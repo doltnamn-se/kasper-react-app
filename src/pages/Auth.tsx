@@ -81,7 +81,13 @@ const Auth = () => {
     <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-6">
-          <img src="/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Logo" className="mx-auto h-6" />
+          <img 
+            src={isDarkMode 
+              ? "/lovable-uploads/868b20a1-c3f1-404c-b8da-9d33fe738d9d.png"
+              : "/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png"} 
+            alt="Logo" 
+            className="mx-auto h-8" 
+          />
           <div className="space-y-2">
             <h1 className="text-2xl font-bold text-black dark:text-white">Välkommen tillbaka</h1>
             <p className="text-gray-600 dark:text-gray-400">Logga in på ditt konto</p>
