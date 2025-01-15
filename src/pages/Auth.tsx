@@ -42,8 +42,8 @@ const Auth = () => {
             className="h-8 mx-auto"
           />
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-black">Welcome back</h1>
-            <p className="text-gray-600">Sign in to your account</p>
+            <h1 className="text-2xl font-bold text-black">Välkommen tillbaka</h1>
+            <p className="text-gray-600">Logga in på ditt konto</p>
           </div>
         </div>
         
@@ -92,12 +92,12 @@ const Auth = () => {
             localization={{
               variables: {
                 sign_in: {
-                  email_label: 'Email address',
-                  password_label: 'Password',
-                  button_label: 'Sign in',
-                  loading_button_label: 'Signing in...',
-                  social_provider_text: 'Sign in with {{provider}}',
-                  link_text: 'Already have an account? Sign in',
+                  email_label: 'E-postadress',
+                  password_label: 'Lösenord',
+                  button_label: 'Logga in',
+                  loading_button_label: 'Loggar in...',
+                  social_provider_text: 'Logga in med {{provider}}',
+                  link_text: 'Har du redan ett konto? Logga in',
                 }
               }
             }}
@@ -107,7 +107,7 @@ const Auth = () => {
             showLinks={false}
           />
           <div className="mt-6 text-center">
-            <span className="text-gray-500">Don't have an account?</span>
+            <span className="text-gray-500">Har du inget konto?</span>
             {' '}
             <a 
               href="https://doltnamn.se/#planer" 
@@ -115,7 +115,7 @@ const Auth = () => {
               rel="noopener noreferrer"
               className="text-black hover:text-gray-700 font-medium"
             >
-              Sign up
+              Registrera dig
             </a>
           </div>
         </div>
