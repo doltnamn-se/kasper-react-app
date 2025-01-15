@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import type { AuthError } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 const Auth = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -32,6 +34,32 @@ const Auth = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const handleTestPayment = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('stripe-webhook', {
+        body: {
+          test: true
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create checkout session",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -87,16 +115,26 @@ const Auth = () => {
             view="sign_in"
             showLinks={false}
           />
-          <div className="mt-4 text-center space-x-2">
-            <span className="text-muted-foreground">Har du inget konto?</span>
-            <a 
-              href="https://doltnamn.se/#planer" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline font-medium"
+          <div className="mt-4 text-center space-y-4">
+            <div className="space-x-2">
+              <span className="text-muted-foreground">Har du inget konto?</span>
+              <a 
+                href="https://doltnamn.se/#planer" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline font-medium"
+              >
+                Bli medlem
+              </a>
+            </div>
+            <Button
+              onClick={handleTestPayment}
+              disabled={loading}
+              variant="outline"
+              className="w-full"
             >
-              Bli medlem
-            </a>
+              {loading ? "Creating checkout..." : "Test Payment"}
+            </Button>
           </div>
         </div>
       </div>

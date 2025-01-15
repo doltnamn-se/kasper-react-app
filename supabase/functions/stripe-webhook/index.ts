@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from 'https://esm.sh/stripe@14.21.0';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
   apiVersion: '2023-10-16',
@@ -7,11 +8,57 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
 
 const STRIPE_WEBHOOK_SIGNING_SECRET = Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET');
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 serve(async (req) => {
   try {
+    // Handle CORS preflight requests
+    if (req.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // Handle POST request for creating checkout session
     if (req.method === 'POST') {
+      const { test } = await req.json();
+      
+      if (test) {
+        console.log('Creating test checkout session...');
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ['card'],
+          line_items: [
+            {
+              price_data: {
+                currency: 'usd',
+                product_data: {
+                  name: 'Test Product',
+                },
+                unit_amount: 500, // $5.00
+              },
+              quantity: 1,
+            },
+          ],
+          mode: 'payment',
+          success_url: `${req.headers.get('origin')}/auth`,
+          cancel_url: `${req.headers.get('origin')}/auth`,
+        });
+
+        console.log('Test checkout session created:', session.id);
+        return new Response(
+          JSON.stringify({ url: session.url }),
+          { 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 200,
+          }
+        );
+      }
+
+      // Verify webhook signature
       const signature = req.headers.get('stripe-signature');
       if (!signature || !STRIPE_WEBHOOK_SIGNING_SECRET) {
+        console.error('Webhook signature missing or secret not configured');
         return new Response('Webhook signature missing or secret not configured', { status: 400 });
       }
 
@@ -39,14 +86,18 @@ serve(async (req) => {
           
           // Create user in Supabase
           const { customer_email, metadata } = session;
-          if (customer_email && metadata?.productId) {
+          if (customer_email) {
             try {
+              const supabaseAdmin = createClient(
+                Deno.env.get('SUPABASE_URL') ?? '',
+                Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+              );
+
               const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
                 email: customer_email,
                 email_confirm: true,
                 password: crypto.randomUUID(), // Generate a random password
                 user_metadata: {
-                  productId: metadata.productId,
                   stripeCustomerId: session.customer
                 }
               });
@@ -70,7 +121,7 @@ serve(async (req) => {
 
       return new Response(JSON.stringify({ received: true }), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
 
