@@ -36,8 +36,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
               button_label: t('sign.in'),
               loading_button_label: t('signing.in'),
               social_provider_text: t('sign.in.with.provider'),
-              link_text: t('already.have.account'),
-              forgotten_password_label: t('forgot.password')
+              link_text: t('already.have.account')
             },
             sign_up: {
               email_label: t('email'),
