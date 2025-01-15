@@ -174,12 +174,11 @@ const Auth = () => {
             </a>
           </div>
         </div>
+
+        <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
       </div>
 
-      <div className="w-full max-w-md space-y-4 mt-auto">
-        <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
-        <AuthFooter />
-      </div>
+      <AuthFooter />
     </div>
   );
 };
