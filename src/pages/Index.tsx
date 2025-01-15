@@ -1,12 +1,8 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <main>
-        <Hero />
+      <main className="container mx-auto p-4">
+        {/* Your app content will go here */}
       </main>
     </div>
   );
