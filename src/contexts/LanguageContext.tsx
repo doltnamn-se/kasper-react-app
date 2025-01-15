@@ -17,6 +17,11 @@ const translations = {
     'register': 'Get started',
     'email': 'Email',
     'password': 'Password',
+    'email.placeholder': 'Enter your email',
+    'password.placeholder': 'Enter your password',
+    'new.password.placeholder': 'Enter new password',
+    'phone.placeholder': 'Enter phone number',
+    'token.placeholder': 'Enter verification code',
     // Footer links
     'privacy': 'Privacy',
     'license': 'License',
@@ -44,6 +49,11 @@ const translations = {
     'register': 'Kom igång',
     'email': 'E-post',
     'password': 'Lösenord',
+    'email.placeholder': 'Ange din e-postadress',
+    'password.placeholder': 'Ange ditt lösenord',
+    'new.password.placeholder': 'Ange nytt lösenord',
+    'phone.placeholder': 'Ange telefonnummer',
+    'token.placeholder': 'Ange verifieringskod',
     // Footer links
     'privacy': 'Integritet',
     'license': 'Licensvillkor',

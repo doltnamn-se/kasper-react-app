@@ -31,6 +31,8 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             sign_in: {
               email_label: t('email'),
               password_label: t('password'),
+              email_input_placeholder: t('email.placeholder'),
+              password_input_placeholder: t('password.placeholder'),
               button_label: t('sign.in'),
               loading_button_label: t('signing.in'),
               social_provider_text: t('sign.in.with.provider'),
@@ -39,6 +41,8 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             sign_up: {
               email_label: t('email'),
               password_label: t('password'),
+              email_input_placeholder: t('email.placeholder'),
+              password_input_placeholder: t('password.placeholder'),
               button_label: t('register'),
               loading_button_label: t('registering'),
               social_provider_text: t('register.with.provider'),
@@ -47,25 +51,31 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             forgotten_password: {
               email_label: t('email'),
               password_label: t('password'),
+              email_input_placeholder: t('email.placeholder'),
               button_label: t('send.recovery.link'),
               loading_button_label: t('sending.recovery.link'),
               link_text: t('forgot.password'),
             },
             update_password: {
               password_label: t('new.password'),
+              password_input_placeholder: t('new.password.placeholder'),
               button_label: t('update.password'),
               loading_button_label: t('updating.password'),
             },
             magic_link: {
               email_input_label: t('email'),
+              email_input_placeholder: t('email.placeholder'),
               button_label: t('send.magic.link'),
               loading_button_label: t('sending.magic.link'),
               link_text: t('send.magic.link.via.email'),
             },
             verify_otp: {
               email_input_label: t('email'),
+              email_input_placeholder: t('email.placeholder'),
               phone_input_label: t('phone'),
+              phone_input_placeholder: t('phone.placeholder'),
               token_input_label: t('token'),
+              token_input_placeholder: t('token.placeholder'),
               button_label: t('verify.token'),
               loading_button_label: t('verifying.token'),
             }
