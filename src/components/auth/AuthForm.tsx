@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getAuthAppearance } from "./AuthAppearance";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 interface AuthFormProps {
@@ -39,30 +40,38 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
 
   if (isResetMode) {
     return (
-      <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032]">
-        <h2 className="text-xl font-semibold mb-4 text-center dark:text-white">
+      <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in">
+        <h2 className="text-xl font-semibold mb-6 text-center dark:text-white">
           {t('forgot.password')}
         </h2>
-        <div className="space-y-4">
-          <Input
-            type="email"
-            placeholder={t('email.placeholder')}
-            value={resetEmail}
-            onChange={(e) => setResetEmail(e.target.value)}
-          />
-          <div className="flex gap-2">
-            <button
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {t('email')}
+            </label>
+            <Input
+              id="email"
+              type="email"
+              placeholder={t('email.placeholder')}
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="flex flex-col gap-3">
+            <Button
               onClick={handleResetPassword}
-              className="flex-1 bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition-colors"
+              className="w-full"
             >
               {t('send.recovery.link')}
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setIsResetMode(false)}
-              className="flex-1 bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              variant="outline"
+              className="w-full"
             >
               {t('cancel')}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
