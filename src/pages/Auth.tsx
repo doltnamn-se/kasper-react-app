@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AuthError, AuthApiError } from "@supabase/supabase-js";
-import { Switch } from "@/components/ui/switch";
-import { Moon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AuthLogo } from "@/components/auth/AuthLogo";
+import { DarkModeToggle } from "@/components/auth/DarkModeToggle";
+import { AuthFooter } from "@/components/auth/AuthFooter";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -43,7 +43,6 @@ const Auth = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log("Auth state changed:", event, session);
         if (event === "SIGNED_IN" && session) {
           navigate("/");
         }
@@ -88,18 +87,7 @@ const Auth = () => {
     <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-6">
-          <div className="relative h-8">
-            <img 
-              src="/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png"
-              alt="Logo" 
-              className={`mx-auto h-8 absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
-            />
-            <img 
-              src="/lovable-uploads/868b20a1-c3f1-404c-b8da-9d33fe738d9d.png"
-              alt="Logo" 
-              className={`mx-auto h-8 absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
-            />
-          </div>
+          <AuthLogo />
           <div className="space-y-2">
             <h1 className="text-2xl font-bold text-black dark:text-white">Välkommen tillbaka</h1>
             <p className="text-gray-600 dark:text-gray-400">Logga in på ditt konto</p>
@@ -187,29 +175,8 @@ const Auth = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-6 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Moon className="w-4 h-4 text-[#4c4c49] dark:text-[#67676c] stroke-[1.5]" />
-            <span className="text-sm text-[#1A1F2C] dark:text-slate-200">Mörkt läge</span>
-          </div>
-          <Switch
-            checked={isDarkMode}
-            onCheckedChange={toggleDarkMode}
-            className="data-[state=checked]:bg-[#c3caf5] transition-colors duration-300"
-          />
-        </div>
-
-        <div className="flex justify-center gap-6 mt-8">
-          <Button variant="link" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
-            Integritet
-          </Button>
-          <Button variant="link" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
-            Licensvillkor
-          </Button>
-          <Button variant="link" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
-            Användarvillkor
-          </Button>
-        </div>
+        <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
+        <AuthFooter />
       </div>
     </div>
   );
