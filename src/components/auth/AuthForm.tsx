@@ -88,7 +88,13 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
 
       <SupabaseAuth 
         supabaseClient={supabase}
-        appearance={getAuthAppearance(isDarkMode)}
+        appearance={{
+          ...getAuthAppearance(isDarkMode),
+          className: {
+            ...getAuthAppearance(isDarkMode).className,
+            label: "text-sm font-medium text-gray-700 dark:text-gray-300"
+          }
+        }}
         providers={[]}
         view="sign_in"
         showLinks={false}
