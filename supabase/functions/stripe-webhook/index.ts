@@ -52,7 +52,7 @@ serve(async (req) => {
         );
       }
 
-      // Verify webhook signature
+      // For actual webhook handling
       const signature = req.headers.get('stripe-signature');
       if (!signature) {
         console.error('Webhook signature missing');
@@ -63,19 +63,6 @@ serve(async (req) => {
       let event;
 
       try {
-        const stripeEvent = JSON.parse(body);
-        const isTestMode = stripeEvent.livemode === false;
-        console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event:`, stripeEvent.type);
-
-        const signingSecret = isTestMode 
-          ? Deno.env.get('STRIPE_TEST_WEBHOOK_SIGNING_SECRET')
-          : Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET');
-
-        if (!signingSecret) {
-          console.error(`${isTestMode ? 'Test' : 'Live'} webhook signing secret not configured`);
-          return new Response('Webhook signing secret not configured', { status: 400 });
-        }
-
         const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
           apiVersion: '2023-10-16',
         });
@@ -83,7 +70,7 @@ serve(async (req) => {
         event = stripe.webhooks.constructEvent(
           body,
           signature,
-          signingSecret
+          Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET') || ''
         );
       } catch (err) {
         console.error(`Webhook signature verification failed:`, err);
@@ -96,7 +83,7 @@ serve(async (req) => {
       switch (event.type) {
         case 'checkout.session.completed': {
           const session = event.data.object;
-          console.log('Processing completed checkout session:', session);
+          console.log('Payment successful:', session);
           break;
         }
         default:
@@ -115,7 +102,6 @@ serve(async (req) => {
     return new Response('Method not allowed', { status: 405 });
   } catch (error) {
     console.error('Error processing webhook:', error);
-    console.error('Full error:', JSON.stringify(error, null, 2));
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
