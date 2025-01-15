@@ -68,6 +68,15 @@ const Auth = () => {
         case "Invalid login credentials":
           setErrorMessage("Felaktigt användarnamn eller lösenord");
           break;
+        case "Email not confirmed":
+          setErrorMessage("Vänligen bekräfta din e-postadress innan du loggar in");
+          break;
+        case "User not found":
+          setErrorMessage("Ingen användare hittades med dessa uppgifter");
+          break;
+        case "Invalid email or password":
+          setErrorMessage("Ogiltig e-postadress eller lösenord");
+          break;
         default:
           setErrorMessage("Ett fel uppstod. Försök igen senare.");
       }
@@ -158,6 +167,47 @@ const Auth = () => {
                   loading_button_label: 'Loggar in...',
                   social_provider_text: 'Logga in med {{provider}}',
                   link_text: 'Har du redan ett konto? Logga in',
+                },
+                sign_up: {
+                  email_label: 'E-postadress',
+                  password_label: 'Lösenord',
+                  email_input_placeholder: 'Din e-postadress',
+                  password_input_placeholder: 'Ditt lösenord',
+                  button_label: 'Registrera',
+                  loading_button_label: 'Registrerar...',
+                  social_provider_text: 'Registrera med {{provider}}',
+                  link_text: 'Har du inget konto? Registrera dig',
+                },
+                forgotten_password: {
+                  email_label: 'E-postadress',
+                  password_label: 'Lösenord',
+                  email_input_placeholder: 'Din e-postadress',
+                  button_label: 'Skicka återställningslänk',
+                  loading_button_label: 'Skickar återställningslänk...',
+                  link_text: 'Glömt lösenord?',
+                },
+                update_password: {
+                  password_label: 'Nytt lösenord',
+                  password_input_placeholder: 'Ditt nya lösenord',
+                  button_label: 'Uppdatera lösenord',
+                  loading_button_label: 'Uppdaterar lösenord...',
+                },
+                magic_link: {
+                  email_input_label: 'E-postadress',
+                  email_input_placeholder: 'Din e-postadress',
+                  button_label: 'Skicka magisk länk',
+                  loading_button_label: 'Skickar magisk länk...',
+                  link_text: 'Skicka magisk länk via e-post',
+                },
+                verify_otp: {
+                  email_input_label: 'E-postadress',
+                  email_input_placeholder: 'Din e-postadress',
+                  phone_input_label: 'Telefonnummer',
+                  phone_input_placeholder: 'Ditt telefonnummer',
+                  token_input_label: 'Token',
+                  token_input_placeholder: 'Din engångskod',
+                  button_label: 'Verifiera token',
+                  loading_button_label: 'Verifierar...',
                 }
               }
             }}
