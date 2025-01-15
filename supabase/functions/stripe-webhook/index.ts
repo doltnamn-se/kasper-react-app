@@ -80,41 +80,66 @@ serve(async (req) => {
 
       // Handle the event
       switch (event.type) {
-        case 'checkout.session.completed':
+        case 'checkout.session.completed': {
           const session = event.data.object;
           console.log('Checkout session completed:', session);
           
           // Create user in Supabase
-          const { customer_email, metadata } = session;
+          const { customer_email } = session;
           if (customer_email) {
             try {
               const supabaseAdmin = createClient(
                 Deno.env.get('SUPABASE_URL') ?? '',
                 Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+                {
+                  auth: {
+                    autoRefreshToken: false,
+                    persistSession: false
+                  }
+                }
               );
 
+              // Generate a secure random password
+              const tempPassword = crypto.randomUUID();
+
+              console.log('Creating user in Supabase:', customer_email);
               const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
                 email: customer_email,
                 email_confirm: true,
-                password: crypto.randomUUID(), // Generate a random password
+                password: tempPassword,
                 user_metadata: {
-                  stripeCustomerId: session.customer
+                  stripe_customer_id: session.customer,
+                  payment_status: 'completed'
                 }
               });
 
               if (authError) {
+                console.error('Error creating user:', authError);
                 throw authError;
               }
 
-              console.log('User created successfully:', authData);
+              console.log('User created successfully:', authData.user.id);
+
+              // Send password reset email to allow user to set their password
+              const { error: resetError } = await supabaseAdmin.auth.admin.generateLink({
+                type: 'recovery',
+                email: customer_email,
+              });
+
+              if (resetError) {
+                console.error('Error generating password reset link:', resetError);
+                throw resetError;
+              }
+
+              console.log('Password reset email sent to:', customer_email);
             } catch (error) {
-              console.error('Error creating user:', error);
+              console.error('Error in user creation process:', error);
               // Don't return an error response as the payment was successful
               // Just log the error and return success
             }
           }
           break;
-
+        }
         default:
           console.log(`Unhandled event type: ${event.type}`);
       }
