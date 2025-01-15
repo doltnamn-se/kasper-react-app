@@ -84,8 +84,8 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
+    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-between p-4">
+      <div className="w-full max-w-md space-y-8 mt-8">
         <div className="text-center space-y-6">
           <AuthLogo />
           <div className="space-y-2">
@@ -174,7 +174,9 @@ const Auth = () => {
             </a>
           </div>
         </div>
+      </div>
 
+      <div className="w-full max-w-md space-y-4 mt-auto">
         <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
         <AuthFooter />
       </div>
