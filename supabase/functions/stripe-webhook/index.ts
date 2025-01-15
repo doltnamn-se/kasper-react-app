@@ -52,7 +52,7 @@ serve(async (req) => {
         );
       }
 
-      // For actual webhook handling
+      // For webhook handling
       const signature = req.headers.get('stripe-signature');
       if (!signature) {
         console.error('Webhook signature missing');
@@ -63,18 +63,32 @@ serve(async (req) => {
       let event;
 
       try {
+        // Parse the event to determine if it's a test event
+        const rawEvent = JSON.parse(body);
+        const isTestMode = rawEvent.livemode === false;
+        console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event:`, rawEvent.type);
+
         const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
           apiVersion: '2023-10-16',
         });
 
+        // Use the appropriate webhook secret based on test/live mode
+        const webhookSecret = isTestMode
+          ? Deno.env.get('STRIPE_TEST_WEBHOOK_SIGNING_SECRET')
+          : Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET');
+
+        if (!webhookSecret) {
+          throw new Error(`${isTestMode ? 'Test' : 'Live'} webhook signing secret not configured`);
+        }
+
         event = stripe.webhooks.constructEvent(
           body,
           signature,
-          Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET') || ''
+          webhookSecret
         );
       } catch (err) {
         console.error(`Webhook signature verification failed:`, err);
-        return new Response(`Webhook signature verification failed: ${err.message}`, { status: 400 });
+        return new Response(`Webhook Error: ${err.message}`, { status: 400 });
       }
 
       console.log(`Event type: ${event.type}`);
