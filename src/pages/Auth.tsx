@@ -20,6 +20,12 @@ const Auth = () => {
         if (event === "SIGNED_OUT") {
           setErrorMessage("");
         }
+        if (event === "PASSWORD_RECOVERY") {
+          const { error } = await supabase.auth.getSession();
+          if (error) {
+            handleError(error);
+          }
+        }
       }
     );
 
@@ -124,11 +130,9 @@ const Auth = () => {
                 }
               }
             }}
-            theme="light"
             providers={[]}
             view="sign_in"
             showLinks={false}
-            onError={handleError}
           />
           <div className="mt-6 text-center">
             <span className="text-gray-500">Har du inget konto?</span>
