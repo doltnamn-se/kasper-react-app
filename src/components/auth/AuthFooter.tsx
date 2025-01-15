@@ -15,21 +15,21 @@ export const AuthFooter = () => {
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
         >
           Integritet
-          <ArrowUpRight className="w-2.5 h-2.5 -ml-0.5 -mt-0.5" />
+          <ArrowUpRight className="w-2 h-2 -ml-0.5 -mt-1" />
         </Button>
         <Button 
           variant="link" 
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
         >
           Licensvillkor
-          <ArrowUpRight className="w-2.5 h-2.5 -ml-0.5 -mt-0.5" />
+          <ArrowUpRight className="w-2 h-2 -ml-0.5 -mt-1" />
         </Button>
         <Button 
           variant="link" 
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
         >
           Användarvillkor
-          <ArrowUpRight className="w-2.5 h-2.5 -ml-0.5 -mt-0.5" />
+          <ArrowUpRight className="w-2 h-2 -ml-0.5 -mt-1" />
         </Button>
       </div>
       <p className="text-[11px] text-gray-400 dark:text-gray-500">
