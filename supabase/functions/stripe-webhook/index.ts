@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from 'https://esm.sh/stripe@14.21.0';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -64,7 +63,6 @@ serve(async (req) => {
       let event;
 
       try {
-        // Determine if this is a test event
         const stripeEvent = JSON.parse(body);
         const isTestMode = stripeEvent.livemode === false;
         console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event:`, stripeEvent.type);
@@ -99,93 +97,6 @@ serve(async (req) => {
         case 'checkout.session.completed': {
           const session = event.data.object;
           console.log('Processing completed checkout session:', session);
-          
-          // Create user in Supabase
-          const { customer_email } = session;
-          if (customer_email) {
-            try {
-              console.log('Initializing Supabase client...');
-              const supabaseUrl = Deno.env.get('SUPABASE_URL');
-              const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-              
-              if (!supabaseUrl || !supabaseServiceKey) {
-                throw new Error('Missing Supabase configuration');
-              }
-
-              console.log('Creating Supabase admin client...');
-              const supabaseAdmin = createClient(
-                supabaseUrl,
-                supabaseServiceKey
-              );
-
-              // First, check if the user already exists
-              console.log('Checking if user exists:', customer_email);
-              const { data: existingUser, error: getUserError } = await supabaseAdmin.auth.admin.getUserByEmail(customer_email);
-
-              if (getUserError) {
-                console.error('Error checking existing user:', getUserError);
-                // Continue with user creation if we can't verify existence
-              }
-
-              if (existingUser) {
-                console.log('User already exists:', existingUser.id);
-                // User exists, no need to create a new one
-                return new Response(
-                  JSON.stringify({ received: true }),
-                  { 
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                    status: 200,
-                  }
-                );
-              }
-
-              // Generate a secure random password only if we need to create a new user
-              const tempPassword = crypto.randomUUID();
-
-              console.log('Attempting to create new user:', customer_email);
-              const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-                email: customer_email,
-                password: tempPassword,
-                email_confirm: true
-              });
-
-              if (authError) {
-                console.error('Error creating user:', authError);
-                console.error('Full auth error:', JSON.stringify(authError, null, 2));
-                // Don't throw the error, just log it and continue
-                return new Response(
-                  JSON.stringify({ received: true, warning: 'User creation failed but payment processed' }),
-                  { 
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                    status: 200,
-                  }
-                );
-              }
-
-              console.log('User created successfully:', authData.user.id);
-
-              // Send password reset email
-              console.log('Generating password reset link...');
-              const { error: resetError } = await supabaseAdmin.auth.admin.generateLink({
-                type: 'recovery',
-                email: customer_email,
-              });
-
-              if (resetError) {
-                console.error('Error generating password reset link:', resetError);
-                console.error('Full reset error:', JSON.stringify(resetError, null, 2));
-                // Don't throw the error, just log it
-              } else {
-                console.log('Password reset email sent successfully');
-              }
-            } catch (error) {
-              console.error('Error in user creation process:', error);
-              console.error('Full error:', JSON.stringify(error, null, 2));
-              // Don't throw the error, continue with success response
-            }
-          } else {
-            console.error('No customer email in session:', session);
-          }
           break;
         }
         default:
