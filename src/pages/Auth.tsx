@@ -108,7 +108,7 @@ const Auth = () => {
                     inputBorderFocus: '#000000',
                     inputBorderHover: '#000000',
                     messageText: '#ff6369',
-                    messageDangerBackground: '#ff22221e',
+                    messageBackground: '#ff22221e',
                     messageTextDanger: '#ff6369',
                   },
                   borderWidths: {
@@ -130,9 +130,9 @@ const Auth = () => {
                 },
                 message: {
                   backgroundColor: '#ff22221e',
-                  borderColor: '#ff22221e',
+                  border: 'none',
                   color: '#ff6369',
-                  fontWeight: 500,
+                  fontWeight: 600,
                   padding: '12px 16px',
                   borderRadius: '0.5rem',
                 }
@@ -144,7 +144,7 @@ const Auth = () => {
                 divider: 'my-4',
                 label: 'text-sm font-medium text-gray-700 dark:text-gray-300',
                 loader: 'border-black dark:border-white',
-                message: 'text-[#ff6369] bg-[#ff22221e] border-[#ff22221e]',
+                message: 'text-[#ff6369] bg-[#ff22221e]',
               },
             }}
             localization={{
