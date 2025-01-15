@@ -60,10 +60,25 @@ const Auth = () => {
                   },
                 },
               },
+              className: {
+                anchor: 'hidden', // This hides the "Sign up" link
+              },
             }}
             theme="light"
             providers={[]}
+            view="sign_in"
           />
+          <div className="mt-4 text-center space-x-2">
+            <span className="text-muted-foreground">Don't have an account?</span>
+            <a 
+              href="https://doltnamn.se/#planer" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              Become a member
+            </a>
+          </div>
         </div>
       </div>
     </div>
