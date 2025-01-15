@@ -61,12 +61,19 @@ const Auth = () => {
                 },
               },
               className: {
-                anchor: 'hidden', // This hides the "Sign up" link
+                anchor: 'hidden',
+                button: 'hidden',
+                container: 'hidden',
+                divider: 'hidden',
+                label: 'hidden',
+                loader: 'hidden',
+                message: 'hidden',
               },
             }}
             theme="light"
             providers={[]}
             view="sign_in"
+            showLinks={false}
           />
           <div className="mt-4 text-center space-x-2">
             <span className="text-muted-foreground">Don't have an account?</span>
