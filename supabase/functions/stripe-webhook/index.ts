@@ -70,7 +70,7 @@ serve(async (req) => {
         // Determine if this is a test event
         const stripeEvent = JSON.parse(body);
         const isTestMode = stripeEvent.livemode === false;
-        console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event`);
+        console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event:`, stripeEvent.type);
 
         const signingSecret = isTestMode 
           ? STRIPE_TEST_WEBHOOK_SIGNING_SECRET 
@@ -87,25 +87,33 @@ serve(async (req) => {
           signingSecret
         );
       } catch (err) {
-        console.error(`Webhook signature verification failed: ${err.message}`);
+        console.error(`Webhook signature verification failed:`, err);
         return new Response(`Webhook signature verification failed: ${err.message}`, { status: 400 });
       }
 
-      console.log(`Event received: ${event.type}`);
+      console.log(`Event type: ${event.type}`);
 
       // Handle the event
       switch (event.type) {
         case 'checkout.session.completed': {
           const session = event.data.object;
-          console.log('Checkout session completed:', session);
+          console.log('Processing completed checkout session:', session);
           
           // Create user in Supabase
           const { customer_email } = session;
           if (customer_email) {
             try {
+              console.log('Initializing Supabase client...');
+              const supabaseUrl = Deno.env.get('SUPABASE_URL');
+              const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+              
+              if (!supabaseUrl || !supabaseServiceKey) {
+                throw new Error('Missing Supabase configuration');
+              }
+
               const supabaseAdmin = createClient(
-                Deno.env.get('SUPABASE_URL') ?? '',
-                Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+                supabaseUrl,
+                supabaseServiceKey,
                 {
                   auth: {
                     autoRefreshToken: false,
@@ -136,7 +144,8 @@ serve(async (req) => {
 
               console.log('User created successfully:', authData.user.id);
 
-              // Send password reset email to allow user to set their password
+              // Send password reset email
+              console.log('Generating password reset link...');
               const { error: resetError } = await supabaseAdmin.auth.admin.generateLink({
                 type: 'recovery',
                 email: customer_email,
@@ -150,9 +159,13 @@ serve(async (req) => {
               console.log('Password reset email sent to:', customer_email);
             } catch (error) {
               console.error('Error in user creation process:', error);
+              // Log the full error object for debugging
+              console.error('Full error:', JSON.stringify(error, null, 2));
               // Don't return an error response as the payment was successful
               // Just log the error and return success
             }
+          } else {
+            console.error('No customer email in session:', session);
           }
           break;
         }
@@ -169,6 +182,7 @@ serve(async (req) => {
     return new Response('Method not allowed', { status: 405 });
   } catch (error) {
     console.error('Error processing webhook:', error);
+    console.error('Full error:', JSON.stringify(error, null, 2));
     return new Response(`Webhook Error: ${error.message}`, { status: 400 });
   }
 });
