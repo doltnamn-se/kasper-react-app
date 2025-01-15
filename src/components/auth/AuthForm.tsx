@@ -25,7 +25,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
         appearance={getAuthAppearance(isDarkMode)}
         providers={[]}
         view="sign_in"
-        showLinks={false}
+        showLinks={true}
         localization={{
           variables: {
             sign_in: {
