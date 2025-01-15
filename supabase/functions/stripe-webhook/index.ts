@@ -70,8 +70,8 @@ serve(async (req) => {
         console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event:`, stripeEvent.type);
 
         const signingSecret = isTestMode 
-          ? STRIPE_TEST_WEBHOOK_SIGNING_SECRET 
-          : STRIPE_WEBHOOK_SIGNING_SECRET;
+          ? Deno.env.get('STRIPE_TEST_WEBHOOK_SIGNING_SECRET')
+          : Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET');
 
         if (!signingSecret) {
           console.error(`${isTestMode ? 'Test' : 'Live'} webhook signing secret not configured`);
@@ -118,10 +118,31 @@ serve(async (req) => {
                 supabaseServiceKey
               );
 
-              // Generate a secure random password
+              // First, check if the user already exists
+              console.log('Checking if user exists:', customer_email);
+              const { data: existingUser, error: getUserError } = await supabaseAdmin.auth.admin.getUserByEmail(customer_email);
+
+              if (getUserError) {
+                console.error('Error checking existing user:', getUserError);
+                // Continue with user creation if we can't verify existence
+              }
+
+              if (existingUser) {
+                console.log('User already exists:', existingUser.id);
+                // User exists, no need to create a new one
+                return new Response(
+                  JSON.stringify({ received: true }),
+                  { 
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                    status: 200,
+                  }
+                );
+              }
+
+              // Generate a secure random password only if we need to create a new user
               const tempPassword = crypto.randomUUID();
 
-              console.log('Attempting to create user:', customer_email);
+              console.log('Attempting to create new user:', customer_email);
               const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
                 email: customer_email,
                 password: tempPassword,
