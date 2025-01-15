@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard, CheckSquare, Link, LogOut, User, Bell, UserCog, Moon } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Link, LogOut, User, Bell, UserCog, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Index = () => {
       {/* Sidebar */}
       <aside className="w-72 border-r border-[#E5DEFF] bg-white p-6 flex flex-col shadow-sm fixed h-screen">
         {/* User Profile Section */}
-        <div className="flex items-center gap-4 px-4 py-4 mb-8 bg-[#F1F0FB] rounded-xl">
+        <div className="flex items-center gap-4 px-4 py-4 mb-4 bg-[#F1F0FB] rounded-xl">
           <div className="w-10 h-10 rounded-full bg-[#E5DEFF] flex items-center justify-center">
             <User className="w-5 h-5 text-[#8B5CF6]" />
           </div>
@@ -59,6 +60,23 @@ const Index = () => {
             <h3 className="font-medium text-sm text-[#1A1F2C]">Användare</h3>
             <p className="text-xs text-[#6E59A5]">Inloggad</p>
           </div>
+        </div>
+
+        {/* Dark Mode Toggle */}
+        <div className="flex items-center justify-between px-4 py-3 mb-6 bg-[#F1F0FB] rounded-lg">
+          <div className="flex items-center gap-3">
+            {isDarkMode ? (
+              <Moon className="w-5 h-5 text-[#8B5CF6]" />
+            ) : (
+              <Sun className="w-5 h-5 text-[#8B5CF6]" />
+            )}
+            <span className="text-sm text-[#1A1F2C]">Mörkt läge</span>
+          </div>
+          <Switch
+            checked={isDarkMode}
+            onCheckedChange={toggleDarkMode}
+            className="data-[state=checked]:bg-[#8B5CF6]"
+          />
         </div>
 
         {/* Main Menu */}
@@ -80,12 +98,6 @@ const Index = () => {
             icon={UserCog} 
             label="Hantera konto"
             onClick={() => console.log('Account settings clicked')}
-          />
-          <MenuItem 
-            icon={Moon} 
-            label="Mörkt läge"
-            onClick={toggleDarkMode}
-            className={isDarkMode ? "text-[#8B5CF6]" : ""}
           />
         </div>
 
