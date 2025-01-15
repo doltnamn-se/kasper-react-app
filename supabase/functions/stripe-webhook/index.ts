@@ -111,6 +111,7 @@ serve(async (req) => {
                 throw new Error('Missing Supabase configuration');
               }
 
+              console.log('Supabase configuration found, creating client...');
               const supabaseAdmin = createClient(
                 supabaseUrl,
                 supabaseServiceKey,
@@ -139,6 +140,7 @@ serve(async (req) => {
 
               if (authError) {
                 console.error('Error creating user:', authError);
+                console.error('Full auth error:', JSON.stringify(authError, null, 2));
                 throw authError;
               }
 
@@ -153,6 +155,7 @@ serve(async (req) => {
 
               if (resetError) {
                 console.error('Error generating password reset link:', resetError);
+                console.error('Full reset error:', JSON.stringify(resetError, null, 2));
                 throw resetError;
               }
 
