@@ -79,6 +79,13 @@ const Auth = () => {
                   },
                 },
               },
+              style: {
+                input: {
+                  placeholder: {
+                    color: '#6B7280',
+                  },
+                },
+              },
               className: {
                 anchor: 'text-black hover:text-gray-700',
                 button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-lg',
@@ -94,6 +101,8 @@ const Auth = () => {
                 sign_in: {
                   email_label: 'E-postadress',
                   password_label: 'Lösenord',
+                  password_placeholder: 'Ditt lösenord',
+                  email_input_placeholder: 'Din e-postadress',
                   button_label: 'Logga in',
                   loading_button_label: 'Loggar in...',
                   social_provider_text: 'Logga in med {{provider}}',
