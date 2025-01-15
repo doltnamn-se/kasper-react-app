@@ -129,11 +129,6 @@ const Auth = () => {
         )}
 
         <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032]">
-          <div className="space-y-2 mb-4">
-            <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
-            <LanguageSwitch />
-          </div>
-          
           <SupabaseAuth 
             supabaseClient={supabase}
             appearance={{ 
@@ -258,6 +253,11 @@ const Auth = () => {
               {t('register')}
             </a>
           </div>
+        </div>
+
+        <div className="flex flex-col items-center gap-2 mt-6">
+          <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
+          <LanguageSwitch />
         </div>
       </div>
 
