@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AuthError, AuthApiError } from "@supabase/supabase-js";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -19,16 +20,6 @@ const Auth = () => {
         if (event === "SIGNED_OUT") {
           setErrorMessage("");
         }
-        if (event === "USER_UPDATED") {
-          const { error } = await supabase.auth.getSession();
-          if (error) {
-            if (error.message.includes("Invalid login credentials")) {
-              setErrorMessage("Felaktigt användarnamn eller lösenord");
-            } else {
-              setErrorMessage("Ett fel uppstod. Försök igen senare.");
-            }
-          }
-        }
       }
     );
 
@@ -41,6 +32,21 @@ const Auth = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const handleError = (error: AuthError) => {
+    console.error("Auth error:", error);
+    if (error instanceof AuthApiError) {
+      switch (error.message) {
+        case "Invalid login credentials":
+          setErrorMessage("Felaktigt användarnamn eller lösenord");
+          break;
+        default:
+          setErrorMessage("Ett fel uppstod. Försök igen senare.");
+      }
+    } else {
+      setErrorMessage("Ett fel uppstod. Försök igen senare.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#EEEEEE] flex items-center justify-center p-4">
@@ -122,6 +128,7 @@ const Auth = () => {
             providers={[]}
             view="sign_in"
             showLinks={false}
+            onError={handleError}
           />
           <div className="mt-6 text-center">
             <span className="text-gray-500">Har du inget konto?</span>
