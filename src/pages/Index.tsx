@@ -15,7 +15,7 @@ const Index = () => {
       <main className="container mx-auto p-4">
         <div className="flex justify-end">
           <Button onClick={handleSignOut} variant="outline">
-            Sign Out
+            Logga ut
           </Button>
         </div>
         {/* Your app content will go here */}

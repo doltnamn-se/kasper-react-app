@@ -37,8 +37,8 @@ const Auth = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-4">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold">Welcome</h1>
-          <p className="text-muted-foreground">Sign in to your account</p>
+          <h1 className="text-2xl font-bold">Välkommen</h1>
+          <p className="text-muted-foreground">Logga in på ditt konto</p>
         </div>
         
         {errorMessage && (
@@ -70,20 +70,32 @@ const Auth = () => {
                 message: 'hidden',
               },
             }}
+            localization={{
+              variables: {
+                sign_in: {
+                  email_label: 'E-postadress',
+                  password_label: 'Lösenord',
+                  button_label: 'Logga in',
+                  loading_button_label: 'Loggar in...',
+                  social_provider_text: 'Logga in med {{provider}}',
+                  link_text: 'Har du redan ett konto? Logga in',
+                }
+              }
+            }}
             theme="light"
             providers={[]}
             view="sign_in"
             showLinks={false}
           />
           <div className="mt-4 text-center space-x-2">
-            <span className="text-muted-foreground">Don't have an account?</span>
+            <span className="text-muted-foreground">Har du inget konto?</span>
             <a 
               href="https://doltnamn.se/#planer" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-primary hover:underline font-medium"
             >
-              Become a member
+              Bli medlem
             </a>
           </div>
         </div>
