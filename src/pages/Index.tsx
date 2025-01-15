@@ -10,7 +10,6 @@ const Index = () => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Initialize dark mode from localStorage on component mount
   useEffect(() => {
     const isDark = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(isDark);
@@ -58,19 +57,17 @@ const Index = () => {
         className
       )}
     >
-      <Icon className="w-5 h-5" />
+      <Icon className="w-5 h-5 transition-transform duration-200 ease-in-out stroke-[1.5]" />
       <span>{label}</span>
     </button>
   );
 
   return (
     <div className="min-h-screen bg-[#F6F6F7] dark:bg-slate-900 flex">
-      {/* Sidebar */}
       <aside className="w-72 border-r border-[#E5DEFF] dark:border-slate-700 bg-white dark:bg-slate-900 p-6 flex flex-col shadow-sm fixed h-screen">
-        {/* User Profile Section */}
         <div className="flex items-center gap-4 px-4 py-4 mb-4 bg-[#F1F0FB] dark:bg-slate-800 rounded-xl">
           <div className="w-10 h-10 rounded-full bg-[#E5DEFF] dark:bg-slate-700 flex items-center justify-center">
-            <User className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400" />
+            <User className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
           </div>
           <div className="flex-1">
             <h3 className="font-medium text-sm text-[#1A1F2C] dark:text-slate-200">Användare</h3>
@@ -78,13 +75,12 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Dark Mode Toggle */}
         <div className="flex items-center justify-between px-4 py-3 mb-6 bg-[#F1F0FB] dark:bg-slate-800 rounded-lg">
           <div className="flex items-center gap-3">
             {isDarkMode ? (
-              <Moon className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400" />
+              <Moon className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
             ) : (
-              <Sun className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400" />
+              <Sun className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
             )}
             <span className="text-sm text-[#1A1F2C] dark:text-slate-200">Mörkt läge</span>
           </div>
@@ -95,14 +91,12 @@ const Index = () => {
           />
         </div>
 
-        {/* Main Menu */}
         <nav className="flex-1 space-y-2">
           <MenuItem icon={LayoutDashboard} label="Översikt" active={true} />
           <MenuItem icon={CheckSquare} label="Checklista" />
           <MenuItem icon={Link} label="Mina länkar" />
         </nav>
 
-        {/* Secondary Menu */}
         <div className="space-y-2 mb-4">
           <div className="h-px bg-[#E5DEFF] dark:bg-slate-700 my-4" />
           <MenuItem 
@@ -117,7 +111,6 @@ const Index = () => {
           />
         </div>
 
-        {/* Bottom Section */}
         <div className="border-t border-[#E5DEFF] dark:border-slate-700 pt-4">
           <MenuItem 
             icon={LogOut} 
@@ -128,7 +121,6 @@ const Index = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-8 ml-72">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-semibold mb-6 text-[#1A1F2C] dark:text-slate-200">Översikt</h1>
