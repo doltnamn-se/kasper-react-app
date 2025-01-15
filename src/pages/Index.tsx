@@ -1,15 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard, CheckSquare, Link, LogOut, User } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Link, LogOut, User, Bell, UserCog, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/auth");
+  };
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
   };
 
   const MenuItem = ({ 
@@ -61,8 +68,29 @@ const Index = () => {
           <MenuItem icon={Link} label="Mina länkar" />
         </nav>
 
+        {/* Secondary Menu */}
+        <div className="space-y-2 mb-4">
+          <div className="h-px bg-[#E5DEFF] my-4" />
+          <MenuItem 
+            icon={Bell} 
+            label="Notifikationer"
+            onClick={() => console.log('Notifications clicked')}
+          />
+          <MenuItem 
+            icon={UserCog} 
+            label="Hantera konto"
+            onClick={() => console.log('Account settings clicked')}
+          />
+          <MenuItem 
+            icon={Moon} 
+            label="Mörkt läge"
+            onClick={toggleDarkMode}
+            className={isDarkMode ? "text-[#8B5CF6]" : ""}
+          />
+        </div>
+
         {/* Bottom Section */}
-        <div className="border-t border-[#E5DEFF] pt-4 mt-4">
+        <div className="border-t border-[#E5DEFF] pt-4">
           <MenuItem 
             icon={LogOut} 
             label="Logga ut" 
