@@ -7,6 +7,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
 });
 
 const STRIPE_WEBHOOK_SIGNING_SECRET = Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET');
+const STRIPE_TEST_WEBHOOK_SIGNING_SECRET = Deno.env.get('STRIPE_TEST_WEBHOOK_SIGNING_SECRET');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -57,19 +58,33 @@ serve(async (req) => {
 
       // Verify webhook signature
       const signature = req.headers.get('stripe-signature');
-      if (!signature || !STRIPE_WEBHOOK_SIGNING_SECRET) {
-        console.error('Webhook signature missing or secret not configured');
-        return new Response('Webhook signature missing or secret not configured', { status: 400 });
+      if (!signature) {
+        console.error('Webhook signature missing');
+        return new Response('Webhook signature missing', { status: 400 });
       }
 
       const body = await req.text();
       let event;
 
       try {
+        // Determine if this is a test event
+        const stripeEvent = JSON.parse(body);
+        const isTestMode = stripeEvent.livemode === false;
+        console.log(`Processing ${isTestMode ? 'test' : 'live'} mode event`);
+
+        const signingSecret = isTestMode 
+          ? STRIPE_TEST_WEBHOOK_SIGNING_SECRET 
+          : STRIPE_WEBHOOK_SIGNING_SECRET;
+
+        if (!signingSecret) {
+          console.error(`${isTestMode ? 'Test' : 'Live'} webhook signing secret not configured`);
+          return new Response('Webhook signing secret not configured', { status: 400 });
+        }
+
         event = stripe.webhooks.constructEvent(
           body,
           signature,
-          STRIPE_WEBHOOK_SIGNING_SECRET
+          signingSecret
         );
       } catch (err) {
         console.error(`Webhook signature verification failed: ${err.message}`);
@@ -109,7 +124,8 @@ serve(async (req) => {
                 password: tempPassword,
                 user_metadata: {
                   stripe_customer_id: session.customer,
-                  payment_status: 'completed'
+                  payment_status: 'completed',
+                  is_test_user: event.livemode === false
                 }
               });
 
