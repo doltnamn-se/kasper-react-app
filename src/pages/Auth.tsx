@@ -77,6 +77,30 @@ const Auth = () => {
         case "Invalid email or password":
           setErrorMessage("Ogiltig e-postadress eller lösenord");
           break;
+        case "missing email or phone":
+          setErrorMessage("E-postadress eller telefonnummer saknas");
+          break;
+        case "missing password":
+          setErrorMessage("Lösenord saknas");
+          break;
+        case "password too short":
+          setErrorMessage("Lösenordet är för kort");
+          break;
+        case "email already taken":
+          setErrorMessage("E-postadressen används redan");
+          break;
+        case "phone number already taken":
+          setErrorMessage("Telefonnumret används redan");
+          break;
+        case "weak password":
+          setErrorMessage("Lösenordet är för svagt");
+          break;
+        case "invalid email":
+          setErrorMessage("Ogiltig e-postadress");
+          break;
+        case "invalid phone":
+          setErrorMessage("Ogiltigt telefonnummer");
+          break;
         default:
           setErrorMessage("Ett fel uppstod. Försök igen senare.");
       }
