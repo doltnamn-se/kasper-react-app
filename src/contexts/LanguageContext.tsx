@@ -22,6 +22,7 @@ const translations = {
     'new.password.placeholder': 'Enter new password',
     'phone.placeholder': 'Enter phone number',
     'token.placeholder': 'Enter verification code',
+    'dark.mode': 'Dark mode',
     // Footer links
     'privacy': 'Privacy',
     'license': 'License',
@@ -54,6 +55,7 @@ const translations = {
     'new.password.placeholder': 'Ange nytt lösenord',
     'phone.placeholder': 'Ange telefonnummer',
     'token.placeholder': 'Ange verifieringskod',
+    'dark.mode': 'Mörkt läge',
     // Footer links
     'privacy': 'Integritet',
     'license': 'Licensvillkor',
