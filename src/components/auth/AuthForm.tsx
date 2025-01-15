@@ -55,7 +55,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
               placeholder={t('email.placeholder')}
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
-              className="w-full"
+              className="w-full bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400"
             />
           </div>
           <div className="flex flex-col gap-3">
