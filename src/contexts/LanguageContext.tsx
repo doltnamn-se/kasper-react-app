@@ -14,7 +14,13 @@ const translations = {
     'welcome.back': 'Welcome back',
     'sign.in': 'Sign in to your account',
     'no.account': "Don't have an account?",
-    'register': 'Register',
+    'register': 'Get started',
+    'email': 'Email',
+    'password': 'Password',
+    // Footer links
+    'privacy': 'Privacy',
+    'license': 'License',
+    'terms': 'Terms',
     // Error messages
     'error.invalid.credentials': 'Invalid login credentials',
     'error.email.not.confirmed': 'Please confirm your email before logging in',
@@ -35,7 +41,13 @@ const translations = {
     'welcome.back': 'Välkommen tillbaka',
     'sign.in': 'Logga in på ditt konto',
     'no.account': 'Har du inget konto?',
-    'register': 'Registrera dig',
+    'register': 'Kom igång',
+    'email': 'E-post',
+    'password': 'Lösenord',
+    // Footer links
+    'privacy': 'Integritet',
+    'license': 'Licensvillkor',
+    'terms': 'Användarvillkor',
     // Error messages
     'error.invalid.credentials': 'Felaktigt användarnamn eller lösenord',
     'error.email.not.confirmed': 'Vänligen bekräfta din e-postadress innan du loggar in',
