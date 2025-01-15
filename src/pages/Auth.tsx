@@ -78,7 +78,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EEEEEE] dark:bg-[#18181b] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#EEEEEE] dark:bg-[#161618] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-6">
           <img 
@@ -98,7 +98,7 @@ const Auth = () => {
           </Alert>
         )}
 
-        <div className="bg-white dark:bg-[#27272a] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <SupabaseAuth 
             supabaseClient={supabase}
             appearance={{ 
@@ -126,7 +126,8 @@ const Auth = () => {
               },
               style: {
                 input: {
-                  color: '#6B7280',
+                  backgroundColor: isDarkMode ? '#3f3f46' : 'white',
+                  color: isDarkMode ? '#fff' : '#6B7280',
                 }
               },
               className: {
@@ -173,13 +174,13 @@ const Auth = () => {
 
         <div className="flex items-center justify-center gap-3 px-4 py-3">
           <div className="flex items-center gap-3">
-            <Moon className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
+            <Moon className="w-5 h-5 text-[#c3caf5] dark:text-[#c3caf5] stroke-[1.5]" />
             <span className="text-sm text-[#1A1F2C] dark:text-slate-200">Mörkt läge</span>
           </div>
           <Switch
             checked={isDarkMode}
             onCheckedChange={toggleDarkMode}
-            className="data-[state=checked]:bg-[#8B5CF6]"
+            className="data-[state=checked]:bg-[#c3caf5]"
           />
         </div>
       </div>
