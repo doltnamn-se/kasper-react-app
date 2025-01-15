@@ -2,13 +2,6 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from 'https://esm.sh/stripe@14.21.0';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-  apiVersion: '2023-10-16',
-});
-
-const STRIPE_WEBHOOK_SIGNING_SECRET = Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET');
-const STRIPE_TEST_WEBHOOK_SIGNING_SECRET = Deno.env.get('STRIPE_TEST_WEBHOOK_SIGNING_SECRET');
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -27,6 +20,10 @@ serve(async (req) => {
       
       if (test) {
         console.log('Creating test checkout session...');
+        const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+          apiVersion: '2023-10-16',
+        });
+
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card'],
           line_items: [
@@ -81,6 +78,10 @@ serve(async (req) => {
           return new Response('Webhook signing secret not configured', { status: 400 });
         }
 
+        const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+          apiVersion: '2023-10-16',
+        });
+
         event = stripe.webhooks.constructEvent(
           body,
           signature,
@@ -111,37 +112,33 @@ serve(async (req) => {
                 throw new Error('Missing Supabase configuration');
               }
 
-              console.log('Supabase configuration found, creating client...');
+              console.log('Creating Supabase admin client...');
               const supabaseAdmin = createClient(
                 supabaseUrl,
-                supabaseServiceKey,
-                {
-                  auth: {
-                    autoRefreshToken: false,
-                    persistSession: false
-                  }
-                }
+                supabaseServiceKey
               );
 
               // Generate a secure random password
               const tempPassword = crypto.randomUUID();
 
-              console.log('Creating user in Supabase:', customer_email);
+              console.log('Attempting to create user:', customer_email);
               const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
                 email: customer_email,
-                email_confirm: true,
                 password: tempPassword,
-                user_metadata: {
-                  stripe_customer_id: session.customer,
-                  payment_status: 'completed',
-                  is_test_user: event.livemode === false
-                }
+                email_confirm: true
               });
 
               if (authError) {
                 console.error('Error creating user:', authError);
                 console.error('Full auth error:', JSON.stringify(authError, null, 2));
-                throw authError;
+                // Don't throw the error, just log it and continue
+                return new Response(
+                  JSON.stringify({ received: true, warning: 'User creation failed but payment processed' }),
+                  { 
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                    status: 200,
+                  }
+                );
               }
 
               console.log('User created successfully:', authData.user.id);
@@ -156,16 +153,14 @@ serve(async (req) => {
               if (resetError) {
                 console.error('Error generating password reset link:', resetError);
                 console.error('Full reset error:', JSON.stringify(resetError, null, 2));
-                throw resetError;
+                // Don't throw the error, just log it
+              } else {
+                console.log('Password reset email sent successfully');
               }
-
-              console.log('Password reset email sent to:', customer_email);
             } catch (error) {
               console.error('Error in user creation process:', error);
-              // Log the full error object for debugging
               console.error('Full error:', JSON.stringify(error, null, 2));
-              // Don't return an error response as the payment was successful
-              // Just log the error and return success
+              // Don't throw the error, continue with success response
             }
           } else {
             console.error('No customer email in session:', session);
@@ -176,16 +171,25 @@ serve(async (req) => {
           console.log(`Unhandled event type: ${event.type}`);
       }
 
-      return new Response(JSON.stringify({ received: true }), {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return new Response(
+        JSON.stringify({ received: true }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200,
+        }
+      );
     }
 
     return new Response('Method not allowed', { status: 405 });
   } catch (error) {
     console.error('Error processing webhook:', error);
     console.error('Full error:', JSON.stringify(error, null, 2));
-    return new Response(`Webhook Error: ${error.message}`, { status: 400 });
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500,
+      }
+    );
   }
 });
