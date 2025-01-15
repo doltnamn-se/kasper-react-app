@@ -8,14 +8,16 @@ import { AuthError, AuthApiError } from "@supabase/supabase-js";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { DarkModeToggle } from "@/components/auth/DarkModeToggle";
 import { AuthFooter } from "@/components/auth/AuthFooter";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Auth = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
-    // Preload both logo images
     const lightLogo = new Image();
     const darkLogo = new Image();
     lightLogo.src = "/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png";
@@ -66,46 +68,46 @@ const Auth = () => {
     if (error instanceof AuthApiError) {
       switch (error.message) {
         case "Invalid login credentials":
-          setErrorMessage("Felaktigt användarnamn eller lösenord");
+          setErrorMessage(t('error.invalid.credentials'));
           break;
         case "Email not confirmed":
-          setErrorMessage("Vänligen bekräfta din e-postadress innan du loggar in");
+          setErrorMessage(t('error.email.not.confirmed'));
           break;
         case "User not found":
-          setErrorMessage("Ingen användare hittades med dessa uppgifter");
+          setErrorMessage(t('error.user.not.found'));
           break;
         case "Invalid email or password":
-          setErrorMessage("Ogiltig e-postadress eller lösenord");
+          setErrorMessage(t('error.invalid.email.password'));
           break;
         case "missing email or phone":
-          setErrorMessage("E-postadress eller telefonnummer saknas");
+          setErrorMessage(t('error.missing.email.phone'));
           break;
         case "missing password":
-          setErrorMessage("Lösenord saknas");
+          setErrorMessage(t('error.missing.password'));
           break;
         case "password too short":
-          setErrorMessage("Lösenordet är för kort");
+          setErrorMessage(t('error.password.too.short'));
           break;
         case "email already taken":
-          setErrorMessage("E-postadressen används redan");
+          setErrorMessage(t('error.email.taken'));
           break;
         case "phone number already taken":
-          setErrorMessage("Telefonnumret används redan");
+          setErrorMessage(t('error.phone.taken'));
           break;
         case "weak password":
-          setErrorMessage("Lösenordet är för svagt");
+          setErrorMessage(t('error.weak.password'));
           break;
         case "invalid email":
-          setErrorMessage("Ogiltig e-postadress");
+          setErrorMessage(t('error.invalid.email'));
           break;
         case "invalid phone":
-          setErrorMessage("Ogiltigt telefonnummer");
+          setErrorMessage(t('error.invalid.phone'));
           break;
         default:
-          setErrorMessage("Ett fel uppstod. Försök igen senare.");
+          setErrorMessage(t('error.generic'));
       }
     } else {
-      setErrorMessage("Ett fel uppstod. Försök igen senare.");
+      setErrorMessage(t('error.generic'));
     }
   };
 
@@ -115,8 +117,8 @@ const Auth = () => {
         <div className="text-center space-y-6">
           <AuthLogo />
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-black dark:text-white">Välkommen tillbaka</h1>
-            <p className="text-gray-600 dark:text-gray-400">Logga in på ditt konto</p>
+            <h1 className="text-2xl font-bold text-black dark:text-white">{t('welcome.back')}</h1>
+            <p className="text-gray-600 dark:text-gray-400">{t('sign.in')}</p>
           </div>
         </div>
         
@@ -127,6 +129,9 @@ const Auth = () => {
         )}
 
         <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032]">
+          <div className="flex justify-end mb-4">
+            <LanguageSwitch />
+          </div>
           <SupabaseAuth 
             supabaseClient={supabase}
             appearance={{ 
@@ -183,55 +188,55 @@ const Auth = () => {
             localization={{
               variables: {
                 sign_in: {
-                  email_label: 'E-postadress',
-                  password_label: 'Lösenord',
-                  email_input_placeholder: 'Din e-postadress',
-                  password_input_placeholder: 'Ditt lösenord',
-                  button_label: 'Logga in',
-                  loading_button_label: 'Loggar in...',
-                  social_provider_text: 'Logga in med {{provider}}',
-                  link_text: 'Har du redan ett konto? Logga in',
+                  email_label: t('email'),
+                  password_label: t('password'),
+                  email_input_placeholder: t('email.placeholder'),
+                  password_input_placeholder: t('password.placeholder'),
+                  button_label: t('sign.in'),
+                  loading_button_label: t('signing.in'),
+                  social_provider_text: t('sign.in.with.provider'),
+                  link_text: t('already.have.account'),
                 },
                 sign_up: {
-                  email_label: 'E-postadress',
-                  password_label: 'Lösenord',
-                  email_input_placeholder: 'Din e-postadress',
-                  password_input_placeholder: 'Ditt lösenord',
-                  button_label: 'Registrera',
-                  loading_button_label: 'Registrerar...',
-                  social_provider_text: 'Registrera med {{provider}}',
-                  link_text: 'Har du inget konto? Registrera dig',
+                  email_label: t('email'),
+                  password_label: t('password'),
+                  email_input_placeholder: t('email.placeholder'),
+                  password_input_placeholder: t('password.placeholder'),
+                  button_label: t('register'),
+                  loading_button_label: t('registering'),
+                  social_provider_text: t('register.with.provider'),
+                  link_text: t('no.account'),
                 },
                 forgotten_password: {
-                  email_label: 'E-postadress',
-                  password_label: 'Lösenord',
-                  email_input_placeholder: 'Din e-postadress',
-                  button_label: 'Skicka återställningslänk',
-                  loading_button_label: 'Skickar återställningslänk...',
-                  link_text: 'Glömt lösenord?',
+                  email_label: t('email'),
+                  password_label: t('password'),
+                  email_input_placeholder: t('email.placeholder'),
+                  button_label: t('send.recovery.link'),
+                  loading_button_label: t('sending.recovery.link'),
+                  link_text: t('forgot.password'),
                 },
                 update_password: {
-                  password_label: 'Nytt lösenord',
-                  password_input_placeholder: 'Ditt nya lösenord',
-                  button_label: 'Uppdatera lösenord',
-                  loading_button_label: 'Uppdaterar lösenord...',
+                  password_label: t('new.password'),
+                  password_input_placeholder: t('new.password.placeholder'),
+                  button_label: t('update.password'),
+                  loading_button_label: t('updating.password'),
                 },
                 magic_link: {
-                  email_input_label: 'E-postadress',
-                  email_input_placeholder: 'Din e-postadress',
-                  button_label: 'Skicka magisk länk',
-                  loading_button_label: 'Skickar magisk länk...',
-                  link_text: 'Skicka magisk länk via e-post',
+                  email_input_label: t('email'),
+                  email_input_placeholder: t('email.placeholder'),
+                  button_label: t('send.magic.link'),
+                  loading_button_label: t('sending.magic.link'),
+                  link_text: t('send.magic.link.via.email'),
                 },
                 verify_otp: {
-                  email_input_label: 'E-postadress',
-                  email_input_placeholder: 'Din e-postadress',
-                  phone_input_label: 'Telefonnummer',
-                  phone_input_placeholder: 'Ditt telefonnummer',
-                  token_input_label: 'Token',
-                  token_input_placeholder: 'Din engångskod',
-                  button_label: 'Verifiera token',
-                  loading_button_label: 'Verifierar...',
+                  email_input_label: t('email'),
+                  email_input_placeholder: t('email.placeholder'),
+                  phone_input_label: t('phone'),
+                  phone_input_placeholder: t('phone.placeholder'),
+                  token_input_label: t('token'),
+                  token_input_placeholder: t('token.placeholder'),
+                  button_label: t('verify.token'),
+                  loading_button_label: t('verifying.token'),
                 }
               }
             }}
@@ -240,7 +245,7 @@ const Auth = () => {
             showLinks={false}
           />
           <div className="mt-6 text-center">
-            <span className="text-gray-500 dark:text-gray-400">Har du inget konto?</span>
+            <span className="text-gray-500 dark:text-gray-400">{t('no.account')}</span>
             {' '}
             <a 
               href="https://doltnamn.se/#planer" 
@@ -248,7 +253,7 @@ const Auth = () => {
               rel="noopener noreferrer"
               className="text-black hover:text-gray-700 dark:text-white dark:hover:text-gray-300 font-medium"
             >
-              Registrera dig
+              {t('register')}
             </a>
           </div>
         </div>
