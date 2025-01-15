@@ -61,7 +61,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
           <div className="flex flex-col gap-3">
             <Button
               onClick={handleResetPassword}
-              className="w-full"
+              className="w-full bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100"
             >
               {t('send.recovery.link')}
             </Button>
