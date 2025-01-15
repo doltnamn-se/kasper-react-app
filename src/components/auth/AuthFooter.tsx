@@ -14,18 +14,21 @@ export const AuthFooter = () => {
         <Button 
           variant="link" 
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
+          onClick={() => window.open('https://doltnamn.se/integritetspolicy/', '_blank')}
         >
           {t('privacy')}
         </Button>
         <Button 
           variant="link" 
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
+          onClick={() => window.open('https://doltnamn.se/licensvillkor/', '_blank')}
         >
           {t('license')}
         </Button>
         <Button 
           variant="link" 
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
+          onClick={() => window.open('https://doltnamn.se/anvandarvillkor/', '_blank')}
         >
           {t('terms')}
         </Button>
