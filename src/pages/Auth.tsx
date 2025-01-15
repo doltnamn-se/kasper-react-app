@@ -33,7 +33,7 @@ const Auth = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#EEEEEE] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-6">
           <img 
@@ -42,8 +42,8 @@ const Auth = () => {
             className="h-8 mx-auto"
           />
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-            <p className="text-gray-500">Sign in to your account</p>
+            <h1 className="text-2xl font-bold text-black">Welcome back</h1>
+            <p className="text-gray-600">Sign in to your account</p>
           </div>
         </div>
         
@@ -61,12 +61,12 @@ const Auth = () => {
               variables: {
                 default: {
                   colors: {
-                    brand: '#0F766E',
-                    brandAccent: '#0D9488',
+                    brand: '#000000',
+                    brandAccent: '#333333',
                     inputBackground: 'white',
                     inputBorder: '#E5E7EB',
-                    inputBorderFocus: '#0F766E',
-                    inputBorderHover: '#0F766E',
+                    inputBorderFocus: '#000000',
+                    inputBorderHover: '#000000',
                   },
                   borderWidths: {
                     buttonBorderWidth: '1px',
@@ -80,12 +80,12 @@ const Auth = () => {
                 },
               },
               className: {
-                anchor: 'text-teal-600 hover:text-teal-700',
-                button: 'bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg',
+                anchor: 'text-black hover:text-gray-700',
+                button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-lg',
                 container: 'space-y-4',
                 divider: 'my-4',
                 label: 'text-sm font-medium text-gray-700',
-                loader: 'border-teal-600',
+                loader: 'border-black',
                 message: 'text-red-600',
               },
             }}
@@ -113,7 +113,7 @@ const Auth = () => {
               href="https://doltnamn.se/#planer" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-teal-600 hover:text-teal-700 font-medium"
+              className="text-black hover:text-gray-700 font-medium"
             >
               Sign up
             </a>
