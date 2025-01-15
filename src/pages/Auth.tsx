@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AuthError, AuthApiError } from "@supabase/supabase-js";
 import { Switch } from "@/components/ui/switch";
 import { Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-6">
           <div className="relative h-8">
@@ -186,7 +187,7 @@ const Auth = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-3 px-4 py-3">
+        <div className="flex items-center justify-center gap-6 px-4 py-3">
           <div className="flex items-center gap-3">
             <Moon className="w-4 h-4 text-[#4c4c49] dark:text-[#67676c] stroke-[1.5]" />
             <span className="text-sm text-[#1A1F2C] dark:text-slate-200">Mörkt läge</span>
@@ -196,6 +197,18 @@ const Auth = () => {
             onCheckedChange={toggleDarkMode}
             className="data-[state=checked]:bg-[#c3caf5] transition-colors duration-300"
           />
+        </div>
+
+        <div className="flex justify-center gap-6 mt-8">
+          <Button variant="link" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+            Integritet
+          </Button>
+          <Button variant="link" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+            Licensvillkor
+          </Button>
+          <Button variant="link" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+            Användarvillkor
+          </Button>
         </div>
       </div>
     </div>
