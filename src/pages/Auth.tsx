@@ -129,9 +129,11 @@ const Auth = () => {
         )}
 
         <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032]">
-          <div className="flex justify-end mb-4">
+          <div className="space-y-2 mb-4">
+            <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
             <LanguageSwitch />
           </div>
+          
           <SupabaseAuth 
             supabaseClient={supabase}
             appearance={{ 
@@ -257,8 +259,6 @@ const Auth = () => {
             </a>
           </div>
         </div>
-
-        <DarkModeToggle isDarkMode={isDarkMode} onToggle={toggleDarkMode} />
       </div>
 
       <AuthFooter />
