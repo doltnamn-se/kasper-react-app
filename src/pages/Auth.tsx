@@ -81,10 +81,8 @@ const Auth = () => {
               },
               style: {
                 input: {
-                  placeholder: {
-                    color: '#6B7280',
-                  },
-                },
+                  color: '#6B7280',
+                }
               },
               className: {
                 anchor: 'text-black hover:text-gray-700',
@@ -101,8 +99,8 @@ const Auth = () => {
                 sign_in: {
                   email_label: 'E-postadress',
                   password_label: 'Lösenord',
-                  password_placeholder: 'Ditt lösenord',
                   email_input_placeholder: 'Din e-postadress',
+                  password_input_placeholder: 'Ditt lösenord',
                   button_label: 'Logga in',
                   loading_button_label: 'Loggar in...',
                   social_provider_text: 'Logga in med {{provider}}',
