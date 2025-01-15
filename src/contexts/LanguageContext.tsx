@@ -23,6 +23,7 @@ const translations = {
     'phone.placeholder': 'Enter phone number',
     'token.placeholder': 'Enter verification code',
     'dark.mode': 'Dark mode',
+    'forgot.password': 'Forgot your password?',
     // Footer links
     'privacy': 'Privacy',
     'license': 'License',
@@ -56,6 +57,7 @@ const translations = {
     'phone.placeholder': 'Ange telefonnummer',
     'token.placeholder': 'Ange verifieringskod',
     'dark.mode': 'Mörkt läge',
+    'forgot.password': 'Glömt ditt lösenord?',
     // Footer links
     'privacy': 'Integritet',
     'license': 'Licensvillkor',
