@@ -58,13 +58,6 @@ const Auth = () => {
       }
     );
 
-    // Check if user is already signed in
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/");
-      }
-    });
-
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -114,6 +107,9 @@ const Auth = () => {
                     inputBorder: '#E5E7EB',
                     inputBorderFocus: '#000000',
                     inputBorderHover: '#000000',
+                    messageText: '#ff6369',
+                    messageDangerBackground: '#ff22221e',
+                    messageTextDanger: '#ff6369',
                   },
                   borderWidths: {
                     buttonBorderWidth: '1px',
@@ -131,6 +127,14 @@ const Auth = () => {
                   backgroundColor: isDarkMode ? '#3f3f46' : 'white',
                   color: isDarkMode ? '#fff' : '#6B7280',
                   borderColor: isDarkMode ? '#303032' : '#E5E7EB',
+                },
+                message: {
+                  backgroundColor: '#ff22221e',
+                  borderColor: '#ff22221e',
+                  color: '#ff6369',
+                  fontWeight: 500,
+                  padding: '12px 16px',
+                  borderRadius: '0.5rem',
                 }
               },
               className: {
@@ -140,7 +144,7 @@ const Auth = () => {
                 divider: 'my-4',
                 label: 'text-sm font-medium text-gray-700 dark:text-gray-300',
                 loader: 'border-black dark:border-white',
-                message: 'text-red-600 dark:text-red-400',
+                message: 'text-[#ff6369] bg-[#ff22221e] border-[#ff22221e]',
               },
             }}
             localization={{
