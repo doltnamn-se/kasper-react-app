@@ -19,6 +19,16 @@ const Auth = () => {
         if (event === "SIGNED_OUT") {
           setErrorMessage("");
         }
+        if (event === "USER_UPDATED") {
+          const { error } = await supabase.auth.getSession();
+          if (error) {
+            if (error.message.includes("Invalid login credentials")) {
+              setErrorMessage("Felaktigt användarnamn eller lösenord");
+            } else {
+              setErrorMessage("Ett fel uppstod. Försök igen senare.");
+            }
+          }
+        }
       }
     );
 
