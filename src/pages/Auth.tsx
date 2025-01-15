@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AuthError, AuthApiError } from "@supabase/supabase-js";
 import { Switch } from "@/components/ui/switch";
-import { Moon, Sun } from "lucide-react";
+import { Moon } from "lucide-react";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EEEEEE] dark:bg-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#EEEEEE] dark:bg-[#18181b] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-6">
           <img 
@@ -98,7 +98,7 @@ const Auth = () => {
           </Alert>
         )}
 
-        <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-[#27272a] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <SupabaseAuth 
             supabaseClient={supabase}
             appearance={{ 
@@ -171,13 +171,9 @@ const Auth = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
+        <div className="flex items-center justify-center gap-3 px-4 py-3">
           <div className="flex items-center gap-3">
-            {isDarkMode ? (
-              <Moon className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
-            ) : (
-              <Sun className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
-            )}
+            <Moon className="w-5 h-5 text-[#8B5CF6] dark:text-purple-400 stroke-[1.5]" />
             <span className="text-sm text-[#1A1F2C] dark:text-slate-200">Mörkt läge</span>
           </div>
           <Switch
