@@ -94,7 +94,6 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             ...getAuthAppearance(isDarkMode).className,
             label: "text-sm font-bold text-gray-700 dark:text-gray-300",
             container: "space-y-4",
-            anchor: "text-sm absolute top-0 right-0"
           }
         }}
         providers={[]}
@@ -159,7 +158,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
       <div className="mt-4 text-center">
         <button
           onClick={() => setIsResetMode(true)}
-          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-xs"
         >
           {t('forgot.password')}
         </button>
