@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
+import { TopNav } from "@/components/TopNav";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -157,7 +158,9 @@ const Index = () => {
         </div>
       </aside>
 
-      <main className="flex-1 p-8 ml-72">
+      <TopNav />
+
+      <main className="flex-1 p-8 ml-72 mt-16">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300 mb-6 font-system-ui">Översikt</h1>
           <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
