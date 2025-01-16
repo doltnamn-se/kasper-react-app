@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
 
 const Index = () => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { language } = useLanguage();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
     // Set page title based on language
@@ -23,11 +25,41 @@ const Index = () => {
     if (isDark) {
       document.documentElement.classList.add('dark');
     }
+
+    // Get user email
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user?.email) {
+        setUserEmail(user.email);
+      }
+    });
   }, [language]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/auth");
+  };
+
+  const handleTestEmail = async () => {
+    if (!userEmail) {
+      toast.error("No user email found");
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(userEmail, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+
+      if (error) {
+        console.error("Error sending test email:", error);
+        toast.error("Failed to send test email");
+      } else {
+        toast.success("Test email sent successfully! Check your inbox.");
+      }
+    } catch (error) {
+      console.error("Error sending test email:", error);
+      toast.error("Failed to send test email");
+    }
   };
 
   const toggleDarkMode = () => {
@@ -132,7 +164,13 @@ const Index = () => {
         <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-semibold mb-6 text-[#1A1F2C] dark:text-slate-200">Översikt</h1>
           <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-[#E5DEFF] dark:border-slate-700">
-            <p className="text-[#6E59A5] dark:text-slate-400">Välkommen till din översikt.</p>
+            <p className="text-[#6E59A5] dark:text-slate-400 mb-4">Välkommen till din översikt.</p>
+            <Button 
+              onClick={handleTestEmail}
+              className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white"
+            >
+              Testa e-postfunktionalitet
+            </Button>
           </div>
         </div>
       </main>
