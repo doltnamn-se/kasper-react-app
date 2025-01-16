@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -14,9 +13,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/integrations/supabase/types";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
-type Customer = Database['public']['Tables']['customers']['Row'];
 
-type CustomerWithProfile = Customer & {
+// Simplified customer type with only the fields we need
+type CustomerBasicInfo = {
+  id: string;
+  created_at: string | null;
+  onboarding_completed: boolean | null;
+  onboarding_step: number | null;
   profiles?: Profile | null;
 };
 
@@ -29,7 +32,13 @@ const AdminCustomers = () => {
       console.log('Fetching customers data...');
       const { data, error } = await supabase
         .from('customers')
-        .select('*, profiles(*)');
+        .select(`
+          id,
+          created_at,
+          onboarding_completed,
+          onboarding_step,
+          profiles (*)
+        `);
         
       if (error) {
         console.error("Error fetching customers:", error);
@@ -37,7 +46,7 @@ const AdminCustomers = () => {
       }
       
       console.log('Customers data received:', data);
-      return (data || []) as CustomerWithProfile[];
+      return (data || []) as CustomerBasicInfo[];
     },
   });
 
@@ -72,7 +81,6 @@ const AdminCustomers = () => {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Created</TableHead>
-              <TableHead>Subscription</TableHead>
               <TableHead>Onboarding</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -87,9 +95,6 @@ const AdminCustomers = () => {
                 </TableCell>
                 <TableCell>
                   {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
-                </TableCell>
-                <TableCell>
-                  {customer.subscription_plan || 'No plan'}
                 </TableCell>
                 <TableCell>
                   {customer.onboarding_completed ? 
