@@ -16,7 +16,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Initialize session state
     const initSession = async () => {
       try {
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
@@ -35,37 +34,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     initSession();
 
-    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
-      
-      switch (event) {
-        case 'SIGNED_OUT':
-          console.log("User signed out");
-          setSession(false);
-          break;
-        
-        case 'SIGNED_IN':
-        case 'TOKEN_REFRESHED':
-          console.log("Session update event received");
-          try {
-            const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-            if (!error && currentSession) {
-              console.log("Session updated successfully");
-              setSession(true);
-            } else {
-              console.error("Failed to update session:", error);
-              setSession(false);
-            }
-          } catch (err) {
-            console.error("Session update failed:", err);
-            setSession(false);
-          }
-          break;
-
-        default:
-          console.log("Unhandled auth event:", event);
-      }
+      setSession(!!session);
     });
 
     return () => {
@@ -74,14 +45,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // Show nothing while checking authentication
   if (session === null) {
     console.log("Session state is null, waiting for initialization...");
     return null;
   }
 
   console.log("Rendering protected route, session state:", session);
-  return session ? <>{children}</> : <Navigate to="/auth" replace />;
+  return session ? children : <Navigate to="/auth" replace />;
 };
 
 const AuthRoute = () => {
@@ -114,17 +84,15 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={
+              <ProtectedRoute>
+                <SidebarProvider>
+                  <Index />
+                </SidebarProvider>
+              </ProtectedRoute>
+            } />
             <Route path="/auth" element={<AuthRoute />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <SidebarProvider>
-                    <Index />
-                  </SidebarProvider>
-                </ProtectedRoute>
-              }
-            />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
