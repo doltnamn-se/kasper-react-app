@@ -9,6 +9,8 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
 import Index from "./pages/Index";
 import AdminCustomers from "./pages/admin/AdminCustomers";
+import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
+import { SetPassword } from "./pages/onboarding/SetPassword";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +36,10 @@ const App = () => (
                 </SidebarProvider>
               </ProtectedRoute>
             } />
+            <Route path="/onboarding" element={<OnboardingLayout />}>
+              <Route index element={<SetPassword />} />
+              <Route path="set-password" element={<SetPassword />} />
+            </Route>
             <Route path="/auth" element={<AuthRoute />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
