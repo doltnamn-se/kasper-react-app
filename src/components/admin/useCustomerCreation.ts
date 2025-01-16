@@ -83,9 +83,33 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         return;
       }
 
+      // Send activation email
+      const response = await fetch('/functions/v1/send-activation-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          customerId: authData.user.id,
+          email: formData.email,
+          firstName: formData.firstName,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("Error sending activation email:", error);
+        toast({
+          title: "Warning",
+          description: "Customer created but activation email could not be sent.",
+          variant: "destructive",
+        });
+      }
+
       toast({
         title: "Success",
-        description: "Customer created successfully.",
+        description: "Customer created successfully and activation email sent.",
       });
 
       resetForm();
