@@ -16,6 +16,7 @@ const queryClient = new QueryClient();
 const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode; requiredRole?: string }) => {
   const [session, setSession] = useState<boolean | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -30,7 +31,6 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
           console.log("Initial session check: Authenticated");
           setSession(true);
           
-          // Only fetch role if we have a valid session
           try {
             const { data: profileData, error: profileError } = await supabase
               .from('profiles')
@@ -40,7 +40,6 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
               
             if (profileError) {
               console.error("Error fetching user role:", profileError);
-              // Don't set session to false here, just log the error
             } else if (profileData) {
               console.log("User role:", profileData.role);
               setUserRole(profileData.role);
@@ -62,6 +61,10 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
           setSession(false);
           setUserRole(null);
         }
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -71,6 +74,8 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
       
       if (!mounted) return;
+
+      setIsLoading(true);
 
       if (session) {
         setSession(true);
@@ -97,6 +102,7 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
         setSession(false);
         setUserRole(null);
       }
+      setIsLoading(false);
     });
 
     return () => {
@@ -106,9 +112,13 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
     };
   }, []);
 
-  if (session === null || (requiredRole && userRole === null)) {
-    console.log("Session or role state is null, waiting for initialization...");
-    return null;
+  if (isLoading) {
+    console.log("Loading authentication state...");
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      </div>
+    );
   }
 
   if (!session) {
@@ -126,23 +136,36 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
 
 const AuthRoute = () => {
   const [session, setSession] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session: currentSession } } = await supabase.auth.getSession();
-      setSession(!!currentSession);
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        setSession(!!currentSession);
+      } finally {
+        setIsLoading(false);
+      }
     };
     
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(!!session);
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  if (session === null) return null;
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      </div>
+    );
+  }
+
   return session ? <Navigate to="/" replace /> : <Auth />;
 };
 
