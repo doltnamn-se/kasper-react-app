@@ -33,12 +33,13 @@ const Index = () => {
           </nav>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 px-6 py-4">
+        <div className="absolute bottom-0 left-0 right-0 px-6 py-4 flex justify-between items-center">
           <LanguageSwitch />
+          <span className="text-xs text-[#5e5e5e] dark:text-gray-400">v{APP_VERSION}</span>
         </div>
       </div>
 
-      <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200 relative">
+      <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
         
         <main className="px-8 pt-24">
@@ -49,10 +50,6 @@ const Index = () => {
             </div>
           </div>
         </main>
-
-        <div className="absolute bottom-4 right-8">
-          <span className="text-xs text-[#5e5e5e] dark:text-gray-400">v{APP_VERSION}</span>
-        </div>
       </div>
     </>
   );
