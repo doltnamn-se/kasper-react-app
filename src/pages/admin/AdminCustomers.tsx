@@ -17,7 +17,7 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 type Customer = Database['public']['Tables']['customers']['Row'];
 
 type CustomerWithProfile = Customer & {
-  profile: Profile | null;
+  profiles?: Profile | null;
 };
 
 const AdminCustomers = () => {
@@ -29,10 +29,7 @@ const AdminCustomers = () => {
       console.log('Fetching customers data...');
       const { data, error } = await supabase
         .from('customers')
-        .select(`
-          *,
-          profile:profiles(*)
-        `);
+        .select('*, profiles(*)');
         
       if (error) {
         console.error("Error fetching customers:", error);
@@ -40,7 +37,7 @@ const AdminCustomers = () => {
       }
       
       console.log('Customers data received:', data);
-      return data as CustomerWithProfile[];
+      return (data || []) as CustomerWithProfile[];
     },
   });
 
@@ -84,12 +81,12 @@ const AdminCustomers = () => {
             {customers?.map((customer) => (
               <TableRow key={customer.id}>
                 <TableCell>
-                  {customer.profile ? 
-                    `${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim() || 'No name provided' : 
+                  {customer.profiles ? 
+                    `${customer.profiles.first_name || ''} ${customer.profiles.last_name || ''}`.trim() || 'No name provided' : 
                     'No name provided'}
                 </TableCell>
                 <TableCell>
-                  {new Date(customer.created_at || '').toLocaleDateString()}
+                  {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
                 </TableCell>
                 <TableCell>
                   {customer.subscription_plan || 'No plan'}
