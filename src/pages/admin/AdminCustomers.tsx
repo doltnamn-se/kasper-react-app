@@ -20,7 +20,7 @@ type CustomerBasicInfo = {
   created_at: string | null;
   onboarding_completed: boolean | null;
   onboarding_step: number | null;
-  profiles?: Profile | null;
+  profile?: Profile | null;
 };
 
 const AdminCustomers = () => {
@@ -30,23 +30,41 @@ const AdminCustomers = () => {
     queryKey: ['customers'],
     queryFn: async () => {
       console.log('Fetching customers data...');
-      const { data, error } = await supabase
+      
+      // First get customers
+      const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
           id,
           created_at,
           onboarding_completed,
-          onboarding_step,
-          profiles (*)
+          onboarding_step
         `);
         
-      if (error) {
-        console.error("Error fetching customers:", error);
-        throw error;
+      if (customersError) {
+        console.error("Error fetching customers:", customersError);
+        throw customersError;
       }
+
+      // Then get profiles for these customers
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('id', customersData.map(c => c.id));
+
+      if (profilesError) {
+        console.error("Error fetching profiles:", profilesError);
+        throw profilesError;
+      }
+
+      // Combine the data
+      const combinedData: CustomerBasicInfo[] = customersData.map(customer => ({
+        ...customer,
+        profile: profilesData.find(p => p.id === customer.id) || null
+      }));
       
-      console.log('Customers data received:', data);
-      return (data || []) as CustomerBasicInfo[];
+      console.log('Combined customer data:', combinedData);
+      return combinedData;
     },
   });
 
@@ -89,8 +107,8 @@ const AdminCustomers = () => {
             {customers?.map((customer) => (
               <TableRow key={customer.id}>
                 <TableCell>
-                  {customer.profiles ? 
-                    `${customer.profiles.first_name || ''} ${customer.profiles.last_name || ''}`.trim() || 'No name provided' : 
+                  {customer.profile ? 
+                    `${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim() || 'No name provided' : 
                     'No name provided'}
                 </TableCell>
                 <TableCell>
