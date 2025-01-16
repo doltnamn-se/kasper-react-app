@@ -20,9 +20,9 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
         inputBorderWidth: '1px',
       },
       radii: {
-        borderRadiusButton: '0.5rem',
-        buttonBorderRadius: '0.5rem',
-        inputBorderRadius: '0.5rem',
+        borderRadiusButton: '0',
+        buttonBorderRadius: '0',
+        inputBorderRadius: '0',
       },
     },
   },
@@ -31,6 +31,7 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
       backgroundColor: isDarkMode ? '#3f3f46' : 'white',
       color: isDarkMode ? '#fff' : '#6B7280',
       borderColor: isDarkMode ? '#303032' : '#E5E7EB',
+      height: '48px',
     },
     message: {
       backgroundColor: '#ff22221e',
@@ -38,12 +39,12 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
       color: '#ff6369',
       fontWeight: 600,
       padding: '12px 16px',
-      borderRadius: '0.5rem',
+      borderRadius: '0',
     }
   },
   className: {
     anchor: 'text-black hover:text-gray-700 dark:text-white dark:hover:text-gray-300',
-    button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-lg dark:bg-white dark:text-black dark:hover:bg-gray-100',
+    button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 h-12 dark:bg-white dark:text-black dark:hover:bg-gray-100',
     container: 'space-y-4',
     divider: 'my-4',
     label: 'text-sm font-bold text-gray-700 dark:text-gray-300',

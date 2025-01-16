@@ -41,7 +41,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
   if (isResetMode) {
     return (
       <div className="flex justify-center w-full">
-        <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in">
+        <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in">
           <h2 className="text-xl font-semibold mb-6 text-center dark:text-white">
             {t('forgot.password')}
           </h2>
@@ -56,20 +56,20 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
                 placeholder={t('email.placeholder')}
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
-                className="w-full bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400"
+                className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-none"
               />
             </div>
             <div className="flex flex-col gap-3">
               <Button
                 onClick={handleResetPassword}
-                className="w-full bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100"
+                className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-none"
               >
                 {t('send.recovery.link')}
               </Button>
               <Button
                 onClick={() => setIsResetMode(false)}
                 variant="outline"
-                className="w-full"
+                className="w-full h-12 rounded-none"
               >
                 {t('cancel')}
               </Button>
@@ -81,7 +81,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
   }
 
   return (
-    <div className="bg-white dark:bg-[#232325] p-8 rounded-lg shadow-sm border border-gray-200 dark:border-[#303032] fade-in">
+    <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] fade-in">
       {errorMessage && (
         <Alert variant="destructive" className="mb-4">
           <AlertDescription>{errorMessage}</AlertDescription>
@@ -96,6 +96,8 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             ...getAuthAppearance(isDarkMode).className,
             label: "text-sm font-bold text-gray-700 dark:text-gray-300",
             container: "space-y-4",
+            button: "w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-none",
+            input: "w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-none",
           }
         }}
         providers={[]}
