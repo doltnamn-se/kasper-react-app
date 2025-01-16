@@ -12,9 +12,14 @@ const Auth = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
+    // Set page title based on language
+    document.title = language === 'sv' ? 
+      "Logga in | Doltnamn.se" : 
+      "Log in | Doltnamn.se";
+
     const lightLogo = new Image();
     const darkLogo = new Image();
     lightLogo.src = "/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png";
@@ -25,7 +30,7 @@ const Auth = () => {
     if (isDark) {
       document.documentElement.classList.add('dark');
     }
-  }, []);
+  }, [language]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;

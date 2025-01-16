@@ -5,18 +5,25 @@ import { LayoutDashboard, CheckSquare, Link, LogOut, User, Bell, UserCog, Moon, 
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { language } = useLanguage();
 
   useEffect(() => {
+    // Set page title based on language
+    document.title = language === 'sv' ? 
+      "Översikt | Doltnamn.se" : 
+      "Dashboard | Doltnamn.se";
+
     const isDark = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(isDark);
     if (isDark) {
       document.documentElement.classList.add('dark');
     }
-  }, []);
+  }, [language]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
