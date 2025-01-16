@@ -18,12 +18,17 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
   const [newCustomerEmail, setNewCustomerEmail] = useState("");
   const [newCustomerFirstName, setNewCustomerFirstName] = useState("");
   const [newCustomerLastName, setNewCustomerLastName] = useState("");
-  const [newCustomerRole, setNewCustomerRole] = useState<"customer" | "super_admin">("customer");
+  const [newCustomerSubscriptionPlan, setNewCustomerSubscriptionPlan] = useState<"1_month" | "6_months" | "12_months">("1_month");
 
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
-      console.log('Creating new customer...', { newCustomerEmail, newCustomerFirstName, newCustomerLastName, newCustomerRole });
+      console.log('Creating new customer...', { 
+        newCustomerEmail, 
+        newCustomerFirstName, 
+        newCustomerLastName, 
+        newCustomerSubscriptionPlan 
+      });
 
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: newCustomerEmail,
@@ -51,7 +56,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
         .update({
           first_name: newCustomerFirstName,
           last_name: newCustomerLastName,
-          role: newCustomerRole,
+          role: 'customer',
         })
         .eq('id', authData.user.id);
 
@@ -65,6 +70,23 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
         return;
       }
 
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({
+          subscription_plan: newCustomerSubscriptionPlan,
+        })
+        .eq('id', authData.user.id);
+
+      if (customerError) {
+        console.error("Error updating customer subscription plan:", customerError);
+        toast({
+          title: "Error",
+          description: "Failed to update customer subscription plan. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       toast({
         title: "Success",
         description: "Customer created successfully.",
@@ -73,7 +95,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
       setNewCustomerEmail("");
       setNewCustomerFirstName("");
       setNewCustomerLastName("");
-      setNewCustomerRole("customer");
+      setNewCustomerSubscriptionPlan("1_month");
       onCustomerCreated();
     } catch (err) {
       console.error("Error in customer creation:", err);
@@ -129,17 +151,18 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
+            <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
             <Select
-              value={newCustomerRole}
-              onValueChange={(value: "customer" | "super_admin") => setNewCustomerRole(value)}
+              value={newCustomerSubscriptionPlan}
+              onValueChange={(value: "1_month" | "6_months" | "12_months") => setNewCustomerSubscriptionPlan(value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select role" />
+                <SelectValue placeholder="Select subscription plan" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="customer">Customer</SelectItem>
-                <SelectItem value="super_admin">Super Admin</SelectItem>
+                <SelectItem value="1_month">1 Month</SelectItem>
+                <SelectItem value="6_months">6 Months</SelectItem>
+                <SelectItem value="12_months">12 Months</SelectItem>
               </SelectContent>
             </Select>
           </div>
