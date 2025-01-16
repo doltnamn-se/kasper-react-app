@@ -15,7 +15,7 @@ export const DarkModeToggle = ({ isDarkMode, onToggle }: DarkModeToggleProps) =>
       <Switch
         checked={isDarkMode}
         onCheckedChange={onToggle}
-        className="data-[state=checked]:bg-[#c3caf5] transition-all duration-300 ease-in-out"
+        className="data-[state=checked]:bg-[#c3caf5] transition-transform duration-[400ms] ease-[cubic-bezier(0.85,0.05,0.18,1.35)]"
       />
     </div>
   );
