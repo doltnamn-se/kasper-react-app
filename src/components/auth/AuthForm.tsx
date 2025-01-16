@@ -64,7 +64,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             <div className="flex flex-col gap-3">
               <Button
                 onClick={handleResetPassword}
-                className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-[4px] font-system-ui"
+                className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
               >
                 {t('send.recovery.link')}
               </Button>
@@ -98,7 +98,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             ...getAuthAppearance(isDarkMode).className,
             label: "text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui",
             container: "space-y-4 font-system-ui",
-            button: "w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-[4px] font-system-ui",
+            button: "w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui",
             input: "w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui",
           },
           style: {
