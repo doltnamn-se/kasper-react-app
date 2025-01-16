@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { CustomerWithProfile } from "@/types/customer";
 import { CustomersTable } from "@/components/admin/CustomersTable";
 import { useQuery } from "@tanstack/react-query";
+import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 
 const AdminCustomers = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -107,7 +108,10 @@ const AdminCustomers = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <CreateCustomerDialog onCustomerCreated={refetch} />
+      </div>
       {customers && customers.length > 0 ? (
         <CustomersTable customers={customers} onCustomerUpdated={refetch} />
       ) : (
