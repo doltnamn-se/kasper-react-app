@@ -33,7 +33,7 @@ export const AuthFooter = () => {
           {t('terms')}
         </Button>
       </div>
-      <p className="text-[11px] text-gray-400 dark:text-gray-500">
+      <p className="text-[11px] text-gray-400">
         {currentYear} © Doltnamn.se &nbsp;&nbsp;·&nbsp;&nbsp; App version {APP_VERSION}
       </p>
     </div>
