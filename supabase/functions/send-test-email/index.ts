@@ -1,18 +1,27 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { corsHeaders } from "../_shared/cors.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
+
 const handler = async (req: Request): Promise<Response> => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email } = await req.json();
+    
+    console.log("Attempting to send test email to:", email);
+    console.log("Using Resend API key:", RESEND_API_KEY ? "Present" : "Missing");
 
-    if (!email) {
-      throw new Error("Email is required");
+    if (!RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY is not configured");
     }
 
     const res = await fetch("https://api.resend.com/emails", {
@@ -29,22 +38,30 @@ const handler = async (req: Request): Promise<Response> => {
       }),
     });
 
+    const data = await res.json();
+    console.log("Resend API response:", data);
+
     if (!res.ok) {
-      const error = await res.text();
-      throw new Error(error);
+      throw new Error(data.message || "Failed to send email");
     }
 
-    const data = await res.json();
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
-  } catch (error) {
-    console.error("Error sending test email:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
-    });
+  } catch (error: any) {
+    console.error("Error in send-test-email function:", error);
+    return new Response(
+      JSON.stringify({ 
+        error: error.message,
+        statusCode: 500,
+        name: "server_error" 
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      }
+    );
   }
 };
 
