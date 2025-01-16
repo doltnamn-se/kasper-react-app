@@ -87,7 +87,7 @@ serve(async (req) => {
             console.error('Error creating customer record:', customerError)
           }
 
-          // Send welcome email with password reset link
+          // Generate password reset link
           const { data: resetData, error: resetError } = await supabase.auth.admin.generateLink({
             type: 'recovery',
             email: customer.email,
@@ -97,8 +97,36 @@ serve(async (req) => {
             console.error('Error generating password reset link:', resetError)
           } else {
             console.log('Password reset link generated for new user')
-            // Note: You'll need to implement email sending logic here
-            // The reset link is in resetData.properties.action_link
+            
+            // Send welcome email with password reset link
+            try {
+              const response = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/send-email`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+                },
+                body: JSON.stringify({
+                  to: [customer.email],
+                  subject: 'Welcome to Doltnamn - Set Up Your Account',
+                  html: `
+                    <h1>Welcome to Doltnamn!</h1>
+                    <p>Your account has been created. To get started, please set up your password by clicking the link below:</p>
+                    <p><a href="${resetData.properties.action_link}">Set Your Password</a></p>
+                    <p>This link will expire in 24 hours.</p>
+                    <p>If you have any questions, please don't hesitate to contact us.</p>
+                  `
+                })
+              });
+
+              if (!response.ok) {
+                throw new Error('Failed to send welcome email');
+              }
+
+              console.log('Welcome email sent successfully');
+            } catch (error) {
+              console.error('Error sending welcome email:', error);
+            }
           }
         }
         break
