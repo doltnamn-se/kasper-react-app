@@ -12,11 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
-import { Switch } from "./ui/switch";
 
 export const TopNav = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const TopNav = () => {
   };
 
   return (
-    <div className="fixed top-0 right-0 left-72 h-16 bg-transparent backdrop-blur-sm z-50">
+    <div className="fixed top-0 right-0 left-72 h-16 bg-transparent backdrop-blur-sm z-50 transition-[left] duration-200 group-data-[state=collapsed]:left-16">
       <div className="flex items-center justify-between h-full px-8">
         <div className="flex-1 max-w-md">
           <div className="relative">
@@ -72,9 +72,14 @@ export const TopNav = () => {
               id="global-search"
               type="search" 
               placeholder="Sök..." 
-              className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-shadow"
+              className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setIsSearchFocused(false)}
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none">
+            <div className={cn(
+              "absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none transition-opacity duration-200",
+              isSearchFocused ? "opacity-0" : "opacity-100"
+            )}>
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
                 Shift
               </div>
