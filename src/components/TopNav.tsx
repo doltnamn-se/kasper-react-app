@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, MessageSquare, Moon, Search, User } from "lucide-react";
+import { Bell, ChevronDown, MessageSquare, Moon, Search, User, ArrowBigUp } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -87,9 +87,10 @@ export const TopNav = () => {
               isSearchFocused ? "opacity-0" : "opacity-100"
             )}>
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
+                <ArrowBigUp className="w-3 h-3 mr-0.5" />
                 Shift
               </div>
-              <span className="text-[#5e5e5e] dark:text-gray-400">+</span>
+              <span className="text-[#5e5e5e] dark:text-gray-400 text-[10px]">+</span>
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
                 S
               </div>
