@@ -167,7 +167,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
       </div>
       <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
         {language === 'sv' ? "Har du inget konto? " : "Don't have an account? "}
-        <a href="https://doltnamn.se/#planer" className="font-semibold text-black dark:text-white hover:underline">
+        <a href="https://doltnamn.se/#planer" target="_blank" rel="noopener noreferrer" className="font-semibold text-black dark:text-white hover:underline">
           {language === 'sv' ? "Kom igång" : "Get started"}
         </a>
       </div>
