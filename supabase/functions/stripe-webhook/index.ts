@@ -8,7 +8,6 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -46,32 +45,61 @@ serve(async (req) => {
     )
 
     switch (event.type) {
-      case 'customer.created':
-      case 'customer.updated': {
+      case 'customer.created': {
         const customer = event.data.object as Stripe.Customer
-        if (!customer.email) break
+        if (!customer.email) {
+          console.error('No email found in customer data')
+          break
+        }
 
-        const { data: users, error: userError } = await supabase
+        // Check if user already exists
+        const { data: existingUser } = await supabase
           .from('auth.users')
           .select('id')
           .eq('email', customer.email)
           .single()
 
-        if (userError || !users) {
-          console.error('Error finding user:', userError)
-          break
-        }
-
-        const { error: upsertError } = await supabase
-          .from('customers')
-          .upsert({
-            id: users.id,
-            stripe_customer_id: customer.id,
-            updated_at: new Date().toISOString(),
+        if (!existingUser) {
+          // Create new user in Supabase
+          const password = crypto.randomUUID() // Generate a random password
+          const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
+            email: customer.email,
+            password: password,
+            email_confirm: true
           })
 
-        if (upsertError) {
-          console.error('Error upserting customer:', upsertError)
+          if (createError) {
+            console.error('Error creating user:', createError)
+            break
+          }
+
+          console.log('Created new user in Supabase:', newUser.user.id)
+
+          // Create customer record
+          const { error: customerError } = await supabase
+            .from('customers')
+            .insert({
+              id: newUser.user.id,
+              stripe_customer_id: customer.id,
+            })
+
+          if (customerError) {
+            console.error('Error creating customer record:', customerError)
+          }
+
+          // Send welcome email with password reset link
+          const { data: resetData, error: resetError } = await supabase.auth.admin.generateLink({
+            type: 'recovery',
+            email: customer.email,
+          })
+
+          if (resetError) {
+            console.error('Error generating password reset link:', resetError)
+          } else {
+            console.log('Password reset link generated for new user')
+            // Note: You'll need to implement email sending logic here
+            // The reset link is in resetData.properties.action_link
+          }
         }
         break
       }
