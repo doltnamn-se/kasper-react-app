@@ -24,6 +24,12 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
         buttonBorderRadius: '4px',
         inputBorderRadius: '4px',
       },
+      fonts: {
+        bodyFontFamily: 'system-ui',
+        buttonFontFamily: 'system-ui',
+        inputFontFamily: 'system-ui',
+        labelFontFamily: 'system-ui',
+      },
     },
   },
   style: {
@@ -32,6 +38,7 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
       color: isDarkMode ? '#fff' : '#6B7280',
       borderColor: isDarkMode ? '#303032' : '#E5E7EB',
       height: '48px',
+      fontFamily: 'system-ui',
     },
     message: {
       backgroundColor: '#ff22221e',
@@ -40,15 +47,16 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
       fontWeight: 600,
       padding: '12px 16px',
       borderRadius: '4px',
+      fontFamily: 'system-ui',
     }
   },
   className: {
-    anchor: 'text-black hover:text-gray-700 dark:text-white dark:hover:text-gray-300',
-    button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 h-12 dark:bg-white dark:text-black dark:hover:bg-gray-100',
-    container: 'space-y-4',
+    anchor: 'text-black hover:text-gray-700 dark:text-white dark:hover:text-gray-300 font-system-ui',
+    button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 h-12 dark:bg-white dark:text-black dark:hover:bg-gray-100 font-system-ui',
+    container: 'space-y-4 font-system-ui',
     divider: 'my-4',
-    label: 'text-sm font-bold text-gray-700 dark:text-gray-300',
+    label: 'text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui',
     loader: 'border-black dark:border-white',
-    message: 'text-[#ff6369] bg-[#ff22221e]',
+    message: 'text-[#ff6369] bg-[#ff22221e] font-system-ui',
   },
 });
