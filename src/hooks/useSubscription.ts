@@ -11,18 +11,16 @@ export const useSubscription = () => {
         throw new Error('No session found');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-webhook`, {
+      // Use supabase.functions.invoke instead of raw fetch
+      const { data, error } = await supabase.functions.invoke('stripe-webhook', {
         method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-        },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch subscription status');
+      if (error) {
+        console.error('Subscription check error:', error);
+        throw error;
       }
 
-      const data = await response.json();
       return data.subscribed;
     },
     retry: false,
