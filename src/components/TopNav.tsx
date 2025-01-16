@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 export const TopNav = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
+  const { isCollapsed } = useSidebar();
 
   useEffect(() => {
     // Set up keyboard shortcut
@@ -64,7 +66,10 @@ export const TopNav = () => {
   };
 
   return (
-    <div className="fixed top-0 right-0 left-72 h-16 bg-transparent backdrop-blur-sm z-50 transition-[left] duration-200 group-data-[state=collapsed]:left-16">
+    <div className={cn(
+      "fixed top-0 right-0 h-16 bg-transparent backdrop-blur-sm z-50 transition-[left] duration-200",
+      isCollapsed ? "left-16" : "left-72"
+    )}>
       <div className="flex items-center justify-between h-full px-8">
         <div className="flex-1 max-w-md">
           <div className="relative">
