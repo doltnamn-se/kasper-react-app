@@ -6,7 +6,6 @@ import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
-import { SubscriptionButton } from "@/components/auth/SubscriptionButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Auth = () => {
@@ -118,7 +117,6 @@ const Auth = () => {
       <div className="w-full max-w-md space-y-8 mt-8">
         <AuthHeader />
         <AuthForm errorMessage={errorMessage} isDarkMode={isDarkMode} />
-        <SubscriptionButton />
         <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
       </div>
       <AuthFooter />
