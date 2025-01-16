@@ -1,11 +1,42 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { CustomerWithProfile } from "@/types/customer";
+import { CustomersTable } from "@/components/admin/CustomersTable";
+import { useQuery } from "@tanstack/react-query";
 
 const AdminCustomers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const { data: customers, refetch } = useQuery({
+    queryKey: ['customers'],
+    queryFn: async () => {
+      console.log("Fetching customers...");
+      const { data: customersData, error: customersError } = await supabase
+        .from('customers')
+        .select(`
+          *,
+          profile:profiles (
+            id,
+            first_name,
+            last_name,
+            role,
+            created_at,
+            updated_at
+          )
+        `);
+
+      if (customersError) {
+        console.error("Error fetching customers:", customersError);
+        throw customersError;
+      }
+
+      console.log("Customers fetched:", customersData);
+      return customersData as CustomerWithProfile[];
+    }
+  });
 
   useEffect(() => {
     const checkAdminAccess = async () => {
@@ -77,7 +108,11 @@ const AdminCustomers = () => {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-      {/* Add your admin dashboard content here */}
+      {customers && customers.length > 0 ? (
+        <CustomersTable customers={customers} onCustomerUpdated={refetch} />
+      ) : (
+        <p className="text-gray-500">No customers found.</p>
+      )}
     </div>
   );
 };
