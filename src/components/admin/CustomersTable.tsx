@@ -1,18 +1,14 @@
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { CustomerWithProfile } from "@/types/customer";
-import { EditCustomerDialog } from "./EditCustomerDialog";
-import { CustomerDetails } from "./CustomerDetails";
 import { supabase } from "@/integrations/supabase/client";
-import { Trash2 } from "lucide-react";
+import { CustomerTableRow } from "./CustomerTableRow";
 
 interface CustomersTableProps {
   customers: CustomerWithProfile[];
@@ -71,33 +67,12 @@ export const CustomersTable = ({ customers, onCustomerUpdated }: CustomersTableP
         </TableHeader>
         <TableBody>
           {customers?.map((customer) => (
-            <TableRow key={customer.id}>
-              <TableCell>
-                {`${customer.profile?.first_name || ''} ${customer.profile?.last_name || ''}`.trim() || 'No name provided'}
-              </TableCell>
-              <TableCell>
-                {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
-              </TableCell>
-              <TableCell>
-                {customer.onboarding_completed ? 
-                  'Completed' : 
-                  `Step ${customer.onboarding_step || 1}`}
-              </TableCell>
-              <TableCell className="space-x-2">
-                <CustomerDetails customer={customer} />
-                <EditCustomerDialog 
-                  customer={customer} 
-                  onCustomerUpdated={onCustomerUpdated} 
-                />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDeleteCustomer(customer.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
+            <CustomerTableRow
+              key={customer.id}
+              customer={customer}
+              onCustomerUpdated={onCustomerUpdated}
+              onDeleteCustomer={handleDeleteCustomer}
+            />
           ))}
         </TableBody>
       </Table>
