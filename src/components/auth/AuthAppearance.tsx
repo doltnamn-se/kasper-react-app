@@ -46,7 +46,7 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
     button: 'bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-lg dark:bg-white dark:text-black dark:hover:bg-gray-100',
     container: 'space-y-4',
     divider: 'my-4',
-    label: 'text-sm font-medium text-gray-700 dark:text-gray-300',
+    label: 'text-sm font-bold text-gray-700 dark:text-gray-300',
     loader: 'border-black dark:border-white',
     message: 'text-[#ff6369] bg-[#ff22221e]',
   },

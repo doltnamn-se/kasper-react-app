@@ -46,7 +46,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
         </h2>
         <div className="space-y-6">
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="email" className="text-sm font-bold text-gray-700 dark:text-gray-300">
               {t('email')}
             </label>
             <Input
@@ -92,7 +92,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
           ...getAuthAppearance(isDarkMode),
           className: {
             ...getAuthAppearance(isDarkMode).className,
-            label: "text-sm font-medium text-gray-700 dark:text-gray-300"
+            label: "text-sm font-bold text-gray-700 dark:text-gray-300"
           }
         }}
         providers={[]}
