@@ -16,19 +16,42 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<boolean | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Checking session:", session ? "Authenticated" : "Not authenticated");
-      setSession(!!session);
+    // Immediately check the current session
+    const checkSession = async () => {
+      try {
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Session check error:", error);
+          setSession(false);
+          return;
+        }
+        console.log("Initial session check:", currentSession ? "Authenticated" : "Not authenticated");
+        setSession(!!currentSession);
+      } catch (err) {
+        console.error("Session check failed:", err);
+        setSession(false);
+      }
+    };
+
+    checkSession();
+
+    // Set up the auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
+      
+      if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+        setSession(false);
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        setSession(true);
+      }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("Auth state changed:", _event, session ? "Authenticated" : "Not authenticated");
-      setSession(!!session);
-    });
-
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
+  // Show nothing while checking authentication
   if (session === null) {
     return null;
   }
