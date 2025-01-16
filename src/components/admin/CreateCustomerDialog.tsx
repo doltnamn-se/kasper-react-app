@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,11 +18,12 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
   const [newCustomerEmail, setNewCustomerEmail] = useState("");
   const [newCustomerFirstName, setNewCustomerFirstName] = useState("");
   const [newCustomerLastName, setNewCustomerLastName] = useState("");
+  const [newCustomerRole, setNewCustomerRole] = useState<"customer" | "super_admin">("customer");
 
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
-      console.log('Creating new customer...');
+      console.log('Creating new customer...', { newCustomerEmail, newCustomerFirstName, newCustomerLastName, newCustomerRole });
 
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: newCustomerEmail,
@@ -49,6 +51,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
         .update({
           first_name: newCustomerFirstName,
           last_name: newCustomerLastName,
+          role: newCustomerRole,
         })
         .eq('id', authData.user.id);
 
@@ -70,6 +73,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
       setNewCustomerEmail("");
       setNewCustomerFirstName("");
       setNewCustomerLastName("");
+      setNewCustomerRole("customer");
       onCustomerCreated();
     } catch (err) {
       console.error("Error in customer creation:", err);
@@ -123,6 +127,21 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
               value={newCustomerLastName}
               onChange={(e) => setNewCustomerLastName(e.target.value)}
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="role">Role</Label>
+            <Select
+              value={newCustomerRole}
+              onValueChange={(value: "customer" | "super_admin") => setNewCustomerRole(value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="customer">Customer</SelectItem>
+                <SelectItem value="super_admin">Super Admin</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <Button 
             className="w-full" 
