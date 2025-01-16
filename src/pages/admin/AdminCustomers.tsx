@@ -54,7 +54,7 @@ const AdminCustomers = () => {
         <h1 className="text-2xl font-bold">Customer Management</h1>
         <CreateCustomerDialog onCustomerCreated={refetch} />
       </div>
-      <CustomersTable customers={customers || []} />
+      <CustomersTable customers={customers || []} onCustomerUpdated={refetch} />
     </div>
   );
 };
