@@ -11,6 +11,10 @@ import Index from "./pages/Index";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { SetPassword } from "./pages/onboarding/SetPassword";
+import { HidingPreferences } from "./pages/onboarding/HidingPreferences";
+import { RemovalUrls } from "./pages/onboarding/RemovalUrls";
+import { IdentificationInfo } from "./pages/onboarding/IdentificationInfo";
+import { OnboardingComplete } from "./pages/onboarding/OnboardingComplete";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +43,10 @@ const App = () => (
             <Route path="/onboarding" element={<OnboardingLayout />}>
               <Route index element={<SetPassword />} />
               <Route path="set-password" element={<SetPassword />} />
+              <Route path="hiding-preferences" element={<HidingPreferences />} />
+              <Route path="removal-urls" element={<RemovalUrls />} />
+              <Route path="identification" element={<IdentificationInfo />} />
+              <Route path="complete" element={<OnboardingComplete />} />
             </Route>
             <Route path="/auth" element={<AuthRoute />} />
             <Route path="*" element={<Navigate to="/" replace />} />

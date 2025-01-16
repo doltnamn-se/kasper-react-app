@@ -65,18 +65,21 @@ export type Database = {
           customer_id: string | null
           id: string
           site_name: string
+          site_type: Database["public"]["Enums"]["hiding_site"] | null
         }
         Insert: {
           created_at?: string
           customer_id?: string | null
           id?: string
           site_name: string
+          site_type?: Database["public"]["Enums"]["hiding_site"] | null
         }
         Update: {
           created_at?: string
           customer_id?: string | null
           id?: string
           site_name?: string
+          site_type?: Database["public"]["Enums"]["hiding_site"] | null
         }
         Relationships: [
           {
@@ -265,6 +268,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      hiding_site: "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo"
       subscription_plan: "1_month" | "6_months" | "12_months"
       user_role: "super_admin" | "customer"
     }
