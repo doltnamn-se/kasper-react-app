@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { CustomerWithProfile } from "@/types/customer";
 import { EditCustomerDialog } from "./EditCustomerDialog";
+import { CustomerDetails } from "./CustomerDetails";
 import { supabase } from "@/integrations/supabase/client";
 import { Trash2 } from "lucide-react";
 
@@ -83,6 +84,7 @@ export const CustomersTable = ({ customers, onCustomerUpdated }: CustomersTableP
                   `Step ${customer.onboarding_step || 1}`}
               </TableCell>
               <TableCell className="space-x-2">
+                <CustomerDetails customer={customer} />
                 <EditCustomerDialog 
                   customer={customer} 
                   onCustomerUpdated={onCustomerUpdated} 
