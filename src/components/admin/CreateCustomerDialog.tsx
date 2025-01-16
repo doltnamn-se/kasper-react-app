@@ -1,113 +1,15 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { CustomerFormFields } from "./CustomerFormFields";
+import { useCustomerCreation } from "./useCustomerCreation";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
 }
 
 export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialogProps) => {
-  const { toast } = useToast();
-  const [isCreating, setIsCreating] = useState(false);
-  const [newCustomerEmail, setNewCustomerEmail] = useState("");
-  const [newCustomerFirstName, setNewCustomerFirstName] = useState("");
-  const [newCustomerLastName, setNewCustomerLastName] = useState("");
-  const [newCustomerSubscriptionPlan, setNewCustomerSubscriptionPlan] = useState<"1_month" | "6_months" | "12_months">("1_month");
-
-  const handleCreateCustomer = async () => {
-    try {
-      setIsCreating(true);
-      console.log('Creating new customer...', { 
-        newCustomerEmail, 
-        newCustomerFirstName, 
-        newCustomerLastName, 
-        newCustomerSubscriptionPlan 
-      });
-
-      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-        email: newCustomerEmail,
-        email_confirm: true,
-        password: Math.random().toString(36).slice(-8),
-      });
-
-      if (authError) {
-        console.error("Error creating auth user:", authError);
-        toast({
-          title: "Error",
-          description: "Failed to create customer. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (!authData.user) {
-        console.error("No user data returned");
-        return;
-      }
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          first_name: newCustomerFirstName,
-          last_name: newCustomerLastName,
-          role: 'customer',
-        })
-        .eq('id', authData.user.id);
-
-      if (profileError) {
-        console.error("Error updating profile:", profileError);
-        toast({
-          title: "Error",
-          description: "Failed to update customer profile. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { error: customerError } = await supabase
-        .from('customers')
-        .update({
-          subscription_plan: newCustomerSubscriptionPlan,
-        })
-        .eq('id', authData.user.id);
-
-      if (customerError) {
-        console.error("Error updating customer subscription plan:", customerError);
-        toast({
-          title: "Error",
-          description: "Failed to update customer subscription plan. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      toast({
-        title: "Success",
-        description: "Customer created successfully.",
-      });
-
-      setNewCustomerEmail("");
-      setNewCustomerFirstName("");
-      setNewCustomerLastName("");
-      setNewCustomerSubscriptionPlan("1_month");
-      onCustomerCreated();
-    } catch (err) {
-      console.error("Error in customer creation:", err);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsCreating(false);
-    }
-  };
+  const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(onCustomerCreated);
 
   return (
     <Dialog>
@@ -122,54 +24,20 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
           <DialogTitle>Create New Customer</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="customer@example.com"
-              value={newCustomerEmail}
-              onChange={(e) => setNewCustomerEmail(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              id="firstName"
-              placeholder="John"
-              value={newCustomerFirstName}
-              onChange={(e) => setNewCustomerFirstName(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              placeholder="Doe"
-              value={newCustomerLastName}
-              onChange={(e) => setNewCustomerLastName(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
-            <Select
-              value={newCustomerSubscriptionPlan}
-              onValueChange={(value: "1_month" | "6_months" | "12_months") => setNewCustomerSubscriptionPlan(value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select subscription plan" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1_month">1 Month</SelectItem>
-                <SelectItem value="6_months">6 Months</SelectItem>
-                <SelectItem value="12_months">12 Months</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <CustomerFormFields
+            email={formData.email}
+            firstName={formData.firstName}
+            lastName={formData.lastName}
+            subscriptionPlan={formData.subscriptionPlan}
+            onEmailChange={(email) => setFormData(prev => ({ ...prev, email }))}
+            onFirstNameChange={(firstName) => setFormData(prev => ({ ...prev, firstName }))}
+            onLastNameChange={(lastName) => setFormData(prev => ({ ...prev, lastName }))}
+            onSubscriptionPlanChange={(subscriptionPlan) => setFormData(prev => ({ ...prev, subscriptionPlan }))}
+          />
           <Button 
             className="w-full" 
             onClick={handleCreateCustomer}
-            disabled={isCreating || !newCustomerEmail}
+            disabled={isCreating || !formData.email}
           >
             {isCreating ? "Creating..." : "Create Customer"}
           </Button>
