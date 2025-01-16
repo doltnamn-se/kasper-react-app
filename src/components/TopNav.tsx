@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export const TopNav = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
