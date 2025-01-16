@@ -11,9 +11,12 @@ export const useSubscription = () => {
         throw new Error('No session found');
       }
 
-      // Use supabase.functions.invoke instead of raw fetch
+      // Pass the authorization header with the session token
       const { data, error } = await supabase.functions.invoke('stripe-webhook', {
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
       });
 
       if (error) {
