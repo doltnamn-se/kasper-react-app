@@ -7,6 +7,7 @@ import { getAuthAppearance } from "./AuthAppearance";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 interface AuthFormProps {
   errorMessage: string;
@@ -17,6 +18,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
   const { t, language } = useLanguage();
   const [isResetMode, setIsResetMode] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleResetPassword = async () => {
     if (!resetEmail) {
@@ -98,6 +100,16 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             container: "space-y-4 font-system-ui",
             button: "w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-[4px] font-system-ui",
             input: "w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui",
+          },
+          style: {
+            ...getAuthAppearance(isDarkMode).style,
+            input: {
+              ...getAuthAppearance(isDarkMode).style.input,
+              '&[type="password"]': {
+                fontFamily: 'text-security-disc',
+                '-webkit-text-security': 'disc',
+              }
+            },
           }
         }}
         providers={[]}
@@ -109,7 +121,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
               email_label: t('email'),
               password_label: t('password'),
               email_input_placeholder: t('email.placeholder'),
-              password_input_placeholder: t('password.placeholder'),
+              password_input_placeholder: '••••••••',
               button_label: t('sign.in'),
               loading_button_label: t('signing.in'),
               social_provider_text: t('sign.in.with.provider'),
@@ -119,7 +131,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
               email_label: t('email'),
               password_label: t('password'),
               email_input_placeholder: t('email.placeholder'),
-              password_input_placeholder: t('password.placeholder'),
+              password_input_placeholder: '••••••••',
               button_label: t('register'),
               loading_button_label: t('registering'),
               social_provider_text: t('register.with.provider'),
@@ -135,7 +147,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             },
             update_password: {
               password_label: t('new.password'),
-              password_input_placeholder: t('new.password.placeholder'),
+              password_input_placeholder: '••••••••',
               button_label: t('update.password'),
               loading_button_label: t('updating.password'),
             },
