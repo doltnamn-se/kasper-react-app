@@ -12,23 +12,189 @@ export type Database = {
       customers: {
         Row: {
           created_at: string | null
+          created_by: string | null
           id: string
+          identification_info: Json | null
+          onboarding_completed: boolean | null
+          onboarding_step: number | null
           stripe_customer_id: string | null
+          subscription_plan:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
+          created_by?: string | null
           id: string
+          identification_info?: Json | null
+          onboarding_completed?: boolean | null
+          onboarding_step?: number | null
           stripe_customer_id?: string | null
+          subscription_plan?:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
+          created_by?: string | null
           id?: string
+          identification_info?: Json | null
+          onboarding_completed?: boolean | null
+          onboarding_step?: number | null
           stripe_customer_id?: string | null
+          subscription_plan?:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
           updated_at?: string | null
         }
         Relationships: []
+      }
+      hiding_preferences: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          id: string
+          site_name: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          site_name: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          site_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hiding_preferences_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_notifications: boolean | null
+          in_app_notifications: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_notifications?: boolean | null
+          in_app_notifications?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_notifications?: boolean | null
+          in_app_notifications?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean | null
+          title: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean | null
+          title: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean | null
+          title?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          role: Database["public"]["Enums"]["user_role"] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      removal_urls: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          id: string
+          status: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          status?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          status?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "removal_urls_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscriptions: {
         Row: {
@@ -91,7 +257,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      subscription_plan: "1_month" | "6_months" | "12_months"
+      user_role: "super_admin" | "customer"
     }
     CompositeTypes: {
       [_ in never]: never
