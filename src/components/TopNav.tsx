@@ -20,6 +20,7 @@ export const TopNav = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
   const { isCollapsed } = useSidebar();
   const { toast } = useToast();
@@ -51,11 +52,32 @@ export const TopNav = () => {
   }, []);
 
   const handleSignOut = async () => {
+    if (isSigningOut) {
+      console.log("Sign out already in progress");
+      return;
+    }
+
     try {
+      setIsSigningOut(true);
       console.log("Attempting to sign out...");
+
+      // Clear local state first
+      setUserEmail(null);
+      
+      // Force navigation to auth page before sign out
+      navigate("/auth", { replace: true });
+      
+      // Attempt to sign out
       const { error } = await supabase.auth.signOut();
+      
       if (error) {
         console.error("Error signing out:", error);
+        // If it's a session not found error, we can ignore it since we've already navigated
+        if (error.message.includes("session_not_found")) {
+          console.log("Session not found, but navigation completed");
+          return;
+        }
+        
         toast({
           variant: "destructive",
           title: "Error",
@@ -65,10 +87,6 @@ export const TopNav = () => {
       }
       
       console.log("Sign out successful");
-      // Clear any local user data
-      setUserEmail(null);
-      // Force navigation to auth page
-      navigate("/auth", { replace: true });
       
       toast({
         title: "Signed out successfully",
@@ -81,6 +99,8 @@ export const TopNav = () => {
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
       });
+    } finally {
+      setIsSigningOut(false);
     }
   };
 
@@ -171,8 +191,12 @@ export const TopNav = () => {
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut} className="text-red-600 dark:text-red-400">
-                Logga ut
+              <DropdownMenuItem 
+                onClick={handleSignOut} 
+                disabled={isSigningOut}
+                className="text-red-600 dark:text-red-400"
+              >
+                {isSigningOut ? 'Signing out...' : 'Logga ut'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
