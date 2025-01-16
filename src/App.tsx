@@ -39,10 +39,17 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
       
-      if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+      if (event === 'SIGNED_OUT') {
         setSession(false);
       } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        setSession(true);
+        // Refresh the session when signed in or token refreshed
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        if (!error && currentSession) {
+          setSession(true);
+        } else {
+          console.error("Failed to get session after auth state change:", error);
+          setSession(false);
+        }
       }
     });
 
