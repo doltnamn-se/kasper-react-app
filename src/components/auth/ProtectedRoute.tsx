@@ -14,64 +14,46 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true;
-
-    const initSession = async () => {
+    const checkSession = async () => {
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        if (!mounted) return;
-
         if (currentSession) {
-          console.log("Initial session check: Authenticated");
+          console.log("Session found:", currentSession.user.id);
           setSession(true);
           
-          try {
-            const { data: profileData, error: profileError } = await supabase
-              .from('profiles')
-              .select('role')
-              .eq('id', currentSession.user.id)
-              .maybeSingle();
-              
-            if (profileError) {
-              console.error("Error fetching user role:", profileError);
-            } else if (profileData) {
-              console.log("User role:", profileData.role);
-              setUserRole(profileData.role);
-            } else {
-              console.log("No profile found for user");
-              setUserRole(null);
-            }
-          } catch (profileErr) {
-            console.error("Unexpected error fetching profile:", profileErr);
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', currentSession.user.id)
+            .single();
+          
+          if (profileError) {
+            console.error("Error fetching user role:", profileError);
+            setUserRole(null);
+          } else {
+            console.log("User role:", profileData.role);
+            setUserRole(profileData.role);
           }
         } else {
-          console.log("Initial session check: Not authenticated");
+          console.log("No session found");
           setSession(false);
           setUserRole(null);
         }
-      } catch (err) {
-        console.error("Session initialization failed:", err);
-        if (mounted) {
-          setSession(false);
-          setUserRole(null);
-        }
+      } catch (error) {
+        console.error("Error checking session:", error);
+        setSession(false);
+        setUserRole(null);
       } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       }
     };
 
-    initSession();
+    checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
       
-      if (!mounted) return;
-
-      setIsLoading(true);
-
       if (session) {
         setSession(true);
         try {
@@ -79,19 +61,18 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
             .from('profiles')
             .select('role')
             .eq('id', session.user.id)
-            .maybeSingle();
+            .single();
           
           if (profileError) {
             console.error("Error fetching user role on auth change:", profileError);
-          } else if (profileData) {
+            setUserRole(null);
+          } else {
             console.log("Updated user role:", profileData.role);
             setUserRole(profileData.role);
-          } else {
-            console.log("No profile found for user on auth change");
-            setUserRole(null);
           }
-        } catch (err) {
-          console.error("Error updating user role:", err);
+        } catch (error) {
+          console.error("Error updating user role:", error);
+          setUserRole(null);
         }
       } else {
         setSession(false);
@@ -101,8 +82,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
     });
 
     return () => {
-      mounted = false;
-      console.log("Cleaning up auth subscription");
       subscription.unsubscribe();
     };
   }, []);
@@ -112,12 +91,12 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   if (!session) {
-    console.log("User not authenticated, redirecting to auth");
+    console.log("Redirecting to auth - no session");
     return <Navigate to="/auth" replace />;
   }
 
   if (requiredRole && userRole !== requiredRole) {
-    console.log(`User doesn't have required role (${requiredRole}), current role: ${userRole}`);
+    console.log(`Access denied - required role: ${requiredRole}, user role: ${userRole}`);
     return <Navigate to="/" replace />;
   }
 
