@@ -1,4 +1,4 @@
-import { Library, ListTodo, Link2, Users } from "lucide-react";
+import { Library, ListTodo, Link2, Users, Shield } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
@@ -48,7 +48,7 @@ const Index = () => {
               <span className="text-sm text-black dark:text-gray-300">Checklista</span>
             </Link>
 
-            <Link to="#" className="flex items-center gap-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Link to="#" className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
               <Link2 className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
               <span className="text-sm text-black dark:text-gray-300">Mina länkar</span>
             </Link>
@@ -56,10 +56,10 @@ const Index = () => {
             {userRole === 'super_admin' && (
               <Link 
                 to="/admin/customers" 
-                className="flex items-center gap-3 mt-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="flex items-center gap-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <Users className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
-                <span className="text-sm text-black dark:text-gray-300">Manage Customers</span>
+                <Shield className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+                <span className="text-sm text-black dark:text-gray-300">Admin Dashboard</span>
               </Link>
             )}
           </nav>
