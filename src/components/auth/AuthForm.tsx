@@ -105,7 +105,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             ...getAuthAppearance(isDarkMode).style,
             input: {
               ...getAuthAppearance(isDarkMode).style.input,
-              '&[type="password"]': {
+              '&[type=password]': {
                 fontFamily: 'text-security-disc',
                 '-webkit-text-security': 'disc',
               }
