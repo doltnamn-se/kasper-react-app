@@ -11,7 +11,6 @@ import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
-// Protected Route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<boolean | null>(null);
 
@@ -30,7 +29,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (session === null) {
-    return null; // Loading state
+    return null;
   }
 
   return session ? <>{children}</> : <Navigate to="/auth" />;
@@ -49,9 +48,7 @@ const App = () => (
               path="/"
               element={
                 <ProtectedRoute>
-                  <div className="min-h-screen flex w-full">
-                    <Index />
-                  </div>
+                  <Index />
                 </ProtectedRoute>
               }
             />
