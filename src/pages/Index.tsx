@@ -1,4 +1,4 @@
-import { LayoutDashboard, CheckSquare, Link } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Link, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
@@ -19,18 +20,18 @@ const Index = () => {
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] flex transition-colors duration-200">
         <Sidebar className="bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325]">
-          <SidebarHeader className="px-6 py-5">
-            <AuthLogo />
+          <SidebarHeader className="px-8 py-6">
+            <AuthLogo className="w-auto h-6" />
           </SidebarHeader>
 
-          <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-4 mb-6 transition-colors duration-200" />
+          <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-6 mb-8 transition-colors duration-200" />
 
-          <SidebarContent className="px-4">
+          <SidebarContent className="px-6">
             <SidebarMenu>
               <SidebarMenuButton
                 isActive={true}
                 tooltip="Översikt"
-                className="mb-2"
+                className="mb-3"
               >
                 <LayoutDashboard className="w-4 h-4 text-[#5e5e5e] dark:text-gray-300" />
                 <span>Översikt</span>
@@ -38,7 +39,7 @@ const Index = () => {
 
               <SidebarMenuButton
                 tooltip="Checklista"
-                className="mb-2"
+                className="mb-3"
               >
                 <CheckSquare className="w-4 h-4 text-[#5e5e5e] dark:text-gray-300" />
                 <span>Checklista</span>
@@ -53,9 +54,11 @@ const Index = () => {
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter className="px-4 py-3">
+          <SidebarFooter className="px-6 py-4">
             <span className="text-xs text-[#5e5e5e] dark:text-gray-400">v{APP_VERSION}</span>
           </SidebarFooter>
+
+          <SidebarRail />
         </Sidebar>
 
         <TopNav />
