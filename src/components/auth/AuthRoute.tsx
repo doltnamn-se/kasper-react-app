@@ -9,18 +9,27 @@ export const AuthRoute = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkSession = async () => {
+    const initializeAuth = async () => {
       try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("Error checking session:", error);
+          setSession(false);
+          return;
+        }
+
+        console.log("Auth route - session check:", currentSession ? "Authenticated" : "Not authenticated");
         setSession(!!currentSession);
       } finally {
         setIsLoading(false);
       }
     };
-    
-    checkSession();
+
+    initializeAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth route - auth state changed:", event);
       setSession(!!session);
       setIsLoading(false);
     });

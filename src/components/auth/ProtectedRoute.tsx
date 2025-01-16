@@ -14,34 +14,47 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkSession = async () => {
+    const initializeAuth = async () => {
       try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        // First check if there's an existing session in localStorage
+        const storedSession = localStorage.getItem('supabase.auth.token');
+        console.log("Stored session exists:", !!storedSession);
+
+        // Get current session from Supabase
+        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
+        if (sessionError) {
+          console.error("Error getting session:", sessionError);
+          setSession(false);
+          setUserRole(null);
+          return;
+        }
+
         if (currentSession) {
-          console.log("Session found:", currentSession.user.id);
+          console.log("Active session found for user:", currentSession.user.id);
           setSession(true);
-          
+
+          // Fetch user role
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', currentSession.user.id)
             .single();
-          
+
           if (profileError) {
             console.error("Error fetching user role:", profileError);
             setUserRole(null);
           } else {
-            console.log("User role:", profileData.role);
+            console.log("User role fetched:", profileData.role);
             setUserRole(profileData.role);
           }
         } else {
-          console.log("No session found");
+          console.log("No active session found");
           setSession(false);
           setUserRole(null);
         }
       } catch (error) {
-        console.error("Error checking session:", error);
+        console.error("Unexpected error during auth initialization:", error);
         setSession(false);
         setUserRole(null);
       } finally {
@@ -49,20 +62,24 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
       }
     };
 
-    checkSession();
+    // Initialize auth state
+    initializeAuth();
 
+    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
-      
+      console.log("Auth state changed:", event);
+
       if (session) {
+        console.log("New session established for user:", session.user.id);
         setSession(true);
+
         try {
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', session.user.id)
             .single();
-          
+
           if (profileError) {
             console.error("Error fetching user role on auth change:", profileError);
             setUserRole(null);
@@ -75,10 +92,10 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
           setUserRole(null);
         }
       } else {
+        console.log("Session ended");
         setSession(false);
         setUserRole(null);
       }
-      setIsLoading(false);
     });
 
     return () => {
@@ -91,7 +108,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   if (!session) {
-    console.log("Redirecting to auth - no session");
+    console.log("No active session, redirecting to auth");
     return <Navigate to="/auth" replace />;
   }
 
