@@ -12,16 +12,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
+interface Profile {
+  first_name: string | null;
+  last_name: string | null;
+}
+
 interface Customer {
   id: string;
   created_at: string;
   subscription_plan: string | null;
-  onboarding_completed: boolean;
-  onboarding_step: number;
-  profile?: {
-    first_name: string;
-    last_name: string;
-  };
+  onboarding_completed: boolean | null;
+  onboarding_step: number | null;
+  profile?: Profile | null;
 }
 
 const AdminCustomers = () => {
@@ -42,7 +44,7 @@ const AdminCustomers = () => {
         throw error;
       }
       
-      return data as Customer[];
+      return (data || []) as Customer[];
     },
   });
 
@@ -87,7 +89,7 @@ const AdminCustomers = () => {
               <TableRow key={customer.id}>
                 <TableCell>
                   {customer.profile ? 
-                    `${customer.profile.first_name} ${customer.profile.last_name}` : 
+                    `${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim() || 'No name provided' : 
                     'No name provided'}
                 </TableCell>
                 <TableCell>
@@ -99,14 +101,13 @@ const AdminCustomers = () => {
                 <TableCell>
                   {customer.onboarding_completed ? 
                     'Completed' : 
-                    `Step ${customer.onboarding_step}`}
+                    `Step ${customer.onboarding_step || 1}`}
                 </TableCell>
                 <TableCell>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => {
-                      // TODO: Implement view details
                       toast({
                         title: "Coming soon",
                         description: "Customer details view will be implemented soon.",
