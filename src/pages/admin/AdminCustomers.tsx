@@ -38,7 +38,7 @@ const AdminCustomers = () => {
           created_at,
           onboarding_completed,
           onboarding_step,
-          profile:profiles!inner(*)
+          profile:profiles (*)
         `);
         
       if (error) {
