@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSidebar } from "@/components/ui/sidebar";
 
 interface AuthLogoProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const AuthLogo: React.FC<AuthLogoProps> = ({ className, ...props }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { state } = useSidebar();
-  const isCollapsed = state === "collapsed";
 
   useEffect(() => {
     // Initial check for dark mode
@@ -32,18 +29,6 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({ className, ...props }) => {
     // Cleanup
     return () => observer.disconnect();
   }, []);
-
-  if (isCollapsed) {
-    return (
-      <div className={className} {...props}>
-        <img 
-          src="/lovable-uploads/bbfa3367-08fa-41ab-b5c5-3a15c8a28872.png"
-          alt="Logo" 
-          className="h-8 w-8"
-        />
-      </div>
-    );
-  }
 
   return (
     <div className={className} {...props}>
