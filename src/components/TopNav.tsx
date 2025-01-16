@@ -26,6 +26,39 @@ export const TopNav = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    let mounted = true;
+
+    const initUser = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!mounted) return;
+        
+        if (session?.user?.email) {
+          console.log("Setting user email:", session.user.email);
+          setUserEmail(session.user.email);
+        } else {
+          console.log("No user session found");
+          setUserEmail(null);
+        }
+      } catch (err) {
+        console.error("Error fetching user session:", err);
+        if (mounted) setUserEmail(null);
+      }
+    };
+
+    initUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!mounted) return;
+      
+      console.log("Auth state changed:", event);
+      if (session?.user?.email) {
+        setUserEmail(session.user.email);
+      } else {
+        setUserEmail(null);
+      }
+    });
+
     // Set up keyboard shortcut
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key.toLowerCase() === 's') {
@@ -39,16 +72,14 @@ export const TopNav = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user?.email) {
-        setUserEmail(user.email);
-      }
-    });
-
     const isDark = document.documentElement.classList.contains('dark');
     setIsDarkMode(isDark);
 
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const handleSignOut = async () => {
@@ -60,14 +91,13 @@ export const TopNav = () => {
     try {
       setIsSigningOut(true);
       console.log("Attempting to sign out...");
-
+      
       // Clear local state first
       setUserEmail(null);
       
       // Force navigation to auth page before sign out
       navigate("/auth", { replace: true });
       
-      // Attempt to sign out
       const { error } = await supabase.auth.signOut();
       
       if (error) {
