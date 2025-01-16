@@ -99,18 +99,8 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
             label: "text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui",
             container: "space-y-4 font-system-ui",
             button: "w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui",
-            input: "w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui",
+            input: "w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui [&[type=password]]:font-['text-security-disc'] [&[type=password]]:-webkit-text-security-disc",
           },
-          style: {
-            ...getAuthAppearance(isDarkMode).style,
-            input: {
-              ...getAuthAppearance(isDarkMode).style.input,
-              '&[type=password]': {
-                fontFamily: 'text-security-disc',
-                '-webkit-text-security': 'disc',
-              }
-            },
-          }
         }}
         providers={[]}
         view="sign_in"

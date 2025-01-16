@@ -39,10 +39,6 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
       borderColor: isDarkMode ? '#303032' : '#E5E7EB',
       height: '48px',
       fontFamily: 'system-ui',
-      '&[type="password"]': {
-        fontFamily: 'text-security-disc',
-        '-webkit-text-security': 'disc',
-      }
     },
     message: {
       backgroundColor: '#ff22221e',
