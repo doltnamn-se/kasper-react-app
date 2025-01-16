@@ -13,8 +13,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/integrations/supabase/types";
 
-type CustomerWithProfile = Database['public']['Tables']['customers']['Row'] & {
-  profile: Database['public']['Tables']['profiles']['Row'] | null;
+type Profile = Database['public']['Tables']['profiles']['Row'];
+type Customer = Database['public']['Tables']['customers']['Row'];
+
+type CustomerWithProfile = Customer & {
+  profile: Profile | null;
 };
 
 const AdminCustomers = () => {
@@ -23,11 +26,12 @@ const AdminCustomers = () => {
   const { data: customers, isLoading, error } = useQuery({
     queryKey: ['customers'],
     queryFn: async () => {
+      console.log('Fetching customers data...');
       const { data, error } = await supabase
         .from('customers')
         .select(`
           *,
-          profile:profiles(first_name, last_name)
+          profile:profiles(*)
         `);
         
       if (error) {
@@ -35,7 +39,8 @@ const AdminCustomers = () => {
         throw error;
       }
       
-      return (data || []) as CustomerWithProfile[];
+      console.log('Customers data received:', data);
+      return data as CustomerWithProfile[];
     },
   });
 
