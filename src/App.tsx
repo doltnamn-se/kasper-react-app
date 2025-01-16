@@ -22,7 +22,6 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
 
     const initSession = async () => {
       try {
-        // Get initial session
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
         if (!mounted) return;
@@ -31,34 +30,43 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
           console.log("Initial session check: Authenticated");
           setSession(true);
           
-          // Fetch user role from profiles
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', currentSession.user.id)
-            .maybeSingle();
-            
-          if (profileError) {
-            console.error("Error fetching user role:", profileError);
-          } else if (profileData) {
-            console.log("User role:", profileData.role);
-            setUserRole(profileData.role);
+          // Only fetch role if we have a valid session
+          try {
+            const { data: profileData, error: profileError } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', currentSession.user.id)
+              .maybeSingle();
+              
+            if (profileError) {
+              console.error("Error fetching user role:", profileError);
+              // Don't set session to false here, just log the error
+            } else if (profileData) {
+              console.log("User role:", profileData.role);
+              setUserRole(profileData.role);
+            } else {
+              console.log("No profile found for user");
+              setUserRole(null);
+            }
+          } catch (profileErr) {
+            console.error("Unexpected error fetching profile:", profileErr);
           }
         } else {
           console.log("Initial session check: Not authenticated");
           setSession(false);
+          setUserRole(null);
         }
       } catch (err) {
         console.error("Session initialization failed:", err);
         if (mounted) {
           setSession(false);
+          setUserRole(null);
         }
       }
     };
 
     initSession();
 
-    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
       
@@ -78,6 +86,9 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
           } else if (profileData) {
             console.log("Updated user role:", profileData.role);
             setUserRole(profileData.role);
+          } else {
+            console.log("No profile found for user on auth change");
+            setUserRole(null);
           }
         } catch (err) {
           console.error("Error updating user role:", err);
