@@ -22,20 +22,7 @@ const Auth = () => {
         <div className="space-y-6">
           <AuthLogo />
           <AuthHeader />
-          <div className="text-center text-sm text-muted-foreground">
-            {language === 'sv' 
-              ? "Denna inloggning är endast för befintliga kunder. Om du vill bli kund, besök "
-              : "This login is for existing customers only. To become a customer, visit "}
-            <a 
-              href="https://doltnamn.se" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="font-medium underline underline-offset-4 hover:text-primary"
-            >
-              doltnamn.se
-            </a>
-          </div>
-          <AuthForm />
+          <AuthForm errorMessage="" isDarkMode={false} />
         </div>
         <AuthFooter>
           <div className="flex justify-between items-center w-full">
