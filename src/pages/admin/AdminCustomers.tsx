@@ -1,41 +1,67 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
-import { CustomersTable } from "@/components/admin/CustomersTable";
-import { CustomerWithProfile } from "@/types/customer";
+import { useToast } from "@/components/ui/use-toast";
 
 const AdminCustomers = () => {
-  const { data: customers, isLoading, error, refetch } = useQuery({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      console.log('Fetching customers data...');
-      
-      const { data, error } = await supabase
-        .from('customers')
-        .select(`
-          *,
-          profile:profiles (*)
-        `);
-        
-      if (error) {
-        console.error("Error fetching customers:", error);
-        throw error;
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const checkAdminAccess = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        console.log("Checking admin access for user:", user);
+
+        if (user) {
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+          if (error) {
+            console.error("Error fetching user role:", error);
+            setError("Could not verify admin access");
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Could not verify admin access. Please try again.",
+            });
+            return;
+          }
+
+          console.log("User profile for admin check:", profile);
+
+          if (profile?.role !== 'super_admin') {
+            setError("Unauthorized access");
+            toast({
+              variant: "destructive",
+              title: "Unauthorized",
+              description: "You don't have permission to access this page.",
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Unexpected error checking admin access:", err);
+        setError("An unexpected error occurred");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+        });
+      } finally {
+        setIsLoading(false);
       }
-      
-      console.log('Customers data received:', data);
-      return data as CustomerWithProfile[];
-    },
-  });
+    };
+
+    checkAdminAccess();
+  }, [toast]);
 
   if (isLoading) {
     return (
       <div className="p-8">
-        <div className="h-8 w-32 bg-gray-200 rounded animate-pulse"></div>
-        <div className="mt-4 space-y-3">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-16 bg-gray-100 rounded animate-pulse"></div>
-          ))}
-        </div>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -43,18 +69,15 @@ const AdminCustomers = () => {
   if (error) {
     return (
       <div className="p-8">
-        <div className="text-red-500">Error loading customers. Please try again later.</div>
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
   return (
     <div className="p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Customer Management</h1>
-        <CreateCustomerDialog onCustomerCreated={refetch} />
-      </div>
-      <CustomersTable customers={customers || []} onCustomerUpdated={refetch} />
+      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+      {/* Add your admin dashboard content here */}
     </div>
   );
 };

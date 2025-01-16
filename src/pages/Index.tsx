@@ -1,4 +1,4 @@
-import { Library, ListTodo, Link2, Users, Shield } from "lucide-react";
+import { Library, ListTodo, Link2, Shield } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
@@ -6,26 +6,50 @@ import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const [userRole, setUserRole] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchUserRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single();
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        console.log("Current user:", user);
         
-        setUserRole(profile?.role);
+        if (user) {
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) {
+            console.error("Error fetching user role:", error);
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Could not fetch user role. Please try again.",
+            });
+            return;
+          }
+
+          console.log("User profile data:", profile);
+          setUserRole(profile?.role);
+        }
+      } catch (err) {
+        console.error("Unexpected error fetching user role:", err);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+        });
       }
     };
 
     fetchUserRole();
-  }, []);
+  }, [toast]);
 
   return (
     <>
