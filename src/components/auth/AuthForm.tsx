@@ -92,7 +92,18 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
           ...getAuthAppearance(isDarkMode),
           className: {
             ...getAuthAppearance(isDarkMode).className,
-            label: "text-sm font-bold text-gray-700 dark:text-gray-300"
+            label: "text-sm font-bold text-gray-700 dark:text-gray-300",
+            container: "space-y-4 relative",
+            input: "mt-2"
+          },
+          style: {
+            ...getAuthAppearance(isDarkMode).style,
+            forgotPasswordLink: {
+              position: 'absolute',
+              top: '0',
+              right: '0',
+              fontSize: '0.875rem',
+            }
           }
         }}
         providers={[]}
