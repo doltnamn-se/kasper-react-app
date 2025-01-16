@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, MessageSquare, Search, Settings, User, Shift } from "lucide-react";
+import { Bell, ChevronDown, MessageSquare, Search, Settings, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,7 +44,18 @@ export const TopNav = () => {
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none">
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
-                <Shift className="w-3 h-3" />
+                <svg 
+                  viewBox="0 0 24 24" 
+                  width="12" 
+                  height="12" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  fill="none" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" transform="rotate(180 12 12)"></path>
+                </svg>
               </div>
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
                 S
