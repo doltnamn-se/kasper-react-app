@@ -16,53 +16,77 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Immediately check the current session
-    const checkSession = async () => {
+    // Initialize session state
+    const initSession = async () => {
       try {
+        // Clear any existing session first to ensure a clean state
+        await supabase.auth.signOut();
+        console.log("Cleared existing session");
+
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         if (error) {
-          console.error("Session check error:", error);
+          console.error("Initial session check error:", error);
           setSession(false);
           return;
         }
         console.log("Initial session check:", currentSession ? "Authenticated" : "Not authenticated");
         setSession(!!currentSession);
       } catch (err) {
-        console.error("Session check failed:", err);
+        console.error("Session initialization failed:", err);
         setSession(false);
       }
     };
 
-    checkSession();
+    initSession();
 
-    // Set up the auth state listener
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
       
-      if (event === 'SIGNED_OUT') {
-        setSession(false);
-      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        // Refresh the session when signed in or token refreshed
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        if (!error && currentSession) {
-          setSession(true);
-        } else {
-          console.error("Failed to get session after auth state change:", error);
+      switch (event) {
+        case 'SIGNED_OUT':
+          console.log("User signed out");
           setSession(false);
-        }
+          break;
+        
+        case 'SIGNED_IN':
+        case 'TOKEN_REFRESHED':
+          console.log("Attempting to refresh session");
+          try {
+            const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+            if (!error && currentSession) {
+              console.log("Session refreshed successfully");
+              setSession(true);
+            } else {
+              console.error("Failed to refresh session:", error);
+              setSession(false);
+              // Force a clean signout if session refresh fails
+              await supabase.auth.signOut();
+            }
+          } catch (err) {
+            console.error("Session refresh failed:", err);
+            setSession(false);
+          }
+          break;
+
+        default:
+          console.log("Unhandled auth event:", event);
       }
     });
 
     return () => {
+      console.log("Cleaning up auth subscription");
       subscription.unsubscribe();
     };
   }, []);
 
   // Show nothing while checking authentication
   if (session === null) {
+    console.log("Session state is null, waiting for initialization...");
     return null;
   }
 
+  console.log("Rendering protected route, session state:", session);
   return session ? <>{children}</> : <Navigate to="/auth" />;
 };
 
