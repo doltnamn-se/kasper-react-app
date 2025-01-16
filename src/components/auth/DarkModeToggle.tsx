@@ -8,7 +8,7 @@ interface DarkModeToggleProps {
 
 export const DarkModeToggle = ({ isDarkMode, onToggle }: DarkModeToggleProps) => {
   return (
-    <div className="flex items-center justify-center gap-4 px-4 py-3 rounded-lg">
+    <div className="flex items-center gap-4">
       <div className="flex items-center">
         <Moon className="w-4 h-4 text-[#4c4c49] dark:text-[#67676c] stroke-[1.5]" />
       </div>
