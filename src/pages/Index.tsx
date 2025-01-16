@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard, CheckSquare, Link, LogOut, User, Bell, UserCog, Moon, Sun } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Link, LogOut, User, Bell, UserCog, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
@@ -88,23 +88,23 @@ const Index = () => {
     <button
       onClick={onClick}
       className={cn(
-        "w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 rounded-lg",
+        "w-full flex items-center gap-3 px-3 py-2.5 text-sm transition-all duration-200 rounded-[4px]",
         "hover:bg-black/5 text-[#000000] dark:hover:bg-[#232325] dark:text-gray-300",
         active ? "font-medium" : "",
         className
       )}
     >
-      <Icon className="w-5 h-5 transition-transform duration-200 ease-in-out stroke-[1.5] text-[#5e5e5e] dark:text-gray-300" />
+      <Icon className="w-4 h-4 transition-transform duration-200 ease-in-out stroke-[1.5] text-[#5e5e5e] dark:text-gray-300" />
       <span className="font-system-ui">{label}</span>
     </button>
   );
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] flex transition-colors duration-200">
-      <aside className="w-72 border-r border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] p-6 flex flex-col fixed h-screen transition-colors duration-200">
+      <aside className="w-72 border-r border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] p-4 flex flex-col fixed h-screen transition-colors duration-200">
         <div className="flex items-center gap-4 px-4 py-4 mb-4 rounded-[7px] transition-colors duration-200">
           <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-[#303032] flex items-center justify-center transition-colors duration-200">
-            <User className="w-5 h-5 text-[#5e5e5e] dark:text-[#c3caf5] stroke-[1.5]" />
+            <User className="w-4 h-4 text-[#5e5e5e] dark:text-[#c3caf5] stroke-[1.5]" />
           </div>
           <div className="flex-1">
             <h3 className="font-medium text-sm text-[#000000] dark:text-gray-300 font-system-ui">{userEmail}</h3>
@@ -114,11 +114,7 @@ const Index = () => {
 
         <div className="flex items-center justify-between px-4 py-3 mb-6 rounded-[7px] transition-colors duration-200">
           <div className="flex items-center gap-3">
-            {isDarkMode ? (
-              <Moon className="w-5 h-5 text-[#5e5e5e] dark:text-[#c3caf5] stroke-[1.5]" />
-            ) : (
-              <Sun className="w-5 h-5 text-[#5e5e5e] stroke-[1.5]" />
-            )}
+            <Moon className="w-4 h-4 text-[#5e5e5e] dark:text-[#c3caf5] stroke-[1.5]" />
             <span className="text-sm text-[#000000] dark:text-gray-300 font-system-ui">Mörkt läge</span>
           </div>
           <Switch
@@ -128,13 +124,13 @@ const Index = () => {
           />
         </div>
 
-        <nav className="flex-1 space-y-2">
+        <nav className="flex-1 space-y-1">
           <MenuItem icon={LayoutDashboard} label="Översikt" active={true} />
           <MenuItem icon={CheckSquare} label="Checklista" />
           <MenuItem icon={Link} label="Mina länkar" />
         </nav>
 
-        <div className="space-y-2 mb-4">
+        <div className="space-y-1 mb-4">
           <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] my-4 transition-colors duration-200" />
           <MenuItem 
             icon={Bell} 
@@ -153,7 +149,7 @@ const Index = () => {
             icon={LogOut} 
             label="Logga ut" 
             onClick={handleSignOut}
-            className="text-[#ff6369] hover:bg-[#ff22221e] hover:text-[#ff6369] dark:text-[#ff6369] dark:hover:bg-[#ff22221e] dark:hover:text-[#ff6369]" 
+            className="text-[#000000] hover:bg-[#ff22221e] dark:text-[#ff6369] dark:hover:bg-[#ff22221e] dark:hover:text-[#ff6369]" 
           />
         </div>
       </aside>
