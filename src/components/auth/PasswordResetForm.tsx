@@ -12,6 +12,7 @@ interface PasswordResetFormProps {
 export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
   const { t } = useLanguage();
   const [resetEmail, setResetEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleResetPassword = async () => {
     if (!resetEmail) {
@@ -19,17 +20,30 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
       return;
     }
 
-    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
-    });
+    setIsLoading(true);
+    console.log("Attempting password reset for email:", resetEmail);
 
-    if (error) {
-      console.error("Password reset error:", error);
-      toast.error(error.message);
-    } else {
-      toast.success(t('reset.password.success'));
-      onCancel();
-      setResetEmail("");
+    try {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+
+      console.log("Password reset response:", { data, error });
+
+      if (error) {
+        console.error("Password reset error:", error);
+        toast.error(error.message);
+      } else {
+        console.log("Password reset email sent successfully");
+        toast.success(t('reset.password.success'));
+        onCancel();
+        setResetEmail("");
+      }
+    } catch (err) {
+      console.error("Unexpected error during password reset:", err);
+      toast.error(t('error.generic'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,19 +65,22 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
               className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+              disabled={isLoading}
             />
           </div>
           <div className="flex flex-col gap-3">
             <Button
               onClick={handleResetPassword}
               className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+              disabled={isLoading}
             >
-              {t('send.recovery.link')}
+              {isLoading ? t('sending.recovery.link') : t('send.recovery.link')}
             </Button>
             <Button
               onClick={onCancel}
               variant="outline"
               className="w-full h-12 rounded-[4px] font-system-ui"
+              disabled={isLoading}
             >
               {t('cancel')}
             </Button>
