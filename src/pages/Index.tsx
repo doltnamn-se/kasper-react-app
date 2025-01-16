@@ -15,7 +15,6 @@ const Index = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    // Set page title based on language
     document.title = language === 'sv' ? 
       "Översikt | Doltnamn.se" : 
       "Dashboard | Doltnamn.se";
@@ -26,7 +25,6 @@ const Index = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Get user email
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user?.email) {
         setUserEmail(user.email);
@@ -46,19 +44,27 @@ const Index = () => {
     }
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(userEmail, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
-      });
+      const response = await fetch(
+        "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-test-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ email: userEmail }),
+        }
+      );
 
-      if (error) {
-        console.error("Error sending test email:", error);
-        toast.error("Failed to send test email");
-      } else {
-        toast.success("Test email sent successfully! Check your inbox.");
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to send test email");
       }
-    } catch (error) {
+
+      toast.success("Test email sent successfully! Check your inbox.");
+    } catch (error: any) {
       console.error("Error sending test email:", error);
-      toast.error("Failed to send test email");
+      toast.error(error.message || "Failed to send test email");
     }
   };
 
