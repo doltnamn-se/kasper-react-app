@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-// Define the current app version - we'll start from 1.0.0
-const APP_VERSION = "1.0.0";
+import { APP_VERSION } from "@/config/version";
 
 export const AuthFooter = () => {
   const currentYear = new Date().getFullYear();
