@@ -13,13 +13,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/integrations/supabase/types";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
+type Customer = Database['public']['Tables']['customers']['Row'];
 
-// Simplified customer type with only the fields we need
-type CustomerBasicInfo = {
-  id: string;
-  created_at: string | null;
-  onboarding_completed: boolean | null;
-  onboarding_step: number | null;
+type CustomerWithProfile = Customer & {
   profile: Profile;
 };
 
@@ -34,10 +30,7 @@ const AdminCustomers = () => {
       const { data, error } = await supabase
         .from('customers')
         .select(`
-          id,
-          created_at,
-          onboarding_completed,
-          onboarding_step,
+          *,
           profile:profiles (*)
         `);
         
@@ -47,7 +40,7 @@ const AdminCustomers = () => {
       }
       
       console.log('Customers data received:', data);
-      return data as CustomerBasicInfo[];
+      return data as CustomerWithProfile[];
     },
   });
 
@@ -90,7 +83,7 @@ const AdminCustomers = () => {
             {customers?.map((customer) => (
               <TableRow key={customer.id}>
                 <TableCell>
-                  {`${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim() || 'No name provided'}
+                  {`${customer.profile?.first_name || ''} ${customer.profile?.last_name || ''}`.trim() || 'No name provided'}
                 </TableCell>
                 <TableCell>
                   {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
