@@ -18,15 +18,15 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
   const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     const initSession = async () => {
       try {
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        if (error) {
-          console.error("Initial session check error:", error);
-          setSession(false);
-          return;
-        }
+        // Get initial session
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
         
+        if (!mounted) return;
+
         if (currentSession) {
           console.log("Initial session check: Authenticated");
           setSession(true);
@@ -36,13 +36,13 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
             .from('profiles')
             .select('role')
             .eq('id', currentSession.user.id)
-            .single();
+            .maybeSingle();
             
           if (profileError) {
             console.error("Error fetching user role:", profileError);
-          } else {
-            console.log("User role:", profileData?.role);
-            setUserRole(profileData?.role);
+          } else if (profileData) {
+            console.log("User role:", profileData.role);
+            setUserRole(profileData.role);
           }
         } else {
           console.log("Initial session check: Not authenticated");
@@ -50,27 +50,46 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
         }
       } catch (err) {
         console.error("Session initialization failed:", err);
-        setSession(false);
+        if (mounted) {
+          setSession(false);
+        }
       }
     };
 
     initSession();
 
+    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session ? "Authenticated" : "Not authenticated");
-      setSession(!!session);
       
+      if (!mounted) return;
+
       if (session) {
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .single();
-        setUserRole(profileData?.role);
+        setSession(true);
+        try {
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .maybeSingle();
+          
+          if (profileError) {
+            console.error("Error fetching user role on auth change:", profileError);
+          } else if (profileData) {
+            console.log("Updated user role:", profileData.role);
+            setUserRole(profileData.role);
+          }
+        } catch (err) {
+          console.error("Error updating user role:", err);
+        }
+      } else {
+        setSession(false);
+        setUserRole(null);
       }
     });
 
     return () => {
+      mounted = false;
       console.log("Cleaning up auth subscription");
       subscription.unsubscribe();
     };
@@ -87,11 +106,10 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode;
   }
 
   if (requiredRole && userRole !== requiredRole) {
-    console.log("User doesn't have required role, redirecting to home");
+    console.log(`User doesn't have required role (${requiredRole}), current role: ${userRole}`);
     return <Navigate to="/" replace />;
   }
 
-  console.log("Rendering protected route, session state:", session);
   return children;
 };
 
