@@ -19,10 +19,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     // Initialize session state
     const initSession = async () => {
       try {
-        // Clear any existing session first to ensure a clean state
-        await supabase.auth.signOut();
-        console.log("Cleared existing session");
-
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         if (error) {
           console.error("Initial session check error:", error);
@@ -51,20 +47,18 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         
         case 'SIGNED_IN':
         case 'TOKEN_REFRESHED':
-          console.log("Attempting to refresh session");
+          console.log("Session update event received");
           try {
             const { data: { session: currentSession }, error } = await supabase.auth.getSession();
             if (!error && currentSession) {
-              console.log("Session refreshed successfully");
+              console.log("Session updated successfully");
               setSession(true);
             } else {
-              console.error("Failed to refresh session:", error);
+              console.error("Failed to update session:", error);
               setSession(false);
-              // Force a clean signout if session refresh fails
-              await supabase.auth.signOut();
             }
           } catch (err) {
-            console.error("Session refresh failed:", err);
+            console.error("Session update failed:", err);
             setSession(false);
           }
           break;
