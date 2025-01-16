@@ -96,15 +96,23 @@ export const TopNav = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8"
+            className="text-[#5e5e5e] dark:text-gray-400 hover:bg-[#f4f4f4] dark:hover:bg-[#232325] rounded h-8 w-8"
             onClick={toggleDarkMode}
           >
             <Moon className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-[#5e5e5e] dark:text-gray-400 hover:bg-[#f4f4f4] dark:hover:bg-[#232325] rounded h-8 w-8"
+          >
             <MessageSquare className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-[#5e5e5e] dark:text-gray-400 hover:bg-[#f4f4f4] dark:hover:bg-[#232325] rounded h-8 w-8"
+          >
             <Bell className="w-4 h-4" />
           </Button>
           
@@ -112,7 +120,7 @@ export const TopNav = () => {
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="ghost" 
-                className="flex items-center gap-2 text-[#000000] dark:text-gray-300 hover:bg-black/5 dark:hover:bg-[#232325] ml-2"
+                className="flex items-center gap-2 text-[#000000] dark:text-gray-300 hover:bg-[#f4f4f4] dark:hover:bg-[#232325] rounded ml-2"
               >
                 <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-[#303032] flex items-center justify-center">
                   <User className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
