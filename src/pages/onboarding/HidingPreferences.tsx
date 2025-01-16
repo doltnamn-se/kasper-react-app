@@ -5,19 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
+import { Database } from "@/integrations/supabase/types";
 
-const HIDING_SITES = [
+type HidingSite = Database["public"]["Enums"]["hiding_site"];
+
+const HIDING_SITES: { id: HidingSite; label: string }[] = [
   { id: "eniro", label: "Eniro" },
   { id: "hitta", label: "Hitta" },
   { id: "birthday", label: "Birthday" },
   { id: "ratsit", label: "Ratsit" },
   { id: "merinfo", label: "Merinfo" },
-] as const;
+];
 
 export const HidingPreferences = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [selectedSites, setSelectedSites] = useState<string[]>([]);
+  const [selectedSites, setSelectedSites] = useState<HidingSite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +39,8 @@ export const HidingPreferences = () => {
         .single();
 
       // Insert hiding preferences
-      const { error: preferencesError } = await supabase.from("hiding_preferences")
+      const { error: preferencesError } = await supabase
+        .from("hiding_preferences")
         .insert(
           selectedSites.map(site => ({
             customer_id: user.id,
