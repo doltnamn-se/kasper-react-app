@@ -1,5 +1,4 @@
-import { LayoutDashboard, CheckSquare, Link, ChevronLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { LayoutDashboard, CheckSquare, Link } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
@@ -12,16 +11,15 @@ import {
   SidebarMenuButton,
   SidebarProvider,
   SidebarRail,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 const Index = () => {
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] flex transition-colors duration-200">
-        <Sidebar className="bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325]">
+        <Sidebar variant="inset" className="bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325]">
           <SidebarHeader className="px-8 py-6">
-            <AuthLogo className="w-auto h-6" />
+            <AuthLogo className="relative h-8" />
           </SidebarHeader>
 
           <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-6 mb-8 transition-colors duration-200" />
@@ -63,8 +61,8 @@ const Index = () => {
 
         <TopNav />
 
-        <main className="flex-1 p-8 ml-72 mt-16 transition-all duration-200 group-data-[state=collapsed]:ml-16">
-          <div className="max-w-5xl mx-auto">
+        <main className="flex-1 p-8 pt-24">
+          <div className="max-w-5xl">
             <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300 mb-6 font-system-ui">Översikt</h1>
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <p className="text-[#000000] dark:text-gray-400 mb-4 font-system-ui">Välkommen till din översikt.</p>
