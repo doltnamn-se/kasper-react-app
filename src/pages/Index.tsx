@@ -1,10 +1,32 @@
-import { Library, ListTodo, Link2 } from "lucide-react";
+import { Library, ListTodo, Link2, Users } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 const Index = () => {
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+        
+        setUserRole(profile?.role);
+      }
+    };
+
+    fetchUserRole();
+  }, []);
+
   return (
     <>
       <div className="bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0">
@@ -16,20 +38,30 @@ const Index = () => {
 
         <div className="px-6">
           <nav>
-            <a href="#" className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md bg-gray-100 dark:bg-gray-800">
+            <Link to="/" className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md bg-gray-100 dark:bg-gray-800">
               <Library className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
               <span className="text-sm text-black dark:text-gray-300">Översikt</span>
-            </a>
+            </Link>
 
-            <a href="#" className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Link to="#" className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
               <ListTodo className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
               <span className="text-sm text-black dark:text-gray-300">Checklista</span>
-            </a>
+            </Link>
 
-            <a href="#" className="flex items-center gap-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Link to="#" className="flex items-center gap-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
               <Link2 className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
               <span className="text-sm text-black dark:text-gray-300">Mina länkar</span>
-            </a>
+            </Link>
+
+            {userRole === 'super_admin' && (
+              <Link 
+                to="/admin/customers" 
+                className="flex items-center gap-3 mt-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <Users className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+                <span className="text-sm text-black dark:text-gray-300">Manage Customers</span>
+              </Link>
+            )}
           </nav>
         </div>
 
