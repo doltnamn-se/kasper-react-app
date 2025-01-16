@@ -3,7 +3,6 @@ import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { SidebarContext } from "./sidebar-context";
-import type { SidebarContext as SidebarContextType } from "./types";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -70,17 +69,20 @@ export const SidebarProvider = React.forwardRef<
       return () => window.removeEventListener("keydown", handleKeyDown);
     }, [toggleSidebar]);
 
-    const state: SidebarContextType["state"] = open ? "expanded" : "collapsed";
+    const state = open ? "expanded" : "collapsed";
 
-    const contextValue: SidebarContextType = {
-      state,
-      open,
-      setOpen,
-      isMobile,
-      openMobile,
-      setOpenMobile,
-      toggleSidebar,
-    };
+    const contextValue = React.useMemo(
+      () => ({
+        state,
+        open,
+        setOpen,
+        isMobile,
+        openMobile,
+        setOpenMobile,
+        toggleSidebar,
+      }),
+      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    );
 
     return (
       <SidebarContext.Provider value={contextValue}>
