@@ -56,13 +56,13 @@ const Index = () => {
             <span className="text-xs text-[#5e5e5e] dark:text-gray-400">v{APP_VERSION}</span>
           </SidebarFooter>
 
-          <SidebarRail />
+          <SidebarRail className="!cursor-default after:!cursor-default" />
         </Sidebar>
 
         <TopNav />
 
-        <main className="flex-1 p-8 pt-24">
-          <div className="max-w-5xl">
+        <main className="flex-1 px-8 pt-24">
+          <div className="max-w-5xl pl-0">
             <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300 mb-6 font-system-ui">Översikt</h1>
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <p className="text-[#000000] dark:text-gray-400 mb-4 font-system-ui">Välkommen till din översikt.</p>
