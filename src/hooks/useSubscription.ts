@@ -11,8 +11,7 @@ export const useSubscription = () => {
         throw new Error('No session found');
       }
 
-      // Pass the authorization header with the session token
-      const { data, error } = await supabase.functions.invoke('stripe-webhook', {
+      const { data, error } = await supabase.functions.invoke('check-subscription', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${session.access_token}`,
