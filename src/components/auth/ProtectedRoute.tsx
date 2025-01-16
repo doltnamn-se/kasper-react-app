@@ -16,10 +16,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // First check if there's an existing session in localStorage
-        const storedSession = localStorage.getItem('supabase.auth.token');
-        console.log("Stored session exists:", !!storedSession);
-
         // Get current session from Supabase
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
@@ -96,6 +92,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
         setSession(false);
         setUserRole(null);
       }
+      setIsLoading(false);
     });
 
     return () => {
