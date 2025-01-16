@@ -81,7 +81,29 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   console.log("Rendering protected route, session state:", session);
-  return session ? <>{children}</> : <Navigate to="/auth" />;
+  return session ? <>{children}</> : <Navigate to="/auth" replace />;
+};
+
+const AuthRoute = () => {
+  const [session, setSession] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      setSession(!!currentSession);
+    };
+    
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (session === null) return null;
+  return session ? <Navigate to="/" replace /> : <Auth />;
 };
 
 const App = () => (
@@ -92,7 +114,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/auth" element={<AuthRoute />} />
             <Route
               path="/"
               element={
