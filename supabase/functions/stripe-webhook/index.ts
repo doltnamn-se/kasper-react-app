@@ -104,64 +104,53 @@ serve(async (req) => {
     )
 
     switch (event.type) {
-      case 'customer.created': {
-        const customer = event.data.object as Stripe.Customer
-        if (!customer.email) {
-          console.error('No email found in customer data')
-          break
-        }
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session
+        console.log('Processing checkout session:', session.id)
 
-        // Check if user already exists
-        const { data: existingUser } = await supabase
-          .from('auth.users')
+        // Get the subscription details
+        const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
+        console.log('Retrieved subscription:', subscription.id)
+
+        // Get customer details from our database
+        const { data: customerData, error: customerError } = await supabase
+          .from('customers')
           .select('id')
-          .eq('email', customer.email)
+          .eq('stripe_customer_id', session.customer)
           .single()
 
-        if (!existingUser) {
-          // Create new user in Supabase
-          const password = crypto.randomUUID() // Generate a random password
-          const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
-            email: customer.email,
-            password: password,
-            email_confirm: true
-          })
-
-          if (createError) {
-            console.error('Error creating user:', createError)
-            break
-          }
-
-          console.log('Created new user in Supabase:', newUser.user.id)
-
-          // Create customer record
-          const { error: customerError } = await supabase
-            .from('customers')
-            .insert({
-              id: newUser.user.id,
-              stripe_customer_id: customer.id,
-            })
-
-          if (customerError) {
-            console.error('Error creating customer record:', customerError)
-          }
-
-          // Generate password reset link and send email using Supabase
-          const { error: resetError } = await supabase.auth.admin.generateLink({
-            type: 'recovery',
-            email: customer.email,
-          })
-
-          if (resetError) {
-            console.error('Error generating password reset link:', resetError)
-          } else {
-            console.log('Password reset link generated and email sent via Supabase')
-          }
+        if (customerError || !customerData) {
+          console.error('Error finding customer:', customerError)
+          throw new Error('Customer not found')
         }
+
+        // Create subscription record
+        const subscriptionData = {
+          id: subscription.id,
+          customer_id: customerData.id,
+          stripe_subscription_id: subscription.id,
+          stripe_price_id: subscription.items.data[0].price.id,
+          status: subscription.status,
+          cancel_at_period_end: subscription.cancel_at_period_end,
+          cancel_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null,
+          canceled_at: subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null,
+          current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        }
+
+        const { error: subscriptionError } = await supabase
+          .from('subscriptions')
+          .upsert(subscriptionData)
+
+        if (subscriptionError) {
+          console.error('Error creating subscription record:', subscriptionError)
+          throw new Error('Failed to create subscription record')
+        }
+
+        console.log('Successfully created subscription record')
         break
       }
 
-      case 'customer.subscription.created':
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription
@@ -197,7 +186,7 @@ serve(async (req) => {
           .upsert(subscriptionData)
 
         if (subscriptionError) {
-          console.error('Error upserting subscription:', subscriptionError)
+          console.error('Error updating subscription:', subscriptionError)
         }
         break
       }
