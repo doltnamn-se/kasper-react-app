@@ -88,37 +88,37 @@ const Index = () => {
       onClick={onClick}
       className={cn(
         "w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 rounded-lg",
-        "hover:bg-[#F1F0FB] hover:text-[#8B5CF6] dark:hover:bg-[#232325] dark:hover:text-[#c3caf5]",
-        active ? "bg-[#F1F0FB] text-[#8B5CF6] font-medium dark:bg-[#232325] dark:text-[#c3caf5]" : "text-[#1A1F2C] dark:text-gray-300",
+        "hover:bg-black/5 text-[#000000] dark:hover:bg-[#232325] dark:text-gray-300",
+        active ? "font-medium" : "",
         className
       )}
     >
-      <Icon className="w-5 h-5 transition-transform duration-200 ease-in-out stroke-[1.5]" />
+      <Icon className="w-5 h-5 transition-transform duration-200 ease-in-out stroke-[1.5] text-[#5e5e5e] dark:text-gray-300" />
       <span className="font-system-ui">{label}</span>
     </button>
   );
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex transition-colors duration-200">
+    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] flex transition-colors duration-200">
       <aside className="w-72 border-r border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] p-6 flex flex-col fixed h-screen transition-colors duration-200">
-        <div className="flex items-center gap-4 px-4 py-4 mb-4 bg-[#F1F0FB] dark:bg-[#232325] rounded-[7px] transition-colors duration-200">
-          <div className="w-10 h-10 rounded-full bg-[#E5DEFF] dark:bg-[#303032] flex items-center justify-center transition-colors duration-200">
-            <User className="w-5 h-5 text-[#8B5CF6] dark:text-[#c3caf5] stroke-[1.5]" />
+        <div className="flex items-center gap-4 px-4 py-4 mb-4 rounded-[7px] transition-colors duration-200">
+          <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-[#303032] flex items-center justify-center transition-colors duration-200">
+            <User className="w-5 h-5 text-[#5e5e5e] dark:text-[#c3caf5] stroke-[1.5]" />
           </div>
           <div className="flex-1">
-            <h3 className="font-medium text-sm text-[#1A1F2C] dark:text-gray-300 font-system-ui">{userEmail}</h3>
-            <p className="text-xs text-[#6E59A5] dark:text-gray-400 font-system-ui">Inloggad</p>
+            <h3 className="font-medium text-sm text-[#000000] dark:text-gray-300 font-system-ui">{userEmail}</h3>
+            <p className="text-xs text-[#000000] dark:text-gray-400 font-system-ui">Inloggad</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-between px-4 py-3 mb-6 bg-[#F1F0FB] dark:bg-[#232325] rounded-[7px] transition-colors duration-200">
+        <div className="flex items-center justify-between px-4 py-3 mb-6 rounded-[7px] transition-colors duration-200">
           <div className="flex items-center gap-3">
             {isDarkMode ? (
-              <Moon className="w-5 h-5 text-[#8B5CF6] dark:text-[#c3caf5] stroke-[1.5]" />
+              <Moon className="w-5 h-5 text-[#5e5e5e] dark:text-[#c3caf5] stroke-[1.5]" />
             ) : (
-              <Sun className="w-5 h-5 text-[#8B5CF6] stroke-[1.5]" />
+              <Sun className="w-5 h-5 text-[#5e5e5e] stroke-[1.5]" />
             )}
-            <span className="text-sm text-[#1A1F2C] dark:text-gray-300 font-system-ui">Mörkt läge</span>
+            <span className="text-sm text-[#000000] dark:text-gray-300 font-system-ui">Mörkt läge</span>
           </div>
           <Switch
             checked={isDarkMode}
@@ -159,9 +159,9 @@ const Index = () => {
 
       <main className="flex-1 p-8 ml-72">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-2xl font-bold text-[#1A1F2C] dark:text-gray-300 mb-6 font-system-ui">Översikt</h1>
+          <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300 mb-6 font-system-ui">Översikt</h1>
           <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-            <p className="text-[#6E59A5] dark:text-gray-400 mb-4 font-system-ui">Välkommen till din översikt.</p>
+            <p className="text-[#000000] dark:text-gray-400 mb-4 font-system-ui">Välkommen till din översikt.</p>
             <Button 
               onClick={handleTestEmail}
               className="bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] h-12 px-6 rounded-[4px] font-system-ui transition-colors duration-200"
