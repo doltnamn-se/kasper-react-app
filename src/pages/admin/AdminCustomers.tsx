@@ -11,20 +11,11 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { Database } from "@/integrations/supabase/types";
 
-interface Profile {
-  first_name: string | null;
-  last_name: string | null;
-}
-
-interface Customer {
-  id: string;
-  created_at: string;
-  subscription_plan: string | null;
-  onboarding_completed: boolean | null;
-  onboarding_step: number | null;
-  profile?: Profile | null;
-}
+type CustomerWithProfile = Database['public']['Tables']['customers']['Row'] & {
+  profile: Database['public']['Tables']['profiles']['Row'] | null;
+};
 
 const AdminCustomers = () => {
   const { toast } = useToast();
@@ -44,7 +35,7 @@ const AdminCustomers = () => {
         throw error;
       }
       
-      return (data || []) as Customer[];
+      return (data || []) as CustomerWithProfile[];
     },
   });
 
@@ -93,7 +84,7 @@ const AdminCustomers = () => {
                     'No name provided'}
                 </TableCell>
                 <TableCell>
-                  {new Date(customer.created_at).toLocaleDateString()}
+                  {new Date(customer.created_at || '').toLocaleDateString()}
                 </TableCell>
                 <TableCell>
                   {customer.subscription_plan || 'No plan'}
