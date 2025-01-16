@@ -44,20 +44,11 @@ const Index = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-test-email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ email: userEmail }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke('send-test-email', {
+        body: { email: userEmail }
+      });
 
-      if (!response.ok) {
-        const error = await response.json();
+      if (error) {
         throw new Error(error.message || "Failed to send test email");
       }
 
