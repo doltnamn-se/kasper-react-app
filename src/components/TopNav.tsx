@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
+import { useToast } from "./ui/use-toast";
 
 export const TopNav = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export const TopNav = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
   const { isCollapsed } = useSidebar();
+  const { toast } = useToast();
 
   useEffect(() => {
     // Set up keyboard shortcut
@@ -49,8 +51,27 @@ export const TopNav = () => {
   }, []);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/auth");
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Error signing out:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Could not sign out. Please try again.",
+        });
+        return;
+      }
+      console.log("User signed out successfully");
+      navigate("/auth");
+    } catch (err) {
+      console.error("Unexpected error during sign out:", err);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+      });
+    }
   };
 
   const toggleDarkMode = () => {
