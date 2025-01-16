@@ -20,9 +20,9 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
         inputBorderWidth: '1px',
       },
       radii: {
-        borderRadiusButton: '0',
-        buttonBorderRadius: '0',
-        inputBorderRadius: '0',
+        borderRadiusButton: '4px',
+        buttonBorderRadius: '4px',
+        inputBorderRadius: '4px',
       },
     },
   },
@@ -39,7 +39,7 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
       color: '#ff6369',
       fontWeight: 600,
       padding: '12px 16px',
-      borderRadius: '0',
+      borderRadius: '4px',
     }
   },
   className: {
