@@ -12,23 +12,39 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   const [session, setSession] = useState<boolean | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
 
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // Get current session from Supabase
+        console.log("ProtectedRoute: Initializing auth check...");
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
-          console.error("Error getting session:", sessionError);
+          console.error("ProtectedRoute: Error getting session:", sessionError);
           setSession(false);
           setUserRole(null);
+          setIsLoading(false);
           return;
         }
 
         if (currentSession) {
-          console.log("Active session found for user:", currentSession.user.id);
+          console.log("ProtectedRoute: Active session found for user:", currentSession.user.id);
           setSession(true);
+
+          // Check onboarding status
+          const { data: customerData, error: customerError } = await supabase
+            .from('customers')
+            .select('onboarding_completed')
+            .eq('id', currentSession.user.id)
+            .single();
+
+          if (customerError) {
+            console.error("ProtectedRoute: Error fetching onboarding status:", customerError);
+          } else {
+            console.log("ProtectedRoute: Onboarding status:", customerData?.onboarding_completed);
+            setOnboardingCompleted(customerData?.onboarding_completed);
+          }
 
           // Fetch user role
           const { data: profileData, error: profileError } = await supabase
@@ -38,19 +54,19 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
             .single();
 
           if (profileError) {
-            console.error("Error fetching user role:", profileError);
+            console.error("ProtectedRoute: Error fetching user role:", profileError);
             setUserRole(null);
           } else {
-            console.log("User role fetched:", profileData.role);
+            console.log("ProtectedRoute: User role fetched:", profileData.role);
             setUserRole(profileData.role);
           }
         } else {
-          console.log("No active session found");
+          console.log("ProtectedRoute: No active session found");
           setSession(false);
           setUserRole(null);
         }
       } catch (error) {
-        console.error("Unexpected error during auth initialization:", error);
+        console.error("ProtectedRoute: Unexpected error during auth initialization:", error);
         setSession(false);
         setUserRole(null);
       } finally {
@@ -58,18 +74,30 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
       }
     };
 
-    // Initialize auth state
     initializeAuth();
 
-    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event);
+      console.log("ProtectedRoute: Auth state changed:", event);
 
       if (session) {
-        console.log("New session established for user:", session.user.id);
+        console.log("ProtectedRoute: New session established for user:", session.user.id);
         setSession(true);
 
         try {
+          // Check onboarding status on auth change
+          const { data: customerData, error: customerError } = await supabase
+            .from('customers')
+            .select('onboarding_completed')
+            .eq('id', session.user.id)
+            .single();
+
+          if (customerError) {
+            console.error("ProtectedRoute: Error fetching onboarding status on auth change:", customerError);
+          } else {
+            console.log("ProtectedRoute: Updated onboarding status:", customerData?.onboarding_completed);
+            setOnboardingCompleted(customerData?.onboarding_completed);
+          }
+
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('role')
@@ -77,20 +105,21 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
             .single();
 
           if (profileError) {
-            console.error("Error fetching user role on auth change:", profileError);
+            console.error("ProtectedRoute: Error fetching user role on auth change:", profileError);
             setUserRole(null);
           } else {
-            console.log("Updated user role:", profileData.role);
+            console.log("ProtectedRoute: Updated user role:", profileData.role);
             setUserRole(profileData.role);
           }
         } catch (error) {
-          console.error("Error updating user role:", error);
+          console.error("ProtectedRoute: Error updating user role:", error);
           setUserRole(null);
         }
       } else {
-        console.log("Session ended");
+        console.log("ProtectedRoute: Session ended");
         setSession(false);
         setUserRole(null);
+        setOnboardingCompleted(null);
       }
       setIsLoading(false);
     });
@@ -101,18 +130,25 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   }, []);
 
   if (isLoading) {
+    console.log("ProtectedRoute: Still loading...");
     return <LoadingSpinner />;
   }
 
   if (!session) {
-    console.log("No active session, redirecting to auth");
+    console.log("ProtectedRoute: No active session, redirecting to auth");
     return <Navigate to="/auth" replace />;
   }
 
+  if (onboardingCompleted === false) {
+    console.log("ProtectedRoute: Onboarding not completed, redirecting to onboarding");
+    return <Navigate to="/onboarding" replace />;
+  }
+
   if (requiredRole && userRole !== requiredRole) {
-    console.log(`Access denied - required role: ${requiredRole}, user role: ${userRole}`);
+    console.log(`ProtectedRoute: Access denied - required role: ${requiredRole}, user role: ${userRole}`);
     return <Navigate to="/" replace />;
   }
 
+  console.log("ProtectedRoute: All checks passed, rendering protected content");
   return children;
 };

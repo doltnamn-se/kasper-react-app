@@ -12,18 +12,18 @@ export const AuthRoute = () => {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
+        console.log("AuthRoute: Checking session...");
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error("Error checking session:", error);
+          console.error("AuthRoute: Error checking session:", error);
           setSession(false);
           return;
         }
 
         if (currentSession) {
-          console.log("Auth route - session check: Authenticated");
+          console.log("AuthRoute: Session found, checking onboarding status");
           
-          // Check onboarding status
           const { data: customerData, error: customerError } = await supabase
             .from('customers')
             .select('onboarding_completed')
@@ -31,9 +31,9 @@ export const AuthRoute = () => {
             .single();
 
           if (customerError) {
-            console.error("Error fetching customer data:", customerError);
+            console.error("AuthRoute: Error fetching customer data:", customerError);
           } else {
-            console.log("Customer onboarding status:", customerData?.onboarding_completed);
+            console.log("AuthRoute: Customer onboarding status:", customerData?.onboarding_completed);
             if (!customerData?.onboarding_completed) {
               setRedirectPath('/onboarding');
             }
@@ -41,7 +41,7 @@ export const AuthRoute = () => {
 
           setSession(true);
         } else {
-          console.log("Auth route - session check: Not authenticated");
+          console.log("AuthRoute: No session found");
           setSession(false);
         }
       } finally {
@@ -52,10 +52,10 @@ export const AuthRoute = () => {
     initializeAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth route - auth state changed:", event);
+      console.log("AuthRoute: Auth state changed:", event);
       
       if (session) {
-        // Check onboarding status on auth state change
+        console.log("AuthRoute: New session detected, checking onboarding status");
         const { data: customerData, error: customerError } = await supabase
           .from('customers')
           .select('onboarding_completed')
@@ -63,9 +63,9 @@ export const AuthRoute = () => {
           .single();
 
         if (customerError) {
-          console.error("Error fetching customer data:", customerError);
+          console.error("AuthRoute: Error fetching customer data:", customerError);
         } else {
-          console.log("Customer onboarding status:", customerData?.onboarding_completed);
+          console.log("AuthRoute: Updated onboarding status:", customerData?.onboarding_completed);
           if (!customerData?.onboarding_completed) {
             setRedirectPath('/onboarding');
           }
@@ -73,6 +73,7 @@ export const AuthRoute = () => {
         
         setSession(true);
       } else {
+        console.log("AuthRoute: Session ended");
         setSession(false);
         setRedirectPath(null);
       }
@@ -83,12 +84,15 @@ export const AuthRoute = () => {
   }, []);
 
   if (isLoading) {
+    console.log("AuthRoute: Loading...");
     return <LoadingSpinner />;
   }
 
   if (session) {
+    console.log("AuthRoute: Session active, redirecting to:", redirectPath || "/");
     return <Navigate to={redirectPath || "/"} replace />;
   }
 
+  console.log("AuthRoute: No session, showing auth page");
   return <Auth />;
 };
