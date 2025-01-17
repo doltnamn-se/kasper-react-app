@@ -20,6 +20,7 @@ export const OnboardingLayout = () => {
   const [progress, setProgress] = useState(0);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -34,6 +35,24 @@ export const OnboardingLayout = () => {
         }
 
         console.log("OnboardingLayout: Fetching data for user:", user.id);
+        
+        // First, ensure the customer record exists
+        const { error: insertError } = await supabase
+          .from("customers")
+          .upsert({ 
+            id: user.id,
+            onboarding_completed: false,
+            onboarding_step: 1
+          }, { 
+            onConflict: 'id'
+          });
+
+        if (insertError) {
+          console.error("OnboardingLayout: Error ensuring customer record:", insertError);
+          throw insertError;
+        }
+
+        // Then fetch the customer data
         const { data: customerData, error } = await supabase
           .from("customers")
           .select("*")
@@ -42,22 +61,20 @@ export const OnboardingLayout = () => {
 
         if (error) {
           console.error("OnboardingLayout: Error fetching customer data:", error);
-          toast({
-            title: "Error",
-            description: "Failed to load customer data. Please try again.",
-            variant: "destructive",
-          });
-          return;
+          if (retryCount < 3) {
+            setRetryCount(prev => prev + 1);
+            return;
+          }
+          throw error;
         }
 
         if (!customerData) {
           console.log("OnboardingLayout: No customer record found");
           toast({
             title: "Error",
-            description: "Customer profile not found. Please contact support.",
+            description: "Unable to load your profile. Please try refreshing the page.",
             variant: "destructive",
           });
-          navigate("/auth");
           return;
         }
 
@@ -82,7 +99,7 @@ export const OnboardingLayout = () => {
         console.error("OnboardingLayout: Unexpected error:", error);
         toast({
           title: "Error",
-          description: "An unexpected error occurred. Please try again.",
+          description: "An unexpected error occurred. Please try refreshing the page.",
           variant: "destructive",
         });
       } finally {
@@ -91,7 +108,7 @@ export const OnboardingLayout = () => {
     };
 
     fetchCustomerData();
-  }, [navigate, location.pathname, toast]);
+  }, [navigate, location.pathname, toast, retryCount]);
 
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">
