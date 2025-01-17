@@ -34,46 +34,83 @@ export const TopNav = () => {
 
     const initUser = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!mounted) return;
+        // First check if we have a valid session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
-        if (session?.user?.email) {
+        if (sessionError) {
+          console.error("Session error:", sessionError);
+          if (mounted) {
+            setUserEmail(null);
+            setUserProfile(null);
+          }
+          // Redirect to auth if session error
+          navigate("/auth");
+          return;
+        }
+
+        if (!session) {
+          console.log("No active session found");
+          if (mounted) {
+            setUserEmail(null);
+            setUserProfile(null);
+          }
+          navigate("/auth");
+          return;
+        }
+        
+        if (session?.user?.email && mounted) {
           console.log("Setting user email:", session.user.email);
           setUserEmail(session.user.email);
           
-          const { data: profileData } = await supabase
+          const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('first_name, last_name')
             .eq('id', session.user.id)
             .single();
           
+          if (profileError) {
+            console.error("Error fetching profile:", profileError);
+          }
+          
           if (mounted && profileData) {
             setUserProfile(profileData);
           }
-        } else {
-          console.log("No user session found");
-          setUserEmail(null);
         }
       } catch (err) {
-        console.error("Error fetching user session:", err);
+        console.error("Error in initUser:", err);
         if (mounted) {
           setUserEmail(null);
           setUserProfile(null);
         }
+        navigate("/auth");
       }
     };
 
     initUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       
       console.log("Auth state changed:", event);
-      if (session?.user?.email) {
-        setUserEmail(session.user.email);
-      } else {
+      
+      if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
         setUserEmail(null);
         setUserProfile(null);
+        navigate("/auth");
+        return;
+      }
+
+      if (session?.user?.email) {
+        setUserEmail(session.user.email);
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('first_name, last_name')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (mounted && profileData) {
+          setUserProfile(profileData);
+        }
       }
     });
 
@@ -97,7 +134,7 @@ export const TopNav = () => {
       subscription.unsubscribe();
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [navigate]);
 
   const handleSignOut = async () => {
     if (isSigningOut) {
