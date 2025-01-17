@@ -4,7 +4,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 serve(async (req: Request) => {
@@ -130,7 +129,6 @@ serve(async (req: Request) => {
     if (!resendResponse.ok) {
       const errorText = await resendResponse.text();
       console.error("Error sending activation email:", errorText);
-      // Don't throw here as email sending failure shouldn't block account creation
     } else {
       console.log("Activation email sent successfully");
     }
