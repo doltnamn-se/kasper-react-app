@@ -27,6 +27,7 @@ serve(async (req: Request) => {
     console.log("Request data:", { email, firstName, lastName, subscriptionPlan, createdBy });
 
     if (!email || !createdBy) {
+      console.error("Missing required fields");
       throw new Error("Email and createdBy are required");
     }
 
@@ -63,7 +64,7 @@ serve(async (req: Request) => {
         status: 200,
       }
     );
-  } catch (err) {
+  } catch (err: any) {
     console.error("Error in create-customer function:", err);
     return new Response(
       JSON.stringify({ 

@@ -40,6 +40,9 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           lastName: formData.lastName,
           subscriptionPlan: formData.subscriptionPlan,
           createdBy: user.id 
+        },
+        headers: {
+          'x-user-id': user.id
         }
       });
 
