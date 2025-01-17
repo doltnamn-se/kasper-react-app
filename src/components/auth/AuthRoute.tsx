@@ -14,20 +14,11 @@ export const AuthRoute = () => {
 
     const checkSession = async () => {
       try {
-        console.log("AuthRoute: Checking initial session...");
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error("AuthRoute: Error checking session:", error);
-          if (mounted) {
-            setSession(false);
-            setIsLoading(false);
-          }
-          return;
-        }
+        console.log("AuthRoute: Checking session...");
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
 
         if (!currentSession) {
-          console.log("AuthRoute: No initial session found");
+          console.log("AuthRoute: No session found");
           if (mounted) {
             setSession(false);
             setIsLoading(false);
@@ -35,7 +26,7 @@ export const AuthRoute = () => {
           return;
         }
 
-        console.log("AuthRoute: Initial session found, checking onboarding status");
+        console.log("AuthRoute: Session found, checking customer data");
         const { data: customerData, error: customerError } = await supabase
           .from('customers')
           .select('onboarding_completed')
@@ -51,13 +42,12 @@ export const AuthRoute = () => {
           return;
         }
 
-        if (!customerData?.onboarding_completed) {
-          console.log("AuthRoute: Onboarding not completed, redirecting");
-          if (mounted) setRedirectPath('/onboarding');
-        }
-
         if (mounted) {
           setSession(true);
+          if (!customerData?.onboarding_completed) {
+            console.log("AuthRoute: Onboarding incomplete, setting redirect");
+            setRedirectPath('/onboarding');
+          }
           setIsLoading(false);
         }
       } catch (error) {
@@ -75,7 +65,7 @@ export const AuthRoute = () => {
     // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       console.log("AuthRoute: Auth state changed:", event);
-      
+
       if (!currentSession) {
         console.log("AuthRoute: No session in state change");
         if (mounted) {
@@ -87,7 +77,6 @@ export const AuthRoute = () => {
       }
 
       try {
-        console.log("AuthRoute: Session in state change, checking onboarding");
         const { data: customerData, error: customerError } = await supabase
           .from('customers')
           .select('onboarding_completed')
@@ -95,7 +84,7 @@ export const AuthRoute = () => {
           .maybeSingle();
 
         if (customerError) {
-          console.error("AuthRoute: Error fetching customer data:", customerError);
+          console.error("AuthRoute: Error in state change:", customerError);
           if (mounted) {
             setSession(false);
             setIsLoading(false);
@@ -103,13 +92,12 @@ export const AuthRoute = () => {
           return;
         }
 
-        if (!customerData?.onboarding_completed) {
-          console.log("AuthRoute: Onboarding not completed, updating redirect");
-          if (mounted) setRedirectPath('/onboarding');
-        }
-
         if (mounted) {
           setSession(true);
+          if (!customerData?.onboarding_completed) {
+            console.log("AuthRoute: Onboarding incomplete in state change");
+            setRedirectPath('/onboarding');
+          }
           setIsLoading(false);
         }
       } catch (error) {
@@ -128,7 +116,7 @@ export const AuthRoute = () => {
   }, []);
 
   if (isLoading) {
-    console.log("AuthRoute: Still loading...");
+    console.log("AuthRoute: Loading...");
     return <LoadingSpinner />;
   }
 
