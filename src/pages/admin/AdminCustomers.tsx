@@ -5,6 +5,7 @@ import { CustomerWithProfile } from "@/types/customer";
 import { CustomersTable } from "@/components/admin/CustomersTable";
 import { useQuery } from "@tanstack/react-query";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
+import { TopNav } from "@/components/TopNav";
 
 const AdminCustomers = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -139,35 +140,50 @@ const AdminCustomers = () => {
 
   if (isLoading) {
     return (
-      <div className="p-8">
-        <p>Loading...</p>
+      <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
+        <TopNav />
+        <main className="px-8 pt-24">
+          <div className="max-w-5xl px-8">
+            <p>Loading...</p>
+          </div>
+        </main>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-8">
-        <p className="text-red-500">{error}</p>
+      <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
+        <TopNav />
+        <main className="px-8 pt-24">
+          <div className="max-w-5xl px-8">
+            <p className="text-red-500">{error}</p>
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <CreateCustomerDialog onCustomerCreated={refetch} />
-      </div>
-      {customers && customers.length > 0 ? (
-        <CustomersTable 
-          customers={customers} 
-          onCustomerUpdated={refetch}
-          onDeleteCustomer={handleDeleteCustomer}
-        />
-      ) : (
-        <p className="text-gray-500">No customers found.</p>
-      )}
+    <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
+      <TopNav />
+      <main className="px-8 pt-24">
+        <div className="max-w-5xl px-8">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300">Admin Dashboard</h1>
+            <CreateCustomerDialog onCustomerCreated={refetch} />
+          </div>
+          {customers && customers.length > 0 ? (
+            <CustomersTable 
+              customers={customers} 
+              onCustomerUpdated={refetch}
+              onDeleteCustomer={handleDeleteCustomer}
+            />
+          ) : (
+            <p className="text-gray-500">No customers found.</p>
+          )}
+        </div>
+      </main>
     </div>
   );
 };
