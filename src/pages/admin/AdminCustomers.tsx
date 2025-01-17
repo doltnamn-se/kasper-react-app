@@ -16,16 +16,16 @@ const AdminCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       const { data: customersData, error: customersError } = await supabase
-        .from('customers')
+        .from('profiles')
         .select(`
-          *,
-          profile:profiles (
-            id,
-            first_name,
-            last_name,
-            role,
-            created_at,
-            updated_at
+          id,
+          first_name,
+          last_name,
+          role,
+          created_at,
+          updated_at,
+          customers (
+            *
           )
         `);
 
@@ -34,8 +34,21 @@ const AdminCustomers = () => {
         throw customersError;
       }
 
-      console.log("Customers fetched:", customersData);
-      return customersData as CustomerWithProfile[];
+      // Transform the data to match CustomerWithProfile type
+      const transformedData = customersData?.map(profile => ({
+        ...profile.customers?.[0],
+        profile: {
+          id: profile.id,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          role: profile.role,
+          created_at: profile.created_at,
+          updated_at: profile.updated_at
+        }
+      })) || [];
+
+      console.log("Customers fetched:", transformedData);
+      return transformedData as CustomerWithProfile[];
     }
   });
 
