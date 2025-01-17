@@ -4,7 +4,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-user-id",
 };
 
 interface CreateCustomerPayload {
@@ -15,13 +15,16 @@ interface CreateCustomerPayload {
 }
 
 serve(async (req: Request) => {
+  console.log("Received request to create-customer function");
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log("Handling CORS preflight request");
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Initialize Supabase client with service role key for admin operations
+    console.log("Initializing Supabase admin client");
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -34,10 +37,12 @@ serve(async (req: Request) => {
     );
 
     const { email, firstName, lastName, subscriptionPlan } = await req.json() as CreateCustomerPayload;
-    console.log("Creating new customer with data:", { email, firstName, lastName, subscriptionPlan });
+    console.log("Received customer data:", { email, firstName, lastName, subscriptionPlan });
 
     // Create auth user with a random password
     const tempPassword = Math.random().toString(36).slice(-8);
+    console.log("Creating auth user for:", email);
+    
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: tempPassword,
@@ -56,7 +61,7 @@ serve(async (req: Request) => {
     }
 
     if (!authData.user) {
-      console.error("No user data returned");
+      console.error("No user data returned from auth creation");
       return new Response(
         JSON.stringify({ error: "Failed to create user" }),
         {
@@ -69,6 +74,7 @@ serve(async (req: Request) => {
     console.log("Auth user created successfully:", authData.user.id);
 
     // Update profile
+    console.log("Updating user profile");
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({
@@ -80,7 +86,6 @@ serve(async (req: Request) => {
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
-      // Delete the auth user if profile update fails
       await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
       return new Response(
         JSON.stringify({ error: "Failed to update profile" }),
@@ -94,17 +99,17 @@ serve(async (req: Request) => {
     console.log("Profile updated successfully");
 
     // Update customer subscription plan
+    console.log("Updating customer subscription plan");
     const { error: customerError } = await supabaseAdmin
       .from('customers')
       .update({
         subscription_plan: subscriptionPlan,
-        created_by: req.headers.get('x-user-id'), // Store who created the customer
+        created_by: req.headers.get('x-user-id'),
       })
       .eq('id', authData.user.id);
 
     if (customerError) {
       console.error("Error updating customer:", customerError);
-      // Delete the auth user if customer update fails
       await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
       return new Response(
         JSON.stringify({ error: "Failed to update customer" }),
@@ -117,7 +122,8 @@ serve(async (req: Request) => {
 
     console.log("Customer subscription plan updated successfully");
 
-    // Generate magic link for email verification
+    // Generate magic link
+    console.log("Generating magic link");
     const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
       email: email,
@@ -139,8 +145,9 @@ serve(async (req: Request) => {
 
     console.log("Magic link generated successfully");
 
-    // Send activation email using Resend
+    // Send activation email
     try {
+      console.log("Sending activation email");
       const resendResponse = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -176,8 +183,6 @@ serve(async (req: Request) => {
 
     } catch (emailError) {
       console.error("Error in email sending:", emailError);
-      // Don't fail the whole operation if email sending fails
-      // The user is still created and can be managed by admin
     }
 
     return new Response(

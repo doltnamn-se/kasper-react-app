@@ -24,12 +24,19 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
-      console.log('Creating new customer...', formData);
+      console.log('Starting customer creation process...');
 
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
+        console.error("No authenticated user found");
         throw new Error("No authenticated user found");
       }
+      console.log("Current user:", user);
+
+      console.log("Invoking create-customer function with data:", {
+        body: formData,
+        headers: { 'x-user-id': user.id }
+      });
 
       const { data, error } = await supabase.functions.invoke('create-customer', {
         body: formData,
@@ -39,7 +46,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       });
 
       if (error) {
-        console.error("Error creating customer:", error);
+        console.error("Error response from create-customer function:", error);
         toast({
           title: "Error",
           description: "Failed to create customer. Please try again.",
@@ -57,7 +64,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       resetForm();
       onCustomerCreated();
     } catch (err) {
-      console.error("Error in customer creation:", err);
+      console.error("Detailed error in customer creation:", err);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
