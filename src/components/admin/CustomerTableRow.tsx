@@ -1,37 +1,48 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
+import { format } from "date-fns";
 import { CustomerTableActions } from "./CustomerTableActions";
+import { Badge } from "../ui/badge";
 
 interface CustomerTableRowProps {
   customer: CustomerWithProfile;
   onCustomerUpdated: () => void;
-  onDeleteCustomer: (customerId: string) => void;
 }
 
-export const CustomerTableRow = ({
-  customer,
-  onCustomerUpdated,
-  onDeleteCustomer,
-}: CustomerTableRowProps) => {
+export const CustomerTableRow = ({ customer, onCustomerUpdated }: CustomerTableRowProps) => {
+  const getBadgeVariant = (role: string | null) => {
+    switch (role) {
+      case 'super_admin':
+        return 'destructive';
+      case 'customer':
+        return 'default';
+      default:
+        return 'secondary';
+    }
+  };
+
   return (
-    <TableRow>
+    <TableRow key={customer.id}>
+      <TableCell>{customer.profile?.id}</TableCell>
       <TableCell>
-        {`${customer.profile?.first_name || ''} ${customer.profile?.last_name || ''}`.trim() || 'No name provided'}
+        <Badge variant={getBadgeVariant(customer.profile?.role)}>
+          {customer.profile?.role || 'No role'}
+        </Badge>
+      </TableCell>
+      <TableCell>{customer.profile?.first_name || '-'}</TableCell>
+      <TableCell>{customer.profile?.last_name || '-'}</TableCell>
+      <TableCell>
+        {customer.created_at
+          ? format(new Date(customer.created_at), 'MMM d, yyyy')
+          : '-'}
       </TableCell>
       <TableCell>
-        {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
+        <Badge variant={customer.onboarding_completed ? "success" : "warning"}>
+          {customer.onboarding_completed ? 'Complete' : 'Incomplete'}
+        </Badge>
       </TableCell>
-      <TableCell>
-        {customer.onboarding_completed ? 
-          'Completed' : 
-          `Step ${customer.onboarding_step || 1}`}
-      </TableCell>
-      <TableCell>
-        <CustomerTableActions
-          customer={customer}
-          onCustomerUpdated={onCustomerUpdated}
-          onDeleteCustomer={onDeleteCustomer}
-        />
+      <TableCell className="text-right">
+        <CustomerTableActions customer={customer} onCustomerUpdated={onCustomerUpdated} />
       </TableCell>
     </TableRow>
   );
