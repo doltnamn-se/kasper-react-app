@@ -17,7 +17,15 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   useEffect(() => {
     const checkAccess = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("ProtectedRoute: Session error:", sessionError);
+          await supabase.auth.signOut();
+          setIsAuthenticated(false);
+          setIsLoading(false);
+          return;
+        }
 
         if (!session) {
           console.log("ProtectedRoute: No session");
@@ -27,11 +35,19 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
         }
 
         console.log("ProtectedRoute: Session found, checking role");
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('role')
           .eq('id', session.user.id)
           .single();
+
+        if (profileError) {
+          console.error("ProtectedRoute: Profile error:", profileError);
+          await supabase.auth.signOut();
+          setIsAuthenticated(false);
+          setIsLoading(false);
+          return;
+        }
 
         setUserRole(profile?.role || null);
 
@@ -43,17 +59,26 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
           return;
         }
 
-        const { data: customer } = await supabase
+        const { data: customer, error: customerError } = await supabase
           .from('customers')
           .select('onboarding_completed')
           .eq('id', session.user.id)
           .single();
+
+        if (customerError) {
+          console.error("ProtectedRoute: Customer error:", customerError);
+          await supabase.auth.signOut();
+          setIsAuthenticated(false);
+          setIsLoading(false);
+          return;
+        }
 
         setIsAuthenticated(true);
         setNeedsOnboarding(!customer?.onboarding_completed);
         
       } catch (error) {
         console.error("ProtectedRoute: Error:", error);
+        await supabase.auth.signOut();
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
