@@ -1,7 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createSupabaseAdmin, createAuthUser } from "./auth.ts";
-import { CustomerData, updateProfile, updateCustomerSubscription } from "./customer.ts";
-import { generateAndSendActivationEmail } from "./email.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
 
 console.log("Loading create-customer function...");
@@ -19,9 +17,18 @@ serve(async (req: Request) => {
   }
 
   try {
-    console.log("Creating Supabase admin client");
-    const supabaseAdmin = createSupabaseAdmin();
-    
+    // Initialize Supabase client with service role key
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
+
     console.log("Parsing request body");
     const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
     console.log("Request data:", { email, firstName, lastName, subscriptionPlan, createdBy });
@@ -33,24 +40,96 @@ serve(async (req: Request) => {
 
     // Create auth user
     console.log("Creating auth user");
-    const user = await createAuthUser(supabaseAdmin, email);
+    const { data: { user }, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      email_confirm: true,
+      password: Math.random().toString(36).slice(-8), // Random temporary password
+    });
+
+    if (authError || !user) {
+      console.error("Error creating auth user:", authError);
+      throw new Error(authError?.message || "Failed to create user");
+    }
     console.log("Auth user created:", user.id);
 
-    // Update profile and customer data
+    // Update profile
     console.log("Updating profile");
-    await updateProfile(supabaseAdmin, user.id, firstName, lastName);
-    
-    console.log("Updating customer subscription");
-    await updateCustomerSubscription(supabaseAdmin, user.id, subscriptionPlan, createdBy);
+    const { error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .update({
+        first_name: firstName,
+        last_name: lastName,
+        role: 'customer'
+      })
+      .eq('id', user.id);
 
-    // Generate and send activation email
-    console.log("Generating and sending activation email");
-    await generateAndSendActivationEmail(
-      supabaseAdmin,
-      email,
-      firstName || "",
-      req.headers.get("origin") || ""
-    );
+    if (profileError) {
+      console.error("Error updating profile:", profileError);
+      throw new Error("Failed to update profile");
+    }
+
+    // Update customer data
+    console.log("Updating customer data");
+    const { error: customerError } = await supabaseAdmin
+      .from('customers')
+      .update({
+        subscription_plan: subscriptionPlan,
+        created_by: createdBy,
+      })
+      .eq('id', user.id);
+
+    if (customerError) {
+      console.error("Error updating customer:", customerError);
+      throw new Error("Failed to update customer");
+    }
+
+    // Send activation email
+    console.log("Generating magic link");
+    const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
+      type: 'magiclink',
+      email: email,
+      options: {
+        redirectTo: `${req.headers.get('origin')}/onboarding`,
+      }
+    });
+
+    if (magicLinkError || !magicLinkData?.properties?.action_link) {
+      console.error("Error generating magic link:", magicLinkError);
+      throw new Error("Failed to generate activation link");
+    }
+
+    console.log("Sending activation email");
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+      },
+      body: JSON.stringify({
+        from: "Doltnamn <no-reply@doltnamn.se>",
+        to: [email],
+        subject: "Activate Your Doltnamn Account",
+        html: `
+          <div>
+            <h1>Welcome to Doltnamn, ${firstName}!</h1>
+            <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
+            <a href="${magicLinkData.properties.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+              Activate Account
+            </a>
+            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+            <p>${magicLinkData.properties.action_link}</p>
+          </div>
+        `,
+      }),
+    });
+
+    if (!resendResponse.ok) {
+      const errorText = await resendResponse.text();
+      console.error("Error sending activation email:", errorText);
+      // Don't throw here as email sending failure shouldn't block account creation
+    } else {
+      console.log("Activation email sent successfully");
+    }
 
     console.log("Customer creation completed successfully");
     return new Response(
