@@ -40,6 +40,9 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           lastName: formData.lastName,
           subscriptionPlan: formData.subscriptionPlan,
           createdBy: user.id 
+        },
+        headers: {
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
         }
       });
 

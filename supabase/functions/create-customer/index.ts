@@ -7,6 +7,12 @@ const corsHeaders = {
 };
 
 serve(async (req: Request) => {
+  console.log("Function invoked with request:", {
+    method: req.method,
+    url: req.url,
+    headers: Object.fromEntries(req.headers.entries())
+  });
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     console.log("Handling CORS preflight request");
@@ -17,8 +23,6 @@ serve(async (req: Request) => {
   }
 
   try {
-    console.log("Starting customer creation process");
-    
     // Initialize Supabase client with service role key
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -91,7 +95,7 @@ serve(async (req: Request) => {
       type: 'magiclink',
       email: email,
       options: {
-        redirectTo: `${req.headers.get('origin')}/onboarding`,
+        redirectTo: `${new URL(req.url).origin}/onboarding`,
       }
     });
 
