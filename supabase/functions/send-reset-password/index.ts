@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,35 +13,6 @@ serve(async (req) => {
   try {
     const { email } = await req.json();
     console.log("Processing password reset for email:", email);
-
-    // Initialize Supabase client
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
-    );
-
-    // Generate reset password link
-    console.log("Generating reset password link");
-    const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'recovery',
-      email: email,
-      options: {
-        redirectTo: `${new URL(req.url).origin}/auth/reset-password`,
-      }
-    });
-
-    if (linkError || !linkData?.properties?.action_link) {
-      console.error("Error generating reset link:", linkError);
-      throw new Error("Failed to generate reset link");
-    }
-
-    console.log("Reset link generated successfully");
 
     // Send email using Resend
     console.log("Sending reset password email");
@@ -59,13 +29,8 @@ serve(async (req) => {
         html: `
           <div>
             <h1>Password Reset Request</h1>
-            <p>We received a request to reset your Doltnamn password. Click the button below to set a new password:</p>
-            <a href="${linkData.properties.action_link}" style="display: inline-block; background-color: #000000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Reset Password
-            </a>
+            <p>We received a request to reset your Doltnamn password. Click the link below to set a new password:</p>
             <p>If you didn't request this password reset, you can safely ignore this email.</p>
-            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-            <p>${linkData.properties.action_link}</p>
           </div>
         `,
       }),
