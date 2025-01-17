@@ -41,7 +41,6 @@ export const TopNav = () => {
           console.log("Setting user email:", session.user.email);
           setUserEmail(session.user.email);
           
-          // Fetch user profile
           const { data: profileData } = await supabase
             .from('profiles')
             .select('first_name, last_name')
@@ -78,7 +77,6 @@ export const TopNav = () => {
       }
     });
 
-    // Set up keyboard shortcut
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key.toLowerCase() === 's') {
         e.preventDefault();
@@ -111,10 +109,7 @@ export const TopNav = () => {
       setIsSigningOut(true);
       console.log("Attempting to sign out...");
       
-      // First navigate to auth page
-      navigate("/auth", { replace: true });
-      
-      // Clear local state
+      // First clear local state
       setUserEmail(null);
       setUserProfile(null);
       
@@ -132,6 +127,9 @@ export const TopNav = () => {
       }
       
       console.log("Sign out successful");
+      
+      // Finally navigate to auth page
+      navigate("/auth", { replace: true });
       
       toast({
         title: "Signed out successfully",
