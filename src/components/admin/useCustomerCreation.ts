@@ -40,15 +40,12 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           lastName: formData.lastName,
           subscriptionPlan: formData.subscriptionPlan,
           createdBy: user.id 
-        },
-        headers: {
-          'x-user-id': user.id
         }
       });
 
       if (error) {
         console.error("Error response from create-customer function:", error);
-        throw new Error(error.message || "Failed to create customer");
+        throw error;
       }
 
       if (!data) {

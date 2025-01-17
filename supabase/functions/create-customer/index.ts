@@ -3,7 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-user-id',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 serve(async (req: Request) => {
@@ -17,6 +18,8 @@ serve(async (req: Request) => {
   }
 
   try {
+    console.log("Starting customer creation process in Edge Function");
+    
     // Initialize Supabase client with service role key
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -40,17 +43,17 @@ serve(async (req: Request) => {
 
     // Create auth user
     console.log("Creating auth user");
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.admin.createUser({
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       email_confirm: true,
       password: Math.random().toString(36).slice(-8), // Random temporary password
     });
 
-    if (authError || !user) {
+    if (authError || !authData.user) {
       console.error("Error creating auth user:", authError);
       throw new Error(authError?.message || "Failed to create user");
     }
-    console.log("Auth user created:", user.id);
+    console.log("Auth user created:", authData.user.id);
 
     // Update profile
     console.log("Updating profile");
@@ -61,7 +64,7 @@ serve(async (req: Request) => {
         last_name: lastName,
         role: 'customer'
       })
-      .eq('id', user.id);
+      .eq('id', authData.user.id);
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
@@ -76,14 +79,14 @@ serve(async (req: Request) => {
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
       })
-      .eq('id', user.id);
+      .eq('id', authData.user.id);
 
     if (customerError) {
       console.error("Error updating customer:", customerError);
       throw new Error("Failed to update customer");
     }
 
-    // Send activation email
+    // Generate magic link
     console.log("Generating magic link");
     const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
@@ -98,6 +101,7 @@ serve(async (req: Request) => {
       throw new Error("Failed to generate activation link");
     }
 
+    // Send activation email
     console.log("Sending activation email");
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -135,7 +139,7 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        userId: user.id,
+        userId: authData.user.id,
         message: "Customer created successfully and activation email sent."
       }),
       {
