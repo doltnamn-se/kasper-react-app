@@ -111,17 +111,17 @@ serve(async (req: Request) => {
 
     console.log("Customer subscription plan updated successfully");
 
-    // Generate password reset link
-    const { data: { user: resetUser }, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'recovery',
+    // Generate magic link for email verification
+    const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
+      type: 'magiclink',
       email: email,
       options: {
         redirectTo: `${req.headers.get("origin")}/onboarding`,
       }
     });
 
-    if (resetError || !resetUser) {
-      console.error("Error generating reset link:", resetError);
+    if (magicLinkError || !magicLinkData.properties?.action_link) {
+      console.error("Error generating magic link:", magicLinkError);
       return new Response(
         JSON.stringify({ error: "Failed to generate activation link" }),
         {
@@ -131,7 +131,7 @@ serve(async (req: Request) => {
       );
     }
 
-    console.log("Reset link generated successfully");
+    console.log("Magic link generated successfully");
 
     // Send activation email using Resend
     try {
@@ -149,11 +149,11 @@ serve(async (req: Request) => {
             <div>
               <h1>Welcome to Doltnamn, ${firstName}!</h1>
               <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
-              <a href="${resetUser.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+              <a href="${magicLinkData.properties.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
                 Activate Account
               </a>
               <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-              <p>${resetUser.action_link}</p>
+              <p>${magicLinkData.properties.action_link}</p>
             </div>
           `,
         }),
