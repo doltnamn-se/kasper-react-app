@@ -7,6 +7,7 @@ import Auth from "@/pages/Auth";
 export const AuthRoute = () => {
   const [session, setSession] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [redirectPath, setRedirectPath] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -19,8 +20,30 @@ export const AuthRoute = () => {
           return;
         }
 
-        console.log("Auth route - session check:", currentSession ? "Authenticated" : "Not authenticated");
-        setSession(!!currentSession);
+        if (currentSession) {
+          console.log("Auth route - session check: Authenticated");
+          
+          // Check onboarding status
+          const { data: customerData, error: customerError } = await supabase
+            .from('customers')
+            .select('onboarding_completed')
+            .eq('id', currentSession.user.id)
+            .single();
+
+          if (customerError) {
+            console.error("Error fetching customer data:", customerError);
+          } else {
+            console.log("Customer onboarding status:", customerData?.onboarding_completed);
+            if (!customerData?.onboarding_completed) {
+              setRedirectPath('/onboarding');
+            }
+          }
+
+          setSession(true);
+        } else {
+          console.log("Auth route - session check: Not authenticated");
+          setSession(false);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -28,9 +51,31 @@ export const AuthRoute = () => {
 
     initializeAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth route - auth state changed:", event);
-      setSession(!!session);
+      
+      if (session) {
+        // Check onboarding status on auth state change
+        const { data: customerData, error: customerError } = await supabase
+          .from('customers')
+          .select('onboarding_completed')
+          .eq('id', session.user.id)
+          .single();
+
+        if (customerError) {
+          console.error("Error fetching customer data:", customerError);
+        } else {
+          console.log("Customer onboarding status:", customerData?.onboarding_completed);
+          if (!customerData?.onboarding_completed) {
+            setRedirectPath('/onboarding');
+          }
+        }
+        
+        setSession(true);
+      } else {
+        setSession(false);
+        setRedirectPath(null);
+      }
       setIsLoading(false);
     });
 
@@ -41,5 +86,9 @@ export const AuthRoute = () => {
     return <LoadingSpinner />;
   }
 
-  return session ? <Navigate to="/" replace /> : <Auth />;
+  if (session) {
+    return <Navigate to={redirectPath || "/"} replace />;
+  }
+
+  return <Auth />;
 };
