@@ -24,38 +24,28 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      // Get the current origin
-      const origin = window.location.origin;
-      console.log("Current origin:", origin);
-      
-      const redirectTo = `${origin}/auth/reset-password`;
-      console.log("Redirect URL:", redirectTo);
-
-      const { data, error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: redirectTo,
+      const response = await fetch(`${supabase.supabaseUrl}/functions/v1/send-reset-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabase.supabaseKey}`,
+        },
+        body: JSON.stringify({ email: resetEmail }),
       });
 
-      console.log("Reset password response:", { data, error });
+      const data = await response.json();
+      console.log("Reset password response:", data);
 
-      if (error) {
-        console.error("Password reset error details:", {
-          message: error.message,
-          status: error.status,
-          name: error.name
-        });
-        if (error.message.includes("Email rate limit exceeded")) {
-          toast.error(t('error.email.rate.limit'));
-        } else {
-          toast.error(error.message);
-        }
-      } else {
-        console.log("Password reset email sent successfully");
-        toast.success(t('reset.password.success'));
-        onCancel();
-        setResetEmail("");
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send reset password email");
       }
+
+      console.log("Password reset email sent successfully");
+      toast.success(t('reset.password.success'));
+      onCancel();
+      setResetEmail("");
     } catch (err) {
-      console.error("Unexpected error during password reset:", err);
+      console.error("Error in password reset:", err);
       toast.error(t('error.generic'));
     } finally {
       setIsLoading(false);
