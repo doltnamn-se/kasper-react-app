@@ -1,76 +1,44 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { SidebarProvider } from "@/contexts/SidebarContext";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import { AuthRoute } from "@/components/auth/AuthRoute";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import AdminCustomers from "./pages/admin/AdminCustomers";
-import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
-import { SetPassword } from "./pages/onboarding/SetPassword";
-import { HidingPreferences } from "./pages/onboarding/HidingPreferences";
-import { RemovalUrls } from "./pages/onboarding/RemovalUrls";
-import { IdentificationInfo } from "./pages/onboarding/IdentificationInfo";
-import { OnboardingComplete } from "./pages/onboarding/OnboardingComplete";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Checklist from "./pages/Checklist";
+import MyLinks from "./pages/MyLinks";
+import AddressAlerts from "./pages/AddressAlerts";
+import Guides from "./pages/Guides";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { AuthRoute } from "./components/auth/AuthRoute";
+import { Toaster } from "./components/ui/toaster";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <Router>
           <Routes>
-            <Route path="/" element={
-              <ProtectedRoute>
-                <SidebarProvider>
-                  <Index />
-                </SidebarProvider>
-              </ProtectedRoute>
-            } />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <SidebarProvider>
-                  <Profile />
-                </SidebarProvider>
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <SidebarProvider>
-                  <Settings />
-                </SidebarProvider>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/customers" element={
-              <ProtectedRoute requiredRole="super_admin">
-                <SidebarProvider>
-                  <AdminCustomers />
-                </SidebarProvider>
-              </ProtectedRoute>
-            } />
-            <Route path="/onboarding" element={<OnboardingLayout />}>
-              <Route index element={<SetPassword />} />
-              <Route path="set-password" element={<SetPassword />} />
-              <Route path="hiding-preferences" element={<HidingPreferences />} />
-              <Route path="removal-urls" element={<RemovalUrls />} />
-              <Route path="identification" element={<IdentificationInfo />} />
-              <Route path="complete" element={<OnboardingComplete />} />
-            </Route>
-            <Route path="/auth" element={<AuthRoute />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
+            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/customers" element={<ProtectedRoute><AdminCustomers /></ProtectedRoute>} />
+            <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
+            <Route path="/my-links" element={<ProtectedRoute><MyLinks /></ProtectedRoute>} />
+            <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
+            <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
-  </QueryClientProvider>
-);
+          <Toaster />
+        </Router>
+      </LanguageProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

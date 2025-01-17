@@ -5,6 +5,7 @@ import { CustomersTable } from "@/components/admin/CustomersTable";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useCustomers } from "@/hooks/useCustomers";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AdminCustomers = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,7 @@ const AdminCustomers = () => {
     refetch,
     handleDeleteCustomer 
   } = useCustomers();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const checkAdminAccess = async () => {
@@ -87,6 +89,9 @@ const AdminCustomers = () => {
 
   return (
     <MainLayout>
+      <h1 className="text-2xl font-normal text-[#000000] dark:text-white mb-6">
+        {t('nav.admin.customers')}
+      </h1>
       <AdminHeader onCustomerCreated={refetch} />
       {customers && customers.length > 0 ? (
         <CustomersTable 
