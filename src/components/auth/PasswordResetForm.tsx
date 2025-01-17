@@ -24,27 +24,16 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      // Generate reset password link using Supabase
-      const { data: linkData, error: linkError } = await supabase.auth.resetPasswordForEmail(
+      const { error } = await supabase.auth.resetPasswordForEmail(
         resetEmail,
         {
           redirectTo: `${window.location.origin}/auth/reset-password`,
         }
       );
 
-      if (linkError) {
-        console.error("Error generating reset link:", linkError);
-        throw linkError;
-      }
-
-      // Send email using our Edge Function
-      const response = await supabase.functions.invoke('send-reset-password', {
-        body: { email: resetEmail },
-      });
-
-      if (response.error) {
-        console.error("Error sending reset email:", response.error);
-        throw new Error(response.error.message);
+      if (error) {
+        console.error("Error in password reset:", error);
+        throw error;
       }
 
       console.log("Password reset email sent successfully");
