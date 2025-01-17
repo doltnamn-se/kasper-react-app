@@ -44,9 +44,7 @@ const App = () => (
             } />
             <Route path="/settings" element={
               <ProtectedRoute>
-                <Side
-
-barProvider>
+                <SidebarProvider>
                   <Settings />
                 </SidebarProvider>
               </ProtectedRoute>
