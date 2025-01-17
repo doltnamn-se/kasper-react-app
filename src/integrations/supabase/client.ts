@@ -14,10 +14,12 @@ export const supabase = createClient<Database>(
       storage: window.localStorage,
       autoRefreshToken: true,
       detectSessionInUrl: true,
+      flowType: 'pkce',
     },
     global: {
       headers: {
         'X-Client-Info': 'supabase-js-client',
+        'Access-Control-Allow-Origin': '*',
       },
     },
     realtime: {
@@ -31,14 +33,25 @@ export const supabase = createClient<Database>(
   }
 );
 
-// Add error handling for fetch failures
+// Add better error handling and logging for fetch failures
 const originalFetch = window.fetch;
 window.fetch = async (...args) => {
   try {
+    console.log('Making fetch request:', args[0]);
     const response = await originalFetch(...args);
+    if (!response.ok) {
+      console.error('Fetch response not OK:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.url,
+      });
+    }
     return response;
   } catch (error) {
-    console.error('Fetch error:', error);
+    console.error('Fetch error:', {
+      error,
+      request: args[0],
+    });
     throw error;
   }
 };
