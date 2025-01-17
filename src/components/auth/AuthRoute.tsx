@@ -12,7 +12,6 @@ export const AuthRoute = () => {
   useEffect(() => {
     let mounted = true;
 
-    // Initial session check
     const initializeAuth = async () => {
       try {
         console.log("AuthRoute: Initializing...");
@@ -28,27 +27,37 @@ export const AuthRoute = () => {
         }
 
         console.log("AuthRoute: Session found, user:", currentSession.user.id);
-        if (mounted) {
-          setSession(true);
-          checkOnboardingStatus(currentSession.user.id);
-        }
-      } catch (error) {
-        console.error("AuthRoute: Init error:", error);
-        if (mounted) {
-          setSession(false);
-          setIsLoading(false);
-        }
-      }
-    };
+        
+        // First check if user is super_admin
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', currentSession.user.id)
+          .single();
 
-    // Check onboarding status
-    const checkOnboardingStatus = async (userId: string) => {
-      try {
-        console.log("AuthRoute: Checking onboarding for user:", userId);
+        if (profileError) {
+          console.error("AuthRoute: Profile check error:", profileError);
+          throw profileError;
+        }
+
+        console.log("AuthRoute: User role:", profileData?.role);
+
+        // If super_admin, skip onboarding check
+        if (profileData?.role === 'super_admin') {
+          console.log("AuthRoute: Super admin detected, skipping onboarding check");
+          if (mounted) {
+            setSession(true);
+            setRedirectPath('/admin/customers');
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        // For regular users, check onboarding status
         const { data, error } = await supabase
           .from('customers')
           .select('onboarding_completed')
-          .eq('id', userId)
+          .eq('id', currentSession.user.id)
           .maybeSingle();
 
         if (error) {
@@ -61,10 +70,11 @@ export const AuthRoute = () => {
             console.log("AuthRoute: Onboarding incomplete");
             setRedirectPath('/onboarding');
           }
+          setSession(true);
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("AuthRoute: Onboarding check failed:", error);
+        console.error("AuthRoute: Auth error:", error);
         if (mounted) {
           setSession(false);
           setIsLoading(false);
@@ -72,11 +82,9 @@ export const AuthRoute = () => {
       }
     };
 
-    // Initialize auth
     initializeAuth();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       console.log("AuthRoute: Auth state changed:", event);
       
       if (!currentSession) {
@@ -89,10 +97,55 @@ export const AuthRoute = () => {
         return;
       }
 
-      if (mounted) {
-        console.log("AuthRoute: New session started");
-        setSession(true);
-        checkOnboardingStatus(currentSession.user.id);
+      try {
+        // Check role on auth state change
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', currentSession.user.id)
+          .single();
+
+        if (profileError) {
+          console.error("AuthRoute: Profile check error:", profileError);
+          throw profileError;
+        }
+
+        // If super_admin, skip onboarding
+        if (profileData?.role === 'super_admin') {
+          console.log("AuthRoute: Super admin detected on auth change");
+          if (mounted) {
+            setSession(true);
+            setRedirectPath('/admin/customers');
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        // For regular users, check onboarding
+        const { data, error } = await supabase
+          .from('customers')
+          .select('onboarding_completed')
+          .eq('id', currentSession.user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error("AuthRoute: Onboarding check error:", error);
+          throw error;
+        }
+
+        if (mounted) {
+          setSession(true);
+          if (!data?.onboarding_completed) {
+            setRedirectPath('/onboarding');
+          }
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("AuthRoute: Error in auth change handler:", error);
+        if (mounted) {
+          setSession(false);
+          setIsLoading(false);
+        }
       }
     });
 
