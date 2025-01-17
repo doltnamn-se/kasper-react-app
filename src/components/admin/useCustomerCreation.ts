@@ -33,30 +33,95 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
       console.log("Current user:", user);
 
-      const { data, error } = await supabase.functions.invoke('create-customer', {
-        body: { 
-          email: formData.email,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          subscriptionPlan: formData.subscriptionPlan,
-          createdBy: user.id 
-        },
-        headers: {
-          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+      // 1. Create auth user
+      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+        email: formData.email,
+        email_confirm: true,
+        password: Math.random().toString(36).slice(-8)
+      });
+
+      if (authError) {
+        console.error("Error creating auth user:", authError);
+        throw new Error(authError.message);
+      }
+
+      if (!authData.user) {
+        throw new Error("Failed to create user");
+      }
+
+      // 2. Update profile
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          role: 'customer'
+        })
+        .eq('id', authData.user.id);
+
+      if (profileError) {
+        console.error("Error updating profile:", profileError);
+        throw new Error("Failed to update profile");
+      }
+
+      // 3. Update customer data
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({
+          subscription_plan: formData.subscriptionPlan,
+          created_by: user.id
+        })
+        .eq('id', authData.user.id);
+
+      if (customerError) {
+        console.error("Error updating customer:", customerError);
+        throw new Error("Failed to update customer");
+      }
+
+      // 4. Generate magic link
+      const { data: magicLinkData, error: magicLinkError } = await supabase.auth.admin.generateLink({
+        type: 'magiclink',
+        email: formData.email,
+        options: {
+          redirectTo: `${window.location.origin}/onboarding`,
         }
       });
 
-      if (error) {
-        console.error("Error response from create-customer function:", error);
-        throw error;
+      if (magicLinkError) {
+        console.error("Error generating magic link:", magicLinkError);
+        throw new Error("Failed to generate activation link");
       }
 
-      if (!data) {
-        console.error("No data returned from create-customer function");
-        throw new Error("No response from server");
+      // 5. Send activation email using Resend
+      const resendResponse = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: "Doltnamn <no-reply@doltnamn.se>",
+          to: [formData.email],
+          subject: "Activate Your Doltnamn Account",
+          html: `
+            <div>
+              <h1>Welcome to Doltnamn, ${formData.firstName}!</h1>
+              <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
+              <a href="${magicLinkData.properties.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+                Activate Account
+              </a>
+              <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+              <p>${magicLinkData.properties.action_link}</p>
+            </div>
+          `,
+        }),
+      });
+
+      if (!resendResponse.ok) {
+        console.error("Error sending activation email:", await resendResponse.text());
       }
 
-      console.log("Customer created successfully:", data);
+      console.log("Customer creation completed successfully");
       toast({
         title: "Success",
         description: "Customer created successfully and activation email sent.",
@@ -65,7 +130,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       resetForm();
       onCustomerCreated();
     } catch (err: any) {
-      console.error("Detailed error in customer creation:", err);
+      console.error("Error in customer creation:", err);
       toast({
         title: "Error",
         description: err.message || "An unexpected error occurred. Please try again.",
