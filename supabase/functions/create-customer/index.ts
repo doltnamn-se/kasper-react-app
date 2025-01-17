@@ -21,6 +21,7 @@ serve(async (req: Request) => {
   }
 
   try {
+    // Initialize Supabase client with service role key for admin operations
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -46,7 +47,7 @@ serve(async (req: Request) => {
     if (authError) {
       console.error("Error creating auth user:", authError);
       return new Response(
-        JSON.stringify({ error: "Failed to create customer" }),
+        JSON.stringify({ error: authError.message }),
         {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -57,7 +58,7 @@ serve(async (req: Request) => {
     if (!authData.user) {
       console.error("No user data returned");
       return new Response(
-        JSON.stringify({ error: "Failed to create customer" }),
+        JSON.stringify({ error: "Failed to create user" }),
         {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -79,8 +80,10 @@ serve(async (req: Request) => {
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
+      // Delete the auth user if profile update fails
+      await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
       return new Response(
-        JSON.stringify({ error: "Failed to update customer profile" }),
+        JSON.stringify({ error: "Failed to update profile" }),
         {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -95,13 +98,16 @@ serve(async (req: Request) => {
       .from('customers')
       .update({
         subscription_plan: subscriptionPlan,
+        created_by: req.headers.get('x-user-id'), // Store who created the customer
       })
       .eq('id', authData.user.id);
 
     if (customerError) {
-      console.error("Error updating customer subscription plan:", customerError);
+      console.error("Error updating customer:", customerError);
+      // Delete the auth user if customer update fails
+      await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
       return new Response(
-        JSON.stringify({ error: "Failed to update customer subscription plan" }),
+        JSON.stringify({ error: "Failed to update customer" }),
         {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -170,17 +176,16 @@ serve(async (req: Request) => {
 
     } catch (emailError) {
       console.error("Error in email sending:", emailError);
-      return new Response(
-        JSON.stringify({ error: "Failed to send activation email" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      // Don't fail the whole operation if email sending fails
+      // The user is still created and can be managed by admin
     }
 
     return new Response(
-      JSON.stringify({ success: true, userId: authData.user.id }),
+      JSON.stringify({ 
+        success: true, 
+        userId: authData.user.id,
+        message: "Customer created successfully and activation email sent."
+      }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,

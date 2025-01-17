@@ -26,8 +26,16 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       setIsCreating(true);
       console.log('Creating new customer...', formData);
 
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error("No authenticated user found");
+      }
+
       const { data, error } = await supabase.functions.invoke('create-customer', {
-        body: formData
+        body: formData,
+        headers: {
+          'x-user-id': user.id
+        }
       });
 
       if (error) {
