@@ -84,7 +84,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               }`}
             >
               <House className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300 font-normal">{t('nav.home')}</span>
+              <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.home')}</span>
             </Link>
 
             <Link 
@@ -96,7 +96,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               }`}
             >
               <BadgeCheck className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300 font-normal">{t('nav.checklist')}</span>
+              <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.checklist')}</span>
             </Link>
 
             <Link 
@@ -108,7 +108,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               }`}
             >
               <QrCode className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300 font-normal">{t('nav.my.links')}</span>
+              <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.my.links')}</span>
             </Link>
 
             <Link 
@@ -120,7 +120,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               }`}
             >
               <MapPinHouse className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300 font-normal">{t('nav.address.alerts')}</span>
+              <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.address.alerts')}</span>
             </Link>
 
             <Link 
@@ -132,7 +132,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               }`}
             >
               <MousePointerClick className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300 font-normal">{t('nav.guides')}</span>
+              <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.guides')}</span>
             </Link>
           </nav>
         </div>
