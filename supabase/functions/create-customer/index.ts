@@ -4,8 +4,10 @@ import { CustomerData, updateProfile, updateCustomerSubscription } from "./custo
 import { generateAndSendActivationEmail } from "./email.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 
+console.log("Loading create-customer function...");
+
 serve(async (req: Request) => {
-  console.log("Received request to create-customer function");
+  console.log(`Received ${req.method} request to create-customer function`);
   
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {

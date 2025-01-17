@@ -33,21 +33,22 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
       console.log("Current user:", user);
 
-      console.log("Invoking create-customer function with data:", {
+      const functionData = {
         body: formData,
         headers: { 'x-user-id': user.id }
-      });
+      };
+      console.log("Invoking create-customer function with data:", functionData);
 
-      const { data, error } = await supabase.functions.invoke('create-customer', {
-        body: formData,
-        headers: {
-          'x-user-id': user.id
-        }
-      });
+      const { data, error } = await supabase.functions.invoke('create-customer', functionData);
 
       if (error) {
         console.error("Error response from create-customer function:", error);
-        throw error;
+        throw new Error(error.message || "Failed to create customer");
+      }
+
+      if (!data) {
+        console.error("No data returned from create-customer function");
+        throw new Error("No response from server");
       }
 
       console.log("Customer created successfully:", data);
@@ -58,7 +59,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       resetForm();
       onCustomerCreated();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Detailed error in customer creation:", err);
       toast({
         title: "Error",
