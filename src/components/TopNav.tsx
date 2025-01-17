@@ -93,7 +93,7 @@ export const TopNav = () => {
       
       console.log("Auth state changed:", event);
       
-      if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+      if (event === 'SIGNED_OUT') {
         setUserEmail(null);
         setUserProfile(null);
         navigate("/auth");
