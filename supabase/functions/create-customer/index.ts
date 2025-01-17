@@ -35,11 +35,12 @@ serve(async (req: Request) => {
     const { email, firstName, lastName, subscriptionPlan } = await req.json() as CreateCustomerPayload;
     console.log("Creating new customer with data:", { email, firstName, lastName, subscriptionPlan });
 
-    // Create auth user
+    // Create auth user with a random password
+    const tempPassword = Math.random().toString(36).slice(-8);
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
+      password: tempPassword,
       email_confirm: true,
-      password: Math.random().toString(36).slice(-8),
     });
 
     if (authError) {
@@ -64,6 +65,8 @@ serve(async (req: Request) => {
       );
     }
 
+    console.log("Auth user created successfully:", authData.user.id);
+
     // Update profile
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
@@ -85,6 +88,8 @@ serve(async (req: Request) => {
       );
     }
 
+    console.log("Profile updated successfully");
+
     // Update customer subscription plan
     const { error: customerError } = await supabaseAdmin
       .from('customers')
@@ -104,31 +109,74 @@ serve(async (req: Request) => {
       );
     }
 
-    // Send activation email
-    const resendResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
-      },
-      body: JSON.stringify({
-        from: "Doltnamn <no-reply@doltnamn.se>",
-        to: [email],
-        subject: "Activate Your Doltnamn Account",
-        html: `
-          <div>
-            <h1>Welcome to Doltnamn, ${firstName}!</h1>
-            <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
-            <a href="${Deno.env.get("SUPABASE_URL")}/auth/v1/verify?token=${authData.user.confirmation_token}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Activate Account
-            </a>
-          </div>
-        `,
-      }),
+    console.log("Customer subscription plan updated successfully");
+
+    // Generate password reset link
+    const { data: { user: resetUser }, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
+      type: 'recovery',
+      email: email,
+      options: {
+        redirectTo: `${req.headers.get("origin")}/onboarding`,
+      }
     });
 
-    if (!resendResponse.ok) {
-      console.error("Error sending activation email:", await resendResponse.text());
+    if (resetError || !resetUser) {
+      console.error("Error generating reset link:", resetError);
+      return new Response(
+        JSON.stringify({ error: "Failed to generate activation link" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    console.log("Reset link generated successfully");
+
+    // Send activation email using Resend
+    try {
+      const resendResponse = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+        },
+        body: JSON.stringify({
+          from: "Doltnamn <no-reply@doltnamn.se>",
+          to: [email],
+          subject: "Activate Your Doltnamn Account",
+          html: `
+            <div>
+              <h1>Welcome to Doltnamn, ${firstName}!</h1>
+              <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
+              <a href="${resetUser.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+                Activate Account
+              </a>
+              <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+              <p>${resetUser.action_link}</p>
+            </div>
+          `,
+        }),
+      });
+
+      if (!resendResponse.ok) {
+        const errorText = await resendResponse.text();
+        console.error("Error sending activation email:", errorText);
+        throw new Error(`Failed to send email: ${errorText}`);
+      }
+
+      const emailData = await resendResponse.json();
+      console.log("Activation email sent successfully:", emailData);
+
+    } catch (emailError) {
+      console.error("Error in email sending:", emailError);
+      return new Response(
+        JSON.stringify({ error: "Failed to send activation email" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
     return new Response(
