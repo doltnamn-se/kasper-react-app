@@ -39,6 +39,40 @@ const AdminCustomers = () => {
     }
   });
 
+  const handleDeleteCustomer = async (customerId: string) => {
+    try {
+      console.log("Deleting customer:", customerId);
+      const { error: deleteError } = await supabase
+        .from('customers')
+        .delete()
+        .eq('id', customerId);
+
+      if (deleteError) {
+        console.error("Error deleting customer:", deleteError);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to delete customer. Please try again.",
+        });
+        return;
+      }
+
+      console.log("Customer deleted successfully");
+      toast({
+        title: "Success",
+        description: "Customer deleted successfully",
+      });
+      refetch();
+    } catch (err) {
+      console.error("Unexpected error deleting customer:", err);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+      });
+    }
+  };
+
   useEffect(() => {
     const checkAdminAccess = async () => {
       try {
@@ -113,7 +147,11 @@ const AdminCustomers = () => {
         <CreateCustomerDialog onCustomerCreated={refetch} />
       </div>
       {customers && customers.length > 0 ? (
-        <CustomersTable customers={customers} onCustomerUpdated={refetch} />
+        <CustomersTable 
+          customers={customers} 
+          onCustomerUpdated={refetch}
+          onDeleteCustomer={handleDeleteCustomer}
+        />
       ) : (
         <p className="text-gray-500">No customers found.</p>
       )}
