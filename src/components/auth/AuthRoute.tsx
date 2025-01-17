@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "./LoadingSpinner";
-import Auth from "@/pages/Auth";
 
-export const AuthRoute = () => {
+interface AuthRouteProps {
+  children: React.ReactNode;
+}
+
+export const AuthRoute = ({ children }: AuthRouteProps) => {
   const [session, setSession] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -78,5 +81,5 @@ export const AuthRoute = () => {
     return <Navigate to="/" replace />;
   }
 
-  return <Auth />;
+  return <>{children}</>;
 };
