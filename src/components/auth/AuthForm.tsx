@@ -43,6 +43,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
         providers={[]}
         view="sign_in"
         showLinks={false}
+        redirectTo={`${window.location.origin}/`}
         localization={{
           variables: {
             sign_in: {

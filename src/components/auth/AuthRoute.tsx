@@ -14,9 +14,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Clear any existing session first to ensure clean state
-        await supabase.auth.signOut();
-        
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
         if (!currentSession) {
@@ -48,8 +45,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         }
       } catch (error) {
         console.error("AuthRoute: Error:", error);
-        // On error, clear session and show auth page
-        await supabase.auth.signOut();
         setSession(false);
       } finally {
         setIsLoading(false);
