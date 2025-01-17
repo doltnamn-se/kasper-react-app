@@ -7,9 +7,14 @@ import { Badge } from "../ui/badge";
 interface CustomerTableRowProps {
   customer: CustomerWithProfile;
   onCustomerUpdated: () => void;
+  onDeleteCustomer: (customerId: string) => void;
 }
 
-export const CustomerTableRow = ({ customer, onCustomerUpdated }: CustomerTableRowProps) => {
+export const CustomerTableRow = ({ 
+  customer, 
+  onCustomerUpdated,
+  onDeleteCustomer 
+}: CustomerTableRowProps) => {
   const getBadgeVariant = (role: string | null) => {
     switch (role) {
       case 'super_admin':
@@ -37,12 +42,16 @@ export const CustomerTableRow = ({ customer, onCustomerUpdated }: CustomerTableR
           : '-'}
       </TableCell>
       <TableCell>
-        <Badge variant={customer.onboarding_completed ? "success" : "warning"}>
+        <Badge variant={customer.onboarding_completed ? "default" : "secondary"}>
           {customer.onboarding_completed ? 'Complete' : 'Incomplete'}
         </Badge>
       </TableCell>
       <TableCell className="text-right">
-        <CustomerTableActions customer={customer} onCustomerUpdated={onCustomerUpdated} />
+        <CustomerTableActions 
+          customer={customer} 
+          onCustomerUpdated={onCustomerUpdated}
+          onDeleteCustomer={onDeleteCustomer}
+        />
       </TableCell>
     </TableRow>
   );

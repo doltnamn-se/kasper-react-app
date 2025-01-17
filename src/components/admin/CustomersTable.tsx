@@ -1,14 +1,18 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
-import { CustomerTableActions } from "./CustomerTableActions";
 import { CustomerTableRow } from "./CustomerTableRow";
 
 interface CustomersTableProps {
   customers: CustomerWithProfile[];
   onCustomerUpdated: () => void;
+  onDeleteCustomer: (customerId: string) => void;
 }
 
-export const CustomersTable = ({ customers, onCustomerUpdated }: CustomersTableProps) => {
+export const CustomersTable = ({ 
+  customers, 
+  onCustomerUpdated,
+  onDeleteCustomer 
+}: CustomersTableProps) => {
   return (
     <div className="rounded-md border">
       <Table>
@@ -29,6 +33,7 @@ export const CustomersTable = ({ customers, onCustomerUpdated }: CustomersTableP
               key={customer.id} 
               customer={customer} 
               onCustomerUpdated={onCustomerUpdated}
+              onDeleteCustomer={onDeleteCustomer}
             />
           ))}
         </TableBody>
