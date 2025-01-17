@@ -40,11 +40,18 @@ export const AuthRoute = () => {
           .from('customers')
           .select('onboarding_completed')
           .eq('id', currentSession.user.id)
-          .single();
+          .maybeSingle();
 
         if (customerError) {
           console.error("AuthRoute: Error fetching customer data:", customerError);
-        } else if (!customerData?.onboarding_completed) {
+          if (mounted) {
+            setSession(false);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        if (!customerData?.onboarding_completed) {
           console.log("AuthRoute: Onboarding not completed, redirecting");
           if (mounted) setRedirectPath('/onboarding');
         }
@@ -85,11 +92,18 @@ export const AuthRoute = () => {
           .from('customers')
           .select('onboarding_completed')
           .eq('id', currentSession.user.id)
-          .single();
+          .maybeSingle();
 
         if (customerError) {
           console.error("AuthRoute: Error fetching customer data:", customerError);
-        } else if (!customerData?.onboarding_completed) {
+          if (mounted) {
+            setSession(false);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        if (!customerData?.onboarding_completed) {
           console.log("AuthRoute: Onboarding not completed, updating redirect");
           if (mounted) setRedirectPath('/onboarding');
         }
