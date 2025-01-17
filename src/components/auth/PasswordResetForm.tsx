@@ -24,22 +24,19 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      const response = await fetch("/api/send-reset-password", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: resetEmail }),
+      const { data, error } = await supabase.functions.invoke('email-handler', {
+        body: {
+          type: 'reset_password',
+          email: resetEmail
+        }
       });
 
-      const data = await response.json();
-      console.log("Reset password response:", data);
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to send reset password email");
+      if (error) {
+        console.error("Error in password reset:", error);
+        throw error;
       }
 
-      console.log("Password reset email sent successfully");
+      console.log("Password reset email sent successfully:", data);
       toast.success(t('reset.password.success'));
       onCancel();
       setResetEmail("");

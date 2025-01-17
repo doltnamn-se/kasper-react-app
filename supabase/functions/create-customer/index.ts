@@ -7,16 +7,15 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    console.log("Handling CORS preflight request");
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    console.log("Starting customer creation process");
-    
-    // Initialize Supabase client
+    const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
+    console.log("Creating customer with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
+
+    // Initialize Supabase admin client
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -28,31 +27,69 @@ serve(async (req) => {
       }
     );
 
-    // Parse request body
-    const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
-    console.log("Request data:", { email, firstName, lastName, subscriptionPlan, createdBy });
-
-    if (!email || !createdBy) {
-      console.error("Missing required fields");
-      throw new Error("Email and createdBy are required");
-    }
-
     // Create auth user
     console.log("Creating auth user");
+    const tempPassword = Math.random().toString(36).slice(-8);
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
+      password: tempPassword,
       email_confirm: true,
-      password: crypto.randomUUID(),
     });
 
-    if (authError || !authData.user) {
+    if (authError) {
       console.error("Error creating auth user:", authError);
-      throw new Error(authError?.message || "Failed to create user");
+      throw new Error(authError.message);
     }
-    console.log("Auth user created:", authData.user.id);
 
-    // Update profile
-    console.log("Updating profile");
+    if (!authData.user) {
+      console.error("No user data returned from auth creation");
+      throw new Error("Failed to create user");
+    }
+
+    console.log("Auth user created successfully:", authData.user.id);
+
+    // Generate magic link for welcome email
+    console.log("Generating magic link for welcome email");
+    const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
+      type: 'magiclink',
+      email: email,
+      options: {
+        redirectTo: `${new URL(req.url).origin}/onboarding`,
+      }
+    });
+
+    if (magicLinkError || !magicLinkData?.properties?.action_link) {
+      console.error("Error generating magic link:", magicLinkError);
+      throw new Error("Failed to generate activation link");
+    }
+
+    // Send welcome email using our email handler
+    console.log("Sending welcome email");
+    const emailResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/email-handler`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+      },
+      body: JSON.stringify({
+        type: 'welcome',
+        email: email,
+        data: {
+          firstName: firstName,
+          resetLink: magicLinkData.properties.action_link,
+        },
+      }),
+    });
+
+    if (!emailResponse.ok) {
+      console.error("Error sending welcome email:", await emailResponse.text());
+      throw new Error("Failed to send welcome email");
+    }
+
+    console.log("Welcome email sent successfully");
+
+    // Update profile data
+    console.log("Updating profile data");
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({
@@ -81,56 +118,6 @@ serve(async (req) => {
       console.error("Error updating customer:", customerError);
       throw new Error("Failed to update customer");
     }
-
-    // Generate magic link
-    console.log("Generating magic link");
-    const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'magiclink',
-      email: email,
-      options: {
-        redirectTo: `${new URL(req.url).origin}/onboarding`,
-      }
-    });
-
-    if (magicLinkError || !magicLinkData?.properties?.action_link) {
-      console.error("Error generating magic link:", magicLinkError);
-      throw new Error("Failed to generate activation link");
-    }
-
-    // Send activation email using Resend
-    console.log("Sending activation email");
-    const resendResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
-      },
-      body: JSON.stringify({
-        from: "Doltnamn <no-reply@doltnamn.se>",
-        to: [email],
-        subject: "Activate Your Doltnamn Account",
-        html: `
-          <div>
-            <h1>Welcome to Doltnamn, ${firstName}!</h1>
-            <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
-            <a href="${magicLinkData.properties.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Activate Account
-            </a>
-            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-            <p>${magicLinkData.properties.action_link}</p>
-          </div>
-        `,
-      }),
-    });
-
-    if (!resendResponse.ok) {
-      const errorText = await resendResponse.text();
-      console.error("Error sending activation email:", errorText);
-      throw new Error(`Failed to send email: ${errorText}`);
-    }
-
-    const emailData = await resendResponse.json();
-    console.log("Activation email sent successfully:", emailData);
 
     console.log("Customer creation completed successfully");
     return new Response(
