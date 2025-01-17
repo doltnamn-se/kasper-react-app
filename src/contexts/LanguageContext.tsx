@@ -26,10 +26,27 @@ const translations = {
     'forgot.password': 'Forgot your password?',
     'send.recovery.link': 'Send recovery link',
     'cancel': 'Cancel',
+    // Navigation
+    'nav.home': 'Home',
+    'nav.checklist': 'Checklist',
+    'nav.my.links': 'My Links',
+    'nav.address.alerts': 'Address Alerts',
+    'nav.guides': 'Guides',
+    // Profile menu
+    'profile.manage': 'Manage Profile',
+    'profile.billing': 'Billing',
+    'profile.settings': 'Settings',
+    'profile.sign.out': 'Sign out',
+    'profile.signing.out': 'Signing out...',
+    // Search
+    'search.placeholder': 'Search...',
     // Footer links
     'privacy': 'Privacy',
     'license': 'License',
     'terms': 'Terms',
+    // Page titles
+    'overview.title': 'Overview',
+    'overview.welcome': 'Welcome to your overview.',
     // Error messages
     'error.invalid.credentials': 'Invalid login credentials',
     'error.email.not.confirmed': 'Please confirm your email before logging in',
@@ -62,10 +79,27 @@ const translations = {
     'forgot.password': 'Glömt ditt lösenord?',
     'send.recovery.link': 'Skicka återställningslänk',
     'cancel': 'Avbryt',
+    // Navigation
+    'nav.home': 'Hem',
+    'nav.checklist': 'Checklista',
+    'nav.my.links': 'Mina länkar',
+    'nav.address.alerts': 'Adresslarm',
+    'nav.guides': 'Guider',
+    // Profile menu
+    'profile.manage': 'Hantera profil',
+    'profile.billing': 'Fakturering',
+    'profile.settings': 'Inställningar',
+    'profile.sign.out': 'Logga ut',
+    'profile.signing.out': 'Loggar ut...',
+    // Search
+    'search.placeholder': 'Sök...',
     // Footer links
     'privacy': 'Integritet',
     'license': 'Licensvillkor',
     'terms': 'Användarvillkor',
+    // Page titles
+    'overview.title': 'Översikt',
+    'overview.welcome': 'Välkommen till din översikt.',
     // Error messages
     'error.invalid.credentials': 'Felaktigt användarnamn eller lösenord',
     'error.email.not.confirmed': 'Vänligen bekräfta din e-postadress innan du loggar in',

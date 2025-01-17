@@ -8,6 +8,8 @@ import { SidebarProvider } from "@/contexts/SidebarContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
 import Index from "./pages/Index";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { SetPassword } from "./pages/onboarding/SetPassword";
@@ -30,6 +32,22 @@ const App = () => (
               <ProtectedRoute>
                 <SidebarProvider>
                   <Index />
+                </SidebarProvider>
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <SidebarProvider>
+                  <Profile />
+                </SidebarProvider>
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Side
+
+barProvider>
+                  <Settings />
                 </SidebarProvider>
               </ProtectedRoute>
             } />

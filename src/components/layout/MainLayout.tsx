@@ -2,8 +2,9 @@ import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
-import { LayoutDashboard, Library, ListTodo, Link2, Sparkle } from "lucide-react";
+import { House, SquareCheckBig, QrCode, MapPinHouse, MousePointerClick, Sparkle } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,7 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <>
@@ -63,24 +65,40 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
-              <LayoutDashboard className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300">Översikt</span>
+              <House className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+              <span className="text-sm text-black dark:text-gray-300">{t('nav.home')}</span>
             </Link>
 
             <Link 
               to="#" 
               className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              <ListTodo className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300">Checklista</span>
+              <SquareCheckBig className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+              <span className="text-sm text-black dark:text-gray-300">{t('nav.checklist')}</span>
             </Link>
 
             <Link 
               to="#" 
               className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              <Link2 className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300">Mina länkar</span>
+              <QrCode className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+              <span className="text-sm text-black dark:text-gray-300">{t('nav.my.links')}</span>
+            </Link>
+
+            <Link 
+              to="#" 
+              className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <MapPinHouse className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+              <span className="text-sm text-black dark:text-gray-300">{t('nav.address.alerts')}</span>
+            </Link>
+
+            <Link 
+              to="#" 
+              className="flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <MousePointerClick className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+              <span className="text-sm text-black dark:text-gray-300">{t('nav.guides')}</span>
             </Link>
           </nav>
         </div>

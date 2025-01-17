@@ -1,8 +1,9 @@
-import { Bell, ChevronDown, MessageSquare, Moon, Search, User, ArrowBigUp, Settings, UserCircle, CreditCard, LogOut } from "lucide-react";
+import { Bell, ChevronDown, MessageSquare, Moon, Search, ArrowBigUp, Settings, UserCircle, CreditCard, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,15 +16,18 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { useToast } from "./ui/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const TopNav = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<{ first_name?: string; last_name?: string } | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
   const { isCollapsed } = useSidebar();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     let mounted = true;
@@ -36,13 +40,27 @@ export const TopNav = () => {
         if (session?.user?.email) {
           console.log("Setting user email:", session.user.email);
           setUserEmail(session.user.email);
+          
+          // Fetch user profile
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('first_name, last_name')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (mounted && profileData) {
+            setUserProfile(profileData);
+          }
         } else {
           console.log("No user session found");
           setUserEmail(null);
         }
       } catch (err) {
         console.error("Error fetching user session:", err);
-        if (mounted) setUserEmail(null);
+        if (mounted) {
+          setUserEmail(null);
+          setUserProfile(null);
+        }
       }
     };
 
@@ -56,6 +74,7 @@ export const TopNav = () => {
         setUserEmail(session.user.email);
       } else {
         setUserEmail(null);
+        setUserProfile(null);
       }
     });
 
@@ -97,6 +116,7 @@ export const TopNav = () => {
       
       // Clear local state
       setUserEmail(null);
+      setUserProfile(null);
       
       // Then sign out from Supabase
       const { error } = await supabase.auth.signOut();
@@ -141,6 +161,11 @@ export const TopNav = () => {
     }
   };
 
+  const getUserInitials = () => {
+    if (!userProfile?.first_name && !userProfile?.last_name) return 'U';
+    return `${userProfile.first_name?.[0] || ''}${userProfile.last_name?.[0] || ''}`;
+  };
+
   return (
     <div className={cn(
       "fixed top-0 right-0 h-16 bg-transparent backdrop-blur-sm z-50 transition-[left] duration-200",
@@ -153,7 +178,7 @@ export const TopNav = () => {
             <Input 
               id="global-search"
               type="search" 
-              placeholder="Sök..." 
+              placeholder={t('search.placeholder')}
               className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setIsSearchFocused(false)}
@@ -196,36 +221,43 @@ export const TopNav = () => {
                 variant="ghost" 
                 className="flex items-center gap-2 text-[#000000] dark:text-gray-300 hover:bg-black/5 dark:hover:bg-[#232325] ml-2"
               >
-                <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-[#303032] flex items-center justify-center">
-                  <User className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
-                </div>
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-gray-400 text-sm">
+                    {getUserInitials()}
+                  </AvatarFallback>
+                </Avatar>
                 <span className="text-sm font-medium">{userEmail}</span>
                 <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 p-2">
+            <DropdownMenuContent align="end" className="w-56 p-3">
               <DropdownMenuGroup>
-                <DropdownMenuItem className="py-2">
+                <DropdownMenuItem onClick={() => navigate("/profile")} className="py-2 cursor-pointer">
                   <UserCircle className="mr-3 h-4 w-4" />
-                  Manage profile
+                  <span className="text-black dark:text-gray-300">{t('profile.manage')}</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="py-2">
+                <DropdownMenuItem 
+                  className="py-2 cursor-pointer"
+                  onClick={() => window.open('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss', '_blank')}
+                >
                   <CreditCard className="mr-3 h-4 w-4" />
-                  Billing
+                  <span className="text-black dark:text-gray-300">{t('profile.billing')}</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="py-2">
+                <DropdownMenuItem onClick={() => navigate("/settings")} className="py-2 cursor-pointer">
                   <Settings className="mr-3 h-4 w-4" />
-                  Settings
+                  <span className="text-black dark:text-gray-300">{t('profile.settings')}</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="mx-[-12px] my-2" />
               <DropdownMenuItem 
                 onClick={handleSignOut} 
                 disabled={isSigningOut}
-                className="py-2 text-black dark:text-gray-300"
+                className="py-2 cursor-pointer"
               >
                 <LogOut className="mr-3 h-4 w-4" />
-                {isSigningOut ? 'Signing out...' : 'Logga ut'}
+                <span className="text-black dark:text-gray-300">
+                  {isSigningOut ? t('profile.signing.out') : t('profile.sign.out')}
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
