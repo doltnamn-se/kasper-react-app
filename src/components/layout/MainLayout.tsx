@@ -2,8 +2,15 @@ import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
-import { Library, ListTodo, Link2, Shield } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { LayoutDashboard, Library, ListTodo, Link2, Sparkle } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -11,6 +18,7 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -23,6 +31,30 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
         <div className="px-6">
           <nav>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button 
+                  className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md w-full text-left ${
+                    location.pathname.startsWith("/admin") 
+                      ? "bg-gray-100 dark:bg-gray-800" 
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  <Sparkle className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+                  <span className="text-sm text-black dark:text-gray-300">Admin</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="start" sideOffset={8}>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => navigate("/admin/customers")}>
+                    Customers
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-2 my-4 transition-colors duration-200" />
+
             <Link 
               to="/" 
               className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
@@ -31,7 +63,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
-              <Library className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
+              <LayoutDashboard className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
               <span className="text-sm text-black dark:text-gray-300">Översikt</span>
             </Link>
 
@@ -49,18 +81,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             >
               <Link2 className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
               <span className="text-sm text-black dark:text-gray-300">Mina länkar</span>
-            </Link>
-
-            <Link 
-              to="/admin/customers" 
-              className={`flex items-center gap-3 px-5 py-2.5 rounded-md ${
-                location.pathname === "/admin/customers" 
-                  ? "bg-gray-100 dark:bg-gray-800" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
-              }`}
-            >
-              <Shield className="w-[18px] h-[18px] text-[#5b5b59] dark:text-gray-300" />
-              <span className="text-sm text-black dark:text-gray-300">Admin Dashboard</span>
             </Link>
           </nav>
         </div>

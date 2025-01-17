@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, MessageSquare, Moon, Search, User, ArrowBigUp } from "lucide-react";
+import { Bell, ChevronDown, MessageSquare, Moon, Search, User, ArrowBigUp, Settings, UserCircle, CreditCard, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -146,7 +146,7 @@ export const TopNav = () => {
       "fixed top-0 right-0 h-16 bg-transparent backdrop-blur-sm z-50 transition-[left] duration-200",
       isCollapsed ? "left-16" : "left-72"
     )}>
-      <div className="flex items-center justify-between h-full px-8">
+      <div className="flex items-center justify-between h-full px-16">
         <div className="flex-1 max-w-md">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
@@ -203,15 +203,18 @@ export const TopNav = () => {
                 <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-56 p-2">
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="py-2">
+                  <UserCircle className="mr-3 h-4 w-4" />
                   Manage profile
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="py-2">
+                  <CreditCard className="mr-3 h-4 w-4" />
                   Billing
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="py-2">
+                  <Settings className="mr-3 h-4 w-4" />
                   Settings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -219,8 +222,9 @@ export const TopNav = () => {
               <DropdownMenuItem 
                 onClick={handleSignOut} 
                 disabled={isSigningOut}
-                className="text-red-600 dark:text-red-400"
+                className="py-2 text-black dark:text-gray-300"
               >
+                <LogOut className="mr-3 h-4 w-4" />
                 {isSigningOut ? 'Signing out...' : 'Logga ut'}
               </DropdownMenuItem>
             </DropdownMenuContent>
