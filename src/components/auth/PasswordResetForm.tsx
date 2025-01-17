@@ -24,15 +24,17 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
     console.log("Attempting password reset for email:", resetEmail);
 
     try {
-      const { data, error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
       });
 
-      console.log("Password reset response:", { data, error });
-
       if (error) {
         console.error("Password reset error:", error);
-        toast.error(error.message);
+        if (error.message.includes("Email rate limit exceeded")) {
+          toast.error(t('error.email.rate.limit'));
+        } else {
+          toast.error(error.message);
+        }
       } else {
         console.log("Password reset email sent successfully");
         toast.success(t('reset.password.success'));
