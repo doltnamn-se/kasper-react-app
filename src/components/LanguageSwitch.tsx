@@ -25,7 +25,7 @@ export const LanguageSwitch = () => {
           className="flex items-center gap-2 px-2"
         >
           <span>{languages[language].flag}</span>
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200">
+          <span className="text-sm text-black dark:text-gray-300">
             {languages[language].label}
           </span>
           <ChevronDown className="h-4 w-4 text-[#4c4c49] dark:text-[#67676c]" />
