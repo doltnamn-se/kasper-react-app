@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-user-id',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
@@ -18,7 +18,7 @@ serve(async (req: Request) => {
   }
 
   try {
-    console.log("Starting customer creation process in Edge Function");
+    console.log("Starting customer creation process");
     
     // Initialize Supabase client with service role key
     const supabaseAdmin = createClient(
@@ -46,7 +46,7 @@ serve(async (req: Request) => {
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       email_confirm: true,
-      password: Math.random().toString(36).slice(-8), // Random temporary password
+      password: Math.random().toString(36).slice(-8),
     });
 
     if (authError || !authData.user) {
