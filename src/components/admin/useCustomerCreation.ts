@@ -33,9 +33,10 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
       console.log("Current user:", user);
 
-      // Invoke the function with minimal data structure
+      // Include the user ID in the request body
       const { data, error } = await supabase.functions.invoke('create-customer', {
-        body: formData
+        body: { ...formData, createdBy: user.id },
+        headers: { 'x-user-id': user.id }
       });
 
       if (error) {
