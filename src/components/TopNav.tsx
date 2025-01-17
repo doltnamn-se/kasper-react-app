@@ -48,7 +48,7 @@ export const TopNav = () => {
 
     initUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!mounted) return;
       
       console.log("Auth state changed:", event);
@@ -92,22 +92,17 @@ export const TopNav = () => {
       setIsSigningOut(true);
       console.log("Attempting to sign out...");
       
-      // Clear local state first
-      setUserEmail(null);
-      
-      // Force navigation to auth page before sign out
+      // First navigate to auth page
       navigate("/auth", { replace: true });
       
+      // Clear local state
+      setUserEmail(null);
+      
+      // Then sign out from Supabase
       const { error } = await supabase.auth.signOut();
       
       if (error) {
         console.error("Error signing out:", error);
-        // If it's a session not found error, we can ignore it since we've already navigated
-        if (error.message.includes("session_not_found")) {
-          console.log("Session not found, but navigation completed");
-          return;
-        }
-        
         toast({
           variant: "destructive",
           title: "Error",
