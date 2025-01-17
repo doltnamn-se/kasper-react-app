@@ -33,58 +33,25 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
       console.log("Current user:", user);
 
-      // Send invitation email to the new customer
-      const { error: signUpError } = await supabase.auth.signInWithOtp({
-        email: formData.email,
-        options: {
-          data: {
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-          },
-          emailRedirectTo: `${window.location.origin}/onboarding`,
-        },
+      const { data, error } = await supabase.functions.invoke('create-customer', {
+        body: {
+          email: formData.email,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          subscriptionPlan: formData.subscriptionPlan,
+          createdBy: user.id
+        }
       });
 
-      if (signUpError) {
-        console.error("Error sending invitation:", signUpError);
-        throw new Error("Failed to send invitation email");
+      if (error) {
+        console.error("Error in customer creation:", error);
+        throw error;
       }
 
-      // Create a temporary profile entry
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          id: formData.email, // Temporary ID until user signs up
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          role: 'customer'
-        });
-
-      if (profileError) {
-        console.error("Error creating profile:", profileError);
-        throw new Error("Failed to create profile");
-      }
-
-      // Create customer entry
-      const { error: customerError } = await supabase
-        .from('customers')
-        .insert({
-          id: formData.email, // Temporary ID until user signs up
-          subscription_plan: formData.subscriptionPlan,
-          created_by: user.id,
-          onboarding_completed: false,
-          onboarding_step: 1
-        });
-
-      if (customerError) {
-        console.error("Error creating customer:", customerError);
-        throw new Error("Failed to create customer record");
-      }
-
-      console.log("Customer creation completed successfully");
+      console.log("Customer creation response:", data);
       toast({
         title: "Success",
-        description: "Invitation sent successfully. The customer will receive an email to complete their registration.",
+        description: "Customer created successfully and activation email sent.",
       });
 
       resetForm();
