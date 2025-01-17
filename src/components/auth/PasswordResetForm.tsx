@@ -24,11 +24,10 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      const response = await fetch(`${supabase.supabaseUrl}/functions/v1/send-reset-password`, {
+      const response = await fetch("/api/send-reset-password", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabase.supabaseKey}`,
         },
         body: JSON.stringify({ email: resetEmail }),
       });
