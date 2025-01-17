@@ -33,7 +33,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
       console.log("Current user:", user);
 
-      const functionResponse = await supabase.functions.invoke('create-customer', {
+      const { data, error } = await supabase.functions.invoke('create-customer', {
         body: { 
           email: formData.email,
           firstName: formData.firstName,
@@ -43,19 +43,17 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         }
       });
 
-      console.log("Function response:", functionResponse);
-
-      if (functionResponse.error) {
-        console.error("Error response from create-customer function:", functionResponse.error);
-        throw new Error(functionResponse.error.message || "Failed to create customer");
+      if (error) {
+        console.error("Error response from create-customer function:", error);
+        throw new Error(error.message || "Failed to create customer");
       }
 
-      if (!functionResponse.data) {
+      if (!data) {
         console.error("No data returned from create-customer function");
         throw new Error("No response from server");
       }
 
-      console.log("Customer created successfully:", functionResponse.data);
+      console.log("Customer created successfully:", data);
       toast({
         title: "Success",
         description: "Customer created successfully and activation email sent.",

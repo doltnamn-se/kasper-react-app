@@ -23,27 +23,31 @@ serve(async (req: Request) => {
     const supabaseAdmin = createSupabaseAdmin();
     
     console.log("Parsing request body");
-    const customerData = await req.json() as CustomerData & { createdBy: string };
-    console.log("Customer data received:", customerData);
+    const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
+    console.log("Request data:", { email, firstName, lastName, subscriptionPlan, createdBy });
+
+    if (!email || !createdBy) {
+      throw new Error("Email and createdBy are required");
+    }
 
     // Create auth user
     console.log("Creating auth user");
-    const user = await createAuthUser(supabaseAdmin, customerData.email);
+    const user = await createAuthUser(supabaseAdmin, email);
     console.log("Auth user created:", user.id);
 
     // Update profile and customer data
     console.log("Updating profile");
-    await updateProfile(supabaseAdmin, user.id, customerData.firstName, customerData.lastName);
+    await updateProfile(supabaseAdmin, user.id, firstName, lastName);
     
     console.log("Updating customer subscription");
-    await updateCustomerSubscription(supabaseAdmin, user.id, customerData.subscriptionPlan, customerData.createdBy);
+    await updateCustomerSubscription(supabaseAdmin, user.id, subscriptionPlan, createdBy);
 
     // Generate and send activation email
     console.log("Generating and sending activation email");
     await generateAndSendActivationEmail(
       supabaseAdmin,
-      customerData.email,
-      customerData.firstName,
+      email,
+      firstName || "",
       req.headers.get("origin") || ""
     );
 
