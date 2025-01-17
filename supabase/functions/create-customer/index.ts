@@ -5,6 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-user-id",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 interface CreateCustomerPayload {
@@ -15,12 +16,13 @@ interface CreateCustomerPayload {
 }
 
 serve(async (req: Request) => {
-  console.log("Received request to create-customer function");
-
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     console.log("Handling CORS preflight request");
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
   }
 
   try {
