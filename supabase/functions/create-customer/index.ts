@@ -23,16 +23,8 @@ serve(async (req: Request) => {
     const supabaseAdmin = createSupabaseAdmin();
     
     console.log("Parsing request body");
-    const customerData = await req.json() as CustomerData;
+    const customerData = await req.json() as CustomerData & { createdBy: string };
     console.log("Customer data received:", customerData);
-    
-    const createdById = req.headers.get('x-user-id');
-    console.log("Created by user ID:", createdById);
-
-    if (!createdById) {
-      console.error("No user ID provided in headers");
-      throw new Error("User ID is required");
-    }
 
     // Create auth user
     console.log("Creating auth user");
@@ -44,7 +36,7 @@ serve(async (req: Request) => {
     await updateProfile(supabaseAdmin, user.id, customerData.firstName, customerData.lastName);
     
     console.log("Updating customer subscription");
-    await updateCustomerSubscription(supabaseAdmin, user.id, customerData.subscriptionPlan, createdById);
+    await updateCustomerSubscription(supabaseAdmin, user.id, customerData.subscriptionPlan, customerData.createdBy);
 
     // Generate and send activation email
     console.log("Generating and sending activation email");
