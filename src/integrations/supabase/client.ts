@@ -13,6 +13,32 @@ export const supabase = createClient<Database>(
       storageKey: 'supabase.auth.token',
       storage: window.localStorage,
       autoRefreshToken: true,
-    }
+      detectSessionInUrl: true,
+    },
+    global: {
+      headers: {
+        'X-Client-Info': 'supabase-js-client',
+      },
+    },
+    realtime: {
+      params: {
+        eventsPerSecond: 10,
+      },
+    },
+    db: {
+      schema: 'public',
+    },
   }
 );
+
+// Add error handling for fetch failures
+const originalFetch = window.fetch;
+window.fetch = async (...args) => {
+  try {
+    const response = await originalFetch(...args);
+    return response;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
+  }
+};
