@@ -6,7 +6,8 @@ import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -50,6 +51,51 @@ const Index = () => {
 
     fetchUserRole();
   }, [toast]);
+
+  const testCreateCustomer = async () => {
+    try {
+      console.log("Testing customer creation...");
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error("No authenticated user found");
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-customer', {
+        body: {
+          email: "test@example.com",
+          firstName: "Test",
+          lastName: "User",
+          subscriptionPlan: "1_month",
+          createdBy: user.id
+        }
+      });
+
+      if (error) {
+        console.error("Error creating test customer:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to create test customer: " + error.message
+        });
+        return;
+      }
+
+      console.log("Test customer creation response:", data);
+      toast({
+        title: "Success",
+        description: "Test customer created successfully"
+      });
+
+    } catch (err) {
+      console.error("Error in test customer creation:", err);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An unexpected error occurred creating test customer"
+      });
+    }
+  };
 
   return (
     <>
@@ -103,6 +149,11 @@ const Index = () => {
             <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300 mb-6 font-system-ui">Översikt</h1>
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <p className="text-[#000000] dark:text-gray-400 mb-4 font-system-ui">Välkommen till din översikt.</p>
+              {userRole === 'super_admin' && (
+                <Button onClick={testCreateCustomer}>
+                  Test Create Customer
+                </Button>
+              )}
             </div>
           </div>
         </main>
