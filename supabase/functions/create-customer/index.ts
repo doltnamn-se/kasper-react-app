@@ -7,35 +7,28 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  console.log("Function invoked with request:", {
-    method: req.method,
-    url: req.url,
-    headers: Object.fromEntries(req.headers.entries())
-  });
-
   // Handle CORS preflight requests
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     console.log("Handling CORS preflight request");
-    return new Response(null, { 
-      headers: corsHeaders,
-      status: 204
-    });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Initialize Supabase client with service role key
+    console.log("Starting customer creation process");
+    
+    // Initialize Supabase client
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       {
         auth: {
           autoRefreshToken: false,
-          persistSession: false
-        }
+          persistSession: false,
+        },
       }
     );
 
-    console.log("Parsing request body");
+    // Parse request body
     const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
     console.log("Request data:", { email, firstName, lastName, subscriptionPlan, createdBy });
 
@@ -49,7 +42,7 @@ serve(async (req) => {
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       email_confirm: true,
-      password: Math.random().toString(36).slice(-8),
+      password: crypto.randomUUID(),
     });
 
     if (authError || !authData.user) {
@@ -65,7 +58,7 @@ serve(async (req) => {
       .update({
         first_name: firstName,
         last_name: lastName,
-        role: 'customer'
+        role: 'customer',
       })
       .eq('id', authData.user.id);
 
@@ -104,7 +97,7 @@ serve(async (req) => {
       throw new Error("Failed to generate activation link");
     }
 
-    // Send activation email
+    // Send activation email using Resend
     console.log("Sending activation email");
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -151,7 +144,7 @@ serve(async (req) => {
         status: 200,
       }
     );
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error in create-customer function:", err);
     return new Response(
       JSON.stringify({ 
