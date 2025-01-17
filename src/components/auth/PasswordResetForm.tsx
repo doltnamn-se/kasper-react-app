@@ -24,11 +24,8 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      const { data, error } = await supabase.functions.invoke('email-handler', {
-        body: {
-          type: 'reset_password',
-          email: resetEmail
-        }
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       });
 
       if (error) {
@@ -36,7 +33,7 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
         throw error;
       }
 
-      console.log("Password reset email sent successfully:", data);
+      console.log("Password reset email sent successfully");
       toast.success(t('reset.password.success'));
       onCancel();
       setResetEmail("");
