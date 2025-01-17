@@ -47,12 +47,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       if (error) {
         console.error("Error response from create-customer function:", error);
-        toast({
-          title: "Error",
-          description: "Failed to create customer. Please try again.",
-          variant: "destructive",
-        });
-        return;
+        throw error;
       }
 
       console.log("Customer created successfully:", data);
@@ -67,7 +62,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       console.error("Detailed error in customer creation:", err);
       toast({
         title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        description: err.message || "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
