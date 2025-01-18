@@ -10,9 +10,10 @@ import { toast } from "sonner";
 interface AuthFormProps {
   errorMessage: string;
   isDarkMode: boolean;
+  isResetPasswordMode?: boolean;
 }
 
-export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
+export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: AuthFormProps) => {
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
