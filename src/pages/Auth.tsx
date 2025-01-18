@@ -33,16 +33,39 @@ const Auth = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Check for recovery token and type
+    // Handle PKCE token and recovery type
     const type = searchParams.get('type');
     const token = searchParams.get('token');
-    console.log("Auth page: Recovery check -", { type, token });
-    
-    if (type === 'recovery' || token) {
-      console.log("Auth page: Enabling password reset mode");
-      setIsResetPasswordMode(true);
-    }
-  }, [language, searchParams]);
+    console.log("Auth page: URL parameters -", { type, token });
+
+    const handleRecoveryFlow = async () => {
+      if (token?.startsWith('pkce_')) {
+        console.log("Auth page: Detected PKCE token, handling recovery flow");
+        try {
+          const { error } = await supabase.auth.verifyOtp({
+            token_hash: token,
+            type: 'recovery'
+          });
+          
+          if (error) {
+            console.error("Error verifying recovery token:", error);
+            setErrorMessage(t('error.invalid.recovery.link'));
+          } else {
+            console.log("Successfully verified recovery token");
+            setIsResetPasswordMode(true);
+          }
+        } catch (err) {
+          console.error("Error in recovery flow:", err);
+          setErrorMessage(t('error.generic'));
+        }
+      } else if (type === 'recovery') {
+        console.log("Auth page: Setting reset password mode (no token)");
+        setIsResetPasswordMode(true);
+      }
+    };
+
+    handleRecoveryFlow();
+  }, [language, searchParams, t]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
@@ -76,54 +99,6 @@ const Auth = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
-
-  const handleError = (error: AuthError) => {
-    console.error("Auth error:", error);
-    if (error instanceof AuthApiError) {
-      switch (error.message) {
-        case "Invalid login credentials":
-          setErrorMessage(t('error.invalid.credentials'));
-          break;
-        case "Email not confirmed":
-          setErrorMessage(t('error.email.not.confirmed'));
-          break;
-        case "User not found":
-          setErrorMessage(t('error.user.not.found'));
-          break;
-        case "Invalid email or password":
-          setErrorMessage(t('error.invalid.email.password'));
-          break;
-        case "missing email or phone":
-          setErrorMessage(t('error.missing.email.phone'));
-          break;
-        case "missing password":
-          setErrorMessage(t('error.missing.password'));
-          break;
-        case "password too short":
-          setErrorMessage(t('error.password.too.short'));
-          break;
-        case "email already taken":
-          setErrorMessage(t('error.email.taken'));
-          break;
-        case "phone number already taken":
-          setErrorMessage(t('error.phone.taken'));
-          break;
-        case "weak password":
-          setErrorMessage(t('error.weak.password'));
-          break;
-        case "invalid email":
-          setErrorMessage(t('error.invalid.email'));
-          break;
-        case "invalid phone":
-          setErrorMessage(t('error.invalid.phone'));
-          break;
-        default:
-          setErrorMessage(t('error.generic'));
-      }
-    } else {
-      setErrorMessage(t('error.generic'));
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-between p-4">
