@@ -16,11 +16,21 @@ export const SetPassword = () => {
   useEffect(() => {
     const initSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        // First check for magic link parameters
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isMagicLink = hashParams.get('type') === 'magiclink';
         
-        if (error) {
-          console.error("SetPassword: Session error:", error);
-          throw error;
+        if (isMagicLink) {
+          console.log("SetPassword: Magic link detected, proceeding with session setup");
+          // Let the magic link process complete before checking session
+          return;
+        }
+
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("SetPassword: Session error:", sessionError);
+          throw sessionError;
         }
 
         if (!session?.user?.id) {
@@ -46,8 +56,12 @@ export const SetPassword = () => {
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("SetPassword: Auth state changed:", event);
-      if (!session) {
-        console.log("SetPassword: No session in auth change");
+      
+      if (event === 'SIGNED_IN' && session?.user?.id) {
+        console.log("SetPassword: User signed in with ID:", session.user.id);
+        setUserId(session.user.id);
+      } else if (event === 'SIGNED_OUT') {
+        console.log("SetPassword: User signed out");
         navigate("/auth");
       }
     });
