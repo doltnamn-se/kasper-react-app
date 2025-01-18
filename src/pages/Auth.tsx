@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { AuthError, AuthApiError } from "@supabase/supabase-js";
 import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
@@ -33,38 +32,15 @@ const Auth = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Handle PKCE token and recovery type
+    // Handle recovery flow
     const type = searchParams.get('type');
     const token = searchParams.get('token');
     console.log("Auth page: URL parameters -", { type, token });
 
-    const handleRecoveryFlow = async () => {
-      if (token?.startsWith('pkce_')) {
-        console.log("Auth page: Detected PKCE token, handling recovery flow");
-        try {
-          const { error } = await supabase.auth.verifyOtp({
-            token_hash: token,
-            type: 'recovery'
-          });
-          
-          if (error) {
-            console.error("Error verifying recovery token:", error);
-            setErrorMessage(t('error.invalid.recovery.link'));
-          } else {
-            console.log("Successfully verified recovery token");
-            setIsResetPasswordMode(true);
-          }
-        } catch (err) {
-          console.error("Error in recovery flow:", err);
-          setErrorMessage(t('error.generic'));
-        }
-      } else if (type === 'recovery') {
-        console.log("Auth page: Setting reset password mode (no token)");
-        setIsResetPasswordMode(true);
-      }
-    };
-
-    handleRecoveryFlow();
+    if (type === 'recovery') {
+      console.log("Auth page: Setting reset password mode (recovery type)");
+      setIsResetPasswordMode(true);
+    }
   }, [language, searchParams, t]);
 
   const toggleDarkMode = () => {
