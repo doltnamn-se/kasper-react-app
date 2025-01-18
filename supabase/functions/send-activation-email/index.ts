@@ -4,16 +4,25 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 };
 
 serve(async (req) => {
+  console.log("Starting activation email process...");
+  
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    console.log("Handling OPTIONS preflight request");
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
   }
 
   try {
     const { email, firstName } = await req.json();
-    console.log("Starting activation email process for:", email);
+    console.log("Received request to send activation email to:", email);
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -41,8 +50,10 @@ serve(async (req) => {
       throw new Error("Failed to generate activation link");
     }
 
+    console.log("Magic link generated successfully");
+
     // Send activation email
-    console.log("Sending activation email");
+    console.log("Sending activation email via Resend");
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
