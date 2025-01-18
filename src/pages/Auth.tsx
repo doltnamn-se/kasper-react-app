@@ -33,12 +33,13 @@ const Auth = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Check URL parameters for recovery flow
+    // Check for recovery token and type
     const type = searchParams.get('type');
-    console.log("Auth page: URL type parameter =", type);
+    const token = searchParams.get('token');
+    console.log("Auth page: Recovery check -", { type, token });
     
-    if (type === 'recovery') {
-      console.log("Auth page: Setting reset password mode to true");
+    if (type === 'recovery' || token) {
+      console.log("Auth page: Enabling password reset mode");
       setIsResetPasswordMode(true);
     }
   }, [language, searchParams]);
@@ -58,7 +59,7 @@ const Auth = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log("Auth page: Auth state changed:", event);
+        console.log("Auth page: Auth state changed:", event, session);
         
         if (event === "PASSWORD_RECOVERY") {
           console.log("Auth page: Password recovery event detected");
