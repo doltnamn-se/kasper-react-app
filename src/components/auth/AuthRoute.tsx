@@ -15,9 +15,27 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        // First check if we're handling a magic link
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isMagicLink = hashParams.get('type') === 'magiclink';
         
-        // If no session, allow access to auth page
+        if (isMagicLink) {
+          console.log("AuthRoute: Magic link detected, allowing access for onboarding");
+          setSession(false);
+          setIsLoading(false);
+          return;
+        }
+
+        // If not a magic link, check for existing session
+        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("AuthRoute: Session error:", sessionError);
+          setSession(false);
+          setIsLoading(false);
+          return;
+        }
+
         if (!currentSession) {
           console.log("AuthRoute: No session found, allowing auth page access");
           setSession(false);
@@ -25,33 +43,37 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        // Check if we're coming from a magic link (activation email)
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const isMagicLink = hashParams.get('type') === 'magiclink';
-        
-        if (isMagicLink) {
-          console.log("AuthRoute: Magic link detected, redirecting to onboarding");
-          window.location.href = '/onboarding';
-          return;
-        }
-
         console.log("AuthRoute: Session found, checking role");
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('role')
           .eq('id', currentSession.user.id)
           .single();
+
+        if (profileError) {
+          console.error("AuthRoute: Profile error:", profileError);
+          setSession(false);
+          setIsLoading(false);
+          return;
+        }
 
         if (profile?.role === 'super_admin') {
           console.log("AuthRoute: Super admin detected, redirecting to admin");
           setSession(true);
         } else {
           console.log("AuthRoute: Regular user, checking onboarding");
-          const { data: customer } = await supabase
+          const { data: customer, error: customerError } = await supabase
             .from('customers')
             .select('onboarding_completed')
             .eq('id', currentSession.user.id)
             .single();
+
+          if (customerError) {
+            console.error("AuthRoute: Customer error:", customerError);
+            setSession(false);
+            setIsLoading(false);
+            return;
+          }
 
           setSession(true);
         }
@@ -65,9 +87,9 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
     checkAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("AuthRoute: Auth state changed:", event);
-      if (!session) {
+      if (event === 'SIGNED_OUT') {
         setSession(false);
         setIsLoading(false);
         return;
