@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError, AuthApiError } from "@supabase/supabase-js";
 import { AuthHeader } from "@/components/auth/AuthHeader";
@@ -10,9 +10,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const Auth = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [errorMessage, setErrorMessage] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { t, language } = useLanguage();
+  const [isResetPasswordMode, setIsResetPasswordMode] = useState(false);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -29,7 +31,12 @@ const Auth = () => {
     if (isDark) {
       document.documentElement.classList.add('dark');
     }
-  }, [language]);
+
+    // Check if we're on the reset-password route
+    if (location.pathname === '/auth/reset-password') {
+      setIsResetPasswordMode(true);
+    }
+  }, [language, location]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
@@ -46,6 +53,7 @@ const Auth = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth event:", event);
         if (event === "SIGNED_IN" && session) {
           navigate("/");
         }
@@ -53,6 +61,8 @@ const Auth = () => {
           setErrorMessage("");
         }
         if (event === "PASSWORD_RECOVERY") {
+          console.log("Password recovery event detected");
+          setIsResetPasswordMode(true);
           const { error } = await supabase.auth.getSession();
           if (error) {
             handleError(error);
@@ -116,7 +126,11 @@ const Auth = () => {
     <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-between p-4">
       <div className="w-full max-w-md space-y-8 mt-8">
         <AuthHeader />
-        <AuthForm errorMessage={errorMessage} isDarkMode={isDarkMode} />
+        <AuthForm 
+          errorMessage={errorMessage} 
+          isDarkMode={isDarkMode} 
+          isResetPasswordMode={isResetPasswordMode} 
+        />
         <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
       </div>
       <AuthFooter />

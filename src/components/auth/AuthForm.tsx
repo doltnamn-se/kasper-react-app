@@ -10,14 +10,16 @@ import { SignUpPrompt } from "./SignUpPrompt";
 interface AuthFormProps {
   errorMessage: string;
   isDarkMode: boolean;
+  isResetPasswordMode?: boolean;
 }
 
-export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
+export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false }: AuthFormProps) => {
   const { t } = useLanguage();
-  const [isResetMode, setIsResetMode] = useState(false);
+  const [isManualResetMode, setIsManualResetMode] = useState(false);
 
-  if (isResetMode) {
-    return <PasswordResetForm onCancel={() => setIsResetMode(false)} />;
+  // If we're in reset password mode (either from URL or manual click), show the reset form
+  if (isResetPasswordMode || isManualResetMode) {
+    return <PasswordResetForm onCancel={() => setIsManualResetMode(false)} />;
   }
 
   return (
@@ -41,7 +43,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
           },
         }}
         providers={[]}
-        view="sign_in"
+        view={isResetPasswordMode ? "update_password" : "sign_in"}
         showLinks={false}
         redirectTo={`${window.location.origin}/`}
         localization={{
@@ -100,15 +102,17 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
           }
         }}
       />
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => setIsResetMode(true)}
-          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-xs font-system-ui"
-        >
-          {t('forgot.password')}
-        </button>
-      </div>
-      <SignUpPrompt />
+      {!isResetPasswordMode && (
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => setIsManualResetMode(true)}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-xs font-system-ui"
+          >
+            {t('forgot.password')}
+          </button>
+        </div>
+      )}
+      {!isResetPasswordMode && <SignUpPrompt />}
     </div>
   );
 };
