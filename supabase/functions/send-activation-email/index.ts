@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Max-Age': '86400',
 };
@@ -11,6 +11,7 @@ const corsHeaders = {
 serve(async (req) => {
   console.log("Activation email function invoked with method:", req.method);
   
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
     return new Response(null, { 
@@ -40,9 +41,10 @@ serve(async (req) => {
       email: email,
       options: {
         redirectTo: `${req.headers.get('origin')}/onboarding`,
-        // Set a longer expiration time (24 hours)
+        // Set a longer expiration time (24 hours) and mark as activation link
         data: {
-          activationLink: true
+          activationLink: true,
+          expiresIn: 86400 // 24 hours in seconds
         }
       }
     });

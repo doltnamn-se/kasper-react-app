@@ -19,6 +19,10 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         // First check if we're handling a magic link
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const magicLinkType = hashParams.get('type');
+        const error = hashParams.get('error');
+        const errorDescription = hashParams.get('error_description');
+        
+        console.log("AuthRoute: URL parameters:", { magicLinkType, error, errorDescription });
         
         if (magicLinkType === 'magiclink') {
           console.log("AuthRoute: Magic link detected, allowing access");
