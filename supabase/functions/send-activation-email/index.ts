@@ -5,7 +5,6 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Max-Age': '86400',
 };
 
 serve(async (req) => {
@@ -41,7 +40,6 @@ serve(async (req) => {
       email: email,
       options: {
         redirectTo: `${req.headers.get('origin')}/onboarding`,
-        // Set a longer expiration time (24 hours) and mark as activation link
         data: {
           activationLink: true,
           expiresIn: 86400 // 24 hours in seconds
