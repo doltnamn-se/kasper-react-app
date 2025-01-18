@@ -13,20 +13,17 @@ export const SetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [initializationAttempts, setInitializationAttempts] = useState(0);
 
   useEffect(() => {
+    let mounted = true;
+    const MAX_ATTEMPTS = 3;
+    const RETRY_DELAY = 2000; // 2 seconds
+
     const initSession = async () => {
       try {
-        // First check for magic link parameters
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const isMagicLink = hashParams.get('type') === 'magiclink';
+        console.log(`SetPassword: Initialization attempt ${initializationAttempts + 1}`);
         
-        if (isMagicLink) {
-          console.log("SetPassword: Magic link detected, waiting for session initialization");
-          // Don't set isInitializing to false here - wait for auth state change
-          return;
-        }
-
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -35,36 +32,46 @@ export const SetPassword = () => {
         }
 
         if (!session?.user?.id) {
-          console.error("SetPassword: No user ID in session");
-          throw new Error("No active session found");
+          console.log("SetPassword: No session found, will retry if attempts remain");
+          if (mounted && initializationAttempts < MAX_ATTEMPTS) {
+            setTimeout(() => {
+              setInitializationAttempts(prev => prev + 1);
+            }, RETRY_DELAY);
+            return;
+          }
+          throw new Error("Failed to initialize session after multiple attempts");
         }
 
-        console.log("SetPassword: Session initialized with user ID:", session.user.id);
-        setUserId(session.user.id);
-        setIsInitializing(false);
+        if (mounted) {
+          console.log("SetPassword: Session initialized with user ID:", session.user.id);
+          setUserId(session.user.id);
+          setIsInitializing(false);
+        }
       } catch (error: any) {
         console.error("SetPassword: Init error:", error);
-        toast({
-          title: "Error",
-          description: "Unable to verify your session. Please try logging in again.",
-          variant: "destructive",
-        });
-        navigate("/auth");
+        if (mounted) {
+          toast({
+            title: "Error",
+            description: "Unable to initialize your session. Please try again.",
+            variant: "destructive",
+          });
+          navigate("/auth");
+        }
       }
     };
 
-    initSession();
+    // Only attempt initialization if we haven't exceeded max attempts
+    if (initializationAttempts < MAX_ATTEMPTS) {
+      initSession();
+    }
 
-    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!mounted) return;
+      
       console.log("SetPassword: Auth state changed:", event, session?.user?.id);
       
-      if (event === 'SIGNED_IN' && session?.user?.id) {
-        console.log("SetPassword: User signed in with ID:", session.user.id);
-        setUserId(session.user.id);
-        setIsInitializing(false);
-      } else if (event === 'INITIAL_SESSION' && session?.user?.id) {
-        console.log("SetPassword: Initial session established with ID:", session.user.id);
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user?.id) {
+        console.log("SetPassword: Session established with ID:", session.user.id);
         setUserId(session.user.id);
         setIsInitializing(false);
       } else if (event === 'SIGNED_OUT' && !isInitializing) {
@@ -74,9 +81,10 @@ export const SetPassword = () => {
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
-  }, [navigate, toast]);
+  }, [navigate, toast, initializationAttempts]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,7 +129,6 @@ export const SetPassword = () => {
 
       console.log("SetPassword: Password updated successfully");
 
-      // Update onboarding step
       const { error: updateStepError } = await supabase
         .from("customers")
         .update({ onboarding_step: 2 })
@@ -133,7 +140,6 @@ export const SetPassword = () => {
       }
 
       console.log("SetPassword: Onboarding step updated");
-
       toast({
         title: "Success",
         description: "Password set successfully",
@@ -157,7 +163,11 @@ export const SetPassword = () => {
       <div className="flex items-center justify-center min-h-[200px]">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="text-sm text-gray-600">Initializing your session...</p>
+          <p className="text-sm text-gray-600">
+            {initializationAttempts > 0 
+              ? `Retrying session initialization (Attempt ${initializationAttempts + 1}/3)...`
+              : "Initializing your session..."}
+          </p>
         </div>
       </div>
     );
