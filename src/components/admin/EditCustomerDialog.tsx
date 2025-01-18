@@ -1,11 +1,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { CustomerWithProfile } from "@/types/customer";
+import { EditCustomerForm } from "./EditCustomerForm";
 
 interface EditCustomerDialogProps {
   customer: CustomerWithProfile;
@@ -15,13 +14,11 @@ interface EditCustomerDialogProps {
 export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomerDialogProps) => {
   const { toast } = useToast();
   const [isUpdating, setIsUpdating] = useState(false);
-  const [firstName, setFirstName] = useState(customer.profile?.first_name || "");
-  const [lastName, setLastName] = useState(customer.profile?.last_name || "");
 
-  const handleUpdateCustomer = async () => {
+  const handleUpdateCustomer = async (firstName: string, lastName: string) => {
     try {
       setIsUpdating(true);
-      console.log('Updating customer profile...');
+      console.log('Updating customer profile:', customer.id);
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -33,14 +30,10 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
 
       if (profileError) {
         console.error("Error updating profile:", profileError);
-        toast({
-          title: "Error",
-          description: "Failed to update customer profile. Please try again.",
-          variant: "destructive",
-        });
-        return;
+        throw profileError;
       }
 
+      console.log('Customer profile updated successfully');
       toast({
         title: "Success",
         description: "Customer updated successfully.",
@@ -51,7 +44,7 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
       console.error("Error in customer update:", err);
       toast({
         title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        description: "Failed to update customer profile. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -70,33 +63,11 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
         <DialogHeader>
           <DialogTitle>Edit Customer</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              id="firstName"
-              placeholder="John"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              placeholder="Doe"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <Button 
-            className="w-full" 
-            onClick={handleUpdateCustomer}
-            disabled={isUpdating}
-          >
-            {isUpdating ? "Updating..." : "Update Customer"}
-          </Button>
-        </div>
+        <EditCustomerForm 
+          customer={customer}
+          onSubmit={handleUpdateCustomer}
+          isUpdating={isUpdating}
+        />
       </DialogContent>
     </Dialog>
   );
