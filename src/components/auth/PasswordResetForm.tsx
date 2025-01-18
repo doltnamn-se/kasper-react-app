@@ -26,8 +26,9 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
+      // The key change is here - we're setting the correct redirect URL
       const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `${window.location.origin}/auth?type=recovery`,
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       });
 
       if (error) {
