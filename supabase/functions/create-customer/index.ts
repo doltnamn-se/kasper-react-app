@@ -47,6 +47,37 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", authData.user.id);
 
+    // Update profile data
+    console.log("Updating profile data");
+    const { error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .update({
+        first_name: firstName,
+        last_name: lastName,
+        role: 'customer',
+      })
+      .eq('id', authData.user.id);
+
+    if (profileError) {
+      console.error("Error updating profile:", profileError);
+      throw new Error("Failed to update profile");
+    }
+
+    // Update customer data
+    console.log("Updating customer data");
+    const { error: customerError } = await supabaseAdmin
+      .from('customers')
+      .update({
+        subscription_plan: subscriptionPlan,
+        created_by: createdBy,
+      })
+      .eq('id', authData.user.id);
+
+    if (customerError) {
+      console.error("Error updating customer:", customerError);
+      throw new Error("Failed to update customer");
+    }
+
     // Generate magic link for activation email
     console.log("Generating magic link");
     const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
@@ -92,39 +123,6 @@ serve(async (req) => {
       const errorText = await resendResponse.text();
       console.error("Error sending activation email:", errorText);
       throw new Error(`Failed to send email: ${errorText}`);
-    }
-
-    console.log("Activation email sent successfully");
-
-    // Update profile data
-    console.log("Updating profile data");
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .update({
-        first_name: firstName,
-        last_name: lastName,
-        role: 'customer',
-      })
-      .eq('id', authData.user.id);
-
-    if (profileError) {
-      console.error("Error updating profile:", profileError);
-      throw new Error("Failed to update profile");
-    }
-
-    // Update customer data
-    console.log("Updating customer data");
-    const { error: customerError } = await supabaseAdmin
-      .from('customers')
-      .update({
-        subscription_plan: subscriptionPlan,
-        created_by: createdBy,
-      })
-      .eq('id', authData.user.id);
-
-    if (customerError) {
-      console.error("Error updating customer:", customerError);
-      throw new Error("Failed to update customer");
     }
 
     console.log("Customer creation completed successfully");
