@@ -1,10 +1,4 @@
 project_id = "upfapfohwnkiugvebujh"
 
-[functions.email-handler]
-verify_jwt = true
-
-[functions.create-customer]
-verify_jwt = true
-
-[functions.send-password-reset]
+[send-password-reset]
 verify_jwt = true

@@ -31,7 +31,7 @@ serve(async (req) => {
       }
     );
 
-    // Generate password reset link with the correct redirect URL
+    // Generate password reset link
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email: email,
@@ -59,15 +59,11 @@ serve(async (req) => {
         to: [email],
         subject: "Reset Your Doltnamn Password",
         html: `
-          <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
-            <h2>Reset Your Password</h2>
-            <p>Click the button below to reset your password:</p>
-            <a href="${linkData.properties.action_link}" style="display: inline-block; background-color: black; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Reset Password
-            </a>
-            <p>If you didn't request this password reset, you can safely ignore this email.</p>
-            <p>Best regards,<br>The Doltnamn Team</p>
-          </div>
+          <p>Hello,</p>
+          <p>Click the link below to reset your password:</p>
+          <p><a href="${linkData.properties.action_link}">Reset Password</a></p>
+          <p>If you didn't request this password reset, you can safely ignore this email.</p>
+          <p>Best regards,<br>The Doltnamn Team</p>
         `,
       }),
     });
