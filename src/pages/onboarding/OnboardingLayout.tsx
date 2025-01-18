@@ -23,49 +23,51 @@ export const OnboardingLayout = () => {
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    const fetchCustomerData = async () => {
+    const checkAuthAndFetchData = async () => {
       try {
-        console.log("OnboardingLayout: Fetching customer data...");
-        const { data: { user } } = await supabase.auth.getUser();
+        console.log("OnboardingLayout: Checking auth state...");
         
-        if (!user) {
-          console.log("OnboardingLayout: No authenticated user found");
+        // Check for magic link parameters in URL
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isMagicLink = hashParams.get('type') === 'magiclink';
+        
+        if (isMagicLink) {
+          console.log("OnboardingLayout: Magic link detected, proceeding with onboarding");
+          // Let the magic link process complete
+          return;
+        }
+
+        // Get current session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("OnboardingLayout: Session error:", sessionError);
           navigate("/auth");
           return;
         }
 
-        console.log("OnboardingLayout: Fetching data for user:", user.id);
-        
-        // First, ensure the customer record exists
-        const { error: insertError } = await supabase
-          .from("customers")
-          .upsert({ 
-            id: user.id,
-            onboarding_completed: false,
-            onboarding_step: 1
-          }, { 
-            onConflict: 'id'
-          });
-
-        if (insertError) {
-          console.error("OnboardingLayout: Error ensuring customer record:", insertError);
-          throw insertError;
+        if (!session) {
+          console.log("OnboardingLayout: No session found, redirecting to auth");
+          navigate("/auth");
+          return;
         }
 
-        // Then fetch the customer data
-        const { data: customerData, error } = await supabase
+        console.log("OnboardingLayout: Session found, checking customer data");
+        
+        // Check if customer exists and fetch their data
+        const { data: customerData, error: customerError } = await supabase
           .from("customers")
           .select("*")
-          .eq("id", user.id)
+          .eq("id", session.user.id)
           .maybeSingle();
 
-        if (error) {
-          console.error("OnboardingLayout: Error fetching customer data:", error);
+        if (customerError) {
+          console.error("OnboardingLayout: Error fetching customer:", customerError);
           if (retryCount < 3) {
             setRetryCount(prev => prev + 1);
             return;
           }
-          throw error;
+          throw customerError;
         }
 
         if (!customerData) {
@@ -75,6 +77,14 @@ export const OnboardingLayout = () => {
             description: "Unable to load your profile. Please try refreshing the page.",
             variant: "destructive",
           });
+          navigate("/auth");
+          return;
+        }
+
+        // If onboarding is completed, redirect to home
+        if (customerData.onboarding_completed) {
+          console.log("OnboardingLayout: Onboarding already completed, redirecting to home");
+          navigate("/");
           return;
         }
 
@@ -102,12 +112,13 @@ export const OnboardingLayout = () => {
           description: "An unexpected error occurred. Please try refreshing the page.",
           variant: "destructive",
         });
+        navigate("/auth");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchCustomerData();
+    checkAuthAndFetchData();
   }, [navigate, location.pathname, toast, retryCount]);
 
   if (isLoading) {
