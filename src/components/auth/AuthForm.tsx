@@ -18,7 +18,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
   const [isManualResetMode, setIsManualResetMode] = useState(false);
 
   // If we're in reset password mode (either from URL or manual click), show the reset form
-  if (isResetPasswordMode || isManualResetMode) {
+  if (isManualResetMode) {
     return <PasswordResetForm onCancel={() => setIsManualResetMode(false)} />;
   }
 
@@ -45,7 +45,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
         providers={[]}
         view={isResetPasswordMode ? "update_password" : "sign_in"}
         showLinks={false}
-        redirectTo={`${window.location.origin}/`}
+        redirectTo={`${window.location.origin}/auth?type=recovery`}
         localization={{
           variables: {
             sign_in: {
