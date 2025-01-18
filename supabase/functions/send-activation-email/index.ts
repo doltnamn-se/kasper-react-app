@@ -1,8 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 
-const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -59,7 +57,7 @@ serve(async (req) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${RESEND_API_KEY}`,
+          Authorization: `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
         },
         body: JSON.stringify({
           from: "Doltnamn <no-reply@doltnamn.se>",
@@ -113,7 +111,7 @@ serve(async (req) => {
                     margin: 32px auto;
                     padding: 12px 24px;
                     background-color: #000000;
-                    color: #ffffff;
+                    color: #ffffff !important;
                     text-decoration: none;
                     border-radius: 6px;
                     font-weight: 500;
