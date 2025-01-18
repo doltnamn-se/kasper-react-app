@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getAuthAppearance } from "./AuthAppearance";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { SignUpPrompt } from "./SignUpPrompt";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface AuthFormProps {
@@ -18,30 +18,56 @@ interface AuthFormProps {
 export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false }: AuthFormProps) => {
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [isManualResetMode, setIsManualResetMode] = useState(false);
   const [view, setView] = useState<"sign_in" | "update_password">("sign_in");
   const [resetError, setResetError] = useState<string | null>(null);
 
   useEffect(() => {
     const type = searchParams.get('type');
+    const code = searchParams.get('code');
     const error = searchParams.get('error');
     const errorDescription = searchParams.get('error_description');
     
-    console.log("AuthForm: URL parameters -", { type, error, errorDescription });
+    console.log("AuthForm: URL parameters -", { type, code, error, errorDescription });
     
-    if (type === 'recovery') {
-      if (error === 'access_denied') {
+    const handleRecoveryFlow = async () => {
+      if (type === 'recovery' && code) {
+        try {
+          // Exchange the recovery code for a session
+          const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+          
+          if (sessionError) {
+            console.error("AuthForm: Session error -", sessionError);
+            setResetError(t('error.reset.link.expired'));
+            toast.error(t('error.reset.link.expired'));
+            setView("sign_in");
+            setIsManualResetMode(true);
+            return;
+          }
+
+          if (data.session) {
+            console.log("AuthForm: Recovery session established");
+            setView("update_password");
+          }
+        } catch (err) {
+          console.error("AuthForm: Recovery flow error -", err);
+          setResetError(t('error.reset.link.expired'));
+          toast.error(t('error.reset.link.expired'));
+          setView("sign_in");
+          setIsManualResetMode(true);
+        }
+      } else if (type === 'recovery' && error === 'access_denied') {
         console.log("AuthForm: Password reset link expired");
         setResetError(t('error.reset.link.expired'));
         toast.error(t('error.reset.link.expired'));
         setView("sign_in");
         setIsManualResetMode(true);
-      } else {
-        console.log("AuthForm: Setting view to update_password");
-        setView("update_password");
       }
-    }
-  }, [searchParams, t]);
+    };
+
+    handleRecoveryFlow();
+  }, [searchParams, t, navigate]);
 
   // If we're in manual reset mode (from clicking forgot password or expired link), show the reset form
   if (isManualResetMode) {
