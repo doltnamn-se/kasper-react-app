@@ -6,10 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface EmailRequest {
-  email: string;
-}
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -17,35 +13,26 @@ serve(async (req) => {
   }
 
   try {
-    const { email } = await req.json() as EmailRequest;
+    const { email } = await req.json();
     console.log("Processing password reset request for:", email);
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
     // Generate password reset link
-    const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'recovery',
-      email: email,
-      options: {
-        redirectTo: 'https://app.doltnamn.se/auth/reset-password',
+    const { data, error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo: `${req.headers.get('origin')}/auth/reset-password`,
       }
-    });
+    );
 
-    if (linkError) {
-      console.error("Error generating reset link:", linkError);
-      throw new Error("Failed to generate reset link");
+    if (resetError) {
+      console.error("Error generating reset link:", resetError);
+      throw resetError;
     }
-
-    console.log("Generated reset link:", linkData.properties.action_link);
 
     // Send email via Resend
     const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -60,9 +47,7 @@ serve(async (req) => {
         subject: "Reset Your Doltnamn Password",
         html: `
           <p>Hello,</p>
-          <p>Click the link below to reset your password:</p>
-          <p><a href="${linkData.properties.action_link}">Reset Password</a></p>
-          <p>If you didn't request this password reset, you can safely ignore this email.</p>
+          <p>A password reset has been requested for your account. If you didn't make this request, you can safely ignore this email.</p>
           <p>Best regards,<br>The Doltnamn Team</p>
         `,
       }),
@@ -74,18 +59,13 @@ serve(async (req) => {
       throw new Error(`Failed to send email: ${errorText}`);
     }
 
-    const emailData = await resendResponse.json();
-    console.log("Email sent successfully:", emailData);
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
+    });
 
-    return new Response(
-      JSON.stringify({ success: true, message: "Password reset email sent successfully" }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
-      }
-    );
   } catch (err) {
-    console.error("Error in password-reset function:", err);
+    console.error("Error in password reset function:", err);
     return new Response(
       JSON.stringify({ 
         error: err.message || "An unexpected error occurred",
