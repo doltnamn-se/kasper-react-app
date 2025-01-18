@@ -11,6 +11,8 @@ export type Database = {
     Tables: {
       customers: {
         Row: {
+          checklist_completed: boolean | null
+          checklist_step: number | null
           created_at: string | null
           created_by: string | null
           id: string
@@ -24,6 +26,8 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          checklist_completed?: boolean | null
+          checklist_step?: number | null
           created_at?: string | null
           created_by?: string | null
           id: string
@@ -37,6 +41,8 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          checklist_completed?: boolean | null
+          checklist_step?: number | null
           created_at?: string | null
           created_by?: string | null
           id?: string
