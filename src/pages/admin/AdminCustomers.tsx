@@ -89,7 +89,7 @@ const AdminCustomers = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-normal text-[#000000] dark:text-white mb-6">
+      <h1 className="text-2xl font-bold text-[#000000] dark:text-white mb-6">
         {t('nav.admin.customers')}
       </h1>
       <AdminHeader onCustomerCreated={refetch} />

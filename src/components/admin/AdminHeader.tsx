@@ -6,8 +6,7 @@ interface AdminHeaderProps {
 
 export const AdminHeader = ({ onCustomerCreated }: AdminHeaderProps) => {
   return (
-    <div className="flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-bold text-[#000000] dark:text-gray-300">Admin Dashboard</h1>
+    <div className="flex justify-end items-center mb-6">
       <CreateCustomerDialog onCustomerCreated={onCustomerCreated} />
     </div>
   );
