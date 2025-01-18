@@ -26,8 +26,10 @@ export const CustomerTableRow = ({
     }
   };
 
+  console.log("Customer onboarding status:", customer.id, customer.onboarding_completed);
+
   return (
-    <TableRow key={customer.id}>
+    <TableRow>
       <TableCell>{customer.profile?.id}</TableCell>
       <TableCell>
         <Badge variant={getBadgeVariant(customer.profile?.role)}>
@@ -43,7 +45,7 @@ export const CustomerTableRow = ({
       </TableCell>
       <TableCell>
         <Badge variant={customer.onboarding_completed ? "default" : "secondary"}>
-          {customer.onboarding_completed ? 'Complete' : 'Incomplete'}
+          {customer.onboarding_completed === true ? 'Complete' : 'Incomplete'}
         </Badge>
       </TableCell>
       <TableCell className="text-right">
