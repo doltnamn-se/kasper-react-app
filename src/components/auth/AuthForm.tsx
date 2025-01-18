@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Auth as SupabaseAuth } from "@supabase/auth-ui-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getAuthAppearance } from "./AuthAppearance";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { SignUpPrompt } from "./SignUpPrompt";
+import { useSearchParams } from "react-router-dom";
 
 interface AuthFormProps {
   errorMessage: string;
@@ -15,9 +16,21 @@ interface AuthFormProps {
 
 export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false }: AuthFormProps) => {
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
   const [isManualResetMode, setIsManualResetMode] = useState(false);
+  const [view, setView] = useState<"sign_in" | "update_password">("sign_in");
 
-  // If we're in reset password mode (either from URL or manual click), show the reset form
+  useEffect(() => {
+    const type = searchParams.get('type');
+    console.log("AuthForm: URL parameters -", { type });
+    
+    if (type === 'recovery') {
+      console.log("AuthForm: Setting view to update_password");
+      setView("update_password");
+    }
+  }, [searchParams]);
+
+  // If we're in manual reset mode (from clicking forgot password), show the reset form
   if (isManualResetMode) {
     return <PasswordResetForm onCancel={() => setIsManualResetMode(false)} />;
   }
@@ -43,7 +56,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
           },
         }}
         providers={[]}
-        view={isResetPasswordMode ? "update_password" : "sign_in"}
+        view={view}
         showLinks={false}
         redirectTo={`${window.location.origin}/auth?type=recovery`}
         localization={{
@@ -102,7 +115,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
           }
         }}
       />
-      {!isResetPasswordMode && (
+      {view === "sign_in" && (
         <div className="mt-4 text-center">
           <button
             onClick={() => setIsManualResetMode(true)}
@@ -112,7 +125,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
           </button>
         </div>
       )}
-      {!isResetPasswordMode && <SignUpPrompt />}
+      {!isResetPasswordMode && view === "sign_in" && <SignUpPrompt />}
     </div>
   );
 };
