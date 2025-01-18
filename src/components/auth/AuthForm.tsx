@@ -7,6 +7,7 @@ import { getAuthAppearance } from "./AuthAppearance";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { SignUpPrompt } from "./SignUpPrompt";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 interface AuthFormProps {
   errorMessage: string;
@@ -19,20 +20,40 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
   const [searchParams] = useSearchParams();
   const [isManualResetMode, setIsManualResetMode] = useState(false);
   const [view, setView] = useState<"sign_in" | "update_password">("sign_in");
+  const [resetError, setResetError] = useState<string | null>(null);
 
   useEffect(() => {
     const type = searchParams.get('type');
-    console.log("AuthForm: URL parameters -", { type });
+    const error = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+    
+    console.log("AuthForm: URL parameters -", { type, error, errorDescription });
     
     if (type === 'recovery') {
-      console.log("AuthForm: Setting view to update_password");
-      setView("update_password");
+      if (error === 'access_denied') {
+        console.log("AuthForm: Password reset link expired");
+        setResetError(t('error.reset.link.expired'));
+        toast.error(t('error.reset.link.expired'));
+        setView("sign_in");
+        setIsManualResetMode(true);
+      } else {
+        console.log("AuthForm: Setting view to update_password");
+        setView("update_password");
+      }
     }
-  }, [searchParams]);
+  }, [searchParams, t]);
 
-  // If we're in manual reset mode (from clicking forgot password), show the reset form
+  // If we're in manual reset mode (from clicking forgot password or expired link), show the reset form
   if (isManualResetMode) {
-    return <PasswordResetForm onCancel={() => setIsManualResetMode(false)} />;
+    return (
+      <PasswordResetForm 
+        onCancel={() => {
+          setIsManualResetMode(false);
+          setResetError(null);
+        }} 
+        initialError={resetError}
+      />
+    );
   }
 
   return (

@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface PasswordResetFormProps {
   onCancel: () => void;
+  initialError?: string | null;
 }
 
-export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
+export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormProps) => {
   const { t } = useLanguage();
   const [resetEmail, setResetEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +58,11 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
         <h2 className="text-xl font-semibold mb-6 text-center dark:text-white font-system-ui">
           {t('forgot.password')}
         </h2>
+        {initialError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{initialError}</AlertDescription>
+          </Alert>
+        )}
         <div className="space-y-6">
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui">
