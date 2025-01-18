@@ -157,8 +157,9 @@ export const TopNav = () => {
         console.error("Error signing out:", error);
         toast({
           variant: "destructive",
-          title: "Error",
-          description: "Could not sign out. Please try again.",
+          title: t('toast.error.title'),
+          description: t('toast.error.description'),
+          className: "top-4 right-4",
         });
         return;
       }
@@ -169,15 +170,17 @@ export const TopNav = () => {
       navigate("/auth", { replace: true });
       
       toast({
-        title: "Signed out successfully",
-        description: "You have been logged out of your account.",
+        title: t('toast.signed.out.title'),
+        description: t('toast.signed.out.description'),
+        className: "top-4 right-4",
       });
     } catch (err) {
       console.error("Unexpected error during sign out:", err);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: t('toast.error.title'),
+        description: t('toast.error.unexpected'),
+        className: "top-4 right-4",
       });
     } finally {
       setIsSigningOut(false);

@@ -67,6 +67,11 @@ const translations = {
     'error.invalid.email': 'Invalid email',
     'error.invalid.phone': 'Invalid phone number',
     'error.generic': 'An error occurred. Please try again later.',
+    'toast.signed.out.title': 'Signed out successfully',
+    'toast.signed.out.description': 'You have been logged out of your account.',
+    'toast.error.title': 'Error',
+    'toast.error.description': 'Could not sign out. Please try again.',
+    'toast.error.unexpected': 'An unexpected error occurred. Please try again.',
   },
   sv: {
     // Auth related
