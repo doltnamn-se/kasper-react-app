@@ -21,11 +21,11 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Generate password reset link
+    // Generate password reset link with correct redirect URL
     const { data, error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: `${req.headers.get('origin')}/auth/reset-password`,
+        redirectTo: `${req.headers.get('origin')}/auth?type=recovery`,
       }
     );
 
