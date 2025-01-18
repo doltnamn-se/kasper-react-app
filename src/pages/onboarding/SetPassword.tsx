@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export const SetPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,32 +19,71 @@ export const SetPassword = () => {
   useEffect(() => {
     let mounted = true;
     const MAX_ATTEMPTS = 3;
-    const RETRY_DELAY = 2000; // 2 seconds
 
     const initSession = async () => {
       try {
-        console.log(`SetPassword: Initialization attempt ${initializationAttempts + 1}`);
-        
+        console.log("SetPassword: Checking for magic link parameters...");
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isMagicLink = hashParams.get('type') === 'magiclink';
+
+        if (isMagicLink) {
+          console.log("SetPassword: Magic link detected, waiting for session...");
+          // Give time for the magic link session to be established
+          setTimeout(async () => {
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+            
+            if (sessionError) {
+              console.error("SetPassword: Session error:", sessionError);
+              if (mounted) {
+                toast({
+                  title: "Error",
+                  description: "Unable to initialize session. Please try again.",
+                  variant: "destructive",
+                });
+                navigate("/auth");
+              }
+              return;
+            }
+
+            if (!session?.user?.id) {
+              console.log("SetPassword: No session found after magic link");
+              if (mounted && initializationAttempts < MAX_ATTEMPTS) {
+                setInitializationAttempts(prev => prev + 1);
+                return;
+              }
+            }
+
+            if (mounted && session?.user?.id) {
+              console.log("SetPassword: Session established with user ID:", session.user.id);
+              setUserId(session.user.id);
+              setIsInitializing(false);
+            }
+          }, 2000); // Wait 2 seconds for magic link session
+          return;
+        }
+
+        // Regular session check
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
-          console.error("SetPassword: Session error:", sessionError);
           throw sessionError;
         }
 
         if (!session?.user?.id) {
-          console.log("SetPassword: No session found, will retry if attempts remain");
-          if (mounted && initializationAttempts < MAX_ATTEMPTS) {
-            setTimeout(() => {
-              setInitializationAttempts(prev => prev + 1);
-            }, RETRY_DELAY);
-            return;
+          console.log("SetPassword: No session found");
+          if (mounted) {
+            toast({
+              title: "Error",
+              description: "No active session found. Please try logging in again.",
+              variant: "destructive",
+            });
+            navigate("/auth");
           }
-          throw new Error("Failed to initialize session after multiple attempts");
+          return;
         }
 
         if (mounted) {
-          console.log("SetPassword: Session initialized with user ID:", session.user.id);
+          console.log("SetPassword: Session found with user ID:", session.user.id);
           setUserId(session.user.id);
           setIsInitializing(false);
         }
@@ -60,31 +100,24 @@ export const SetPassword = () => {
       }
     };
 
-    // Only attempt initialization if we haven't exceeded max attempts
     if (initializationAttempts < MAX_ATTEMPTS) {
       initSession();
-    }
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (!mounted) return;
-      
-      console.log("SetPassword: Auth state changed:", event, session?.user?.id);
-      
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user?.id) {
-        console.log("SetPassword: Session established with ID:", session.user.id);
-        setUserId(session.user.id);
-        setIsInitializing(false);
-      } else if (event === 'SIGNED_OUT' && !isInitializing) {
-        console.log("SetPassword: User signed out (not during initialization)");
+    } else {
+      console.log("SetPassword: Max initialization attempts reached");
+      if (mounted) {
+        toast({
+          title: "Error",
+          description: "Unable to initialize session after multiple attempts. Please try again.",
+          variant: "destructive",
+        });
         navigate("/auth");
       }
-    });
+    }
 
     return () => {
       mounted = false;
-      subscription.unsubscribe();
     };
-  }, [navigate, toast, initializationAttempts]);
+  }, [navigate, toast, initializationAttempts, location.hash]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,21 +191,6 @@ export const SetPassword = () => {
     }
   };
 
-  if (isInitializing) {
-    return (
-      <div className="flex items-center justify-center min-h-[200px]">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="text-sm text-gray-600">
-            {initializationAttempts > 0 
-              ? `Retrying session initialization (Attempt ${initializationAttempts + 1}/3)...`
-              : "Initializing your session..."}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -182,31 +200,44 @@ export const SetPassword = () => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-          />
+      {isInitializing ? (
+        <div className="flex items-center justify-center min-h-[200px]">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+            <p className="text-sm text-gray-600">
+              {initializationAttempts > 0 
+                ? `Initializing session (Attempt ${initializationAttempts + 1}/3)...`
+                : "Initializing your session..."}
+            </p>
+          </div>
         </div>
-        <div className="space-y-2">
-          <Input
-            type="password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            minLength={6}
-          />
-        </div>
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Setting password..." : "Continue"}
-        </Button>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
+          <div className="space-y-2">
+            <Input
+              type="password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Setting password..." : "Continue"}
+          </Button>
+        </form>
+      )}
     </div>
   );
 };
