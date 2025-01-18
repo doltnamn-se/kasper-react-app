@@ -51,20 +51,21 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       console.log("Customer created successfully:", createData);
 
-      // Step 2: Generate and send magic link
-      console.log("Step 2: Generating magic link...");
-      const { error: signInError } = await supabase.auth.signInWithOtp({
-        email: formData.email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/onboarding`,
-        },
+      // Step 2: Send activation email
+      console.log("Step 2: Sending activation email...");
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email: formData.email,
+          firstName: formData.firstName
+        }
       });
 
-      if (signInError) {
-        console.error("Error sending magic link:", signInError);
+      if (emailError) {
+        console.error("Error sending activation email:", emailError);
+        // Don't throw here, show a notification instead
         toast({
           title: "Partial Success",
-          description: "Customer created but activation email could not be sent. Please try sending the magic link manually.",
+          description: "Customer created but activation email could not be sent. Please try resending the email later.",
           variant: "default",
         });
       } else {
