@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
@@ -22,6 +22,9 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create New Customer</DialogTitle>
+          <DialogDescription>
+            Add a new customer to the platform. Fill in their details below.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <CustomerFormFields

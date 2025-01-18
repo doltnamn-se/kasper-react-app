@@ -3,28 +3,33 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Max-Age': '86400',
 }
 
 serve(async (req) => {
+  console.log("Function invoked with request:", req.method);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
   }
 
   try {
     // Verify authorization header
-    const authHeader = req.headers.get('Authorization')
+    const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      console.error("No authorization header")
-      throw new Error('No authorization header')
+      console.error("No authorization header");
+      throw new Error('No authorization header');
     }
 
-    const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json()
-    console.log("Starting customer creation with data:", { email, firstName, lastName, subscriptionPlan, createdBy })
+    const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
+    console.log("Starting customer creation with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -35,30 +40,30 @@ serve(async (req) => {
           persistSession: false,
         },
       }
-    )
+    );
 
     // Create auth user
-    console.log("Creating auth user")
+    console.log("Creating auth user");
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: Math.random().toString(36).slice(-8),
       email_confirm: true,
-    })
+    });
 
     if (authError) {
-      console.error("Error creating auth user:", authError)
-      throw new Error(authError.message)
+      console.error("Error creating auth user:", authError);
+      throw new Error(authError.message);
     }
 
     if (!authData.user) {
-      console.error("No user data returned from auth creation")
-      throw new Error("Failed to create user")
+      console.error("No user data returned from auth creation");
+      throw new Error("Failed to create user");
     }
 
-    console.log("Auth user created successfully:", authData.user.id)
+    console.log("Auth user created successfully:", authData.user.id);
 
     // Update profile data
-    console.log("Updating profile data")
+    console.log("Updating profile data");
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({
@@ -66,29 +71,29 @@ serve(async (req) => {
         last_name: lastName,
         role: 'customer',
       })
-      .eq('id', authData.user.id)
+      .eq('id', authData.user.id);
 
     if (profileError) {
-      console.error("Error updating profile:", profileError)
-      throw new Error("Failed to update profile")
+      console.error("Error updating profile:", profileError);
+      throw new Error("Failed to update profile");
     }
 
     // Update customer data
-    console.log("Updating customer data")
+    console.log("Updating customer data");
     const { error: customerError } = await supabaseAdmin
       .from('customers')
       .update({
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
       })
-      .eq('id', authData.user.id)
+      .eq('id', authData.user.id);
 
     if (customerError) {
-      console.error("Error updating customer:", customerError)
-      throw new Error("Failed to update customer")
+      console.error("Error updating customer:", customerError);
+      throw new Error("Failed to update customer");
     }
 
-    console.log("Customer creation completed successfully")
+    console.log("Customer creation completed successfully");
     return new Response(
       JSON.stringify({ 
         success: true, 
@@ -99,9 +104,9 @@ serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
       }
-    )
+    );
   } catch (err) {
-    console.error("Error in create-customer function:", err)
+    console.error("Error in create-customer function:", err);
     return new Response(
       JSON.stringify({ 
         error: err.message || "An unexpected error occurred",
@@ -111,6 +116,6 @@ serve(async (req) => {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
-    )
+    );
   }
-})
+});
