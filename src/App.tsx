@@ -31,8 +31,21 @@ function App() {
         <SidebarProvider>
           <Router>
             <Routes>
+              {/* Auth routes */}
               <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
               <Route path="/auth/reset-password" element={<AuthRoute><Auth /></AuthRoute>} />
+              
+              {/* Onboarding Routes - No protection wrapper */}
+              <Route path="/onboarding" element={<OnboardingLayout />}>
+                <Route path="/onboarding/set-password" element={<SetPassword />} />
+                <Route path="/onboarding/hiding-preferences" element={<HidingPreferences />} />
+                <Route path="/onboarding/removal-urls" element={<RemovalUrls />} />
+                <Route path="/onboarding/identification" element={<IdentificationInfo />} />
+                <Route path="/onboarding/complete" element={<OnboardingComplete />} />
+                <Route index element={<SetPassword />} />
+              </Route>
+
+              {/* Protected Routes */}
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
@@ -42,16 +55,6 @@ function App() {
               <Route path="/my-links" element={<ProtectedRoute><MyLinks /></ProtectedRoute>} />
               <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
               <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
-              
-              {/* Onboarding Routes */}
-              <Route path="/onboarding" element={<OnboardingLayout />}>
-                <Route path="/onboarding/set-password" element={<SetPassword />} />
-                <Route path="/onboarding/hiding-preferences" element={<HidingPreferences />} />
-                <Route path="/onboarding/removal-urls" element={<RemovalUrls />} />
-                <Route path="/onboarding/identification" element={<IdentificationInfo />} />
-                <Route path="/onboarding/complete" element={<OnboardingComplete />} />
-                <Route index element={<SetPassword />} />
-              </Route>
             </Routes>
             <Toaster />
           </Router>
