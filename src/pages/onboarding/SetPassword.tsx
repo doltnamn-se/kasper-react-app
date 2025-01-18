@@ -12,6 +12,7 @@ export const SetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
     const initSession = async () => {
@@ -21,9 +22,8 @@ export const SetPassword = () => {
         const isMagicLink = hashParams.get('type') === 'magiclink';
         
         if (isMagicLink) {
-          console.log("SetPassword: Magic link detected, proceeding with session setup");
-          // Let the magic link process complete before checking session
-          return;
+          console.log("SetPassword: Magic link detected, waiting for session initialization");
+          return; // Let the auth state change handler manage the session
         }
 
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
@@ -48,6 +48,8 @@ export const SetPassword = () => {
           variant: "destructive",
         });
         navigate("/auth");
+      } finally {
+        setIsInitializing(false);
       }
     };
 
@@ -55,13 +57,19 @@ export const SetPassword = () => {
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("SetPassword: Auth state changed:", event);
+      console.log("SetPassword: Auth state changed:", event, session?.user?.id);
       
-      if (event === 'SIGNED_IN' && session?.user?.id) {
+      if (event === 'INITIAL_SESSION' && session?.user?.id) {
+        console.log("SetPassword: Initial session established with ID:", session.user.id);
+        setUserId(session.user.id);
+        setIsInitializing(false);
+      } else if (event === 'SIGNED_IN' && session?.user?.id) {
         console.log("SetPassword: User signed in with ID:", session.user.id);
         setUserId(session.user.id);
-      } else if (event === 'SIGNED_OUT') {
-        console.log("SetPassword: User signed out");
+        setIsInitializing(false);
+      } else if (event === 'SIGNED_OUT' && !isInitializing) {
+        // Only redirect if we're not in the initialization phase
+        console.log("SetPassword: User signed out (not during initialization)");
         navigate("/auth");
       }
     });
