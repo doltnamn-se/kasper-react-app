@@ -1,11 +1,9 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { getPasswordResetTemplate } from "../email-handler/templates.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 interface EmailRequest {
@@ -13,6 +11,7 @@ interface EmailRequest {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -59,7 +58,17 @@ serve(async (req) => {
         from: "Doltnamn <no-reply@doltnamn.se>",
         to: [email],
         subject: "Reset Your Doltnamn Password",
-        html: getPasswordResetTemplate(linkData.properties.action_link),
+        html: `
+          <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+            <h2>Reset Your Password</h2>
+            <p>Click the button below to reset your password:</p>
+            <a href="${linkData.properties.action_link}" style="display: inline-block; background-color: black; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+              Reset Password
+            </a>
+            <p>If you didn't request this password reset, you can safely ignore this email.</p>
+            <p>Best regards,<br>The Doltnamn Team</p>
+          </div>
+        `,
       }),
     });
 
