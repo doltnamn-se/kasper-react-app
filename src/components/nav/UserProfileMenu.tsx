@@ -165,6 +165,11 @@ export const UserProfileMenu = () => {
     return `${userProfile.first_name?.[0] || ''}${userProfile.last_name?.[0] || ''}`;
   };
 
+  const getFullName = () => {
+    if (!userProfile?.first_name && !userProfile?.last_name) return userEmail;
+    return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim() || userEmail;
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -177,7 +182,7 @@ export const UserProfileMenu = () => {
               {getUserInitials()}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm font-medium">{userEmail}</span>
+          <span className="text-sm font-medium">{getFullName()}</span>
           <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
