@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { getPasswordResetTemplate, getWelcomeTemplate, getTestEmailTemplate } from "./templates.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,7 +18,6 @@ interface EmailRequest {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -26,7 +26,6 @@ serve(async (req) => {
     const { type, email, data } = await req.json() as EmailRequest;
     console.log("Processing email request:", { type, email, data });
 
-    // Initialize Supabase admin client for auth operations
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -41,7 +40,6 @@ serve(async (req) => {
     let emailContent;
     let subject;
 
-    // Generate appropriate email content based on type
     switch (type) {
       case 'reset_password':
         console.log("Generating reset password link");
@@ -59,38 +57,17 @@ serve(async (req) => {
         }
 
         subject = "Reset Your Doltnamn Password";
-        emailContent = `
-          <div>
-            <h1>Password Reset Request</h1>
-            <p>We received a request to reset your Doltnamn password. Click the button below to set a new password:</p>
-            <a href="${linkData.properties.action_link}" style="display: inline-block; background-color: #000000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Reset Password
-            </a>
-            <p>If you didn't request this password reset, you can safely ignore this email.</p>
-            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-            <p>${linkData.properties.action_link}</p>
-          </div>
-        `;
+        emailContent = getPasswordResetTemplate(linkData.properties.action_link);
         break;
 
       case 'welcome':
         subject = "Welcome to Doltnamn";
-        emailContent = `
-          <div>
-            <h1>Welcome to Doltnamn, ${data?.firstName}!</h1>
-            <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
-            <a href="${data?.resetLink}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Activate Account
-            </a>
-            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-            <p>${data?.resetLink}</p>
-          </div>
-        `;
+        emailContent = getWelcomeTemplate(data?.firstName || '', data?.resetLink || '');
         break;
 
       case 'test':
         subject = "Test Email from Doltnamn";
-        emailContent = "<p>This is a test email from Doltnamn. If you received this, the email functionality is working correctly!</p>";
+        emailContent = getTestEmailTemplate();
         break;
 
       default:
