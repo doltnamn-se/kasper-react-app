@@ -7,6 +7,7 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -15,7 +16,6 @@ serve(async (req) => {
     const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
     console.log("Creating customer with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
 
-    // Initialize Supabase admin client
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -29,10 +29,9 @@ serve(async (req) => {
 
     // Create auth user
     console.log("Creating auth user");
-    const tempPassword = Math.random().toString(36).slice(-8);
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
-      password: tempPassword,
+      password: Math.random().toString(36).slice(-8),
       email_confirm: true,
     });
 
@@ -48,8 +47,8 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", authData.user.id);
 
-    // Generate magic link for welcome email
-    console.log("Generating magic link for welcome email");
+    // Generate magic link for activation email
+    console.log("Generating magic link");
     const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
       email: email,
@@ -63,30 +62,39 @@ serve(async (req) => {
       throw new Error("Failed to generate activation link");
     }
 
-    // Send welcome email using our email handler
-    console.log("Sending welcome email");
-    const emailResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/email-handler`, {
-      method: 'POST',
+    // Send activation email
+    console.log("Sending activation email");
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
       },
       body: JSON.stringify({
-        type: 'welcome',
-        email: email,
-        data: {
-          firstName: firstName,
-          resetLink: magicLinkData.properties.action_link,
-        },
+        from: "Doltnamn <no-reply@doltnamn.se>",
+        to: [email],
+        subject: "Activate Your Doltnamn Account",
+        html: `
+          <div>
+            <h1>Welcome to Doltnamn, ${firstName}!</h1>
+            <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
+            <a href="${magicLinkData.properties.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
+              Activate Account
+            </a>
+            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
+            <p>${magicLinkData.properties.action_link}</p>
+          </div>
+        `,
       }),
     });
 
-    if (!emailResponse.ok) {
-      console.error("Error sending welcome email:", await emailResponse.text());
-      throw new Error("Failed to send welcome email");
+    if (!resendResponse.ok) {
+      const errorText = await resendResponse.text();
+      console.error("Error sending activation email:", errorText);
+      throw new Error(`Failed to send email: ${errorText}`);
     }
 
-    console.log("Welcome email sent successfully");
+    console.log("Activation email sent successfully");
 
     // Update profile data
     console.log("Updating profile data");

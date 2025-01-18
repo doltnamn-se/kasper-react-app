@@ -31,7 +31,6 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         console.error("No authenticated user found");
         throw new Error("No authenticated user found");
       }
-      console.log("Current user:", user);
 
       const { data, error } = await supabase.functions.invoke('create-customer', {
         body: {
