@@ -1,63 +1,13 @@
-import { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { CustomersTable } from "@/components/admin/CustomersTable";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Customer } from "@/types/customer";
-import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { CustomerWithProfile } from "@/types/customer";
+import { useCustomers } from "@/hooks/useCustomers";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      console.log('Fetching customers...');
-      const { data: customersData, error: customersError } = await supabase
-        .from('customers')
-        .select(`
-          *,
-          profiles (
-            first_name,
-            last_name,
-            role
-          ),
-          subscriptions (
-            status,
-            stripe_price_id
-          )
-        `);
-
-      if (customersError) {
-        console.error('Error fetching customers:', customersError);
-        throw customersError;
-      }
-
-      console.log('Customers data:', customersData);
-      return customersData;
-    }
-  });
-
-  useEffect(() => {
-    if (data) {
-      const formattedCustomers = data.map((customer: any) => ({
-        id: customer.id,
-        firstName: customer.profiles?.first_name || '',
-        lastName: customer.profiles?.last_name || '',
-        role: customer.profiles?.role || 'customer',
-        onboardingCompleted: customer.onboarding_completed || false,
-        subscriptionStatus: customer.subscriptions?.[0]?.status || 'inactive',
-        subscriptionPlan: customer.subscriptions?.[0]?.stripe_price_id || null,
-        stripeCustomerId: customer.stripe_customer_id || null,
-        createdAt: customer.created_at,
-      }));
-      
-      console.log('Formatted customers:', formattedCustomers);
-      setCustomers(formattedCustomers);
-    }
-  }, [data]);
+  const { customers, isLoading, error, refetch } = useCustomers();
 
   if (error) {
     console.error('Error in AdminCustomers:', error);
@@ -78,8 +28,9 @@ const AdminCustomers = () => {
         <div>Loading...</div>
       ) : (
         <CustomersTable 
-          customers={customers} 
+          customers={customers || []} 
           onCustomerUpdated={refetch}
+          onDeleteCustomer={() => {}}
         />
       )}
     </MainLayout>
