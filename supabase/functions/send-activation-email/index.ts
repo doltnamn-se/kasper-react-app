@@ -11,7 +11,6 @@ const corsHeaders = {
 serve(async (req) => {
   console.log("Activation email function invoked with method:", req.method);
   
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
     return new Response(null, { 
@@ -24,7 +23,6 @@ serve(async (req) => {
     const { email, firstName } = await req.json();
     console.log("Received request to send activation email to:", email);
 
-    // Initialize Supabase admin client
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -42,6 +40,10 @@ serve(async (req) => {
       email: email,
       options: {
         redirectTo: `${req.headers.get('origin')}/onboarding`,
+        // Set a longer expiration time (24 hours)
+        data: {
+          activationLink: true
+        }
       }
     });
 

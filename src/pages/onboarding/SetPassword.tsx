@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,18 +7,16 @@ import { useToast } from "@/hooks/use-toast";
 
 export const SetPassword = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
-  const [initializationAttempts, setInitializationAttempts] = useState(0);
 
   useEffect(() => {
     let mounted = true;
-    const MAX_ATTEMPTS = 3;
+    let sessionCheckTimeout: number;
 
     const initSession = async () => {
       try {
@@ -29,7 +27,7 @@ export const SetPassword = () => {
         if (isMagicLink) {
           console.log("SetPassword: Magic link detected, waiting for session...");
           // Give time for the magic link session to be established
-          setTimeout(async () => {
+          sessionCheckTimeout = window.setTimeout(async () => {
             const { data: { session }, error: sessionError } = await supabase.auth.getSession();
             
             if (sessionError) {
@@ -47,18 +45,23 @@ export const SetPassword = () => {
 
             if (!session?.user?.id) {
               console.log("SetPassword: No session found after magic link");
-              if (mounted && initializationAttempts < MAX_ATTEMPTS) {
-                setInitializationAttempts(prev => prev + 1);
-                return;
+              if (mounted) {
+                toast({
+                  title: "Error",
+                  description: "Session not found. Please try clicking the activation link again.",
+                  variant: "destructive",
+                });
+                navigate("/auth");
               }
+              return;
             }
 
-            if (mounted && session?.user?.id) {
+            if (mounted) {
               console.log("SetPassword: Session established with user ID:", session.user.id);
               setUserId(session.user.id);
               setIsInitializing(false);
             }
-          }, 2000); // Wait 2 seconds for magic link session
+          }, 2000);
           return;
         }
 
@@ -100,24 +103,15 @@ export const SetPassword = () => {
       }
     };
 
-    if (initializationAttempts < MAX_ATTEMPTS) {
-      initSession();
-    } else {
-      console.log("SetPassword: Max initialization attempts reached");
-      if (mounted) {
-        toast({
-          title: "Error",
-          description: "Unable to initialize session after multiple attempts. Please try again.",
-          variant: "destructive",
-        });
-        navigate("/auth");
-      }
-    }
+    initSession();
 
     return () => {
       mounted = false;
+      if (sessionCheckTimeout) {
+        window.clearTimeout(sessionCheckTimeout);
+      }
     };
-  }, [navigate, toast, initializationAttempts, location.hash]);
+  }, [navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -205,9 +199,7 @@ export const SetPassword = () => {
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
             <p className="text-sm text-gray-600">
-              {initializationAttempts > 0 
-                ? `Initializing session (Attempt ${initializationAttempts + 1}/3)...`
-                : "Initializing your session..."}
+              Initializing your session...
             </p>
           </div>
         </div>
