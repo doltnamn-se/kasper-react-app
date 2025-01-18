@@ -2,15 +2,16 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
+  'Access-Control-Allow-Origin': '*',  // Allow all origins in development
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-user-id',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Credentials': 'true'
+  'Access-Control-Max-Age': '86400',  // Cache preflight request for 24 hours
 }
 
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log("Handling OPTIONS preflight request");
     return new Response(null, { headers: corsHeaders })
   }
 
