@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError, AuthApiError } from "@supabase/supabase-js";
 import { AuthHeader } from "@/components/auth/AuthHeader";
@@ -11,6 +11,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Auth = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { t, language } = useLanguage();
@@ -32,11 +33,17 @@ const Auth = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Check if we're on the reset-password route
-    if (location.pathname === '/auth/reset-password') {
+    // Check if we have a recovery token in the URL
+    const type = searchParams.get('type');
+    const token = searchParams.get('token');
+    
+    console.log("URL parameters:", { type, token });
+    
+    if (type === 'recovery' && token) {
+      console.log("Setting reset password mode due to recovery token");
       setIsResetPasswordMode(true);
     }
-  }, [language, location]);
+  }, [language, searchParams]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
