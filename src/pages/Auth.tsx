@@ -33,14 +33,12 @@ const Auth = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Check if we have a recovery token in the URL
+    // Check URL parameters for recovery flow
     const type = searchParams.get('type');
-    const token = searchParams.get('token');
+    console.log("Auth page: URL type parameter =", type);
     
-    console.log("URL parameters:", { type, token });
-    
-    if (type === 'recovery' && token) {
-      console.log("Setting reset password mode due to recovery token");
+    if (type === 'recovery') {
+      console.log("Auth page: Setting reset password mode to true");
       setIsResetPasswordMode(true);
     }
   }, [language, searchParams]);
@@ -60,20 +58,17 @@ const Auth = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log("Auth event:", event);
-        if (event === "SIGNED_IN" && session) {
-          navigate("/");
-        }
-        if (event === "SIGNED_OUT") {
-          setErrorMessage("");
-        }
+        console.log("Auth page: Auth state changed:", event);
+        
         if (event === "PASSWORD_RECOVERY") {
-          console.log("Password recovery event detected");
+          console.log("Auth page: Password recovery event detected");
           setIsResetPasswordMode(true);
-          const { error } = await supabase.auth.getSession();
-          if (error) {
-            handleError(error);
-          }
+        } else if (event === "SIGNED_IN" && session) {
+          console.log("Auth page: User signed in, navigating to home");
+          navigate("/");
+        } else if (event === "SIGNED_OUT") {
+          console.log("Auth page: User signed out");
+          setErrorMessage("");
         }
       }
     );
