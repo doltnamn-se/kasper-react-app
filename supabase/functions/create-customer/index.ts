@@ -7,14 +7,13 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
-    console.log("Creating customer with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
+    console.log("Starting customer creation with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -78,59 +77,12 @@ serve(async (req) => {
       throw new Error("Failed to update customer");
     }
 
-    // Generate magic link for activation email
-    console.log("Generating magic link");
-    const { data: magicLinkData, error: magicLinkError } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'magiclink',
-      email: email,
-      options: {
-        redirectTo: `${new URL(req.url).origin}/onboarding`,
-      }
-    });
-
-    if (magicLinkError || !magicLinkData?.properties?.action_link) {
-      console.error("Error generating magic link:", magicLinkError);
-      throw new Error("Failed to generate activation link");
-    }
-
-    // Send activation email
-    console.log("Sending activation email");
-    const resendResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
-      },
-      body: JSON.stringify({
-        from: "Doltnamn <no-reply@doltnamn.se>",
-        to: [email],
-        subject: "Activate Your Doltnamn Account",
-        html: `
-          <div>
-            <h1>Welcome to Doltnamn, ${firstName}!</h1>
-            <p>Your account has been created. Click the button below to set up your password and complete your onboarding:</p>
-            <a href="${magicLinkData.properties.action_link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 16px 0;">
-              Activate Account
-            </a>
-            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-            <p>${magicLinkData.properties.action_link}</p>
-          </div>
-        `,
-      }),
-    });
-
-    if (!resendResponse.ok) {
-      const errorText = await resendResponse.text();
-      console.error("Error sending activation email:", errorText);
-      throw new Error(`Failed to send email: ${errorText}`);
-    }
-
     console.log("Customer creation completed successfully");
     return new Response(
       JSON.stringify({ 
         success: true, 
         userId: authData.user.id,
-        message: "Customer created successfully and activation email sent."
+        message: "Customer created successfully"
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

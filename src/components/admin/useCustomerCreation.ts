@@ -32,7 +32,9 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      const { data, error } = await supabase.functions.invoke('create-customer', {
+      // Step 1: Create customer
+      console.log("Step 1: Creating customer...");
+      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
           email: formData.email,
           firstName: formData.firstName,
@@ -42,21 +44,41 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         }
       });
 
-      if (error) {
-        console.error("Error in customer creation:", error);
-        throw error;
+      if (createError) {
+        console.error("Error in customer creation:", createError);
+        throw createError;
       }
 
-      console.log("Customer creation response:", data);
-      toast({
-        title: "Success",
-        description: "Customer created successfully and activation email sent.",
+      console.log("Customer created successfully:", createData);
+
+      // Step 2: Send activation email
+      console.log("Step 2: Sending activation email...");
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email: formData.email,
+          firstName: formData.firstName
+        }
       });
+
+      if (emailError) {
+        console.error("Error sending activation email:", emailError);
+        // Don't throw here, show a warning instead
+        toast({
+          title: "Partial Success",
+          description: "Customer created but activation email could not be sent. Please try resending the email later.",
+          variant: "warning",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Customer created successfully and activation email sent.",
+        });
+      }
 
       resetForm();
       onCustomerCreated();
     } catch (err: any) {
-      console.error("Error in customer creation:", err);
+      console.error("Error in customer creation process:", err);
       toast({
         title: "Error",
         description: err.message || "An unexpected error occurred. Please try again.",
