@@ -16,7 +16,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { SidebarProvider } from "./contexts/SidebarContext";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
-import { SetPassword } from "./pages/onboarding/SetPassword";
 import { HidingPreferences } from "./pages/onboarding/HidingPreferences";
 import { RemovalUrls } from "./pages/onboarding/RemovalUrls";
 import { IdentificationInfo } from "./pages/onboarding/IdentificationInfo";
@@ -37,12 +36,11 @@ function App() {
               
               {/* Onboarding Routes - No protection wrapper */}
               <Route path="/onboarding" element={<OnboardingLayout />}>
-                <Route path="/onboarding/set-password" element={<SetPassword />} />
                 <Route path="/onboarding/hiding-preferences" element={<HidingPreferences />} />
                 <Route path="/onboarding/removal-urls" element={<RemovalUrls />} />
                 <Route path="/onboarding/identification" element={<IdentificationInfo />} />
                 <Route path="/onboarding/complete" element={<OnboardingComplete />} />
-                <Route index element={<SetPassword />} />
+                <Route index element={<HidingPreferences />} />
               </Route>
 
               {/* Protected Routes */}
