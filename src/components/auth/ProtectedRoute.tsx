@@ -29,24 +29,25 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
           return;
         }
 
+        // Get current session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {
           console.error("ProtectedRoute: Session error:", sessionError);
-          await supabase.auth.signOut();
           setIsAuthenticated(false);
           setIsLoading(false);
           return;
         }
 
         if (!session) {
-          console.log("ProtectedRoute: No session");
+          console.log("ProtectedRoute: No session found");
           setIsAuthenticated(false);
           setIsLoading(false);
           return;
         }
 
-        console.log("ProtectedRoute: Session found, checking role");
+        // Check user role and onboarding status
+        console.log("ProtectedRoute: Session found, checking user status");
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('role')
@@ -55,7 +56,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
 
         if (profileError) {
           console.error("ProtectedRoute: Profile error:", profileError);
-          await supabase.auth.signOut();
           setIsAuthenticated(false);
           setIsLoading(false);
           return;
@@ -79,7 +79,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
 
         if (customerError) {
           console.error("ProtectedRoute: Customer error:", customerError);
-          await supabase.auth.signOut();
           setIsAuthenticated(false);
           setIsLoading(false);
           return;
@@ -90,7 +89,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
         
       } catch (error) {
         console.error("ProtectedRoute: Error:", error);
-        await supabase.auth.signOut();
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);

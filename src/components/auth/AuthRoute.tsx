@@ -43,21 +43,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        // If we have a session, check if user should be redirected
-        console.log("AuthRoute: Session found, checking user status");
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', currentSession.user.id)
-          .single();
-
-        if (profileError) {
-          console.error("AuthRoute: Profile error:", profileError);
-          setSession(false);
-          setIsLoading(false);
-          return;
-        }
-
+        console.log("AuthRoute: Session found, allowing access");
         setSession(true);
 
       } catch (error) {
@@ -71,18 +57,11 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("AuthRoute: Auth state changed:", event, session);
+      console.log("AuthRoute: Auth state changed:", event);
       
       if (event === 'SIGNED_OUT') {
         console.log("AuthRoute: User signed out");
         setSession(false);
-        setIsLoading(false);
-        return;
-      }
-      
-      if (event === 'SIGNED_IN' && session) {
-        console.log("AuthRoute: User signed in");
-        setSession(true);
         setIsLoading(false);
         return;
       }
