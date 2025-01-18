@@ -17,6 +17,7 @@ export const SetPassword = () => {
   useEffect(() => {
     let mounted = true;
     let sessionCheckTimeout: number;
+    let authStateUnsubscribe: (() => void) | null = null;
 
     const initSession = async () => {
       try {
@@ -25,8 +26,22 @@ export const SetPassword = () => {
         const isMagicLink = hashParams.get('type') === 'magiclink';
 
         if (isMagicLink) {
-          console.log("SetPassword: Magic link detected, waiting for session...");
-          // Give time for the magic link session to be established
+          console.log("SetPassword: Magic link detected, setting up auth state listener...");
+          
+          // Set up auth state change listener before checking session
+          const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            console.log("SetPassword: Auth state changed:", event, session?.user?.id);
+            
+            if (event === 'SIGNED_IN' && session?.user?.id && mounted) {
+              console.log("SetPassword: User signed in via magic link:", session.user.id);
+              setUserId(session.user.id);
+              setIsInitializing(false);
+            }
+          });
+
+          authStateUnsubscribe = () => subscription.unsubscribe();
+
+          // Initial session check after a delay
           sessionCheckTimeout = window.setTimeout(async () => {
             const { data: { session }, error: sessionError } = await supabase.auth.getSession();
             
@@ -43,29 +58,17 @@ export const SetPassword = () => {
               return;
             }
 
-            if (!session?.user?.id) {
-              console.log("SetPassword: No session found after magic link");
-              if (mounted) {
-                toast({
-                  title: "Error",
-                  description: "Session not found. Please try clicking the activation link again.",
-                  variant: "destructive",
-                });
-                navigate("/auth");
-              }
-              return;
-            }
-
-            if (mounted) {
-              console.log("SetPassword: Session established with user ID:", session.user.id);
+            if (session?.user?.id && mounted) {
+              console.log("SetPassword: Session found with user ID:", session.user.id);
               setUserId(session.user.id);
               setIsInitializing(false);
             }
           }, 2000);
+          
           return;
         }
 
-        // Regular session check
+        // Regular session check for non-magic-link cases
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -109,6 +112,9 @@ export const SetPassword = () => {
       mounted = false;
       if (sessionCheckTimeout) {
         window.clearTimeout(sessionCheckTimeout);
+      }
+      if (authStateUnsubscribe) {
+        authStateUnsubscribe();
       }
     };
   }, [navigate, toast]);
