@@ -3,110 +3,92 @@ export const getPasswordResetTemplate = (resetLink: string) => `
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reset Your Doltnamn Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Your Password</title>
   <style>
-    body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background-color: #f6f6f4; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .logo { text-align: center; margin-bottom: 30px; }
-    .logo img { height: 40px; }
-    .content { background: white; border-radius: 8px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .button { display: inline-block; background-color: #000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 500; }
-    .footer { text-align: center; color: #6B7280; font-size: 12px; }
-    .link { color: #6B7280; word-break: break-all; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f6f6f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .email-wrapper {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 40px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo img {
+      max-width: 150px;
+      height: auto;
+    }
+    h1 {
+      color: #161618;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    p {
+      color: #4a4a4a;
+      margin-bottom: 20px;
+    }
+    .button {
+      display: inline-block;
+      background-color: #000000;
+      color: #ffffff;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .button:hover {
+      background-color: #333333;
+    }
+    .footer {
+      text-align: center;
+      color: #666666;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+    @media only screen and (max-width: 480px) {
+      .container {
+        padding: 10px;
+      }
+      .email-wrapper {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-    </div>
-    <div class="content">
-      <h1 style="margin: 0 0 20px; color: #000; font-size: 24px; font-weight: 600;">Reset Your Password</h1>
-      <p style="margin: 0 0 20px; color: #374151; line-height: 1.5;">We received a request to reset your Doltnamn password. Click the button below to choose a new password:</p>
-      <div style="text-align: center; margin: 30px 0;">
+    <div class="email-wrapper">
+      <div class="logo">
+        <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
+      </div>
+      <h1>Reset Your Password</h1>
+      <p>Hello,</p>
+      <p>We received a request to reset your password for your Doltnamn account. Click the button below to reset it:</p>
+      <div style="text-align: center;">
         <a href="${resetLink}" class="button">Reset Password</a>
       </div>
-      <p style="margin: 20px 0 0; color: #6B7280; font-size: 14px;">If you didn't request this password reset, you can safely ignore this email.</p>
-      <p style="margin: 20px 0 0; color: #6B7280; font-size: 14px;">If the button doesn't work, copy and paste this link into your browser:</p>
-      <p style="margin: 10px 0 0;" class="link">${resetLink}</p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
-    </div>
-  </div>
-</body>
-</html>
-`;
-
-export const getWelcomeTemplate = (firstName: string, resetLink: string) => `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Welcome to Doltnamn</title>
-  <style>
-    body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background-color: #f6f6f4; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .logo { text-align: center; margin-bottom: 30px; }
-    .logo img { height: 40px; }
-    .content { background: white; border-radius: 8px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .button { display: inline-block; background-color: #000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 500; }
-    .footer { text-align: center; color: #6B7280; font-size: 12px; }
-    .link { color: #6B7280; word-break: break-all; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-    </div>
-    <div class="content">
-      <h1 style="margin: 0 0 20px; color: #000; font-size: 24px; font-weight: 600;">Welcome to Doltnamn${firstName ? `, ${firstName}` : ''}!</h1>
-      <p style="margin: 0 0 20px; color: #374151; line-height: 1.5;">Thank you for joining Doltnamn. We're excited to help you protect your privacy online.</p>
-      <p style="margin: 0 0 20px; color: #374151; line-height: 1.5;">To get started, please set up your password:</p>
-      <div style="text-align: center; margin: 30px 0;">
-        <a href="${resetLink}" class="button">Set Password</a>
+      <p>If you didn't request this, you can safely ignore this email. The link will expire in 24 hours.</p>
+      <p>For security reasons, we recommend copying and pasting this link if the button doesn't work:</p>
+      <p style="word-break: break-all; font-size: 12px; color: #666666;">${resetLink}</p>
+      <div class="footer">
+        <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
       </div>
-      <p style="margin: 20px 0 0; color: #6B7280; font-size: 14px;">If the button doesn't work, copy and paste this link into your browser:</p>
-      <p style="margin: 10px 0 0;" class="link">${resetLink}</p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
-    </div>
-  </div>
-</body>
-</html>
-`;
-
-export const getTestEmailTemplate = () => `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Test Email from Doltnamn</title>
-  <style>
-    body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background-color: #f6f6f4; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .logo { text-align: center; margin-bottom: 30px; }
-    .logo img { height: 40px; }
-    .content { background: white; border-radius: 8px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .footer { text-align: center; color: #6B7280; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-    </div>
-    <div class="content">
-      <h1 style="margin: 0 0 20px; color: #000; font-size: 24px; font-weight: 600;">Test Email</h1>
-      <p style="margin: 0 0 20px; color: #374151; line-height: 1.5;">This is a test email from Doltnamn. If you're seeing this, email sending is working correctly!</p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
     </div>
   </div>
 </body>
