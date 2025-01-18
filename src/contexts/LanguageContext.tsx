@@ -13,6 +13,7 @@ const translations = {
     // Auth related
     'welcome.back': 'Welcome back',
     'sign.in': 'Sign in to your account',
+    'signing.in': 'Signing in...',
     'no.account': "Don't have an account?",
     'register': 'Get started',
     'email': 'Email',
@@ -77,6 +78,7 @@ const translations = {
     // Auth related
     'welcome.back': 'Välkommen tillbaka',
     'sign.in': 'Logga in på ditt konto',
+    'signing.in': 'Loggar in...',
     'no.account': 'Har du inget konto?',
     'register': 'Kom igång',
     'email': 'E-post',
@@ -131,6 +133,11 @@ const translations = {
     'error.invalid.email': 'Ogiltig e-postadress',
     'error.invalid.phone': 'Ogiltigt telefonnummer',
     'error.generic': 'Ett fel uppstod. Försök igen senare.',
+    'toast.signed.out.title': 'Du har loggats ut',
+    'toast.signed.out.description': 'Du har loggats ut från ditt konto.',
+    'toast.error.title': 'Fel',
+    'toast.error.description': 'Kunde inte logga ut. Försök igen.',
+    'toast.error.unexpected': 'Ett oväntat fel uppstod. Försök igen.',
   }
 };
 
