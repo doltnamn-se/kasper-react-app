@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "./LoadingSpinner";
 
@@ -10,16 +10,28 @@ interface AuthRouteProps {
 export const AuthRoute = ({ children }: AuthRouteProps) => {
   const [session, setSession] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
+        // If no session, allow access to auth page
         if (!currentSession) {
           console.log("AuthRoute: No session found, allowing auth page access");
           setSession(false);
           setIsLoading(false);
+          return;
+        }
+
+        // Check if we're coming from a magic link (activation email)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isMagicLink = hashParams.get('type') === 'magiclink';
+        
+        if (isMagicLink) {
+          console.log("AuthRoute: Magic link detected, redirecting to onboarding");
+          window.location.href = '/onboarding';
           return;
         }
 
