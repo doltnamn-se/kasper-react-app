@@ -62,11 +62,11 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       if (emailError) {
         console.error("Error sending activation email:", emailError);
-        // Don't throw here, show a warning instead
+        // Don't throw here, show a notification instead
         toast({
           title: "Partial Success",
           description: "Customer created but activation email could not be sent. Please try resending the email later.",
-          variant: "warning",
+          variant: "default", // Changed from "warning" to "default"
         });
       } else {
         toast({
