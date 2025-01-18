@@ -30,7 +30,6 @@ export const PasswordResetForm = ({ onCancel }: PasswordResetFormProps) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
           },
           body: JSON.stringify({ email: resetEmail }),
         }
