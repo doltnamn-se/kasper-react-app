@@ -17,6 +17,18 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   useEffect(() => {
     const checkAccess = async () => {
       try {
+        // Check for magic link parameters
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isMagicLink = hashParams.get('type') === 'magiclink';
+        
+        if (isMagicLink) {
+          console.log("ProtectedRoute: Magic link detected, redirecting to onboarding");
+          setIsAuthenticated(false);
+          setNeedsOnboarding(true);
+          setIsLoading(false);
+          return;
+        }
+
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {
@@ -119,5 +131,5 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
     return <Navigate to="/onboarding" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };

@@ -20,13 +20,13 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         const isMagicLink = hashParams.get('type') === 'magiclink';
         
         if (isMagicLink) {
-          console.log("AuthRoute: Magic link detected, allowing access for onboarding");
+          console.log("AuthRoute: Magic link detected, proceeding with onboarding");
           setSession(false);
           setIsLoading(false);
           return;
         }
 
-        // If not a magic link, check for existing session
+        // Get current session
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -43,7 +43,8 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        console.log("AuthRoute: Session found, checking role");
+        // If we have a session, check if user should be redirected
+        console.log("AuthRoute: Session found, checking user status");
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('role')
@@ -57,26 +58,8 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        if (profile?.role === 'super_admin') {
-          console.log("AuthRoute: Super admin detected, redirecting to admin");
-          setSession(true);
-        } else {
-          console.log("AuthRoute: Regular user, checking onboarding");
-          const { data: customer, error: customerError } = await supabase
-            .from('customers')
-            .select('onboarding_completed')
-            .eq('id', currentSession.user.id)
-            .single();
+        setSession(true);
 
-          if (customerError) {
-            console.error("AuthRoute: Customer error:", customerError);
-            setSession(false);
-            setIsLoading(false);
-            return;
-          }
-
-          setSession(true);
-        }
       } catch (error) {
         console.error("AuthRoute: Error:", error);
         setSession(false);
@@ -88,12 +71,22 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("AuthRoute: Auth state changed:", event);
+      console.log("AuthRoute: Auth state changed:", event, session);
+      
       if (event === 'SIGNED_OUT') {
+        console.log("AuthRoute: User signed out");
         setSession(false);
         setIsLoading(false);
         return;
       }
+      
+      if (event === 'SIGNED_IN' && session) {
+        console.log("AuthRoute: User signed in");
+        setSession(true);
+        setIsLoading(false);
+        return;
+      }
+
       checkAuth();
     });
 
