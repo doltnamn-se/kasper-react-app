@@ -121,6 +121,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+                placeholder={t('new.password.placeholder')}
                 disabled={isLoading}
                 required
                 minLength={6}
@@ -138,6 +139,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+                  placeholder={t('email.placeholder')}
                   disabled={isLoading}
                   required
                 />
@@ -152,6 +154,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+                  placeholder={t('password.placeholder')}
                   disabled={isLoading}
                   required
                 />
@@ -172,7 +175,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
               type="button"
               variant="ghost"
               onClick={() => setShowResetForm(true)}
-              className="w-full text-xs text-gray-600 hover:text-gray-600 hover:bg-transparent dark:text-gray-400 font-normal"
+              className="w-full text-xs text-gray-600 hover:text-black hover:bg-transparent dark:text-gray-400 dark:hover:text-white font-normal"
             >
               {t('forgot.password')}
             </Button>
