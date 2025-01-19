@@ -172,12 +172,13 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
               type="button"
               variant="ghost"
               onClick={() => setShowResetForm(true)}
-              className="w-full text-xs text-gray-600 hover:no-underline dark:text-gray-400 font-normal"
+              className="w-full text-xs text-gray-600 hover:bg-transparent dark:text-gray-400 font-normal"
             >
               {t('forgot.password')}
             </Button>
           )}
         </form>
+        <SignUpPrompt />
       </div>
     </div>
   );
