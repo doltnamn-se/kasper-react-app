@@ -28,8 +28,17 @@ export const useCustomers = () => {
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
-          *,
-          profile:profiles!customers_profile_id_fkey (
+          id,
+          created_at,
+          updated_at,
+          subscription_plan,
+          onboarding_completed,
+          onboarding_step,
+          identification_info,
+          created_by,
+          checklist_completed,
+          checklist_step,
+          profile:profiles (
             id,
             first_name,
             last_name,

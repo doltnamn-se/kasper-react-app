@@ -19,7 +19,6 @@ export type Database = {
           identification_info: Json | null
           onboarding_completed: boolean | null
           onboarding_step: number | null
-          stripe_customer_id: string | null
           subscription_plan:
             | Database["public"]["Enums"]["subscription_plan"]
             | null
@@ -34,7 +33,6 @@ export type Database = {
           identification_info?: Json | null
           onboarding_completed?: boolean | null
           onboarding_step?: number | null
-          stripe_customer_id?: string | null
           subscription_plan?:
             | Database["public"]["Enums"]["subscription_plan"]
             | null
@@ -49,7 +47,6 @@ export type Database = {
           identification_info?: Json | null
           onboarding_completed?: boolean | null
           onboarding_step?: number | null
-          stripe_customer_id?: string | null
           subscription_plan?:
             | Database["public"]["Enums"]["subscription_plan"]
             | null
@@ -212,59 +209,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "removal_urls_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "customers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      subscriptions: {
-        Row: {
-          cancel_at: string | null
-          cancel_at_period_end: boolean | null
-          canceled_at: string | null
-          created_at: string | null
-          current_period_end: string | null
-          current_period_start: string | null
-          customer_id: string | null
-          id: string
-          status: string | null
-          stripe_price_id: string | null
-          stripe_subscription_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          cancel_at?: string | null
-          cancel_at_period_end?: boolean | null
-          canceled_at?: string | null
-          created_at?: string | null
-          current_period_end?: string | null
-          current_period_start?: string | null
-          customer_id?: string | null
-          id?: string
-          status?: string | null
-          stripe_price_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          cancel_at?: string | null
-          cancel_at_period_end?: boolean | null
-          canceled_at?: string | null
-          created_at?: string | null
-          current_period_end?: string | null
-          current_period_start?: string | null
-          customer_id?: string | null
-          id?: string
-          status?: string | null
-          stripe_price_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "subscriptions_customer_id_fkey"
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
