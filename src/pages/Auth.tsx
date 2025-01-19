@@ -6,6 +6,7 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -35,17 +36,14 @@ const Auth = () => {
     // Handle recovery flow
     const handleRecoveryFlow = async () => {
       const type = searchParams.get('type');
-      const token = searchParams.get('token');
+      const accessToken = searchParams.get('access_token');
       
-      console.log("Auth page: URL parameters -", { type, token });
+      console.log("Auth page: URL parameters -", { type, accessToken });
 
-      if (type === 'recovery' && token) {
+      if (type === 'recovery' && accessToken) {
         console.log("Auth page: Processing recovery token");
         try {
-          const { data, error } = await supabase.auth.verifyOtp({
-            token_hash: token,
-            type: 'recovery'
-          });
+          const { data, error } = await supabase.auth.getSession();
 
           if (error) {
             console.error("Auth page: Recovery verification error -", error);
