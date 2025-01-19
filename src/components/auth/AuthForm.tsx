@@ -56,32 +56,29 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
           return;
         }
 
-        // First get the session from the hash
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        // First verify the recovery token
+        const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
+          token_hash: hash,
+          type: 'recovery'
+        });
+
+        if (verifyError) {
+          console.error("Error verifying recovery token:", verifyError);
+          toast.error(t('error.generic'));
+          return;
+        }
+
+        console.log("Recovery token verified:", verifyData);
+
+        // Now update the password
+        const { error: updateError } = await supabase.auth.updateUser({ 
+          password: newPassword 
+        });
         
-        if (sessionError || !session) {
-          console.error("Error getting session:", sessionError);
-          // Try to exchange the hash for a session
-          const { error: updateError } = await supabase.auth.updateUser({ 
-            password: newPassword 
-          });
-          
-          if (updateError) {
-            console.error("Error updating password:", updateError);
-            toast.error(t('error.password.update'));
-            return;
-          }
-        } else {
-          // We have a session, update the password
-          const { error: updateError } = await supabase.auth.updateUser({ 
-            password: newPassword 
-          });
-          
-          if (updateError) {
-            console.error("Error updating password:", updateError);
-            toast.error(t('error.password.update'));
-            return;
-          }
+        if (updateError) {
+          console.error("Error updating password:", updateError);
+          toast.error(t('error.password.update'));
+          return;
         }
 
         console.log("Password updated successfully");
