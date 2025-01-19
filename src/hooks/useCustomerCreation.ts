@@ -30,19 +30,14 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // Generate a random password
-      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
-      console.log("Generated password for new user");
-
-      // Step 1: Create customer using the Edge Function
+      // Call the Edge Function without any custom headers
       console.log("Step 1: Creating customer...");
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
           email: formData.email,
           displayName: formData.displayName,
           subscriptionPlan: formData.subscriptionPlan,
-          createdBy: user.id,
-          password: generatedPassword
+          createdBy: user.id
         }
       });
 
@@ -52,30 +47,10 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
 
       console.log("Customer created successfully:", createData);
-
-      // Step 2: Send welcome email with credentials
-      console.log("Step 2: Sending welcome email...");
-      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
-        body: {
-          email: formData.email,
-          displayName: formData.displayName,
-          password: generatedPassword
-        }
+      toast({
+        title: "Success",
+        description: "Customer created successfully",
       });
-
-      if (emailError) {
-        console.error("Error sending welcome email:", emailError);
-        toast({
-          title: "Partial Success",
-          description: "Customer created but welcome email could not be sent. Please try resending the email later.",
-          variant: "default",
-        });
-      } else {
-        toast({
-          title: "Success",
-          description: "Customer created successfully and welcome email sent with login credentials.",
-        });
-      }
 
       resetForm();
       onCustomerCreated();
