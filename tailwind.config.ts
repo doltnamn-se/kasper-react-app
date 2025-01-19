@@ -68,10 +68,14 @@ export default {
         gray: {
           400: '#616166'
         },
-        subscription: {
-          text: '#001400',
-          bg: '#d6f37d',
-          'bg-dark': '#c8ed52 !important'
+        badge: {
+          subscription: {
+            text: '#001400',
+            bg: {
+              DEFAULT: '#d6f37d',
+              dark: '#c8ed52 !important'
+            }
+          }
         },
         role: {
           superadmin: {

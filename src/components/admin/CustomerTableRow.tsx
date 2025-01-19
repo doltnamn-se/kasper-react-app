@@ -80,7 +80,7 @@ export const CustomerTableRow = ({
         {customer.subscription_plan && (
           <Badge 
             variant="secondary"
-            className="text-xs font-semibold text-subscription-text bg-subscription-bg dark:text-subscription-text dark:bg-subscription-bg py-2 hover:bg-subscription-bg dark:hover:bg-subscription-bg"
+            className="text-xs font-semibold text-badge-subscription-text bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark py-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
           >
             {formatSubscriptionPlan(customer.subscription_plan)}
           </Badge>
