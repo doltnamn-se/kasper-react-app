@@ -25,6 +25,7 @@ export const useCustomers = () => {
             id,
             first_name,
             last_name,
+            display_name,
             role,
             email,
             created_at,
