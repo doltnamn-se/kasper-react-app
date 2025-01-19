@@ -17,6 +17,7 @@ export const useCustomers = () => {
           first_name,
           last_name,
           role,
+          email,
           created_at,
           updated_at,
           customers (
@@ -36,6 +37,7 @@ export const useCustomers = () => {
           first_name: profile.first_name,
           last_name: profile.last_name,
           role: profile.role,
+          email: profile.email,
           created_at: profile.created_at,
           updated_at: profile.updated_at
         }
