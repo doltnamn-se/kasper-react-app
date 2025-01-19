@@ -12,9 +12,10 @@ import { toast } from "sonner";
 interface AuthFormProps {
   errorMessage: string;
   isDarkMode: boolean;
+  isResetPasswordMode?: boolean;
 }
 
-export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
+export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false }: AuthFormProps) => {
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -147,7 +148,7 @@ export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
           </button>
         </div>
       )}
-      <SignUpPrompt />
+      {!isResetPasswordMode && <SignUpPrompt />}
     </div>
   );
 };
