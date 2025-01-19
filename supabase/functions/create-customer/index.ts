@@ -5,11 +5,13 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Content-Type': 'application/json'
 };
 
 serve(async (req) => {
   console.log("Function invoked with request:", req.method);
   
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
     return new Response(null, { 
@@ -100,7 +102,7 @@ serve(async (req) => {
         message: "Customer created successfully"
       }),
       {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: corsHeaders,
         status: 200,
       }
     );
@@ -112,8 +114,8 @@ serve(async (req) => {
         details: err.toString()
       }),
       {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400, // Changed from 500 to 400 for client errors
+        headers: corsHeaders,
+        status: 400,
       }
     );
   }
