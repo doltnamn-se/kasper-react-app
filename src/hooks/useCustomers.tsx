@@ -11,11 +11,24 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       
+      // First get the current user's profile to check role
+      const { data: userProfile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching user profile:", profileError);
+        throw profileError;
+      }
+
+      console.log("Current user role:", userProfile?.role);
+
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
           *,
-          profiles!inner (
+          profile:profiles (
             id,
             first_name,
             last_name,
@@ -36,7 +49,7 @@ export const useCustomers = () => {
 
       const transformedData = customersData?.map(customer => ({
         ...customer,
-        profile: customer.profiles
+        profile: customer.profile
       })) || [];
 
       console.log("Transformed customers data:", transformedData);
