@@ -25,18 +25,18 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   useEffect(() => {
     // Extract hash from URL if in reset password mode
     if (isResetPasswordMode) {
-      // Get the full URL hash including the #
-      const hashFromUrl = window.location.hash;
-      console.log("Full URL:", window.location.href);
-      console.log("Hash from URL:", hashFromUrl);
+      // Get the full URL
+      const fullUrl = window.location.href;
+      console.log("Full URL:", fullUrl);
       
-      // If there's a hash, remove the # symbol
-      if (hashFromUrl) {
-        const cleanHash = hashFromUrl.substring(1);
-        console.log("Clean hash:", cleanHash);
-        setHash(cleanHash);
+      // Find the hash in the URL (it might be after #access_token=)
+      const hashMatch = fullUrl.match(/#access_token=(.[^&]*)/);
+      if (hashMatch && hashMatch[1]) {
+        const extractedHash = hashMatch[1];
+        console.log("Extracted hash:", extractedHash);
+        setHash(extractedHash);
       } else {
-        console.log("No hash found in URL");
+        console.log("No hash found in URL. Full URL for debugging:", fullUrl);
       }
     }
   }, [isResetPasswordMode]);
