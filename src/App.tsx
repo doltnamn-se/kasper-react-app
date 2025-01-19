@@ -33,8 +33,8 @@ function App() {
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-              <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/admin/customers" element={<ProtectedRoute><AdminCustomers /></ProtectedRoute>} />
+              <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="super_admin"><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/customers" element={<ProtectedRoute requiredRole="super_admin"><AdminCustomers /></ProtectedRoute>} />
               <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
               <Route path="/my-links" element={<ProtectedRoute><MyLinks /></ProtectedRoute>} />
               <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
