@@ -25,24 +25,27 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
 
   useEffect(() => {
     const type = searchParams.get('type');
-    const code = searchParams.get('code');
+    const token = searchParams.get('token');
     
-    console.log("AuthForm: Recovery flow check -", { type, code });
+    console.log("AuthForm: Recovery flow check -", { type, token });
     
-    if (type === 'recovery' && !code) {
-      console.log("AuthForm: Recovery type without code, showing manual reset form");
+    if (type === 'recovery' && !token) {
+      console.log("AuthForm: Recovery type without token, showing manual reset form");
       setIsManualResetMode(true);
       return;
     }
 
     const handleRecoveryFlow = async () => {
-      if (type === 'recovery' && code) {
-        console.log("AuthForm: Starting recovery flow with code:", code);
+      if (type === 'recovery' && token) {
+        console.log("AuthForm: Starting recovery flow with token");
         try {
-          const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash: token,
+            type: 'recovery'
+          });
           
-          if (sessionError) {
-            console.error("AuthForm: Session error during recovery -", sessionError);
+          if (error) {
+            console.error("AuthForm: Recovery verification error -", error);
             setResetError(t('error.reset.link.expired'));
             toast.error(t('error.reset.link.expired'));
             setView("sign_in");
