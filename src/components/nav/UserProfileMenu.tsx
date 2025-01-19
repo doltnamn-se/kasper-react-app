@@ -77,7 +77,7 @@ export const UserProfileMenu = () => {
           <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 p-3">
+      <DropdownMenuContent align="end" className="w-56 p-2">
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
       </DropdownMenuContent>
     </DropdownMenu>
