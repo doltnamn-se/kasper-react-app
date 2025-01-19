@@ -9,39 +9,39 @@ serve(async (req) => {
   }
 
   try {
-    // Log the raw request body for debugging
-    const rawBody = await req.text();
-    console.log("Raw request body:", rawBody);
-
-    // Parse the JSON body
-    let body;
-    try {
-      body = JSON.parse(rawBody);
-    } catch (parseError) {
-      console.error("Error parsing request body:", parseError);
-      return new Response(
-        JSON.stringify({ 
-          error: "Invalid JSON in request body",
-          details: parseError.message 
-        }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
-      );
-    }
+    // Get the request body
+    const body = await req.json();
+    console.log("Received request body:", JSON.stringify(body, null, 2));
 
     const { email, displayName, subscriptionPlan, createdBy } = body;
-    console.log("Parsed customer data:", { email, displayName, subscriptionPlan, createdBy });
+    
+    // Log all input values
+    console.log("Processing customer creation with:", {
+      email,
+      displayName,
+      subscriptionPlan,
+      createdBy
+    });
 
-    // Validate required fields
+    // Validate required fields with detailed logging
+    if (!email) console.log("Missing email");
+    if (!displayName) console.log("Missing displayName");
+    if (!subscriptionPlan) console.log("Missing subscriptionPlan");
+    if (!createdBy) console.log("Missing createdBy");
+
     if (!email || !displayName || !subscriptionPlan || !createdBy) {
-      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy });
+      const errorResponse = {
+        error: "Missing required fields",
+        details: {
+          email: email || "missing",
+          displayName: displayName || "missing",
+          subscriptionPlan: subscriptionPlan || "missing",
+          createdBy: createdBy || "missing"
+        }
+      };
+      console.error("Validation failed:", errorResponse);
       return new Response(
-        JSON.stringify({
-          error: "Missing required fields",
-          details: { email, displayName, subscriptionPlan, createdBy }
-        }),
+        JSON.stringify(errorResponse),
         {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" }
@@ -50,6 +50,7 @@ serve(async (req) => {
     }
 
     // Initialize Supabase admin client
+    console.log("Initializing Supabase admin client");
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
