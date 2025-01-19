@@ -44,6 +44,13 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
           setUserRole(profile?.role || null);
           setIsAuthenticated(true);
 
+          // Check if user has required role
+          if (requiredRole && profile?.role !== requiredRole) {
+            console.log("ProtectedRoute: User does not have required role");
+            setIsLoading(false);
+            return;
+          }
+
           // Super admins don't need onboarding
           if (profile?.role === 'super_admin') {
             setNeedsOnboarding(false);
@@ -51,7 +58,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
             return;
           }
 
-          // Check onboarding status
+          // Check onboarding status for customers
           const { data: customer } = await supabase
             .from('customers')
             .select('onboarding_completed')
@@ -91,7 +98,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
       mounted = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [requiredRole]);
 
   if (isLoading) {
     return <LoadingSpinner />;

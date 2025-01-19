@@ -40,18 +40,19 @@ export const useCustomers = () => {
 
       console.log("Raw customers data:", customersData);
 
-      const transformedData = customersData?.map(customer => {
-        return {
-          subscription_plan: customer.subscription_plan,
-          onboarding_completed: customer.onboarding_completed,
-          onboarding_step: customer.onboarding_step,
-          checklist_completed: customer.checklist_completed,
-          checklist_step: customer.checklist_step,
-          identification_info: customer.identification_info,
-          stripe_customer_id: customer.stripe_customer_id,
-          profile: customer.profiles
-        };
-      }) || [];
+      const transformedData = customersData?.map(customer => ({
+        subscription_plan: customer.subscription_plan,
+        onboarding_completed: customer.onboarding_completed,
+        onboarding_step: customer.onboarding_step,
+        checklist_completed: customer.checklist_completed,
+        checklist_step: customer.checklist_step,
+        identification_info: customer.identification_info,
+        stripe_customer_id: customer.stripe_customer_id,
+        profile: {
+          ...customer.profiles,
+          email: customer.profiles.email
+        }
+      })) || [];
 
       console.log("Transformed customers data:", transformedData);
       return transformedData as CustomerWithProfile[];

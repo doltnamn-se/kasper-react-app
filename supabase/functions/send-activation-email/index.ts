@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { email, firstName, password } = await req.json();
+    const { email, displayName, password } = await req.json();
     console.log("Sending welcome email to:", email);
 
     if (!email) {
@@ -27,7 +26,7 @@ serve(async (req) => {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to Doltnamn</title>
+        <title>Välkommen till Doltnamn</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -72,6 +71,27 @@ serve(async (req) => {
             border-radius: 4px;
             margin: 20px 0;
           }
+          .button {
+            display: inline-block;
+            background-color: #000000;
+            color: #ffffff !important;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+            text-align: center;
+          }
+          .copy-button {
+            display: inline-block;
+            background-color: #f0f0f0;
+            color: #333333 !important;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 1px solid #ddd;
+          }
           .footer {
             text-align: center;
             color: #666666;
@@ -86,19 +106,31 @@ serve(async (req) => {
             <div class="logo">
               <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
             </div>
-            <h1>Welcome to Doltnamn, ${firstName}!</h1>
-            <p>Your account has been created. Here are your login credentials:</p>
+            <h1>Välkommen till Doltnamn, ${displayName}!</h1>
+            <p>Ditt konto har skapats. Här är dina inloggningsuppgifter:</p>
             <div class="credentials">
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Password:</strong> ${password}</p>
+              <p><strong>E-post:</strong> ${email}</p>
+              <p><strong>Lösenord:</strong> 
+                <span id="password">${password}</span>
+                <button class="copy-button" onclick="copyPassword()">Kopiera lösenord</button>
+              </p>
             </div>
-            <p>You can log in to your account at: <a href="https://app.doltnamn.se/auth">https://app.doltnamn.se/auth</a></p>
-            <p>For security reasons, we recommend changing your password after your first login.</p>
+            <div style="text-align: center;">
+              <a href="https://app.doltnamn.se/auth" class="button">Logga in på ditt konto</a>
+            </div>
+            <p>Av säkerhetsskäl rekommenderar vi att du ändrar ditt lösenord efter din första inloggning.</p>
             <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
+              <p>&copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.</p>
             </div>
           </div>
         </div>
+        <script>
+          function copyPassword() {
+            const password = document.getElementById('password').textContent;
+            navigator.clipboard.writeText(password);
+            alert('Lösenord kopierat!');
+          }
+        </script>
       </body>
       </html>
     `;
@@ -113,7 +145,7 @@ serve(async (req) => {
       body: JSON.stringify({
         from: "Doltnamn <no-reply@doltnamn.se>",
         to: [email],
-        subject: "Welcome to Doltnamn - Your Login Credentials",
+        subject: "Välkommen till Doltnamn - Dina inloggningsuppgifter",
         html: emailHtml,
       }),
     });

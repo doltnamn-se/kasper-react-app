@@ -10,16 +10,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { getUserInitials, getFullName } from "@/utils/profileUtils";
+import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
 
 export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
   const { toast } = useToast();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+
+  const getDisplayName = () => {
+    if (userProfile?.display_name) return userProfile.display_name;
+    if (userProfile?.first_name || userProfile?.last_name) {
+      return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
+    }
+    return userEmail;
+  };
 
   const handleSignOut = async () => {
     if (isSigningOut) {
@@ -64,6 +71,8 @@ export const UserProfileMenu = () => {
     }
   };
 
+  const initials = getUserInitials(userProfile);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,12 +82,12 @@ export const UserProfileMenu = () => {
         >
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-gray-400 text-sm">
-              {getUserInitials(userProfile)}
+              {initials}
             </AvatarFallback>
           </Avatar>
           {!isMobile && (
             <>
-              <span className="text-sm font-medium">{getFullName(userProfile, userEmail)}</span>
+              <span className="text-sm font-medium">{getDisplayName()}</span>
               <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
             </>
           )}
