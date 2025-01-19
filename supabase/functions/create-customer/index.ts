@@ -1,40 +1,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
-import { corsHeaders } from "../_shared/cors.ts";
 
 serve(async (req) => {
-  console.log("Function invoked with request:", req.method);
-  
-  // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    console.log("Handling OPTIONS preflight request");
-    return new Response(null, { 
-      headers: corsHeaders,
-      status: 204
-    });
-  }
-
   try {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
 
-    // Initialize Supabase admin client with service role key
+    // Initialize Supabase admin client
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Generate a random password
+    // Generate password
     const password = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
     console.log("Generated password for new user");
 
-    // Create auth user with provided email and password
+    // Create auth user
     console.log("Creating auth user");
     const { data: { user }, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
       email,
@@ -108,7 +90,7 @@ serve(async (req) => {
         message: "Customer created successfully"
       }),
       {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         status: 200,
       }
     );
@@ -121,7 +103,7 @@ serve(async (req) => {
       }),
       {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
       }
     );
   }

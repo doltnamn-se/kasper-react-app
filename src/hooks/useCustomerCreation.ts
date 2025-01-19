@@ -30,8 +30,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      console.log("Step 1: Creating customer...");
-      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
+      console.log("Calling create-customer function");
+      const { data, error } = await supabase.functions.invoke('create-customer', {
         body: {
           email: formData.email,
           displayName: formData.displayName,
@@ -40,12 +40,12 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         }
       });
 
-      if (createError) {
-        console.error("Error in customer creation:", createError);
-        throw createError;
+      if (error) {
+        console.error("Error in customer creation:", error);
+        throw error;
       }
 
-      console.log("Customer created successfully:", createData);
+      console.log("Customer created successfully:", data);
       toast({
         title: "Success",
         description: "Customer created successfully and welcome email sent.",
