@@ -15,7 +15,7 @@ export const useCustomers = () => {
         .from('customers')
         .select(`
           *,
-          profile:profiles (
+          profile:profiles!customers_profile_id_fkey (
             id,
             email,
             display_name,

@@ -55,9 +55,6 @@ export const CustomerTableRow = ({
     }
   };
 
-  console.log("Customer data in row:", customer);
-  console.log("Customer profile:", customer.profile);
-
   return (
     <TableRow className="text-xs bg-white dark:bg-[#1c1c1e] hover:bg-white dark:hover:bg-[#1c1c1e]">
       <TableCell className="text-xs text-black dark:text-white">{customer.id || '-'}</TableCell>
