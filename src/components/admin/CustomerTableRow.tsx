@@ -69,7 +69,7 @@ export const CustomerTableRow = ({
           {customer.profile.role || 'No role'}
         </Badge>
       </TableCell>
-      <TableCell className="text-xs text-black dark:text-white" colSpan={2}>
+      <TableCell className="text-xs text-black dark:text-white">
         {customer.profile.display_name || '-'}
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
