@@ -2,7 +2,6 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { CustomersTable } from "@/components/admin/CustomersTable";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CustomerWithProfile } from "@/types/customer";
 import { useCustomers } from "@/hooks/useCustomers";
 
 const AdminCustomers = () => {
@@ -20,7 +19,7 @@ const AdminCustomers = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-normal text-[#000000] dark:text-white mb-6">
+      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.admin.customers')}
       </h1>
       <AdminHeader onCustomerCreated={refetch} />
