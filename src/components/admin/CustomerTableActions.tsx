@@ -16,7 +16,7 @@ export const CustomerTableActions = ({
   onDeleteCustomer,
 }: CustomerTableActionsProps) => {
   return (
-    <div className="space-x-2">
+    <div className="flex items-center justify-end space-x-2">
       <CustomerDetails customer={customer} />
       <EditCustomerDialog 
         customer={customer} 

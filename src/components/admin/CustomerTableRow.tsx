@@ -28,21 +28,21 @@ export const CustomerTableRow = ({
 
   return (
     <TableRow className="text-xs bg-white hover:bg-white">
-      <TableCell className="text-xs text-black">{customer.id || '-'}</TableCell>
-      <TableCell className="text-xs text-black">{customer.profile?.email || '-'}</TableCell>
+      <TableCell className="text-xs text-black">{customer.profile.id || '-'}</TableCell>
+      <TableCell className="text-xs text-black">{customer.profile.email || '-'}</TableCell>
       <TableCell>
         <Badge 
-          variant={getBadgeVariant(customer.profile?.role)}
+          variant={getBadgeVariant(customer.profile.role)}
           className="text-xs font-normal"
         >
-          {customer.profile?.role || 'No role'}
+          {customer.profile.role || 'No role'}
         </Badge>
       </TableCell>
-      <TableCell className="text-xs text-black">{customer.profile?.first_name || '-'}</TableCell>
-      <TableCell className="text-xs text-black">{customer.profile?.last_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black">{customer.profile.first_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black">{customer.profile.last_name || '-'}</TableCell>
       <TableCell className="text-xs text-black">
-        {customer.created_at
-          ? format(new Date(customer.created_at), 'MMM d, yyyy')
+        {customer.profile.created_at
+          ? format(new Date(customer.profile.created_at), 'MMM d, yyyy')
           : '-'}
       </TableCell>
       <TableCell>
