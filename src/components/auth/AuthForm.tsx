@@ -23,20 +23,19 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   const [hash, setHash] = useState<string | null>(null);
 
   useEffect(() => {
-    // Extract hash from URL if in reset password mode
     if (isResetPasswordMode) {
-      // Get the full URL
       const fullUrl = window.location.href;
       console.log("Full URL:", fullUrl);
       
-      // Find the hash in the URL (it might be after #access_token=)
-      const hashMatch = fullUrl.match(/#access_token=(.[^&]*)/);
-      if (hashMatch && hashMatch[1]) {
-        const extractedHash = hashMatch[1];
-        console.log("Extracted hash:", extractedHash);
-        setHash(extractedHash);
+      // Extract the token from the fragment
+      const fragment = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = fragment.get('access_token');
+      
+      if (accessToken) {
+        console.log("Found access token in URL");
+        setHash(accessToken);
       } else {
-        console.log("No hash found in URL. Full URL for debugging:", fullUrl);
+        console.log("No access token found in URL. Full URL for debugging:", fullUrl);
       }
     }
   }, [isResetPasswordMode]);
@@ -47,34 +46,21 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
     try {
       if (isResetPasswordMode) {
-        console.log("Updating password in reset mode");
-        console.log("Current hash:", hash);
+        console.log("Starting password reset process");
         
         if (!hash) {
-          console.error("No hash found in URL");
+          console.error("No recovery token found");
           toast.error(t('error.generic'));
           return;
         }
 
-        // First verify the recovery token
-        const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
-          token_hash: hash,
-          type: 'recovery'
+        // Update the user's password using the recovery token
+        const { data, error: updateError } = await supabase.auth.updateUser({
+          password: newPassword
+        }, {
+          accessToken: hash
         });
 
-        if (verifyError) {
-          console.error("Error verifying recovery token:", verifyError);
-          toast.error(t('error.generic'));
-          return;
-        }
-
-        console.log("Recovery token verified:", verifyData);
-
-        // Now update the password
-        const { error: updateError } = await supabase.auth.updateUser({ 
-          password: newPassword 
-        });
-        
         if (updateError) {
           console.error("Error updating password:", updateError);
           toast.error(t('error.password.update'));
@@ -83,7 +69,8 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
         console.log("Password updated successfully");
         toast.success(t('password.updated'));
-        // Redirect to login after password update
+        
+        // Redirect to login after successful password update
         window.location.href = '/auth';
         return;
       }
