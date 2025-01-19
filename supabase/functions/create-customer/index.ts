@@ -3,6 +3,11 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 import { corsHeaders } from "../_shared/cors.ts"
 
 serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
   try {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
@@ -66,21 +71,6 @@ serve(async (req) => {
     if (customerError) {
       console.error("Error updating customer:", customerError);
       throw new Error("Failed to update customer");
-    }
-
-    // Send welcome email
-    console.log("Sending welcome email");
-    const { error: emailError } = await supabaseAdmin.functions.invoke('send-activation-email', {
-      body: {
-        email,
-        displayName,
-        password
-      }
-    });
-
-    if (emailError) {
-      console.error("Error sending welcome email:", emailError);
-      // Don't throw error, just log it as this is not critical
     }
 
     console.log("Customer creation completed successfully");
