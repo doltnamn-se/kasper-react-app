@@ -11,7 +11,6 @@ interface ProtectedRouteProps {
 export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
-  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -51,21 +50,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
             return;
           }
 
-          // Super admins don't need onboarding
-          if (profile?.role === 'super_admin') {
-            setNeedsOnboarding(false);
-            setIsLoading(false);
-            return;
-          }
-
-          // Check onboarding status for customers
-          const { data: customer } = await supabase
-            .from('customers')
-            .select('onboarding_completed')
-            .eq('id', session.user.id)
-            .single();
-
-          setNeedsOnboarding(!customer?.onboarding_completed);
           setIsLoading(false);
         }
       } catch (error) {
@@ -112,11 +96,6 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   if (requiredRole && userRole !== requiredRole) {
     console.log("ProtectedRoute: Insufficient role permissions");
     return <Navigate to="/" replace />;
-  }
-
-  if (needsOnboarding && userRole !== 'super_admin') {
-    console.log("ProtectedRoute: User needs onboarding");
-    return <Navigate to="/onboarding" replace />;
   }
 
   return <>{children}</>;
