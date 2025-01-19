@@ -7,7 +7,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -21,16 +20,15 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Get the origin from the request headers
     const origin = req.headers.get('origin');
     console.log("Request origin:", origin);
 
-    // Generate password reset link
+    // Generate password reset link with direct callback URL
     const { data, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
       options: {
-        redirectTo: `${origin}/auth/callback?type=recovery`,
+        redirectTo: `${origin}/auth?type=recovery`,
       }
     });
 
@@ -41,7 +39,6 @@ serve(async (req) => {
 
     console.log("Reset link generated successfully");
 
-    // Send email via Resend
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {

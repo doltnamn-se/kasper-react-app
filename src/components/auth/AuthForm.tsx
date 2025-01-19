@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,73 +15,12 @@ interface AuthFormProps {
 }
 
 export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: AuthFormProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
-  const [recoveryToken, setRecoveryToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const initializeRecoveryFlow = async () => {
-      if (!isResetPasswordMode) return;
-
-      console.log("Initializing password recovery flow...");
-      
-      // Extract token from URL hash
-      const hash = window.location.hash.substring(1);
-      const hashParams = new URLSearchParams(hash);
-      const accessToken = hashParams.get('access_token');
-
-      if (accessToken) {
-        console.log("Found access token in URL hash");
-        setRecoveryToken(accessToken);
-        return;
-      }
-
-      // If no access token in hash, check for recovery token in query params
-      const searchParams = new URLSearchParams(window.location.search);
-      const token = searchParams.get('token');
-      const type = searchParams.get('type');
-
-      console.log("Recovery flow parameters:", { 
-        token: token ? "Found" : "Not found", 
-        type,
-        accessToken: accessToken ? "Found" : "Not found"
-      });
-
-      if (!token || type !== 'recovery') {
-        console.error("Invalid recovery flow parameters");
-        toast.error(t('error.invalid.recovery.link'));
-        return;
-      }
-
-      try {
-        // Exchange recovery token for session
-        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(token);
-
-        if (exchangeError) {
-          console.error("Error exchanging token:", exchangeError);
-          toast.error(t('error.invalid.recovery.link'));
-          return;
-        }
-
-        if (data?.session) {
-          console.log("Recovery token exchanged successfully, session created");
-          setRecoveryToken(data.session.access_token);
-        } else {
-          console.error("No session created after token exchange");
-          toast.error(t('error.invalid.recovery.link'));
-        }
-      } catch (err) {
-        console.error("Error in recovery flow:", err);
-        toast.error(t('error.invalid.recovery.link'));
-      }
-    };
-
-    initializeRecoveryFlow();
-  }, [isResetPasswordMode, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,13 +28,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
     try {
       if (isResetPasswordMode) {
-        if (!recoveryToken) {
-          console.error("No recovery token available");
-          toast.error(t('error.invalid.recovery.link'));
-          return;
-        }
-
-        console.log("Updating password with recovery token");
+        console.log("Updating password in reset mode");
         const { error: updateError } = await supabase.auth.updateUser({
           password: newPassword
         });
@@ -139,7 +72,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in rounded-[7px] font-system-ui">
         <h2 className="text-xl font-bold mb-6 text-center dark:text-white font-system-ui font-[700]">
           {isResetPasswordMode 
-            ? language === 'sv' ? "Återställ lösenord" : "Reset password"
+            ? t('reset.password')
             : t('sign.in')}
         </h2>
         

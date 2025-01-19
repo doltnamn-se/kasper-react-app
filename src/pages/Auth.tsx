@@ -33,15 +33,34 @@ const Auth = () => {
     }
 
     // Handle recovery flow
-    const type = searchParams.get('type');
-    console.log("Auth page: URL parameters -", { type });
-
     const handleRecoveryFlow = async () => {
-      if (type === 'recovery') {
-        console.log("Auth page: Setting reset password mode (recovery type)");
-        // Sign out any existing session to prevent automatic login
-        await supabase.auth.signOut();
-        setIsResetPasswordMode(true);
+      const type = searchParams.get('type');
+      const token = searchParams.get('token');
+      
+      console.log("Auth page: URL parameters -", { type, token });
+
+      if (type === 'recovery' && token) {
+        console.log("Auth page: Processing recovery token");
+        try {
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash: token,
+            type: 'recovery'
+          });
+
+          if (error) {
+            console.error("Auth page: Recovery verification error -", error);
+            setErrorMessage(t('error.invalid.recovery.link'));
+            return;
+          }
+
+          if (data?.session) {
+            console.log("Auth page: Recovery verification successful");
+            setIsResetPasswordMode(true);
+          }
+        } catch (err) {
+          console.error("Auth page: Recovery error -", err);
+          setErrorMessage(t('error.invalid.recovery.link'));
+        }
       }
     };
 
@@ -71,7 +90,6 @@ const Auth = () => {
           return;
         }
         
-        // Only redirect on SIGNED_IN if not in recovery mode
         if (event === "SIGNED_IN" && session && !isResetPasswordMode) {
           console.log("Auth page: User signed in, navigating to home");
           navigate("/");
