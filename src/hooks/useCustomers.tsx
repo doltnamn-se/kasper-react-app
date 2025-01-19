@@ -24,29 +24,18 @@ export const useCustomers = () => {
 
       console.log("Current user role:", userProfile?.role);
 
-      // Fetch customers with their profiles using a left join
+      // Fetch customers with their profiles using a join
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
-          id,
-          created_at,
-          updated_at,
-          subscription_plan,
-          onboarding_completed,
-          onboarding_step,
-          identification_info,
-          created_by,
-          checklist_completed,
-          checklist_step,
-          profile:profiles (
+          *,
+          profile:profiles!customers_profile_id_fkey (
             id,
+            email,
             first_name,
             last_name,
             display_name,
-            role,
-            email,
-            created_at,
-            updated_at
+            role
           )
         `);
 
@@ -57,9 +46,17 @@ export const useCustomers = () => {
 
       console.log("Raw customers data:", customersData);
 
+      // Transform the data to ensure each customer has a profile, even if empty
       const transformedData = customersData?.map(customer => ({
         ...customer,
-        profile: customer.profile
+        profile: customer.profile || {
+          id: customer.id,
+          email: null,
+          first_name: null,
+          last_name: null,
+          display_name: null,
+          role: 'No role'
+        }
       })) || [];
 
       console.log("Transformed customers data:", transformedData);
