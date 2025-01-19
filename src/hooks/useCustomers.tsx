@@ -41,8 +41,15 @@ export const useCustomers = () => {
 
       const transformedData = customersData?.map(profile => {
         console.log("Profile data:", profile);
+        const customerData = profile.customers?.[0] || {};
         return {
-          ...profile.customers?.[0],
+          subscription_plan: customerData.subscription_plan,
+          onboarding_completed: customerData.onboarding_completed,
+          onboarding_step: customerData.onboarding_step,
+          checklist_completed: customerData.checklist_completed,
+          checklist_step: customerData.checklist_step,
+          identification_info: customerData.identification_info,
+          stripe_customer_id: customerData.stripe_customer_id,
           profile: {
             id: profile.id,
             first_name: profile.first_name,
