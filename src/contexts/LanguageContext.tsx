@@ -80,7 +80,7 @@ const translations = {
     'table.firstName': 'First Name',
     'table.lastName': 'Last Name',
     'table.created': 'Created',
-    'table.status': 'Status',
+    'table.subscription': 'Subscription',
     'table.actions': 'Actions',
   },
   sv: {
@@ -154,7 +154,7 @@ const translations = {
     'table.firstName': 'Förnamn',
     'table.lastName': 'Efternamn',
     'table.created': 'Skapad',
-    'table.status': 'Status',
+    'table.subscription': 'Prenumeration',
     'table.actions': 'Åtgärder',
   }
 };

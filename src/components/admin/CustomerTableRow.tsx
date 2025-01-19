@@ -26,7 +26,20 @@ export const CustomerTableRow = ({
     }
   };
 
-  console.log("Rendering customer row:", customer); // Add this log to debug customer data
+  const formatSubscriptionPlan = (plan: string | null) => {
+    switch (plan) {
+      case '1_month':
+        return '1 Month';
+      case '6_months':
+        return '6 Months';
+      case '12_months':
+        return '12 Months';
+      default:
+        return 'No plan';
+    }
+  };
+
+  console.log("Rendering customer row:", customer);
 
   return (
     <TableRow className="text-xs bg-white hover:bg-white">
@@ -49,10 +62,10 @@ export const CustomerTableRow = ({
       </TableCell>
       <TableCell>
         <Badge 
-          variant={customer.onboarding_completed ? "default" : "secondary"}
+          variant="secondary"
           className="text-xs font-normal"
         >
-          {customer.onboarding_completed === true ? 'Complete' : 'Incomplete'}
+          {formatSubscriptionPlan(customer.subscription_plan)}
         </Badge>
       </TableCell>
       <TableCell className="text-right">

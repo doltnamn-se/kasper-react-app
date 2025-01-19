@@ -27,7 +27,7 @@ export const CustomersTable = ({
             <TableHead className="text-xs font-normal text-black">{t('table.firstName')}</TableHead>
             <TableHead className="text-xs font-normal text-black">{t('table.lastName')}</TableHead>
             <TableHead className="text-xs font-normal text-black">{t('table.created')}</TableHead>
-            <TableHead className="text-xs font-normal text-black">{t('table.status')}</TableHead>
+            <TableHead className="text-xs font-normal text-black">{t('table.subscription')}</TableHead>
             <TableHead className="text-right text-xs font-normal text-black">{t('table.actions')}</TableHead>
           </TableRow>
         </TableHeader>
