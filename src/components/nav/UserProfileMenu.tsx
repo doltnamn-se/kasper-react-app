@@ -12,11 +12,14 @@ import { ChevronDown } from "lucide-react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { getUserInitials, getFullName } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
   const { toast } = useToast();
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
 
   const handleSignOut = async () => {
     if (isSigningOut) {
@@ -73,8 +76,12 @@ export const UserProfileMenu = () => {
               {getUserInitials(userProfile)}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm font-medium">{getFullName(userProfile, userEmail)}</span>
-          <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
+          {!isMobile && (
+            <>
+              <span className="text-sm font-medium">{getFullName(userProfile, userEmail)}</span>
+              <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
+            </>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 p-2">

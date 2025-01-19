@@ -38,7 +38,7 @@ export const TopNav = () => {
         {/* Left side - Search bar (hidden on mobile) */}
         <div className={cn(
           "flex-1 max-w-md",
-          isMobile && "hidden"
+          isMobile ? "hidden" : "block"
         )}>
           <SearchBar />
         </div>
