@@ -19,18 +19,24 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   return (
     <>
       <DropdownMenuGroup>
-        <DropdownMenuItem onClick={() => navigate("/profile")} className="py-2 cursor-pointer">
+        <DropdownMenuItem 
+          onClick={() => navigate("/profile")} 
+          className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
+        >
           <UserCircle className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300">{t('profile.manage')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
-          className="py-2 cursor-pointer"
+          className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
           onClick={() => window.open('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss', '_blank')}
         >
           <CreditCard className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300">{t('profile.billing')}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/settings")} className="py-2 cursor-pointer">
+        <DropdownMenuItem 
+          onClick={() => navigate("/settings")} 
+          className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
+        >
           <Settings className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300">{t('profile.settings')}</span>
         </DropdownMenuItem>
@@ -39,7 +45,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
       <DropdownMenuItem 
         onClick={onSignOut} 
         disabled={isSigningOut}
-        className="py-2 cursor-pointer"
+        className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
       >
         <LogOut className="mr-3 h-4 w-4" />
         <span className="text-black dark:text-gray-300">

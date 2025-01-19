@@ -36,8 +36,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 <AccordionTrigger 
                   className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md w-full text-left ${
                     location.pathname.startsWith("/admin") 
-                      ? "bg-gray-100 dark:bg-gray-800" 
-                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                      ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+                      : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -78,8 +78,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               to="/" 
               className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
                 location.pathname === "/" 
-                  ? "bg-gray-100 dark:bg-gray-800" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+                  : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
               }`}
             >
               <House className="w-[18px] h-[18px] text-black dark:text-gray-300" />
@@ -90,8 +90,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               to="/checklist" 
               className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
                 location.pathname === "/checklist" 
-                  ? "bg-gray-100 dark:bg-gray-800" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+                  : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
               }`}
             >
               <BadgeCheck className="w-[18px] h-[18px] text-black dark:text-gray-300" />
@@ -102,8 +102,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               to="/my-links" 
               className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
                 location.pathname === "/my-links" 
-                  ? "bg-gray-100 dark:bg-gray-800" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+                  : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
               }`}
             >
               <QrCode className="w-[18px] h-[18px] text-black dark:text-gray-300" />
@@ -114,8 +114,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               to="/address-alerts" 
               className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
                 location.pathname === "/address-alerts" 
-                  ? "bg-gray-100 dark:bg-gray-800" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+                  : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
               }`}
             >
               <MapPinHouse className="w-[18px] h-[18px] text-black dark:text-gray-300" />
@@ -126,8 +126,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               to="/guides" 
               className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
                 location.pathname === "/guides" 
-                  ? "bg-gray-100 dark:bg-gray-800" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+                  : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
               }`}
             >
               <MousePointerClick className="w-[18px] h-[18px] text-black dark:text-gray-300" />

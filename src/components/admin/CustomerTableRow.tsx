@@ -58,9 +58,9 @@ export const CustomerTableRow = ({
   console.log("Rendering customer row:", customer);
 
   return (
-    <TableRow className="text-xs bg-white hover:bg-white">
-      <TableCell className="text-xs text-black">{customer.profile.id || '-'}</TableCell>
-      <TableCell className="text-xs text-black">{customer.profile.email || '-'}</TableCell>
+    <TableRow className="text-xs bg-white dark:bg-[#1c1c1e] hover:bg-white dark:hover:bg-[#1c1c1e]">
+      <TableCell className="text-xs text-black dark:text-white">{customer.profile.id || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white">{customer.profile.email || '-'}</TableCell>
       <TableCell>
         <Badge 
           variant="outline"
@@ -69,9 +69,9 @@ export const CustomerTableRow = ({
           {customer.profile.role || 'No role'}
         </Badge>
       </TableCell>
-      <TableCell className="text-xs text-black">{customer.profile.first_name || '-'}</TableCell>
-      <TableCell className="text-xs text-black">{customer.profile.last_name || '-'}</TableCell>
-      <TableCell className="text-xs text-black">
+      <TableCell className="text-xs text-black dark:text-white">{customer.profile.first_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white">{customer.profile.last_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white">
         {customer.profile.created_at
           ? format(new Date(customer.profile.created_at), 'MMM d, yyyy')
           : '-'}
