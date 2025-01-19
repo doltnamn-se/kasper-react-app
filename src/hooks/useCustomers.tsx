@@ -21,7 +21,16 @@ export const useCustomers = () => {
           created_at,
           updated_at,
           customers (
-            *
+            id,
+            subscription_plan,
+            created_at,
+            updated_at,
+            onboarding_completed,
+            onboarding_step,
+            checklist_completed,
+            checklist_step,
+            identification_info,
+            stripe_customer_id
           )
         `);
 
@@ -31,7 +40,7 @@ export const useCustomers = () => {
       }
 
       const transformedData = customersData?.map(profile => {
-        console.log("Profile data:", profile); // Add this log to debug profile data
+        console.log("Profile data:", profile);
         return {
           ...profile.customers?.[0],
           profile: {
