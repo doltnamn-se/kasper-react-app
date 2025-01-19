@@ -30,25 +30,28 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      console.log("Calling create-customer function");
-      const { data, error } = await supabase.functions.invoke('create-customer', {
-        body: {
-          email: formData.email,
-          displayName: formData.displayName,
-          subscriptionPlan: formData.subscriptionPlan,
-          createdBy: user.id
-        }
+      // Log the request payload for debugging
+      const requestPayload = {
+        email: formData.email,
+        displayName: formData.displayName,
+        subscriptionPlan: formData.subscriptionPlan,
+        createdBy: user.id
+      };
+      console.log("Sending create customer request with payload:", requestPayload);
+
+      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
+        body: requestPayload
       });
 
-      if (error) {
-        console.error("Error in customer creation:", error);
-        throw error;
+      if (createError) {
+        console.error("Error in customer creation:", createError);
+        throw createError;
       }
 
-      console.log("Customer created successfully:", data);
+      console.log("Customer created successfully:", createData);
       toast({
         title: "Success",
-        description: "Customer created successfully and welcome email sent.",
+        description: "Customer created successfully.",
       });
 
       resetForm();
