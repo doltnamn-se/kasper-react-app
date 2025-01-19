@@ -11,12 +11,11 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       
-      // Join customers with profiles to get all profile data
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
           *,
-          profile:profiles!customers_profile_id_fkey (
+          profile:profiles (
             id,
             email,
             display_name,
@@ -31,7 +30,7 @@ export const useCustomers = () => {
 
       console.log("Raw customers data:", customersData);
 
-      // Transform the data to ensure each customer has a profile, even if empty
+      // Transform the data to ensure each customer has a profile
       const transformedData = customersData?.map(customer => ({
         ...customer,
         profile: customer.profile || {
