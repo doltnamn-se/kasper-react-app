@@ -21,13 +21,18 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
+    // Get the origin from the request headers
+    const origin = req.headers.get('origin');
+    console.log("Request origin:", origin);
+
     // Generate password reset link with correct redirect URL
-    const { data, error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(
+    const { data, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
+      type: 'recovery',
       email,
-      {
-        redirectTo: `${req.headers.get('origin')}/auth?type=recovery`,
+      options: {
+        redirectTo: `${origin}/auth/callback?type=recovery`,
       }
-    );
+    });
 
     if (resetError) {
       console.error("Error generating reset link:", resetError);
@@ -47,7 +52,9 @@ serve(async (req) => {
         subject: "Reset Your Doltnamn Password",
         html: `
           <p>Hello,</p>
-          <p>A password reset has been requested for your account. If you didn't make this request, you can safely ignore this email.</p>
+          <p>A password reset has been requested for your account. Click the link below to reset your password:</p>
+          <p><a href="${data.properties.action_link}">${data.properties.action_link}</a></p>
+          <p>If you didn't make this request, you can safely ignore this email.</p>
           <p>Best regards,<br>The Doltnamn Team</p>
         `,
       }),

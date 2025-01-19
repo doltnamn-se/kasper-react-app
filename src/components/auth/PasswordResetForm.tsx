@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -26,12 +25,17 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
     console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      const response = await fetch(`${window.location.origin}/functions/v1/send-password-reset`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: resetEmail }),
       });
 
-      if (error) {
-        console.error("Error in password reset:", error);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error in password reset:", errorText);
         toast.error(t('error.generic'));
         return;
       }
