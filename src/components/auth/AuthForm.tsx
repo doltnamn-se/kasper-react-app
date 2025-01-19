@@ -54,11 +54,21 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
           return;
         }
 
-        // Update the user's password using the recovery token
-        const { data, error: updateError } = await supabase.auth.updateUser({
+        // Set the session with the recovery token
+        const { data: { session }, error: sessionError } = await supabase.auth.setSession({
+          access_token: hash,
+          refresh_token: '',
+        });
+
+        if (sessionError) {
+          console.error("Error setting session:", sessionError);
+          toast.error(t('error.generic'));
+          return;
+        }
+
+        // Update the user's password
+        const { error: updateError } = await supabase.auth.updateUser({
           password: newPassword
-        }, {
-          accessToken: hash
         });
 
         if (updateError) {
