@@ -14,7 +14,7 @@ export const CustomersTable = ({
   onCustomerUpdated,
   onDeleteCustomer 
 }: CustomersTableProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   return (
     <div className="rounded-[4px] border border-[#e5e5e5] dark:border-[#303032] overflow-hidden">
@@ -24,7 +24,7 @@ export const CustomersTable = ({
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.userId')}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.email')}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.role')}</TableHead>
-            <TableHead className="text-xs font-normal text-black dark:text-white" colSpan={2}>{t('table.displayName')}</TableHead>
+            <TableHead className="text-xs font-normal text-black dark:text-white" colSpan={2}>{language === 'sv' ? 'Namn' : 'Name'}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.created')}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.subscription')}</TableHead>
             <TableHead className="text-right text-xs font-normal text-black dark:text-white">{t('table.actions')}</TableHead>
