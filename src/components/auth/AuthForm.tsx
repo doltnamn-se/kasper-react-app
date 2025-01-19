@@ -29,18 +29,11 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
       console.log("Initializing password recovery flow...");
       
-      // First check URL hash for access_token
-      const hash = window.location.hash;
-      const hashParams = new URLSearchParams(hash.replace('#', ''));
-      let token = hashParams.get('access_token');
+      // Get token from URL parameters
+      const searchParams = new URLSearchParams(window.location.search);
+      const token = searchParams.get('token');
+      const type = searchParams.get('type');
       
-      // If no token in hash, check query params
-      if (!token) {
-        const searchParams = new URLSearchParams(window.location.search);
-        token = searchParams.get('token');
-      }
-
-      const type = new URLSearchParams(window.location.search).get('type');
       console.log("Recovery flow parameters:", { token: token ? "Found" : "Not found", type });
 
       if (!token || type !== 'recovery') {
@@ -50,34 +43,24 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       }
 
       try {
-        // Get the current session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          console.error("Session error:", sessionError);
+        // Try to verify the OTP token directly
+        const { data, error: verifyError } = await supabase.auth.verifyOtp({
+          token_hash: token,
+          type: 'recovery'
+        });
+
+        if (verifyError) {
+          console.error("Token verification error:", verifyError);
           toast.error(t('error.invalid.recovery.link'));
           return;
         }
 
-        // If we have a session, verify it's valid for password recovery
-        if (session?.access_token) {
-          console.log("Session found, verifying recovery token");
-          setRecoveryToken(session.access_token);
+        if (data?.session) {
+          console.log("Recovery token verified successfully, session created");
+          setRecoveryToken(data.session.access_token);
         } else {
-          // If no session, try to exchange the recovery token
-          const { error: verifyError } = await supabase.auth.verifyOtp({
-            token_hash: token,
-            type: 'recovery'
-          });
-
-          if (verifyError) {
-            console.error("Token verification error:", verifyError);
-            toast.error(t('error.invalid.recovery.link'));
-            return;
-          }
-
-          console.log("Recovery token verified successfully");
-          setRecoveryToken(token);
+          console.error("No session created after token verification");
+          toast.error(t('error.invalid.recovery.link'));
         }
       } catch (err) {
         console.error("Error in recovery flow:", err);
