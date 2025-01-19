@@ -71,6 +71,24 @@ export default {
 				subscription: {
 					text: '#001400',
 					bg: '#d6f37d'
+				},
+				role: {
+					superadmin: {
+						text: '#dc7b18',
+						'text-dark': '#db8e00',
+						bg: '#ffb2241a',
+						'bg-dark': '#db8e001a',
+						border: '#f3ba63',
+						'border-dark': '#693f05'
+					},
+					customer: {
+						text: '#097c4f',
+						'text-dark': '#85e0ba',
+						bg: '#3fcf8e1a',
+						'bg-dark': '#3ecf8e1a',
+						border: '#16b674',
+						'border-dark': '#006239'
+					}
 				}
 			},
 			borderRadius: {

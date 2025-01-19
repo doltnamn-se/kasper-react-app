@@ -29,6 +29,17 @@ export const CustomerTableRow = ({
     }
   };
 
+  const getRoleBadgeClasses = (role: string | null) => {
+    switch (role) {
+      case 'super_admin':
+        return 'text-role-superadmin-text dark:text-role-superadmin-text-dark bg-role-superadmin-bg dark:bg-role-superadmin-bg-dark border-role-superadmin-border dark:border-role-superadmin-border-dark hover:bg-role-superadmin-bg dark:hover:bg-role-superadmin-bg-dark';
+      case 'customer':
+        return 'text-role-customer-text dark:text-role-customer-text-dark bg-role-customer-bg dark:bg-role-customer-bg-dark border-role-customer-border dark:border-role-customer-border-dark hover:bg-role-customer-bg dark:hover:bg-role-customer-bg-dark';
+      default:
+        return '';
+    }
+  };
+
   const formatSubscriptionPlan = (plan: string | null) => {
     if (!plan) return '';
     
@@ -52,8 +63,8 @@ export const CustomerTableRow = ({
       <TableCell className="text-xs text-black">{customer.profile.email || '-'}</TableCell>
       <TableCell>
         <Badge 
-          variant={getBadgeVariant(customer.profile.role)}
-          className="text-xs font-normal"
+          variant="outline"
+          className={`text-xs font-normal ${getRoleBadgeClasses(customer.profile.role)}`}
         >
           {customer.profile.role || 'No role'}
         </Badge>
@@ -69,7 +80,7 @@ export const CustomerTableRow = ({
         {customer.subscription_plan && (
           <Badge 
             variant="secondary"
-            className="text-xs font-semibold text-subscription-text bg-subscription-bg dark:text-subscription-text dark:bg-subscription-bg py-1"
+            className="text-xs font-semibold text-subscription-text bg-subscription-bg dark:text-subscription-text dark:bg-subscription-bg py-2 hover:bg-subscription-bg dark:hover:bg-subscription-bg"
           >
             {formatSubscriptionPlan(customer.subscription_plan)}
           </Badge>
