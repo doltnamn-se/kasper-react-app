@@ -3,34 +3,24 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
+  console.log("Function invoked with request:", req.method);
+  
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
     return new Response(null, { 
-      status: 204,
-      headers: corsHeaders
+      headers: corsHeaders,
+      status: 204
     });
   }
 
   try {
     const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
-
-    if (!email || !displayName || !subscriptionPlan || !createdBy || !password) {
-      console.error("Missing required fields");
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }), 
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
-    }
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -56,24 +46,12 @@ serve(async (req) => {
 
     if (authError) {
       console.error("Error creating auth user:", authError);
-      return new Response(
-        JSON.stringify({ error: `Failed to create auth user: ${authError.message}` }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
+      throw new Error(authError.message);
     }
 
     if (!authData.user) {
       console.error("No user data returned from auth creation");
-      return new Response(
-        JSON.stringify({ error: "Failed to create user - no user data returned" }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
+      throw new Error("Failed to create user");
     }
 
     console.log("Auth user created successfully:", authData.user.id);
@@ -91,13 +69,7 @@ serve(async (req) => {
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
-      return new Response(
-        JSON.stringify({ error: `Failed to update profile: ${profileError.message}` }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
+      throw new Error("Failed to update profile");
     }
 
     // Update customer data
@@ -112,13 +84,7 @@ serve(async (req) => {
 
     if (customerError) {
       console.error("Error updating customer:", customerError);
-      return new Response(
-        JSON.stringify({ error: `Failed to update customer: ${customerError.message}` }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
+      throw new Error("Failed to update customer");
     }
 
     console.log("Customer creation completed successfully");
@@ -129,8 +95,8 @@ serve(async (req) => {
         message: "Customer created successfully"
       }),
       {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     );
   } catch (err) {
@@ -141,8 +107,8 @@ serve(async (req) => {
         details: err.toString()
       }),
       {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   }

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "./useCustomerCreation";
-import { useState } from "react";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -11,15 +10,9 @@ interface CreateCustomerDialogProps {
 
 export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialogProps) => {
   const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(onCustomerCreated);
-  const [open, setOpen] = useState(false);
-
-  const handleCreate = async () => {
-    await handleCreateCustomer();
-    setOpen(false);
-  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button>
           <UserPlus className="w-4 h-4 mr-2" />
@@ -44,8 +37,8 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
           />
           <Button 
             className="w-full" 
-            onClick={handleCreate}
-            disabled={isCreating || !formData.email || !formData.displayName}
+            onClick={handleCreateCustomer}
+            disabled={isCreating || !formData.email}
           >
             {isCreating ? "Creating..." : "Create Customer"}
           </Button>
