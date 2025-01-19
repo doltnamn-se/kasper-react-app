@@ -74,6 +74,7 @@ const translations = {
     'toast.error.description': 'Could not sign out. Please try again.',
     'toast.error.unexpected': 'An unexpected error occurred. Please try again.',
     // Table related
+    'table.userId': 'UID',
     'table.email': 'Email',
     'table.role': 'Role',
     'table.firstName': 'First Name',
@@ -147,6 +148,7 @@ const translations = {
     'toast.error.description': 'Kunde inte logga ut. Försök igen.',
     'toast.error.unexpected': 'Ett oväntat fel uppstod. Försök igen.',
     // Table related
+    'table.userId': 'UID',
     'table.email': 'E-post',
     'table.role': 'Roll',
     'table.firstName': 'Förnamn',

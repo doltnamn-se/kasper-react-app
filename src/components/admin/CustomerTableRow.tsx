@@ -26,6 +26,8 @@ export const CustomerTableRow = ({
     }
   };
 
+  console.log("Rendering customer row:", customer); // Add this log to debug customer data
+
   return (
     <TableRow className="text-xs bg-white hover:bg-white">
       <TableCell className="text-xs text-black">{customer.profile.id || '-'}</TableCell>

@@ -30,20 +30,23 @@ export const useCustomers = () => {
         throw customersError;
       }
 
-      const transformedData = customersData?.map(profile => ({
-        ...profile.customers?.[0],
-        profile: {
-          id: profile.id,
-          first_name: profile.first_name,
-          last_name: profile.last_name,
-          role: profile.role,
-          email: profile.email,
-          created_at: profile.created_at,
-          updated_at: profile.updated_at
-        }
-      })) || [];
+      const transformedData = customersData?.map(profile => {
+        console.log("Profile data:", profile); // Add this log to debug profile data
+        return {
+          ...profile.customers?.[0],
+          profile: {
+            id: profile.id,
+            first_name: profile.first_name,
+            last_name: profile.last_name,
+            role: profile.role,
+            email: profile.email,
+            created_at: profile.created_at,
+            updated_at: profile.updated_at
+          }
+        };
+      }) || [];
 
-      console.log("Customers fetched:", transformedData);
+      console.log("Transformed customers data:", transformedData);
       return transformedData as CustomerWithProfile[];
     }
   });
