@@ -27,15 +27,16 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       const fullUrl = window.location.href;
       console.log("Full URL:", fullUrl);
       
-      // Extract the token from the fragment
-      const fragment = new URLSearchParams(window.location.hash.substring(1));
-      const token = fragment.get('recovery_token');
+      // Extract the code from query parameters instead of hash
+      const searchParams = new URLSearchParams(window.location.search);
+      const code = searchParams.get('code');
+      const type = searchParams.get('type');
       
-      if (token) {
-        console.log("Found recovery token in URL");
-        setRecoveryToken(token);
+      if (code && type === 'recovery') {
+        console.log("Found recovery code in URL");
+        setRecoveryToken(code);
       } else {
-        console.error("No recovery token found in URL. Full URL for debugging:", fullUrl);
+        console.error("No recovery code found in URL or invalid type. Full URL for debugging:", fullUrl);
       }
     }
   }, [isResetPasswordMode]);
@@ -54,19 +55,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
           return;
         }
 
-        // Set the session with the recovery token
-        const { data: { session }, error: sessionError } = await supabase.auth.setSession({
-          access_token: recoveryToken,
-          refresh_token: '',
-        });
-
-        if (sessionError) {
-          console.error("Error setting session:", sessionError);
-          toast.error(t('error.generic'));
-          return;
-        }
-
-        // Update the user's password
+        // Update the user's password using the recovery token
         const { error: updateError } = await supabase.auth.updateUser({
           password: newPassword
         });
