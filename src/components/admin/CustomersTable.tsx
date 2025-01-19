@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
 import { CustomerTableRow } from "./CustomerTableRow";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomersTableProps {
   customers: CustomerWithProfile[];
@@ -13,18 +14,20 @@ export const CustomersTable = ({
   onCustomerUpdated,
   onDeleteCustomer 
 }: CustomersTableProps) => {
+  const { t } = useLanguage();
+  
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border border-[#333333] overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>First Name</TableHead>
-            <TableHead>Last Name</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="text-xs font-medium">{t('table.email')}</TableHead>
+            <TableHead className="text-xs font-medium">{t('table.role')}</TableHead>
+            <TableHead className="text-xs font-medium">{t('table.firstName')}</TableHead>
+            <TableHead className="text-xs font-medium">{t('table.lastName')}</TableHead>
+            <TableHead className="text-xs font-medium">{t('table.created')}</TableHead>
+            <TableHead className="text-xs font-medium">{t('table.status')}</TableHead>
+            <TableHead className="text-right text-xs font-medium">{t('table.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

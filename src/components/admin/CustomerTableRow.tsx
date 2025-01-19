@@ -26,25 +26,29 @@ export const CustomerTableRow = ({
     }
   };
 
-  console.log("Customer onboarding status:", customer.id, customer.onboarding_completed);
-
   return (
-    <TableRow>
-      <TableCell>{customer.profile?.id}</TableCell>
+    <TableRow className="text-xs hover:bg-[#333333] transition-colors">
+      <TableCell className="text-xs">{customer.profile?.id || '-'}</TableCell>
       <TableCell>
-        <Badge variant={getBadgeVariant(customer.profile?.role)}>
+        <Badge 
+          variant={getBadgeVariant(customer.profile?.role)}
+          className="text-xs font-normal"
+        >
           {customer.profile?.role || 'No role'}
         </Badge>
       </TableCell>
-      <TableCell>{customer.profile?.first_name || '-'}</TableCell>
-      <TableCell>{customer.profile?.last_name || '-'}</TableCell>
-      <TableCell>
+      <TableCell className="text-xs">{customer.profile?.first_name || '-'}</TableCell>
+      <TableCell className="text-xs">{customer.profile?.last_name || '-'}</TableCell>
+      <TableCell className="text-xs">
         {customer.created_at
           ? format(new Date(customer.created_at), 'MMM d, yyyy')
           : '-'}
       </TableCell>
       <TableCell>
-        <Badge variant={customer.onboarding_completed ? "default" : "secondary"}>
+        <Badge 
+          variant={customer.onboarding_completed ? "default" : "secondary"}
+          className="text-xs font-normal"
+        >
           {customer.onboarding_completed === true ? 'Complete' : 'Incomplete'}
         </Badge>
       </TableCell>

@@ -73,6 +73,14 @@ const translations = {
     'toast.error.title': 'Error',
     'toast.error.description': 'Could not sign out. Please try again.',
     'toast.error.unexpected': 'An unexpected error occurred. Please try again.',
+    // Table related
+    'table.email': 'Email',
+    'table.role': 'Role',
+    'table.firstName': 'First Name',
+    'table.lastName': 'Last Name',
+    'table.created': 'Created',
+    'table.status': 'Status',
+    'table.actions': 'Actions',
   },
   sv: {
     // Auth related
@@ -138,6 +146,14 @@ const translations = {
     'toast.error.title': 'Fel',
     'toast.error.description': 'Kunde inte logga ut. Försök igen.',
     'toast.error.unexpected': 'Ett oväntat fel uppstod. Försök igen.',
+    // Table related
+    'table.email': 'E-post',
+    'table.role': 'Roll',
+    'table.firstName': 'Förnamn',
+    'table.lastName': 'Efternamn',
+    'table.created': 'Skapad',
+    'table.status': 'Status',
+    'table.actions': 'Åtgärder',
   }
 };
 
