@@ -146,7 +146,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
         <main className="px-8 pt-24">
-          <div className="max-w-5xl px-8">
+          {/* Removed the max-w-5xl and px-8 constraints */}
+          <div>
             {children}
           </div>
         </main>
