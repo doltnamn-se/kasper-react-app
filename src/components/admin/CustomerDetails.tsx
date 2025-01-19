@@ -65,12 +65,6 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
                   <span className="text-muted-foreground">Plan:</span>{" "}
                   {customer.subscription_plan ? customer.subscription_plan.replace('_', ' ') : 'No active plan'}
                 </p>
-                {customer.stripe_customer_id && (
-                  <p>
-                    <span className="text-muted-foreground">Stripe ID:</span>{" "}
-                    {customer.stripe_customer_id}
-                  </p>
-                )}
               </div>
             </div>
           </div>
