@@ -23,7 +23,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
 
       // Generate a UUID for the new user
-      const { data: customerId } = await supabase.rpc<string>('gen_random_uuid');
+      const { data: customerId } = await supabase.rpc<string, never>('gen_random_uuid');
       if (!customerId) {
         console.error("Failed to generate UUID");
         throw new Error("Failed to generate UUID");
