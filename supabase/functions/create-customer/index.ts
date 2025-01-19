@@ -18,15 +18,15 @@ serve(async (req) => {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
 
-    // Initialize Supabase client with service role key
+    // Initialize Supabase admin client with service role key
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       {
         auth: {
           autoRefreshToken: false,
-          persistSession: false,
-        },
+          persistSession: false
+        }
       }
     );
 
@@ -34,9 +34,9 @@ serve(async (req) => {
     const password = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
     console.log("Generated password for new user");
 
-    // Create auth user with provided password
+    // Create auth user with provided email and password
     console.log("Creating auth user");
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+    const { data: { user }, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
@@ -45,17 +45,12 @@ serve(async (req) => {
       }
     });
 
-    if (authError) {
-      console.error("Error creating auth user:", authError);
-      throw new Error(authError.message);
+    if (createUserError || !user) {
+      console.error("Error creating auth user:", createUserError);
+      throw new Error(createUserError?.message || "Failed to create user");
     }
 
-    if (!authData.user) {
-      console.error("No user data returned from auth creation");
-      throw new Error("Failed to create user");
-    }
-
-    console.log("Auth user created successfully:", authData.user.id);
+    console.log("Auth user created successfully:", user.id);
 
     // Update profile data
     console.log("Updating profile data");
@@ -66,7 +61,7 @@ serve(async (req) => {
         email: email,
         role: 'customer',
       })
-      .eq('id', authData.user.id);
+      .eq('id', user.id);
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
@@ -83,7 +78,7 @@ serve(async (req) => {
         onboarding_completed: true,
         onboarding_step: 5
       })
-      .eq('id', authData.user.id);
+      .eq('id', user.id);
 
     if (customerError) {
       console.error("Error updating customer:", customerError);
@@ -109,7 +104,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        userId: authData.user.id,
+        userId: user.id,
         message: "Customer created successfully"
       }),
       {
