@@ -32,7 +32,7 @@ export const TopNav = () => {
       "fixed top-0 right-0 h-16 bg-transparent backdrop-blur-sm z-50 transition-[left] duration-200",
       isCollapsed ? "left-16" : "left-72"
     )}>
-      <div className="flex items-center justify-between h-full px-16">
+      <div className="flex items-center justify-between h-full px-8">
         <div className="flex-1 max-w-md">
           <SearchBar />
         </div>
