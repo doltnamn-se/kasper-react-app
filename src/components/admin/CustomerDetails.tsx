@@ -32,8 +32,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
               <h3 className="font-medium">Personal Information</h3>
               <div className="mt-2 space-y-2 text-sm">
                 <p>
-                  <span className="text-muted-foreground">Name:</span>{" "}
-                  {`${customer.profile?.first_name || ''} ${customer.profile?.last_name || ''}`.trim() || 'No name provided'}
+                  <span className="text-muted-foreground">Display Name:</span>{" "}
+                  {customer.profile?.display_name || 'No name provided'}
                 </p>
                 <p>
                   <span className="text-muted-foreground">Created:</span>{" "}
