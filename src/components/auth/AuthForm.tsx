@@ -28,16 +28,16 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       const fullUrl = window.location.href;
       console.log("Full URL:", fullUrl);
       
-      // Extract the code from query parameters instead of hash
+      // Extract the token from the URL query parameters
       const searchParams = new URLSearchParams(window.location.search);
-      const code = searchParams.get('code');
+      const token = searchParams.get('token');
       const type = searchParams.get('type');
       
-      if (code && type === 'recovery') {
-        console.log("Found recovery code in URL");
-        setRecoveryToken(code);
+      if (token && type === 'recovery') {
+        console.log("Found recovery token in URL");
+        setRecoveryToken(token);
       } else {
-        console.error("No recovery code found in URL or invalid type. Full URL for debugging:", fullUrl);
+        console.error("No recovery token found in URL or invalid type");
       }
     }
   }, [isResetPasswordMode]);
@@ -51,7 +51,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
         console.log("Starting password reset process");
         
         if (!recoveryToken) {
-          console.error("No recovery token found");
+          console.error("No recovery token available");
           toast.error(t('error.generic'));
           return;
         }
@@ -175,7 +175,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
               type="button"
               variant="ghost"
               onClick={() => setShowResetForm(true)}
-              className="w-full text-xs text-gray-600 hover:text-black hover:bg-transparent dark:text-gray-400 dark:hover:text-white font-normal"
+              className="w-full text-xs text-gray-600 hover:text-[#000000] hover:bg-transparent dark:text-gray-400 dark:hover:text-white font-normal"
             >
               {t('forgot.password')}
             </Button>
