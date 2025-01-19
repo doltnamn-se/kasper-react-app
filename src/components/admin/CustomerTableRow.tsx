@@ -55,20 +55,39 @@ export const CustomerTableRow = ({
     }
   };
 
+  const getDisplayName = () => {
+    if (!customer.profile) return '-';
+    if (customer.profile.display_name) return customer.profile.display_name;
+    if (customer.profile.first_name || customer.profile.last_name) {
+      return `${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim();
+    }
+    return '-';
+  };
+
+  const getRole = () => {
+    return customer.profile?.role || 'No role';
+  };
+
+  const getEmail = () => {
+    return customer.profile?.email || '-';
+  };
+
+  console.log("Rendering customer row:", customer);
+
   return (
     <TableRow className="text-xs bg-white dark:bg-[#1c1c1e] hover:bg-white dark:hover:bg-[#1c1c1e]">
       <TableCell className="text-xs text-black dark:text-white">{customer.id || '-'}</TableCell>
-      <TableCell className="text-xs text-black dark:text-white">{customer.profile?.email || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white">{getEmail()}</TableCell>
       <TableCell>
         <Badge 
           variant="outline"
           className={`text-xs font-normal ${getRoleBadgeClasses(customer.profile?.role)}`}
         >
-          {customer.profile?.role || 'customer'}
+          {getRole()}
         </Badge>
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
-        {customer.profile?.display_name || '-'}
+        {getDisplayName()}
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
         {customer.created_at

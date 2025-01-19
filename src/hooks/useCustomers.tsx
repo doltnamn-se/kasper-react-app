@@ -15,8 +15,7 @@ export const useCustomers = () => {
         .from('customers')
         .select(`
           *,
-          profile:profiles!customers_profile_id_fkey (
-            id,
+          profile:profiles (
             email,
             display_name,
             role
@@ -30,14 +29,13 @@ export const useCustomers = () => {
 
       console.log("Raw customers data:", customersData);
 
-      // Transform the data to ensure each customer has a profile
+      // Transform the data to ensure each customer has a profile, even if empty
       const transformedData = customersData?.map(customer => ({
         ...customer,
         profile: customer.profile || {
-          id: customer.id,
           email: null,
           display_name: null,
-          role: 'customer'
+          role: null
         }
       })) || [];
 
