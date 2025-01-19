@@ -15,7 +15,7 @@ interface AuthFormProps {
 }
 
 export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: AuthFormProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -100,7 +100,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
     <div className="flex justify-center w-full">
       <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in rounded-[7px] font-system-ui">
         <h2 className="text-xl font-bold mb-6 text-center dark:text-white font-system-ui">
-          {isResetPasswordMode ? t('reset.password') : t('sign.in')}
+          {isResetPasswordMode ? (language === 'sv' ? "Återställ lösenord" : "Reset password") : t('sign.in')}
         </h2>
         
         {errorMessage && (
