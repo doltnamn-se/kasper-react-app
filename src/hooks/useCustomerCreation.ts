@@ -22,11 +22,17 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
+      // Generate a UUID for the new user
+      const { data: newId } = await supabase.rpc('gen_random_uuid');
+      const customerId = newId as string;
+      console.log("Generated new customer ID:", customerId);
+
       // First create the profile
       console.log("Creating profile...");
       const { error: profileError } = await supabase
         .from('profiles')
         .insert({
+          id: customerId,
           email: formData.email,
           display_name: formData.displayName,
           role: 'customer'
@@ -42,6 +48,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       const { error: customerError } = await supabase
         .from('customers')
         .insert({
+          id: customerId,
           subscription_plan: formData.subscriptionPlan,
           created_by: user.id,
           onboarding_completed: true,
