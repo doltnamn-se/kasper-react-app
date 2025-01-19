@@ -41,11 +41,6 @@ serve(async (req) => {
     });
 
     // Validate required fields
-    if (!email) console.log("Missing email");
-    if (!displayName) console.log("Missing displayName");
-    if (!subscriptionPlan) console.log("Missing subscriptionPlan");
-    if (!createdBy) console.log("Missing createdBy");
-
     if (!email || !displayName || !subscriptionPlan || !createdBy) {
       const errorResponse = {
         error: "Missing required fields",
@@ -79,9 +74,6 @@ serve(async (req) => {
       email,
       password: Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12),
       email_confirm: true,
-      user_metadata: {
-        display_name: displayName
-      }
     });
 
     if (createUserError || !user) {
@@ -100,22 +92,22 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", user.id);
 
-    // Update profile data
-    console.log("Updating profile for user:", user.id);
+    // Create profile first since it has a foreign key constraint with auth.users
+    console.log("Creating profile for user:", user.id);
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
-      .update({
-        display_name: displayName,
+      .insert({
+        id: user.id,
         email: email,
-        role: 'customer',
-      })
-      .eq('id', user.id);
+        display_name: displayName,
+        role: 'customer'
+      });
 
     if (profileError) {
-      console.error("Error updating profile:", profileError);
+      console.error("Error creating profile:", profileError);
       return new Response(
         JSON.stringify({ 
-          error: "Failed to update profile",
+          error: "Failed to create profile",
           details: profileError 
         }),
         {
@@ -125,23 +117,23 @@ serve(async (req) => {
       );
     }
 
-    // Update customer data
-    console.log("Updating customer data for user:", user.id);
+    // Create customer record after profile is created
+    console.log("Creating customer record for user:", user.id);
     const { error: customerError } = await supabaseAdmin
       .from('customers')
-      .update({
+      .insert({
+        id: user.id,
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
         onboarding_completed: true,
         onboarding_step: 5
-      })
-      .eq('id', user.id);
+      });
 
     if (customerError) {
-      console.error("Error updating customer:", customerError);
+      console.error("Error creating customer:", customerError);
       return new Response(
         JSON.stringify({ 
-          error: "Failed to update customer",
+          error: "Failed to create customer",
           details: customerError 
         }),
         {
