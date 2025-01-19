@@ -10,6 +10,22 @@ export const useCustomers = () => {
     queryKey: ['customers'],
     queryFn: async () => {
       console.log("Fetching customers...");
+      
+      // First, get the current user's profile to check role
+      const { data: userProfile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching user profile:", profileError);
+        throw profileError;
+      }
+
+      console.log("User role:", userProfile?.role);
+
+      // Fetch customers based on role
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
