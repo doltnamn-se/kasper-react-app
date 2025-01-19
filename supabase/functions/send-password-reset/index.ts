@@ -25,7 +25,7 @@ serve(async (req) => {
     const origin = req.headers.get('origin');
     console.log("Request origin:", origin);
 
-    // Generate password reset link with correct redirect URL
+    // Generate password reset link
     const { data, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
@@ -38,6 +38,8 @@ serve(async (req) => {
       console.error("Error generating reset link:", resetError);
       throw resetError;
     }
+
+    console.log("Reset link generated successfully");
 
     // Send email via Resend
     const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -65,6 +67,8 @@ serve(async (req) => {
       console.error("Error sending email:", errorText);
       throw new Error(`Failed to send email: ${errorText}`);
     }
+
+    console.log("Password reset email sent successfully");
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
