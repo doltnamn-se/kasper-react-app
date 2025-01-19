@@ -161,7 +161,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
           <Button
             type="submit"
-            className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+            className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
             disabled={isLoading}
           >
             {isLoading ? t('loading') : isResetPasswordMode ? t('update.password') : t('sign.in')}
@@ -172,7 +172,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
               type="button"
               variant="ghost"
               onClick={() => setShowResetForm(true)}
-              className="w-full text-xs text-gray-600 hover:bg-transparent dark:text-gray-400 font-normal"
+              className="w-full text-xs text-gray-600 hover:text-gray-600 hover:bg-transparent dark:text-gray-400 font-normal"
             >
               {t('forgot.password')}
             </Button>
