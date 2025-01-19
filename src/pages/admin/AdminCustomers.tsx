@@ -26,7 +26,6 @@ const AdminCustomers = () => {
         </h1>
         <CreateCustomerDialog onCustomerCreated={refetch} />
       </div>
-      <AdminHeader onCustomerCreated={refetch} />
       {isLoading ? (
         <div>Loading...</div>
       ) : (
