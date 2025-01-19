@@ -9,12 +9,34 @@ serve(async (req) => {
   }
 
   try {
-    const { email, displayName, subscriptionPlan, createdBy } = await req.json();
-    console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
+    // Log the raw request body for debugging
+    const rawBody = await req.text();
+    console.log("Raw request body:", rawBody);
+
+    // Parse the JSON body
+    let body;
+    try {
+      body = JSON.parse(rawBody);
+    } catch (parseError) {
+      console.error("Error parsing request body:", parseError);
+      return new Response(
+        JSON.stringify({ 
+          error: "Invalid JSON in request body",
+          details: parseError.message 
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
+    }
+
+    const { email, displayName, subscriptionPlan, createdBy } = body;
+    console.log("Parsed customer data:", { email, displayName, subscriptionPlan, createdBy });
 
     // Validate required fields
     if (!email || !displayName || !subscriptionPlan || !createdBy) {
-      console.error("Missing required fields");
+      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy });
       return new Response(
         JSON.stringify({
           error: "Missing required fields",
@@ -38,7 +60,7 @@ serve(async (req) => {
     console.log("Generated password for new user");
 
     // Create auth user
-    console.log("Creating auth user");
+    console.log("Creating auth user with email:", email);
     const { data: { user }, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -52,7 +74,7 @@ serve(async (req) => {
       console.error("Error creating auth user:", createUserError);
       return new Response(
         JSON.stringify({ 
-          error: createUserError?.message || "Failed to create user",
+          error: "Failed to create user",
           details: createUserError 
         }),
         {
@@ -65,7 +87,7 @@ serve(async (req) => {
     console.log("Auth user created successfully:", user.id);
 
     // Update profile data
-    console.log("Updating profile data");
+    console.log("Updating profile for user:", user.id);
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({
@@ -90,7 +112,7 @@ serve(async (req) => {
     }
 
     // Update customer data
-    console.log("Updating customer data");
+    console.log("Updating customer data for user:", user.id);
     const { error: customerError } = await supabaseAdmin
       .from('customers')
       .update({
