@@ -29,12 +29,27 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
       console.log("Initializing password recovery flow...");
       
-      // Get token from URL parameters
+      // Extract token from URL hash
+      const hash = window.location.hash.substring(1);
+      const hashParams = new URLSearchParams(hash);
+      const accessToken = hashParams.get('access_token');
+
+      if (accessToken) {
+        console.log("Found access token in URL hash");
+        setRecoveryToken(accessToken);
+        return;
+      }
+
+      // If no access token in hash, check for recovery token in query params
       const searchParams = new URLSearchParams(window.location.search);
       const token = searchParams.get('token');
       const type = searchParams.get('type');
-      
-      console.log("Recovery flow parameters:", { token: token ? "Found" : "Not found", type });
+
+      console.log("Recovery flow parameters:", { 
+        token: token ? "Found" : "Not found", 
+        type,
+        accessToken: accessToken ? "Found" : "Not found"
+      });
 
       if (!token || type !== 'recovery') {
         console.error("Invalid recovery flow parameters");
@@ -43,23 +58,20 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       }
 
       try {
-        // Try to verify the OTP token directly
-        const { data, error: verifyError } = await supabase.auth.verifyOtp({
-          token_hash: token,
-          type: 'recovery'
-        });
+        // Exchange recovery token for session
+        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(token);
 
-        if (verifyError) {
-          console.error("Token verification error:", verifyError);
+        if (exchangeError) {
+          console.error("Error exchanging token:", exchangeError);
           toast.error(t('error.invalid.recovery.link'));
           return;
         }
 
         if (data?.session) {
-          console.log("Recovery token verified successfully, session created");
+          console.log("Recovery token exchanged successfully, session created");
           setRecoveryToken(data.session.access_token);
         } else {
-          console.error("No session created after token verification");
+          console.error("No session created after token exchange");
           toast.error(t('error.invalid.recovery.link'));
         }
       } catch (err) {
