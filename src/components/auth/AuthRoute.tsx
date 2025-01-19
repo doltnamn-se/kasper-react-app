@@ -10,28 +10,11 @@ interface AuthRouteProps {
 export const AuthRoute = ({ children }: AuthRouteProps) => {
   const [session, setSession] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMagicLink, setIsMagicLink] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // First check if we're handling a magic link
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const magicLinkType = hashParams.get('type');
-        const error = hashParams.get('error');
-        const errorDescription = hashParams.get('error_description');
-        
-        console.log("AuthRoute: URL parameters:", { magicLinkType, error, errorDescription });
-        
-        if (magicLinkType === 'magiclink') {
-          console.log("AuthRoute: Magic link detected, allowing access");
-          setIsMagicLink(true);
-          setSession(false);
-          setIsLoading(false);
-          return;
-        }
-
         // Get current session
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
@@ -91,11 +74,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
   if (isLoading) {
     return <LoadingSpinner />;
-  }
-
-  // If it's a magic link, always allow access regardless of session
-  if (isMagicLink) {
-    return <>{children}</>;
   }
 
   // If there's a session, redirect to home

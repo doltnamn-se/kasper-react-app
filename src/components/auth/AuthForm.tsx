@@ -12,10 +12,9 @@ import { toast } from "sonner";
 interface AuthFormProps {
   errorMessage: string;
   isDarkMode: boolean;
-  isResetPasswordMode?: boolean;
 }
 
-export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false }: AuthFormProps) => {
+export const AuthForm = ({ errorMessage, isDarkMode }: AuthFormProps) => {
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -34,7 +33,6 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
     const handleRecoveryFlow = async () => {
       if (type === 'recovery' && code) {
         try {
-          // Exchange the recovery code for a session
           const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
           
           if (sessionError) {
@@ -57,19 +55,13 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
           setView("sign_in");
           setIsManualResetMode(true);
         }
-      } else if (type === 'recovery' && error === 'access_denied') {
-        console.log("AuthForm: Password reset link expired");
-        setResetError(t('error.reset.link.expired'));
-        toast.error(t('error.reset.link.expired'));
-        setView("sign_in");
-        setIsManualResetMode(true);
       }
     };
 
     handleRecoveryFlow();
   }, [searchParams, t, navigate]);
 
-  // If we're in manual reset mode (from clicking forgot password or expired link), show the reset form
+  // If we're in manual reset mode (from clicking forgot password), show the reset form
   if (isManualResetMode) {
     return (
       <PasswordResetForm 
@@ -142,23 +134,6 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
               button_label: t('update.password'),
               loading_button_label: t('updating.password'),
             },
-            magic_link: {
-              email_input_label: t('email'),
-              email_input_placeholder: t('email.placeholder'),
-              button_label: t('send.magic.link'),
-              loading_button_label: t('sending.magic.link'),
-              link_text: t('send.magic.link.via.email'),
-            },
-            verify_otp: {
-              email_input_label: t('email'),
-              email_input_placeholder: t('email.placeholder'),
-              phone_input_label: t('phone'),
-              phone_input_placeholder: t('phone.placeholder'),
-              token_input_label: t('token'),
-              token_input_placeholder: t('token.placeholder'),
-              button_label: t('verify.token'),
-              loading_button_label: t('verifying.token'),
-            }
           }
         }}
       />
@@ -172,7 +147,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
           </button>
         </div>
       )}
-      {!isResetPasswordMode && view === "sign_in" && <SignUpPrompt />}
+      <SignUpPrompt />
     </div>
   );
 };
