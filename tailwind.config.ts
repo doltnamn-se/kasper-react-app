@@ -71,7 +71,7 @@ export default {
         subscription: {
           text: '#001400',
           bg: '#d6f37d',
-          'bg-dark': '#c8ed52'
+          'bg-dark': '#c8ed52 !important'
         },
         role: {
           superadmin: {
