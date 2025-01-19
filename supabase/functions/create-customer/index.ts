@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 import { corsHeaders } from "../_shared/cors.ts"
 
 serve(async (req) => {
-  // Always include CORS headers in the response
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -11,6 +11,21 @@ serve(async (req) => {
   try {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
+
+    // Validate required fields
+    if (!email || !displayName || !subscriptionPlan || !createdBy) {
+      console.error("Missing required fields");
+      return new Response(
+        JSON.stringify({
+          error: "Missing required fields",
+          details: { email, displayName, subscriptionPlan, createdBy }
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
+    }
 
     // Initialize Supabase admin client
     const supabaseAdmin = createClient(
@@ -35,7 +50,16 @@ serve(async (req) => {
 
     if (createUserError || !user) {
       console.error("Error creating auth user:", createUserError);
-      throw new Error(createUserError?.message || "Failed to create user");
+      return new Response(
+        JSON.stringify({ 
+          error: createUserError?.message || "Failed to create user",
+          details: createUserError 
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
     }
 
     console.log("Auth user created successfully:", user.id);
@@ -53,7 +77,16 @@ serve(async (req) => {
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
-      throw new Error("Failed to update profile");
+      return new Response(
+        JSON.stringify({ 
+          error: "Failed to update profile",
+          details: profileError 
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
     }
 
     // Update customer data
@@ -70,7 +103,16 @@ serve(async (req) => {
 
     if (customerError) {
       console.error("Error updating customer:", customerError);
-      throw new Error("Failed to update customer");
+      return new Response(
+        JSON.stringify({ 
+          error: "Failed to update customer",
+          details: customerError 
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
     }
 
     console.log("Customer creation completed successfully");
@@ -85,7 +127,7 @@ serve(async (req) => {
         status: 200,
       }
     );
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error in create-customer function:", err);
     return new Response(
       JSON.stringify({ 
