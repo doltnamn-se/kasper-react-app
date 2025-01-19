@@ -15,83 +15,58 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log("ProtectedRoute: Initializing");
+    let mounted = true;
+
     const checkAccess = async () => {
       try {
-        // Check for magic link parameters
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const isMagicLink = hashParams.get('type') === 'magiclink';
-        
-        if (isMagicLink) {
-          console.log("ProtectedRoute: Magic link detected, redirecting to onboarding");
-          setIsAuthenticated(false);
-          setNeedsOnboarding(true);
-          setIsLoading(false);
-          return;
-        }
-
-        // Get current session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-
-        if (sessionError) {
-          console.error("ProtectedRoute: Session error:", sessionError);
-          setIsAuthenticated(false);
-          setIsLoading(false);
-          return;
-        }
+        const { data: { session } } = await supabase.auth.getSession();
 
         if (!session) {
           console.log("ProtectedRoute: No session found");
-          setIsAuthenticated(false);
-          setIsLoading(false);
+          if (mounted) {
+            setIsAuthenticated(false);
+            setIsLoading(false);
+          }
           return;
         }
 
-        // Check user role and onboarding status
         console.log("ProtectedRoute: Session found, checking user status");
-        const { data: profile, error: profileError } = await supabase
+        
+        // Check user role
+        const { data: profile } = await supabase
           .from('profiles')
           .select('role')
           .eq('id', session.user.id)
           .single();
 
-        if (profileError) {
-          console.error("ProtectedRoute: Profile error:", profileError);
-          setIsAuthenticated(false);
-          setIsLoading(false);
-          return;
-        }
-
-        setUserRole(profile?.role || null);
-
-        if (profile?.role === 'super_admin') {
-          console.log("ProtectedRoute: Super admin access granted");
+        if (mounted) {
+          setUserRole(profile?.role || null);
           setIsAuthenticated(true);
-          setNeedsOnboarding(false);
+
+          // Super admins don't need onboarding
+          if (profile?.role === 'super_admin') {
+            setNeedsOnboarding(false);
+            setIsLoading(false);
+            return;
+          }
+
+          // Check onboarding status
+          const { data: customer } = await supabase
+            .from('customers')
+            .select('onboarding_completed')
+            .eq('id', session.user.id)
+            .single();
+
+          setNeedsOnboarding(!customer?.onboarding_completed);
           setIsLoading(false);
-          return;
         }
-
-        const { data: customer, error: customerError } = await supabase
-          .from('customers')
-          .select('onboarding_completed')
-          .eq('id', session.user.id)
-          .single();
-
-        if (customerError) {
-          console.error("ProtectedRoute: Customer error:", customerError);
-          setIsAuthenticated(false);
-          setIsLoading(false);
-          return;
-        }
-
-        setIsAuthenticated(true);
-        setNeedsOnboarding(!customer?.onboarding_completed);
-        
       } catch (error) {
         console.error("ProtectedRoute: Error:", error);
-        setIsAuthenticated(false);
-      } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsAuthenticated(false);
+          setIsLoading(false);
+        }
       }
     };
 
@@ -99,16 +74,21 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("ProtectedRoute: Auth state changed:", event);
-      if (!session) {
-        setIsAuthenticated(false);
-        setUserRole(null);
-        setIsLoading(false);
+      
+      if (!session && event === 'SIGNED_OUT') {
+        if (mounted) {
+          setIsAuthenticated(false);
+          setUserRole(null);
+          setIsLoading(false);
+        }
         return;
       }
+      
       checkAccess();
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
@@ -118,14 +98,17 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   if (!isAuthenticated) {
+    console.log("ProtectedRoute: Redirecting to auth page");
     return <Navigate to="/auth" replace />;
   }
 
   if (requiredRole && userRole !== requiredRole) {
+    console.log("ProtectedRoute: Insufficient role permissions");
     return <Navigate to="/" replace />;
   }
 
   if (needsOnboarding && userRole !== 'super_admin') {
+    console.log("ProtectedRoute: User needs onboarding");
     return <Navigate to="/onboarding" replace />;
   }
 

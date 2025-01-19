@@ -13,9 +13,11 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("AuthRoute: Initializing");
+    
     const checkAuth = async () => {
       try {
-        // If we're on the callback route, allow access without session check
+        // Special handling for callback route
         if (location.pathname === '/auth/callback') {
           console.log("AuthRoute: On callback route, allowing access");
           setSession(false);
@@ -23,28 +25,19 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        if (sessionError) {
-          console.error("AuthRoute: Session error:", sessionError);
+        if (currentSession) {
+          console.log("AuthRoute: Active session found, redirecting to home");
+          setSession(true);
+        } else {
+          console.log("AuthRoute: No session found, allowing auth page access");
           setSession(false);
-          setIsLoading(false);
-          return;
         }
-
-        if (!currentSession) {
-          console.log("AuthRoute: No session found");
-          setSession(false);
-          setIsLoading(false);
-          return;
-        }
-
-        console.log("AuthRoute: Active session found, redirecting to home");
-        setSession(true);
-        setIsLoading(false);
       } catch (error) {
         console.error("AuthRoute: Error checking auth:", error);
         setSession(false);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -52,23 +45,17 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("AuthRoute: Auth state changed:", event, session?.user?.id);
+      console.log("AuthRoute: Auth state changed:", event);
       
-      if (event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_IN') {
+        console.log("AuthRoute: User signed in");
+        setSession(true);
+        setIsLoading(false);
+      } else if (event === 'SIGNED_OUT') {
         console.log("AuthRoute: User signed out");
         setSession(false);
         setIsLoading(false);
-        return;
       }
-
-      if (session) {
-        console.log("AuthRoute: Session established");
-        setSession(true);
-      } else {
-        console.log("AuthRoute: No session");
-        setSession(false);
-      }
-      setIsLoading(false);
     });
 
     return () => {
