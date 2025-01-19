@@ -25,9 +25,19 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   useEffect(() => {
     // Extract hash from URL if in reset password mode
     if (isResetPasswordMode) {
+      // Get the full URL hash including the #
       const hashFromUrl = window.location.hash;
+      console.log("Full URL:", window.location.href);
       console.log("Hash from URL:", hashFromUrl);
-      setHash(hashFromUrl);
+      
+      // If there's a hash, remove the # symbol
+      if (hashFromUrl) {
+        const cleanHash = hashFromUrl.substring(1);
+        console.log("Clean hash:", cleanHash);
+        setHash(cleanHash);
+      } else {
+        console.log("No hash found in URL");
+      }
     }
   }, [isResetPasswordMode]);
 
@@ -38,6 +48,8 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
     try {
       if (isResetPasswordMode) {
         console.log("Updating password in reset mode");
+        console.log("Current hash:", hash);
+        
         if (!hash) {
           console.error("No hash found in URL");
           toast.error(t('error.generic'));
@@ -50,7 +62,9 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
         if (sessionError || !session) {
           console.error("Error getting session:", sessionError);
           // Try to exchange the hash for a session
-          const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+          const { error: updateError } = await supabase.auth.updateUser({ 
+            password: newPassword 
+          });
           
           if (updateError) {
             console.error("Error updating password:", updateError);
@@ -59,7 +73,9 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
           }
         } else {
           // We have a session, update the password
-          const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+          const { error: updateError } = await supabase.auth.updateUser({ 
+            password: newPassword 
+          });
           
           if (updateError) {
             console.error("Error updating password:", updateError);
