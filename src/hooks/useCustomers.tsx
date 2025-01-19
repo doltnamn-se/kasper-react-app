@@ -24,11 +24,12 @@ export const useCustomers = () => {
 
       console.log("Current user role:", userProfile?.role);
 
+      // Fetch customers with their profiles using a left join
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
           *,
-          profile:profiles (
+          profile:profiles!customers_profile_id_fkey (
             id,
             first_name,
             last_name,
