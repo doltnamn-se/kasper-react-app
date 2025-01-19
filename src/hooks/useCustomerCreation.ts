@@ -11,14 +11,6 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months"
   });
 
-  const resetForm = () => {
-    setFormData({
-      email: "",
-      displayName: "",
-      subscriptionPlan: "1_month"
-    });
-  };
-
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
@@ -30,31 +22,49 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // Log the request payload for debugging
-      const requestPayload = {
-        email: formData.email,
-        displayName: formData.displayName,
-        subscriptionPlan: formData.subscriptionPlan,
-        createdBy: user.id
-      };
-      console.log("Sending create customer request with payload:", requestPayload);
+      // First create the profile
+      console.log("Creating profile...");
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          email: formData.email,
+          display_name: formData.displayName,
+          role: 'customer'
+        });
 
-      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
-        body: requestPayload
-      });
-
-      if (createError) {
-        console.error("Error in customer creation:", createError);
-        throw createError;
+      if (profileError) {
+        console.error("Error creating profile:", profileError);
+        throw new Error("Failed to create profile");
       }
 
-      console.log("Customer created successfully:", createData);
+      // Then create the customer record
+      console.log("Creating customer record...");
+      const { error: customerError } = await supabase
+        .from('customers')
+        .insert({
+          subscription_plan: formData.subscriptionPlan,
+          created_by: user.id,
+          onboarding_completed: true,
+          onboarding_step: 5
+        });
+
+      if (customerError) {
+        console.error("Error creating customer:", customerError);
+        throw new Error("Failed to create customer");
+      }
+
+      console.log("Customer created successfully");
       toast({
         title: "Success",
         description: "Customer created successfully.",
       });
 
-      resetForm();
+      setFormData({
+        email: "",
+        displayName: "",
+        subscriptionPlan: "1_month"
+      });
+      
       onCustomerCreated();
     } catch (err: any) {
       console.error("Error in customer creation process:", err);
