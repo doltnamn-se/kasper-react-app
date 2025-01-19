@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
@@ -21,6 +21,11 @@ serve(async (req) => {
   try {
     const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
+
+    if (!email || !displayName || !subscriptionPlan || !createdBy || !password) {
+      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy, password });
+      throw new Error("Missing required fields");
+    }
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -46,12 +51,12 @@ serve(async (req) => {
 
     if (authError) {
       console.error("Error creating auth user:", authError);
-      throw new Error(authError.message);
+      throw new Error(`Failed to create auth user: ${authError.message}`);
     }
 
     if (!authData.user) {
       console.error("No user data returned from auth creation");
-      throw new Error("Failed to create user");
+      throw new Error("Failed to create user - no user data returned");
     }
 
     console.log("Auth user created successfully:", authData.user.id);
@@ -69,7 +74,7 @@ serve(async (req) => {
 
     if (profileError) {
       console.error("Error updating profile:", profileError);
-      throw new Error("Failed to update profile");
+      throw new Error(`Failed to update profile: ${profileError.message}`);
     }
 
     // Update customer data
@@ -84,7 +89,7 @@ serve(async (req) => {
 
     if (customerError) {
       console.error("Error updating customer:", customerError);
-      throw new Error("Failed to update customer");
+      throw new Error(`Failed to update customer: ${customerError.message}`);
     }
 
     console.log("Customer creation completed successfully");
@@ -107,8 +112,8 @@ serve(async (req) => {
         details: err.toString()
       }),
       {
-        status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400, // Changed from 500 to 400 for client errors
       }
     );
   }

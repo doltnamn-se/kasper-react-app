@@ -57,6 +57,13 @@ export type Database = {
             foreignKeyName: "customers_profile_id_fkey"
             columns: ["id"]
             isOneToOne: true
+            referencedRelation: "admin_cache"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customers_profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -218,7 +225,12 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_cache: {
+        Row: {
+          id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
