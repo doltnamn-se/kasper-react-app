@@ -24,32 +24,48 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   const [recoveryToken, setRecoveryToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isResetPasswordMode) {
-      const hash = window.location.hash;
-      console.log("Current URL hash:", hash);
+    const initializeRecoveryFlow = async () => {
+      if (!isResetPasswordMode) return;
+
+      console.log("Initializing password recovery flow...");
       
-      // First try to get the token from the hash
+      // Get the recovery token from the URL
+      const hash = window.location.hash;
       const hashParams = new URLSearchParams(hash.replace('#', ''));
       let token = hashParams.get('access_token');
       
-      // If not in hash, try query params
       if (!token) {
         const searchParams = new URLSearchParams(window.location.search);
         token = searchParams.get('token');
       }
       
       const type = new URLSearchParams(window.location.search).get('type');
-      
-      console.log("Recovery flow - Token:", token ? "Found" : "Not found", "Type:", type);
-      
-      if (token && type === 'recovery') {
-        console.log("Valid recovery token found");
+      console.log("Recovery flow parameters - Token:", token ? "Found" : "Not found", "Type:", type);
+
+      if (!token || type !== 'recovery') {
+        console.error("Invalid recovery flow parameters");
+        toast.error(t('error.invalid.recovery.link'));
+        return;
+      }
+
+      try {
+        // Verify the recovery token is valid
+        const { error } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Session error:", error);
+          toast.error(t('error.invalid.recovery.link'));
+          return;
+        }
+
+        console.log("Recovery token validated successfully");
         setRecoveryToken(token);
-      } else {
-        console.error("No valid recovery token found in URL");
+      } catch (err) {
+        console.error("Error validating recovery token:", err);
         toast.error(t('error.invalid.recovery.link'));
       }
-    }
+    };
+
+    initializeRecoveryFlow();
   }, [isResetPasswordMode, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,9 +73,14 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
     setIsLoading(true);
 
     try {
-      if (isResetPasswordMode && recoveryToken) {
-        console.log("Starting password reset with recovery token");
-        
+      if (isResetPasswordMode) {
+        if (!recoveryToken) {
+          console.error("No recovery token available");
+          toast.error(t('error.invalid.recovery.link'));
+          return;
+        }
+
+        console.log("Updating password with recovery token");
         const { error: updateError } = await supabase.auth.updateUser({
           password: newPassword
         });
@@ -72,12 +93,11 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
         console.log("Password updated successfully");
         toast.success(t('password.updated'));
-        
-        // Redirect to login after successful password update
         window.location.href = '/auth';
         return;
       }
 
+      // Regular sign in flow
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -102,8 +122,10 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   return (
     <div className="flex justify-center w-full">
       <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in rounded-[7px] font-system-ui">
-        <h2 className="text-xl font-bold mb-6 text-center dark:text-white font-system-ui">
-          {isResetPasswordMode ? (language === 'sv' ? "Återställ lösenord" : "Reset password") : t('sign.in')}
+        <h2 className="text-xl font-bold mb-6 text-center dark:text-white font-system-ui font-[700]">
+          {isResetPasswordMode 
+            ? language === 'sv' ? "Återställ lösenord" : "Reset password"
+            : t('sign.in')}
         </h2>
         
         {errorMessage && (
