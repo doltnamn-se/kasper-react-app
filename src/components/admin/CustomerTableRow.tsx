@@ -82,8 +82,8 @@ export const CustomerTableRow = ({
         {getDisplayName()}
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
-        {customer.profile?.created_at
-          ? format(new Date(customer.profile.created_at), 'MMM d, yyyy')
+        {customer.created_at
+          ? format(new Date(customer.created_at), 'MMM d, yyyy')
           : '-'}
       </TableCell>
       <TableCell>
