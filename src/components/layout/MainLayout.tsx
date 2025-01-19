@@ -1,147 +1,25 @@
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
-import { APP_VERSION } from "@/config/version";
-import { LanguageSwitch } from "@/components/LanguageSwitch";
-import { House, BadgeCheck, QrCode, MapPinHouse, MousePointerClick, Sparkle } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useSidebar } from "@/contexts/SidebarContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useSidebar } from "@/contexts/SidebarContext";
+import { AdminNavigation } from "@/components/nav/AdminNavigation";
+import { MainNavigation } from "@/components/nav/MainNavigation";
+import { SidebarFooter } from "@/components/nav/SidebarFooter";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const location = useLocation();
-  const { t } = useLanguage();
   const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const { userProfile } = useUserProfile();
+  const isAdmin = userProfile?.role === 'super_admin';
 
   const Navigation = () => {
-    const isAdmin = userProfile?.role === 'super_admin';
-
     return (
       <nav>
-        {isAdmin && (
-          <>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="admin" className="border-none">
-                <AccordionTrigger 
-                  className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md w-full text-left ${
-                    location.pathname.startsWith("/admin") 
-                      ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-                      : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Sparkle className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-                    <span className="text-sm text-black dark:text-gray-300 font-normal">Admin</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col gap-2 pl-11">
-                    <Link 
-                      to="/admin/dashboard" 
-                      className={`text-sm py-2 ${
-                        location.pathname === "/admin/dashboard"
-                          ? "text-primary dark:text-primary"
-                          : "text-black dark:text-gray-300"
-                      } font-normal`}
-                      onClick={toggleMobileMenu}
-                    >
-                      {t('nav.admin.dashboard')}
-                    </Link>
-                    <Link 
-                      to="/admin/customers" 
-                      className={`text-sm py-2 ${
-                        location.pathname === "/admin/customers"
-                          ? "text-primary dark:text-primary"
-                          : "text-black dark:text-gray-300"
-                      } font-normal`}
-                      onClick={toggleMobileMenu}
-                    >
-                      {t('nav.admin.customers')}
-                    </Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-2 my-4 transition-colors duration-200" />
-          </>
-        )}
-
-        <Link 
-          to="/" 
-          className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
-            location.pathname === "/" 
-              ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-              : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-          }`}
-          onClick={toggleMobileMenu}
-        >
-          <House className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.home')}</span>
-        </Link>
-
-        <Link 
-          to="/checklist" 
-          className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
-            location.pathname === "/checklist" 
-              ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-              : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-          }`}
-          onClick={toggleMobileMenu}
-        >
-          <BadgeCheck className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.checklist')}</span>
-        </Link>
-
-        <Link 
-          to="/my-links" 
-          className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
-            location.pathname === "/my-links" 
-              ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-              : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-          }`}
-          onClick={toggleMobileMenu}
-        >
-          <QrCode className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.my.links')}</span>
-        </Link>
-
-        <Link 
-          to="/address-alerts" 
-          className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
-            location.pathname === "/address-alerts" 
-              ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-              : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-          }`}
-          onClick={toggleMobileMenu}
-        >
-          <MapPinHouse className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.address.alerts')}</span>
-        </Link>
-
-        <Link 
-          to="/guides" 
-          className={`flex items-center gap-3 mb-3 px-5 py-2.5 rounded-md ${
-            location.pathname === "/guides" 
-              ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-              : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-          }`}
-          onClick={toggleMobileMenu}
-        >
-          <MousePointerClick className="w-[18px] h-[18px] text-black dark:text-gray-300" />
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.guides')}</span>
-        </Link>
+        {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
+        <MainNavigation toggleMobileMenu={toggleMobileMenu} />
       </nav>
     );
   };
@@ -160,10 +38,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           <Navigation />
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 px-6 py-4 flex justify-between items-center">
-          <LanguageSwitch />
-          <span className="text-xs text-[#5e5e5e] dark:text-gray-400">v{APP_VERSION}</span>
-        </div>
+        <SidebarFooter />
       </div>
 
       {/* Sidebar - Mobile */}
@@ -186,10 +61,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             <Navigation />
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 px-6 py-4 flex justify-between items-center">
-            <LanguageSwitch />
-            <span className="text-xs text-[#5e5e5e] dark:text-gray-400">v{APP_VERSION}</span>
-          </div>
+          <SidebarFooter />
         </div>
       </div>
 
