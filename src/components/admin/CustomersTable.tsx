@@ -33,7 +33,7 @@ export const CustomersTable = ({
         <TableBody>
           {customers.map((customer) => (
             <CustomerTableRow 
-              key={customer.profile.id} 
+              key={customer.id} 
               customer={customer} 
               onCustomerUpdated={onCustomerUpdated}
               onDeleteCustomer={onDeleteCustomer}
