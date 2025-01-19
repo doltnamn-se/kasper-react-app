@@ -29,12 +29,10 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
         <div className="space-y-4 py-4">
           <CustomerFormFields
             email={formData.email}
-            firstName={formData.firstName}
-            lastName={formData.lastName}
+            displayName={formData.displayName}
             subscriptionPlan={formData.subscriptionPlan}
             onEmailChange={(email) => setFormData(prev => ({ ...prev, email }))}
-            onFirstNameChange={(firstName) => setFormData(prev => ({ ...prev, firstName }))}
-            onLastNameChange={(lastName) => setFormData(prev => ({ ...prev, lastName }))}
+            onDisplayNameChange={(displayName) => setFormData(prev => ({ ...prev, displayName }))}
             onSubscriptionPlanChange={(subscriptionPlan) => setFormData(prev => ({ ...prev, subscriptionPlan }))}
           />
           <Button 

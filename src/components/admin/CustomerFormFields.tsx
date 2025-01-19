@@ -4,23 +4,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface CustomerFormFieldsProps {
   email: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   subscriptionPlan: "1_month" | "6_months" | "12_months";
   onEmailChange: (value: string) => void;
-  onFirstNameChange: (value: string) => void;
-  onLastNameChange: (value: string) => void;
+  onDisplayNameChange: (value: string) => void;
   onSubscriptionPlanChange: (value: "1_month" | "6_months" | "12_months") => void;
 }
 
 export const CustomerFormFields = ({
   email,
-  firstName,
-  lastName,
+  displayName,
   subscriptionPlan,
   onEmailChange,
-  onFirstNameChange,
-  onLastNameChange,
+  onDisplayNameChange,
   onSubscriptionPlanChange,
 }: CustomerFormFieldsProps) => {
   return (
@@ -36,21 +32,12 @@ export const CustomerFormFields = ({
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="firstName">First Name</Label>
+        <Label htmlFor="displayName">Display Name</Label>
         <Input
-          id="firstName"
-          placeholder="John"
-          value={firstName}
-          onChange={(e) => onFirstNameChange(e.target.value)}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="lastName">Last Name</Label>
-        <Input
-          id="lastName"
-          placeholder="Doe"
-          value={lastName}
-          onChange={(e) => onLastNameChange(e.target.value)}
+          id="displayName"
+          placeholder="John Doe"
+          value={displayName}
+          onChange={(e) => onDisplayNameChange(e.target.value)}
         />
       </div>
       <div className="space-y-2">

@@ -7,16 +7,14 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    lastName: "",
+    displayName: "",
     subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months"
   });
 
   const resetForm = () => {
     setFormData({
       email: "",
-      firstName: "",
-      lastName: "",
+      displayName: "",
       subscriptionPlan: "1_month"
     });
   };
@@ -41,8 +39,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
           email: formData.email,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
+          displayName: formData.displayName,
           subscriptionPlan: formData.subscriptionPlan,
           createdBy: user.id,
           password: generatedPassword
@@ -61,7 +58,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
           email: formData.email,
-          firstName: formData.firstName,
+          displayName: formData.displayName,
           password: generatedPassword
         }
       });

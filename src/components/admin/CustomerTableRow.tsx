@@ -69,8 +69,9 @@ export const CustomerTableRow = ({
           {customer.profile.role || 'No role'}
         </Badge>
       </TableCell>
-      <TableCell className="text-xs text-black dark:text-white">{customer.profile.first_name || '-'}</TableCell>
-      <TableCell className="text-xs text-black dark:text-white">{customer.profile.last_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white" colSpan={2}>
+        {customer.profile.display_name || '-'}
+      </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
         {customer.profile.created_at
           ? format(new Date(customer.profile.created_at), 'MMM d, yyyy')

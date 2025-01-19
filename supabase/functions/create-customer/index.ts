@@ -19,8 +19,8 @@ serve(async (req) => {
   }
 
   try {
-    const { email, firstName, lastName, subscriptionPlan, createdBy, password } = await req.json();
-    console.log("Starting customer creation with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
+    const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
+    console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -39,6 +39,9 @@ serve(async (req) => {
       email,
       password,
       email_confirm: true,
+      user_metadata: {
+        display_name: displayName
+      }
     });
 
     if (authError) {
@@ -58,8 +61,7 @@ serve(async (req) => {
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({
-        first_name: firstName,
-        last_name: lastName,
+        display_name: displayName,
         role: 'customer',
       })
       .eq('id', authData.user.id);
