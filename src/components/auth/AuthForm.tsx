@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PasswordResetForm } from "./PasswordResetForm";
+import { SignUpPrompt } from "./SignUpPrompt";
 
 interface AuthFormProps {
   errorMessage?: string;
@@ -160,7 +161,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
           <Button
             type="submit"
-            className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 rounded-none font-system-ui"
+            className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
             disabled={isLoading}
           >
             {isLoading ? t('loading') : isResetPasswordMode ? t('update.password') : t('sign.in')}
@@ -169,9 +170,9 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
           {!isResetPasswordMode && (
             <Button
               type="button"
-              variant="link"
+              variant="ghost"
               onClick={() => setShowResetForm(true)}
-              className="w-full text-sm text-[#4B48EC] hover:text-[#3734DB] dark:text-[#6E6AFF] dark:hover:text-[#8583FF] font-normal"
+              className="w-full text-xs text-gray-600 hover:no-underline dark:text-gray-400 font-normal"
             >
               {t('forgot.password')}
             </Button>

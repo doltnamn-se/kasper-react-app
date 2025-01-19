@@ -5,6 +5,7 @@ import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
+import { SignUpPrompt } from "@/components/auth/SignUpPrompt";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Auth = () => {
@@ -94,6 +95,7 @@ const Auth = () => {
           isDarkMode={isDarkMode} 
           isResetPasswordMode={isResetPasswordMode} 
         />
+        <SignUpPrompt />
         <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
       </div>
       <AuthFooter />
