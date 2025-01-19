@@ -20,7 +20,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   const [newPassword, setNewPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
-  const [hash, setHash] = useState<string | null>(null);
+  const [recoveryToken, setRecoveryToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (isResetPasswordMode) {
@@ -29,13 +29,13 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       
       // Extract the token from the fragment
       const fragment = new URLSearchParams(window.location.hash.substring(1));
-      const accessToken = fragment.get('access_token');
+      const token = fragment.get('recovery_token');
       
-      if (accessToken) {
-        console.log("Found access token in URL");
-        setHash(accessToken);
+      if (token) {
+        console.log("Found recovery token in URL");
+        setRecoveryToken(token);
       } else {
-        console.log("No access token found in URL. Full URL for debugging:", fullUrl);
+        console.error("No recovery token found in URL. Full URL for debugging:", fullUrl);
       }
     }
   }, [isResetPasswordMode]);
@@ -48,7 +48,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
       if (isResetPasswordMode) {
         console.log("Starting password reset process");
         
-        if (!hash) {
+        if (!recoveryToken) {
           console.error("No recovery token found");
           toast.error(t('error.generic'));
           return;
@@ -56,7 +56,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
         // Set the session with the recovery token
         const { data: { session }, error: sessionError } = await supabase.auth.setSession({
-          access_token: hash,
+          access_token: recoveryToken,
           refresh_token: '',
         });
 
