@@ -9,9 +9,22 @@ serve(async (req) => {
   }
 
   try {
-    // Get the request body
-    const body = await req.json();
-    console.log("Received request body:", JSON.stringify(body, null, 2));
+    // Get and log the request body
+    const requestBody = await req.text();
+    console.log("Raw request body:", requestBody);
+
+    let body;
+    try {
+      body = JSON.parse(requestBody);
+    } catch (e) {
+      console.error("Error parsing JSON:", e);
+      return new Response(
+        JSON.stringify({ error: "Invalid JSON in request body" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    console.log("Parsed request body:", body);
 
     const { email, displayName, subscriptionPlan, createdBy } = body;
     
@@ -23,7 +36,7 @@ serve(async (req) => {
       createdBy
     });
 
-    // Validate required fields with detailed logging
+    // Validate required fields
     if (!email) console.log("Missing email");
     if (!displayName) console.log("Missing displayName");
     if (!subscriptionPlan) console.log("Missing subscriptionPlan");
@@ -56,15 +69,11 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Generate password
-    const password = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
-    console.log("Generated password for new user");
-
     // Create auth user
     console.log("Creating auth user with email:", email);
     const { data: { user }, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
       email,
-      password,
+      password: Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12),
       email_confirm: true,
       user_metadata: {
         display_name: displayName
