@@ -47,7 +47,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     ? "text-primary dark:text-primary"
                     : "text-black dark:text-gray-300"
                 } font-normal`}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={toggleMobileMenu}
               >
                 {t('nav.admin.dashboard')}
               </Link>
@@ -58,7 +58,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     ? "text-primary dark:text-primary"
                     : "text-black dark:text-gray-300"
                 } font-normal`}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={toggleMobileMenu}
               >
                 {t('nav.admin.customers')}
               </Link>
@@ -76,7 +76,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
-        onClick={() => setIsMobileMenuOpen(false)}
+        onClick={toggleMobileMenu}
       >
         <House className="w-[18px] h-[18px] text-black dark:text-gray-300" />
         <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.home')}</span>
@@ -89,7 +89,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
-        onClick={() => setIsMobileMenuOpen(false)}
+        onClick={toggleMobileMenu}
       >
         <BadgeCheck className="w-[18px] h-[18px] text-black dark:text-gray-300" />
         <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.checklist')}</span>
@@ -102,7 +102,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
-        onClick={() => setIsMobileMenuOpen(false)}
+        onClick={toggleMobileMenu}
       >
         <QrCode className="w-[18px] h-[18px] text-black dark:text-gray-300" />
         <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.my.links')}</span>
@@ -115,7 +115,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
-        onClick={() => setIsMobileMenuOpen(false)}
+        onClick={toggleMobileMenu}
       >
         <MapPinHouse className="w-[18px] h-[18px] text-black dark:text-gray-300" />
         <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.address.alerts')}</span>
@@ -128,7 +128,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
-        onClick={() => setIsMobileMenuOpen(false)}
+        onClick={toggleMobileMenu}
       >
         <MousePointerClick className="w-[18px] h-[18px] text-black dark:text-gray-300" />
         <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{t('nav.guides')}</span>
