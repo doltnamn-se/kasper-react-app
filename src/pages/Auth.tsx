@@ -6,6 +6,7 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -34,12 +35,13 @@ const Auth = () => {
 
     // Handle recovery flow
     const type = searchParams.get('type');
-    const token = searchParams.get('token');
-    console.log("Auth page: URL parameters -", { type, token });
+    console.log("Auth page: URL parameters -", { type });
 
     if (type === 'recovery') {
       console.log("Auth page: Setting reset password mode (recovery type)");
       setIsResetPasswordMode(true);
+      // Prevent automatic sign-in for recovery flow
+      supabase.auth.signOut();
     }
   }, [language, searchParams, t]);
 
@@ -63,7 +65,11 @@ const Auth = () => {
         if (event === "PASSWORD_RECOVERY") {
           console.log("Auth page: Password recovery event detected");
           setIsResetPasswordMode(true);
-        } else if (event === "SIGNED_IN" && session) {
+          return;
+        }
+        
+        // Only redirect on SIGNED_IN if not in recovery mode
+        if (event === "SIGNED_IN" && session && !isResetPasswordMode) {
           console.log("Auth page: User signed in, navigating to home");
           navigate("/");
         } else if (event === "SIGNED_OUT") {
@@ -74,7 +80,7 @@ const Auth = () => {
     );
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, isResetPasswordMode]);
 
   return (
     <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-between p-4">

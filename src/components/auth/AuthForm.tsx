@@ -1,161 +1,150 @@
-import { useState, useEffect } from "react";
-import { Auth as SupabaseAuth } from "@supabase/auth-ui-react";
-import { supabase } from "@/integrations/supabase/client";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { getAuthAppearance } from "./AuthAppearance";
-import { PasswordResetForm } from "./PasswordResetForm";
-import { SignUpPrompt } from "./SignUpPrompt";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { PasswordResetForm } from "./PasswordResetForm";
 
 interface AuthFormProps {
-  errorMessage: string;
-  isDarkMode: boolean;
+  errorMessage?: string;
+  isDarkMode?: boolean;
   isResetPasswordMode?: boolean;
 }
 
-export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false }: AuthFormProps) => {
+export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: AuthFormProps) => {
   const { t } = useLanguage();
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [isManualResetMode, setIsManualResetMode] = useState(false);
-  const [view, setView] = useState<"sign_in" | "update_password">("sign_in");
-  const [resetError, setResetError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showResetForm, setShowResetForm] = useState(false);
 
-  useEffect(() => {
-    const type = searchParams.get('type');
-    const token = searchParams.get('token');
-    
-    console.log("AuthForm: Recovery flow check -", { type, token });
-    
-    if (type === 'recovery' && !token) {
-      console.log("AuthForm: Recovery type without token, showing manual reset form");
-      setIsManualResetMode(true);
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    const handleRecoveryFlow = async () => {
-      if (type === 'recovery' && token) {
-        console.log("AuthForm: Starting recovery flow with token");
-        try {
-          const { data, error } = await supabase.auth.verifyOtp({
-            token_hash: token,
-            type: 'recovery'
-          });
-          
-          if (error) {
-            console.error("AuthForm: Recovery verification error -", error);
-            setResetError(t('error.reset.link.expired'));
-            toast.error(t('error.reset.link.expired'));
-            setView("sign_in");
-            setIsManualResetMode(true);
-            return;
-          }
-
-          if (data.session) {
-            console.log("AuthForm: Recovery session established, showing password update form");
-            setView("update_password");
-          }
-        } catch (err) {
-          console.error("AuthForm: Recovery flow error -", err);
-          setResetError(t('error.reset.link.expired'));
-          toast.error(t('error.reset.link.expired'));
-          setView("sign_in");
-          setIsManualResetMode(true);
+    try {
+      if (isResetPasswordMode) {
+        console.log("Updating password for recovery flow");
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        
+        if (error) {
+          console.error("Error updating password:", error);
+          toast.error(t('error.password.update'));
+          return;
         }
-      }
-    };
 
-    handleRecoveryFlow();
-  }, [searchParams, t]);
+        toast.success(t('password.updated'));
+        // Redirect to login after password update
+        window.location.href = '/auth';
+        return;
+      }
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Sign in error:", error);
+        toast.error(t('error.signin'));
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error(t('error.generic'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (showResetForm) {
+    return <PasswordResetForm onCancel={() => setShowResetForm(false)} initialError={errorMessage} />;
+  }
 
   return (
-    <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] fade-in rounded-[7px] font-system-ui">
-      {errorMessage && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertDescription>{errorMessage}</AlertDescription>
-        </Alert>
-      )}
+    <div className="flex justify-center w-full">
+      <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in rounded-[7px] font-system-ui">
+        <h2 className="text-xl font-semibold mb-6 text-center dark:text-white font-system-ui">
+          {isResetPasswordMode ? t('reset.password') : t('sign.in')}
+        </h2>
+        
+        {errorMessage && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
-      {isManualResetMode ? (
-        <PasswordResetForm 
-          onCancel={() => {
-            setIsManualResetMode(false);
-            setResetError(null);
-          }} 
-          initialError={resetError}
-        />
-      ) : (
-        <>
-          <SupabaseAuth 
-            supabaseClient={supabase}
-            appearance={{
-              ...getAuthAppearance(isDarkMode),
-              className: {
-                ...getAuthAppearance(isDarkMode).className,
-                label: "text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui",
-                container: "space-y-4 font-system-ui",
-                button: "w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui",
-                input: "w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui [&[type='password']]:font-['text-security-disc']",
-              },
-            }}
-            providers={[]}
-            view={view}
-            showLinks={false}
-            redirectTo={`${window.location.origin}/auth/callback`}
-            localization={{
-              variables: {
-                sign_in: {
-                  email_label: t('email'),
-                  password_label: t('password'),
-                  email_input_placeholder: t('email.placeholder'),
-                  password_input_placeholder: '••••••••',
-                  button_label: t('sign.in'),
-                  loading_button_label: t('signing.in'),
-                  social_provider_text: t('sign.in.with.provider'),
-                  link_text: t('already.have.account')
-                },
-                sign_up: {
-                  email_label: t('email'),
-                  password_label: t('password'),
-                  email_input_placeholder: t('email.placeholder'),
-                  password_input_placeholder: '••••••••',
-                  button_label: t('register'),
-                  loading_button_label: t('registering'),
-                  social_provider_text: t('register.with.provider'),
-                  link_text: t('no.account'),
-                },
-                forgotten_password: {
-                  email_label: t('email'),
-                  password_label: t('password'),
-                  email_input_placeholder: t('email.placeholder'),
-                  button_label: t('send.recovery.link'),
-                  loading_button_label: t('sending.recovery.link'),
-                  link_text: t('forgot.password'),
-                },
-                update_password: {
-                  password_label: t('new.password'),
-                  password_input_placeholder: '••••••••',
-                  button_label: t('update.password'),
-                  loading_button_label: t('updating.password'),
-                }
-              }
-            }}
-          />
-          {view === "sign_in" && !isResetPasswordMode && (
-            <div className="mt-4 text-center">
-              <button
-                onClick={() => setIsManualResetMode(true)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-xs font-system-ui"
-              >
-                {t('forgot.password')}
-              </button>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {isResetPasswordMode ? (
+            <div className="space-y-2">
+              <label htmlFor="newPassword" className="text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui">
+                {t('new.password')}
+              </label>
+              <Input
+                id="newPassword"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+                disabled={isLoading}
+                required
+              />
             </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui">
+                  {t('email')}
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+                  disabled={isLoading}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui">
+                  {t('password')}
+                </label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+                  disabled={isLoading}
+                  required
+                />
+              </div>
+            </>
           )}
-          {!isResetPasswordMode && <SignUpPrompt />}
-        </>
-      )}
+
+          <Button
+            type="submit"
+            className="w-full h-12 bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+            disabled={isLoading}
+          >
+            {isLoading ? t('loading') : isResetPasswordMode ? t('update.password') : t('sign.in')}
+          </Button>
+
+          {!isResetPasswordMode && (
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setShowResetForm(true)}
+              className="w-full text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              {t('forgot.password')}
+            </Button>
+          )}
+        </form>
+      </div>
     </div>
   );
 };
