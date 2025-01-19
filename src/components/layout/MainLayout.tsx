@@ -144,7 +144,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
       <div className="ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
-        <main className="px-8 pt-24">
+        <main className="px-12 pt-24">
           <div>
             {children}
           </div>
