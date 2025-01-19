@@ -32,8 +32,10 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        if (location.pathname.includes('/auth/callback')) {
-          console.log("AuthRoute: On callback page, allowing access");
+        // Always allow access to callback and recovery routes
+        if (location.pathname.includes('/auth/callback') || 
+            (location.search.includes('type=recovery') && location.search.includes('code='))) {
+          console.log("AuthRoute: On special auth route, allowing access");
           setSession(false);
           setIsLoading(false);
           return;
@@ -81,7 +83,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   if (isLoading) {
     return <LoadingSpinner />;

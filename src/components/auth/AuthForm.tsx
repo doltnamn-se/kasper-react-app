@@ -29,6 +29,12 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
     
     console.log("AuthForm: Recovery flow check -", { type, code });
     
+    if (type === 'recovery' && !code) {
+      console.log("AuthForm: Recovery type without code, showing manual reset form");
+      setIsManualResetMode(true);
+      return;
+    }
+
     const handleRecoveryFlow = async () => {
       if (type === 'recovery' && code) {
         console.log("AuthForm: Starting recovery flow with code");
@@ -60,6 +66,18 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
 
     handleRecoveryFlow();
   }, [searchParams, t]);
+
+  if (isManualResetMode) {
+    return (
+      <PasswordResetForm 
+        onCancel={() => {
+          setIsManualResetMode(false);
+          setResetError(null);
+        }} 
+        initialError={resetError}
+      />
+    );
+  }
 
   return (
     <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] fade-in rounded-[7px] font-system-ui">
