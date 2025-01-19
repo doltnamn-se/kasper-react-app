@@ -27,8 +27,9 @@ export const CustomerTableRow = ({
   };
 
   return (
-    <TableRow className="text-xs hover:bg-[#333333] transition-colors">
-      <TableCell className="text-xs">{customer.profile?.id || '-'}</TableCell>
+    <TableRow className="text-xs bg-white hover:bg-white">
+      <TableCell className="text-xs text-black">{customer.id || '-'}</TableCell>
+      <TableCell className="text-xs text-black">{customer.profile?.email || '-'}</TableCell>
       <TableCell>
         <Badge 
           variant={getBadgeVariant(customer.profile?.role)}
@@ -37,9 +38,9 @@ export const CustomerTableRow = ({
           {customer.profile?.role || 'No role'}
         </Badge>
       </TableCell>
-      <TableCell className="text-xs">{customer.profile?.first_name || '-'}</TableCell>
-      <TableCell className="text-xs">{customer.profile?.last_name || '-'}</TableCell>
-      <TableCell className="text-xs">
+      <TableCell className="text-xs text-black">{customer.profile?.first_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black">{customer.profile?.last_name || '-'}</TableCell>
+      <TableCell className="text-xs text-black">
         {customer.created_at
           ? format(new Date(customer.created_at), 'MMM d, yyyy')
           : '-'}
