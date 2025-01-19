@@ -1,4 +1,4 @@
 project_id = "upfapfohwnkiugvebujh"
 
-[functions.send-activation-email]
+[functions.create-customer]
 verify_jwt = true

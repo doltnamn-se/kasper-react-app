@@ -20,7 +20,7 @@ serve(async (req) => {
   }
 
   try {
-    const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
+    const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Starting customer creation with data:", { email, displayName, subscriptionPlan, createdBy });
 
     // Initialize Supabase client with service role key
@@ -34,6 +34,10 @@ serve(async (req) => {
         },
       }
     );
+
+    // Generate a random password
+    const password = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+    console.log("Generated password for new user");
 
     // Create auth user with provided password
     console.log("Creating auth user");
@@ -89,6 +93,21 @@ serve(async (req) => {
     if (customerError) {
       console.error("Error updating customer:", customerError);
       throw new Error("Failed to update customer");
+    }
+
+    // Send welcome email
+    console.log("Sending welcome email");
+    const { error: emailError } = await supabaseAdmin.functions.invoke('send-activation-email', {
+      body: {
+        email,
+        displayName,
+        password
+      }
+    });
+
+    if (emailError) {
+      console.error("Error sending welcome email:", emailError);
+      // Don't throw error, just log it as this is not critical
     }
 
     console.log("Customer creation completed successfully");

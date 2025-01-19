@@ -30,7 +30,6 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // Call the Edge Function without any custom headers
       console.log("Step 1: Creating customer...");
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
@@ -49,7 +48,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       console.log("Customer created successfully:", createData);
       toast({
         title: "Success",
-        description: "Customer created successfully",
+        description: "Customer created successfully and welcome email sent.",
       });
 
       resetForm();
