@@ -27,15 +27,16 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
     const type = searchParams.get('type');
     const code = searchParams.get('code');
     
-    console.log("AuthForm: URL parameters -", { type, code });
+    console.log("AuthForm: Recovery flow check -", { type, code });
     
     const handleRecoveryFlow = async () => {
       if (type === 'recovery' && code) {
+        console.log("AuthForm: Starting recovery flow with code");
         try {
           const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
           
           if (sessionError) {
-            console.error("AuthForm: Session error -", sessionError);
+            console.error("AuthForm: Session error during recovery -", sessionError);
             setResetError(t('error.reset.link.expired'));
             toast.error(t('error.reset.link.expired'));
             setView("sign_in");
@@ -44,7 +45,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
           }
 
           if (data.session) {
-            console.log("AuthForm: Recovery session established");
+            console.log("AuthForm: Recovery session established, showing password update form");
             setView("update_password");
           }
         } catch (err) {
@@ -59,18 +60,6 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
 
     handleRecoveryFlow();
   }, [searchParams, t]);
-
-  if (isManualResetMode) {
-    return (
-      <PasswordResetForm 
-        onCancel={() => {
-          setIsManualResetMode(false);
-          setResetError(null);
-        }} 
-        initialError={resetError}
-      />
-    );
-  }
 
   return (
     <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] fade-in rounded-[7px] font-system-ui">
@@ -95,7 +84,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
         providers={[]}
         view={view}
         showLinks={false}
-        redirectTo={`${window.location.origin}/auth?type=recovery`}
+        redirectTo={`${window.location.origin}/auth/callback`}
         localization={{
           variables: {
             sign_in: {
