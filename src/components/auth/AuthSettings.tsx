@@ -8,8 +8,8 @@ interface AuthSettingsProps {
 
 export const AuthSettings = ({ isDarkMode, onToggleDarkMode }: AuthSettingsProps) => {
   return (
-    <div className="flex justify-between items-center w-full max-w-sm">
-      <div className="w-full max-w-sm flex justify-between items-center">
+    <div className="w-full max-w-sm">
+      <div className="flex justify-between items-center">
         <LanguageSwitch />
         <DarkModeToggle isDarkMode={isDarkMode} onToggle={onToggleDarkMode} />
       </div>
