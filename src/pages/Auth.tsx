@@ -36,10 +36,16 @@ const Auth = () => {
     const type = searchParams.get('type');
     console.log("Auth page: URL parameters -", { type });
 
-    if (type === 'recovery') {
-      console.log("Auth page: Setting reset password mode (recovery type)");
-      setIsResetPasswordMode(true);
-    }
+    const handleRecoveryFlow = async () => {
+      if (type === 'recovery') {
+        console.log("Auth page: Setting reset password mode (recovery type)");
+        // Sign out any existing session to prevent automatic login
+        await supabase.auth.signOut();
+        setIsResetPasswordMode(true);
+      }
+    };
+
+    handleRecoveryFlow();
   }, [language, searchParams, t]);
 
   const toggleDarkMode = () => {
