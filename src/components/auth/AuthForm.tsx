@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -20,6 +20,16 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   const [newPassword, setNewPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
+  const [hash, setHash] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Extract hash from URL if in reset password mode
+    if (isResetPasswordMode) {
+      const hashFromUrl = window.location.hash;
+      console.log("Hash from URL:", hashFromUrl);
+      setHash(hashFromUrl);
+    }
+  }, [isResetPasswordMode]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,14 +38,34 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
     try {
       if (isResetPasswordMode) {
         console.log("Updating password in reset mode");
-        const { error } = await supabase.auth.updateUser({ 
-          password: newPassword 
-        });
-        
-        if (error) {
-          console.error("Error updating password:", error);
-          toast.error(t('error.password.update'));
+        if (!hash) {
+          console.error("No hash found in URL");
+          toast.error(t('error.generic'));
           return;
+        }
+
+        // First get the session from the hash
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          console.error("Error getting session:", sessionError);
+          // Try to exchange the hash for a session
+          const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+          
+          if (updateError) {
+            console.error("Error updating password:", updateError);
+            toast.error(t('error.password.update'));
+            return;
+          }
+        } else {
+          // We have a session, update the password
+          const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+          
+          if (updateError) {
+            console.error("Error updating password:", updateError);
+            toast.error(t('error.password.update'));
+            return;
+          }
         }
 
         console.log("Password updated successfully");
