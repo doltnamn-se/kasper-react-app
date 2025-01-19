@@ -15,11 +15,6 @@ import { Toaster } from "./components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { SidebarProvider } from "./contexts/SidebarContext";
-import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
-import { HidingPreferences } from "./pages/onboarding/HidingPreferences";
-import { RemovalUrls } from "./pages/onboarding/RemovalUrls";
-import { IdentificationInfo } from "./pages/onboarding/IdentificationInfo";
-import { OnboardingComplete } from "./pages/onboarding/OnboardingComplete";
 
 const queryClient = new QueryClient();
 
@@ -33,15 +28,6 @@ function App() {
               {/* Auth routes */}
               <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
               <Route path="/auth/callback" element={<AuthRoute><Auth /></AuthRoute>} />
-              
-              {/* Onboarding Routes - No protection wrapper */}
-              <Route path="/onboarding" element={<OnboardingLayout />}>
-                <Route path="/onboarding/hiding-preferences" element={<HidingPreferences />} />
-                <Route path="/onboarding/removal-urls" element={<RemovalUrls />} />
-                <Route path="/onboarding/identification" element={<IdentificationInfo />} />
-                <Route path="/onboarding/complete" element={<OnboardingComplete />} />
-                <Route index element={<HidingPreferences />} />
-              </Route>
 
               {/* Protected Routes */}
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />

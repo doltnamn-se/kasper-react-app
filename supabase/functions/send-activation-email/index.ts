@@ -14,47 +14,12 @@ serve(async (req) => {
   }
 
   try {
-    const { email, firstName } = await req.json();
-    console.log("Sending activation email to:", email);
+    const { email, firstName, password } = await req.json();
+    console.log("Sending welcome email to:", email);
 
     if (!email) {
       throw new Error('Email is required');
     }
-
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
-    );
-
-    console.log("Generating magic link...");
-    const { data, error } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'magiclink',
-      email: email,
-      options: {
-        redirectTo: `${req.headers.get('origin')}/onboarding/hiding-preferences`,
-        data: {
-          activationLink: true,
-          expiresIn: 86400
-        }
-      }
-    });
-
-    if (error) {
-      console.error("Error generating magic link:", error);
-      throw error;
-    }
-
-    if (!data.properties?.action_link) {
-      throw new Error("No magic link generated");
-    }
-
-    console.log("Magic link generated successfully");
 
     const emailHtml = `
       <!DOCTYPE html>
@@ -101,17 +66,11 @@ serve(async (req) => {
             color: #4a4a4a;
             margin-bottom: 20px;
           }
-          .button {
-            display: inline-block;
-            background-color: #000000;
-            color: #ffffff;
-            padding: 12px 24px;
-            text-decoration: none;
+          .credentials {
+            background-color: #f8f8f8;
+            padding: 20px;
             border-radius: 4px;
             margin: 20px 0;
-          }
-          .button:hover {
-            background-color: #333333;
           }
           .footer {
             text-align: center;
@@ -128,12 +87,13 @@ serve(async (req) => {
               <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
             </div>
             <h1>Welcome to Doltnamn, ${firstName}!</h1>
-            <p>Your account has been created. Click the button below to access your account and complete your onboarding:</p>
-            <div style="text-align: center;">
-              <a href="${data.properties.action_link}" class="button">Access Your Account</a>
+            <p>Your account has been created. Here are your login credentials:</p>
+            <div class="credentials">
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Password:</strong> ${password}</p>
             </div>
-            <p>If the button doesn't work, you can copy and paste this link into your browser:</p>
-            <p style="word-break: break-all; font-size: 12px; color: #666666;">${data.properties.action_link}</p>
+            <p>You can log in to your account at: <a href="https://app.doltnamn.se/auth">https://app.doltnamn.se/auth</a></p>
+            <p>For security reasons, we recommend changing your password after your first login.</p>
             <div class="footer">
               <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
             </div>
@@ -143,7 +103,7 @@ serve(async (req) => {
       </html>
     `;
 
-    console.log("Sending activation email via Resend");
+    console.log("Sending welcome email via Resend");
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -153,7 +113,7 @@ serve(async (req) => {
       body: JSON.stringify({
         from: "Doltnamn <no-reply@doltnamn.se>",
         to: [email],
-        subject: "Welcome to Doltnamn - Access Your Account",
+        subject: "Welcome to Doltnamn - Your Login Credentials",
         html: emailHtml,
       }),
     });
@@ -165,10 +125,10 @@ serve(async (req) => {
     }
 
     const emailData = await resendResponse.json();
-    console.log("Activation email sent successfully:", emailData);
+    console.log("Welcome email sent successfully:", emailData);
 
     return new Response(
-      JSON.stringify({ success: true, message: "Activation email sent successfully" }),
+      JSON.stringify({ success: true, message: "Welcome email sent successfully" }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
@@ -176,7 +136,7 @@ serve(async (req) => {
     console.error("Error in send-activation-email function:", err);
     return new Response(
       JSON.stringify({ 
-        error: err.message || "Failed to send activation email",
+        error: err.message || "Failed to send welcome email",
         details: err.toString()
       }),
       { 

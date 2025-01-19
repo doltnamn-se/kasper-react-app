@@ -10,7 +10,6 @@ const corsHeaders = {
 serve(async (req) => {
   console.log("Function invoked with request:", req.method);
   
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
     return new Response(null, { 
@@ -20,14 +19,7 @@ serve(async (req) => {
   }
 
   try {
-    // Verify authorization header
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      console.error("No authorization header");
-      throw new Error('No authorization header');
-    }
-
-    const { email, firstName, lastName, subscriptionPlan, createdBy } = await req.json();
+    const { email, firstName, lastName, subscriptionPlan, createdBy, password } = await req.json();
     console.log("Starting customer creation with data:", { email, firstName, lastName, subscriptionPlan, createdBy });
 
     const supabaseAdmin = createClient(
@@ -41,11 +33,11 @@ serve(async (req) => {
       }
     );
 
-    // Create auth user
+    // Create auth user with provided password
     console.log("Creating auth user");
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
-      password: Math.random().toString(36).slice(-8),
+      password,
       email_confirm: true,
     });
 

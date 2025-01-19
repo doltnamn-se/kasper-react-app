@@ -32,6 +32,10 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
+      // Generate a random password
+      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      console.log("Generated password for new user");
+
       // Step 1: Create customer
       console.log("Step 1: Creating customer...");
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
@@ -40,7 +44,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           firstName: formData.firstName,
           lastName: formData.lastName,
           subscriptionPlan: formData.subscriptionPlan,
-          createdBy: user.id
+          createdBy: user.id,
+          password: generatedPassword
         }
       });
 
@@ -51,27 +56,27 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       console.log("Customer created successfully:", createData);
 
-      // Step 2: Send activation email
-      console.log("Step 2: Sending activation email...");
+      // Step 2: Send welcome email with credentials
+      console.log("Step 2: Sending welcome email...");
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
           email: formData.email,
-          firstName: formData.firstName
+          firstName: formData.firstName,
+          password: generatedPassword
         }
       });
 
       if (emailError) {
-        console.error("Error sending activation email:", emailError);
-        // Don't throw here, show a notification instead
+        console.error("Error sending welcome email:", emailError);
         toast({
           title: "Partial Success",
-          description: "Customer created but activation email could not be sent. Please try resending the email later.",
+          description: "Customer created but welcome email could not be sent. Please try resending the email later.",
           variant: "default",
         });
       } else {
         toast({
           title: "Success",
-          description: "Customer created successfully and activation email sent.",
+          description: "Customer created successfully and welcome email sent with login credentials.",
         });
       }
 
