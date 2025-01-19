@@ -56,6 +56,7 @@ export const CustomerTableRow = ({
   };
 
   const getDisplayName = () => {
+    if (!customer.profile) return '-';
     if (customer.profile.display_name) return customer.profile.display_name;
     if (customer.profile.first_name || customer.profile.last_name) {
       return `${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim();
@@ -67,21 +68,21 @@ export const CustomerTableRow = ({
 
   return (
     <TableRow className="text-xs bg-white dark:bg-[#1c1c1e] hover:bg-white dark:hover:bg-[#1c1c1e]">
-      <TableCell className="text-xs text-black dark:text-white">{customer.profile.id || '-'}</TableCell>
-      <TableCell className="text-xs text-black dark:text-white">{customer.profile.email || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white">{customer.id || '-'}</TableCell>
+      <TableCell className="text-xs text-black dark:text-white">{customer.profile?.email || '-'}</TableCell>
       <TableCell>
         <Badge 
           variant="outline"
-          className={`text-xs font-normal ${getRoleBadgeClasses(customer.profile.role)}`}
+          className={`text-xs font-normal ${getRoleBadgeClasses(customer.profile?.role)}`}
         >
-          {customer.profile.role || 'No role'}
+          {customer.profile?.role || 'No role'}
         </Badge>
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
         {getDisplayName()}
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
-        {customer.profile.created_at
+        {customer.profile?.created_at
           ? format(new Date(customer.profile.created_at), 'MMM d, yyyy')
           : '-'}
       </TableCell>
