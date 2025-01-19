@@ -67,6 +67,10 @@ export default {
 				},
 				gray: {
 					400: '#616166'
+				},
+				subscription: {
+					text: '#001400',
+					bg: '#d6f37d'
 				}
 			},
 			borderRadius: {
@@ -76,20 +80,12 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
 				}
 			},
 			animation: {

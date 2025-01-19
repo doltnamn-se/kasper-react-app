@@ -3,6 +3,7 @@ import { CustomerWithProfile } from "@/types/customer";
 import { format } from "date-fns";
 import { CustomerTableActions } from "./CustomerTableActions";
 import { Badge } from "../ui/badge";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerTableRowProps {
   customer: CustomerWithProfile;
@@ -15,6 +16,8 @@ export const CustomerTableRow = ({
   onCustomerUpdated,
   onDeleteCustomer 
 }: CustomerTableRowProps) => {
+  const { language } = useLanguage();
+  
   const getBadgeVariant = (role: string | null) => {
     switch (role) {
       case 'super_admin':
@@ -27,15 +30,17 @@ export const CustomerTableRow = ({
   };
 
   const formatSubscriptionPlan = (plan: string | null) => {
+    if (!plan) return '';
+    
     switch (plan) {
       case '1_month':
-        return '1 Month';
+        return language === 'sv' ? '1 MÅN' : '1 MO';
       case '6_months':
-        return '6 Months';
+        return language === 'sv' ? '6 MÅN' : '6 MO';
       case '12_months':
-        return '12 Months';
+        return language === 'sv' ? '12 MÅN' : '12 MO';
       default:
-        return 'No plan';
+        return '';
     }
   };
 
@@ -61,12 +66,14 @@ export const CustomerTableRow = ({
           : '-'}
       </TableCell>
       <TableCell>
-        <Badge 
-          variant="secondary"
-          className="text-xs font-normal"
-        >
-          {formatSubscriptionPlan(customer.subscription_plan)}
-        </Badge>
+        {customer.subscription_plan && (
+          <Badge 
+            variant="secondary"
+            className="text-xs font-normal text-subscription-text bg-subscription-bg dark:text-subscription-text dark:bg-subscription-bg"
+          >
+            {formatSubscriptionPlan(customer.subscription_plan)}
+          </Badge>
+        )}
       </TableCell>
       <TableCell className="text-right">
         <CustomerTableActions 
