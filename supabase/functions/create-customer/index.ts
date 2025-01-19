@@ -56,12 +56,13 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", authData.user.id);
 
-    // Update profile data
+    // Update profile data with email and display name
     console.log("Updating profile data");
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({
         display_name: displayName,
+        email: email,
         role: 'customer',
       })
       .eq('id', authData.user.id);
