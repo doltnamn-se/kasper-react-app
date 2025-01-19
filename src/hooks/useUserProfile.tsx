@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-
-type UserProfile = {
-  first_name?: string;
-  last_name?: string;
-  display_name?: string;
-};
+import { Profile } from "@/types/customer";
 
 export const useUserProfile = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
 
@@ -47,7 +42,7 @@ export const useUserProfile = () => {
           
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
-            .select('first_name, last_name, display_name')
+            .select('first_name, last_name, display_name, role')
             .eq('id', session.user.id)
             .single();
           
@@ -87,7 +82,7 @@ export const useUserProfile = () => {
         setUserEmail(session.user.email);
         const { data: profileData } = await supabase
           .from('profiles')
-          .select('first_name, last_name, display_name')
+          .select('first_name, last_name, display_name, role')
           .eq('id', session.user.id)
           .single();
         
