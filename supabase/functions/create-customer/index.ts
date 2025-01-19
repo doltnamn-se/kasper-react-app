@@ -3,9 +3,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Max-Age': '86400',
+  'Content-Type': 'application/json'
 }
 
 serve(async (req) => {
@@ -26,7 +27,7 @@ serve(async (req) => {
       console.error("Error parsing JSON:", e);
       return new Response(
         JSON.stringify({ error: "Invalid JSON in request body" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -56,10 +57,7 @@ serve(async (req) => {
       console.error("Validation failed:", errorResponse);
       return new Response(
         JSON.stringify(errorResponse),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -85,10 +83,7 @@ serve(async (req) => {
           error: "Failed to create user",
           details: createUserError 
         }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -112,10 +107,7 @@ serve(async (req) => {
           error: "Failed to create profile",
           details: profileError 
         }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -138,10 +130,7 @@ serve(async (req) => {
           error: "Failed to create customer",
           details: customerError 
         }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -152,10 +141,7 @@ serve(async (req) => {
         userId: user.id,
         message: "Customer created successfully"
       }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
-      }
+      { headers: corsHeaders }
     );
   } catch (err) {
     console.error("Error in create-customer function:", err);
@@ -164,9 +150,9 @@ serve(async (req) => {
         error: err.message || "An unexpected error occurred",
         details: err.toString()
       }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500,
+      { 
+        headers: corsHeaders,
+        status: 500
       }
     );
   }
