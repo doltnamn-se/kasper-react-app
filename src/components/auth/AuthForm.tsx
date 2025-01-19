@@ -26,10 +26,8 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
   useEffect(() => {
     const type = searchParams.get('type');
     const code = searchParams.get('code');
-    const error = searchParams.get('error');
-    const errorDescription = searchParams.get('error_description');
     
-    console.log("AuthForm: URL parameters -", { type, code, error, errorDescription });
+    console.log("AuthForm: URL parameters -", { type, code });
     
     const handleRecoveryFlow = async () => {
       if (type === 'recovery' && code) {
@@ -60,9 +58,8 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode = false
     };
 
     handleRecoveryFlow();
-  }, [searchParams, t, navigate]);
+  }, [searchParams, t]);
 
-  // If we're in manual reset mode (from clicking forgot password), show the reset form
   if (isManualResetMode) {
     return (
       <PasswordResetForm 

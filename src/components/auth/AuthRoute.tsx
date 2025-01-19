@@ -15,7 +15,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Get current session
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -34,11 +33,10 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
         console.log("AuthRoute: Session found, redirecting to home");
         setSession(true);
-
+        setIsLoading(false);
       } catch (error) {
         console.error("AuthRoute: Error:", error);
         setSession(false);
-      } finally {
         setIsLoading(false);
       }
     };
@@ -46,25 +44,20 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("AuthRoute: Auth state changed:", event, session?.user?.id);
+      console.log("AuthRoute: Auth state changed:", event);
       
       if (event === 'SIGNED_OUT') {
-        console.log("AuthRoute: User signed out");
         setSession(false);
         setIsLoading(false);
         return;
       }
 
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
-        if (session) {
-          console.log("AuthRoute: Session established, redirecting to home");
-          setSession(true);
-        } else {
-          console.log("AuthRoute: No session in state change");
-          setSession(false);
-        }
-        setIsLoading(false);
+      if (session) {
+        setSession(true);
+      } else {
+        setSession(false);
       }
+      setIsLoading(false);
     });
 
     return () => {
@@ -76,11 +69,9 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return <LoadingSpinner />;
   }
 
-  // If there's a session, redirect to home
   if (session) {
     return <Navigate to="/" replace />;
   }
 
-  // Otherwise, render the auth page
   return <>{children}</>;
 };
