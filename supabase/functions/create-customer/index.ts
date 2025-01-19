@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Max-Age': '86400',
   'Content-Type': 'application/json'
@@ -65,7 +65,13 @@ serve(async (req) => {
     console.log("Initializing Supabase admin client");
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
     );
 
     // Create auth user
@@ -141,7 +147,10 @@ serve(async (req) => {
         userId: user.id,
         message: "Customer created successfully"
       }),
-      { headers: corsHeaders }
+      { 
+        status: 200,
+        headers: corsHeaders 
+      }
     );
   } catch (err) {
     console.error("Error in create-customer function:", err);
@@ -151,8 +160,8 @@ serve(async (req) => {
         details: err.toString()
       }),
       { 
-        headers: corsHeaders,
-        status: 500
+        status: 500,
+        headers: corsHeaders
       }
     );
   }
