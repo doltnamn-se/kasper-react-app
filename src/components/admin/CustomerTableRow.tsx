@@ -55,6 +55,14 @@ export const CustomerTableRow = ({
     }
   };
 
+  const getDisplayName = () => {
+    if (customer.profile.display_name) return customer.profile.display_name;
+    if (customer.profile.first_name || customer.profile.last_name) {
+      return `${customer.profile.first_name || ''} ${customer.profile.last_name || ''}`.trim();
+    }
+    return '-';
+  };
+
   console.log("Rendering customer row:", customer);
 
   return (
@@ -70,7 +78,7 @@ export const CustomerTableRow = ({
         </Badge>
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
-        {customer.profile.display_name || '-'}
+        {getDisplayName()}
       </TableCell>
       <TableCell className="text-xs text-black dark:text-white">
         {customer.profile.created_at
