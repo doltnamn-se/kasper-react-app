@@ -27,8 +27,10 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
     try {
       if (isResetPasswordMode) {
-        console.log("Updating password for recovery flow");
-        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        console.log("Updating password in reset mode");
+        const { error } = await supabase.auth.updateUser({ 
+          password: newPassword 
+        });
         
         if (error) {
           console.error("Error updating password:", error);
@@ -36,6 +38,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
           return;
         }
 
+        console.log("Password updated successfully");
         toast.success(t('password.updated'));
         // Redirect to login after password update
         window.location.href = '/auth';
@@ -90,6 +93,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
                 className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
                 disabled={isLoading}
                 required
+                minLength={6}
               />
             </div>
           ) : (

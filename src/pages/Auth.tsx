@@ -6,7 +6,6 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { toast } from "sonner";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -40,8 +39,6 @@ const Auth = () => {
     if (type === 'recovery') {
       console.log("Auth page: Setting reset password mode (recovery type)");
       setIsResetPasswordMode(true);
-      // Prevent automatic sign-in for recovery flow
-      supabase.auth.signOut();
     }
   }, [language, searchParams, t]);
 
