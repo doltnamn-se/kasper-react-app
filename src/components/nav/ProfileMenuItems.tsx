@@ -21,13 +21,13 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
       <DropdownMenuGroup>
         <DropdownMenuItem 
           onClick={() => navigate("/profile")} 
-          className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
         >
           <UserCircle className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300">{t('profile.manage')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
-          className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
           onClick={() => window.open('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss', '_blank')}
         >
           <CreditCard className="mr-3 h-4 w-4" />
@@ -35,17 +35,17 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate("/settings")} 
-          className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
         >
           <Settings className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300">{t('profile.settings')}</span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
-      <DropdownMenuSeparator className="mx-[-12px] my-2" />
+      <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
       <DropdownMenuItem 
         onClick={onSignOut} 
         disabled={isSigningOut}
-        className="py-2 cursor-pointer hover:bg-transparent dark:hover:bg-[#2d2d2d]"
+        className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
       >
         <LogOut className="mr-3 h-4 w-4" />
         <span className="text-black dark:text-gray-300">
