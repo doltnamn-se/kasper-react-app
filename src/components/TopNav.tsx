@@ -10,7 +10,7 @@ import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 
 export const TopNav = () => {
-  const { isCollapsed, toggleCollapse } = useSidebar();
+  const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const TopNav = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={toggleCollapse}
+            onClick={toggleMobileMenu}
             className="mr-2"
           >
             <Menu className="h-6 w-6" />

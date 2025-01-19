@@ -2,11 +2,10 @@ import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { APP_VERSION } from "@/config/version";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
-import { House, BadgeCheck, QrCode, MapPinHouse, MousePointerClick, Sparkle, Menu, X } from "lucide-react";
+import { House, BadgeCheck, QrCode, MapPinHouse, MousePointerClick, Sparkle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/contexts/SidebarContext";
 import {
   Accordion,
   AccordionContent,
@@ -21,11 +20,7 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
   const { t } = useLanguage();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
 
   const Navigation = () => (
     <nav>
@@ -143,20 +138,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed top-4 left-4 z-50 md:hidden"
-        onClick={toggleMobileMenu}
-      >
-        {isMobileMenuOpen ? (
-          <X className="h-6 w-6" />
-        ) : (
-          <Menu className="h-6 w-6" />
-        )}
-      </Button>
-
       {/* Sidebar - Desktop */}
       <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0">
         <div className="px-8 py-6">
@@ -178,10 +159,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       {/* Sidebar - Mobile */}
       <div className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-200 md:hidden ${
         isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}>
-        <div className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-[#1c1c1e] transform transition-transform duration-200 ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}>
+      }`} onClick={toggleMobileMenu}>
+        <div 
+          className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-[#1c1c1e] transform transition-transform duration-200 ${
+            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+          onClick={e => e.stopPropagation()}
+        >
           <div className="px-8 py-6">
             <AuthLogo className="relative h-8" />
           </div>
