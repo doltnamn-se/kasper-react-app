@@ -11,26 +11,24 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       const { data: customersData, error: customersError } = await supabase
-        .from('profiles')
+        .from('customers')
         .select(`
           id,
-          first_name,
-          last_name,
-          role,
-          email,
-          created_at,
-          updated_at,
-          customers (
+          subscription_plan,
+          onboarding_completed,
+          onboarding_step,
+          checklist_completed,
+          checklist_step,
+          identification_info,
+          stripe_customer_id,
+          profiles!inner (
             id,
-            subscription_plan,
+            first_name,
+            last_name,
+            role,
+            email,
             created_at,
-            updated_at,
-            onboarding_completed,
-            onboarding_step,
-            checklist_completed,
-            checklist_step,
-            identification_info,
-            stripe_customer_id
+            updated_at
           )
         `);
 
@@ -39,26 +37,18 @@ export const useCustomers = () => {
         throw customersError;
       }
 
-      const transformedData = customersData?.map(profile => {
-        console.log("Profile data:", profile);
-        const customerData = profile.customers?.[0] || {};
+      console.log("Raw customers data:", customersData);
+
+      const transformedData = customersData?.map(customer => {
         return {
-          subscription_plan: customerData.subscription_plan,
-          onboarding_completed: customerData.onboarding_completed,
-          onboarding_step: customerData.onboarding_step,
-          checklist_completed: customerData.checklist_completed,
-          checklist_step: customerData.checklist_step,
-          identification_info: customerData.identification_info,
-          stripe_customer_id: customerData.stripe_customer_id,
-          profile: {
-            id: profile.id,
-            first_name: profile.first_name,
-            last_name: profile.last_name,
-            role: profile.role,
-            email: profile.email,
-            created_at: profile.created_at,
-            updated_at: profile.updated_at
-          }
+          subscription_plan: customer.subscription_plan,
+          onboarding_completed: customer.onboarding_completed,
+          onboarding_step: customer.onboarding_step,
+          checklist_completed: customer.checklist_completed,
+          checklist_step: customer.checklist_step,
+          identification_info: customer.identification_info,
+          stripe_customer_id: customer.stripe_customer_id,
+          profile: customer.profiles
         };
       }) || [];
 
