@@ -32,18 +32,13 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
 
       if (error) {
         console.error("Error in password reset:", error);
-        if (error.message?.includes("Email rate limit exceeded")) {
-          toast.error(t('error.email.rate.limit'));
-        } else {
-          toast.error(t('error.generic'));
-        }
+        toast.error(t('error.generic'));
         return;
       }
 
       console.log("Password reset email sent successfully");
       toast.success(t('reset.password.success'));
       onCancel();
-      setResetEmail("");
     } catch (err) {
       console.error("Error in password reset:", err);
       toast.error(t('error.generic'));

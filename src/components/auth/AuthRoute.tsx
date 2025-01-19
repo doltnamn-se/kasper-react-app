@@ -15,20 +15,18 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log("AuthRoute: Checking current session");
-        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          console.error("AuthRoute: Session error:", sessionError);
+        // If we're on the callback route, allow access without session check
+        if (location.pathname === '/auth/callback') {
+          console.log("AuthRoute: On callback route, allowing access");
           setSession(false);
           setIsLoading(false);
           return;
         }
 
-        // Special handling for recovery and callback routes
-        if (location.pathname.includes('/auth/callback') || 
-            location.search.includes('type=recovery')) {
-          console.log("AuthRoute: Special route detected, allowing access");
+        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("AuthRoute: Session error:", sessionError);
           setSession(false);
           setIsLoading(false);
           return;
@@ -63,13 +61,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         return;
       }
 
-      if (event === 'PASSWORD_RECOVERY') {
-        console.log("AuthRoute: Password recovery in progress");
-        setSession(false);
-        setIsLoading(false);
-        return;
-      }
-
       if (session) {
         console.log("AuthRoute: Session established");
         setSession(true);
@@ -83,7 +74,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [location.pathname, location.search]);
+  }, [location.pathname]);
 
   if (isLoading) {
     return <LoadingSpinner />;
