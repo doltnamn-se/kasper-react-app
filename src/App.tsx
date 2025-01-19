@@ -32,7 +32,7 @@ function App() {
             <Routes>
               {/* Auth routes */}
               <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
-              <Route path="/auth/reset-password" element={<AuthRoute><Auth /></AuthRoute>} />
+              <Route path="/auth/callback" element={<AuthRoute><Auth /></AuthRoute>} />
               
               {/* Onboarding Routes - No protection wrapper */}
               <Route path="/onboarding" element={<OnboardingLayout />}>

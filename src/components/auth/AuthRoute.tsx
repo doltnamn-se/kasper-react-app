@@ -25,17 +25,17 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        if (!currentSession) {
-          console.log("AuthRoute: No session found, allowing auth page access");
+        // Special handling for recovery and callback routes
+        if (location.pathname.includes('/auth/callback') || 
+            location.search.includes('type=recovery')) {
+          console.log("AuthRoute: Special route detected, allowing access");
           setSession(false);
           setIsLoading(false);
           return;
         }
 
-        // Always allow access to callback and recovery routes
-        if (location.pathname.includes('/auth/callback') || 
-            (location.search.includes('type=recovery') && location.search.includes('code='))) {
-          console.log("AuthRoute: On special auth route, allowing access");
+        if (!currentSession) {
+          console.log("AuthRoute: No session found");
           setSession(false);
           setIsLoading(false);
           return;
