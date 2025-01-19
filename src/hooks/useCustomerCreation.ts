@@ -11,81 +11,79 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months"
   });
 
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      displayName: "",
+      subscriptionPlan: "1_month"
+    });
+  };
+
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
       console.log('Starting customer creation process...');
 
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error("No authenticated user found");
+        throw new Error("No authenticated user found");
+      }
+
       // Generate a random password
-      const password = Math.random().toString(36).slice(-12);
-      
-      // Step 1: Create the auth user
-      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-        email: formData.email,
-        password: password,
-        email_confirm: true
+      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      console.log("Generated password for new user");
+
+      // Step 1: Create customer using the Edge Function
+      console.log("Step 1: Creating customer...");
+      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
+        body: {
+          email: formData.email,
+          displayName: formData.displayName,
+          subscriptionPlan: formData.subscriptionPlan,
+          createdBy: user.id,
+          password: generatedPassword
+        }
       });
 
-      if (authError) {
-        console.error("Error creating auth user:", authError);
-        throw authError;
+      if (createError) {
+        console.error("Error in customer creation:", createError);
+        throw createError;
       }
 
-      if (!authData.user) {
-        throw new Error("No user data returned");
-      }
+      console.log("Customer created successfully:", createData);
 
-      console.log("Auth user created successfully");
-
-      // Step 2: Update the profile
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ 
-          display_name: formData.displayName,
-          email: formData.email
-        })
-        .eq('id', authData.user.id);
-
-      if (profileError) {
-        console.error("Error updating profile:", profileError);
-        throw profileError;
-      }
-
-      console.log("Profile updated successfully");
-
-      // Step 3: Update the customer subscription
-      const { error: customerError } = await supabase
-        .from('customers')
-        .update({ 
-          subscription_plan: formData.subscriptionPlan,
-        })
-        .eq('id', authData.user.id);
-
-      if (customerError) {
-        console.error("Error updating customer:", customerError);
-        throw customerError;
-      }
-
-      console.log("Customer updated successfully");
-
-      toast({
-        title: "Success",
-        description: "Customer created successfully. They will receive an email with login instructions.",
+      // Step 2: Send welcome email with credentials
+      console.log("Step 2: Sending welcome email...");
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email: formData.email,
+          displayName: formData.displayName,
+          password: generatedPassword
+        }
       });
 
-      // Reset form and trigger refresh
-      setFormData({
-        email: "",
-        displayName: "",
-        subscriptionPlan: "1_month"
-      });
+      if (emailError) {
+        console.error("Error sending welcome email:", emailError);
+        toast({
+          title: "Partial Success",
+          description: "Customer created but welcome email could not be sent. Please try resending the email later.",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Customer created successfully and welcome email sent with login credentials.",
+        });
+      }
+
+      resetForm();
       onCustomerCreated();
-
     } catch (err: any) {
       console.error("Error in customer creation process:", err);
       toast({
         title: "Error",
-        description: err.message || "Failed to create customer. Please try again.",
+        description: err.message || "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {

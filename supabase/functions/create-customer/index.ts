@@ -62,6 +62,7 @@ serve(async (req) => {
       .from('profiles')
       .update({
         display_name: displayName,
+        email: email,
         role: 'customer',
       })
       .eq('id', authData.user.id);
@@ -78,6 +79,8 @@ serve(async (req) => {
       .update({
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
+        onboarding_completed: true,
+        onboarding_step: 5
       })
       .eq('id', authData.user.id);
 
