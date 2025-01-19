@@ -25,38 +25,41 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
   useEffect(() => {
     if (isResetPasswordMode) {
-      const fullUrl = window.location.href;
-      console.log("Full URL:", fullUrl);
+      const hash = window.location.hash;
+      console.log("Current URL hash:", hash);
       
-      // Extract the token from the URL query parameters
-      const searchParams = new URLSearchParams(window.location.search);
-      const token = searchParams.get('token');
-      const type = searchParams.get('type');
+      // First try to get the token from the hash
+      const hashParams = new URLSearchParams(hash.replace('#', ''));
+      let token = hashParams.get('access_token');
+      
+      // If not in hash, try query params
+      if (!token) {
+        const searchParams = new URLSearchParams(window.location.search);
+        token = searchParams.get('token');
+      }
+      
+      const type = new URLSearchParams(window.location.search).get('type');
+      
+      console.log("Recovery flow - Token:", token ? "Found" : "Not found", "Type:", type);
       
       if (token && type === 'recovery') {
-        console.log("Found recovery token in URL");
+        console.log("Valid recovery token found");
         setRecoveryToken(token);
       } else {
-        console.error("No recovery token found in URL or invalid type");
+        console.error("No valid recovery token found in URL");
+        toast.error(t('error.invalid.recovery.link'));
       }
     }
-  }, [isResetPasswordMode]);
+  }, [isResetPasswordMode, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      if (isResetPasswordMode) {
-        console.log("Starting password reset process");
+      if (isResetPasswordMode && recoveryToken) {
+        console.log("Starting password reset with recovery token");
         
-        if (!recoveryToken) {
-          console.error("No recovery token available");
-          toast.error(t('error.generic'));
-          return;
-        }
-
-        // Update the user's password using the recovery token
         const { error: updateError } = await supabase.auth.updateUser({
           password: newPassword
         });
