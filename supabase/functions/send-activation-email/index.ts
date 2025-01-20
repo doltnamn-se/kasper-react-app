@@ -3,14 +3,18 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 const corsHeaders = {
   'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': '*',
   'Access-Control-Max-Age': '86400',
 };
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 serve(async (req) => {
+  console.log("Received request to send-activation-email function");
+
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log("Handling OPTIONS request");
     return new Response(null, { 
       headers: corsHeaders,
       status: 204
@@ -22,10 +26,7 @@ serve(async (req) => {
 
     if (!email || !displayName || !password) {
       return new Response(
-        JSON.stringify({ 
-          error: "Missing required fields",
-          received: { email, displayName }
-        }),
+        JSON.stringify({ error: "Missing required fields" }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 400 
@@ -33,116 +34,55 @@ serve(async (req) => {
       );
     }
 
-    console.log("Sending activation email to:", email);
-
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Welcome to Doltnamn</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              line-height: 1.6;
-              color: #333;
-              max-width: 600px;
-              margin: 0 auto;
-              padding: 20px;
-            }
-            .container {
-              background-color: #f9f9f9;
-              border-radius: 5px;
-              padding: 20px;
-              margin-top: 20px;
-            }
-            .header {
-              text-align: center;
-              margin-bottom: 30px;
-            }
-            .credentials {
-              background-color: #fff;
-              padding: 15px;
-              border-radius: 5px;
-              margin: 20px 0;
-            }
-            .button {
-              display: inline-block;
-              padding: 10px 20px;
-              background-color: #007bff;
-              color: #ffffff;
-              text-decoration: none;
-              border-radius: 5px;
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>Welcome to Doltnamn!</h1>
-            </div>
-            
-            <p>Hello ${displayName},</p>
-            
-            <p>Your account has been created successfully. Here are your login credentials:</p>
-            
-            <div class="credentials">
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Password:</strong> ${password}</p>
-            </div>
-            
-            <p>For security reasons, we recommend changing your password after your first login.</p>
-            
-            <p>You can log in to your account using the button below:</p>
-            
-            <a href="https://app.doltnamn.se/auth" class="button">Log In to Your Account</a>
-            
-            <p style="margin-top: 30px;">If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
-            
-            <p>Best regards,<br>The Doltnamn Team</p>
-          </div>
-        </body>
-      </html>
-    `;
-
-    const res = await fetch('https://api.resend.com/emails', {
+    const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         from: 'Doltnamn <no-reply@doltnamn.se>',
-        to: email,
+        to: [email],
         subject: 'Welcome to Doltnamn - Your Account Details',
-        html: emailHtml
-      })
+        html: `
+          <h1>Welcome to Doltnamn!</h1>
+          <p>Hello ${displayName},</p>
+          <p>Your account has been created successfully. Here are your login credentials:</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Password:</strong> ${password}</p>
+          <p>Please login at <a href="https://app.doltnamn.se/auth">https://app.doltnamn.se/auth</a> and change your password immediately.</p>
+          <p>Best regards,<br>The Doltnamn Team</p>
+        `,
+      }),
     });
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      console.error("Error from Resend API:", errorData);
-      throw new Error(`Failed to send email: ${errorData.message || 'Unknown error'}`);
+    if (!emailResponse.ok) {
+      const errorData = await emailResponse.text();
+      console.error("Error sending email:", errorData);
+      return new Response(
+        JSON.stringify({ error: "Failed to send welcome email" }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
     }
 
-    console.log("Welcome email sent successfully to:", email);
-
     return new Response(
-      JSON.stringify({ success: true, message: "Welcome email sent successfully" }),
+      JSON.stringify({ success: true }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200
+        status: 200 
       }
     );
 
   } catch (err) {
     console.error("Error in send-activation-email function:", err);
     return new Response(
-      JSON.stringify({ error: err.message || "Failed to send welcome email" }),
+      JSON.stringify({ error: err.message || "An unexpected error occurred" }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500
+        status: 400 
       }
     );
   }
