@@ -21,8 +21,9 @@ export const UserProfileMenu = () => {
   const isMobile = useIsMobile();
 
   const getDisplayName = () => {
-    if (userProfile?.display_name) return userProfile.display_name;
-    if (userProfile?.first_name || userProfile?.last_name) {
+    if (!userProfile) return userEmail;
+    if (userProfile.display_name) return userProfile.display_name;
+    if (userProfile.first_name || userProfile.last_name) {
       return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
     }
     return userEmail;
@@ -38,7 +39,6 @@ export const UserProfileMenu = () => {
       setIsSigningOut(true);
       console.log("Attempting to sign out...");
       
-      // First check if we have a session
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError) {
@@ -73,6 +73,7 @@ export const UserProfileMenu = () => {
   };
 
   const initials = getUserInitials(userProfile);
+  const displayName = getDisplayName();
 
   return (
     <DropdownMenu>
@@ -88,7 +89,7 @@ export const UserProfileMenu = () => {
           </Avatar>
           {!isMobile && (
             <>
-              <span className="text-sm font-medium">{getDisplayName()}</span>
+              <span className="text-sm font-medium">{displayName}</span>
               <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
             </>
           )}
