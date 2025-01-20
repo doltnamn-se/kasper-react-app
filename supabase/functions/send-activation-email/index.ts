@@ -46,28 +46,34 @@ serve(async (req) => {
         subject: 'Välkommen till Doltnamn - Dina inloggningsuppgifter',
         html: `
           <!DOCTYPE html>
-          <html>
+          <html style="background-color: #f4f4f4 !important; margin: 0; padding: 0;">
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Välkommen till Doltnamn</title>
             <style>
+              html, body {
+                background-color: #f4f4f4 !important;
+                margin: 0;
+                padding: 0;
+              }
               body {
                 font-family: Helvetica, Arial, sans-serif;
                 line-height: 1.6;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4 !important;
                 color: #333333;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
               }
               .container {
                 max-width: 600px;
                 margin: 0 auto;
                 padding: 20px;
+                background-color: #f4f4f4 !important;
               }
               .logo-container {
                 text-align: center;
                 margin-bottom: 20px;
+                padding: 20px;
               }
               .logo-container img {
                 max-width: 120px;
@@ -133,7 +139,7 @@ serve(async (req) => {
               }
             </style>
           </head>
-          <body>
+          <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0;">
             <div class="container">
               <div class="logo-container">
                 <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
