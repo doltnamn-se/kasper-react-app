@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createSupabaseAdmin } from "./auth.ts"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,15 +7,19 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Creating customer with data:", { email, displayName, subscriptionPlan, createdBy });
 
-    const supabaseAdmin = createSupabaseAdmin();
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
 
     // Generate a secure random password
     const tempPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
@@ -68,16 +72,36 @@ serve(async (req) => {
 
     // Step 4: Send welcome email
     console.log("Sending welcome email...");
-    const { error: emailError } = await supabaseAdmin.functions.invoke('send-activation-email', {
-      body: {
-        email,
-        displayName,
-        password: tempPassword
-      }
-    });
+    try {
+      const emailHtml = `
+        <h1>Welcome to Doltnamn!</h1>
+        <p>Your account has been created. Here are your login credentials:</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Password:</strong> ${tempPassword}</p>
+        <p>Please login and change your password.</p>
+      `;
 
-    if (emailError) {
-      console.warn("Warning: Error sending welcome email:", emailError);
+      const resendResponse = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+        },
+        body: JSON.stringify({
+          from: "Doltnamn <no-reply@doltnamn.se>",
+          to: [email],
+          subject: "Welcome to Doltnamn - Your Account Details",
+          html: emailHtml,
+        }),
+      });
+
+      if (!resendResponse.ok) {
+        const errorText = await resendResponse.text();
+        console.error("Error sending welcome email:", errorText);
+        // Don't throw here, as the user is already created
+      }
+    } catch (emailError) {
+      console.error("Error sending welcome email:", emailError);
       // Don't throw here, as the user is already created
     }
 
