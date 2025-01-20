@@ -26,67 +26,45 @@ export const supabase = createClient<Database>(
         eventsPerSecond: 10,
       },
     },
+    db: {
+      schema: 'public'
+    }
   }
 );
-
-// Add better error handling and logging for fetch failures
-const originalFetch = window.fetch;
-window.fetch = async (...args) => {
-  try {
-    console.log('Fetch request:', {
-      url: args[0],
-      options: args[1],
-      headers: args[1]?.headers
-    });
-    const response = await originalFetch(...args);
-    if (!response.ok) {
-      console.error('Fetch response not OK:', {
-        status: response.status,
-        statusText: response.statusText,
-        url: response.url,
-      });
-      // Clone the response to read it multiple times
-      const clonedResponse = response.clone();
-      try {
-        const responseBody = await clonedResponse.text();
-        console.error('Response body:', responseBody);
-      } catch (e) {
-        console.error('Could not read response body:', e);
-      }
-    }
-    return response;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    throw error;
-  }
-};
 
 // Initialize Supabase client and verify connection
 (async () => {
   try {
     console.log('Initializing Supabase client...');
-    const { data, error } = await supabase.auth.getSession();
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     
-    if (error) {
-      console.error('Error initializing Supabase client:', error);
-    } else {
-      console.log('Supabase client initialized successfully with URL:', SUPABASE_URL);
-      if (data.session) {
-        console.log('Active session found');
+    if (sessionError) {
+      console.error('Error initializing Supabase client:', sessionError);
+      return;
+    }
+
+    console.log('Supabase client initialized successfully with URL:', SUPABASE_URL);
+    
+    if (session) {
+      console.log('Active session found');
+      try {
         // Test the profiles table access
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*')
-          .limit(1);
+          .limit(1)
+          .maybeSingle();
         
         if (profileError) {
           console.error('Error testing profiles access:', profileError);
         } else {
           console.log('Successfully tested profiles access');
         }
-      } else {
-        console.log('No active session');
+      } catch (err) {
+        console.error('Error testing database access:', err);
       }
+    } else {
+      console.log('No active session');
     }
   } catch (err) {
     console.error('Failed to initialize Supabase client:', err);
