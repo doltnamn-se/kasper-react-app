@@ -44,7 +44,7 @@ export const useUserProfile = () => {
           console.log("Fetching profile for user:", session.user.id);
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
-            .select('id, email, first_name, last_name, display_name, role, created_at, updated_at')
+            .select('*')
             .eq('id', session.user.id)
             .single();
           
@@ -89,7 +89,7 @@ export const useUserProfile = () => {
         setUserEmail(session.user.email);
         const { data: profileData } = await supabase
           .from('profiles')
-          .select('id, email, first_name, last_name, display_name, role, created_at, updated_at')
+          .select('*')
           .eq('id', session.user.id)
           .single();
         
