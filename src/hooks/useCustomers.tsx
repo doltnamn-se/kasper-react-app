@@ -9,76 +9,67 @@ export const useCustomers = () => {
   const { data: customers, refetch, isLoading, error } = useQuery({
     queryKey: ['customers'],
     queryFn: async () => {
-      console.log("Starting customers fetch...");
-      
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError) {
-        console.error("Session error:", sessionError);
-        throw sessionError;
-      }
-      
-      if (!session) {
-        console.error("No session found");
-        throw new Error("No session found");
-      }
-      
-      console.log("User authenticated, fetching user profile...");
-      
-      const { data: userProfile, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', session.user.id)
-        .single();
+      try {
+        console.log("Starting customers fetch...");
         
-      if (profileError) {
-        console.error("Error fetching user profile:", profileError);
-        throw profileError;
+        // First verify session and admin status
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          throw new Error("No active session");
+        }
+
+        // Fetch customers first
+        console.log("Fetching customers data...");
+        const { data: customersData, error: customersError } = await supabase
+          .from('customers')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (customersError) {
+          console.error("Error fetching customers:", customersError);
+          throw customersError;
+        }
+
+        if (!customersData) {
+          console.log("No customers found");
+          return [];
+        }
+
+        // Then fetch all corresponding profiles
+        console.log("Fetching profiles for customers...");
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('*')
+          .in('id', customersData.map(customer => customer.id));
+
+        if (profilesError) {
+          console.error("Error fetching profiles:", profilesError);
+          throw profilesError;
+        }
+
+        // Combine the data
+        const transformedData = customersData.map(customer => ({
+          ...customer,
+          profile: profilesData?.find(profile => profile.id === customer.id) || null
+        }));
+
+        console.log("Successfully fetched and combined data:", transformedData);
+        return transformedData as CustomerWithProfile[];
+      } catch (error: any) {
+        console.error("Error in customers fetch:", error);
+        throw new Error(error.message || "Failed to fetch customers data");
       }
-      
-      console.log("User role:", userProfile?.role);
-      
-      if (userProfile?.role !== 'super_admin') {
-        throw new Error("Unauthorized: Only super admins can access this resource");
-      }
-
-      // Fetch customers and their profiles separately
-      const { data: customersData, error: customersError } = await supabase
-        .from('customers')
-        .select('*');
-
-      if (customersError) {
-        console.error("Error fetching customers:", customersError);
-        throw customersError;
-      }
-
-      // Fetch all profiles for these customers
-      const { data: profilesData, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .in('id', customersData.map(customer => customer.id));
-
-      if (profilesError) {
-        console.error("Error fetching profiles:", profilesError);
-        throw profilesError;
-      }
-
-      // Combine the data
-      const transformedData = customersData.map(customer => ({
-        ...customer,
-        profile: profilesData.find(profile => profile.id === customer.id) || null
-      }));
-
-      console.log("Combined customer and profile data:", transformedData);
-      
-      return transformedData as CustomerWithProfile[];
-    }
+    },
+    retry: 2, // Retry failed requests up to 2 times
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    refetchOnWindowFocus: false // Don't refetch when window regains focus
   });
 
   const handleDeleteCustomer = async (customerId: string) => {
     try {
       console.log("Starting deletion process for customer:", customerId);
 
-      // First delete from notification_preferences
+      // Delete from notification_preferences
       const { error: notifPrefError } = await supabase
         .from('notification_preferences')
         .delete()
@@ -89,7 +80,7 @@ export const useCustomers = () => {
         throw notifPrefError;
       }
 
-      // Then delete from notifications
+      // Delete from notifications
       const { error: notifError } = await supabase
         .from('notifications')
         .delete()
@@ -144,16 +135,6 @@ export const useCustomers = () => {
         throw customersError;
       }
 
-      // Finally delete the auth user using admin API
-      const { error: authError } = await supabase.auth.admin.deleteUser(
-        customerId
-      );
-
-      if (authError) {
-        console.error("Error deleting auth user:", authError);
-        throw authError;
-      }
-
       console.log("Customer deleted successfully");
       toast({
         title: "Success",
@@ -161,12 +142,12 @@ export const useCustomers = () => {
       });
       
       refetch();
-    } catch (err) {
-      console.error("Unexpected error deleting customer:", err);
+    } catch (err: any) {
+      console.error("Error deleting customer:", err);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to delete customer. Please try again.",
+        description: err.message || "Failed to delete customer",
       });
     }
   };
