@@ -11,43 +11,47 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       
+      // First fetch all customers
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
-        .select(`
-          *,
-          profiles (
-            id,
-            email,
-            display_name,
-            role,
-            created_at,
-            updated_at,
-            first_name,
-            last_name
-          )
-        `)
-        .eq('id', 'profiles.id');
+        .select('*');
 
       if (customersError) {
         console.error("Error fetching customers:", customersError);
         throw customersError;
       }
 
-      console.log("Raw customers data:", customersData);
+      // Then fetch all profiles
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*');
 
-      const transformedData = customersData?.map(customer => ({
-        ...customer,
-        profile: {
-          id: customer.profiles?.id || customer.id,
-          email: customer.profiles?.email || null,
-          display_name: customer.profiles?.display_name || null,
-          role: customer.profiles?.role || null,
-          created_at: customer.profiles?.created_at || customer.created_at || '',
-          updated_at: customer.profiles?.updated_at || customer.updated_at || '',
-          first_name: customer.profiles?.first_name || null,
-          last_name: customer.profiles?.last_name || null
-        }
-      })) || [];
+      if (profilesError) {
+        console.error("Error fetching profiles:", profilesError);
+        throw profilesError;
+      }
+
+      console.log("Raw customers data:", customersData);
+      console.log("Raw profiles data:", profilesData);
+
+      // Map customers to their profiles
+      const transformedData = customersData.map(customer => {
+        const matchingProfile = profilesData.find(profile => profile.id === customer.id);
+        
+        return {
+          ...customer,
+          profile: {
+            id: matchingProfile?.id || customer.id,
+            email: matchingProfile?.email || null,
+            display_name: matchingProfile?.display_name || null,
+            role: matchingProfile?.role || null,
+            created_at: matchingProfile?.created_at || customer.created_at || '',
+            updated_at: matchingProfile?.updated_at || customer.updated_at || '',
+            first_name: matchingProfile?.first_name || null,
+            last_name: matchingProfile?.last_name || null
+          }
+        };
+      });
 
       console.log("Transformed customers data:", transformedData);
       return transformedData as CustomerWithProfile[];
