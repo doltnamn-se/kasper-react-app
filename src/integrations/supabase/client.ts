@@ -11,7 +11,7 @@ export const supabase = createClient<Database>(
     auth: {
       persistSession: true,
       storageKey: 'supabase.auth.token',
-      storage: window.localStorage,
+      storage: localStorage,
       autoRefreshToken: true,
       detectSessionInUrl: true,
       flowType: 'pkce',
@@ -26,9 +26,6 @@ export const supabase = createClient<Database>(
         eventsPerSecond: 10,
       },
     },
-    db: {
-      schema: 'public',
-    },
   }
 );
 
@@ -36,6 +33,10 @@ export const supabase = createClient<Database>(
 const originalFetch = window.fetch;
 window.fetch = async (...args) => {
   try {
+    console.log('Fetch request:', {
+      url: args[0],
+      options: args[1]
+    });
     const response = await originalFetch(...args);
     if (!response.ok) {
       console.error('Fetch response not OK:', {
@@ -51,5 +52,4 @@ window.fetch = async (...args) => {
   }
 };
 
-// Add debug logging for Supabase client initialization
 console.log('Supabase client initialized with URL:', SUPABASE_URL);

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { toast } from "sonner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,7 +21,17 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
 
     const checkAccess = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        console.log("ProtectedRoute: Checking session...");
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("ProtectedRoute: Session error:", sessionError);
+          if (mounted) {
+            setIsAuthenticated(false);
+            setIsLoading(false);
+          }
+          return;
+        }
 
         if (!session) {
           console.log("ProtectedRoute: No session found");
@@ -43,6 +54,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
         if (mounted) {
           setIsAuthenticated(false);
           setIsLoading(false);
+          toast.error("Authentication error. Please try logging in again.");
         }
       }
     };
