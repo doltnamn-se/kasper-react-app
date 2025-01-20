@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Max-Age': '86400',
 }
@@ -25,7 +25,7 @@ serve(async (req) => {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Received data:", { email, displayName, subscriptionPlan, createdBy });
 
-    // Initialize Supabase admin client
+    // Initialize Supabase admin client with specific configuration
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -33,22 +33,35 @@ serve(async (req) => {
         auth: {
           autoRefreshToken: false,
           persistSession: false,
-        },
+          detectSessionInUrl: false
+        }
       }
     );
 
-    // Step 1: Create auth user
+    // Generate a secure random password
+    const password = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+
+    // Step 1: Create auth user with specific options
     console.log("Creating auth user...");
     const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
-      email,
-      password: Math.random().toString(36).slice(-12),
+      email: email,
+      password: password,
       email_confirm: true,
+      user_metadata: {
+        display_name: displayName
+      }
     });
 
-    if (createUserError || !user) {
+    if (createUserError) {
       console.error("Error creating auth user:", createUserError);
-      throw createUserError || new Error("Failed to create user");
+      throw createUserError;
     }
+
+    if (!user) {
+      console.error("No user returned after creation");
+      throw new Error("Failed to create user");
+    }
+
     console.log("Auth user created successfully:", user.id);
 
     // Step 2: Create profile
@@ -57,15 +70,16 @@ serve(async (req) => {
       .from('profiles')
       .insert({
         id: user.id,
-        email,
+        email: email,
         display_name: displayName,
-        role: 'customer',
+        role: 'customer'
       });
 
     if (profileError) {
       console.error("Error creating profile:", profileError);
       throw profileError;
     }
+
     console.log("Profile created successfully");
 
     // Step 3: Create customer record
@@ -77,13 +91,14 @@ serve(async (req) => {
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
         onboarding_completed: false,
-        onboarding_step: 1,
+        onboarding_step: 1
       });
 
     if (customerError) {
       console.error("Error creating customer:", customerError);
       throw customerError;
     }
+
     console.log("Customer record created successfully");
 
     return new Response(
