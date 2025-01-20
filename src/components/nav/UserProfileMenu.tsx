@@ -13,10 +13,10 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
 
 export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
-  const { toast } = useToast();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
 
@@ -38,34 +38,35 @@ export const UserProfileMenu = () => {
       setIsSigningOut(true);
       console.log("Attempting to sign out...");
       
+      // First check if we have a session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error("Error getting session:", sessionError);
+        toast.error(t('error.signout'));
+        return;
+      }
+
+      if (!session) {
+        console.log("No active session found, redirecting to auth page");
+        window.location.href = '/auth';
+        return;
+      }
+      
       const { error } = await supabase.auth.signOut();
       
       if (error) {
         console.error("Error signing out:", error);
-        toast({
-          variant: "destructive",
-          title: t('toast.error.title'),
-          description: t('toast.error.description'),
-          className: "top-4 right-4",
-        });
+        toast.error(t('error.signout'));
         return;
       }
       
       console.log("Sign out successful");
+      window.location.href = '/auth';
       
-      toast({
-        title: t('toast.signed.out.title'),
-        description: t('toast.signed.out.description'),
-        className: "top-4 right-4",
-      });
     } catch (err) {
       console.error("Unexpected error during sign out:", err);
-      toast({
-        variant: "destructive",
-        title: t('toast.error.title'),
-        description: t('toast.error.unexpected'),
-        className: "top-4 right-4",
-      });
+      toast.error(t('error.signout'));
     } finally {
       setIsSigningOut(false);
     }
