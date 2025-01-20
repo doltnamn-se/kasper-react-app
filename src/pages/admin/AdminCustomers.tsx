@@ -1,22 +1,10 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { CustomersTable } from "@/components/admin/CustomersTable";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useCustomers } from "@/hooks/useCustomers";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
-  const { customers, isLoading, error, refetch, handleDeleteCustomer } = useCustomers();
-
-  if (error) {
-    console.error('Error in AdminCustomers:', error);
-    return (
-      <MainLayout>
-        <div>Error loading customers</div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>
@@ -24,17 +12,8 @@ const AdminCustomers = () => {
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.admin.customers')}
         </h1>
-        <CreateCustomerDialog onCustomerCreated={refetch} />
+        <CreateCustomerDialog onCustomerCreated={() => {}} />
       </div>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <CustomersTable 
-          customers={customers || []} 
-          onCustomerUpdated={refetch}
-          onDeleteCustomer={handleDeleteCustomer}
-        />
-      )}
     </MainLayout>
   );
 };
