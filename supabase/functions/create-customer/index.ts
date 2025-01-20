@@ -33,7 +33,7 @@ serve(async (req) => {
 
     console.log("Parsed request body:", body);
 
-    const { email, displayName, subscriptionPlan, createdBy } = body;
+    const { email, displayName, subscriptionPlan, createdBy, password } = body;
     
     // Log all input values
     console.log("Processing customer creation with:", {
@@ -78,7 +78,7 @@ serve(async (req) => {
     console.log("Creating auth user with email:", email);
     const { data: { user }, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
       email,
-      password: Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12),
+      password,
       email_confirm: true,
     });
 
