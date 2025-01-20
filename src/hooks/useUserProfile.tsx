@@ -14,6 +14,7 @@ export const useUserProfile = () => {
 
     const initUser = async () => {
       try {
+        console.log("Initializing user profile...");
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -40,6 +41,7 @@ export const useUserProfile = () => {
           console.log("Setting user email:", session.user.email);
           setUserEmail(session.user.email);
           
+          console.log("Fetching profile for user:", session.user.id);
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('id, email, first_name, last_name, display_name, role, created_at, updated_at')
@@ -47,10 +49,15 @@ export const useUserProfile = () => {
             .single();
           
           if (profileError) {
-            console.error("Error fetching profile:", profileError);
+            console.error("Error fetching profile:", {
+              error: profileError,
+              userId: session.user.id,
+              email: session.user.email
+            });
           }
           
           if (mounted && profileData) {
+            console.log("Profile data fetched successfully:", profileData);
             setUserProfile(profileData);
           }
         }

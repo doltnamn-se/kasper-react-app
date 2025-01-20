@@ -36,7 +36,6 @@ export const supabase = createClient<Database>(
 const originalFetch = window.fetch;
 window.fetch = async (...args) => {
   try {
-    console.log('Making fetch request:', args[0]);
     const response = await originalFetch(...args);
     if (!response.ok) {
       console.error('Fetch response not OK:', {
@@ -47,10 +46,10 @@ window.fetch = async (...args) => {
     }
     return response;
   } catch (error) {
-    console.error('Fetch error:', {
-      error,
-      request: args[0],
-    });
+    console.error('Fetch error:', error);
     throw error;
   }
 };
+
+// Add debug logging for Supabase client initialization
+console.log('Supabase client initialized with URL:', SUPABASE_URL);
