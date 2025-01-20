@@ -41,19 +41,36 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
 
         console.log("Password updated successfully");
         toast.success(t('password.updated'));
+        
+        // Clear any existing session
+        await supabase.auth.signOut();
+        
         window.location.href = '/auth';
         return;
       }
 
       // Regular sign in flow
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log("Attempting sign in with email:", email);
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
         console.error("Sign in error:", error);
-        toast.error(t('error.signin'));
+        if (error.message === 'Invalid login credentials') {
+          toast.error(t('error.invalid.credentials'));
+        } else {
+          toast.error(t('error.signin'));
+        }
+        return;
+      }
+
+      if (data?.session) {
+        console.log("Sign in successful, session established");
+        // Explicitly store the session
+        await supabase.auth.setSession(data.session);
+        window.location.href = '/';
       }
     } catch (err) {
       console.error("Unexpected error:", err);

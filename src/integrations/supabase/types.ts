@@ -200,6 +200,13 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles_cache: {
+        Row: {
+          id: string | null
+          role: Database["public"]["Enums"]["user_role"] | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
