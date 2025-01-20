@@ -11,6 +11,14 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months"
   });
 
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      displayName: "",
+      subscriptionPlan: "1_month"
+    });
+  };
+
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
@@ -22,8 +30,13 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // Step 1: Create customer using Edge Function
-      console.log("Step 1: Creating customer via Edge Function");
+      console.log("Calling create-customer function with data:", {
+        email: formData.email,
+        displayName: formData.displayName,
+        subscriptionPlan: formData.subscriptionPlan,
+        createdBy: user.id
+      });
+
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
           email: formData.email,
@@ -45,12 +58,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         description: "Customer created successfully. They will receive an email with login instructions.",
       });
 
-      setFormData({
-        email: "",
-        displayName: "",
-        subscriptionPlan: "1_month"
-      });
-      
+      resetForm();
       onCustomerCreated();
     } catch (err: any) {
       console.error("Error in customer creation process:", err);

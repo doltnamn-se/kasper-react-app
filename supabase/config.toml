@@ -1,4 +1,4 @@
 project_id = "upfapfohwnkiugvebujh"
 
 [functions.create-customer]
-verify_jwt = true
+verify_jwt = false

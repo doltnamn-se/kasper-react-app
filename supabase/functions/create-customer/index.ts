@@ -2,14 +2,18 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 }
 
 serve(async (req) => {
+  console.log("Edge Function received request:", req.method);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log("Handling OPTIONS preflight request");
     return new Response(null, { 
       headers: corsHeaders,
       status: 204,
@@ -17,22 +21,28 @@ serve(async (req) => {
   }
 
   try {
-    console.log("Starting customer creation process...");
+    console.log("Processing customer creation request");
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Received data:", { email, displayName, subscriptionPlan, createdBy });
 
     // Initialize Supabase admin client
-    const supabaseAdmin = createClient(
+    const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
     );
 
-    // Step 1: Create auth user with admin rights
+    // Step 1: Create auth user
     console.log("Creating auth user...");
-    const { data: { user }, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
+    const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email,
-      password: crypto.randomUUID().slice(0, 16), // Generate a secure random password
-      email_confirm: true
+      password: Math.random().toString(36).slice(-12),
+      email_confirm: true,
     });
 
     if (createUserError || !user) {
@@ -43,13 +53,13 @@ serve(async (req) => {
 
     // Step 2: Create profile
     console.log("Creating profile...");
-    const { error: profileError } = await supabaseAdmin
+    const { error: profileError } = await supabase
       .from('profiles')
       .insert({
         id: user.id,
         email,
         display_name: displayName,
-        role: 'customer'
+        role: 'customer',
       });
 
     if (profileError) {
@@ -60,14 +70,14 @@ serve(async (req) => {
 
     // Step 3: Create customer record
     console.log("Creating customer record...");
-    const { error: customerError } = await supabaseAdmin
+    const { error: customerError } = await supabase
       .from('customers')
       .insert({
         id: user.id,
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
         onboarding_completed: false,
-        onboarding_step: 1
+        onboarding_step: 1,
       });
 
     if (customerError) {
