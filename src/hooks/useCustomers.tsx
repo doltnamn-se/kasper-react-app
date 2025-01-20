@@ -47,7 +47,51 @@ export const useCustomers = () => {
     try {
       console.log("Starting deletion process for customer:", customerId);
 
-      // First delete from profiles table
+      // First delete from notification_preferences
+      const { error: notifPrefError } = await supabase
+        .from('notification_preferences')
+        .delete()
+        .eq('user_id', customerId);
+
+      if (notifPrefError) {
+        console.error("Error deleting notification preferences:", notifPrefError);
+        throw notifPrefError;
+      }
+
+      // Then delete from notifications
+      const { error: notifError } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('user_id', customerId);
+
+      if (notifError) {
+        console.error("Error deleting notifications:", notifError);
+        throw notifError;
+      }
+
+      // Delete from hiding_preferences
+      const { error: hidingPrefError } = await supabase
+        .from('hiding_preferences')
+        .delete()
+        .eq('customer_id', customerId);
+
+      if (hidingPrefError) {
+        console.error("Error deleting hiding preferences:", hidingPrefError);
+        throw hidingPrefError;
+      }
+
+      // Delete from removal_urls
+      const { error: removalUrlsError } = await supabase
+        .from('removal_urls')
+        .delete()
+        .eq('customer_id', customerId);
+
+      if (removalUrlsError) {
+        console.error("Error deleting removal URLs:", removalUrlsError);
+        throw removalUrlsError;
+      }
+
+      // Delete from profiles
       const { error: profilesError } = await supabase
         .from('profiles')
         .delete()
@@ -58,7 +102,7 @@ export const useCustomers = () => {
         throw profilesError;
       }
 
-      // Then delete from customers table
+      // Delete from customers
       const { error: customersError } = await supabase
         .from('customers')
         .delete()
