@@ -9,7 +9,35 @@ export const useCustomers = () => {
   const { data: customers, refetch, isLoading, error } = useQuery({
     queryKey: ['customers'],
     queryFn: async () => {
-      console.log("Fetching customers...");
+      console.log("Starting customers fetch...");
+      
+      // First check if user is authenticated
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error("Session error:", sessionError);
+        throw sessionError;
+      }
+      
+      if (!session) {
+        console.error("No session found");
+        throw new Error("No session found");
+      }
+      
+      console.log("User authenticated, fetching user profile...");
+      
+      // Check user role
+      const { data: userProfile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+        
+      if (profileError) {
+        console.error("Error fetching user profile:", profileError);
+        throw profileError;
+      }
+      
+      console.log("User role:", userProfile?.role);
       
       // First fetch all customers
       const { data: customersData, error: customersError } = await supabase
@@ -21,6 +49,8 @@ export const useCustomers = () => {
         throw customersError;
       }
 
+      console.log("Fetched customers:", customersData);
+
       // Then fetch all profiles
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
@@ -31,8 +61,7 @@ export const useCustomers = () => {
         throw profilesError;
       }
 
-      console.log("Raw customers data:", customersData);
-      console.log("Raw profiles data:", profilesData);
+      console.log("Fetched profiles:", profilesData);
 
       // Map customers to their profiles
       const transformedData = customersData.map(customer => {
@@ -53,7 +82,7 @@ export const useCustomers = () => {
         };
       });
 
-      console.log("Transformed customers data:", transformedData);
+      console.log("Transformed data:", transformedData);
       return transformedData as CustomerWithProfile[];
     }
   });
