@@ -19,6 +19,16 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     });
   };
 
+  const generateSimplePassword = () => {
+    // Generate a simple 8-character password with letters and numbers
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed similar-looking characters
+    let password = '';
+    for (let i = 0; i < 8; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+  };
+
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
@@ -30,8 +40,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // Generate a random password
-      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      // Generate a simpler password
+      const generatedPassword = generateSimplePassword();
       console.log("Generated password for new user");
 
       // Step 1: Create customer
