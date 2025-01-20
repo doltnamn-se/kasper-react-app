@@ -1,4 +1,3 @@
 project_id = "upfapfohwnkiugvebujh"
 
-[functions.create-customer]
-verify_jwt = true
+[global.env]
