@@ -209,7 +209,10 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      is_super_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       hiding_site: "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo"

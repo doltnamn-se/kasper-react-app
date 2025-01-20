@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { House, BadgeCheck, QrCode, MapPinHouse, MousePointerClick } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
@@ -9,6 +11,22 @@ interface MainNavigationProps {
 export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const location = useLocation();
   const { t } = useLanguage();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.email === 'info@doltnamn.se') {
+        setIsAdmin(true);
+      }
+    };
+
+    checkAdminStatus();
+  }, []);
+
+  if (isAdmin) {
+    return null; // Don't show customer navigation for admin
+  }
 
   return (
     <>

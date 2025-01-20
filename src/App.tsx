@@ -29,16 +29,18 @@ function App() {
               <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
               <Route path="/auth/callback" element={<AuthRoute><Auth /></AuthRoute>} />
 
-              {/* Protected Routes */}
-              <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-              <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="super_admin"><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/admin/customers" element={<ProtectedRoute requiredRole="super_admin"><AdminCustomers /></ProtectedRoute>} />
-              <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
-              <Route path="/my-links" element={<ProtectedRoute><MyLinks /></ProtectedRoute>} />
-              <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
-              <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
+              {/* Admin Routes */}
+              <Route path="/admin/dashboard" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/customers" element={<ProtectedRoute adminOnly><AdminCustomers /></ProtectedRoute>} />
+
+              {/* Customer Routes */}
+              <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute customerOnly><Profile /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
+              <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
+              <Route path="/my-links" element={<ProtectedRoute customerOnly><MyLinks /></ProtectedRoute>} />
+              <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
+              <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
             </Routes>
             <Toaster />
           </Router>

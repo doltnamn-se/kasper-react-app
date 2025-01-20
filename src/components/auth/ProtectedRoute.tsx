@@ -5,12 +5,13 @@ import { LoadingSpinner } from "./LoadingSpinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: string;
+  adminOnly?: boolean;
+  customerOnly?: boolean;
 }
 
-export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedRouteProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -32,24 +33,9 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
 
         console.log("ProtectedRoute: Session found, checking user status");
         
-        // Check user role
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .single();
-
         if (mounted) {
-          setUserRole(profile?.role || null);
+          setUserEmail(session.user.email);
           setIsAuthenticated(true);
-
-          // Check if user has required role
-          if (requiredRole && profile?.role !== requiredRole) {
-            console.log("ProtectedRoute: User does not have required role");
-            setIsLoading(false);
-            return;
-          }
-
           setIsLoading(false);
         }
       } catch (error) {
@@ -69,7 +55,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
       if (!session && event === 'SIGNED_OUT') {
         if (mounted) {
           setIsAuthenticated(false);
-          setUserRole(null);
+          setUserEmail(null);
           setIsLoading(false);
         }
         return;
@@ -82,7 +68,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [requiredRole]);
+  }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -93,9 +79,16 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
     return <Navigate to="/auth" replace />;
   }
 
-  if (requiredRole && userRole !== requiredRole) {
-    console.log("ProtectedRoute: Insufficient role permissions");
+  const isAdmin = userEmail === 'info@doltnamn.se';
+
+  if (adminOnly && !isAdmin) {
+    console.log("ProtectedRoute: Non-admin trying to access admin route");
     return <Navigate to="/" replace />;
+  }
+
+  if (customerOnly && isAdmin) {
+    console.log("ProtectedRoute: Admin trying to access customer route");
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return <>{children}</>;
