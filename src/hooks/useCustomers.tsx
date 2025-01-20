@@ -16,7 +16,7 @@ export const useCustomers = () => {
           .from('customers')
           .select(`
             *,
-            profile:profiles(*)
+            profile:profiles!inner(*)
           `);
 
         if (customersError) {
@@ -29,8 +29,14 @@ export const useCustomers = () => {
           return [];
         }
 
-        console.log("Successfully fetched customers data:", customersData);
-        return customersData as CustomerWithProfile[];
+        // Transform the data to match CustomerWithProfile type
+        const transformedData = customersData.map(customer => ({
+          ...customer,
+          profile: customer.profile || null
+        })) as CustomerWithProfile[];
+
+        console.log("Successfully fetched customers data:", transformedData);
+        return transformedData;
       } catch (error: any) {
         console.error("Error in customers fetch:", error);
         throw new Error(error.message || "Failed to fetch customers data");
@@ -66,7 +72,7 @@ export const useCustomers = () => {
   };
 
   return {
-    customers,
+    customers: customers || [],
     isLoading,
     error,
     refetch,
