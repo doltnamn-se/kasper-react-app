@@ -39,51 +39,34 @@ export const useCustomers = () => {
       
       console.log("User role:", userProfile?.role);
       
-      // First fetch all customers
-      const { data: customersData, error: customersError } = await supabase
+      if (userProfile?.role !== 'super_admin') {
+        throw new Error("Unauthorized: Only super admins can access this resource");
+      }
+
+      // Fetch customers with their profiles in a single query
+      const { data: customersWithProfiles, error: fetchError } = await supabase
         .from('customers')
-        .select('*');
+        .select(`
+          *,
+          profile:profiles (
+            id,
+            email,
+            display_name,
+            role,
+            created_at,
+            updated_at,
+            first_name,
+            last_name
+          )
+        `);
 
-      if (customersError) {
-        console.error("Error fetching customers:", customersError);
-        throw customersError;
+      if (fetchError) {
+        console.error("Error fetching customers:", fetchError);
+        throw fetchError;
       }
 
-      console.log("Fetched customers:", customersData);
-
-      // Then fetch all profiles
-      const { data: profilesData, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*');
-
-      if (profilesError) {
-        console.error("Error fetching profiles:", profilesError);
-        throw profilesError;
-      }
-
-      console.log("Fetched profiles:", profilesData);
-
-      // Map customers to their profiles
-      const transformedData = customersData.map(customer => {
-        const matchingProfile = profilesData.find(profile => profile.id === customer.id);
-        
-        return {
-          ...customer,
-          profile: {
-            id: matchingProfile?.id || customer.id,
-            email: matchingProfile?.email || null,
-            display_name: matchingProfile?.display_name || null,
-            role: matchingProfile?.role || null,
-            created_at: matchingProfile?.created_at || customer.created_at || '',
-            updated_at: matchingProfile?.updated_at || customer.updated_at || '',
-            first_name: matchingProfile?.first_name || null,
-            last_name: matchingProfile?.last_name || null
-          }
-        };
-      });
-
-      console.log("Transformed data:", transformedData);
-      return transformedData as CustomerWithProfile[];
+      console.log("Fetched customers with profiles:", customersWithProfiles);
+      return customersWithProfiles as CustomerWithProfile[];
     }
   });
 
