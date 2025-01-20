@@ -11,7 +11,6 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Starting customers fetch...");
       
-      // First check if user is authenticated
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       if (sessionError) {
         console.error("Session error:", sessionError);
@@ -25,7 +24,6 @@ export const useCustomers = () => {
       
       console.log("User authenticated, fetching user profile...");
       
-      // Check user role
       const { data: userProfile, error: profileError } = await supabase
         .from('profiles')
         .select('role')
@@ -43,36 +41,35 @@ export const useCustomers = () => {
         throw new Error("Unauthorized: Only super admins can access this resource");
       }
 
-      // Fetch customers with their profiles in a single query
-      const { data, error: fetchError } = await supabase
+      // Fetch customers and their profiles separately
+      const { data: customersData, error: customersError } = await supabase
         .from('customers')
-        .select(`
-          *,
-          profile:profiles!customers_id_fkey (
-            id,
-            email,
-            display_name,
-            role,
-            created_at,
-            updated_at,
-            first_name,
-            last_name
-          )
-        `);
+        .select('*');
 
-      if (fetchError) {
-        console.error("Error fetching customers:", fetchError);
-        throw fetchError;
+      if (customersError) {
+        console.error("Error fetching customers:", customersError);
+        throw customersError;
       }
 
-      console.log("Fetched customers with profiles:", data);
-      
-      // Transform the data to match our expected type
-      const transformedData = data?.map(customer => ({
-        ...customer,
-        profile: customer.profile || null
-      })) || [];
+      // Fetch all profiles for these customers
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('id', customersData.map(customer => customer.id));
 
+      if (profilesError) {
+        console.error("Error fetching profiles:", profilesError);
+        throw profilesError;
+      }
+
+      // Combine the data
+      const transformedData = customersData.map(customer => ({
+        ...customer,
+        profile: profilesData.find(profile => profile.id === customer.id) || null
+      }));
+
+      console.log("Combined customer and profile data:", transformedData);
+      
       return transformedData as CustomerWithProfile[];
     }
   });

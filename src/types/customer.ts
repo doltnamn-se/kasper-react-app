@@ -14,5 +14,5 @@ export type Profile = {
 export type Customer = Database['public']['Tables']['customers']['Row'];
 
 export type CustomerWithProfile = Customer & {
-  profile?: Profile | null;
+  profile: Profile | null;
 };
