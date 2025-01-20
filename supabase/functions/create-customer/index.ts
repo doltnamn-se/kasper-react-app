@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://upfapfohwnkiugvebujh.supabase.co',
+  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Max-Age': '86400',
@@ -97,24 +97,6 @@ serve(async (req) => {
           status: 400 
         }
       );
-    }
-
-    // Step 3: Send welcome email
-    console.log("Sending welcome email...");
-    try {
-      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
-        body: {
-          email,
-          displayName,
-          password
-        }
-      });
-
-      if (emailError) {
-        console.error("Error sending welcome email:", emailError);
-      }
-    } catch (emailErr) {
-      console.error("Exception in email sending:", emailErr);
     }
 
     return new Response(

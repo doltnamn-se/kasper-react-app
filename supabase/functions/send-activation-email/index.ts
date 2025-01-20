@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://upfapfohwnkiugvebujh.supabase.co',
+  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Max-Age': '86400',
