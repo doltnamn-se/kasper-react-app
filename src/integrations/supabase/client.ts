@@ -11,7 +11,7 @@ export const supabase = createClient<Database>(
     auth: {
       persistSession: true,
       storageKey: 'supabase.auth.token',
-      storage: localStorage,
+      storage: window.localStorage,
       autoRefreshToken: true,
       detectSessionInUrl: true,
       flowType: 'pkce',
@@ -52,4 +52,21 @@ window.fetch = async (...args) => {
   }
 };
 
-console.log('Supabase client initialized with URL:', SUPABASE_URL);
+// Initialize Supabase client and verify connection
+(async () => {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error('Error initializing Supabase client:', error);
+    } else {
+      console.log('Supabase client initialized successfully with URL:', SUPABASE_URL);
+      if (data.session) {
+        console.log('Active session found');
+      } else {
+        console.log('No active session');
+      }
+    }
+  } catch (err) {
+    console.error('Failed to initialize Supabase client:', err);
+  }
+})();
