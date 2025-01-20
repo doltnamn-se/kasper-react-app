@@ -20,6 +20,10 @@ serve(async (req) => {
       throw new Error('Email is required');
     }
 
+    if (!RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY is not configured');
+    }
+
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -81,17 +85,6 @@ serve(async (req) => {
             margin: 20px 0;
             text-align: center;
           }
-          .copy-button {
-            display: inline-block;
-            background-color: #f0f0f0;
-            color: #333333 !important;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin: 10px 0;
-            cursor: pointer;
-            border: 1px solid #ddd;
-          }
           .footer {
             text-align: center;
             color: #666666;
@@ -110,10 +103,7 @@ serve(async (req) => {
             <p>Ditt konto har skapats. Här är dina inloggningsuppgifter:</p>
             <div class="credentials">
               <p><strong>E-post:</strong> ${email}</p>
-              <p><strong>Lösenord:</strong> 
-                <span id="password">${password}</span>
-                <button class="copy-button" onclick="copyPassword()">Kopiera lösenord</button>
-              </p>
+              <p><strong>Lösenord:</strong> ${password}</p>
             </div>
             <div style="text-align: center;">
               <a href="https://app.doltnamn.se/auth" class="button">Logga in på ditt konto</a>
@@ -124,13 +114,6 @@ serve(async (req) => {
             </div>
           </div>
         </div>
-        <script>
-          function copyPassword() {
-            const password = document.getElementById('password').textContent;
-            navigator.clipboard.writeText(password);
-            alert('Lösenord kopierat!');
-          }
-        </script>
       </body>
       </html>
     `;

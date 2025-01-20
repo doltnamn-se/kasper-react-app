@@ -17,7 +17,7 @@ serve(async (req) => {
   }
 
   try {
-    console.log("Received request method:", req.method);
+    console.log("Processing customer creation request");
     const requestData = await req.json();
     console.log("Received request data:", requestData);
 
@@ -96,6 +96,27 @@ serve(async (req) => {
           status: 400 
         }
       );
+    }
+
+    // Step 3: Send welcome email
+    console.log("Sending welcome email...");
+    try {
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email,
+          displayName,
+          password
+        }
+      });
+
+      if (emailError) {
+        console.error("Error sending welcome email:", emailError);
+        // Don't return error response here, just log it
+        // We still want to return success since user was created
+      }
+    } catch (emailErr) {
+      console.error("Exception in email sending:", emailErr);
+      // Don't return error response here, just log it
     }
 
     return new Response(
