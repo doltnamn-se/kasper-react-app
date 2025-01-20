@@ -53,11 +53,11 @@ serve(async (req) => {
             <title>Välkommen till Doltnamn</title>
             <style>
               body {
-                font-family: Arial, Helvetica, sans-serif;
+                font-family: Helvetica, Arial, sans-serif;
                 line-height: 1.6;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
+                background-color: #f4f4f4 !important;
                 color: #333333;
               }
               .container {
@@ -65,20 +65,20 @@ serve(async (req) => {
                 margin: 0 auto;
                 padding: 20px;
               }
+              .logo-container {
+                text-align: center;
+                margin-bottom: 20px;
+              }
+              .logo-container img {
+                max-width: 120px;
+                height: auto;
+              }
               .email-wrapper {
                 background-color: #ffffff;
                 border-radius: 8px;
                 padding: 40px;
-                margin: 20px 0;
+                margin: 0;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-              }
-              .logo {
-                text-align: center;
-                margin-bottom: 30px;
-              }
-              .logo img {
-                max-width: 200px;
-                height: auto;
               }
               h1 {
                 color: #161618;
@@ -135,10 +135,10 @@ serve(async (req) => {
           </head>
           <body>
             <div class="container">
+              <div class="logo-container">
+                <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
+              </div>
               <div class="email-wrapper">
-                <div class="logo">
-                  <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-                </div>
                 <h1>Välkommen till Doltnamn, ${displayName}!</h1>
                 <p>Ditt konto har skapats. Här är dina inloggningsuppgifter:</p>
                 <div class="credentials">
