@@ -1,5 +1,4 @@
 import { MainLayout } from "@/components/layout/MainLayout";
-import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 
