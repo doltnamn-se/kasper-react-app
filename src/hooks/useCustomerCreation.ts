@@ -20,10 +20,10 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   };
 
   const generateSimplePassword = () => {
-    // Generate a simple 8-character password with letters and numbers
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed similar-looking characters
+    // Generate a simple 6-character password with only uppercase letters and numbers
+    const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing characters like 0,O,1,I
     let password = '';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 6; i++) {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return password;
