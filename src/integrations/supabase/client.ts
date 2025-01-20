@@ -62,6 +62,17 @@ window.fetch = async (...args) => {
       console.log('Supabase client initialized successfully with URL:', SUPABASE_URL);
       if (data.session) {
         console.log('Active session found');
+        // Test the profiles table access
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .limit(1);
+        
+        if (profileError) {
+          console.error('Error testing profiles access:', profileError);
+        } else {
+          console.log('Successfully tested profiles access');
+        }
       } else {
         console.log('No active session');
       }
