@@ -1,11 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
+// Update CORS headers to explicitly allow the app domain
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-}
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Max-Age': '86400',
+};
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -111,12 +113,9 @@ serve(async (req) => {
 
       if (emailError) {
         console.error("Error sending welcome email:", emailError);
-        // Don't return error response here, just log it
-        // We still want to return success since user was created
       }
     } catch (emailErr) {
       console.error("Exception in email sending:", emailErr);
-      // Don't return error response here, just log it
     }
 
     return new Response(
