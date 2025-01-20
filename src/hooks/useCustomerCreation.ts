@@ -14,39 +14,57 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
-      console.log('Starting customer creation process...');
+      console.log('Starting customer creation process - Step 1: Create Auth User');
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        console.error("No authenticated user found");
-        throw new Error("No authenticated user found");
-      }
-
-      // Generate a random password
+      // Step 1: Create the auth user
       const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
-      console.log("Generated password for new user");
-
-      // Step 1: Create customer using edge function
-      console.log("Step 1: Creating customer via edge function...");
-      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
-        body: {
-          email: formData.email,
-          displayName: formData.displayName,
-          subscriptionPlan: formData.subscriptionPlan,
-          createdBy: user.id,
-          password: generatedPassword
-        }
+      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+        email: formData.email,
+        password: generatedPassword,
+        email_confirm: true
       });
 
-      if (createError) {
-        console.error("Error in customer creation:", createError);
-        throw createError;
+      if (authError || !authData.user) {
+        console.error("Step 1 Error - Auth user creation failed:", authError);
+        throw authError || new Error("Failed to create user");
       }
 
-      console.log("Customer created successfully:", createData);
+      const userId = authData.user.id;
+      console.log("Step 1 Complete - Auth user created:", userId);
 
-      // Step 2: Send welcome email with credentials
-      console.log("Step 2: Sending welcome email...");
+      // Step 2: Update profile
+      console.log('Step 2: Updating profile');
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ 
+          display_name: formData.displayName,
+          email: formData.email 
+        })
+        .eq('id', userId);
+
+      if (profileError) {
+        console.error("Step 2 Error - Profile update failed:", profileError);
+        throw profileError;
+      }
+
+      console.log("Step 2 Complete - Profile updated");
+
+      // Step 3: Update customer subscription
+      console.log('Step 3: Updating customer subscription');
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({ subscription_plan: formData.subscriptionPlan })
+        .eq('id', userId);
+
+      if (customerError) {
+        console.error("Step 3 Error - Customer update failed:", customerError);
+        throw customerError;
+      }
+
+      console.log("Step 3 Complete - Customer subscription updated");
+
+      // Step 4: Send welcome email
+      console.log('Step 4: Sending welcome email');
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
           email: formData.email,
@@ -56,7 +74,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       });
 
       if (emailError) {
-        console.error("Error sending welcome email:", emailError);
+        console.error("Step 4 Warning - Email sending failed:", emailError);
         toast({
           title: "Partial Success",
           description: "Customer created but welcome email could not be sent. Please try resending the email later.",
@@ -65,10 +83,11 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       } else {
         toast({
           title: "Success",
-          description: "Customer created successfully and welcome email sent with login credentials.",
+          description: "Customer created successfully and welcome email sent.",
         });
       }
 
+      // Reset form and notify parent
       setFormData({
         email: "",
         displayName: "",
