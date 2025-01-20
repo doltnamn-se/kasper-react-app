@@ -29,7 +29,6 @@ export const useCustomers = () => {
 
       console.log("Raw customers data:", customersData);
 
-      // Transform the data to ensure each customer has a profile, even if empty
       const transformedData = customersData?.map(customer => ({
         ...customer,
         profile: customer.profile || {
@@ -46,20 +45,38 @@ export const useCustomers = () => {
 
   const handleDeleteCustomer = async (customerId: string) => {
     try {
-      console.log("Deleting customer:", customerId);
-      const { error: deleteError } = await supabase
+      console.log("Starting deletion process for customer:", customerId);
+
+      // First delete from profiles table
+      const { error: profilesError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', customerId);
+
+      if (profilesError) {
+        console.error("Error deleting profile:", profilesError);
+        throw profilesError;
+      }
+
+      // Then delete from customers table
+      const { error: customersError } = await supabase
         .from('customers')
         .delete()
         .eq('id', customerId);
 
-      if (deleteError) {
-        console.error("Error deleting customer:", deleteError);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to delete customer. Please try again.",
-        });
-        return;
+      if (customersError) {
+        console.error("Error deleting customer:", customersError);
+        throw customersError;
+      }
+
+      // Finally delete the auth user using admin API
+      const { error: authError } = await supabase.auth.admin.deleteUser(
+        customerId
+      );
+
+      if (authError) {
+        console.error("Error deleting auth user:", authError);
+        throw authError;
       }
 
       console.log("Customer deleted successfully");
@@ -67,13 +84,14 @@ export const useCustomers = () => {
         title: "Success",
         description: "Customer deleted successfully",
       });
+      
       refetch();
     } catch (err) {
       console.error("Unexpected error deleting customer:", err);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        description: "Failed to delete customer. Please try again.",
       });
     }
   };

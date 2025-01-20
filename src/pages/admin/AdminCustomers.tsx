@@ -7,7 +7,7 @@ import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
-  const { customers, isLoading, error, refetch } = useCustomers();
+  const { customers, isLoading, error, refetch, handleDeleteCustomer } = useCustomers();
 
   if (error) {
     console.error('Error in AdminCustomers:', error);
@@ -32,7 +32,7 @@ const AdminCustomers = () => {
         <CustomersTable 
           customers={customers || []} 
           onCustomerUpdated={refetch}
-          onDeleteCustomer={() => {}}
+          onDeleteCustomer={handleDeleteCustomer}
         />
       )}
     </MainLayout>
