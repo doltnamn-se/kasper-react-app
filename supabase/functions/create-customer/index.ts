@@ -10,15 +10,21 @@ const corsHeaders = {
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
   }
 
   try {
-    const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
-    console.log("Received request data:", { email, displayName, subscriptionPlan, createdBy });
+    console.log("Received request method:", req.method);
+    const requestData = await req.json();
+    console.log("Received request data:", requestData);
+
+    const { email, displayName, subscriptionPlan, createdBy, password } = requestData;
 
     if (!email || !displayName || !subscriptionPlan || !createdBy || !password) {
-      console.error("Missing required fields");
+      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy });
       return new Response(
         JSON.stringify({
           error: "Missing required fields",
