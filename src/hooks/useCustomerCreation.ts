@@ -42,7 +42,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       // Generate a simpler password
       const generatedPassword = generateSimplePassword();
-      console.log("Generated password for new user");
+      console.log("Generated simple password for new user");
 
       // Step 1: Create customer
       console.log("Creating auth user...");

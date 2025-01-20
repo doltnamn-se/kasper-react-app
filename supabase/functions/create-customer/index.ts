@@ -46,11 +46,11 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Step 1: Create auth user
+    // Step 1: Create auth user with the simple password from the request
     console.log("Creating auth user...");
     const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email,
-      password,
+      password, // Use the simple password generated in the frontend
       email_confirm: true,
       user_metadata: {
         display_name: displayName
