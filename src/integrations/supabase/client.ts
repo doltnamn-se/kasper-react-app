@@ -11,7 +11,7 @@ export const supabase = createClient<Database>(
     auth: {
       persistSession: true,
       storageKey: 'supabase.auth.token',
-      storage: localStorage,
+      storage: window.localStorage,
       autoRefreshToken: true,
       detectSessionInUrl: true,
       flowType: 'pkce',
@@ -35,7 +35,8 @@ window.fetch = async (...args) => {
   try {
     console.log('Fetch request:', {
       url: args[0],
-      options: args[1]
+      options: args[1],
+      headers: args[1]?.headers
     });
     const response = await originalFetch(...args);
     if (!response.ok) {
@@ -44,6 +45,14 @@ window.fetch = async (...args) => {
         statusText: response.statusText,
         url: response.url,
       });
+      // Clone the response to read it multiple times
+      const clonedResponse = response.clone();
+      try {
+        const responseBody = await clonedResponse.text();
+        console.error('Response body:', responseBody);
+      } catch (e) {
+        console.error('Could not read response body:', e);
+      }
     }
     return response;
   } catch (error) {
@@ -55,7 +64,9 @@ window.fetch = async (...args) => {
 // Initialize Supabase client and verify connection
 (async () => {
   try {
+    console.log('Initializing Supabase client...');
     const { data, error } = await supabase.auth.getSession();
+    
     if (error) {
       console.error('Error initializing Supabase client:', error);
     } else {
