@@ -2,10 +2,10 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Max-Age': '86400',
+  'Access-Control-Allow-Credentials': 'true',
 }
 
 serve(async (req) => {
@@ -25,7 +25,7 @@ serve(async (req) => {
     const { email, displayName, subscriptionPlan, createdBy } = await req.json();
     console.log("Received data:", { email, displayName, subscriptionPlan, createdBy });
 
-    // Initialize Supabase admin client with specific configuration
+    // Initialize Supabase admin client
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
@@ -38,28 +38,38 @@ serve(async (req) => {
       }
     );
 
-    // Generate a secure random password
-    const password = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
-
-    // Step 1: Create auth user with specific options
+    // Step 1: Create auth user
     console.log("Creating auth user...");
     const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email: email,
-      password: password,
+      password: crypto.randomUUID(),
       email_confirm: true,
-      user_metadata: {
-        display_name: displayName
-      }
     });
 
     if (createUserError) {
       console.error("Error creating auth user:", createUserError);
-      throw createUserError;
+      return new Response(
+        JSON.stringify({
+          error: createUserError.message
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400
+        }
+      );
     }
 
     if (!user) {
       console.error("No user returned after creation");
-      throw new Error("Failed to create user");
+      return new Response(
+        JSON.stringify({
+          error: "Failed to create user"
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400
+        }
+      );
     }
 
     console.log("Auth user created successfully:", user.id);
@@ -77,7 +87,15 @@ serve(async (req) => {
 
     if (profileError) {
       console.error("Error creating profile:", profileError);
-      throw profileError;
+      return new Response(
+        JSON.stringify({
+          error: profileError.message
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400
+        }
+      );
     }
 
     console.log("Profile created successfully");
@@ -96,7 +114,15 @@ serve(async (req) => {
 
     if (customerError) {
       console.error("Error creating customer:", customerError);
-      throw customerError;
+      return new Response(
+        JSON.stringify({
+          error: customerError.message
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400
+        }
+      );
     }
 
     console.log("Customer record created successfully");
