@@ -44,11 +44,11 @@ export const useCustomers = () => {
       }
 
       // Fetch customers with their profiles in a single query
-      const { data: customersWithProfiles, error: fetchError } = await supabase
+      const { data, error: fetchError } = await supabase
         .from('customers')
         .select(`
           *,
-          profile:profiles (
+          profile:profiles!customers_id_fkey (
             id,
             email,
             display_name,
@@ -65,8 +65,15 @@ export const useCustomers = () => {
         throw fetchError;
       }
 
-      console.log("Fetched customers with profiles:", customersWithProfiles);
-      return customersWithProfiles as CustomerWithProfile[];
+      console.log("Fetched customers with profiles:", data);
+      
+      // Transform the data to match our expected type
+      const transformedData = data?.map(customer => ({
+        ...customer,
+        profile: customer.profile || null
+      })) || [];
+
+      return transformedData as CustomerWithProfile[];
     }
   });
 
