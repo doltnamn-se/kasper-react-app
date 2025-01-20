@@ -11,11 +11,12 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       
+      // Using explicit join instead of foreign key reference
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
           *,
-          profile:profiles (
+          profile:profiles!inner(
             email,
             display_name,
             role
