@@ -27,6 +27,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       const { error: profileError } = await supabase
         .from('profiles')
         .insert({
+          id: user.id,
           email: formData.email,
           display_name: formData.displayName,
           role: 'customer'
@@ -42,6 +43,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       const { error: customerError } = await supabase
         .from('customers')
         .insert({
+          id: user.id,
           subscription_plan: formData.subscriptionPlan,
           created_by: user.id,
           onboarding_completed: true,
