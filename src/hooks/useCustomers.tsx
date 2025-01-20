@@ -11,17 +11,18 @@ export const useCustomers = () => {
     queryFn: async () => {
       console.log("Fetching customers...");
       
-      // Using explicit join instead of foreign key reference
+      // Using a cross join with a filter instead of relying on foreign key relationship
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select(`
           *,
-          profile:profiles!inner(
+          profiles!inner (
             email,
             display_name,
             role
           )
-        `);
+        `)
+        .eq('id', supabase.raw('profiles.id')); // This ensures we match customers with their profiles
 
       if (customersError) {
         console.error("Error fetching customers:", customersError);
@@ -32,7 +33,7 @@ export const useCustomers = () => {
 
       const transformedData = customersData?.map(customer => ({
         ...customer,
-        profile: customer.profile || {
+        profile: customer.profiles || {
           email: null,
           display_name: null,
           role: null
