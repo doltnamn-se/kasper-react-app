@@ -31,17 +31,18 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       }
 
       // Generate a random password
-      const generatedPassword = Math.random().toString(36).slice(-8);
-      console.log("Generated password for new user:", generatedPassword);
+      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      console.log("Generated password for new user");
 
-      // Step 1: Create auth user with admin privileges
+      // Step 1: Create customer
       console.log("Creating auth user...");
-      const { data: createData, error: createError } = await supabase.auth.admin.createUser({
-        email: formData.email,
-        password: generatedPassword,
-        email_confirm: true,
-        user_metadata: {
-          display_name: formData.displayName
+      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
+        body: {
+          email: formData.email,
+          displayName: formData.displayName,
+          subscriptionPlan: formData.subscriptionPlan,
+          createdBy: user.id,
+          password: generatedPassword
         }
       });
 
@@ -50,31 +51,9 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw createError;
       }
 
-      if (!createData.user) {
-        console.error("No user data returned");
-        throw new Error("Failed to create user");
-      }
+      console.log("Customer created successfully:", createData);
 
-      console.log("Auth user created successfully:", createData.user);
-
-      // Step 2: Update customer subscription plan
-      console.log("Updating customer subscription plan...");
-      const { error: updateError } = await supabase
-        .from('customers')
-        .update({ subscription_plan: formData.subscriptionPlan })
-        .eq('id', createData.user.id);
-
-      if (updateError) {
-        console.error("Error updating subscription plan:", updateError);
-        // Don't throw here, as the user is already created
-        toast({
-          title: "Partial Success",
-          description: "Customer created but subscription plan could not be updated.",
-          variant: "default",
-        });
-      }
-
-      // Step 3: Send welcome email with credentials
+      // Step 2: Send welcome email with credentials
       console.log("Sending welcome email...");
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
@@ -88,16 +67,15 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         console.error("Error sending welcome email:", emailError);
         toast({
           title: "Partial Success",
-          description: "Customer created but welcome email could not be sent.",
+          description: "Customer created but welcome email could not be sent. Please try resending the email later.",
           variant: "default",
         });
+      } else {
+        toast({
+          title: "Success",
+          description: "Customer created successfully and welcome email sent with login credentials.",
+        });
       }
-
-      console.log("Customer creation process completed successfully");
-      toast({
-        title: "Success",
-        description: "Customer created successfully. They will receive login credentials via email.",
-      });
 
       resetForm();
       onCustomerCreated();
