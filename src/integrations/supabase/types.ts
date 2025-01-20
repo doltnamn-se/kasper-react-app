@@ -76,15 +76,7 @@ export type Database = {
           site_name?: string
           site_type?: Database["public"]["Enums"]["hiding_site"] | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "hiding_preferences_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "customers"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       notification_preferences: {
         Row: {
@@ -198,15 +190,7 @@ export type Database = {
           updated_at?: string
           url?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "removal_urls_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "customers"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
