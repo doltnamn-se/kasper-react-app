@@ -53,12 +53,12 @@ serve(async (req) => {
             <title>Välkommen till Doltnamn</title>
             <style>
               body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                font-family: Arial, Helvetica, sans-serif;
                 line-height: 1.6;
                 margin: 0;
                 padding: 0;
-                background-color: #f6f6f4;
-                color: #1a1a1a;
+                background-color: #f4f4f4;
+                color: #333333;
               }
               .container {
                 max-width: 600px;
@@ -70,6 +70,7 @@ serve(async (req) => {
                 border-radius: 8px;
                 padding: 40px;
                 margin: 20px 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
               }
               .logo {
                 text-align: center;
@@ -80,7 +81,7 @@ serve(async (req) => {
                 height: auto;
               }
               h1 {
-                color: #1a1a1a;
+                color: #161618;
                 font-size: 24px;
                 margin-bottom: 20px;
                 text-align: center;
@@ -94,21 +95,41 @@ serve(async (req) => {
                 padding: 20px;
                 border-radius: 4px;
                 margin: 20px 0;
+                border-left: 4px solid #000000;
               }
               .button {
                 display: inline-block;
                 background-color: #000000;
-                color: #ffffff;
+                color: #ffffff !important;
                 padding: 12px 24px;
                 text-decoration: none;
                 border-radius: 4px;
                 margin: 20px 0;
+                font-weight: bold;
+              }
+              .button:hover {
+                background-color: #333333;
               }
               .footer {
                 text-align: center;
                 color: #666666;
                 font-size: 12px;
                 margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #eeeeee;
+              }
+              .security-notice {
+                font-size: 14px;
+                color: #666666;
+                padding: 15px;
+                border-radius: 4px;
+                background-color: #fff9e6;
+                border: 1px solid #ffe5b4;
+                margin: 20px 0;
+              }
+              .security-notice:before {
+                content: "⚠️";
+                margin-right: 8px;
               }
             </style>
           </head>
@@ -127,7 +148,9 @@ serve(async (req) => {
                 <div style="text-align: center;">
                   <a href="https://app.doltnamn.se/auth" class="button">Logga in på ditt konto</a>
                 </div>
-                <p>Av säkerhetsskäl rekommenderar vi att du ändrar ditt lösenord efter din första inloggning.</p>
+                <div class="security-notice">
+                  Av säkerhetsskäl rekommenderar vi att du ändrar ditt lösenord efter din första inloggning.
+                </div>
                 <div class="footer">
                   <p>&copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.</p>
                 </div>
