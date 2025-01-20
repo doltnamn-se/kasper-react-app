@@ -19,7 +19,6 @@ export const supabase = createClient<Database>(
     global: {
       headers: {
         'X-Client-Info': 'supabase-js-client',
-        'Access-Control-Allow-Origin': '*',
       },
     },
     realtime: {
