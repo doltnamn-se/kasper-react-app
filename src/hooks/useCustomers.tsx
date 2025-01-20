@@ -12,21 +12,25 @@ export const useCustomers = () => {
       try {
         console.log("Fetching customers and profiles...");
         
-        const { data: customersWithProfiles, error } = await supabase
+        const { data: customersData, error: customersError } = await supabase
           .from('customers')
           .select(`
             *,
             profile:profiles(*)
-          `)
-          .order('created_at', { ascending: false });
+          `);
 
-        if (error) {
-          console.error("Error fetching customers:", error);
-          throw error;
+        if (customersError) {
+          console.error("Error fetching customers:", customersError);
+          throw customersError;
         }
 
-        console.log("Successfully fetched customers data:", customersWithProfiles);
-        return customersWithProfiles as CustomerWithProfile[];
+        if (!customersData) {
+          console.log("No customers data found");
+          return [];
+        }
+
+        console.log("Successfully fetched customers data:", customersData);
+        return customersData as CustomerWithProfile[];
       } catch (error: any) {
         console.error("Error in customers fetch:", error);
         throw new Error(error.message || "Failed to fetch customers data");
