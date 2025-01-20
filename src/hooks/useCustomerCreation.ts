@@ -22,44 +22,52 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // First create the profile
-      console.log("Creating profile...");
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          id: user.id,
+      // Generate a random password
+      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      console.log("Generated password for new user");
+
+      // Step 1: Create customer using edge function
+      console.log("Step 1: Creating customer via edge function...");
+      const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
+        body: {
           email: formData.email,
-          display_name: formData.displayName,
-          role: 'customer'
-        });
-
-      if (profileError) {
-        console.error("Error creating profile:", profileError);
-        throw new Error("Failed to create profile");
-      }
-
-      // Then create the customer record
-      console.log("Creating customer record...");
-      const { error: customerError } = await supabase
-        .from('customers')
-        .insert({
-          id: user.id,
-          subscription_plan: formData.subscriptionPlan,
-          created_by: user.id,
-          onboarding_completed: true,
-          onboarding_step: 5
-        });
-
-      if (customerError) {
-        console.error("Error creating customer:", customerError);
-        throw new Error("Failed to create customer");
-      }
-
-      console.log("Customer created successfully");
-      toast({
-        title: "Success",
-        description: "Customer created successfully.",
+          displayName: formData.displayName,
+          subscriptionPlan: formData.subscriptionPlan,
+          createdBy: user.id,
+          password: generatedPassword
+        }
       });
+
+      if (createError) {
+        console.error("Error in customer creation:", createError);
+        throw createError;
+      }
+
+      console.log("Customer created successfully:", createData);
+
+      // Step 2: Send welcome email with credentials
+      console.log("Step 2: Sending welcome email...");
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email: formData.email,
+          displayName: formData.displayName,
+          password: generatedPassword
+        }
+      });
+
+      if (emailError) {
+        console.error("Error sending welcome email:", emailError);
+        toast({
+          title: "Partial Success",
+          description: "Customer created but welcome email could not be sent. Please try resending the email later.",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Customer created successfully and welcome email sent with login credentials.",
+        });
+      }
 
       setFormData({
         email: "",
