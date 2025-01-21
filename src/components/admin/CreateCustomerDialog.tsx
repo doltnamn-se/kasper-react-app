@@ -12,9 +12,7 @@ interface CreateCustomerDialogProps {
 
 export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialogProps) => {
   const [open, setOpen] = useState(false);
-  const { refetchProfile } = useUserProfile();
   const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(async () => {
-    await refetchProfile();
     onCustomerCreated();
     setOpen(false);
   });

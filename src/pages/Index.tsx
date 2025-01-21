@@ -1,16 +1,8 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { useEffect } from "react";
 
 const Index = () => {
   const { t } = useLanguage();
-  const { refetchProfile } = useUserProfile();
-
-  useEffect(() => {
-    // Refetch profile data when the page loads
-    refetchProfile();
-  }, [refetchProfile]);
 
   return (
     <MainLayout>
