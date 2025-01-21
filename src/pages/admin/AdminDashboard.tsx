@@ -6,7 +6,8 @@ const AdminDashboard = () => {
   const { t } = useLanguage();
 
   const handleCustomerCreated = () => {
-    // Refresh data if needed
+    // Simple callback for when a customer is created
+    console.log('Customer created successfully');
   };
 
   return (
@@ -18,7 +19,9 @@ const AdminDashboard = () => {
         <CreateCustomerDialog onCustomerCreated={handleCustomerCreated} />
       </div>
       <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-        {/* Content will be added later */}
+        <p className="text-gray-600 dark:text-gray-300">
+          Välkommen till din översikt.
+        </p>
       </div>
     </MainLayout>
   );
