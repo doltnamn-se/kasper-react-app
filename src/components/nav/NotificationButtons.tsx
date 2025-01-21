@@ -106,10 +106,12 @@ export const NotificationButtons = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="relative text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 pr-1">
-            <Bell className="w-4 h-4" />
-            {totalUnreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#c8ed52]" />
-            )}
+            <div className="relative">
+              <Bell className="w-4 h-4" />
+              {totalUnreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-[#c8ed52]" />
+              )}
+            </div>
           </Button>
         </DropdownMenuTrigger>
         
