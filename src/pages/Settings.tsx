@@ -60,74 +60,76 @@ const Settings = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {t('profile.settings')}
-      </h1>
-      <div className="w-full bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-        <h2 className="text-xl font-semibold mb-6 dark:text-white">
-          {t('settings.change.password')}
-        </h2>
+      <div className="max-w-md mx-auto">
+        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+          {t('profile.settings')}
+        </h1>
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <h2 className="text-xl font-semibold mb-6 dark:text-white">
+            {t('settings.change.password')}
+          </h2>
 
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <form onSubmit={handlePasswordChange} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="currentPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {t('settings.current.password')}
-            </label>
-            <Input
-              id="currentPassword"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full h-12"
+          <form onSubmit={handlePasswordChange} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="currentPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {t('settings.current.password')}
+              </label>
+              <Input
+                id="currentPassword"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full h-12"
+                disabled={isLoading}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {t('settings.new.password')}
+              </label>
+              <Input
+                id="newPassword"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full h-12"
+                disabled={isLoading}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {t('settings.confirm.password')}
+              </label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full h-12"
+                disabled={isLoading}
+                required
+              />
+            </div>
+
+            <Button 
+              type="submit" 
+              className="w-full h-12 bg-black hover:bg-black/90 text-white"
               disabled={isLoading}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {t('settings.new.password')}
-            </label>
-            <Input
-              id="newPassword"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full h-12"
-              disabled={isLoading}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {t('settings.confirm.password')}
-            </label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full h-12"
-              disabled={isLoading}
-              required
-            />
-          </div>
-
-          <Button 
-            type="submit" 
-            className="w-full h-12 bg-black hover:bg-black/90 text-white"
-            disabled={isLoading}
-          >
-            {isLoading ? t('settings.updating.password') : t('settings.update.password')}
-          </Button>
-        </form>
+            >
+              {isLoading ? t('settings.updating.password') : t('settings.update.password')}
+            </Button>
+          </form>
+        </div>
       </div>
     </MainLayout>
   );
