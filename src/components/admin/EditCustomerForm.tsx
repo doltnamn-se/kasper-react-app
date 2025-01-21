@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { CustomerWithProfile } from "@/types/customer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CustomerWithProfile } from "@/types/customer";
 
 interface EditCustomerFormProps {
   customer: CustomerWithProfile;
@@ -10,12 +10,19 @@ interface EditCustomerFormProps {
   isUpdating: boolean;
 }
 
-export const EditCustomerForm = ({ 
-  customer, 
+export const EditCustomerForm = ({
+  customer,
   onSubmit,
-  isUpdating 
+  isUpdating
 }: EditCustomerFormProps) => {
   const [displayName, setDisplayName] = useState(customer.profile?.display_name || "");
+
+  const handleSubmit = () => {
+    if (!displayName.trim()) {
+      return; // Don't submit if display name is empty
+    }
+    onSubmit(displayName.trim());
+  };
 
   return (
     <div className="space-y-4 py-4">
@@ -23,15 +30,15 @@ export const EditCustomerForm = ({
         <Label htmlFor="displayName">Display Name</Label>
         <Input
           id="displayName"
-          placeholder="John Doe"
+          placeholder="Enter display name"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
       </div>
       <Button 
         className="w-full" 
-        onClick={() => onSubmit(displayName)}
-        disabled={isUpdating}
+        onClick={handleSubmit}
+        disabled={isUpdating || !displayName.trim()}
       >
         {isUpdating ? "Updating..." : "Update Customer"}
       </Button>
