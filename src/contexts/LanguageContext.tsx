@@ -61,7 +61,7 @@ const translations = {
     'error.invalid.email.password': 'Invalid email or password',
     'error.missing.email.phone': 'Missing email or phone',
     'error.missing.password': 'Missing password',
-    'error.password.too.short': 'Password is too short',
+    'error.password.too.short': 'Password must be at least 6 characters',
     'error.email.taken': 'Email is already taken',
     'error.phone.taken': 'Phone number is already taken',
     'error.weak.password': 'Password is too weak',
@@ -80,6 +80,7 @@ const translations = {
     'table.created': 'Created',
     'table.subscription': 'Subscription',
     'table.actions': 'Actions',
+    // Settings related
     'settings.change.password': 'Change password',
     'settings.current.password': 'Current password',
     'settings.new.password': 'New password',
@@ -88,7 +89,6 @@ const translations = {
     'settings.updating.password': 'Updating password...',
     'settings.password.updated': 'Password updated successfully',
     'error.passwords.dont.match': 'Passwords do not match',
-    'error.password.too.short': 'Password must be at least 6 characters',
   },
   sv: {
     // Auth related
@@ -142,7 +142,7 @@ const translations = {
     'error.invalid.email.password': 'Ogiltig e-postadress eller lösenord',
     'error.missing.email.phone': 'E-postadress eller telefonnummer saknas',
     'error.missing.password': 'Lösenord saknas',
-    'error.password.too.short': 'Lösenordet är för kort',
+    'error.password.too.short': 'Lösenordet måste vara minst 6 tecken',
     'error.email.taken': 'E-postadressen används redan',
     'error.phone.taken': 'Telefonnumret används redan',
     'error.weak.password': 'Lösenordet är för svagt',
@@ -161,6 +161,7 @@ const translations = {
     'table.created': 'Skapad',
     'table.subscription': 'Prenumeration',
     'table.actions': 'Åtgärder',
+    // Settings related
     'settings.change.password': 'Byt lösenord',
     'settings.current.password': 'Nuvarande lösenord',
     'settings.new.password': 'Nytt lösenord',
@@ -169,7 +170,6 @@ const translations = {
     'settings.updating.password': 'Uppdaterar lösenord...',
     'settings.password.updated': 'Lösenordet har uppdaterats',
     'error.passwords.dont.match': 'Lösenorden matchar inte',
-    'error.password.too.short': 'Lösenordet måste vara minst 6 tecken',
   }
 };
 
