@@ -1,5 +1,6 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 
 const Checklist = () => {
   const { t } = useLanguage();
@@ -10,8 +11,7 @@ const Checklist = () => {
         {t('nav.checklist')}
       </h1>
       <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-        <h2 className="text-lg font-semibold mb-4">Checklist Content</h2>
-        {/* Add your checklist content here */}
+        <ChecklistContainer />
       </div>
     </MainLayout>
   );

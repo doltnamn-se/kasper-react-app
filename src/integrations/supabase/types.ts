@@ -9,6 +9,80 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      checklist_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          order_index: number
+          requires_subscription_plan: string[] | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index: number
+          requires_subscription_plan?: string[] | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          requires_subscription_plan?: string[] | null
+          title?: string
+        }
+        Relationships: []
+      }
+      customer_checklist_progress: {
+        Row: {
+          address: string | null
+          completed_at: string | null
+          created_at: string
+          customer_id: string
+          is_address_hidden: boolean | null
+          password_updated: boolean | null
+          personal_number: string | null
+          removal_urls: string[] | null
+          selected_sites: Database["public"]["Enums"]["hiding_site"][] | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          completed_at?: string | null
+          created_at?: string
+          customer_id: string
+          is_address_hidden?: boolean | null
+          password_updated?: boolean | null
+          personal_number?: string | null
+          removal_urls?: string[] | null
+          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          completed_at?: string | null
+          created_at?: string
+          customer_id?: string
+          is_address_hidden?: boolean | null
+          password_updated?: boolean | null
+          personal_number?: string | null
+          removal_urls?: string[] | null
+          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_checklist_progress_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: true
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           checklist_completed: boolean | null
