@@ -15,25 +15,44 @@ const AdminCustomers = () => {
     queryKey: ['customers'],
     queryFn: async () => {
       console.log('Fetching customers...');
-      const { data: customers, error } = await supabase
+      
+      // First fetch customers
+      const { data: customersData, error: customersError } = await supabase
         .from('customers')
-        .select(`
-          *,
-          profile:profiles(*)
-        `);
+        .select('*');
 
-      if (error) {
-        console.error('Error fetching customers:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to fetch customers",
-        });
-        throw error;
+      if (customersError) {
+        console.error('Error fetching customers:', customersError);
+        throw customersError;
       }
 
-      console.log('Customers fetched successfully:', customers);
-      return customers as CustomerWithProfile[];
+      // Then fetch profiles for these customers
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('id', customersData.map(customer => customer.id));
+
+      if (profilesError) {
+        console.error('Error fetching profiles:', profilesError);
+        throw profilesError;
+      }
+
+      // Combine the data
+      const customersWithProfiles = customersData.map(customer => ({
+        ...customer,
+        profile: profilesData.find(profile => profile.id === customer.id) || null
+      }));
+
+      console.log('Customers with profiles:', customersWithProfiles);
+      return customersWithProfiles as CustomerWithProfile[];
+    },
+    onError: (error) => {
+      console.error('Error in customers query:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to fetch customers",
+      });
     },
   });
 
