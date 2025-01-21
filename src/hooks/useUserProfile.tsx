@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Profile } from "@/types/customer";
+import { toast } from "sonner";
 
 export const useUserProfile = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -54,6 +55,8 @@ export const useUserProfile = () => {
               userId: session.user.id,
               email: session.user.email
             });
+            toast.error("Failed to load user profile");
+            return;
           }
           
           if (mounted && profileData) {
