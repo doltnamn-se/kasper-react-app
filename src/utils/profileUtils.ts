@@ -22,14 +22,9 @@ export const getUserInitials = (userProfile: UserProfile | null): string => {
     return `${userProfile.first_name?.[0] || ''}${userProfile.last_name?.[0] || ''}`.toUpperCase();
   }
   
-  // Finally, try to get meaningful initials from email
+  // Finally, use email
   if (userProfile.email) {
-    const emailParts = userProfile.email.split('@')[0].split(/[._-]/);
-    if (emailParts.length >= 2) {
-      return `${emailParts[0][0]}${emailParts[1][0]}`.toUpperCase();
-    }
-    // If email doesn't have separators, take first two letters
-    return userProfile.email.slice(0, 2).toUpperCase();
+    return (userProfile.email[0] || 'U').toUpperCase();
   }
   
   return 'U';

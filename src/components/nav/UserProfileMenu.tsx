@@ -1,5 +1,4 @@
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -21,12 +20,8 @@ export const UserProfileMenu = () => {
   const isMobile = useIsMobile();
 
   const getDisplayName = () => {
-    if (!userProfile) return userEmail;
-    if (userProfile.display_name) return userProfile.display_name;
-    if (userProfile.first_name || userProfile.last_name) {
-      return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
-    }
-    return userEmail;
+    if (!userProfile?.display_name) return userEmail;
+    return userProfile.display_name;
   };
 
   const handleSignOut = async () => {
