@@ -80,6 +80,15 @@ const translations = {
     'table.created': 'Created',
     'table.subscription': 'Subscription',
     'table.actions': 'Actions',
+    'settings.change.password': 'Change password',
+    'settings.current.password': 'Current password',
+    'settings.new.password': 'New password',
+    'settings.confirm.password': 'Confirm new password',
+    'settings.update.password': 'Update password',
+    'settings.updating.password': 'Updating password...',
+    'settings.password.updated': 'Password updated successfully',
+    'error.passwords.dont.match': 'Passwords do not match',
+    'error.password.too.short': 'Password must be at least 6 characters',
   },
   sv: {
     // Auth related
@@ -152,6 +161,15 @@ const translations = {
     'table.created': 'Skapad',
     'table.subscription': 'Prenumeration',
     'table.actions': 'Åtgärder',
+    'settings.change.password': 'Byt lösenord',
+    'settings.current.password': 'Nuvarande lösenord',
+    'settings.new.password': 'Nytt lösenord',
+    'settings.confirm.password': 'Bekräfta nytt lösenord',
+    'settings.update.password': 'Uppdatera lösenord',
+    'settings.updating.password': 'Uppdaterar lösenord...',
+    'settings.password.updated': 'Lösenordet har uppdaterats',
+    'error.passwords.dont.match': 'Lösenorden matchar inte',
+    'error.password.too.short': 'Lösenordet måste vara minst 6 tecken',
   }
 };
 

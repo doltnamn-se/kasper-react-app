@@ -63,7 +63,7 @@ const Settings = () => {
       <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('profile.settings')}
       </h1>
-      <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+      <div className="w-full bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
         <h2 className="text-xl font-semibold mb-6 dark:text-white">
           {t('settings.change.password')}
         </h2>
@@ -74,7 +74,7 @@ const Settings = () => {
           </Alert>
         )}
 
-        <form onSubmit={handlePasswordChange} className="space-y-4 max-w-md">
+        <form onSubmit={handlePasswordChange} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="currentPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {t('settings.current.password')}
@@ -84,7 +84,7 @@ const Settings = () => {
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full"
+              className="w-full h-12"
               disabled={isLoading}
               required
             />
@@ -99,7 +99,7 @@ const Settings = () => {
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full"
+              className="w-full h-12"
               disabled={isLoading}
               required
             />
@@ -114,7 +114,7 @@ const Settings = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full"
+              className="w-full h-12"
               disabled={isLoading}
               required
             />
@@ -122,7 +122,7 @@ const Settings = () => {
 
           <Button 
             type="submit" 
-            className="w-full"
+            className="w-full h-12 bg-black hover:bg-black/90 text-white"
             disabled={isLoading}
           >
             {isLoading ? t('settings.updating.password') : t('settings.update.password')}
