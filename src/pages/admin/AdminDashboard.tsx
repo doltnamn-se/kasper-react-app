@@ -6,7 +6,6 @@ const AdminDashboard = () => {
   const { t } = useLanguage();
 
   const handleCustomerCreated = () => {
-    // Simple callback for when a customer is created
     console.log('Customer created successfully');
   };
 
@@ -20,7 +19,7 @@ const AdminDashboard = () => {
       </div>
       <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
         <p className="text-gray-600 dark:text-gray-300">
-          Välkommen till din översikt.
+          Welcome to your admin dashboard. Here you can manage customers and their accounts.
         </p>
       </div>
     </MainLayout>
