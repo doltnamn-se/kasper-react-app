@@ -17,40 +17,27 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("ProtectedRoute: Initializing");
     let mounted = true;
 
-    const checkAccess = async () => {
+    const checkSession = async () => {
       try {
-        console.log("ProtectedRoute: Checking session...");
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-
-        if (sessionError) {
-          console.error("ProtectedRoute: Session error:", sessionError);
-          if (mounted) {
-            setIsAuthenticated(false);
-            setIsLoading(false);
-          }
-          return;
-        }
-
-        if (!session) {
-          console.log("ProtectedRoute: No session found");
-          if (mounted) {
-            setIsAuthenticated(false);
-            setIsLoading(false);
-          }
-          return;
-        }
-
-        console.log("ProtectedRoute: Session found, checking user status");
+        const { data: { session }, error } = await supabase.auth.getSession();
         
+        if (error) {
+          console.error("Session check error:", error);
+          if (mounted) {
+            setIsAuthenticated(false);
+            setIsLoading(false);
+          }
+          return;
+        }
+
         if (mounted) {
-          setIsAuthenticated(true);
+          setIsAuthenticated(!!session);
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("ProtectedRoute: Error:", error);
+        console.error("Protected route error:", error);
         if (mounted) {
           setIsAuthenticated(false);
           setIsLoading(false);
@@ -59,20 +46,13 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
       }
     };
 
-    checkAccess();
+    checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("ProtectedRoute: Auth state changed:", event);
-      
-      if (!session && event === 'SIGNED_OUT') {
-        if (mounted) {
-          setIsAuthenticated(false);
-          setIsLoading(false);
-        }
-        return;
+      if (mounted) {
+        setIsAuthenticated(!!session);
+        setIsLoading(false);
       }
-      
-      checkAccess();
     });
 
     return () => {
@@ -86,19 +66,16 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
   }
 
   if (!isAuthenticated) {
-    console.log("ProtectedRoute: Redirecting to auth page");
     return <Navigate to="/auth" replace />;
   }
 
   const isAdmin = userEmail === 'info@doltnamn.se';
 
   if (adminOnly && !isAdmin) {
-    console.log("ProtectedRoute: Non-admin trying to access admin route");
     return <Navigate to="/" replace />;
   }
 
   if (customerOnly && isAdmin) {
-    console.log("ProtectedRoute: Admin trying to access customer route");
     return <Navigate to="/admin" replace />;
   }
 

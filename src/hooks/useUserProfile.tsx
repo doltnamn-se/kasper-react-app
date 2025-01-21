@@ -10,7 +10,7 @@ export const useUserProfile = () => {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const navigate = useNavigate();
-  const initialized = useRef(false);
+  const mounted = useRef(true);
 
   const fetchUserProfile = useCallback(async (userId: string) => {
     try {
@@ -27,7 +27,7 @@ export const useUserProfile = () => {
         return null;
       }
       
-      console.log("Profile data fetched successfully:", profileData);
+      console.log("Profile data fetched successfully");
       return profileData;
     } catch (err) {
       console.error("Error in fetchUserProfile:", err);
@@ -36,52 +36,35 @@ export const useUserProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-    
-    console.log("useUserProfile: Initial setup");
-    let mounted = true;
+    console.log("useUserProfile: Setting up auth listener");
 
-    const initializeProfile = async () => {
+    const initializeProfile = async (session: any) => {
+      if (!mounted.current) return;
+      
       try {
-        console.log("Initializing profile...");
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        setUserEmail(session?.user?.email ?? null);
         
-        if (sessionError) {
-          console.error("Session error:", sessionError);
-          if (mounted) {
-            setIsInitializing(false);
-          }
-          return;
-        }
-
-        if (!session?.user) {
-          console.log("No active session");
-          if (mounted) {
-            setIsInitializing(false);
-          }
-          return;
-        }
-
-        if (mounted) {
-          console.log("Setting up initial profile data");
-          setUserEmail(session.user.email);
+        if (session?.user?.id) {
           const profileData = await fetchUserProfile(session.user.id);
-          if (mounted && profileData) {
+          if (mounted.current && profileData) {
             setUserProfile(profileData);
           }
-          setIsInitializing(false);
         }
+        
+        setIsInitializing(false);
       } catch (err) {
         console.error("Error in initializeProfile:", err);
-        if (mounted) {
+        if (mounted.current) {
           setIsInitializing(false);
         }
       }
     };
 
-    // Initial profile load
-    initializeProfile();
+    // Initial session check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Initial session check:", session ? "Session found" : "No session");
+      initializeProfile(session);
+    });
 
     // Set up real-time subscription for profile changes
     const channel = supabase.channel('profile-changes')
@@ -90,17 +73,16 @@ export const useUserProfile = () => {
         {
           event: '*',
           schema: 'public',
-          table: 'profiles',
-          filter: `id=eq.${supabase.auth.getSession().then(({ data }) => data.session?.user?.id)}`
+          table: 'profiles'
         },
         async (payload) => {
           console.log('Profile changed:', payload);
-          if (mounted) {
+          if (mounted.current) {
             const session = await supabase.auth.getSession();
             const userId = session.data.session?.user?.id;
             if (userId) {
               const updatedProfile = await fetchUserProfile(userId);
-              if (mounted && updatedProfile) {
+              if (mounted.current && updatedProfile) {
                 setUserProfile(updatedProfile);
               }
             }
@@ -110,32 +92,27 @@ export const useUserProfile = () => {
       .subscribe();
 
     // Auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (!mounted) return;
-      
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Auth state changed:", event);
       
       if (event === 'SIGNED_OUT') {
-        setUserEmail(null);
-        setUserProfile(null);
-        setIsInitializing(false);
-        navigate("/auth");
+        if (mounted.current) {
+          setUserEmail(null);
+          setUserProfile(null);
+          setIsInitializing(false);
+          navigate("/auth");
+        }
         return;
       }
 
-      if (event === 'SIGNED_IN' && session?.user) {
-        setUserEmail(session.user.email);
-        const profileData = await fetchUserProfile(session.user.id);
-        if (mounted && profileData) {
-          setUserProfile(profileData);
-        }
-        setIsInitializing(false);
+      if (event === 'SIGNED_IN') {
+        initializeProfile(session);
       }
     });
 
     return () => {
       console.log("Cleaning up useUserProfile hook");
-      mounted = false;
+      mounted.current = false;
       subscription.unsubscribe();
       channel.unsubscribe();
     };
