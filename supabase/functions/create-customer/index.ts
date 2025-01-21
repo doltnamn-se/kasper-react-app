@@ -1,149 +1,55 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { corsHeaders, handleOptionsRequest, addCorsHeaders } from "../_shared/cors.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': '*',
-  'Access-Control-Max-Age': '86400',
-};
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 serve(async (req) => {
-  console.log("Received request to create-customer function");
-  
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    console.log("Handling OPTIONS request");
-    return new Response(null, { 
-      headers: corsHeaders,
-      status: 204
-    });
-  }
+  const optionsResponse = handleOptionsRequest(req);
+  if (optionsResponse) return optionsResponse;
 
   try {
-    console.log("Processing customer creation request");
-    const requestData = await req.json();
-    console.log("Received request data:", requestData);
+    const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
 
-    const { email, displayName, subscriptionPlan, createdBy, password } = requestData;
-
+    // Validate input
     if (!email || !displayName || !subscriptionPlan || !createdBy || !password) {
-      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy });
-      return new Response(
-        JSON.stringify({
-          error: "Missing required fields",
-          received: { email, displayName, subscriptionPlan, createdBy }
-        }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
+      throw new Error("Missing required fields");
     }
 
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    // Step 1: Create customer in the database
+    const { data, error } = await supabase
+      .from('customers')
+      .insert([{ email, displayName, subscriptionPlan, createdBy }]);
 
-    // Create auth user with the simple password from the request
-    console.log("Creating auth user with provided password...");
-    const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
+    if (error) {
+      throw error;
+    }
+
+    // Step 2: Create auth user
+    const { user, error: authError } = await supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: true,
-      user_metadata: {
-        display_name: displayName
-      }
+      user_metadata: { displayName },
     });
 
-    if (createUserError) {
-      console.error("Error creating auth user:", createUserError);
-      return new Response(
-        JSON.stringify({ error: createUserError.message }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
+    if (authError) {
+      throw authError;
     }
 
-    if (!user) {
-      console.error("No user returned after creation");
-      return new Response(
-        JSON.stringify({ error: "Failed to create user" }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
-    }
-
-    console.log("Auth user created successfully:", user.id);
-
-    // Step 2: Update customer subscription plan
-    console.log("Updating customer subscription plan...");
-    const { error: updateError } = await supabase
-      .from('customers')
-      .update({ 
-        subscription_plan: subscriptionPlan,
-        created_by: createdBy 
-      })
-      .eq('id', user.id);
-
-    if (updateError) {
-      console.error("Error updating customer:", updateError);
-      return new Response(
-        JSON.stringify({ error: updateError.message }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
-    }
-
-    // Step 3: Create profile for the user
-    console.log("Creating profile for user...");
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert({
-        id: user.id,
-        email: email,
-        display_name: displayName,
-        role: 'customer'
-      });
-
-    if (profileError) {
-      console.error("Error creating profile:", profileError);
-      // Don't return error here as the user and customer are already created
-      // Just log it for debugging
-    }
-
-    return new Response(
-      JSON.stringify({ 
-        success: true,
-        user: {
-          id: user.id,
-          email: user.email,
-          created_at: user.created_at
-        }
-      }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
-    );
-
-  } catch (err) {
-    console.error("Error in create-customer function:", err);
-    return new Response(
-      JSON.stringify({
-        error: err.message || "An unexpected error occurred"
-      }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400 
-      }
-    );
+    // Return success response
+    const result = { message: "Customer created successfully", userId: user.id };
+    return addCorsHeaders(new Response(JSON.stringify(result), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }));
+  } catch (error) {
+    // Add CORS headers to the error response
+    return addCorsHeaders(new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    }));
   }
 });
