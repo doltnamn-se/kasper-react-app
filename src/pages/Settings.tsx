@@ -15,24 +15,33 @@ const Settings = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const resetForm = () => {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setError(null);
+    setIsLoading(false);
+  };
+
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true);
 
     if (newPassword !== confirmPassword) {
       setError(t('error.passwords.dont.match'));
+      setIsLoading(false);
       return;
     }
 
     if (newPassword.length < 6) {
       setError(t('error.password.too.short'));
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
-    console.log("Attempting to update password...");
-
     try {
+      console.log("Attempting to update password...");
       const { error } = await supabase.auth.updateUser({ 
         password: newPassword 
       });
@@ -40,19 +49,15 @@ const Settings = () => {
       if (error) {
         console.error("Error updating password:", error);
         setError(error.message);
+        setIsLoading(false);
       } else {
         console.log("Password updated successfully");
         toast.success(t('settings.password.updated'));
-        
-        // Reset form and loading state
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
+        resetForm();
       }
     } catch (err) {
       console.error("Error in password update:", err);
       setError(t('error.generic'));
-    } finally {
       setIsLoading(false);
     }
   };
