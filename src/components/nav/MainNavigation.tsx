@@ -18,7 +18,18 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
 
   // Get unread notifications count for each section
   const getUnreadCount = (path: string) => {
-    return notifications.filter(n => !n.read && n.type === path.replace('/', '')).length;
+    // Remove the leading slash and map paths to notification types
+    const typeMap: { [key: string]: string } = {
+      'checklist': 'checklist',
+      'my-links': 'links',
+      'address-alerts': 'address',
+      'guides': 'guide'
+    };
+    
+    const type = typeMap[path.replace('/', '')];
+    if (!type) return 0;
+    
+    return notifications.filter(n => !n.read && n.type === type).length;
   };
 
   useEffect(() => {
