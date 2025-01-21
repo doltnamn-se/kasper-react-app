@@ -109,7 +109,7 @@ export const NotificationButtons = () => {
             <div className="relative">
               <Bell className="w-4 h-4" />
               {totalUnreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-[#c8ed52]" />
+                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-[#c3caf6] dark:bg-[#c2c9f5]" />
               )}
             </div>
           </Button>
@@ -151,7 +151,7 @@ export const NotificationButtons = () => {
                       </p>
                     </div>
                     {!notification.read && (
-                      <div className="h-2 w-2 rounded-full bg-[#c8ed52] mt-2" />
+                      <div className="h-2 w-2 rounded-full bg-[#c3caf6] dark:bg-[#c2c9f5] mt-2" />
                     )}
                   </div>
                 </DropdownMenuItem>
