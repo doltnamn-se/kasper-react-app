@@ -33,12 +33,12 @@ export const TopNav = () => {
 
   return (
     <div className={cn(
-      "top-0 right-0 h-16 z-[100] bg-white dark:bg-[#1c1c1e] transition-[left] duration-200",
+      "sticky top-0 right-0 h-16 z-[100] transition-[left] duration-200",
       isMobile ? (
-        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325]"
+        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e]"
       ) : (
         cn(
-          "bg-[#f4f4f4] dark:bg-[#1c1c1e]",
+          "bg-[#f4f4f4] dark:bg-[#161618]",
           isCollapsed ? "left-16 px-12" : "left-72 px-12"
         )
       )
