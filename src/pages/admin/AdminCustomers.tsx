@@ -3,18 +3,18 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CustomersTable } from "@/components/admin/CustomersTable";
-import { CustomerWithProfile } from "@/types/customer";
+import { Profile } from "@/types/customer";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
 
-  const { data: customers = [], refetch } = useQuery({
+  const { data: profiles = [], refetch } = useQuery({
     queryKey: ['profiles'],
     queryFn: async () => {
       console.log('Fetching profiles for admin view...');
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select()
         .eq('role', 'customer');
 
       if (error) {
@@ -26,7 +26,7 @@ const AdminCustomers = () => {
         id: profile.id,
         profile: profile,
         created_at: profile.created_at,
-      })) as CustomerWithProfile[];
+      }));
     },
   });
 
@@ -52,7 +52,7 @@ const AdminCustomers = () => {
         </h1>
       </div>
       <CustomersTable 
-        customers={customers} 
+        customers={profiles} 
         onCustomerUpdated={handleCustomerUpdated}
         onDeleteCustomer={handleDeleteCustomer}
       />
