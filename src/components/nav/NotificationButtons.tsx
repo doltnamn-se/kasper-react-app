@@ -12,19 +12,91 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDistanceToNow } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const NotificationButtons = () => {
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
 
-  const handleMarkAsRead = async (notificationId: string) => {
-    console.log('Marking notification as read:', notificationId);
-    await markAsRead(notificationId);
-  };
+  // Fetch checklist progress to show incomplete items as notifications
+  const { data: checklistProgress } = useQuery({
+    queryKey: ['checklist-progress-notifications'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return null;
 
-  const handleMarkAllAsRead = async () => {
-    console.log('Marking all notifications as read');
-    await markAllAsRead();
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('*')
+        .eq('customer_id', session.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching checklist progress:', error);
+        return null;
+      }
+
+      return data;
+    }
+  });
+
+  // Fetch checklist items to show their titles
+  const { data: checklistItems } = useQuery({
+    queryKey: ['checklist-items-notifications'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('checklist_items')
+        .select('*')
+        .order('order_index');
+
+      if (error) {
+        console.error('Error fetching checklist items:', error);
+        return [];
+      }
+
+      return data;
+    }
+  });
+
+  // Generate notifications for incomplete checklist items
+  const checklistNotifications = checklistItems?.map((item, index) => {
+    let isCompleted = false;
+    if (checklistProgress) {
+      switch (index) {
+        case 0:
+          isCompleted = checklistProgress.password_updated || false;
+          break;
+        case 1:
+          isCompleted = (checklistProgress.selected_sites?.length || 0) > 0;
+          break;
+        case 2:
+          isCompleted = (checklistProgress.removal_urls?.length || 0) > 0;
+          break;
+        case 3:
+          isCompleted = !!(checklistProgress.address && checklistProgress.personal_number);
+          break;
+      }
+    }
+
+    return {
+      id: `checklist-${item.id}`,
+      title: `Checklist: ${item.title}`,
+      message: isCompleted ? 'Completed' : 'Pending completion',
+      read: isCompleted,
+      created_at: new Date().toISOString(),
+      type: 'checklist'
+    };
+  }) || [];
+
+  const allNotifications = [...notifications, ...checklistNotifications];
+  const totalUnreadCount = unreadCount + checklistNotifications.filter(n => !n.read).length;
+
+  const handleMarkAsRead = async (notificationId: string) => {
+    if (notificationId.startsWith('checklist-')) {
+      return; // Checklist notifications can't be marked as read manually
+    }
+    await markAsRead(notificationId);
   };
 
   return (
@@ -37,12 +109,12 @@ export const NotificationButtons = () => {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="relative text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8">
             <Bell className="w-4 h-4" />
-            {unreadCount > 0 && (
+            {totalUnreadCount > 0 && (
               <Badge 
                 variant="destructive" 
                 className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
               >
-                {unreadCount}
+                {totalUnreadCount}
               </Badge>
             )}
           </Button>
@@ -55,7 +127,7 @@ export const NotificationButtons = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={handleMarkAllAsRead}
+                onClick={markAllAsRead}
                 className="h-8 text-xs"
               >
                 {t('notifications.mark.all.read')}
@@ -66,8 +138,8 @@ export const NotificationButtons = () => {
           <DropdownMenuSeparator />
           
           <ScrollArea className="h-[300px]">
-            {notifications && notifications.length > 0 ? (
-              notifications.map((notification) => (
+            {allNotifications && allNotifications.length > 0 ? (
+              allNotifications.map((notification) => (
                 <DropdownMenuItem
                   key={notification.id}
                   className="px-4 py-2 cursor-pointer"

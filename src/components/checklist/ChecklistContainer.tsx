@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PasswordUpdateForm } from "./PasswordUpdateForm";
 import { HidingSitesSelection } from "./HidingSitesSelection";
@@ -25,6 +25,7 @@ export const ChecklistContainer = () => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(0);
+  const queryClient = useQueryClient();
 
   const { data: checklistItems } = useQuery({
     queryKey: ['checklist-items'],
@@ -52,7 +53,6 @@ export const ChecklistContainer = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      // First try to get existing progress
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('*')
@@ -64,7 +64,6 @@ export const ChecklistContainer = () => {
         throw error;
       }
 
-      // If no progress exists yet, create it
       if (!data) {
         const { data: newProgress, error: insertError } = await supabase
           .from('customer_checklist_progress')
@@ -82,8 +81,17 @@ export const ChecklistContainer = () => {
       
       console.log('Checklist progress fetched:', data);
       return data as ChecklistProgress;
-    }
+    },
+    refetchInterval: 0, // Disable automatic refetching
+    staleTime: 0, // Consider data always stale
   });
+
+  // Function to handle step completion
+  const handleStepComplete = async () => {
+    console.log('Step completed, refetching progress...');
+    await refetchProgress();
+    await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
+  };
 
   useEffect(() => {
     if (checklistProgress) {
@@ -114,13 +122,22 @@ export const ChecklistContainer = () => {
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <PasswordUpdateForm onComplete={() => setCurrentStep(2)} />;
+        return <PasswordUpdateForm onComplete={() => {
+          handleStepComplete();
+          setCurrentStep(2);
+        }} />;
       case 2:
-        return <HidingSitesSelection onComplete={() => setCurrentStep(3)} />;
+        return <HidingSitesSelection onComplete={() => {
+          handleStepComplete();
+          setCurrentStep(3);
+        }} />;
       case 3:
-        return <UrlSubmission onComplete={() => setCurrentStep(4)} />;
+        return <UrlSubmission onComplete={() => {
+          handleStepComplete();
+          setCurrentStep(4);
+        }} />;
       case 4:
-        return <PersonalInfoForm onComplete={() => refetchProgress()} />;
+        return <PersonalInfoForm onComplete={handleStepComplete} />;
       default:
         return null;
     }
