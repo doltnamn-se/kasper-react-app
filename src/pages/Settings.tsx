@@ -46,7 +46,7 @@ const Settings = () => {
       console.log("Password updated successfully");
       toast.success(t('settings.password.updated'));
       
-      // Clear form
+      // Reset form
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
