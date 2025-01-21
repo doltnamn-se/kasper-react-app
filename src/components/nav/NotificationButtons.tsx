@@ -19,7 +19,6 @@ export const NotificationButtons = () => {
   const { notifications = [], unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
 
-  // Fetch checklist progress to show incomplete items as notifications
   const { data: checklistProgress } = useQuery({
     queryKey: ['checklist-progress-notifications'],
     queryFn: async () => {
@@ -111,8 +110,7 @@ export const NotificationButtons = () => {
             <Bell className="w-4 h-4" />
             {totalUnreadCount > 0 && (
               <Badge 
-                variant="destructive" 
-                className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px]"
+                className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0"
               >
                 {totalUnreadCount}
               </Badge>
