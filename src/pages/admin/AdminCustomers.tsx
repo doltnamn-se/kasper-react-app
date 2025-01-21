@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CustomerWithProfile } from "@/types/customer";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
@@ -57,6 +58,42 @@ const AdminCustomers = () => {
       },
     },
   });
+
+  // Set up real-time subscription
+  useEffect(() => {
+    console.log('Setting up real-time subscription...');
+    
+    const customersSubscription = supabase
+      .channel('customers-changes')
+      .on('postgres_changes', 
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'customers' 
+        }, 
+        () => {
+          console.log('Customers table changed, refetching...');
+          refetch();
+        }
+      )
+      .on('postgres_changes', 
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'profiles' 
+        }, 
+        () => {
+          console.log('Profiles table changed, refetching...');
+          refetch();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('Cleaning up real-time subscription...');
+      customersSubscription.unsubscribe();
+    };
+  }, [refetch]);
 
   const handleDeleteCustomer = async (customerId: string) => {
     try {
