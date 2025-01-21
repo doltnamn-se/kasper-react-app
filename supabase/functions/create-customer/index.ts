@@ -48,7 +48,6 @@ serve(async (req) => {
 
     // Create auth user with the simple password from the request
     console.log("Creating auth user with provided password...");
-    console.log("Password being used:", password); // Added for debugging
     const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email,
       password,
@@ -101,6 +100,23 @@ serve(async (req) => {
           status: 400 
         }
       );
+    }
+
+    // Step 3: Create profile for the user
+    console.log("Creating profile for user...");
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({
+        id: user.id,
+        email: email,
+        display_name: displayName,
+        role: 'customer'
+      });
+
+    if (profileError) {
+      console.error("Error creating profile:", profileError);
+      // Don't return error here as the user and customer are already created
+      // Just log it for debugging
     }
 
     return new Response(
