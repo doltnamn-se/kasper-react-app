@@ -9,8 +9,8 @@ export const useUserProfile = () => {
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
-  const mountedRef = useRef(true);
   const navigate = useNavigate();
+  const initialized = useRef(false);
 
   const fetchUserProfile = useCallback(async (userId: string) => {
     try {
@@ -36,11 +36,15 @@ export const useUserProfile = () => {
   }, []);
 
   useEffect(() => {
-    console.log("useUserProfile: Initializing");
+    if (initialized.current) return;
+    initialized.current = true;
+    
+    console.log("useUserProfile: Initial setup");
     let mounted = true;
 
     const initializeProfile = async () => {
       try {
+        console.log("Initializing profile...");
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -60,6 +64,7 @@ export const useUserProfile = () => {
         }
 
         if (mounted) {
+          console.log("Setting up initial profile data");
           setUserEmail(session.user.email);
           const profileData = await fetchUserProfile(session.user.id);
           if (mounted && profileData) {
@@ -132,7 +137,7 @@ export const useUserProfile = () => {
       console.log("Cleaning up useUserProfile hook");
       mounted = false;
       subscription.unsubscribe();
-      supabase.removeChannel(channel);
+      channel.unsubscribe();
     };
   }, [navigate, fetchUserProfile]);
 
