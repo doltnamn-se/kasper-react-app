@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { toast } from "sonner";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedRouteProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { userEmail, isInitializing } = useUserProfile();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +46,6 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
         console.log("ProtectedRoute: Session found, checking user status");
         
         if (mounted) {
-          setUserEmail(session.user.email);
           setIsAuthenticated(true);
           setIsLoading(false);
         }
@@ -67,7 +67,6 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
       if (!session && event === 'SIGNED_OUT') {
         if (mounted) {
           setIsAuthenticated(false);
-          setUserEmail(null);
           setIsLoading(false);
         }
         return;
@@ -82,7 +81,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
     };
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isInitializing) {
     return <LoadingSpinner />;
   }
 
