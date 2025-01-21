@@ -9,12 +9,12 @@ export const supabase = createClient<Database>(
   SUPABASE_PUBLISHABLE_KEY,
   {
     auth: {
-      persistSession: true,
-      storageKey: 'supabase.auth.token',
-      storage: window.localStorage,
       autoRefreshToken: true,
+      persistSession: true,
       detectSessionInUrl: true,
-      flowType: 'pkce',
+      storage: localStorage,
+      storageKey: 'supabase.auth.token',
+      flowType: 'pkce'
     },
     global: {
       headers: {
