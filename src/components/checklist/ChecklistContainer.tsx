@@ -52,15 +52,32 @@ export const ChecklistContainer = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
+      // First try to get existing progress
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('*')
         .eq('customer_id', session.user.id)
-        .single();
+        .maybeSingle();
       
       if (error) {
         console.error('Error fetching checklist progress:', error);
         throw error;
+      }
+
+      // If no progress exists yet, create it
+      if (!data) {
+        const { data: newProgress, error: insertError } = await supabase
+          .from('customer_checklist_progress')
+          .insert([{ customer_id: session.user.id }])
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('Error creating checklist progress:', insertError);
+          throw insertError;
+        }
+
+        return newProgress as ChecklistProgress;
       }
       
       console.log('Checklist progress fetched:', data);
