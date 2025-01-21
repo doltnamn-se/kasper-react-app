@@ -44,9 +44,9 @@ export const useUserProfile = () => {
           console.log("Fetching profile for user:", session.user.id);
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
-            .select()
+            .select('*')
             .eq('id', session.user.id)
-            .maybeSingle();
+            .single();
           
           if (profileError) {
             console.error("Error fetching profile:", {
@@ -89,9 +89,9 @@ export const useUserProfile = () => {
         setUserEmail(session.user.email);
         const { data: profileData } = await supabase
           .from('profiles')
-          .select()
+          .select('*')
           .eq('id', session.user.id)
-          .maybeSingle();
+          .single();
         
         if (mounted && profileData) {
           setUserProfile(profileData);
