@@ -108,9 +108,7 @@ export const NotificationButtons = () => {
           <Button variant="ghost" size="icon" className="relative text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 pr-1">
             <Bell className="w-4 h-4" />
             {totalUnreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 text-[#c8ed52] text-[10px] leading-none">
-                {totalUnreadCount}
-              </span>
+              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#c8ed52]" />
             )}
           </Button>
         </DropdownMenuTrigger>
