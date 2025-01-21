@@ -60,7 +60,7 @@ const Settings = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {t('profile.settings')}
         </h1>
