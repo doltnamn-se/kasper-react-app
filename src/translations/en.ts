@@ -88,5 +88,5 @@ export const en: Translations = {
   'settings.update.password': 'Update password',
   'settings.updating.password': 'Updating password...',
   'settings.password.updated': 'Password updated successfully',
-  'error.passwords.dont.match': 'Passwords do not match',
+  'settings.success': 'Success',
 };

@@ -88,5 +88,6 @@ export interface Translations {
   'settings.update.password': string;
   'settings.updating.password': string;
   'settings.password.updated': string;
+  'settings.success': string;
   'error.passwords.dont.match': string;
 }

@@ -87,6 +87,6 @@ export const sv: Translations = {
   'settings.confirm.password': 'Bekräfta nytt lösenord',
   'settings.update.password': 'Uppdatera lösenord',
   'settings.updating.password': 'Uppdaterar lösenord...',
+  'settings.success': 'Klart',
   'settings.password.updated': 'Lösenordet har uppdaterats',
-  'error.passwords.dont.match': 'Lösenorden matchar inte',
 };
