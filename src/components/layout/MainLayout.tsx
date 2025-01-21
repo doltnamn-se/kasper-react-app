@@ -22,9 +22,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     <div className="flex h-screen bg-[#f6f6f4] dark:bg-[#161618]">
       <div className="flex flex-col flex-1">
         <TopNav />
-        <div className="flex items-center px-4 py-2">
-          <AuthLogo />
-        </div>
         <div className="flex flex-1 overflow-hidden">
           <aside className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:block w-64 border-r border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] overflow-y-auto`}>
             <Navigation />
