@@ -28,6 +28,18 @@ export const supabase = createClient<Database>(
     },
     db: {
       schema: 'public'
+    },
+    // Add fetch configuration
+    fetch: (url, options) => {
+      const fetchOptions = {
+        ...options,
+        credentials: 'include' as RequestCredentials,
+        headers: {
+          ...options?.headers,
+          'Accept': 'application/json',
+        }
+      };
+      return fetch(url, fetchOptions);
     }
   }
 );
