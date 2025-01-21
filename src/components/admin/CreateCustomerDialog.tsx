@@ -4,6 +4,7 @@ import { UserPlus } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useState } from "react";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -11,7 +12,9 @@ interface CreateCustomerDialogProps {
 
 export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialogProps) => {
   const [open, setOpen] = useState(false);
-  const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(() => {
+  const { refetchProfile } = useUserProfile();
+  const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(async () => {
+    await refetchProfile();
     onCustomerCreated();
     setOpen(false);
   });
