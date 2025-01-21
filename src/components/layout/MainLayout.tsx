@@ -1,6 +1,5 @@
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
-import { useUserProfile } from "@/hooks/useUserProfile";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { MainNavigation } from "@/components/nav/MainNavigation";
@@ -12,13 +11,11 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
-  const { userProfile } = useUserProfile();
-  const isAdmin = userProfile?.role === 'super_admin';
 
   const Navigation = () => {
     return (
       <nav>
-        {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
+        <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
         <MainNavigation toggleMobileMenu={toggleMobileMenu} />
       </nav>
     );
