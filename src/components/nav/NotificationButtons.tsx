@@ -40,7 +40,6 @@ export const NotificationButtons = () => {
     }
   });
 
-  // Fetch checklist items to show their titles
   const { data: checklistItems = [] } = useQuery({
     queryKey: ['checklist-items-notifications'],
     queryFn: async () => {
@@ -110,7 +109,7 @@ export const NotificationButtons = () => {
             <Bell className="w-4 h-4" />
             {totalUnreadCount > 0 && (
               <Badge 
-                className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0"
+                className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 p-0 flex items-center justify-center text-[9px] leading-none bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0"
               >
                 {totalUnreadCount}
               </Badge>
