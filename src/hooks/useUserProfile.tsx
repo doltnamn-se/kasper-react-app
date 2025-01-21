@@ -9,7 +9,6 @@ export const useUserProfile = () => {
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
-  const initializingRef = useRef(false);
   const mountedRef = useRef(true);
   const navigate = useNavigate();
 
@@ -36,34 +35,10 @@ export const useUserProfile = () => {
     }
   }, []);
 
-  const refetchProfile = useCallback(async () => {
-    if (!mountedRef.current) {
-      console.log("Skipping refetch - component unmounted");
-      return;
-    }
-
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        const profileData = await fetchUserProfile(session.user.id);
-        if (mountedRef.current && profileData) {
-          setUserProfile(profileData);
-          setUserEmail(session.user.email);
-        }
-      }
-    } catch (err) {
-      console.error("Error in refetchProfile:", err);
-    }
-  }, [fetchUserProfile]);
-
   const initUser = useCallback(async () => {
-    if (!mountedRef.current || initializingRef.current) {
-      return;
-    }
+    if (!mountedRef.current) return;
 
     try {
-      initializingRef.current = true;
       setIsInitializing(true);
       
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
@@ -92,7 +67,6 @@ export const useUserProfile = () => {
       navigate("/auth");
     } finally {
       if (mountedRef.current) {
-        initializingRef.current = false;
         setIsInitializing(false);
       }
     }
@@ -100,9 +74,39 @@ export const useUserProfile = () => {
 
   useEffect(() => {
     mountedRef.current = true;
+    
+    // Initial load
     initUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+    // Set up real-time subscription for profile changes
+    const profileSubscription = supabase
+      .channel('profile-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${supabase.auth.getSession().then(({ data }) => data.session?.user?.id)}`
+        },
+        async (payload) => {
+          console.log('Profile changed:', payload);
+          if (mountedRef.current) {
+            const session = await supabase.auth.getSession();
+            const userId = session.data.session?.user?.id;
+            if (userId) {
+              const updatedProfile = await fetchUserProfile(userId);
+              if (mountedRef.current && updatedProfile) {
+                setUserProfile(updatedProfile);
+              }
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    // Auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mountedRef.current) return;
       
       console.log("Auth state changed:", event);
@@ -122,8 +126,8 @@ export const useUserProfile = () => {
     return () => {
       console.log("Cleaning up useUserProfile hook");
       mountedRef.current = false;
-      initializingRef.current = false;
       subscription.unsubscribe();
+      profileSubscription.unsubscribe();
     };
   }, [initUser, navigate]);
 
@@ -132,7 +136,6 @@ export const useUserProfile = () => {
     userProfile,
     isSigningOut,
     setIsSigningOut,
-    refetchProfile,
     isInitializing
   };
 };
