@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Profile } from "@/types/customer";
@@ -12,81 +12,108 @@ export const useUserProfile = () => {
   const mountedRef = useRef(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Setting up useUserProfile effect");
-    mountedRef.current = true;
+  const fetchUserProfile = useCallback(async (userId: string) => {
+    console.log("Fetching profile for user:", userId);
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select()
+      .eq('id', userId)
+      .maybeSingle();
+    
+    if (profileError) {
+      console.error("Error fetching profile:", profileError);
+      toast.error("Error loading profile");
+      return null;
+    }
+    
+    console.log("Profile data fetched successfully:", profileData);
+    return profileData;
+  }, []);
 
-    const initUser = async () => {
-      if (!mountedRef.current || initializingRef.current) {
-        console.log("Skipping initialization - component unmounted or already initializing");
-        return;
+  const refetchProfile = useCallback(async () => {
+    if (!mountedRef.current || initializingRef.current) {
+      console.log("Skipping refetch - component unmounted or already initializing");
+      return;
+    }
+
+    try {
+      initializingRef.current = true;
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        const profileData = await fetchUserProfile(session.user.id);
+        if (mountedRef.current && profileData) {
+          setUserProfile(profileData);
+        }
       }
+    } catch (err) {
+      console.error("Error in refetchProfile:", err);
+    } finally {
+      if (mountedRef.current) {
+        initializingRef.current = false;
+      }
+    }
+  }, [fetchUserProfile]);
 
-      try {
-        initializingRef.current = true;
-        console.log("Starting user profile initialization...");
-        
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          console.error("Session error:", sessionError);
-          if (mountedRef.current) {
-            setUserEmail(null);
-            setUserProfile(null);
-          }
-          navigate("/auth");
-          return;
-        }
+  const initUser = useCallback(async () => {
+    if (!mountedRef.current || initializingRef.current) {
+      console.log("Skipping initialization - component unmounted or already initializing");
+      return;
+    }
 
-        if (!session) {
-          console.log("No active session found");
-          if (mountedRef.current) {
-            setUserEmail(null);
-            setUserProfile(null);
-          }
-          navigate("/auth");
-          return;
-        }
-        
-        if (session?.user?.email && mountedRef.current) {
-          console.log("Setting user email:", session.user.email);
-          setUserEmail(session.user.email);
-          
-          console.log("Fetching profile for user:", session.user.id);
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select()
-            .eq('id', session.user.id)
-            .maybeSingle();
-          
-          if (profileError) {
-            console.error("Error fetching profile:", {
-              error: profileError,
-              userId: session.user.id,
-              email: session.user.email
-            });
-            toast.error("Error loading profile");
-          }
-          
-          if (mountedRef.current && profileData) {
-            console.log("Profile data fetched successfully:", profileData);
-            setUserProfile(profileData);
-          }
-        }
-      } catch (err) {
-        console.error("Error in initUser:", err);
+    try {
+      initializingRef.current = true;
+      console.log("Starting user profile initialization...");
+      
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error("Session error:", sessionError);
         if (mountedRef.current) {
           setUserEmail(null);
           setUserProfile(null);
         }
         navigate("/auth");
-      } finally {
+        return;
+      }
+
+      if (!session) {
+        console.log("No active session found");
         if (mountedRef.current) {
-          initializingRef.current = false;
-          console.log("User profile initialization completed");
+          setUserEmail(null);
+          setUserProfile(null);
+        }
+        navigate("/auth");
+        return;
+      }
+      
+      if (session?.user?.email && mountedRef.current) {
+        console.log("Setting user email:", session.user.email);
+        setUserEmail(session.user.email);
+        
+        const profileData = await fetchUserProfile(session.user.id);
+        if (mountedRef.current && profileData) {
+          setUserProfile(profileData);
         }
       }
-    };
+    } catch (err) {
+      console.error("Error in initUser:", err);
+      if (mountedRef.current) {
+        setUserEmail(null);
+        setUserProfile(null);
+      }
+      navigate("/auth");
+    } finally {
+      if (mountedRef.current) {
+        initializingRef.current = false;
+        console.log("User profile initialization completed");
+      }
+    }
+  }, [navigate, fetchUserProfile]);
+
+  useEffect(() => {
+    console.log("Setting up useUserProfile effect");
+    mountedRef.current = true;
 
     // Initial profile load
     initUser();
@@ -121,12 +148,13 @@ export const useUserProfile = () => {
       initializingRef.current = false;
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [initUser]);
 
   return {
     userEmail,
     userProfile,
     isSigningOut,
-    setIsSigningOut
+    setIsSigningOut,
+    refetchProfile
   };
 };
