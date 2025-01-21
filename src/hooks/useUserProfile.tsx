@@ -44,8 +44,7 @@ export const useUserProfile = () => {
           
           console.log("[useUserProfile] Fetching profile for user:", {
             userId: session.user.id,
-            email: session.user.email,
-            supabaseUrl: supabase.supabaseUrl
+            email: session.user.email
           });
 
           const { data: profileData, error: profileError } = await supabase
