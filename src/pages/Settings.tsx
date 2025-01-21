@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,20 @@ const Settings = () => {
     setError(null);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      console.log("Auth state changed:", event);
+      if (event === 'USER_UPDATED') {
+        toast.success(t('settings.password.updated'));
+        resetForm();
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [t]);
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,11 +64,8 @@ const Settings = () => {
         console.error("Error updating password:", error);
         setError(error.message);
         setIsLoading(false);
-      } else {
-        console.log("Password updated successfully");
-        toast.success(t('settings.password.updated'));
-        resetForm();
       }
+      // Note: We don't need to handle success here as it will be caught by the onAuthStateChange listener
     } catch (err) {
       console.error("Error in password update:", err);
       setError(t('error.generic'));
