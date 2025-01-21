@@ -65,6 +65,8 @@ export const UserProfileMenu = () => {
   const initials = getUserInitials(userProfile);
   const displayName = getFullName(userProfile, userEmail);
 
+  console.log("UserProfileMenu - Current profile:", { userProfile, initials, displayName });
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
