@@ -46,7 +46,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Create auth user with the simple password from the request
+    // Step 1: Create auth user with the simple password from the request
     console.log("Creating auth user with provided password...");
     const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email,
@@ -82,19 +82,19 @@ serve(async (req) => {
     console.log("Auth user created successfully:", user.id);
 
     // Step 2: Update customer subscription plan
-    console.log("Updating customer subscription plan...");
-    const { error: updateError } = await supabase
+    console.log("Creating customer record...");
+    const { error: customerError } = await supabase
       .from('customers')
-      .update({ 
+      .insert({ 
+        id: user.id,
         subscription_plan: subscriptionPlan,
         created_by: createdBy 
-      })
-      .eq('id', user.id);
+      });
 
-    if (updateError) {
-      console.error("Error updating customer:", updateError);
+    if (customerError) {
+      console.error("Error creating customer:", customerError);
       return new Response(
-        JSON.stringify({ error: updateError.message }),
+        JSON.stringify({ error: customerError.message }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 400 
@@ -102,7 +102,22 @@ serve(async (req) => {
       );
     }
 
-    // Step 3: Create profile for the user
+    // Step 3: Send welcome email
+    console.log("Sending welcome email...");
+    const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+      body: {
+        email: email,
+        displayName: displayName,
+        password: password
+      }
+    });
+
+    if (emailError) {
+      console.error("Error sending welcome email:", emailError);
+      // Log the error but continue with profile creation
+    }
+
+    // Step 4: Create profile (only after successful email sending)
     console.log("Creating profile for user...");
     const { error: profileError } = await supabase
       .from('profiles')
@@ -115,8 +130,13 @@ serve(async (req) => {
 
     if (profileError) {
       console.error("Error creating profile:", profileError);
-      // Don't return error here as the user and customer are already created
-      // Just log it for debugging
+      return new Response(
+        JSON.stringify({ error: "Failed to create profile" }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
     }
 
     return new Response(
