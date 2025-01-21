@@ -22,9 +22,9 @@ export const CustomersTable = ({
         <TableHeader className="bg-[#e5e5e5] dark:bg-[#303032]">
           <TableRow className="hover:bg-[#e5e5e5] dark:hover:bg-[#303032]">
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.userId')}</TableHead>
-            <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.email')}</TableHead>
-            <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.role')}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{language === 'sv' ? 'Namn' : 'Name'}</TableHead>
+            <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.role')}</TableHead>
+            <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.email')}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.created')}</TableHead>
             <TableHead className="text-xs font-normal text-black dark:text-white">{t('table.subscription')}</TableHead>
             <TableHead className="text-right text-xs font-normal text-black dark:text-white">{t('table.actions')}</TableHead>
