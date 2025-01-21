@@ -40,16 +40,15 @@ const Settings = () => {
       if (error) {
         console.error("Error updating password:", error);
         setError(error.message);
-        return;
+      } else {
+        console.log("Password updated successfully");
+        toast.success(t('settings.password.updated'));
+        
+        // Reset form and loading state
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
       }
-
-      console.log("Password updated successfully");
-      toast.success(t('settings.password.updated'));
-      
-      // Reset form
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
     } catch (err) {
       console.error("Error in password update:", err);
       setError(t('error.generic'));
