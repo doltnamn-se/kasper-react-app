@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNotifications } from "@/hooks/useNotifications";
 import { Badge } from "@/components/ui/badge";
+import { useQuery } from "@tanstack/react-query";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
@@ -15,6 +16,45 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const { t } = useLanguage();
   const [isAdmin, setIsAdmin] = useState(false);
   const { notifications = [] } = useNotifications();
+
+  // Fetch checklist data for generating checklist notifications
+  const { data: checklistProgress } = useQuery({
+    queryKey: ['checklist-progress-notifications'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return null;
+
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('*')
+        .eq('customer_id', session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching checklist progress:', error);
+        return null;
+      }
+
+      return data;
+    }
+  });
+
+  const { data: checklistItems = [] } = useQuery({
+    queryKey: ['checklist-items-notifications'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('checklist_items')
+        .select('*')
+        .order('order_index');
+
+      if (error) {
+        console.error('Error fetching checklist items:', error);
+        return [];
+      }
+
+      return data;
+    }
+  });
 
   // Get unread notifications count for each section
   const getUnreadCount = (path: string) => {
@@ -29,7 +69,36 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     const type = typeMap[path.replace('/', '')];
     if (!type) return 0;
     
-    return notifications.filter(n => !n.read && n.type === type).length;
+    // Count regular notifications
+    const regularNotificationsCount = notifications.filter(n => !n.read && n.type === type).length;
+
+    // For checklist, also include incomplete checklist items
+    if (type === 'checklist') {
+      const incompleteChecklistItems = checklistItems.filter((item, index) => {
+        if (!checklistProgress) return true;
+        
+        let isCompleted = false;
+        switch (index) {
+          case 0:
+            isCompleted = checklistProgress.password_updated || false;
+            break;
+          case 1:
+            isCompleted = (checklistProgress.selected_sites?.length || 0) > 0;
+            break;
+          case 2:
+            isCompleted = (checklistProgress.removal_urls?.length || 0) > 0;
+            break;
+          case 3:
+            isCompleted = !!(checklistProgress.address && checklistProgress.personal_number);
+            break;
+        }
+        return !isCompleted;
+      }).length;
+
+      return regularNotificationsCount + incompleteChecklistItems;
+    }
+
+    return regularNotificationsCount;
   };
 
   useEffect(() => {
