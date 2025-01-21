@@ -1,20 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Profile } from "@/types/customer";
+import { toast } from "sonner";
 
 export const useUserProfile = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const initializingRef = useRef(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
+    let authSubscription: { data: { subscription: { unsubscribe: () => void } } };
 
     const initUser = async () => {
+      // Prevent multiple simultaneous initializations
+      if (initializingRef.current) {
+        console.log("Already initializing user profile, skipping...");
+        return;
+      }
+
       try {
+        initializingRef.current = true;
         console.log("Initializing user profile...");
+        
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -54,6 +65,7 @@ export const useUserProfile = () => {
               userId: session.user.id,
               email: session.user.email
             });
+            toast.error("Error loading profile");
           }
           
           if (mounted && profileData) {
@@ -68,12 +80,18 @@ export const useUserProfile = () => {
           setUserProfile(null);
         }
         navigate("/auth");
+      } finally {
+        if (mounted) {
+          initializingRef.current = false;
+        }
       }
     };
 
+    // Initial profile load
     initUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Set up auth state change listener
+    authSubscription = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       
       console.log("Auth state changed:", event);
@@ -85,23 +103,17 @@ export const useUserProfile = () => {
         return;
       }
 
-      if (session?.user?.email) {
-        setUserEmail(session.user.email);
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select()
-          .eq('id', session.user.id)
-          .maybeSingle();
-        
-        if (mounted && profileData) {
-          setUserProfile(profileData);
-        }
+      if (event === 'USER_UPDATED' || event === 'SIGNED_IN') {
+        await initUser();
       }
     });
 
+    // Cleanup function
     return () => {
+      console.log("Cleaning up useUserProfile hook");
       mounted = false;
-      subscription.unsubscribe();
+      initializingRef.current = false;
+      authSubscription.data.subscription.unsubscribe();
     };
   }, [navigate]);
 
