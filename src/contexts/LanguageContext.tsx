@@ -1,177 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Language, Translations } from '@/translations/types';
+import { en } from '@/translations/en';
+import { sv } from '@/translations/sv';
 
-type Language = 'en' | 'sv';
+const translations: Record<Language, Translations> = { en, sv };
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: keyof Translations) => string;
 }
-
-const translations = {
-  en: {
-    // Auth related
-    'welcome.back': 'Welcome back',
-    'sign.in': 'Sign in to your account',
-    'signing.in': 'Signing in...',
-    'no.account': "Don't have an account?",
-    'register': 'Get started',
-    'email': 'Email',
-    'password': 'Password',
-    'new.password': 'New password',
-    'email.placeholder': 'Enter your email',
-    'password.placeholder': 'Enter your password',
-    'new.password.placeholder': 'Enter new password',
-    'phone.placeholder': 'Enter phone number',
-    'token.placeholder': 'Enter verification code',
-    'dark.mode': 'Dark mode',
-    'forgot.password': 'Forgot your password?',
-    'send.recovery.link': 'Send recovery link',
-    'sending.recovery.link': 'Sending recovery link...',
-    'update.password': 'Update password',
-    'updating.password': 'Updating password...',
-    'cancel': 'Cancel',
-    // Navigation
-    'nav.home': 'Dashboard',
-    'nav.checklist': 'Checklist',
-    'nav.my.links': 'My Links',
-    'nav.address.alerts': 'Address Alerts',
-    'nav.guides': 'Guides',
-    'nav.admin.dashboard': 'Dashboard',
-    'nav.admin.customers': 'Customers',
-    // Profile menu
-    'profile.manage': 'Manage Profile',
-    'profile.billing': 'Subscription',
-    'profile.settings': 'Settings',
-    'profile.sign.out': 'Sign out',
-    'profile.signing.out': 'Signing out...',
-    // Search
-    'search.placeholder': 'Search...',
-    // Footer links
-    'privacy': 'Privacy',
-    'license': 'License',
-    'terms': 'Terms',
-    // Page titles
-    'overview.title': 'Overview',
-    'overview.welcome': 'Welcome to your overview.',
-    // Error messages
-    'error.invalid.credentials': 'Invalid login credentials',
-    'error.email.not.confirmed': 'Please confirm your email before logging in',
-    'error.user.not.found': 'No user found with these credentials',
-    'error.invalid.email.password': 'Invalid email or password',
-    'error.missing.email.phone': 'Missing email or phone',
-    'error.missing.password': 'Missing password',
-    'error.password.too.short': 'Password must be at least 6 characters',
-    'error.email.taken': 'Email is already taken',
-    'error.phone.taken': 'Phone number is already taken',
-    'error.weak.password': 'Password is too weak',
-    'error.invalid.email': 'Invalid email',
-    'error.invalid.phone': 'Invalid phone number',
-    'error.generic': 'An error occurred. Please try again later.',
-    'toast.signed.out.title': 'Signed out successfully',
-    'toast.signed.out.description': 'You have been logged out of your account.',
-    'toast.error.title': 'Error',
-    'toast.error.description': 'Could not sign out. Please try again.',
-    'toast.error.unexpected': 'An unexpected error occurred. Please try again.',
-    // Table related
-    'table.userId': 'UID',
-    'table.email': 'Email',
-    'table.role': 'Role',
-    'table.created': 'Created',
-    'table.subscription': 'Subscription',
-    'table.actions': 'Actions',
-    // Settings related
-    'settings.change.password': 'Change password',
-    'settings.current.password': 'Current password',
-    'settings.new.password': 'New password',
-    'settings.confirm.password': 'Confirm new password',
-    'settings.update.password': 'Update password',
-    'settings.updating.password': 'Updating password...',
-    'settings.password.updated': 'Password updated successfully',
-    'error.passwords.dont.match': 'Passwords do not match',
-  },
-  sv: {
-    // Auth related
-    'welcome.back': 'Välkommen tillbaka',
-    'sign.in': 'Logga in på ditt konto',
-    'signing.in': 'Loggar in...',
-    'no.account': 'Har du inget konto?',
-    'register': 'Kom igång',
-    'email': 'E-post',
-    'password': 'Lösenord',
-    'new.password': 'Nytt lösenord',
-    'email.placeholder': 'Ange din e-postadress',
-    'password.placeholder': 'Ange ditt lösenord',
-    'new.password.placeholder': 'Ange nytt lösenord',
-    'phone.placeholder': 'Ange telefonnummer',
-    'token.placeholder': 'Ange verifieringskod',
-    'dark.mode': 'Mörkt läge',
-    'forgot.password': 'Glömt ditt lösenord?',
-    'send.recovery.link': 'Skicka återställningslänk',
-    'sending.recovery.link': 'Skickar återställningslänk...',
-    'update.password': 'Uppdatera lösenord',
-    'updating.password': 'Uppdaterar lösenord...',
-    'cancel': 'Avbryt',
-    // Navigation
-    'nav.home': 'Dashboard',
-    'nav.checklist': 'Checklista',
-    'nav.my.links': 'Mina länkar',
-    'nav.address.alerts': 'Adresslarm',
-    'nav.guides': 'Guider',
-    'nav.admin.dashboard': 'Dashboard',
-    'nav.admin.customers': 'Kunder',
-    // Profile menu
-    'profile.manage': 'Hantera profil',
-    'profile.billing': 'Prenumeration',
-    'profile.settings': 'Inställningar',
-    'profile.sign.out': 'Logga ut',
-    'profile.signing.out': 'Loggar ut...',
-    // Search
-    'search.placeholder': 'Sök...',
-    // Footer links
-    'privacy': 'Integritet',
-    'license': 'Licensvillkor',
-    'terms': 'Användarvillkor',
-    // Page titles
-    'overview.title': 'Översikt',
-    'overview.welcome': 'Välkommen till din översikt.',
-    // Error messages
-    'error.invalid.credentials': 'Felaktigt användarnamn eller lösenord',
-    'error.email.not.confirmed': 'Vänligen bekräfta din e-postadress innan du loggar in',
-    'error.user.not.found': 'Ingen användare hittades med dessa uppgifter',
-    'error.invalid.email.password': 'Ogiltig e-postadress eller lösenord',
-    'error.missing.email.phone': 'E-postadress eller telefonnummer saknas',
-    'error.missing.password': 'Lösenord saknas',
-    'error.password.too.short': 'Lösenordet måste vara minst 6 tecken',
-    'error.email.taken': 'E-postadressen används redan',
-    'error.phone.taken': 'Telefonnumret används redan',
-    'error.weak.password': 'Lösenordet är för svagt',
-    'error.invalid.email': 'Ogiltig e-postadress',
-    'error.invalid.phone': 'Ogiltigt telefonnummer',
-    'error.generic': 'Ett fel uppstod. Försök igen senare.',
-    'toast.signed.out.title': 'Du har loggats ut',
-    'toast.signed.out.description': 'Du har loggats ut från ditt konto.',
-    'toast.error.title': 'Fel',
-    'toast.error.description': 'Kunde inte logga ut. Försök igen.',
-    'toast.error.unexpected': 'Ett oväntat fel uppstod. Försök igen.',
-    // Table related
-    'table.userId': 'UID',
-    'table.email': 'E-post',
-    'table.role': 'Roll',
-    'table.created': 'Skapad',
-    'table.subscription': 'Prenumeration',
-    'table.actions': 'Åtgärder',
-    // Settings related
-    'settings.change.password': 'Byt lösenord',
-    'settings.current.password': 'Nuvarande lösenord',
-    'settings.new.password': 'Nytt lösenord',
-    'settings.confirm.password': 'Bekräfta nytt lösenord',
-    'settings.update.password': 'Uppdatera lösenord',
-    'settings.updating.password': 'Uppdaterar lösenord...',
-    'settings.password.updated': 'Lösenordet har uppdaterats',
-    'error.passwords.dont.match': 'Lösenorden matchar inte',
-  }
-};
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
@@ -185,8 +23,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     localStorage.setItem('language', language);
   }, [language]);
 
-  const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations['en']] || key;
+  const t = (key: keyof Translations): string => {
+    return translations[language][key] || key;
   };
 
   return (
