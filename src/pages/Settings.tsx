@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Settings = () => {
@@ -27,7 +27,10 @@ const Settings = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       console.log("Auth state changed:", event);
       if (event === 'USER_UPDATED') {
-        toast.success(t('settings.password.updated'));
+        toast({
+          title: t('settings.success'),
+          description: t('settings.password.updated'),
+        });
         resetForm();
       }
     });
