@@ -8,7 +8,9 @@ interface HidingSitesSelectionProps {
   onComplete: () => void;
 }
 
-const HIDING_SITES = [
+type HidingSite = "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo";
+
+const HIDING_SITES: { id: HidingSite; name: string; description: string }[] = [
   { id: 'eniro', name: 'Eniro', description: 'Phone directory and people search' },
   { id: 'hitta', name: 'Hitta.se', description: 'People and business search' },
   { id: 'birthday', name: 'Birthday.se', description: 'Birthday calendar' },
@@ -17,11 +19,11 @@ const HIDING_SITES = [
 ];
 
 export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) => {
-  const [selectedSites, setSelectedSites] = useState<string[]>([]);
+  const [selectedSites, setSelectedSites] = useState<HidingSite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleSiteToggle = (siteId: string) => {
+  const handleSiteToggle = (siteId: HidingSite) => {
     setSelectedSites(prev =>
       prev.includes(siteId)
         ? prev.filter(id => id !== siteId)
