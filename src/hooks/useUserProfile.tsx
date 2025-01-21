@@ -9,28 +9,28 @@ export const useUserProfile = () => {
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const initializingRef = useRef(false);
+  const mountedRef = useRef(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    let mounted = true;
-    let authSubscription: { data: { subscription: { unsubscribe: () => void } } };
+    console.log("Setting up useUserProfile effect");
+    mountedRef.current = true;
 
     const initUser = async () => {
-      // Prevent multiple simultaneous initializations
-      if (initializingRef.current) {
-        console.log("Already initializing user profile, skipping...");
+      if (!mountedRef.current || initializingRef.current) {
+        console.log("Skipping initialization - component unmounted or already initializing");
         return;
       }
 
       try {
         initializingRef.current = true;
-        console.log("Initializing user profile...");
+        console.log("Starting user profile initialization...");
         
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
           console.error("Session error:", sessionError);
-          if (mounted) {
+          if (mountedRef.current) {
             setUserEmail(null);
             setUserProfile(null);
           }
@@ -40,7 +40,7 @@ export const useUserProfile = () => {
 
         if (!session) {
           console.log("No active session found");
-          if (mounted) {
+          if (mountedRef.current) {
             setUserEmail(null);
             setUserProfile(null);
           }
@@ -48,7 +48,7 @@ export const useUserProfile = () => {
           return;
         }
         
-        if (session?.user?.email && mounted) {
+        if (session?.user?.email && mountedRef.current) {
           console.log("Setting user email:", session.user.email);
           setUserEmail(session.user.email);
           
@@ -68,21 +68,22 @@ export const useUserProfile = () => {
             toast.error("Error loading profile");
           }
           
-          if (mounted && profileData) {
+          if (mountedRef.current && profileData) {
             console.log("Profile data fetched successfully:", profileData);
             setUserProfile(profileData);
           }
         }
       } catch (err) {
         console.error("Error in initUser:", err);
-        if (mounted) {
+        if (mountedRef.current) {
           setUserEmail(null);
           setUserProfile(null);
         }
         navigate("/auth");
       } finally {
-        if (mounted) {
+        if (mountedRef.current) {
           initializingRef.current = false;
+          console.log("User profile initialization completed");
         }
       }
     };
@@ -91,12 +92,16 @@ export const useUserProfile = () => {
     initUser();
 
     // Set up auth state change listener
-    authSubscription = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (!mounted) return;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+      if (!mountedRef.current) {
+        console.log("Ignoring auth state change - component unmounted");
+        return;
+      }
       
       console.log("Auth state changed:", event);
       
       if (event === 'SIGNED_OUT') {
+        console.log("User signed out, clearing profile data");
         setUserEmail(null);
         setUserProfile(null);
         navigate("/auth");
@@ -104,6 +109,7 @@ export const useUserProfile = () => {
       }
 
       if (event === 'USER_UPDATED' || event === 'SIGNED_IN') {
+        console.log("User updated or signed in, reinitializing profile");
         await initUser();
       }
     });
@@ -111,9 +117,9 @@ export const useUserProfile = () => {
     // Cleanup function
     return () => {
       console.log("Cleaning up useUserProfile hook");
-      mounted = false;
+      mountedRef.current = false;
       initializingRef.current = false;
-      authSubscription.data.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, [navigate]);
 
