@@ -20,6 +20,7 @@ export const supabase = createClient<Database>(
       headers: {
         'X-Client-Info': 'supabase-js-client',
         'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
     },
     realtime: {
