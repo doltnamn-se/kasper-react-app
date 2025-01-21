@@ -33,9 +33,15 @@ export const TopNav = () => {
 
   return (
     <div className={cn(
-      "fixed top-0 right-0 h-16 z-50 bg-white dark:bg-[#1c1c1e] border-b border-[#e5e7eb] dark:border-[#232325] transition-[left] duration-200",
-      isMobile ? "left-0 px-4" : 
-      isCollapsed ? "left-16 px-12" : "left-72 px-12"
+      "top-0 right-0 h-16 z-[100] bg-white dark:bg-[#1c1c1e] transition-[left] duration-200",
+      isMobile ? (
+        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325]"
+      ) : (
+        cn(
+          "bg-[#f4f4f4] dark:bg-[#1c1c1e]",
+          isCollapsed ? "left-16 px-12" : "left-72 px-12"
+        )
+      )
     )}>
       <div className="flex items-center justify-between h-full">
         {isMobile && (
