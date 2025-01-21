@@ -136,7 +136,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         </div>
         {unreadCount > 0 && (
           <Badge 
-            className="h-5 w-6 p-0 flex items-center justify-center text-xs leading-none bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0"
+            className="h-5 w-6 p-0 flex items-center justify-center text-xs leading-none bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
           >
             {unreadCount}
           </Badge>

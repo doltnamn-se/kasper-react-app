@@ -99,17 +99,17 @@ export const NotificationButtons = () => {
 
   return (
     <>
-      <Button variant="ghost" size="icon" className="text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8">
+      <Button variant="ghost" size="icon" className="text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 pr-1">
         <MessageSquare className="w-4 h-4" />
       </Button>
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="relative text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8">
+          <Button variant="ghost" size="icon" className="relative text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 pr-1">
             <Bell className="w-4 h-4" />
             {totalUnreadCount > 0 && (
               <Badge 
-                className="absolute -top-0.5 -right-0.5 h-5 w-6 p-0 flex items-center justify-center text-xs leading-none bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0"
+                className="absolute -top-0.5 -right-0.5 h-4 w-5 p-0 flex items-center justify-center text-[10px] leading-none bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#001400] border-0 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
               >
                 {totalUnreadCount}
               </Badge>
