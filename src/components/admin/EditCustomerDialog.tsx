@@ -15,7 +15,7 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
   const { toast } = useToast();
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleUpdateCustomer = async (firstName: string, lastName: string) => {
+  const handleUpdateCustomer = async (displayName: string) => {
     try {
       setIsUpdating(true);
       console.log('Updating customer profile:', customer.id);
@@ -23,8 +23,7 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
-          first_name: firstName,
-          last_name: lastName,
+          display_name: displayName,
         })
         .eq('id', customer.id);
 
