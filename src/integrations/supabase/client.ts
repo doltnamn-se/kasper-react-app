@@ -19,6 +19,7 @@ export const supabase = createClient<Database>(
     global: {
       headers: {
         'X-Client-Info': 'supabase-js-client',
+        'Accept': 'application/json',
       },
     },
     realtime: {
@@ -28,18 +29,6 @@ export const supabase = createClient<Database>(
     },
     db: {
       schema: 'public'
-    },
-    // Add fetch configuration
-    fetch: (url, options) => {
-      const fetchOptions = {
-        ...options,
-        credentials: 'include' as RequestCredentials,
-        headers: {
-          ...options?.headers,
-          'Accept': 'application/json',
-        }
-      };
-      return fetch(url, fetchOptions);
     }
   }
 );

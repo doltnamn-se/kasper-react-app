@@ -30,11 +30,11 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
 
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({
+        .update({ 
           display_name: displayName,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', customer.id);
+          updated_at: new Date().toISOString()
+        } as any)
+        .eq('id', customer.id as string);
 
       if (profileError) {
         console.error('Error updating profile:', profileError);

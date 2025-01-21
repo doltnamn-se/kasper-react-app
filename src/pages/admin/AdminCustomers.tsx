@@ -17,7 +17,6 @@ const AdminCustomers = () => {
     queryFn: async () => {
       console.log('Fetching customers...');
       
-      // First fetch customers
       const { data: customersData, error: customersError } = await supabase
         .from('customers')
         .select('*');
@@ -27,7 +26,10 @@ const AdminCustomers = () => {
         throw customersError;
       }
 
-      // Then fetch profiles for these customers
+      if (!customersData) {
+        return [];
+      }
+
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
         .select('*')
@@ -38,10 +40,9 @@ const AdminCustomers = () => {
         throw profilesError;
       }
 
-      // Combine the data
       const customersWithProfiles = customersData.map(customer => ({
         ...customer,
-        profile: profilesData.find(profile => profile.id === customer.id) || null
+        profile: profilesData?.find(profile => profile.id === customer.id) || null
       }));
 
       console.log('Customers with profiles:', customersWithProfiles);
@@ -59,7 +60,6 @@ const AdminCustomers = () => {
     },
   });
 
-  // Set up real-time subscription
   useEffect(() => {
     console.log('Setting up real-time subscription...');
     
