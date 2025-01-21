@@ -1,202 +1,57 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': '*',
-  'Access-Control-Max-Age': '86400',
-};
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { corsHeaders, handleOptionsRequest, addCorsHeaders } from "../_shared/cors.ts";
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 serve(async (req) => {
-  console.log("Received request to send-activation-email function");
-
-  if (req.method === 'OPTIONS') {
-    console.log("Handling OPTIONS request");
-    return new Response(null, { 
-      headers: corsHeaders,
-      status: 204
-    });
-  }
+  // Handle CORS preflight requests
+  const optionsResponse = handleOptionsRequest(req);
+  if (optionsResponse) return optionsResponse;
 
   try {
     const { email, displayName, password } = await req.json();
-    console.log("Processing email request for:", email);
 
     if (!email || !displayName || !password) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
+      throw new Error('Missing required fields');
     }
 
-    const emailResponse = await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
         from: 'Doltnamn <no-reply@doltnamn.se>',
         to: [email],
-        subject: 'Välkommen till Doltnamn - Dina inloggningsuppgifter',
+        subject: 'Welcome to Doltnamn - Your Account Details',
         html: `
-          <!DOCTYPE html>
-          <html style="background-color: #f4f4f4 !important; margin: 0; padding: 0;">
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Välkommen till Doltnamn</title>
-            <style>
-              html, body {
-                background-color: #f4f4f4 !important;
-                margin: 0;
-                padding: 0;
-              }
-              body {
-                font-family: Helvetica, Arial, sans-serif;
-                line-height: 1.6;
-                color: #333333;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-              }
-              .container {
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f4f4f4 !important;
-              }
-              .logo-container {
-                text-align: center;
-                margin-bottom: 20px;
-                padding: 20px;
-              }
-              .logo-container img {
-                max-width: 120px;
-                height: auto;
-              }
-              .email-wrapper {
-                background-color: #ffffff;
-                border-radius: 8px;
-                padding: 40px;
-                margin: 0;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-              }
-              h1 {
-                color: #161618;
-                font-size: 24px;
-                margin-bottom: 20px;
-                text-align: center;
-              }
-              p {
-                color: #4a4a4a;
-                margin-bottom: 20px;
-              }
-              .credentials {
-                background-color: #f9f9f9;
-                padding: 20px;
-                border-radius: 4px;
-                margin: 20px 0;
-                border-left: 4px solid #000000;
-              }
-              .button {
-                display: inline-block;
-                background-color: #000000;
-                color: #ffffff !important;
-                padding: 12px 24px;
-                text-decoration: none;
-                border-radius: 4px;
-                margin: 20px 0;
-                font-weight: bold;
-              }
-              .button:hover {
-                background-color: #333333;
-              }
-              .footer {
-                text-align: center;
-                color: #666666;
-                font-size: 12px;
-                margin-top: 30px;
-                padding-top: 20px;
-                border-top: 1px solid #eeeeee;
-              }
-              .security-notice {
-                font-size: 14px;
-                color: #666666;
-                padding: 15px;
-                border-radius: 4px;
-                background-color: #fff9e6;
-                border: 1px solid #ffe5b4;
-                margin: 20px 0;
-              }
-              .security-notice:before {
-                content: "⚠️";
-                margin-right: 8px;
-              }
-            </style>
-          </head>
-          <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0;">
-            <div class="container">
-              <div class="logo-container">
-                <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-              </div>
-              <div class="email-wrapper">
-                <h1>Välkommen till Doltnamn, ${displayName}!</h1>
-                <p>Ditt konto har skapats. Här är dina inloggningsuppgifter:</p>
-                <div class="credentials">
-                  <p><strong>E-post:</strong> ${email}</p>
-                  <p><strong>Lösenord:</strong> ${password}</p>
-                </div>
-                <div style="text-align: center;">
-                  <a href="https://app.doltnamn.se/auth" class="button">Logga in på ditt konto</a>
-                </div>
-                <div class="security-notice">
-                  Av säkerhetsskäl rekommenderar vi att du ändrar ditt lösenord efter din första inloggning.
-                </div>
-                <div class="footer">
-                  <p>&copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.</p>
-                </div>
-              </div>
-            </div>
-          </body>
-          </html>
+          <p>Hello ${displayName},</p>
+          <p>Your account has been created successfully. Here are your login credentials:</p>
+          <p>Email: ${email}</p>
+          <p>Password: ${password}</p>
+          <p>Please login at <a href="https://app.doltnamn.se/auth">https://app.doltnamn.se/auth</a></p>
+          <p>For security reasons, we recommend changing your password after your first login.</p>
+          <p>Best regards,<br>The Doltnamn Team</p>
         `,
       }),
     });
 
-    if (!emailResponse.ok) {
-      const errorData = await emailResponse.text();
-      console.error("Error sending email:", errorData);
-      return new Response(
-        JSON.stringify({ error: "Failed to send welcome email" }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to send email');
     }
 
-    console.log("Welcome email sent successfully");
-    return new Response(
-      JSON.stringify({ success: true }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
-    );
-
-  } catch (err) {
-    console.error("Error in send-activation-email function:", err);
-    return new Response(
-      JSON.stringify({ error: err.message || "An unexpected error occurred" }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400 
-      }
-    );
+    return addCorsHeaders(new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }));
+  } catch (error) {
+    console.error('Error in send-activation-email:', error);
+    return addCorsHeaders(new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    }));
   }
 });

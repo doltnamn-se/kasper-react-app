@@ -1,88 +1,55 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { corsHeaders, handleOptionsRequest, addCorsHeaders } from "../_shared/cors.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Handle CORS preflight requests
+  const optionsResponse = handleOptionsRequest(req);
+  if (optionsResponse) return optionsResponse;
 
   try {
-    const { email } = await req.json();
-    console.log("Processing password reset request for:", email);
+    const { email, resetLink } = await req.json();
 
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    const origin = req.headers.get('origin');
-    console.log("Request origin:", origin);
-
-    // Generate password reset link with direct callback URL
-    const { data, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'recovery',
-      email,
-      options: {
-        redirectTo: `${origin}/auth?type=recovery`,
-      }
-    });
-
-    if (resetError) {
-      console.error("Error generating reset link:", resetError);
-      throw resetError;
+    if (!email || !resetLink) {
+      throw new Error('Missing required fields');
     }
 
-    console.log("Reset link generated successfully");
-
-    const resendResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Doltnamn <no-reply@doltnamn.se>",
+        from: 'Doltnamn <no-reply@doltnamn.se>',
         to: [email],
-        subject: "Reset Your Doltnamn Password",
+        subject: 'Password Reset Request - Doltnamn',
         html: `
           <p>Hello,</p>
-          <p>A password reset has been requested for your account. Click the link below to reset your password:</p>
-          <p><a href="${data.properties.action_link}">${data.properties.action_link}</a></p>
-          <p>If you didn't make this request, you can safely ignore this email.</p>
+          <p>We received a request to reset your password. Click the link below to reset it:</p>
+          <p><a href="${resetLink}">${resetLink}</a></p>
+          <p>If you didn't request this, you can safely ignore this email.</p>
           <p>Best regards,<br>The Doltnamn Team</p>
         `,
       }),
     });
 
-    if (!resendResponse.ok) {
-      const errorText = await resendResponse.text();
-      console.error("Error sending email:", errorText);
-      throw new Error(`Failed to send email: ${errorText}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to send email');
     }
 
-    console.log("Password reset email sent successfully");
-
-    return new Response(JSON.stringify({ success: true }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    return addCorsHeaders(new Response(JSON.stringify(data), {
       status: 200,
-    });
-
-  } catch (err) {
-    console.error("Error in password reset function:", err);
-    return new Response(
-      JSON.stringify({ 
-        error: err.message || "An unexpected error occurred",
-        details: err.toString()
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
+      headers: { 'Content-Type': 'application/json' },
+    }));
+  } catch (error) {
+    console.error('Error in send-password-reset:', error);
+    return addCorsHeaders(new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    }));
   }
 });
