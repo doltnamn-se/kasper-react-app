@@ -46,13 +46,15 @@ const AdminCustomers = () => {
       console.log('Customers with profiles:', customersWithProfiles);
       return customersWithProfiles as CustomerWithProfile[];
     },
-    onError: (error) => {
-      console.error('Error in customers query:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to fetch customers",
-      });
+    meta: {
+      onError: (error: Error) => {
+        console.error('Error in customers query:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to fetch customers",
+        });
+      },
     },
   });
 
