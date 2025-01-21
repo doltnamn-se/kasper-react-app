@@ -1,89 +1,149 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, handleOptionsRequest, addCorsHeaders } from "../_shared/cors.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
-const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://app.doltnamn.se',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Max-Age': '86400',
+};
 
 serve(async (req) => {
+  console.log("Received request to create-customer function");
+  
   // Handle CORS preflight requests
-  const optionsResponse = handleOptionsRequest(req);
-  if (optionsResponse) return optionsResponse;
+  if (req.method === 'OPTIONS') {
+    console.log("Handling OPTIONS request");
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
+  }
 
   try {
-    console.log('Starting customer creation process...');
-    const { email, displayName, subscriptionPlan, createdBy, password } = await req.json();
+    console.log("Processing customer creation request");
+    const requestData = await req.json();
+    console.log("Received request data:", requestData);
 
-    // Validate input
-    if (!email || !displayName || !subscriptionPlan || !password) {
-      console.error('Missing required fields:', { email, displayName, subscriptionPlan, password });
-      throw new Error("Missing required fields");
+    const { email, displayName, subscriptionPlan, createdBy, password } = requestData;
+
+    if (!email || !displayName || !subscriptionPlan || !createdBy || !password) {
+      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy });
+      return new Response(
+        JSON.stringify({
+          error: "Missing required fields",
+          received: { email, displayName, subscriptionPlan, createdBy }
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
     }
 
-    console.log('Creating auth user...');
-    // Step 1: Create auth user
-    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // Create auth user with the simple password from the request
+    console.log("Creating auth user with provided password...");
+    const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
-      user_metadata: { displayName }
+      user_metadata: {
+        display_name: displayName
+      }
     });
 
-    if (authError) {
-      console.error('Error creating auth user:', authError);
-      throw authError;
+    if (createUserError) {
+      console.error("Error creating auth user:", createUserError);
+      return new Response(
+        JSON.stringify({ error: createUserError.message }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
     }
 
-    if (!authData.user) {
-      console.error('No user data returned from auth creation');
-      throw new Error("Failed to create auth user");
+    if (!user) {
+      console.error("No user returned after creation");
+      return new Response(
+        JSON.stringify({ error: "Failed to create user" }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
     }
 
-    console.log('Auth user created successfully:', authData.user.id);
+    console.log("Auth user created successfully:", user.id);
 
-    // Step 2: Create customer record
-    console.log('Creating customer record...');
-    const { error: customerError } = await supabase
+    // Step 2: Update customer subscription plan
+    console.log("Updating customer subscription plan...");
+    const { error: updateError } = await supabase
       .from('customers')
-      .insert([{
-        id: authData.user.id,
+      .update({ 
         subscription_plan: subscriptionPlan,
-        created_by: createdBy || null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }]);
+        created_by: createdBy 
+      })
+      .eq('id', user.id);
 
-    if (customerError) {
-      console.error('Error creating customer record:', customerError);
-      // Attempt to clean up the auth user if customer creation fails
-      await supabase.auth.admin.deleteUser(authData.user.id);
-      throw customerError;
+    if (updateError) {
+      console.error("Error updating customer:", updateError);
+      return new Response(
+        JSON.stringify({ error: updateError.message }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
     }
 
-    console.log('Customer created successfully');
-    return addCorsHeaders(new Response(
-      JSON.stringify({ 
-        message: "Customer created successfully",
-        userId: authData.user.id 
-      }),
-      { 
-        status: 200,
-        headers: { "Content-Type": "application/json" }
-      }
-    ));
+    // Step 3: Create profile for the user
+    console.log("Creating profile for user...");
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({
+        id: user.id,
+        email: email,
+        display_name: displayName,
+        role: 'customer'
+      });
 
-  } catch (error) {
-    console.error('Error in customer creation process:', error);
-    return addCorsHeaders(new Response(
+    if (profileError) {
+      console.error("Error creating profile:", profileError);
+      // Don't return error here as the user and customer are already created
+      // Just log it for debugging
+    }
+
+    return new Response(
       JSON.stringify({ 
-        error: error.message || "An unexpected error occurred",
-        details: error.details || null
+        success: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          created_at: user.created_at
+        }
       }),
       { 
-        status: 400,
-        headers: { "Content-Type": "application/json" }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200 
       }
-    ));
+    );
+
+  } catch (err) {
+    console.error("Error in create-customer function:", err);
+    return new Response(
+      JSON.stringify({
+        error: err.message || "An unexpected error occurred"
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400 
+      }
+    );
   }
 });

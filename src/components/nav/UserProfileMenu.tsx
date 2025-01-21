@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { getUserInitials, getFullName } from "@/utils/profileUtils";
+import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
@@ -18,6 +18,11 @@ export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+
+  const getDisplayName = () => {
+    if (!userProfile?.display_name) return userEmail;
+    return userProfile.display_name;
+  };
 
   const handleSignOut = async () => {
     if (isSigningOut) {
@@ -63,9 +68,7 @@ export const UserProfileMenu = () => {
   };
 
   const initials = getUserInitials(userProfile);
-  const displayName = getFullName(userProfile, userEmail);
-
-  console.log("UserProfileMenu - Current profile:", { userProfile, initials, displayName });
+  const displayName = getDisplayName();
 
   return (
     <DropdownMenu>

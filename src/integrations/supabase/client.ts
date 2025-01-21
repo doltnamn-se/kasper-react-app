@@ -49,7 +49,7 @@ export const supabase = createClient<Database>(
       console.log('Active session found');
       try {
         // Test the profiles table access
-        const { error: profileError } = await supabase
+        const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .limit(1)

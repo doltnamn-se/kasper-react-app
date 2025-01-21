@@ -1,18 +1,40 @@
-import { Profile } from "@/types/customer";
+interface UserProfile {
+  first_name?: string | null;
+  last_name?: string | null;
+  display_name?: string | null;
+  email?: string | null;
+}
 
-export const getUserInitials = (profile: Profile | null): string => {
-  if (!profile?.display_name) return "U";
+export const getUserInitials = (userProfile: UserProfile | null): string => {
+  if (!userProfile) return 'U';
   
-  const names = profile.display_name.split(" ");
-  if (names.length >= 2) {
-    return `${names[0][0]}${names[1][0]}`.toUpperCase();
+  // First try to get initials from display name
+  if (userProfile.display_name) {
+    const names = userProfile.display_name.split(' ');
+    if (names.length >= 2) {
+      return `${names[0]?.[0] || ''}${names[names.length - 1]?.[0] || ''}`.toUpperCase();
+    }
+    return (userProfile.display_name[0] || 'U').toUpperCase();
   }
-  return names[0][0].toUpperCase();
+  
+  // Then try first and last name
+  if (userProfile.first_name || userProfile.last_name) {
+    return `${userProfile.first_name?.[0] || ''}${userProfile.last_name?.[0] || ''}`.toUpperCase();
+  }
+  
+  // Finally, use email
+  if (userProfile.email) {
+    return (userProfile.email[0] || 'U').toUpperCase();
+  }
+  
+  return 'U';
 };
 
-export const getFullName = (profile: Profile | null, email: string | null): string => {
-  if (profile?.display_name) {
-    return profile.display_name;
+export const getFullName = (userProfile: UserProfile | null, userEmail: string | null): string => {
+  if (!userProfile) return userEmail || '';
+  if (userProfile.display_name) return userProfile.display_name;
+  if (userProfile.first_name || userProfile.last_name) {
+    return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
   }
-  return email || "";
+  return userEmail || '';
 };

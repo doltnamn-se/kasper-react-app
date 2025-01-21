@@ -19,12 +19,4 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    // Add build configuration that works with both Bun and npm
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
-  },
 }));

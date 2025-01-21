@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Profile } from "@/types/customer";
-import { toast } from "sonner";
 
 export const useUserProfile = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -15,11 +14,11 @@ export const useUserProfile = () => {
 
     const initUser = async () => {
       try {
-        console.log("[useUserProfile] Initializing user profile...");
+        console.log("Initializing user profile...");
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
-          console.error("[useUserProfile] Session error:", sessionError);
+          console.error("Session error:", sessionError);
           if (mounted) {
             setUserEmail(null);
             setUserProfile(null);
@@ -29,7 +28,7 @@ export const useUserProfile = () => {
         }
 
         if (!session) {
-          console.log("[useUserProfile] No active session found");
+          console.log("No active session found");
           if (mounted) {
             setUserEmail(null);
             setUserProfile(null);
@@ -39,42 +38,31 @@ export const useUserProfile = () => {
         }
         
         if (session?.user?.email && mounted) {
-          console.log("[useUserProfile] Setting user email:", session.user.email);
+          console.log("Setting user email:", session.user.email);
           setUserEmail(session.user.email);
           
-          console.log("[useUserProfile] Fetching profile for user:", {
-            userId: session.user.id,
-            email: session.user.email
-          });
-
+          console.log("Fetching profile for user:", session.user.id);
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
-            .select('*')
+            .select()
             .eq('id', session.user.id)
-            .single();
+            .maybeSingle();
           
           if (profileError) {
-            console.error("[useUserProfile] Error fetching profile:", {
+            console.error("Error fetching profile:", {
               error: profileError,
               userId: session.user.id,
-              email: session.user.email,
-              statusCode: profileError.code,
-              details: profileError.details,
-              message: profileError.message
+              email: session.user.email
             });
-            toast.error("Failed to load user profile");
-            return;
           }
           
           if (mounted && profileData) {
-            console.log("[useUserProfile] Profile data fetched successfully:", profileData);
+            console.log("Profile data fetched successfully:", profileData);
             setUserProfile(profileData);
-          } else {
-            console.warn("[useUserProfile] No profile data returned for user:", session.user.id);
           }
         }
       } catch (err) {
-        console.error("[useUserProfile] Unexpected error in initUser:", err);
+        console.error("Error in initUser:", err);
         if (mounted) {
           setUserEmail(null);
           setUserProfile(null);
@@ -88,7 +76,7 @@ export const useUserProfile = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       
-      console.log("[useUserProfile] Auth state changed:", event);
+      console.log("Auth state changed:", event);
       
       if (event === 'SIGNED_OUT') {
         setUserEmail(null);
@@ -101,9 +89,9 @@ export const useUserProfile = () => {
         setUserEmail(session.user.email);
         const { data: profileData } = await supabase
           .from('profiles')
-          .select('*')
+          .select()
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
         
         if (mounted && profileData) {
           setUserProfile(profileData);

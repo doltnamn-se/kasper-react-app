@@ -100,7 +100,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
 
   if (customerOnly && isAdmin) {
     console.log("ProtectedRoute: Admin trying to access customer route");
-    return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   return <>{children}</>;

@@ -88,26 +88,9 @@ const Auth = () => {
           return;
         }
         
-        if (event === "SIGNED_IN" && session) {
-          console.log("Auth page: User signed in, checking profile");
-          try {
-            const { data: profileData, error: profileError } = await supabase
-              .from("profiles")
-              .select("id, email, display_name, role")
-              .eq("id", session.user.id)
-              .maybeSingle();
-
-            if (profileError) {
-              console.error("Error fetching profile:", profileError);
-            }
-
-            if (!isResetPasswordMode) {
-              console.log("Auth page: User signed in, navigating to home");
-              navigate("/");
-            }
-          } catch (err) {
-            console.error("Error in initUser:", err);
-          }
+        if (event === "SIGNED_IN" && session && !isResetPasswordMode) {
+          console.log("Auth page: User signed in, navigating to home");
+          navigate("/");
         } else if (event === "SIGNED_OUT") {
           console.log("Auth page: User signed out");
           setErrorMessage("");
