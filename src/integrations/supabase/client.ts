@@ -19,8 +19,6 @@ export const supabase = createClient<Database>(
     global: {
       headers: {
         'X-Client-Info': 'supabase-js-client',
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
       },
     },
     realtime: {
@@ -51,7 +49,7 @@ export const supabase = createClient<Database>(
       console.log('Active session found');
       try {
         // Test the profiles table access
-        const { data: profileData, error: profileError } = await supabase
+        const { error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .limit(1)
