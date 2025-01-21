@@ -1,7 +1,11 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link, useLocation } from "react-router-dom";
 
-export const AdminNavigation = () => {
+interface AdminNavigationProps {
+  toggleMobileMenu: () => void;
+}
+
+export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
   const { t } = useLanguage();
   const location = useLocation();
 
@@ -18,6 +22,7 @@ export const AdminNavigation = () => {
             ? "bg-[#e5e5e5] dark:bg-[#303032] text-black dark:text-white"
             : "text-gray-600 hover:bg-[#e5e5e5] dark:hover:bg-[#303032] dark:text-gray-300"
         }`}
+        onClick={toggleMobileMenu}
       >
         {t('nav.admin.dashboard')}
       </Link>

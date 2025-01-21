@@ -3,7 +3,6 @@ import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
-import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Checklist from "./pages/Checklist";
 import MyLinks from "./pages/MyLinks";
@@ -30,8 +29,7 @@ function App() {
               <Route path="/auth/callback" element={<AuthRoute><Auth /></AuthRoute>} />
 
               {/* Admin Routes */}
-              <Route path="/admin/dashboard" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/admin/customers" element={<ProtectedRoute adminOnly><AdminCustomers /></ProtectedRoute>} />
+              <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
 
               {/* Customer Routes */}
               <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
