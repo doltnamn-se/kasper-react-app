@@ -22,6 +22,10 @@ export interface Translations {
   'update.password': string;
   'updating.password': string;
   'cancel': string;
+  'loading': string;
+  'reset.password': string;
+  'reset.password.success': string;
+  'password.updated': string;
   // Navigation
   'nav.home': string;
   'nav.checklist': string;
@@ -59,6 +63,11 @@ export interface Translations {
   'error.invalid.email': string;
   'error.invalid.phone': string;
   'error.generic': string;
+  'error.signin': string;
+  'error.signout': string;
+  'error.password.update': string;
+  'error.missing.email': string;
+  'error.invalid.recovery.link': string;
   'toast.signed.out.title': string;
   'toast.signed.out.description': string;
   'toast.error.title': string;
