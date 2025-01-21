@@ -18,18 +18,25 @@ export const useNotifications = () => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   // Fetch notifications
-  const { data: notifications, refetch } = useQuery({
+  const { data: notifications = [], refetch } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
       console.log('Fetching notifications...');
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        console.log('No active session, returning empty notifications array');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
+        .eq('user_id', session.user.id)
         .order('created_at', { ascending: false });
 
       if (error) {
         console.error('Error fetching notifications:', error);
-        throw error;
+        return [];
       }
 
       console.log('Notifications fetched:', data);

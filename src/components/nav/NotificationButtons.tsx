@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const NotificationButtons = () => {
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const { notifications = [], unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
 
   // Fetch checklist progress to show incomplete items as notifications
@@ -30,7 +30,7 @@ export const NotificationButtons = () => {
         .from('customer_checklist_progress')
         .select('*')
         .eq('customer_id', session.user.id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching checklist progress:', error);
@@ -42,7 +42,7 @@ export const NotificationButtons = () => {
   });
 
   // Fetch checklist items to show their titles
-  const { data: checklistItems } = useQuery({
+  const { data: checklistItems = [] } = useQuery({
     queryKey: ['checklist-items-notifications'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -60,7 +60,7 @@ export const NotificationButtons = () => {
   });
 
   // Generate notifications for incomplete checklist items
-  const checklistNotifications = checklistItems?.map((item, index) => {
+  const checklistNotifications = checklistItems.map((item, index) => {
     let isCompleted = false;
     if (checklistProgress) {
       switch (index) {
@@ -87,7 +87,7 @@ export const NotificationButtons = () => {
       created_at: new Date().toISOString(),
       type: 'checklist'
     };
-  }) || [];
+  });
 
   const allNotifications = [...notifications, ...checklistNotifications];
   const totalUnreadCount = unreadCount + checklistNotifications.filter(n => !n.read).length;
