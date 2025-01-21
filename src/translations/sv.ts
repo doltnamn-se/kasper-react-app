@@ -90,4 +90,8 @@ export const sv: Translations = {
   'settings.success': 'Klart',
   'settings.password.updated': 'Lösenordet har uppdaterats',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
+  // Notifications
+  'notifications.title': 'Aviseringar',
+  'notifications.mark.all.read': 'Markera alla som lästa',
+  'notifications.empty': 'Inga aviseringar',
 };

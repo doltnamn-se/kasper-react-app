@@ -90,4 +90,8 @@ export interface Translations {
   'settings.password.updated': string;
   'settings.success': string;
   'error.passwords.dont.match': string;
+  // Notifications
+  'notifications.title': string;
+  'notifications.mark.all.read': string;
+  'notifications.empty': string;
 }

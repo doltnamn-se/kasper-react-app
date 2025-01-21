@@ -1,4 +1,4 @@
-import { Bell, MessageSquare, Check } from "lucide-react";
+import { Bell, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,9 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import { useNotifications } from "@/hooks/useNotifications";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDistanceToNow } from "date-fns";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const NotificationButtons = () => {
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const { t } = useLanguage();
 
   const handleMarkAsRead = async (notificationId: string) => {
     console.log('Marking notification as read:', notificationId);
@@ -48,7 +50,7 @@ export const NotificationButtons = () => {
         
         <DropdownMenuContent align="end" className="w-80">
           <div className="flex items-center justify-between px-4 py-2">
-            <h4 className="font-medium">Notifications</h4>
+            <h4 className="font-medium">{t('notifications.title')}</h4>
             {unreadCount > 0 && (
               <Button 
                 variant="ghost" 
@@ -56,7 +58,7 @@ export const NotificationButtons = () => {
                 onClick={handleMarkAllAsRead}
                 className="h-8 text-xs"
               >
-                Mark all as read
+                {t('notifications.mark.all.read')}
               </Button>
             )}
           </div>
@@ -89,7 +91,7 @@ export const NotificationButtons = () => {
               ))
             ) : (
               <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
-                No notifications
+                {t('notifications.empty')}
               </div>
             )}
           </ScrollArea>
