@@ -99,14 +99,22 @@ export const NotificationButtons = () => {
 
   return (
     <>
-      <Button variant="ghost" size="icon" className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 pr-1">
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 flex items-center justify-center"
+      >
         <MessageSquare className="w-4 h-4" />
       </Button>
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 pr-1">
-            {unreadCount > 0 ? (
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 flex items-center justify-center"
+          >
+            {totalUnreadCount > 0 ? (
               <BellDot className="w-4 h-4" />
             ) : (
               <Bell className="w-4 h-4" />

@@ -26,7 +26,7 @@ export const ThemeToggle = () => {
     <Button 
       variant="ghost" 
       size="icon" 
-      className="text-[#5e5e5e] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8"
+      className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 flex items-center justify-center"
       onClick={toggleDarkMode}
     >
       <Moon className="w-4 h-4" />
