@@ -1,4 +1,4 @@
-import { Bell, BellDot, MessageSquare } from "lucide-react";
+import { Bell, BellRing, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -112,10 +112,13 @@ export const NotificationButtons = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 flex items-center justify-center"
+            className="relative text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 flex items-center justify-center"
           >
             {totalUnreadCount > 0 ? (
-              <BellDot className="w-4 h-4" />
+              <>
+                <BellRing className="w-4 h-4" />
+                <div className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#c8ed52]" />
+              </>
             ) : (
               <Bell className="w-4 h-4" />
             )}
