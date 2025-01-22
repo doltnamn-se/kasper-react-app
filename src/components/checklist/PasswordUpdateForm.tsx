@@ -30,7 +30,11 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
       }
 
       const { error } = await supabase.auth.updateUser({ 
-        password: newPassword 
+        password: newPassword,
+        options: {
+          // Disable email notification for password change in checklist
+          emailRedirectTo: undefined
+        }
       });
 
       if (error) throw error;
