@@ -16,22 +16,17 @@ const Checklist = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-6">
-            <div className="space-y-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">Compliance Health Score</h2>
-                  <p className="text-sm text-gray-500">There's still room for improvement! Our scanner has detected 2 out of 3 privacy features on your site.</p>
+            <div className="flex items-start justify-between">
+              <h2 className="text-lg font-semibold">Your Progress</h2>
+              <div className="relative w-24 h-24">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold">70%</span>
                 </div>
-                <div className="relative w-24 h-24">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-2xl font-bold">70%</span>
-                  </div>
-                  <Progress 
-                    value={70} 
-                    className="h-24 w-24 rounded-full [transform:rotate(-90deg)] ring-2 ring-offset-2 ring-offset-background"
-                    indicatorClassName="bg-gradient-to-br from-teal-500 to-yellow-300"
-                  />
-                </div>
+                <Progress 
+                  value={70} 
+                  className="h-24 w-24 rounded-full [transform:rotate(-90deg)]"
+                  indicatorClassName="bg-gradient-to-r from-teal-500 via-yellow-300 to-blue-500"
+                />
               </div>
             </div>
           </Card>

@@ -5,7 +5,6 @@ import { PasswordUpdateForm } from "./PasswordUpdateForm";
 import { HidingSitesSelection } from "./HidingSitesSelection";
 import { UrlSubmission } from "./UrlSubmission";
 import { PersonalInfoForm } from "./PersonalInfoForm";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
@@ -24,7 +23,6 @@ interface ChecklistProgress {
 export const ChecklistContainer = () => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
-  const [progress, setProgress] = useState(0);
   const queryClient = useQueryClient();
 
   const { data: checklistItems } = useQuery({
@@ -81,9 +79,7 @@ export const ChecklistContainer = () => {
       
       console.log('Checklist progress fetched:', data);
       return data as ChecklistProgress;
-    },
-    refetchInterval: 0, // Disable automatic refetching
-    staleTime: 0, // Consider data always stale
+    }
   });
 
   // Function to handle step completion
@@ -91,20 +87,15 @@ export const ChecklistContainer = () => {
     console.log('Step completed, refetching progress...');
     await refetchProgress();
     await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
-  };
-
-  useEffect(() => {
-    if (checklistProgress) {
+    
+    if (checklistProgress && !checklistProgress.completed_at) {
       let completedSteps = 0;
       if (checklistProgress.password_updated) completedSteps++;
       if (checklistProgress.selected_sites?.length > 0) completedSteps++;
       if (checklistProgress.removal_urls?.length > 0) completedSteps++;
       if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
       
-      const newProgress = (completedSteps / 4) * 100;
-      setProgress(newProgress);
-      
-      if (newProgress === 100 && !checklistProgress.completed_at) {
+      if (completedSteps === 4) {
         confetti({
           particleCount: 100,
           spread: 70,
@@ -117,75 +108,59 @@ export const ChecklistContainer = () => {
         });
       }
     }
-  }, [checklistProgress, toast]);
+  };
 
   const renderCurrentStep = () => {
-    switch (currentStep) {
-      case 1:
-        return <PasswordUpdateForm onComplete={() => {
-          handleStepComplete();
-          setCurrentStep(2);
-        }} />;
-      case 2:
-        return <HidingSitesSelection onComplete={() => {
-          handleStepComplete();
-          setCurrentStep(3);
-        }} />;
-      case 3:
-        return <UrlSubmission onComplete={() => {
-          handleStepComplete();
-          setCurrentStep(4);
-        }} />;
-      case 4:
-        return <PersonalInfoForm onComplete={handleStepComplete} />;
-      default:
-        return null;
-    }
+    const currentItem = checklistItems?.[currentStep - 1];
+    if (!currentItem) return null;
+
+    return (
+      <div className="p-4 border rounded-lg border-black dark:border-white">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium flex items-center gap-2">
+            {currentItem.title}
+          </h3>
+          {currentItem.requires_subscription_plan && (
+            <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+              {currentItem.requires_subscription_plan.join(', ')}
+            </span>
+          )}
+        </div>
+        {currentItem.description && (
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            {currentItem.description}
+          </p>
+        )}
+        {(() => {
+          switch (currentStep) {
+            case 1:
+              return <PasswordUpdateForm onComplete={() => {
+                handleStepComplete();
+                setCurrentStep(2);
+              }} />;
+            case 2:
+              return <HidingSitesSelection onComplete={() => {
+                handleStepComplete();
+                setCurrentStep(3);
+              }} />;
+            case 3:
+              return <UrlSubmission onComplete={() => {
+                handleStepComplete();
+                setCurrentStep(4);
+              }} />;
+            case 4:
+              return <PersonalInfoForm onComplete={handleStepComplete} />;
+            default:
+              return null;
+          }
+        })()}
+      </div>
+    );
   };
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Your Progress</h2>
-          <span className="text-sm text-gray-500">{Math.round(progress)}% Complete</span>
-        </div>
-        <Progress value={progress} className="h-2" />
-      </div>
-
-      <div className="grid gap-4">
-        {checklistItems?.map((item, index) => (
-          <div
-            key={item.id}
-            className={`p-4 border rounded-lg ${
-              index + 1 === currentStep
-                ? 'border-black dark:border-white'
-                : 'border-gray-200 dark:border-gray-800'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-medium flex items-center gap-2">
-                {index + 1 < currentStep && (
-                  <Check className="h-4 w-4 text-green-500" />
-                )}
-                {item.title}
-              </h3>
-              {item.requires_subscription_plan && (
-                <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-                  {item.requires_subscription_plan.join(', ')}
-                </span>
-              )}
-            </div>
-            {item.description && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {item.description}
-              </p>
-            )}
-            {index + 1 === currentStep && renderCurrentStep()}
-          </div>
-        ))}
-      </div>
-
+      {renderCurrentStep()}
       <div className="flex justify-between">
         <Button
           variant="outline"
