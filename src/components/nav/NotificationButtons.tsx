@@ -117,7 +117,7 @@ export const NotificationButtons = () => {
             {totalUnreadCount > 0 ? (
               <>
                 <BellRing className="w-4 h-4" />
-                <div className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#c8ed52]" />
+                <div className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#c8ed52]" />
               </>
             ) : (
               <Bell className="w-4 h-4" />
