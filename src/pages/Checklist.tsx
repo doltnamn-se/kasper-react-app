@@ -41,6 +41,13 @@ const Checklist = () => {
   const progressData = [{ value: progress }, { value: 100 - progress }];
   const COLORS = ['url(#progressGradient)', 'url(#backgroundGradient)'];
 
+  const handleStepClick = (stepNumber: number) => {
+    const container = document.querySelector('.checklist-container');
+    if (container) {
+      container.querySelector(`[data-step="${stepNumber}"]`)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <MainLayout>
       <div className="flex items-center justify-between mb-6">
