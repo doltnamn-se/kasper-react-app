@@ -7,7 +7,6 @@ import { UrlSubmission } from "./UrlSubmission";
 import { PersonalInfoForm } from "./PersonalInfoForm";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Check } from "lucide-react";
 import confetti from 'canvas-confetti';
 
 interface ChecklistProgress {
@@ -82,7 +81,6 @@ export const ChecklistContainer = () => {
     }
   });
 
-  // Function to handle step completion
   const handleStepComplete = async () => {
     console.log('Step completed, refetching progress...');
     await refetchProgress();
@@ -115,45 +113,46 @@ export const ChecklistContainer = () => {
     if (!currentItem) return null;
 
     return (
-      <div className="p-4 border rounded-lg border-black dark:border-white">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-medium flex items-center gap-2">
-            {currentItem.title}
-          </h3>
+      <div className="space-y-4">
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-gray-500">Step {currentStep}</span>
+          <h3 className="text-lg font-semibold">{currentItem.title}</h3>
+          {currentItem.description && (
+            <p className="text-sm text-gray-500">
+              {currentItem.description}
+            </p>
+          )}
           {currentItem.requires_subscription_plan && (
-            <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+            <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded w-fit">
               {currentItem.requires_subscription_plan.join(', ')}
             </span>
           )}
         </div>
-        {currentItem.description && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            {currentItem.description}
-          </p>
-        )}
-        {(() => {
-          switch (currentStep) {
-            case 1:
-              return <PasswordUpdateForm onComplete={() => {
-                handleStepComplete();
-                setCurrentStep(2);
-              }} />;
-            case 2:
-              return <HidingSitesSelection onComplete={() => {
-                handleStepComplete();
-                setCurrentStep(3);
-              }} />;
-            case 3:
-              return <UrlSubmission onComplete={() => {
-                handleStepComplete();
-                setCurrentStep(4);
-              }} />;
-            case 4:
-              return <PersonalInfoForm onComplete={handleStepComplete} />;
-            default:
-              return null;
-          }
-        })()}
+        <div className="pt-4">
+          {(() => {
+            switch (currentStep) {
+              case 1:
+                return <PasswordUpdateForm onComplete={() => {
+                  handleStepComplete();
+                  setCurrentStep(2);
+                }} />;
+              case 2:
+                return <HidingSitesSelection onComplete={() => {
+                  handleStepComplete();
+                  setCurrentStep(3);
+                }} />;
+              case 3:
+                return <UrlSubmission onComplete={() => {
+                  handleStepComplete();
+                  setCurrentStep(4);
+                }} />;
+              case 4:
+                return <PersonalInfoForm onComplete={handleStepComplete} />;
+              default:
+                return null;
+            }
+          })()}
+        </div>
       </div>
     );
   };

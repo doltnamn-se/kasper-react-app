@@ -2,11 +2,13 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Check } from "lucide-react";
+import { PieChart, Pie, Cell } from 'recharts';
 
 const Checklist = () => {
   const { t } = useLanguage();
+  const progressData = [{ value: 70 }, { value: 30 }];
+  const COLORS = ['url(#progressGradient)', '#F3F4F6'];
 
   return (
     <MainLayout>
@@ -22,11 +24,27 @@ const Checklist = () => {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-2xl font-bold">70%</span>
                 </div>
-                <Progress 
-                  value={70} 
-                  className="h-24 w-24 rounded-full [transform:rotate(-90deg)]"
-                  indicatorClassName="bg-gradient-to-r from-teal-500 via-yellow-300 to-blue-500"
-                />
+                <PieChart width={96} height={96}>
+                  <defs>
+                    <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#10B981" />
+                      <stop offset="100%" stopColor="#3B82F6" />
+                    </linearGradient>
+                  </defs>
+                  <Pie
+                    data={progressData}
+                    innerRadius={35}
+                    outerRadius={45}
+                    paddingAngle={0}
+                    dataKey="value"
+                    startAngle={90}
+                    endAngle={-270}
+                  >
+                    {progressData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                    ))}
+                  </Pie>
+                </PieChart>
               </div>
             </div>
           </Card>
@@ -46,10 +64,15 @@ const Checklist = () => {
                 { step: 3, title: "Install your first feature: Privacy Policy", description: "Configure and install your privacy policy", completed: true },
                 { step: 4, title: "Install your required features", description: "Configure and install the rest of your required features", completed: false },
               ].map((item) => (
-                <div key={item.step} className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <div 
+                  key={item.step} 
+                  className={`flex items-start gap-4 ${item.completed ? 'opacity-60' : ''}`}
+                >
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                    item.completed ? 'bg-[#F2FCE2]' : 'bg-gray-100 dark:bg-gray-800'
+                  }`}>
                     {item.completed ? (
-                      <Check className="w-4 h-4 text-green-500" />
+                      <Check className="w-4 h-4 text-white stroke-[#86efac]" />
                     ) : (
                       <span className="text-sm">{item.step}</span>
                     )}
