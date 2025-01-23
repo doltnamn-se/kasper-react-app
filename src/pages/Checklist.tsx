@@ -57,7 +57,7 @@ const Checklist = () => {
           {t('nav.checklist')}
         </h1>
         <div className="flex items-center gap-4">
-          <div className={`relative ${isMobile ? 'w-16 h-16 ml-auto' : 'w-20 h-20'}`}>
+          <div className={`relative ${isMobile ? 'w-16 h-16 ml-auto' : 'w-20 h-20 mr-auto'}`}>
             <div className="absolute inset-0 flex items-center justify-center">
               <span className={`font-black ${isMobile ? 'text-sm' : 'text-base'}`}>{progress}%</span>
             </div>
