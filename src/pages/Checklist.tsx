@@ -2,7 +2,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
-import { Check, ArrowRight } from "lucide-react";
+import { BadgeCheck, ChevronRight } from "lucide-react";
 import { PieChart, Pie, Cell } from 'recharts';
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,7 +27,6 @@ const Checklist = () => {
     }
   });
 
-  // Calculate progress based on completed steps
   const calculateProgress = () => {
     if (!checklistProgress) return 0;
     let completedSteps = 0;
@@ -43,8 +42,6 @@ const Checklist = () => {
   const COLORS = ['url(#progressGradient)', '#F3F4F6'];
 
   const handleStepClick = (stepNumber: number) => {
-    // Update the current step in ChecklistContainer
-    // This will be handled by the parent component's state
     console.log('Navigating to step:', stepNumber);
   };
 
@@ -86,7 +83,7 @@ const Checklist = () => {
                       </Pie>
                     </PieChart>
                   </div>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-lg pl-4">
                     {t('step.progress').replace('{current}', '1').replace('{total}', '4')}
                   </span>
                 </div>
@@ -111,27 +108,27 @@ const Checklist = () => {
               ].map((item) => (
                 <div 
                   key={item.step} 
-                  className="flex items-start justify-between p-4 bg-[#f8f8f7] rounded-lg"
+                  className={`flex items-center justify-between p-4 rounded-lg ${!item.completed ? 'bg-[#f8f8f7]' : ''}`}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] flex items-center justify-center">
+                  <div className="flex items-center gap-4">
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] flex items-center justify-center`}>
                       <span className="text-sm">{item.step}</span>
                     </div>
-                    <div className={`flex-1 ${item.completed ? 'opacity-40' : ''}`}>
+                    <div className={item.completed ? 'opacity-40' : ''}>
                       <p className="text-sm font-medium">{item.title}</p>
                       <p className="text-sm text-gray-500">{item.description}</p>
                     </div>
                   </div>
                   {item.completed ? (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#219653] flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#219653] flex items-center justify-center">
+                      <BadgeCheck className="w-6 h-6 text-white" />
                     </div>
                   ) : (
                     <button 
                       onClick={() => handleStepClick(item.step)}
-                      className="flex-shrink-0 w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
+                      className="flex-shrink-0 w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
                     >
-                      <ArrowRight className="w-4 h-4" />
+                      <ChevronRight className="w-6 h-6" />
                     </button>
                   )}
                 </div>

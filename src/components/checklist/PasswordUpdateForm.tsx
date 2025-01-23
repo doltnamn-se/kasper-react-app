@@ -67,16 +67,6 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs">
-          1
-        </div>
-        <div>
-          <span className="text-sm text-gray-500">{t('step.number').replace('{number}', '1')}</span>
-          <h3 className="text-lg font-semibold">{t('set.password')}</h3>
-          <p className="text-sm text-gray-500">{t('set.password.description')}</p>
-        </div>
-      </div>
       <div>
         <Input
           type="password"
