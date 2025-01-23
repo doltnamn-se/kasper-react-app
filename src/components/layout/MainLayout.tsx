@@ -68,7 +68,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       {/* Main Content */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
-        <main className="px-4 md:px-12 pt-24">
+        <main className="px-4 md:px-12 pt-12">
           <div>
             {children}
           </div>

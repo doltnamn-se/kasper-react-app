@@ -2,7 +2,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
-import { BadgeCheck, ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import { PieChart, Pie, Cell } from 'recharts';
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -42,7 +42,10 @@ const Checklist = () => {
   const COLORS = ['url(#progressGradient)', '#F3F4F6'];
 
   const handleStepClick = (stepNumber: number) => {
-    console.log('Navigating to step:', stepNumber);
+    const container = document.querySelector('.checklist-container');
+    if (container) {
+      container.querySelector(`[data-step="${stepNumber}"]`)?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -52,7 +55,7 @@ const Checklist = () => {
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="p-6">
+          <Card className="p-6 rounded-[4px]">
             <div className="flex items-start">
               <div className="flex flex-col">
                 <h2 className="text-lg font-semibold mb-4">{t('your.progress')}</h2>
@@ -84,20 +87,22 @@ const Checklist = () => {
                     </PieChart>
                   </div>
                   <span className="text-lg pl-4">
-                    {t('step.progress').replace('{current}', '1').replace('{total}', '4')}
+                    {`${calculateProgress() / 25} out of 4 steps finished`}
                   </span>
                 </div>
               </div>
             </div>
           </Card>
           
-          <Card className="p-6">
-            <ChecklistContainer />
+          <Card className="p-6 rounded-[4px]">
+            <div className="space-y-8">
+              <ChecklistContainer />
+            </div>
           </Card>
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="p-6">
+          <Card className="p-6 rounded-[4px]">
             <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">
               {[
@@ -121,7 +126,7 @@ const Checklist = () => {
                   </div>
                   {item.completed ? (
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#219653] flex items-center justify-center">
-                      <BadgeCheck className="w-6 h-6 text-white" />
+                      <Check className="w-6 h-6 text-white" />
                     </div>
                   ) : (
                     <button 
