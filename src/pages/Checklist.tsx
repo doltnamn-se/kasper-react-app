@@ -74,6 +74,7 @@ const Checklist = () => {
                 dataKey="value"
                 startAngle={90}
                 endAngle={-270}
+                stroke="none"
               >
                 {progressData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index]} />
