@@ -41,13 +41,6 @@ const Checklist = () => {
   const progressData = [{ value: progress }, { value: 100 - progress }];
   const COLORS = ['url(#progressGradient)', 'url(#backgroundGradient)'];
 
-  const handleStepClick = (stepNumber: number) => {
-    const container = document.querySelector('.checklist-container');
-    if (container) {
-      container.querySelector(`[data-step="${stepNumber}"]`)?.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <MainLayout>
       <div className="flex items-center justify-between mb-6">
@@ -62,8 +55,34 @@ const Checklist = () => {
             <PieChart width={80} height={80}>
               <defs>
                 <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#4d985e" />
-                  <stop offset="100%" stopColor="#72bd5f" />
+                  <animate
+                    attributeName="x1"
+                    values="0;1;0"
+                    dur="3s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="x2"
+                    values="1;2;1"
+                    dur="3s"
+                    repeatCount="indefinite"
+                  />
+                  <stop offset="0%" stopColor="#4d985e">
+                    <animate
+                      attributeName="offset"
+                      values="0;0.5;0"
+                      dur="3s"
+                      repeatCount="indefinite"
+                    />
+                  </stop>
+                  <stop offset="100%" stopColor="#72bd5f">
+                    <animate
+                      attributeName="offset"
+                      values="0.5;1;0.5"
+                      dur="3s"
+                      repeatCount="indefinite"
+                    />
+                  </stop>
                 </linearGradient>
                 <linearGradient id="backgroundGradient" x1="0" y1="0" x2="1" y2="0">
                   <animate
