@@ -164,18 +164,20 @@ const Checklist = () => {
                       <p className="text-sm text-gray-500">{item.description}</p>
                     </div>
                   </div>
-                  {item.completed ? (
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#219653] flex items-center justify-center">
-                      <Check className="w-6 h-6 text-white" />
-                    </div>
-                  ) : (
-                    <button 
-                      onClick={() => handleStepClick(item.step)}
-                      className="flex-shrink-0 w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </button>
-                  )}
+                  <div className="pl-8">
+                    {item.completed ? (
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#219653] flex items-center justify-center">
+                        <Check className="w-6 h-6 text-white" />
+                      </div>
+                    ) : (
+                      <button 
+                        onClick={() => handleStepClick(item.step)}
+                        className="flex-shrink-0 w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
+                      >
+                        <ChevronRight className="w-6 h-6" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
