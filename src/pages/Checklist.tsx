@@ -57,7 +57,7 @@ const Checklist = () => {
         <div className="flex items-center gap-4">
           <div className="relative w-20 h-20">
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-bold">{progress}%</span>
+              <span className="text-base font-black">{progress}%</span>
             </div>
             <PieChart width={80} height={80}>
               <defs>
@@ -82,7 +82,7 @@ const Checklist = () => {
             </PieChart>
           </div>
           <span className="text-sm">
-            {`${calculateProgress() / 25} out of 4 steps finished`}
+            {`${calculateProgress() / 25} ${t('step.progress', { current: calculateProgress() / 25, total: 4 })}`}
           </span>
         </div>
       </div>

@@ -91,13 +91,6 @@ export const sv: Translations = {
   'settings.password.updated': 'Lösenordet har uppdaterats',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
   // Checklist related
-
-  // Notifications
-  'notifications.title': 'Notifieringar',
-  'notifications.mark.all.read': 'Markera alla som lästa',
-  'notifications.empty': 'Inga notifieringar',
-  
-  // Checklist related
   'your.progress': 'Din framsteg',
   'step.progress': 'Steg {current} av {total}',
   'getting.started': 'Kom igång',
