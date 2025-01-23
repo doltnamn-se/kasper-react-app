@@ -56,8 +56,8 @@ const Checklist = () => {
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.checklist')}
         </h1>
-        <div className={`flex items-center gap-4 ${isMobile ? 'justify-end' : 'justify-start'}`}>
-          <div className={`relative ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}>
+        <div className="flex items-center gap-4">
+          <div className={`relative ${isMobile ? 'w-16 h-16 ml-auto' : 'w-20 h-20'}`}>
             <div className="absolute inset-0 flex items-center justify-center">
               <span className={`font-black ${isMobile ? 'text-sm' : 'text-base'}`}>{progress}%</span>
             </div>
