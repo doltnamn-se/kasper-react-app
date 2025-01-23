@@ -82,7 +82,7 @@ const Checklist = () => {
             </PieChart>
           </div>
           <span className="text-sm">
-            {`${calculateProgress() / 25} ${t('step.progress', { current: calculateProgress() / 25, total: 4 })}`}
+            {t('step.progress', { current: calculateProgress() / 25, total: 4 })}
           </span>
         </div>
       </div>
