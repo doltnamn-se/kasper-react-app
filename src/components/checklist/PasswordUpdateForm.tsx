@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PasswordUpdateFormProps {
   onComplete: () => void;
@@ -14,6 +15,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +25,8 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
       if (newPassword !== confirmPassword) {
         toast({
           variant: "destructive",
-          title: "Passwords don't match",
-          description: "Please make sure your passwords match.",
+          title: t('error.passwords.dont.match'),
+          description: t('error.passwords.match.description'),
         });
         return;
       }
@@ -46,8 +48,8 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
       if (updateError) throw updateError;
 
       toast({
-        title: "Password updated",
-        description: "Your password has been successfully updated.",
+        title: t('success'),
+        description: t('password.updated'),
       });
       
       onComplete();
@@ -55,8 +57,8 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
       console.error('Error updating password:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to update password. Please try again.",
+        title: t('error'),
+        description: t('error.password.update'),
       });
     } finally {
       setIsLoading(false);
@@ -64,36 +66,49 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs">
+          1
+        </div>
+        <div>
+          <span className="text-sm text-gray-500">{t('step.number', { number: 1 })}</span>
+          <h3 className="text-lg font-semibold">{t('set.password')}</h3>
+          <p className="text-sm text-gray-500">{t('set.password.description')}</p>
+        </div>
+      </div>
       <div>
         <Input
           type="password"
-          placeholder="Current password"
+          placeholder={t('current.password')}
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
+          className="h-12 mb-4"
           required
         />
       </div>
       <div>
         <Input
           type="password"
-          placeholder="New password"
+          placeholder={t('new.password')}
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
+          className="h-12 mb-4"
           required
         />
       </div>
       <div>
         <Input
           type="password"
-          placeholder="Confirm new password"
+          placeholder={t('confirm.password')}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          className="h-12"
           required
         />
       </div>
-      <Button type="submit" disabled={isLoading} className="w-full">
-        {isLoading ? "Updating..." : "Update Password"}
+      <Button type="submit" disabled={isLoading} className="w-full h-12">
+        {isLoading ? t('updating.password') : t('update.password')}
       </Button>
     </form>
   );

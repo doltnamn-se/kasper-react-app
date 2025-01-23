@@ -90,8 +90,19 @@ export const sv: Translations = {
   'settings.success': 'Klart',
   'settings.password.updated': 'Lösenordet har uppdaterats',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
-  // Notifications
-  'notifications.title': 'Aviseringar',
-  'notifications.mark.all.read': 'Markera alla som lästa',
-  'notifications.empty': 'Inga aviseringar',
+  // Checklist related
+  'your.progress': 'Din framsteg',
+  'step.progress': 'Steg {{current}} av {{total}}',
+  'getting.started': 'Kom igång',
+  'step.number': 'Steg {{number}}',
+  'set.password': 'Ange ditt lösenord',
+  'set.password.description': 'Ange ditt eget lösenord för att säkerställa kontosäkerhet.',
+  'step.password.title': 'Ange lösenord',
+  'step.password.description': 'Konfigurera och ange ditt säkra lösenord',
+  'step.sites.title': 'Välj webbplatser att dölja',
+  'step.sites.description': 'Välj vilka webbplatser du vill dölja din information från',
+  'step.urls.title': 'Skicka in borttagnings-URL:er',
+  'step.urls.description': 'Lägg till URL:er där din information visas',
+  'step.info.title': 'Personlig information',
+  'step.info.description': 'Lägg till din personliga information för borttagning',
 };

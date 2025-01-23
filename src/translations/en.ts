@@ -90,8 +90,19 @@ export const en: Translations = {
   'settings.password.updated': 'Password updated successfully',
   'settings.success': 'Success',
   'error.passwords.dont.match': 'Passwords do not match',
-  // Notifications
-  'notifications.title': 'Notifications',
-  'notifications.mark.all.read': 'Mark all as read',
-  'notifications.empty': 'No notifications',
+  // Checklist related
+  'your.progress': 'Your Progress',
+  'step.progress': 'Step {{current}} of {{total}}',
+  'getting.started': 'Getting Started',
+  'step.number': 'Step {{number}}',
+  'set.password': 'Set your password',
+  'set.password.description': 'Set your own password to ensure account security.',
+  'step.password.title': 'Set your password',
+  'step.password.description': 'Configure and set your secure password',
+  'step.sites.title': 'Select hiding sites',
+  'step.sites.description': 'Choose which sites to hide your information from',
+  'step.urls.title': 'Submit removal URLs',
+  'step.urls.description': 'Add URLs where your information appears',
+  'step.info.title': 'Personal information',
+  'step.info.description': 'Add your personal information for removal',
 };

@@ -18,33 +18,38 @@ const Checklist = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-6">
-            <div className="flex items-start justify-between">
-              <h2 className="text-lg font-semibold">Your Progress</h2>
-              <div className="relative w-24 h-24">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-2xl font-bold">70%</span>
+            <div className="flex items-start">
+              <div className="flex flex-col">
+                <h2 className="text-lg font-semibold mb-4">{t('your.progress')}</h2>
+                <div className="flex items-center gap-8">
+                  <div className="relative w-32 h-32">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-2xl font-bold">70%</span>
+                    </div>
+                    <PieChart width={128} height={128}>
+                      <defs>
+                        <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="#10B981" />
+                          <stop offset="100%" stopColor="#3B82F6" />
+                        </linearGradient>
+                      </defs>
+                      <Pie
+                        data={progressData}
+                        innerRadius={45}
+                        outerRadius={60}
+                        paddingAngle={0}
+                        dataKey="value"
+                        startAngle={90}
+                        endAngle={-270}
+                      >
+                        {progressData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </div>
+                  <span className="text-sm text-gray-500">{t('step.progress', { current: 1, total: 4 })}</span>
                 </div>
-                <PieChart width={96} height={96}>
-                  <defs>
-                    <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#10B981" />
-                      <stop offset="100%" stopColor="#3B82F6" />
-                    </linearGradient>
-                  </defs>
-                  <Pie
-                    data={progressData}
-                    innerRadius={35}
-                    outerRadius={45}
-                    paddingAngle={0}
-                    dataKey="value"
-                    startAngle={90}
-                    endAngle={-270}
-                  >
-                    {progressData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                    ))}
-                  </Pie>
-                </PieChart>
               </div>
             </div>
           </Card>
@@ -56,13 +61,13 @@ const Checklist = () => {
 
         <div className="lg:col-span-1">
           <Card className="p-6">
-            <h2 className="text-lg font-semibold mb-4">Getting Started</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">
               {[
-                { step: 1, title: "Connect a domain", description: "Connect a domain or URL to your account", completed: true },
-                { step: 2, title: "Complete your compliance checklist", description: "Discover what privacy features your site needs", completed: true },
-                { step: 3, title: "Install your first feature: Privacy Policy", description: "Configure and install your privacy policy", completed: true },
-                { step: 4, title: "Install your required features", description: "Configure and install the rest of your required features", completed: false },
+                { step: 1, title: t('step.password.title'), description: t('step.password.description'), completed: true },
+                { step: 2, title: t('step.sites.title'), description: t('step.sites.description'), completed: true },
+                { step: 3, title: t('step.urls.title'), description: t('step.urls.description'), completed: true },
+                { step: 4, title: t('step.info.title'), description: t('step.info.description'), completed: false },
               ].map((item) => (
                 <div 
                   key={item.step} 
