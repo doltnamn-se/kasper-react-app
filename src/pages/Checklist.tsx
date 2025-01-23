@@ -78,8 +78,8 @@ const Checklist = () => {
                     dur="3s"
                     repeatCount="indefinite"
                   />
-                  <stop offset="0%" stopColor="#e8f5e9" />
-                  <stop offset="100%" stopColor="#c8e6c9" />
+                  <stop offset="0%" className="dark:text-[#1b5e20] text-[#e8f5e9]" stopColor="currentColor" />
+                  <stop offset="100%" className="dark:text-[#2e7d32] text-[#c8e6c9]" stopColor="currentColor" />
                 </linearGradient>
               </defs>
               <Pie
