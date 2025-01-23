@@ -54,12 +54,20 @@ const Checklist = () => {
         {t('nav.checklist')}
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2">
+          <Card className="p-6 rounded-[4px] mb-6">
+            <div className="space-y-8">
+              <ChecklistContainer />
+            </div>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-1 space-y-6">
           <Card className="p-6 rounded-[4px]">
             <div className="flex items-start">
-              <div className="flex flex-col">
+              <div className="flex flex-col w-full">
                 <h2 className="text-lg font-semibold mb-4">{t('your.progress')}</h2>
-                <div className="flex items-center gap-8">
+                <div className="flex flex-col items-center gap-4">
                   <div className="relative w-40 h-40">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="text-2xl font-bold">{progress}%</span>
@@ -86,22 +94,14 @@ const Checklist = () => {
                       </Pie>
                     </PieChart>
                   </div>
-                  <span className="text-lg pl-4">
+                  <span className="text-lg">
                     {`${calculateProgress() / 25} out of 4 steps finished`}
                   </span>
                 </div>
               </div>
             </div>
           </Card>
-          
-          <Card className="p-6 rounded-[4px]">
-            <div className="space-y-8">
-              <ChecklistContainer />
-            </div>
-          </Card>
-        </div>
 
-        <div className="lg:col-span-1">
           <Card className="p-6 rounded-[4px]">
             <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">

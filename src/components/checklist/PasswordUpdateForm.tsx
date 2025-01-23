@@ -66,8 +66,8 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 flex flex-col items-center">
-      <div className="w-1/2">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="w-full md:w-1/2">
         <Input
           type="password"
           placeholder={t('current.password')}
@@ -77,7 +77,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
           required
         />
       </div>
-      <div className="w-1/2">
+      <div className="w-full md:w-1/2">
         <Input
           type="password"
           placeholder={t('new.password')}
@@ -87,7 +87,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
           required
         />
       </div>
-      <div className="w-1/2">
+      <div className="w-full md:w-1/2">
         <Input
           type="password"
           placeholder={t('confirm.password')}
@@ -97,7 +97,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
           required
         />
       </div>
-      <Button type="submit" disabled={isLoading} className="w-1/4 h-12">
+      <Button type="submit" disabled={isLoading} className="w-full md:w-1/4 h-12">
         {isLoading ? t('updating.password') : t('update.password')}
       </Button>
     </form>
