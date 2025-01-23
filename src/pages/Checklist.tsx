@@ -39,7 +39,7 @@ const Checklist = () => {
 
   const progress = calculateProgress();
   const progressData = [{ value: progress }, { value: 100 - progress }];
-  const COLORS = ['url(#progressGradient)', '#F3F4F6'];
+  const COLORS = ['url(#progressGradient)', 'url(#backgroundGradient)'];
 
   const handleStepClick = (stepNumber: number) => {
     const container = document.querySelector('.checklist-container');
@@ -64,6 +64,22 @@ const Checklist = () => {
                 <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#4d985e" />
                   <stop offset="100%" stopColor="#72bd5f" />
+                </linearGradient>
+                <linearGradient id="backgroundGradient" x1="0" y1="0" x2="1" y2="0">
+                  <animate
+                    attributeName="x1"
+                    values="0;1;0"
+                    dur="3s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="x2"
+                    values="1;2;1"
+                    dur="3s"
+                    repeatCount="indefinite"
+                  />
+                  <stop offset="0%" stopColor="#e8f5e9" />
+                  <stop offset="100%" stopColor="#c8e6c9" />
                 </linearGradient>
               </defs>
               <Pie
