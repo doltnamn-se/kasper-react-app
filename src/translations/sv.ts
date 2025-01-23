@@ -93,7 +93,7 @@ export const sv: Translations = {
   
   // Checklist related
   'your.progress': 'Din framsteg',
-  'step.progress': '{current} av {total} steg färdiga',
+  'step.progress': '{current} av {total} steg genomförda',
   'getting.started': 'Kom igång',
   'step.number': 'Steg {number}',
   'set.password': 'Ange ditt lösenord',
