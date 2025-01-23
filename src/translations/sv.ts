@@ -91,10 +91,17 @@ export const sv: Translations = {
   'settings.password.updated': 'Lösenordet har uppdaterats',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
   // Checklist related
+
+  // Notifications
+  'notifications.title': 'Notifieringar',
+  'notifications.mark.all.read': 'Markera alla som lästa',
+  'notifications.empty': 'Inga notifieringar',
+  
+  // Checklist related
   'your.progress': 'Din framsteg',
-  'step.progress': 'Steg {{current}} av {{total}}',
+  'step.progress': 'Steg {current} av {total}',
   'getting.started': 'Kom igång',
-  'step.number': 'Steg {{number}}',
+  'step.number': 'Steg {number}',
   'set.password': 'Ange ditt lösenord',
   'set.password.description': 'Ange ditt eget lösenord för att säkerställa kontosäkerhet.',
   'step.password.title': 'Ange lösenord',
@@ -109,5 +116,5 @@ export const sv: Translations = {
   'confirm.password': 'Bekräfta lösenord',
   'success': 'Klart',
   'error': 'Fel',
-  'error.passwords.match.description': 'Lösenorden matchar inte',
+  'error.passwords.match.description': 'Lösenorden matchar inte'
 };

@@ -48,7 +48,9 @@ const Checklist = () => {
                       </Pie>
                     </PieChart>
                   </div>
-                  <span className="text-sm text-gray-500">{t('step.progress', { current: 1, total: 4 })}</span>
+                  <span className="text-sm text-gray-500">
+                    {t('step.progress').replace('{current}', '1').replace('{total}', '4')}
+                  </span>
                 </div>
               </div>
             </div>

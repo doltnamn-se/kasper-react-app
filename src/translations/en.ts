@@ -91,10 +91,17 @@ export const en: Translations = {
   'settings.success': 'Success',
   'error.passwords.dont.match': 'Passwords do not match',
   // Checklist related
+
+  // Notifications
+  'notifications.title': 'Notifications',
+  'notifications.mark.all.read': 'Mark all as read',
+  'notifications.empty': 'No notifications',
+  
+  // Checklist related
   'your.progress': 'Your Progress',
-  'step.progress': 'Step {{current}} of {{total}}',
+  'step.progress': 'Step {current} of {total}',
   'getting.started': 'Getting Started',
-  'step.number': 'Step {{number}}',
+  'step.number': 'Step {number}',
   'set.password': 'Set your password',
   'set.password.description': 'Set your own password to ensure account security.',
   'step.password.title': 'Set your password',
@@ -109,5 +116,5 @@ export const en: Translations = {
   'confirm.password': 'Confirm password',
   'success': 'Success',
   'error': 'Error',
-  'error.passwords.match.description': 'The passwords you entered do not match',
+  'error.passwords.match.description': 'The passwords you entered do not match'
 };
