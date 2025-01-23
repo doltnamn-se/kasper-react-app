@@ -78,8 +78,8 @@ const Checklist = () => {
                     dur="3s"
                     repeatCount="indefinite"
                   />
-                  <stop offset="0%" stopColor="#e8f5e9" />
-                  <stop offset="100%" stopColor="#c8e6c9" />
+                  <stop offset="0%" className="dark:text-[#243024] text-[#e8f5e9]" stopColor="currentColor" />
+                  <stop offset="100%" className="dark:text-[#2f4030] text-[#c8e6c9]" stopColor="currentColor" />
                 </linearGradient>
               </defs>
               <Pie
@@ -103,6 +103,7 @@ const Checklist = () => {
           </span>
         </div>
       </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Card className="p-6 rounded-[4px] mb-6">
