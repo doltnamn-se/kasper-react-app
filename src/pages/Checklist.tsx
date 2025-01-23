@@ -65,20 +65,20 @@ const Checklist = () => {
                   <animate
                     attributeName="x1"
                     values="0;1;0"
-                    dur="3s"
+                    dur="8s"
                     repeatCount="indefinite"
                   />
                   <animate
                     attributeName="x2"
                     values="1;2;1"
-                    dur="3s"
+                    dur="8s"
                     repeatCount="indefinite"
                   />
                   <stop offset="0%" stopColor="#4d985e">
                     <animate
                       attributeName="offset"
                       values="0;0.5;0"
-                      dur="3s"
+                      dur="8s"
                       repeatCount="indefinite"
                     />
                   </stop>
@@ -86,7 +86,7 @@ const Checklist = () => {
                     <animate
                       attributeName="offset"
                       values="0.5;1;0.5"
-                      dur="3s"
+                      dur="8s"
                       repeatCount="indefinite"
                     />
                   </stop>
@@ -95,13 +95,13 @@ const Checklist = () => {
                   <animate
                     attributeName="x1"
                     values="0;1;0"
-                    dur="3s"
+                    dur="8s"
                     repeatCount="indefinite"
                   />
                   <animate
                     attributeName="x2"
                     values="1;2;1"
-                    dur="3s"
+                    dur="8s"
                     repeatCount="indefinite"
                   />
                   <stop offset="0%" className="dark:text-[#243024] text-[#e8f5e9]" stopColor="currentColor" />
