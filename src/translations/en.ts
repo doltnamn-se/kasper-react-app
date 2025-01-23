@@ -105,4 +105,9 @@ export const en: Translations = {
   'step.urls.description': 'Add URLs where your information appears',
   'step.info.title': 'Personal information',
   'step.info.description': 'Add your personal information for removal',
+  'current.password': 'Current password',
+  'confirm.password': 'Confirm password',
+  'success': 'Success',
+  'error': 'Error',
+  'error.passwords.match.description': 'The passwords you entered do not match',
 };

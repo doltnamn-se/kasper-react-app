@@ -90,8 +90,24 @@ export interface Translations {
   'settings.password.updated': string;
   'settings.success': string;
   'error.passwords.dont.match': string;
-  // Notifications
-  'notifications.title': string;
-  'notifications.mark.all.read': string;
-  'notifications.empty': string;
+  // Checklist related
+  'your.progress': string;
+  'step.progress': string;
+  'getting.started': string;
+  'step.number': string;
+  'set.password': string;
+  'set.password.description': string;
+  'step.password.title': string;
+  'step.password.description': string;
+  'step.sites.title': string;
+  'step.sites.description': string;
+  'step.urls.title': string;
+  'step.urls.description': string;
+  'step.info.title': string;
+  'step.info.description': string;
+  'current.password': string;
+  'confirm.password': string;
+  'success': string;
+  'error': string;
+  'error.passwords.match.description': string;
 }

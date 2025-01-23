@@ -22,11 +22,11 @@ const Checklist = () => {
               <div className="flex flex-col">
                 <h2 className="text-lg font-semibold mb-4">{t('your.progress')}</h2>
                 <div className="flex items-center gap-8">
-                  <div className="relative w-32 h-32">
+                  <div className="relative w-40 h-40">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="text-2xl font-bold">70%</span>
                     </div>
-                    <PieChart width={128} height={128}>
+                    <PieChart width={160} height={160}>
                       <defs>
                         <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
                           <stop offset="0%" stopColor="#10B981" />
@@ -35,8 +35,8 @@ const Checklist = () => {
                       </defs>
                       <Pie
                         data={progressData}
-                        innerRadius={45}
-                        outerRadius={60}
+                        innerRadius={55}
+                        outerRadius={75}
                         paddingAngle={0}
                         dataKey="value"
                         startAngle={90}
@@ -74,10 +74,10 @@ const Checklist = () => {
                   className={`flex items-start gap-4 ${item.completed ? 'opacity-60' : ''}`}
                 >
                   <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                    item.completed ? 'bg-[#F2FCE2]' : 'bg-gray-100 dark:bg-gray-800'
+                    item.completed ? 'bg-[#86efac]' : 'bg-gray-100 dark:bg-gray-800'
                   }`}>
                     {item.completed ? (
-                      <Check className="w-4 h-4 text-white stroke-[#86efac]" />
+                      <Check className="w-4 h-4 text-white" />
                     ) : (
                       <span className="text-sm">{item.step}</span>
                     )}

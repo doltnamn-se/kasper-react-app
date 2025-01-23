@@ -105,4 +105,9 @@ export const sv: Translations = {
   'step.urls.description': 'Lägg till URL:er där din information visas',
   'step.info.title': 'Personlig information',
   'step.info.description': 'Lägg till din personliga information för borttagning',
+  'current.password': 'Nuvarande lösenord',
+  'confirm.password': 'Bekräfta lösenord',
+  'success': 'Klart',
+  'error': 'Fel',
+  'error.passwords.match.description': 'Lösenorden matchar inte',
 };
