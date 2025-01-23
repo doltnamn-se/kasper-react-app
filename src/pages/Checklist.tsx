@@ -53,86 +53,84 @@ const Checklist = () => {
   return (
     <MainLayout>
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-6">
-          <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
-            {t('nav.checklist')}
-          </h1>
-          <div className="flex items-center gap-4">
-            <div className={`relative ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className={`font-black ${isMobile ? 'text-sm' : 'text-base'}`}>{progress}%</span>
-              </div>
-              <PieChart width={isMobile ? 64 : 80} height={isMobile ? 64 : 80}>
-                <defs>
-                  <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
-                    <animate
-                      attributeName="x1"
-                      values="0;1;0"
-                      dur="8s"
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="x2"
-                      values="1;2;1"
-                      dur="8s"
-                      repeatCount="indefinite"
-                    />
-                    <stop offset="0%" stopColor="#4d985e">
-                      <animate
-                        attributeName="offset"
-                        values="0;0.5;0"
-                        dur="8s"
-                        repeatCount="indefinite"
-                      />
-                    </stop>
-                    <stop offset="100%" stopColor="#72bd5f">
-                      <animate
-                        attributeName="offset"
-                        values="0.5;1;0.5"
-                        dur="8s"
-                        repeatCount="indefinite"
-                      />
-                    </stop>
-                  </linearGradient>
-                  <linearGradient id="backgroundGradient" x1="0" y1="0" x2="1" y2="0">
-                    <animate
-                      attributeName="x1"
-                      values="0;1;0"
-                      dur="8s"
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="x2"
-                      values="1;2;1"
-                      dur="8s"
-                      repeatCount="indefinite"
-                    />
-                    <stop offset="0%" className="dark:text-[#243024] text-[#e8f5e9]" stopColor="currentColor" />
-                    <stop offset="100%" className="dark:text-[#2f4030] text-[#c8e6c9]" stopColor="currentColor" />
-                  </linearGradient>
-                </defs>
-                <Pie
-                  data={progressData}
-                  innerRadius={isMobile ? 20 : 25}
-                  outerRadius={isMobile ? 28 : 35}
-                  paddingAngle={0}
-                  dataKey="value"
-                  startAngle={90}
-                  endAngle={-270}
-                  stroke="none"
-                >
-                  {progressData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                  ))}
-                </Pie>
-              </PieChart>
+        <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
+          {t('nav.checklist')}
+        </h1>
+        <div className="flex items-center gap-4">
+          <div className={`relative ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className={`font-black ${isMobile ? 'text-sm' : 'text-base'}`}>{progress}%</span>
             </div>
-            {!isMobile && (
-              <span className="text-sm">
-                {t('step.progress', { current: calculateProgress() / 25, total: 4 })}
-              </span>
-            )}
+            <PieChart width={isMobile ? 64 : 80} height={isMobile ? 64 : 80}>
+              <defs>
+                <linearGradient id="progressGradient" x1="0" y1="0" x2="1" y2="0">
+                  <animate
+                    attributeName="x1"
+                    values="0;1;0"
+                    dur="8s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="x2"
+                    values="1;2;1"
+                    dur="8s"
+                    repeatCount="indefinite"
+                  />
+                  <stop offset="0%" stopColor="#4d985e">
+                    <animate
+                      attributeName="offset"
+                      values="0;0.5;0"
+                      dur="8s"
+                      repeatCount="indefinite"
+                    />
+                  </stop>
+                  <stop offset="100%" stopColor="#72bd5f">
+                    <animate
+                      attributeName="offset"
+                      values="0.5;1;0.5"
+                      dur="8s"
+                      repeatCount="indefinite"
+                    />
+                  </stop>
+                </linearGradient>
+                <linearGradient id="backgroundGradient" x1="0" y1="0" x2="1" y2="0">
+                  <animate
+                    attributeName="x1"
+                    values="0;1;0"
+                    dur="8s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="x2"
+                    values="1;2;1"
+                    dur="8s"
+                    repeatCount="indefinite"
+                  />
+                  <stop offset="0%" className="dark:text-[#243024] text-[#e8f5e9]" stopColor="currentColor" />
+                  <stop offset="100%" className="dark:text-[#2f4030] text-[#c8e6c9]" stopColor="currentColor" />
+                </linearGradient>
+              </defs>
+              <Pie
+                data={progressData}
+                innerRadius={isMobile ? 20 : 25}
+                outerRadius={isMobile ? 28 : 35}
+                paddingAngle={0}
+                dataKey="value"
+                startAngle={90}
+                endAngle={-270}
+                stroke="none"
+              >
+                {progressData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                ))}
+              </Pie>
+            </PieChart>
           </div>
+          {!isMobile && (
+            <span className="text-sm">
+              {t('step.progress', { current: calculateProgress() / 25, total: 4 })}
+            </span>
+          )}
         </div>
       </div>
 
