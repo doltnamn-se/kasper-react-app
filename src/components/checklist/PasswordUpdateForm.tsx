@@ -72,7 +72,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
           1
         </div>
         <div>
-          <span className="text-sm text-gray-500">{t('step.number', { number: 1 })}</span>
+          <span className="text-sm text-gray-500">{t('step.number').replace('{number}', '1')}</span>
           <h3 className="text-lg font-semibold">{t('set.password')}</h3>
           <p className="text-sm text-gray-500">{t('set.password.description')}</p>
         </div>
