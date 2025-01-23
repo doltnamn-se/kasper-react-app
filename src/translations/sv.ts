@@ -90,13 +90,10 @@ export const sv: Translations = {
   'settings.success': 'Klart',
   'settings.password.updated': 'Lösenordet har uppdaterats',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
-  // Notifications
-  'notifications.title': 'Notifieringar',
-  'notifications.mark.all.read': 'Markera alla som lästa',
-  'notifications.empty': 'Inga notifieringar',
+  
   // Checklist related
   'your.progress': 'Din framsteg',
-  'step.progress': 'Steg {current} av {total}',
+  'step.progress': '{current} av {total} steg klara',
   'getting.started': 'Kom igång',
   'step.number': 'Steg {number}',
   'set.password': 'Ange ditt lösenord',
@@ -113,5 +110,9 @@ export const sv: Translations = {
   'confirm.password': 'Bekräfta lösenord',
   'success': 'Klart',
   'error': 'Fel',
-  'error.passwords.match.description': 'Lösenorden matchar inte'
+  'error.passwords.match.description': 'Lösenorden matchar inte',
+  // Notifications
+  'notifications.title': 'Notifieringar',
+  'notifications.mark.all.read': 'Markera alla som lästa',
+  'notifications.empty': 'Inga notifieringar'
 };

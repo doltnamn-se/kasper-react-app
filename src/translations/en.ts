@@ -91,15 +91,8 @@ export const en: Translations = {
   'settings.success': 'Success',
   'error.passwords.dont.match': 'Passwords do not match',
   // Checklist related
-
-  // Notifications
-  'notifications.title': 'Notifications',
-  'notifications.mark.all.read': 'Mark all as read',
-  'notifications.empty': 'No notifications',
-  
-  // Checklist related
   'your.progress': 'Your Progress',
-  'step.progress': 'Step {current} of {total}',
+  'step.progress': '{current} out of {total} steps finished',
   'getting.started': 'Getting Started',
   'step.number': 'Step {number}',
   'set.password': 'Set your password',
