@@ -50,7 +50,7 @@ const Checklist = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+      <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.checklist')}
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -6,7 +6,7 @@ const Guides = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+      <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.guides')}
       </h1>
       <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
