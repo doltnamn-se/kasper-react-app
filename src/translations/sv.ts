@@ -1,20 +1,22 @@
-export const sv = {
+import { Translations } from './types';
+
+export const sv: Translations = {
   // Auth related
   'welcome.back': 'Välkommen tillbaka',
-  'sign.in': 'Logga in',
+  'sign.in': 'Logga in på ditt konto',
   'signing.in': 'Loggar in...',
-  'no.account': 'Inget konto?',
-  'register': 'Registrera',
+  'no.account': 'Har du inget konto?',
+  'register': 'Kom igång',
   'email': 'E-post',
   'password': 'Lösenord',
   'new.password': 'Nytt lösenord',
-  'email.placeholder': 'Ange din e-post',
+  'email.placeholder': 'Ange din e-postadress',
   'password.placeholder': 'Ange ditt lösenord',
   'new.password.placeholder': 'Ange nytt lösenord',
-  'phone.placeholder': 'Ange ditt telefonnummer',
+  'phone.placeholder': 'Ange telefonnummer',
   'token.placeholder': 'Ange verifieringskod',
   'dark.mode': 'Mörkt läge',
-  'forgot.password': 'Glömt lösenord?',
+  'forgot.password': 'Glömt ditt lösenord?',
   'send.recovery.link': 'Skicka återställningslänk',
   'sending.recovery.link': 'Skickar återställningslänk...',
   'update.password': 'Uppdatera lösenord',
@@ -22,83 +24,95 @@ export const sv = {
   'cancel': 'Avbryt',
   'loading': 'Laddar...',
   'reset.password': 'Återställ lösenord',
-  'reset.password.success': 'Lösenordet har återställts',
+  'reset.password.success': 'Återställningslänk har skickats',
   'password.updated': 'Lösenordet har uppdaterats',
-
   // Navigation
+  'nav.home': 'Dashboard',
   'nav.checklist': 'Checklista',
-  'nav.home': 'Hem',
   'nav.my.links': 'Mina länkar',
-  'nav.address.alerts': 'Adressvarningar',
+  'nav.address.alerts': 'Adresslarm',
   'nav.guides': 'Guider',
-  'nav.admin.dashboard': 'Admin Dashboard',
+  'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Kunder',
-
-  // Password requirements
-  'password.requirement.length': 'Minst 12 tecken',
-  'password.requirement.lowercase': 'Minst en liten bokstav',
-  'password.requirement.uppercase': 'Minst en stor bokstav',
-  'password.requirement.special': 'Minst en siffra, symbol eller mellanslag',
-  'error.password.requirements': 'Vänligen uppfyll alla lösenordskrav',
-
-  // Steps
-  'step.number': 'Steg {number}',
-  'step.progress': 'Steg {current} av {total}',
-  'step.password.title': 'Ange lösenord',
-  'step.password.description': 'Skapa ett starkt lösenord för ditt konto',
-  'step.sites.title': 'Välj webbplatser',
-  'step.sites.description': 'Välj vilka webbplatser som ska övervakas',
-  'step.urls.title': 'Lägg till URL:er',
-  'step.urls.description': 'Lägg till URL:er att övervaka',
-  'step.info.title': 'Personlig information',
-  'step.info.description': 'Lägg till din personliga information',
-
-  // General
-  'error': 'Fel',
-  'success': 'Klart',
-  'getting.started': 'Kom igång',
-  'set.password': 'Ange lösenord',
-  'set.password.description': 'Vänligen ange ett starkt lösenord för ditt konto.',
-
-  // Footer
-  'privacy': 'Integritetspolicy',
-  'license': 'Licensvillkor',
-  'terms': 'Användarvillkor',
-
-  // Error messages
-  'error.generic': 'Ett fel uppstod. Försök igen.',
-  'error.signin': 'Kunde inte logga in. Försök igen.',
-  'error.signout': 'Kunde inte logga ut. Försök igen.',
-  'error.password.update': 'Kunde inte uppdatera lösenord. Försök igen.',
-  'error.invalid.credentials': 'Ogiltig e-post eller lösenord.',
-  'error.missing.email': 'Vänligen ange din e-postadress.',
-  'error.invalid.recovery.link': 'Ogiltig eller utgången återställningslänk.',
-  'error.passwords.dont.match': 'Lösenorden matchar inte.',
-  'error.password.too.short': 'Lösenordet måste vara minst 6 tecken.',
-
-  // Profile & Settings
+  // Profile menu
   'profile.manage': 'Hantera profil',
-  'profile.billing': 'Fakturering',
+  'profile.billing': 'Prenumeration',
   'profile.settings': 'Inställningar',
   'profile.sign.out': 'Logga ut',
   'profile.signing.out': 'Loggar ut...',
-  'settings.success': 'Klart',
-  'settings.password.updated': 'Lösenordet har uppdaterats',
-  'settings.change.password': 'Ändra lösenord',
-  'settings.current.password': 'Nuvarande lösenord',
-  'settings.new.password': 'Nytt lösenord',
-  'settings.confirm.password': 'Bekräfta lösenord',
-  'settings.update.password': 'Uppdatera lösenord',
-  'settings.updating.password': 'Uppdaterar lösenord...',
-
   // Search
   'search.placeholder': 'Sök...',
-
+  // Footer links
+  'privacy': 'Integritet',
+  'license': 'Licensvillkor',
+  'terms': 'Användarvillkor',
+  // Page titles
+  'overview.title': 'Översikt',
+  'overview.welcome': 'Välkommen till din översikt.',
+  // Error messages
+  'error.invalid.credentials': 'Felaktigt användarnamn eller lösenord',
+  'error.email.not.confirmed': 'Vänligen bekräfta din e-postadress innan du loggar in',
+  'error.user.not.found': 'Ingen användare hittades med dessa uppgifter',
+  'error.invalid.email.password': 'Ogiltig e-postadress eller lösenord',
+  'error.missing.email.phone': 'E-postadress eller telefonnummer saknas',
+  'error.missing.password': 'Lösenord saknas',
+  'error.password.too.short': 'Lösenordet måste vara minst 6 tecken',
+  'error.email.taken': 'E-postadressen används redan',
+  'error.phone.taken': 'Telefonnumret används redan',
+  'error.weak.password': 'Lösenordet är för svagt',
+  'error.invalid.email': 'Ogiltig e-postadress',
+  'error.invalid.phone': 'Ogiltigt telefonnummer',
+  'error.generic': 'Ett fel uppstod. Försök igen senare.',
+  'error.signin': 'Fel vid inloggning',
+  'error.signout': 'Fel vid utloggning',
+  'error.password.update': 'Fel vid uppdatering av lösenord',
+  'error.missing.email': 'Vänligen ange din e-postadress',
+  'error.invalid.recovery.link': 'Ogiltig eller utgången återställningslänk',
+  'toast.signed.out.title': 'Du har loggats ut',
+  'toast.signed.out.description': 'Du har loggats ut från ditt konto.',
+  'toast.error.title': 'Fel',
+  'toast.error.description': 'Kunde inte logga ut. Försök igen.',
+  'toast.error.unexpected': 'Ett oväntat fel uppstod. Försök igen.',
+  // Table related
+  'table.userId': 'UID',
+  'table.email': 'E-post',
+  'table.role': 'Roll',
+  'table.created': 'Skapad',
+  'table.subscription': 'Prenumeration',
+  'table.actions': 'Åtgärder',
+  // Settings related
+  'settings.change.password': 'Byt lösenord',
+  'settings.current.password': 'Nuvarande lösenord',
+  'settings.new.password': 'Nytt lösenord',
+  'settings.confirm.password': 'Bekräfta nytt lösenord',
+  'settings.update.password': 'Uppdatera lösenord',
+  'settings.updating.password': 'Uppdaterar lösenord...',
+  'settings.success': 'Klart',
+  'settings.password.updated': 'Lösenordet har uppdaterats',
+  'error.passwords.dont.match': 'Lösenorden matchar inte',
+  
+  // Checklist related
+  'your.progress': 'Din framsteg',
+  'step.progress': '{current} av {total} steg genomförda',
+  'getting.started': 'Steg',
+  'step.number': 'Steg {number}',
+  'set.password': 'Skapa ditt lösenord',
+  'set.password.description': 'Skapa ett eget lösenord för enklare tillgång till plattformen',
+  'step.password.title': 'Skapa ditt lösenord',
+  'step.password.description': 'Skapa ett eget lösenord för enklare tillgång till plattformen',
+  'step.sites.title': 'Välj webbplatser att dölja',
+  'step.sites.description': 'Välj vilka webbplatser du vill dölja din information från',
+  'step.urls.title': 'Skicka in borttagnings-URL:er',
+  'step.urls.description': 'Lägg till URL:er där din information visas',
+  'step.info.title': 'Personlig information',
+  'step.info.description': 'Lägg till din personliga information för borttagning',
+  'current.password': 'Nuvarande lösenord',
+  'confirm.password': 'Bekräfta lösenord',
+  'success': 'Klart',
+  'error': 'Fel',
+  'error.passwords.match.description': 'Lösenorden matchar inte',
   // Notifications
-  'notifications.title': 'Notifieringar',
+  'notifications.title': 'Notiser',
   'notifications.mark.all.read': 'Markera alla som lästa',
-  'notifications.empty': 'Inga notifieringar',
-
-  // Overview
-  'overview.welcome': 'Välkommen till din dashboard'
-} as const;
+  'notifications.empty': 'Inga notifieringar'
+};
