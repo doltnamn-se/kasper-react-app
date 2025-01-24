@@ -14,7 +14,6 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNavigate } from "react-router-dom";
 
-// Define the search result type
 type SearchResult = {
   id: string;
   title: string;
@@ -30,7 +29,6 @@ export const SearchBar = () => {
   const navigate = useNavigate();
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
-  // Mock search results - replace with actual data fetching logic
   const getSearchResults = (query: string): SearchResult[] => {
     if (!query) return [];
 
@@ -50,7 +48,6 @@ export const SearchBar = () => {
 
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
-  // Update search results when query changes
   useEffect(() => {
     console.log("Performing search with query:", searchQuery);
     const results = getSearchResults(searchQuery);
@@ -61,8 +58,25 @@ export const SearchBar = () => {
   const handleSelect = (url: string) => {
     console.log("Navigating to:", url);
     setOpen(false);
+    setSearchQuery("");
     navigate(url);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const searchInput = document.getElementById('global-search') as HTMLInputElement;
+        if (searchInput) {
+          searchInput.focus();
+          setOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="relative w-full">
@@ -77,17 +91,15 @@ export const SearchBar = () => {
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                // Only open dropdown if there's a search query
-                setOpen(e.target.value.length > 0);
+                if (!open) setOpen(true);
               }}
               className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
-              onFocus={() => setIsSearchFocused(true)}
+              onFocus={() => {
+                setIsSearchFocused(true);
+                if (searchQuery) setOpen(true);
+              }}
               onBlur={() => {
                 setIsSearchFocused(false);
-                // Close dropdown if there's no search query
-                if (!searchQuery) {
-                  setOpen(false);
-                }
               }}
             />
             <div
@@ -108,7 +120,7 @@ export const SearchBar = () => {
             </div>
           </div>
         </PopoverTrigger>
-        <PopoverContent className="p-0 w-[400px] search-results" align="start">
+        <PopoverContent className="p-0 w-[400px]" align="start">
           <Command>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
