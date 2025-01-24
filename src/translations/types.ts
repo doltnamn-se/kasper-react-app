@@ -114,4 +114,9 @@ export interface Translations {
   'success': string;
   'error': string;
   'error.passwords.match.description': string;
+  'password.requirement.length': string;
+  'password.requirement.lowercase': string;
+  'password.requirement.uppercase': string;
+  'password.requirement.special': string;
+  'error.password.requirements': string;
 }
