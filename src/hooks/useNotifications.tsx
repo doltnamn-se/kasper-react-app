@@ -84,6 +84,11 @@ export const useNotifications = () => {
 
   // Mark notification as read
   const markAsRead = async (notificationId: string) => {
+    // Skip marking as read for checklist notifications which are virtual
+    if (notificationId.startsWith('checklist-')) {
+      return true;
+    }
+
     console.log('Marking notification as read:', notificationId);
     const { error } = await supabase
       .from('notifications')
