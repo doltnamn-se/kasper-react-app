@@ -187,7 +187,7 @@ export const SearchBar = () => {
                     <CommandItem
                       key={result.id}
                       onSelect={() => handleSelect(result.url)}
-                      className="cursor-pointer flex items-center justify-between py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="cursor-pointer flex items-center justify-between py-2 hover:bg-[#f3f4f6] dark:hover:bg-gray-800"
                     >
                       <span className="font-medium text-[#000000] dark:text-[#FFFFFF]">
                         {result.title}
