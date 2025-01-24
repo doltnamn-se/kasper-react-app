@@ -120,7 +120,7 @@ export const ChecklistContainer = () => {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <Badge variant="outline" className="w-fit dark:bg-white dark:text-black border-none font-medium">
+          <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
             {t('step.number', { number: currentStep })}
           </Badge>
           <div className="flex flex-col gap-2">
