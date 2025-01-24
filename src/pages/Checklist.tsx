@@ -157,11 +157,11 @@ const Checklist = () => {
                 >
                   <div className="flex items-center gap-4">
                     <div className={`flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] flex items-center justify-center`}>
-                      <span className="text-xs xl:text-sm">{item.step}</span>
+                      <span className="text-xs xl:text-sm font-medium">{item.step}</span>
                     </div>
                     <div className={item.completed ? 'opacity-40' : ''}>
                       <p className="text-sm xl:text-base font-medium">{item.title}</p>
-                      <p className="text-sm text-gray-500 hidden xl:block">{item.description}</p>
+                      <p className="text-sm text-gray-500 font-medium hidden xl:block">{item.description}</p>
                     </div>
                   </div>
                   <div className="pl-4 xl:pl-8">

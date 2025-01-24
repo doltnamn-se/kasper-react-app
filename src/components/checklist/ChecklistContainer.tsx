@@ -115,10 +115,10 @@ export const ChecklistContainer = () => {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">Step {currentStep}</span>
+          <span className="text-sm text-gray-500 font-medium">Step {currentStep}</span>
           <h3 className="text-lg font-semibold">{currentItem.title}</h3>
           {currentItem.description && (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 font-medium">
               {currentItem.description}
             </p>
           )}
