@@ -19,12 +19,12 @@ export const NotificationList = ({ notifications, onMarkAsRead }: NotificationLi
   const { t, language } = useLanguage();
 
   return (
-    <ScrollArea className="h-[300px] [&_*::-webkit-scrollbar-thumb]:bg-[#e0e0e0] !important">
+    <ScrollArea className="h-[300px] [&_*::-webkit-scrollbar-thumb]:!bg-[#e0e0e0]">
       {notifications && notifications.length > 0 ? (
         notifications.map((notification) => (
           <DropdownMenuItem
             key={notification.id}
-            className="px-4 py-2 cursor-pointer hover:bg-[#f3f4f6] !important dark:hover:bg-[#2d2d2d]"
+            className="px-4 py-2 cursor-pointer hover:!bg-[#f3f4f6] dark:hover:!bg-[#2d2d2d]"
           >
             <NotificationItem
               notification={notification}
