@@ -126,7 +126,7 @@ const Checklist = () => {
           </PieChart>
         </div>
         {!isMobile && (
-          <span className="text-sm font-medium text-[#000000A6]">
+          <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('step.progress', { current: calculateProgress() / 25, total: 4 })}
           </span>
         )}
