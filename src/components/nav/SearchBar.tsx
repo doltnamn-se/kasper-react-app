@@ -21,6 +21,7 @@ type SearchResult = {
 
 export const SearchBar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isSearchHovered, setIsSearchHovered] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -60,7 +61,6 @@ export const SearchBar = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Handle Ctrl/Cmd + K
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (inputRef.current) {
@@ -69,7 +69,6 @@ export const SearchBar = () => {
         }
       }
       
-      // Handle Escape key
       if (e.key === 'Escape' && inputRef.current) {
         inputRef.current.blur();
         setShowResults(false);
@@ -89,16 +88,30 @@ export const SearchBar = () => {
     }
   };
 
+  const focusSearch = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      setShowResults(true);
+    }
+  };
+
   return (
     <div className="relative w-full">
       <div className="relative">
-        <Search 
-          className={cn(
-            "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors",
-            "text-[#000000A6] dark:text-[#FFFFFFA6]",
-            isSearchFocused && "text-[#000000] dark:text-[#FFFFFF]"
-          )} 
-        />
+        <button
+          onClick={focusSearch}
+          onMouseEnter={() => setIsSearchHovered(true)}
+          onMouseLeave={() => setIsSearchHovered(false)}
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          <Search 
+            className={cn(
+              "w-4 h-4 transition-colors",
+              "text-[#000000A6] dark:text-[#FFFFFFA6]",
+              (isSearchFocused || isSearchHovered) && "text-[#000000] dark:text-[#FFFFFF]"
+            )} 
+          />
+        </button>
         <Input
           ref={inputRef}
           id="global-search"
