@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import {
-  Command as CommandPrimitive,
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -12,28 +12,56 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useNavigate } from "react-router-dom";
+
+// Define the search result type
+type SearchResult = {
+  id: string;
+  title: string;
+  url: string;
+  category?: string;
+};
 
 export const SearchBar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
   // Mock search results - replace with actual data fetching logic
-  const searchResults = searchQuery
-    ? [
-        { id: 1, title: "Dashboard", url: "/" },
-        { id: 2, title: "Settings", url: "/settings" },
-        { id: 3, title: "Profile", url: "/profile" },
-      ].filter((item) =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
+  const getSearchResults = (query: string): SearchResult[] => {
+    if (!query) return [];
+
+    const allResults: SearchResult[] = [
+      { id: "1", title: t('nav.home'), url: "/", category: "Pages" },
+      { id: "2", title: t('nav.checklist'), url: "/checklist", category: "Pages" },
+      { id: "3", title: t('nav.my.links'), url: "/my-links", category: "Pages" },
+      { id: "4", title: t('nav.address.alerts'), url: "/address-alerts", category: "Pages" },
+      { id: "5", title: t('nav.guides'), url: "/guides", category: "Pages" },
+      { id: "6", title: t('profile.settings'), url: "/settings", category: "Settings" },
+    ];
+
+    return allResults.filter((item) =>
+      item.title.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+
+  // Update search results when query changes
+  useEffect(() => {
+    console.log("Performing search with query:", searchQuery);
+    const results = getSearchResults(searchQuery);
+    console.log("Search results:", results);
+    setSearchResults(results);
+  }, [searchQuery]);
 
   const handleSelect = (url: string) => {
+    console.log("Navigating to:", url);
     setOpen(false);
-    window.location.href = url;
+    navigate(url);
   };
 
   return (
@@ -73,24 +101,27 @@ export const SearchBar = () => {
           </div>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-[400px]" align="start">
-          <CommandPrimitive>
+          <Command>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               {searchResults.length > 0 && (
-                <CommandGroup heading="Search Results">
+                <CommandGroup>
                   {searchResults.map((result) => (
                     <CommandItem
                       key={result.id}
                       onSelect={() => handleSelect(result.url)}
-                      className="cursor-pointer"
+                      className="cursor-pointer flex items-center justify-between py-2"
                     >
-                      {result.title}
+                      <span>{result.title}</span>
+                      {result.category && (
+                        <span className="text-xs text-muted-foreground">{result.category}</span>
+                      )}
                     </CommandItem>
                   ))}
                 </CommandGroup>
               )}
             </CommandList>
-          </CommandPrimitive>
+          </Command>
         </PopoverContent>
       </Popover>
     </div>
