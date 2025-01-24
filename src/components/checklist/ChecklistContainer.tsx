@@ -171,15 +171,17 @@ export const ChecklistContainer = () => {
         <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
       </div>
       <div className="flex justify-between">
-        <Button
-          variant="outline"
-          onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
-          disabled={currentStep === 1}
-          className="gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          {language === 'en' ? 'Back' : 'Tillbaka'}
-        </Button>
+        {currentStep > 1 && (
+          <Button
+            variant="outline"
+            onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {language === 'en' ? 'Back' : 'Tillbaka'}
+          </Button>
+        )}
+        {currentStep === 1 && <div />} {/* Empty div to maintain spacing when button is hidden */}
         <Button
           onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
           disabled={currentStep === 4}
