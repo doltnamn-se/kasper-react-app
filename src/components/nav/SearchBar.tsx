@@ -91,10 +91,12 @@ export const SearchBar = () => {
                 setSearchQuery(e.target.value);
                 setOpen(true);
               }}
-              onFocus={() => setIsSearchFocused(true)}
+              onFocus={() => {
+                setIsSearchFocused(true);
+                setOpen(true);
+              }}
               onBlur={() => {
                 setIsSearchFocused(false);
-                if (!searchQuery) setOpen(false);
               }}
               className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
             />
@@ -120,14 +122,8 @@ export const SearchBar = () => {
           className="p-0 w-[400px]" 
           align="start" 
           sideOffset={8}
-          onInteractOutside={(e) => {
-            e.preventDefault();
-            if (inputRef.current === document.activeElement) {
-              e.stopPropagation();
-            }
-          }}
         >
-          <Command shouldFilter={false}>
+          <Command>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               {searchResults.length > 0 && (
@@ -136,9 +132,6 @@ export const SearchBar = () => {
                     <CommandItem
                       key={result.id}
                       onSelect={() => handleSelect(result.url)}
-                      onMouseDown={(e) => e.preventDefault()}
-                      onPointerDown={(e) => e.preventDefault()}
-                      onFocus={(e) => e.preventDefault()}
                       className="cursor-pointer flex items-center justify-between py-2"
                     >
                       <span>{result.title}</span>
