@@ -45,7 +45,6 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
     setIsLoading(true);
 
     try {
-      // Check if all requirements are met
       const allRequirementsMet = requirements.every(req => req.validate(newPassword));
       
       if (!allRequirementsMet) {
@@ -93,7 +92,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      <div className="w-full md:w-3/4 lg:w-1/2">
+      <div className="w-full md:w-[75%] lg:w-1/2">
         <div className="relative">
           <Input
             type={showPassword ? "text" : "password"}
@@ -141,7 +140,11 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
         })}
       </div>
 
-      <Button type="submit" disabled={isLoading} className="w-full md:w-1/2 lg:w-1/4 h-12">
+      <Button 
+        type="submit" 
+        disabled={isLoading} 
+        className="w-full md:w-1/2 lg:w-1/4 h-12"
+      >
         {isLoading ? t('updating.password') : t('update.password')}
       </Button>
     </form>
