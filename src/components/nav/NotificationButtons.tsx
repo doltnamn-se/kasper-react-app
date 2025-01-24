@@ -1,23 +1,21 @@
-import { Bell, BellRing, MessageSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { formatDistanceToNow, parseISO } from "date-fns";
-import { sv, enUS } from "date-fns/locale";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { NotificationIcon } from "../notifications/NotificationIcon";
+import { NotificationList } from "../notifications/NotificationList";
 
 export const NotificationButtons = () => {
   const { notifications = [], unreadCount, markAsRead, markAllAsRead } = useNotifications();
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   const { data: checklistProgress } = useQuery({
     queryKey: ['checklist-progress-notifications'],
@@ -94,27 +92,6 @@ export const NotificationButtons = () => {
   const allNotifications = [...notifications, ...checklistNotifications];
   const totalUnreadCount = unreadCount + checklistNotifications.filter(n => !n.read).length;
 
-  const handleMarkAsRead = async (notificationId: string) => {
-    console.log('Marking notification as read:', notificationId);
-    if (notificationId.startsWith('checklist-')) {
-      return;
-    }
-    await markAsRead(notificationId);
-  };
-
-  const formatTimestamp = (timestamp: string) => {
-    try {
-      const date = parseISO(timestamp);
-      return formatDistanceToNow(date, { 
-        addSuffix: true,
-        locale: language === 'sv' ? sv : enUS 
-      });
-    } catch (error) {
-      console.error('Error formatting timestamp:', error);
-      return language === 'sv' ? 'Ogiltigt datum' : 'Invalid date';
-    }
-  };
-
   return (
     <>
       <Button 
@@ -127,20 +104,7 @@ export const NotificationButtons = () => {
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="relative text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
-          >
-            {totalUnreadCount > 0 ? (
-              <>
-                <BellRing className="w-4 h-4" />
-                <div className="absolute -top-[0.025rem] -right-[0.025rem] h-2 w-2 rounded-full bg-[#2e77d0]" />
-              </>
-            ) : (
-              <Bell className="w-4 h-4" />
-            )}
-          </Button>
+          <NotificationIcon unreadCount={totalUnreadCount} />
         </DropdownMenuTrigger>
         
         <DropdownMenuContent align="end" className="w-80 dark:bg-[#1c1c1e] dark:border-[#232325]">
@@ -160,50 +124,10 @@ export const NotificationButtons = () => {
           
           <DropdownMenuSeparator className="dark:border-[#232325]" />
           
-          <ScrollArea className="h-[300px] [&_*::-webkit-scrollbar-thumb]:bg-[#e0e0e0]">
-            {allNotifications && allNotifications.length > 0 ? (
-              allNotifications.map((notification) => (
-                <DropdownMenuItem
-                  key={notification.id}
-                  className="px-4 py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
-                  onClick={() => handleMarkAsRead(notification.id)}
-                >
-                  <div className="flex items-start gap-2 w-full">
-                    <div className="flex-1">
-                      <p className={`text-sm font-medium ${
-                        notification.read 
-                          ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
-                          : 'text-[#000000] dark:text-[#FFFFFF]'
-                      }`}>
-                        {notification.title}
-                      </p>
-                      <p className={`text-xs mt-1 font-medium ${
-                        notification.read 
-                          ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
-                          : 'text-[#000000] dark:text-[#FFFFFF]'
-                      }`}>
-                        {notification.message}
-                      </p>
-                      <p className={`text-xs mt-1 font-medium ${
-                        notification.read 
-                          ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
-                          : 'text-[#000000] dark:text-[#FFFFFF]'
-                      }`}>
-                        {formatTimestamp(notification.created_at)}
-                      </p>
-                    </div>
-                    {!notification.read && (
-                      <div className="h-2 w-2 rounded-full bg-[#2e77d0] mt-2" />
-                    )}
-                  </div>
-                </DropdownMenuItem>
-              ))
-            ) : (
-              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
-                {t('notifications.empty')}
-              </div>
-            )}
-          </ScrollArea>
+          <NotificationList 
+            notifications={allNotifications}
+            onMarkAsRead={markAsRead}
+          />
         </DropdownMenuContent>
       </DropdownMenu>
     </>
