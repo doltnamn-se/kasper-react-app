@@ -6,6 +6,7 @@ import { HidingSitesSelection } from "./HidingSitesSelection";
 import { UrlSubmission } from "./UrlSubmission";
 import { PersonalInfoForm } from "./PersonalInfoForm";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import confetti from 'canvas-confetti';
@@ -117,10 +118,12 @@ export const ChecklistContainer = () => {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-[#000000A6]">{t('step.number', { number: currentStep })}</span>
+          <Badge variant="outline" className="w-fit bg-black text-white border-none">
+            {t('step.number', { number: currentStep })}
+          </Badge>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">{t('set.password')}</h3>
-            <p className="text-sm text-gray-500 font-medium">
+            <p className="text-sm font-medium text-[#000000A6]">
               {t('set.password.description')}
             </p>
             {currentItem.requires_subscription_plan && (
