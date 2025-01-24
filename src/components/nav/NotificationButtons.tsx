@@ -92,7 +92,7 @@ export const NotificationButtons = () => {
 
   const handleMarkAsRead = async (notificationId: string) => {
     if (notificationId.startsWith('checklist-')) {
-      return; // Checklist notifications can't be marked as read manually
+      return;
     }
     await markAsRead(notificationId);
   };
@@ -117,7 +117,7 @@ export const NotificationButtons = () => {
             {totalUnreadCount > 0 ? (
               <>
                 <BellRing className="w-4 h-4" />
-                <div className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#2e77d0] translate-x-0" />
+                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-[#2e77d0]" />
               </>
             ) : (
               <Bell className="w-4 h-4" />
