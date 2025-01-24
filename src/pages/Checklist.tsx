@@ -52,7 +52,7 @@ const Checklist = () => {
 
   return (
     <MainLayout>
-      <div className="flex flex-wrap items-center gap-4 mb-6">
+      <div className="flex flex-wrap items-center gap-8 mb-6">
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.checklist')}
         </h1>

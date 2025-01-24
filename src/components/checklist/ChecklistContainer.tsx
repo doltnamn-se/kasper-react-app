@@ -114,8 +114,8 @@ export const ChecklistContainer = () => {
 
     return (
       <div className="space-y-4">
-        <div className="flex items-center gap-4">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] flex items-center justify-center">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] flex items-center justify-center mt-1">
             <span className="text-sm font-medium">{currentStep}</span>
           </div>
           <div className="flex flex-col gap-2">
