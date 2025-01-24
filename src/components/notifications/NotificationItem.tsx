@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
+import { useNavigate } from 'react-router-dom';
 
 interface NotificationItemProps {
   notification: {
@@ -9,12 +10,15 @@ interface NotificationItemProps {
     message: string;
     read: boolean;
     created_at: string;
+    type?: string;
   };
   language: string;
   onMarkAsRead: (id: string) => void;
 }
 
 export const NotificationItem = ({ notification, language, onMarkAsRead }: NotificationItemProps) => {
+  const navigate = useNavigate();
+
   const formatTimestamp = (timestamp: string) => {
     try {
       const date = parseISO(timestamp);
@@ -28,10 +32,24 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
     }
   };
 
+  const handleClick = () => {
+    onMarkAsRead(notification.id);
+    
+    // Handle navigation based on notification type
+    if (notification.type === 'checklist') {
+      navigate('/checklist');
+    } else if (notification.type === 'address_alert') {
+      navigate('/address-alerts');
+    } else if (notification.type === 'removal') {
+      navigate('/my-links');
+    }
+    // Add more navigation cases as needed
+  };
+
   return (
     <div 
       className="flex items-start gap-2 w-full cursor-pointer"
-      onClick={() => onMarkAsRead(notification.id)}
+      onClick={handleClick}
     >
       <div className="flex-1">
         <p className={`text-sm font-medium ${
