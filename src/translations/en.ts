@@ -27,7 +27,7 @@ export const en: Translations = {
   'reset.password.success': 'Password reset email sent successfully',
   'password.updated': 'Password updated successfully',
   // Navigation
-  'nav.home': 'Dashboard',
+  'nav.home': 'Home',
   'nav.checklist': 'Checklist',
   'nav.my.links': 'My Links',
   'nav.address.alerts': 'Address Alerts',

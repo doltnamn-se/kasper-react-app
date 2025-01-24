@@ -27,7 +27,7 @@ export const sv: Translations = {
   'reset.password.success': 'Återställningslänk har skickats',
   'password.updated': 'Lösenordet har uppdaterats',
   // Navigation
-  'nav.home': 'Dashboard',
+  'nav.home': 'Hem',
   'nav.checklist': 'Checklista',
   'nav.my.links': 'Mina länkar',
   'nav.address.alerts': 'Adresslarm',
@@ -91,7 +91,10 @@ export const sv: Translations = {
   'settings.success': 'Klart',
   'settings.password.updated': 'Lösenordet har uppdaterats',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
-  
+  // Notifications
+  'notifications.title': 'Notiser',
+  'notifications.mark.all.read': 'Markera alla som lästa',
+  'notifications.empty': 'Inga notifieringar',
   // Checklist related
   'your.progress': 'Din framsteg',
   'step.progress': '{current} av {total} steg genomförda',
@@ -112,10 +115,6 @@ export const sv: Translations = {
   'success': 'Klart',
   'error': 'Fel',
   'error.passwords.match.description': 'Lösenorden matchar inte',
-  // Notifications
-  'notifications.title': 'Notiser',
-  'notifications.mark.all.read': 'Markera alla som lästa',
-  'notifications.empty': 'Inga notifieringar',
   'checklist': 'Checklista',
   'completed': 'Genomförd',
   'pending.completion': 'Väntar på genomförande',
