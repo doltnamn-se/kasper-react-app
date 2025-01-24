@@ -68,7 +68,6 @@ const Settings = () => {
         setError(error.message);
         setIsLoading(false);
       }
-      // Note: We don't need to handle success here as it will be caught by the onAuthStateChange listener
     } catch (err) {
       console.error("Error in password update:", err);
       setError(t('error.generic'));
@@ -82,7 +81,7 @@ const Settings = () => {
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {t('profile.settings')}
         </h1>
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[7px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
           <h2 className="text-xl font-semibold mb-6 dark:text-white">
             {t('settings.change.password')}
           </h2>
