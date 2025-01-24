@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Check } from "lucide-react";
+import { Check, Eye, EyeOff } from "lucide-react";
 
 const PasswordTest = () => {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const requirements = [
     {
@@ -34,13 +35,26 @@ const PasswordTest = () => {
         <h1 className="text-2xl font-bold">Password Requirements Test</h1>
         
         <div className="space-y-4">
-          <Input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6]"
-          />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
+          </div>
 
           <div className="space-y-2">
             {requirements.map((req) => {
