@@ -120,12 +120,12 @@ export const ChecklistContainer = () => {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <Badge variant="outline" className="w-fit bg-black text-white border-none font-medium">
+          <Badge variant="outline" className="w-fit dark:bg-white dark:text-black border-none font-medium">
             {t('step.number', { number: currentStep })}
           </Badge>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">{t('set.password')}</h3>
-            <p className="text-sm font-medium text-[#000000A6]">
+            <p className="text-sm font-medium text-[#000000A6] dark:text-gray-400">
               {t('set.password.description')}
             </p>
             {currentItem.requires_subscription_plan && (
