@@ -112,7 +112,7 @@ export const sv: Translations = {
   'error': 'Fel',
   'error.passwords.match.description': 'Lösenorden matchar inte',
   // Notifications
-  'notifications.title': 'Notifieringar',
+  'notifications.title': 'Notiser',
   'notifications.mark.all.read': 'Markera alla som lästa',
   'notifications.empty': 'Inga notifieringar'
 };

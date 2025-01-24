@@ -142,21 +142,23 @@ export const NotificationButtons = () => {
           
           <DropdownMenuSeparator />
           
-          <ScrollArea className="h-[300px]">
+          <ScrollArea className="h-[300px] [&_*::-webkit-scrollbar-thumb]:bg-[#e0e0e0]">
             {allNotifications && allNotifications.length > 0 ? (
               allNotifications.map((notification) => (
                 <DropdownMenuItem
                   key={notification.id}
-                  className="px-4 py-2 cursor-pointer"
+                  className="px-4 py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-gray-800"
                   onClick={() => handleMarkAsRead(notification.id)}
                 >
                   <div className="flex items-start gap-2 w-full">
-                    <div className={`flex-1 ${!notification.read ? 'font-medium' : ''}`}>
-                      <p className="text-sm">{notification.title}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="flex-1">
+                      <p className={`text-sm font-medium ${notification.read ? 'text-[#000000A6]' : 'text-[#000000]'}`}>
+                        {notification.title}
+                      </p>
+                      <p className={`text-xs mt-1 font-medium ${notification.read ? 'text-[#000000A6]' : 'text-[#000000]'}`}>
                         {notification.message}
                       </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 font-medium">
                         {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                       </p>
                     </div>
@@ -167,7 +169,7 @@ export const NotificationButtons = () => {
                 </DropdownMenuItem>
               ))
             ) : (
-              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
                 {t('notifications.empty')}
               </div>
             )}
