@@ -115,4 +115,12 @@ export interface Translations {
   'success': string;
   'error': string;
   'error.passwords.match.description': string;
+  // Checklist notifications
+  'checklist': string;
+  'completed': string;
+  'pending.completion': string;
+  'step.1.title': string;
+  'step.2.title': string;
+  'step.3.title': string;
+  'step.4.title': string;
 }
