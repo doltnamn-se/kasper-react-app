@@ -3,7 +3,7 @@ import { AuthLogo } from "@/components/auth/AuthLogo";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
-import MainNavigation from "@/components/nav/MainNavigation";
+import { MainNavigation } from "@/components/nav/MainNavigation";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
 
 interface MainLayoutProps {
@@ -19,7 +19,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     return (
       <nav>
         {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
-        <MainNavigation />
+        <MainNavigation toggleMobileMenu={toggleMobileMenu} />
       </nav>
     );
   };

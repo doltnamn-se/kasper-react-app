@@ -1,8 +1,8 @@
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
 const MainNavigation = () => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   const navItems = [
     { label: "home", path: "/" },
