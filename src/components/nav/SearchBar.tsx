@@ -91,15 +91,17 @@ export const SearchBar = () => {
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                if (!open) setOpen(true);
+                if (e.target.value) setOpen(true);
               }}
               className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
               onFocus={() => {
                 setIsSearchFocused(true);
-                if (searchQuery) setOpen(true);
               }}
               onBlur={() => {
                 setIsSearchFocused(false);
+                if (!searchQuery) {
+                  setOpen(false);
+                }
               }}
             />
             <div
