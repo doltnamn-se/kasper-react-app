@@ -6,7 +6,6 @@ const AdminDashboard = () => {
   const { t } = useLanguage();
 
   const handleCustomerCreated = () => {
-    // Simple callback for when a customer is created
     console.log('Customer created successfully');
   };
 
