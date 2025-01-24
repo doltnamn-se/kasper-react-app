@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useNotifications } from "@/hooks/useNotifications";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, parseISO } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -97,6 +97,16 @@ export const NotificationButtons = () => {
     await markAsRead(notificationId);
   };
 
+  const formatTimestamp = (timestamp: string) => {
+    try {
+      const date = parseISO(timestamp);
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (error) {
+      console.error('Error formatting timestamp:', error);
+      return 'Invalid date';
+    }
+  };
+
   return (
     <>
       <Button 
@@ -171,7 +181,7 @@ export const NotificationButtons = () => {
                           ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
                           : 'text-[#000000] dark:text-[#FFFFFF]'
                       }`}>
-                        {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                        {formatTimestamp(notification.created_at)}
                       </p>
                     </div>
                     {!notification.read && (
