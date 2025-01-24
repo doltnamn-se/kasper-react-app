@@ -134,7 +134,7 @@ const Checklist = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <Card className="p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e]">
+          <Card className="p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
             <div className="space-y-8">
               <ChecklistContainer />
             </div>
@@ -142,7 +142,7 @@ const Checklist = () => {
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e]">
+          <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
             <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">
               {[
