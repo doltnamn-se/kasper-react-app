@@ -132,7 +132,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
                   <Check className="h-3 w-3 text-white stroke-[4]" />
                 )}
               </div>
-              <span className="text-sm font-medium text-[#000000A6]">
+              <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {req.label}
               </span>
             </div>
