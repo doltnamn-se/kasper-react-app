@@ -15,7 +15,7 @@ export const TopNav = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key.toLowerCase() === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         const searchInput = document.getElementById('global-search') as HTMLInputElement;
         if (searchInput) {

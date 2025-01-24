@@ -18,6 +18,7 @@ export const SearchBar = () => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useLanguage();
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
   // Mock search results - replace with actual data fetching logic
   const searchResults = searchQuery
@@ -60,7 +61,7 @@ export const SearchBar = () => {
               )}
             >
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
-                Ctrl
+                {isMac ? '⌘' : 'Ctrl'}
               </div>
               <span className="text-[#5e5e5e] dark:text-gray-400 text-[10px]">
                 +
