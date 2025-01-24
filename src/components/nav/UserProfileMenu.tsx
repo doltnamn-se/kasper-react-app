@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/contexts/SidebarContext";
-import { SearchBar } from "./SearchBar";
-import { ThemeToggle } from "./ThemeToggle";
-import { NotificationButtons } from "./NotificationButtons";
+import { useState } from "react";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -12,8 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ArrowDown } from "lucide-react";
-import { useUserProfile } from "@/hooks/useUserProfile";
+import { ChevronDown } from "lucide-react";
 import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -24,7 +19,7 @@ export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
-  const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getDisplayName = () => {
     if (!userProfile?.display_name) return userEmail;
@@ -78,13 +73,11 @@ export const UserProfileMenu = () => {
   const displayName = getDisplayName();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-gray-300 dark:hover:text-white hover:bg-transparent ml-2"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-gray-300 dark:hover:text-white hover:bg-transparent ml-2 group"
         >
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-gray-400 text-sm">
@@ -93,14 +86,14 @@ export const UserProfileMenu = () => {
           </Avatar>
           {!isMobile && (
             <>
-              <span className="text-sm font-medium">{displayName}</span>
-              <div className="transition-all duration-300 ease-in-out transform">
-                {isHovered ? (
-                  <ArrowDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400 transform transition-all duration-300 ease-in-out scale-y-100" />
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400 transform transition-all duration-300 ease-in-out scale-y-75" />
-                )}
-              </div>
+              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000]' : ''}`}>
+                {displayName}
+              </span>
+              <ChevronDown 
+                className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-gray-400 dark:group-hover:text-white transition-transform duration-200 ${
+                  isOpen ? 'rotate-180 text-[#000000]' : ''
+                }`}
+              />
             </>
           )}
         </Button>
