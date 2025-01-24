@@ -142,7 +142,7 @@ const Checklist = () => {
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 rounded-[4px] dark:bg-[#232324]">
+          <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e]">
             <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">
               {[
