@@ -7,6 +7,7 @@ import { UrlSubmission } from "./UrlSubmission";
 import { PersonalInfoForm } from "./PersonalInfoForm";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import confetti from 'canvas-confetti';
@@ -165,6 +166,7 @@ export const ChecklistContainer = () => {
   return (
     <div className="space-y-6">
       {renderCurrentStep()}
+      <Separator className="my-6" />
       <div className="flex justify-between">
         <Button
           variant="outline"

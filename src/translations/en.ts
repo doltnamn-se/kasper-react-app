@@ -97,7 +97,7 @@ export const en: Translations = {
   // Checklist related
   'your.progress': 'Your Progress',
   'step.progress': '{current} out of {total} steps finished',
-  'getting.started': 'Getting Started',
+  'getting.started': 'Steps',
   'step.number': 'Step {number}',
   'set.password': 'Set your password',
   'set.password.description': 'Create your own password for easier access to the platform',
