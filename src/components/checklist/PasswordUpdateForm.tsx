@@ -126,7 +126,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
               <div className={`flex items-center justify-center w-4 h-4 rounded-full border-2 ${
                 isValid 
                   ? "border-[#00bda5] bg-[#00bda5]" 
-                  : "border-[#e0e0e0] bg-white"
+                  : "border-[#e0e0e0] dark:border-[#3a3a3b] bg-white dark:bg-[#1c1c1e]"
               }`}>
                 {isValid && (
                   <Check className="h-3 w-3 text-white stroke-[4]" />
