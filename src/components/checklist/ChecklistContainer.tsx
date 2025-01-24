@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import confetti from 'canvas-confetti';
 
 interface ChecklistProgress {
@@ -26,7 +27,7 @@ export const ChecklistContainer = () => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const queryClient = useQueryClient();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data: checklistItems } = useQuery({
     queryKey: ['checklist-items'],
@@ -172,14 +173,18 @@ export const ChecklistContainer = () => {
           variant="outline"
           onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
           disabled={currentStep === 1}
+          className="gap-2"
         >
-          Previous
+          <ArrowLeft className="h-4 w-4" />
+          {language === 'en' ? 'Back' : 'Tillbaka'}
         </Button>
         <Button
           onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
           disabled={currentStep === 4}
+          className="gap-2"
         >
-          Next
+          {language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`}
+          <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
     </div>
