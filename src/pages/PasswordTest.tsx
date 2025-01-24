@@ -53,16 +53,22 @@ const PasswordTest = () => {
               return (
                 <div
                   key={req.id}
-                  className={`flex items-center gap-2 text-sm transition-colors ${
-                    isValid ? "text-green-500" : "text-gray-500"
-                  }`}
+                  className="flex items-center gap-2"
                 >
-                  {isValid ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <X className="h-4 w-4" />
-                  )}
-                  <span>{req.label}</span>
+                  <div className={`flex items-center justify-center w-5 h-5 rounded-full border ${
+                    isValid 
+                      ? "border-[#00bda5] bg-white" 
+                      : "border-[#e0e0e0] bg-white"
+                  }`}>
+                    {isValid ? (
+                      <Check className="h-3.5 w-3.5 text-[#00bda5]" />
+                    ) : (
+                      <X className="h-3.5 w-3.5 text-[#e0e0e0]" />
+                    )}
+                  </div>
+                  <span className="text-sm font-medium text-[#000000A6]">
+                    {req.label}
+                  </span>
                 </div>
               );
             })}
