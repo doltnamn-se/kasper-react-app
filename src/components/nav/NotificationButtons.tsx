@@ -125,7 +125,7 @@ export const NotificationButtons = () => {
           </Button>
         </DropdownMenuTrigger>
         
-        <DropdownMenuContent align="end" className="w-80">
+        <DropdownMenuContent align="end" className="w-80 dark:bg-[#1c1c1e] dark:border-[#232325]">
           <div className="flex items-center justify-between px-4 py-2">
             <h4 className="font-medium text-black dark:text-[#FFFFFF]">{t('notifications.title')}</h4>
             {unreadCount > 0 && (
@@ -140,14 +140,14 @@ export const NotificationButtons = () => {
             )}
           </div>
           
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="dark:border-[#232325]" />
           
           <ScrollArea className="h-[300px] [&_*::-webkit-scrollbar-thumb]:bg-[#e0e0e0]">
             {allNotifications && allNotifications.length > 0 ? (
               allNotifications.map((notification) => (
                 <DropdownMenuItem
                   key={notification.id}
-                  className="px-4 py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-gray-800"
+                  className="px-4 py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
                   onClick={() => handleMarkAsRead(notification.id)}
                 >
                   <div className="flex items-start gap-2 w-full">
