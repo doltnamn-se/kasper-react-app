@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Search, ArrowBigUp } from "lucide-react";
+import { Search, Command } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import {
-  Command,
+  Command as CommandPrimitive,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -60,20 +60,20 @@ export const SearchBar = () => {
               )}
             >
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
-                <ArrowBigUp className="w-3 h-3 mr-0.5" />
-                Shift
+                <Command className="w-3 h-3 mr-0.5" />
+                Ctrl
               </div>
               <span className="text-[#5e5e5e] dark:text-gray-400 text-[10px]">
                 +
               </span>
               <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
-                S
+                K
               </div>
             </div>
           </div>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-[400px]" align="start">
-          <Command>
+          <CommandPrimitive>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               {searchResults.length > 0 && (
@@ -90,7 +90,7 @@ export const SearchBar = () => {
                 </CommandGroup>
               )}
             </CommandList>
-          </Command>
+          </CommandPrimitive>
         </PopoverContent>
       </Popover>
     </div>
