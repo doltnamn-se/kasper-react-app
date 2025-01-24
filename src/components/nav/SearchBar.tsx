@@ -96,13 +96,15 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="relative w-full">
+    <div 
+      className="relative w-full"
+      onMouseEnter={() => setIsSearchHovered(true)}
+      onMouseLeave={() => setIsSearchHovered(false)}
+    >
       <div className="relative">
         <button
           onClick={focusSearch}
-          onMouseEnter={() => setIsSearchHovered(true)}
-          onMouseLeave={() => setIsSearchHovered(false)}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors"
         >
           <Search 
             className={cn(
@@ -134,8 +136,7 @@ export const SearchBar = () => {
             "hover:shadow-sm focus:shadow-md focus-visible:ring-0",
             "text-[#000000] dark:text-[#FFFFFF]",
             "placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6]",
-            "hover:placeholder:text-[#000000] dark:hover:placeholder:text-[#FFFFFF]",
-            "focus:placeholder:text-[#000000] dark:focus:placeholder:text-[#FFFFFF]",
+            (isSearchHovered || isSearchFocused) && "placeholder:text-[#000000] dark:placeholder:text-[#FFFFFF]",
             "transition-all outline-none",
             "[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden",
             "[&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
