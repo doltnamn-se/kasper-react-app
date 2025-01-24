@@ -114,19 +114,23 @@ export const ChecklistContainer = () => {
 
     return (
       <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500 font-medium">Step {currentStep}</span>
-          <h3 className="text-lg font-semibold">{currentItem.title}</h3>
-          {currentItem.description && (
-            <p className="text-sm text-gray-500 font-medium">
-              {currentItem.description}
-            </p>
-          )}
-          {currentItem.requires_subscription_plan && (
-            <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded w-fit">
-              {currentItem.requires_subscription_plan.join(', ')}
-            </span>
-          )}
+        <div className="flex items-center gap-4">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] flex items-center justify-center">
+            <span className="text-sm font-medium">{currentStep}</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-semibold">{currentItem.title}</h3>
+            {currentItem.description && (
+              <p className="text-sm text-gray-500 font-medium">
+                {currentItem.description}
+              </p>
+            )}
+            {currentItem.requires_subscription_plan && (
+              <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded w-fit">
+                {currentItem.requires_subscription_plan.join(', ')}
+              </span>
+            )}
+          </div>
         </div>
         <div className="pt-4">
           {(() => {
