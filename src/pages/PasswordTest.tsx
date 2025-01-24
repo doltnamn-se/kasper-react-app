@@ -41,12 +41,12 @@ const PasswordTest = () => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] pr-10"
+              className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] placeholder:text-[#000000A6] placeholder:font-medium pr-10"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] hover:text-[#000000] focus:outline-none"
             >
               {showPassword ? (
                 <EyeOff className="h-5 w-5" />
