@@ -41,7 +41,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <span className="text-black dark:text-gray-300 font-medium">{t('profile.settings')}</span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
-      <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d] hover:bg-transparent" />
+      <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
       <DropdownMenuItem 
         onClick={onSignOut} 
         disabled={isSigningOut}
