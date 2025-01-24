@@ -132,7 +132,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
       >
         <div className="flex items-center gap-3">
           <span className="text-black dark:text-gray-300">{icon}</span>
-          <span className="text-sm text-[#1A1F2C] dark:text-slate-200 font-normal">{label}</span>
+          <span className="text-sm text-[#000000] dark:text-slate-200 font-medium">{label}</span>
         </div>
         {unreadCount > 0 && (
           <Badge 
