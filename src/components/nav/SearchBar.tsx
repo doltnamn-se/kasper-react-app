@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -28,6 +28,7 @@ export const SearchBar = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const getSearchResults = (query: string): SearchResult[] => {
     if (!query) return [];
@@ -66,9 +67,8 @@ export const SearchBar = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        const searchInput = document.getElementById('global-search') as HTMLInputElement;
-        if (searchInput) {
-          searchInput.focus();
+        if (inputRef.current) {
+          inputRef.current.focus();
           setOpen(true);
         }
       }
@@ -82,9 +82,10 @@ export const SearchBar = () => {
     <div className="relative w-full">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <div className="relative">
+          <div className="relative" onClick={() => inputRef.current?.focus()}>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
             <Input
+              ref={inputRef}
               id="global-search"
               type="search"
               placeholder={t('search.placeholder')}
