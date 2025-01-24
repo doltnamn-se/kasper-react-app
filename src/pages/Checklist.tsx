@@ -161,7 +161,7 @@ const Checklist = () => {
                     </div>
                     <div className={item.completed ? 'opacity-40' : ''}>
                       <p className="text-sm xl:text-base font-medium">{item.title}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 font-medium hidden xl:block">{item.description}</p>
+                      <p className="text-sm text-[#616166] dark:text-[#FFFFFFA6] font-medium hidden xl:block">{item.description}</p>
                     </div>
                   </div>
                   <div className="pl-4 xl:pl-8">
