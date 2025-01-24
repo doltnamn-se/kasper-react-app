@@ -57,7 +57,6 @@ export const NotificationButtons = () => {
     }
   });
 
-  // Generate notifications for incomplete checklist items
   const checklistNotifications = checklistItems.map((item, index) => {
     let isCompleted = false;
     if (checklistProgress) {
@@ -77,7 +76,6 @@ export const NotificationButtons = () => {
       }
     }
 
-    // Use the correct translation keys that match the Translations interface
     const stepTitle = index === 0 ? 'step.1.title' :
                      index === 1 ? 'step.2.title' :
                      index === 2 ? 'step.3.title' :
