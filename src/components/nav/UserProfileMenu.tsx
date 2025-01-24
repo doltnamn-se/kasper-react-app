@@ -77,7 +77,7 @@ export const UserProfileMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-gray-300 dark:hover:text-white hover:bg-transparent ml-2 group"
+          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group"
         >
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-gray-400 text-sm">
@@ -86,12 +86,12 @@ export const UserProfileMenu = () => {
           </Avatar>
           {!isMobile && (
             <>
-              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000]' : ''}`}>
+              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
                 {displayName}
               </span>
               <ChevronDown 
-                className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-gray-400 dark:group-hover:text-white transition-transform duration-200 ${
-                  isOpen ? 'rotate-180 text-[#000000]' : ''
+                className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
+                  isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
                 }`}
               />
             </>

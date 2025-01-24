@@ -102,7 +102,7 @@ export const NotificationButtons = () => {
       <Button 
         variant="ghost" 
         size="icon" 
-        className="text-[#000000A6] hover:text-[#000000] dark:text-white dark:hover:text-white h-8 w-8 flex items-center justify-center hover:bg-transparent"
+        className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
       >
         <MessageSquare className="w-4 h-4" />
       </Button>
@@ -112,7 +112,7 @@ export const NotificationButtons = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="relative text-[#000000A6] hover:text-[#000000] dark:text-white dark:hover:text-white h-8 w-8 flex items-center justify-center hover:bg-transparent"
+            className="relative text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
           >
             {totalUnreadCount > 0 ? (
               <>
