@@ -102,7 +102,7 @@ export const NotificationButtons = () => {
       <Button 
         variant="ghost" 
         size="icon" 
-        className="text-black dark:text-white hover:bg-black/5 dark:hover:bg-[#232325] h-8 w-8 flex items-center justify-center"
+        className="text-[#000000A6] hover:text-[#000000] dark:text-white dark:hover:text-white h-8 w-8 flex items-center justify-center"
       >
         <MessageSquare className="w-4 h-4" />
       </Button>
