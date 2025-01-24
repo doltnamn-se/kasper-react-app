@@ -77,9 +77,15 @@ export const NotificationButtons = () => {
       }
     }
 
+    // Use the correct translation keys that match the Translations interface
+    const stepTitle = index === 0 ? 'step.1.title' :
+                     index === 1 ? 'step.2.title' :
+                     index === 2 ? 'step.3.title' :
+                     'step.4.title';
+
     return {
       id: `checklist-${item.id}`,
-      title: `${t('checklist')}: ${t(`step.${index + 1}.title`)}`,
+      title: `${t('checklist')}: ${t(stepTitle)}`,
       message: isCompleted ? t('completed') : t('pending.completion'),
       read: isCompleted,
       created_at: new Date().toISOString(),
