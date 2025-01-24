@@ -5,6 +5,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { MainNavigation } from "@/components/nav/MainNavigation";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const { userProfile } = useUserProfile();
+  const { t } = useLanguage();
   const isAdmin = userProfile?.role === 'super_admin';
 
   const Navigation = () => {
