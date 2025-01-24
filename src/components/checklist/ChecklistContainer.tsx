@@ -125,7 +125,7 @@ export const ChecklistContainer = () => {
           </Badge>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">{t('set.password')}</h3>
-            <p className="text-sm font-medium text-[#000000A6] dark:text-gray-400">
+            <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {t('set.password.description')}
             </p>
             {currentItem.requires_subscription_plan && (
