@@ -75,11 +75,22 @@ export const SearchBar = () => {
               type="search"
               placeholder={t('search.placeholder')}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (e.target.value) {
+                  setOpen(true);
+                }
+              }}
               className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
-              onFocus={() => {
-                setIsSearchFocused(true);
-                setOpen(true);
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => {
+                setIsSearchFocused(false);
+                // Don't close the popover immediately to allow clicking on results
+                setTimeout(() => {
+                  if (!document.activeElement?.closest('.search-results')) {
+                    setOpen(false);
+                  }
+                }, 200);
               }}
             />
             <div
@@ -100,7 +111,7 @@ export const SearchBar = () => {
             </div>
           </div>
         </PopoverTrigger>
-        <PopoverContent className="p-0 w-[400px]" align="start">
+        <PopoverContent className="p-0 w-[400px] search-results" align="start">
           <Command>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
