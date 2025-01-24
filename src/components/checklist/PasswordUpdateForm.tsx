@@ -99,7 +99,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
             placeholder={t('new.password')}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] dark:text-[#FFFFFFA6] placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] placeholder:font-medium text-2xl pl-0 pr-10 bg-transparent"
+            className="h-12 border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none font-medium text-[#000000A6] dark:text-[#FFFFFFA6] placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] placeholder:font-medium text-2xl pl-0 pr-10 bg-transparent"
           />
           <button
             type="button"
