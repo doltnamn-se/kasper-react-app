@@ -100,18 +100,5 @@ export const en: Translations = {
   'getting.started': 'Getting Started',
   'step.number': 'Step {number}',
   'set.password': 'Set your password',
-  'set.password.description': 'Set your own password to ensure account security.',
-  'step.password.title': 'Set your password',
-  'step.password.description': 'Configure and set your secure password',
-  'step.sites.title': 'Select hiding sites',
-  'step.sites.description': 'Choose which sites to hide your information from',
-  'step.urls.title': 'Submit removal URLs',
-  'step.urls.description': 'Add URLs where your information appears',
-  'step.info.title': 'Personal information',
-  'step.info.description': 'Add your personal information for removal',
-  'current.password': 'Current password',
-  'confirm.password': 'Confirm password',
-  'success': 'Success',
-  'error': 'Error',
-  'error.passwords.match.description': 'The passwords you entered do not match'
+  'set.password.description': 'Create your own password for easier access to the platform'
 };

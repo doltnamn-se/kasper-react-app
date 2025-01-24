@@ -7,6 +7,7 @@ import { UrlSubmission } from "./UrlSubmission";
 import { PersonalInfoForm } from "./PersonalInfoForm";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import confetti from 'canvas-confetti';
 
 interface ChecklistProgress {
@@ -23,6 +24,7 @@ export const ChecklistContainer = () => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
 
   const { data: checklistItems } = useQuery({
     queryKey: ['checklist-items'],
@@ -114,17 +116,13 @@ export const ChecklistContainer = () => {
 
     return (
       <div className="space-y-4">
-        <div className="flex items-start gap-4">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] flex items-center justify-center mt-1">
-            <span className="text-sm font-medium">{currentStep}</span>
-          </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-gray-500">{t('step.number', { number: currentStep })}</span>
           <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold">{currentItem.title}</h3>
-            {currentItem.description && (
-              <p className="text-sm text-gray-500 font-medium">
-                {currentItem.description}
-              </p>
-            )}
+            <h3 className="text-lg font-semibold">{t('set.password')}</h3>
+            <p className="text-sm text-gray-500 font-medium">
+              {t('set.password.description')}
+            </p>
             {currentItem.requires_subscription_plan && (
               <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded w-fit">
                 {currentItem.requires_subscription_plan.join(', ')}
