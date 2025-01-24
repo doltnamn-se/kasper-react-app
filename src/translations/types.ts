@@ -68,6 +68,7 @@ export interface Translations {
   'error.password.update': string;
   'error.missing.email': string;
   'error.invalid.recovery.link': string;
+  'error.password.requirements': string;
   'toast.signed.out.title': string;
   'toast.signed.out.description': string;
   'toast.error.title': string;

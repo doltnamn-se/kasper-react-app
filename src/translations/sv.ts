@@ -68,6 +68,7 @@ export const sv: Translations = {
   'error.password.update': 'Fel vid uppdatering av lösenord',
   'error.missing.email': 'Vänligen ange din e-postadress',
   'error.invalid.recovery.link': 'Ogiltig eller utgången återställningslänk',
+  'error.password.requirements': 'Se till att ditt lösenord uppfyller alla krav',
   'toast.signed.out.title': 'Du har loggats ut',
   'toast.signed.out.description': 'Du har loggats ut från ditt konto.',
   'toast.error.title': 'Fel',
