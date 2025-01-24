@@ -94,11 +94,11 @@ export const UserProfileMenu = () => {
           {!isMobile && (
             <>
               <span className="text-sm font-medium">{displayName}</span>
-              <div className="transition-transform duration-200">
+              <div className="transition-all duration-300 ease-in-out transform">
                 {isHovered ? (
-                  <ArrowDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
+                  <ArrowDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400 transform transition-all duration-300 ease-in-out scale-y-100" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
+                  <ChevronDown className="w-4 h-4 text-[#5e5e5e] dark:text-gray-400 transform transition-all duration-300 ease-in-out scale-y-75" />
                 )}
               </div>
             </>
