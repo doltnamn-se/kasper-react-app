@@ -127,7 +127,7 @@ export const NotificationButtons = () => {
         
         <DropdownMenuContent align="end" className="w-80">
           <div className="flex items-center justify-between px-4 py-2">
-            <h4 className="font-medium">{t('notifications.title')}</h4>
+            <h4 className="font-medium text-black dark:text-[#FFFFFF]">{t('notifications.title')}</h4>
             {unreadCount > 0 && (
               <Button 
                 variant="ghost" 
@@ -152,10 +152,18 @@ export const NotificationButtons = () => {
                 >
                   <div className="flex items-start gap-2 w-full">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${notification.read ? 'text-[#000000A6]' : 'text-[#000000]'}`}>
+                      <p className={`text-sm font-medium ${
+                        notification.read 
+                          ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
+                          : 'text-[#000000] dark:text-[#FFFFFF]'
+                      }`}>
                         {notification.title}
                       </p>
-                      <p className={`text-xs mt-1 font-medium ${notification.read ? 'text-[#000000A6]' : 'text-[#000000]'}`}>
+                      <p className={`text-xs mt-1 font-medium ${
+                        notification.read 
+                          ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
+                          : 'text-[#000000] dark:text-[#FFFFFF]'
+                      }`}>
                         {notification.message}
                       </p>
                       <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 font-medium">
