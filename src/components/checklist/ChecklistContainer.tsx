@@ -168,7 +168,7 @@ export const ChecklistContainer = () => {
     <div className="space-y-6">
       {renderCurrentStep()}
       <div className="py-8">
-        <Separator className="bg-[#e0e0e0]" />
+        <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
       </div>
       <div className="flex justify-between">
         <Button
