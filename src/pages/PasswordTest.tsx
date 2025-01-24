@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 
 const PasswordTest = () => {
   const [password, setPassword] = useState("");
@@ -55,15 +55,13 @@ const PasswordTest = () => {
                   key={req.id}
                   className="flex items-center gap-2"
                 >
-                  <div className={`flex items-center justify-center w-5 h-5 rounded-full border ${
+                  <div className={`flex items-center justify-center w-4 h-4 rounded-full border-2 ${
                     isValid 
-                      ? "border-[#00bda5] bg-white" 
+                      ? "border-[#00bda5] bg-[#00bda5]" 
                       : "border-[#e0e0e0] bg-white"
                   }`}>
-                    {isValid ? (
-                      <Check className="h-3.5 w-3.5 text-[#00bda5]" />
-                    ) : (
-                      <X className="h-3.5 w-3.5 text-[#e0e0e0]" />
+                    {isValid && (
+                      <Check className="h-2.5 w-2.5 text-white stroke-[3]" />
                     )}
                   </div>
                   <span className="text-sm font-medium text-[#000000A6]">
