@@ -15,8 +15,8 @@ import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import PasswordTest from "@/pages/PasswordTest";
 
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import AuthRoute from "@/components/auth/AuthRoute";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { AuthRoute } from "@/components/auth/AuthRoute";
 
 const queryClient = new QueryClient();
 
