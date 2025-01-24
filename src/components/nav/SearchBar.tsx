@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -81,6 +81,14 @@ export const SearchBar = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const clearSearch = () => {
+    setSearchQuery("");
+    setShowResults(false);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   return (
     <div className="relative w-full">
       <div className="relative">
@@ -104,6 +112,14 @@ export const SearchBar = () => {
           }}
           className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
         />
+        {searchQuery && (
+          <button
+            onClick={clearSearch}
+            className="absolute right-12 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+          >
+            <X className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
+          </button>
+        )}
         <div
           className={cn(
             "absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none transition-opacity duration-200",
