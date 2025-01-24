@@ -167,7 +167,9 @@ export const ChecklistContainer = () => {
   return (
     <div className="space-y-6">
       {renderCurrentStep()}
-      <Separator className="my-6" />
+      <div className="py-8">
+        <Separator />
+      </div>
       <div className="flex justify-between">
         <Button
           variant="outline"
