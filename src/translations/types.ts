@@ -27,80 +27,22 @@ export interface Translations {
   'reset.password.success': string;
   'password.updated': string;
   // Navigation
-  'nav.home': string;
   'nav.checklist': string;
+  'nav.home': string;
   'nav.my.links': string;
   'nav.address.alerts': string;
   'nav.guides': string;
   'nav.admin.dashboard': string;
   'nav.admin.customers': string;
-  // Profile menu
-  'profile.manage': string;
-  'profile.billing': string;
-  'profile.settings': string;
-  'profile.sign.out': string;
-  'profile.signing.out': string;
-  // Search
-  'search.placeholder': string;
-  // Footer links
-  'privacy': string;
-  'license': string;
-  'terms': string;
-  // Page titles
-  'overview.title': string;
-  'overview.welcome': string;
-  // Error messages
-  'error.invalid.credentials': string;
-  'error.email.not.confirmed': string;
-  'error.user.not.found': string;
-  'error.invalid.email.password': string;
-  'error.missing.email.phone': string;
-  'error.missing.password': string;
-  'error.password.too.short': string;
-  'error.email.taken': string;
-  'error.phone.taken': string;
-  'error.weak.password': string;
-  'error.invalid.email': string;
-  'error.invalid.phone': string;
-  'error.generic': string;
-  'error.signin': string;
-  'error.signout': string;
-  'error.password.update': string;
-  'error.missing.email': string;
-  'error.invalid.recovery.link': string;
-  'toast.signed.out.title': string;
-  'toast.signed.out.description': string;
-  'toast.error.title': string;
-  'toast.error.description': string;
-  'toast.error.unexpected': string;
-  // Table related
-  'table.userId': string;
-  'table.email': string;
-  'table.role': string;
-  'table.created': string;
-  'table.subscription': string;
-  'table.actions': string;
-  // Settings related
-  'settings.change.password': string;
-  'settings.current.password': string;
-  'settings.new.password': string;
-  'settings.confirm.password': string;
-  'settings.update.password': string;
-  'settings.updating.password': string;
-  'settings.password.updated': string;
-  'settings.success': string;
-  'error.passwords.dont.match': string;
-  // Notifications
-  'notifications.title': string;
-  'notifications.mark.all.read': string;
-  'notifications.empty': string;
-  // Checklist related
-  'your.progress': string;
-  'step.progress': string;
-  'getting.started': string;
+  // Password requirements
+  'password.requirement.length': string;
+  'password.requirement.lowercase': string;
+  'password.requirement.uppercase': string;
+  'password.requirement.special': string;
+  'error.password.requirements': string;
+  // Steps
   'step.number': string;
-  'set.password': string;
-  'set.password.description': string;
+  'step.progress': string;
   'step.password.title': string;
   'step.password.description': string;
   'step.sites.title': string;
@@ -109,14 +51,10 @@ export interface Translations {
   'step.urls.description': string;
   'step.info.title': string;
   'step.info.description': string;
-  'current.password': string;
-  'confirm.password': string;
-  'success': string;
+  // General
   'error': string;
-  'error.passwords.match.description': string;
-  'password.requirement.length': string;
-  'password.requirement.lowercase': string;
-  'password.requirement.uppercase': string;
-  'password.requirement.special': string;
-  'error.password.requirements': string;
+  'success': string;
+  'getting.started': string;
+  'set.password': string;
+  'set.password.description': string;
 }
