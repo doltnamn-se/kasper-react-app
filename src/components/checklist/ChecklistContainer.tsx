@@ -117,7 +117,7 @@ export const ChecklistContainer = () => {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">{t('step.number', { number: currentStep })}</span>
+          <span className="text-sm font-medium text-[#000000A6]">{t('step.number', { number: currentStep })}</span>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">{t('set.password')}</h3>
             <p className="text-sm text-gray-500 font-medium">
