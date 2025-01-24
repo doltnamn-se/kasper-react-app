@@ -8,28 +8,23 @@ const PasswordTest = () => {
   const requirements = [
     {
       id: 1,
-      label: "At least 8 characters long",
-      validate: (pass: string) => pass.length >= 8,
+      label: "At least 12 characters / Minst 12 tecken",
+      validate: (pass: string) => pass.length >= 12,
     },
     {
       id: 2,
-      label: "Contains at least one uppercase letter",
-      validate: (pass: string) => /[A-Z]/.test(pass),
-    },
-    {
-      id: 3,
-      label: "Contains at least one lowercase letter",
+      label: "A lowercase character / Ett gemener-tecken",
       validate: (pass: string) => /[a-z]/.test(pass),
     },
     {
-      id: 4,
-      label: "Contains at least one number",
-      validate: (pass: string) => /[0-9]/.test(pass),
+      id: 3,
+      label: "A capital letter / Ett versaltecken",
+      validate: (pass: string) => /[A-Z]/.test(pass),
     },
     {
-      id: 5,
-      label: "Contains at least one special character",
-      validate: (pass: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pass),
+      id: 4,
+      label: "A number or a symbol / Ett nummer eller en symbol",
+      validate: (pass: string) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(pass),
     },
   ];
 
@@ -61,7 +56,7 @@ const PasswordTest = () => {
                       : "border-[#e0e0e0] bg-white"
                   }`}>
                     {isValid && (
-                      <Check className="h-2.5 w-2.5 text-white stroke-[3]" />
+                      <Check className="h-3 w-3 text-white stroke-[4]" />
                     )}
                   </div>
                   <span className="text-sm font-medium text-[#000000A6]">
