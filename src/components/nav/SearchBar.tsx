@@ -92,7 +92,13 @@ export const SearchBar = () => {
   return (
     <div className="relative w-full">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
+        <Search 
+          className={cn(
+            "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors",
+            "text-[#000000A6] dark:text-[#FFFFFFA6]",
+            isSearchFocused && "text-[#000000] dark:text-[#FFFFFF]"
+          )} 
+        />
         <Input
           ref={inputRef}
           id="global-search"
@@ -110,7 +116,17 @@ export const SearchBar = () => {
           onBlur={() => {
             setIsSearchFocused(false);
           }}
-          className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
+          className={cn(
+            "pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none",
+            "hover:shadow-sm focus:shadow-md focus-visible:ring-0",
+            "text-[#000000] dark:text-[#FFFFFF]",
+            "placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6]",
+            "hover:placeholder:text-[#000000] dark:hover:placeholder:text-[#FFFFFF]",
+            "focus:placeholder:text-[#000000] dark:focus:placeholder:text-[#FFFFFF]",
+            "transition-all outline-none",
+            "[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden",
+            "[&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
+          )}
         />
         {searchQuery && (
           <button
