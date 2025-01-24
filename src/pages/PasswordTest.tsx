@@ -41,7 +41,7 @@ const PasswordTest = () => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] placeholder:text-[#000000A6] placeholder:font-medium text-lg pl-0 pr-10"
+              className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] placeholder:text-[#000000A6] placeholder:font-medium text-2xl pl-0 pr-10"
             />
             <button
               type="button"
