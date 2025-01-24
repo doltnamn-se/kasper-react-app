@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
