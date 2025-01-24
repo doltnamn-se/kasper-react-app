@@ -10,9 +10,7 @@ interface PasswordUpdateFormProps {
 }
 
 export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -22,11 +20,11 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
     setIsLoading(true);
 
     try {
-      if (newPassword !== confirmPassword) {
+      if (newPassword.length < 6) {
         toast({
           variant: "destructive",
-          title: t('error.passwords.dont.match'),
-          description: t('error.passwords.match.description'),
+          title: t('error'),
+          description: t('error.password.too.short'),
         });
         return;
       }
@@ -70,29 +68,9 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
       <div className="w-full md:w-1/2">
         <Input
           type="password"
-          placeholder={t('current.password')}
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          className="h-12 mb-4"
-          required
-        />
-      </div>
-      <div className="w-full md:w-1/2">
-        <Input
-          type="password"
           placeholder={t('new.password')}
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          className="h-12 mb-4"
-          required
-        />
-      </div>
-      <div className="w-full md:w-1/2">
-        <Input
-          type="password"
-          placeholder={t('confirm.password')}
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
           className="h-12"
           required
         />
