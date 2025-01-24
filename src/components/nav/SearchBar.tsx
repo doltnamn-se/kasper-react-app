@@ -22,6 +22,7 @@ type SearchResult = {
 export const SearchBar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isSearchHovered, setIsSearchHovered] = useState(false);
+  const [isClearHovered, setIsClearHovered] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -145,9 +146,16 @@ export const SearchBar = () => {
         {searchQuery && (
           <button
             onClick={clearSearch}
-            className="absolute right-12 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+            onMouseEnter={() => setIsClearHovered(true)}
+            onMouseLeave={() => setIsClearHovered(false)}
+            className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors"
           >
-            <X className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
+            <X 
+              className={cn(
+                "w-4 h-4 transition-colors",
+                isClearHovered ? "text-[#000000] dark:text-[#FFFFFF]" : "text-[#000000A6] dark:text-[#FFFFFFA6]"
+              )} 
+            />
           </button>
         )}
         <div
