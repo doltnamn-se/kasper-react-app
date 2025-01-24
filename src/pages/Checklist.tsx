@@ -164,7 +164,7 @@ const Checklist = () => {
                       <p className="text-xs text-[#616166] dark:text-[#FFFFFFA6] font-medium hidden xl:block">{item.description}</p>
                     </div>
                   </div>
-                  <div className="pl-4 xl:pl-8">
+                  <div className="flex items-center">
                     {item.completed ? (
                       <div className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full bg-[#219653] flex items-center justify-center">
                         <Check className="w-4 h-4 xl:w-6 xl:h-6 text-white" />
