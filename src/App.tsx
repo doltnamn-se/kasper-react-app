@@ -38,8 +38,8 @@ function App() {
                 <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                 <Route path="/password-test" element={<PasswordTest />} />
               </Routes>
+              <Toaster />
             </Router>
-            <Toaster />
           </SidebarProvider>
         </LanguageProvider>
       </ThemeProvider>
