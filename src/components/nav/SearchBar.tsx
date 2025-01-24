@@ -50,14 +50,11 @@ export const SearchBar = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
   useEffect(() => {
-    console.log("Performing search with query:", searchQuery);
     const results = getSearchResults(searchQuery);
-    console.log("Search results:", results);
     setSearchResults(results);
   }, [searchQuery]);
 
   const handleSelect = (url: string) => {
-    console.log("Navigating to:", url);
     setOpen(false);
     setSearchQuery("");
     navigate(url);
@@ -82,7 +79,7 @@ export const SearchBar = () => {
     <div className="relative w-full">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <div className="relative" onClick={() => inputRef.current?.focus()}>
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
             <Input
               ref={inputRef}
@@ -94,16 +91,12 @@ export const SearchBar = () => {
                 setSearchQuery(e.target.value);
                 if (e.target.value) setOpen(true);
               }}
-              className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
-              onFocus={() => {
-                setIsSearchFocused(true);
-              }}
+              onFocus={() => setIsSearchFocused(true)}
               onBlur={() => {
                 setIsSearchFocused(false);
-                if (!searchQuery) {
-                  setOpen(false);
-                }
+                if (!searchQuery) setOpen(false);
               }}
+              className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
             />
             <div
               className={cn(
