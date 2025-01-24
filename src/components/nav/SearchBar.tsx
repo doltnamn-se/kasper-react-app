@@ -96,7 +96,7 @@ export const SearchBar = () => {
         <Input
           ref={inputRef}
           id="global-search"
-          type="search"
+          type="text"
           placeholder={t('search.placeholder')}
           value={searchQuery}
           onChange={(e) => {
@@ -110,7 +110,7 @@ export const SearchBar = () => {
           onBlur={() => {
             setIsSearchFocused(false);
           }}
-          className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
+          className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
         />
         {searchQuery && (
           <button
