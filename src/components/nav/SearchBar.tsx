@@ -148,7 +148,7 @@ export const SearchBar = () => {
             onClick={clearSearch}
             onMouseEnter={() => setIsClearHovered(true)}
             onMouseLeave={() => setIsClearHovered(false)}
-            className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors"
           >
             <X 
               className={cn(
