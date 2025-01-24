@@ -104,7 +104,9 @@ export const NotificationButtons = () => {
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <NotificationIcon unreadCount={totalUnreadCount} />
+          <Button variant="ghost" size="icon" className="relative">
+            <NotificationIcon unreadCount={totalUnreadCount} />
+          </Button>
         </DropdownMenuTrigger>
         
         <DropdownMenuContent align="end" className="w-80 dark:bg-[#1c1c1e] dark:border-[#232325]">
