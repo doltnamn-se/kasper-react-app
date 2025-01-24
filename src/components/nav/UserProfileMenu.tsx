@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { SearchBar } from "./SearchBar";
-import { ThemeToggle } from "./nav/ThemeToggle";
-import { NotificationButtons } from "./nav/NotificationButtons";
+import { ThemeToggle } from "./ThemeToggle";
+import { NotificationButtons } from "./NotificationButtons";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,6 +18,7 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
