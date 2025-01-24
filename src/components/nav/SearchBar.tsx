@@ -58,6 +58,9 @@ export const SearchBar = () => {
     setOpen(false);
     setSearchQuery("");
     navigate(url);
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
   };
 
   useEffect(() => {
@@ -91,7 +94,9 @@ export const SearchBar = () => {
                 setSearchQuery(e.target.value);
                 if (e.target.value) setOpen(true);
               }}
-              onFocus={() => setIsSearchFocused(true)}
+              onFocus={() => {
+                setIsSearchFocused(true);
+              }}
               onBlur={() => {
                 setIsSearchFocused(false);
                 if (!searchQuery) setOpen(false);
@@ -117,7 +122,7 @@ export const SearchBar = () => {
           </div>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-[400px]" align="start">
-          <Command>
+          <Command shouldFilter={false}>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               {searchResults.length > 0 && (
@@ -126,6 +131,7 @@ export const SearchBar = () => {
                     <CommandItem
                       key={result.id}
                       onSelect={() => handleSelect(result.url)}
+                      onMouseDown={(e) => e.preventDefault()}
                       className="cursor-pointer flex items-center justify-between py-2"
                     >
                       <span>{result.title}</span>
