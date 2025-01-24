@@ -7,11 +7,9 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNavigate } from "react-router-dom";
 
 type SearchResult = {
@@ -23,12 +21,12 @@ type SearchResult = {
 
 export const SearchBar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useLanguage();
   const navigate = useNavigate();
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showResults, setShowResults] = useState(false);
 
   const getSearchResults = (query: string): SearchResult[] => {
     if (!query) return [];
@@ -55,7 +53,7 @@ export const SearchBar = () => {
   }, [searchQuery]);
 
   const handleSelect = (url: string) => {
-    setOpen(false);
+    setShowResults(false);
     setSearchQuery("");
     navigate(url);
   };
@@ -66,7 +64,7 @@ export const SearchBar = () => {
         e.preventDefault();
         if (inputRef.current) {
           inputRef.current.focus();
-          setOpen(true);
+          setShowResults(true);
         }
       }
     };
@@ -77,53 +75,48 @@ export const SearchBar = () => {
 
   return (
     <div className="relative w-full">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
-            <Input
-              ref={inputRef}
-              id="global-search"
-              type="search"
-              placeholder={t('search.placeholder')}
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setOpen(true);
-              }}
-              onFocus={() => {
-                setIsSearchFocused(true);
-                setOpen(true);
-              }}
-              onBlur={() => {
-                setIsSearchFocused(false);
-              }}
-              className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
-            />
-            <div
-              className={cn(
-                "absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none transition-opacity duration-200",
-                isSearchFocused ? "opacity-0" : "opacity-100"
-              )}
-            >
-              <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
-                {isMac ? '⌘' : 'Ctrl'}
-              </div>
-              <span className="text-[#5e5e5e] dark:text-gray-400 text-[10px]">
-                +
-              </span>
-              <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
-                K
-              </div>
-            </div>
-          </div>
-        </PopoverTrigger>
-        <PopoverContent 
-          className="p-0 w-[400px]" 
-          align="start" 
-          sideOffset={8}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5e5e5e] dark:text-gray-400" />
+        <Input
+          ref={inputRef}
+          id="global-search"
+          type="search"
+          placeholder={t('search.placeholder')}
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setShowResults(true);
+          }}
+          onFocus={() => {
+            setIsSearchFocused(true);
+            setShowResults(true);
+          }}
+          onBlur={() => {
+            setIsSearchFocused(false);
+          }}
+          className="pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none hover:shadow-sm focus:shadow-md focus-visible:ring-0 text-[#000000] dark:text-gray-300 placeholder:text-[#5e5e5e] dark:placeholder:text-gray-400 transition-all outline-none"
+        />
+        <div
+          className={cn(
+            "absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none transition-opacity duration-200",
+            isSearchFocused ? "opacity-0" : "opacity-100"
+          )}
         >
-          <Command>
+          <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
+            {isMac ? '⌘' : 'Ctrl'}
+          </div>
+          <span className="text-[#5e5e5e] dark:text-gray-400 text-[10px]">
+            +
+          </span>
+          <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
+            K
+          </div>
+        </div>
+      </div>
+
+      {showResults && searchQuery && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden z-50">
+          <Command className="border-none">
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               {searchResults.length > 0 && (
@@ -132,7 +125,7 @@ export const SearchBar = () => {
                     <CommandItem
                       key={result.id}
                       onSelect={() => handleSelect(result.url)}
-                      className="cursor-pointer flex items-center justify-between py-2"
+                      className="cursor-pointer flex items-center justify-between py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       <span>{result.title}</span>
                       {result.category && (
@@ -144,8 +137,8 @@ export const SearchBar = () => {
               )}
             </CommandList>
           </Command>
-        </PopoverContent>
-      </Popover>
+        </div>
+      )}
     </div>
   );
 };
