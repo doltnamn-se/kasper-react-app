@@ -114,5 +114,12 @@ export const en: Translations = {
   'confirm.password': 'Confirm password',
   'success': 'Success',
   'error': 'Error',
-  'error.passwords.match.description': 'The passwords you entered do not match'
+  'error.passwords.match.description': 'The passwords you entered do not match',
+  'checklist': 'Checklist',
+  'completed': 'Completed',
+  'pending.completion': 'Pending completion',
+  'step.1.title': 'Update Password',
+  'step.2.title': 'Select Hiding Sites',
+  'step.3.title': 'Submit URLs',
+  'step.4.title': 'Personal Information',
 };

@@ -80,8 +80,8 @@ export const NotificationButtons = () => {
 
     return {
       id: `checklist-${item.id}`,
-      title: `Checklist: ${item.title}`,
-      message: isCompleted ? 'Completed' : 'Pending completion',
+      title: `${t('checklist')}: ${t(`step.${index + 1}.title`)}`,
+      message: isCompleted ? t('completed') : t('pending.completion'),
       read: isCompleted,
       created_at: new Date().toISOString(),
       type: 'checklist'

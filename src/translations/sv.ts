@@ -115,5 +115,12 @@ export const sv: Translations = {
   // Notifications
   'notifications.title': 'Notiser',
   'notifications.mark.all.read': 'Markera alla som lästa',
-  'notifications.empty': 'Inga notifieringar'
+  'notifications.empty': 'Inga notifieringar',
+  'checklist': 'Checklista',
+  'completed': 'Genomförd',
+  'pending.completion': 'Väntar på genomförande',
+  'step.1.title': 'Uppdatera lösenord',
+  'step.2.title': 'Välj webbplatser',
+  'step.3.title': 'Lägg till URL:er',
+  'step.4.title': 'Personlig information',
 };
