@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Check, RectangleEllipsis } from "lucide-react";
+import { Check } from "lucide-react";
 
 const PasswordTest = () => {
   const [password, setPassword] = useState("");
@@ -34,16 +34,13 @@ const PasswordTest = () => {
         <h1 className="text-2xl font-bold">Password Requirements Test</h1>
         
         <div className="space-y-4">
-          <div className="relative">
-            <RectangleEllipsis className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
-            <Input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-12 border-0 border-b border-input rounded-none pl-7 focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
-          </div>
+          <Input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6]"
+          />
 
           <div className="space-y-2">
             {requirements.map((req) => {
