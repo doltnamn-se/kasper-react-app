@@ -55,6 +55,9 @@ export const NotificationButtons = () => {
     }
   });
 
+  // Get the current timestamp for checklist notifications
+  const now = new Date().toISOString();
+
   const checklistNotifications = checklistItems.map((item, index) => {
     let isCompleted = false;
     if (checklistProgress) {
@@ -79,12 +82,15 @@ export const NotificationButtons = () => {
                      index === 2 ? 'step.3.title' :
                      'step.4.title';
 
+    // Use the checklist progress updated_at timestamp if available, otherwise use current time
+    const timestamp = checklistProgress?.updated_at || now;
+
     return {
       id: `checklist-${item.id}`,
       title: `${t('checklist')}: ${t(stepTitle)}`,
       message: isCompleted ? t('completed') : t('pending.completion'),
       read: isCompleted,
-      created_at: new Date().toISOString(),
+      created_at: timestamp,
       type: 'checklist'
     };
   });
