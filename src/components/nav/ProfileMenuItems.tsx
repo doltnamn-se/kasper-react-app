@@ -24,21 +24,21 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
         >
           <UserCircle className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.manage')}</span>
+          <span className="text-[#000000A6] hover:text-[#000000] dark:text-gray-300 font-medium">{t('profile.manage')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
           onClick={() => window.open('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss', '_blank')}
         >
           <CreditCard className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
+          <span className="text-[#000000A6] hover:text-[#000000] dark:text-gray-300 font-medium">{t('profile.billing')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate("/settings")} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
         >
           <Settings className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.settings')}</span>
+          <span className="text-[#000000A6] hover:text-[#000000] dark:text-gray-300 font-medium">{t('profile.settings')}</span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
@@ -48,7 +48,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]"
       >
         <LogOut className="mr-3 h-4 w-4" />
-        <span className="text-black dark:text-gray-300 font-medium">
+        <span className="text-[#000000A6] hover:text-[#000000] dark:text-gray-300 font-medium">
           {isSigningOut ? t('profile.signing.out') : t('profile.sign.out')}
         </span>
       </DropdownMenuItem>
