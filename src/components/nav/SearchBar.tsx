@@ -60,12 +60,20 @@ export const SearchBar = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle Ctrl/Cmd + K
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (inputRef.current) {
           inputRef.current.focus();
           setShowResults(true);
         }
+      }
+      
+      // Handle Escape key
+      if (e.key === 'Escape' && inputRef.current) {
+        inputRef.current.blur();
+        setShowResults(false);
+        setIsSearchFocused(false);
       }
     };
 
