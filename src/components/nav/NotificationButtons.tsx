@@ -11,13 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { useNotifications } from "@/hooks/useNotifications";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const NotificationButtons = () => {
   const { notifications = [], unreadCount, markAsRead, markAllAsRead } = useNotifications();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data: checklistProgress } = useQuery({
     queryKey: ['checklist-progress-notifications'],
@@ -91,6 +92,7 @@ export const NotificationButtons = () => {
   const totalUnreadCount = unreadCount + checklistNotifications.filter(n => !n.read).length;
 
   const handleMarkAsRead = async (notificationId: string) => {
+    console.log('Marking notification as read:', notificationId);
     if (notificationId.startsWith('checklist-')) {
       return;
     }
@@ -100,10 +102,13 @@ export const NotificationButtons = () => {
   const formatTimestamp = (timestamp: string) => {
     try {
       const date = parseISO(timestamp);
-      return formatDistanceToNow(date, { addSuffix: true });
+      return formatDistanceToNow(date, { 
+        addSuffix: true,
+        locale: language === 'sv' ? sv : enUS 
+      });
     } catch (error) {
       console.error('Error formatting timestamp:', error);
-      return 'Invalid date';
+      return language === 'sv' ? 'Ogiltigt datum' : 'Invalid date';
     }
   };
 
