@@ -15,27 +15,27 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const requirements = [
     {
       id: 1,
-      label: "At least 12 characters / Minst 12 tecken",
+      label: language === 'en' ? "At least 12 characters" : "Minst 12 tecken",
       validate: (pass: string) => pass.length >= 12,
     },
     {
       id: 2,
-      label: "A lowercase character / Ett gemener-tecken",
+      label: language === 'en' ? "A lowercase character" : "Ett gemener-tecken",
       validate: (pass: string) => /[a-z]/.test(pass),
     },
     {
       id: 3,
-      label: "A capital letter / Ett versaltecken",
+      label: language === 'en' ? "A capital letter" : "Ett versaltecken",
       validate: (pass: string) => /[A-Z]/.test(pass),
     },
     {
       id: 4,
-      label: "A number or a symbol / Ett nummer eller en symbol",
+      label: language === 'en' ? "A number or a symbol" : "Ett nummer eller en symbol",
       validate: (pass: string) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(pass),
     },
   ];
@@ -100,7 +100,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
             placeholder={t('new.password')}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="h-12 border-0 border-b border-[#e0e0e0] rounded-none font-medium text-[#000000A6] placeholder:text-[#000000A6] placeholder:font-medium text-2xl pl-0 pr-10"
+            className="h-12 border-0 border-b rounded-none font-medium text-[#000000A6] placeholder:text-[#000000A6] placeholder:font-medium text-2xl pl-0 pr-10"
           />
           <button
             type="button"
