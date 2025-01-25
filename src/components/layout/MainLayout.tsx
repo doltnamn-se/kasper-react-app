@@ -17,6 +17,15 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const { t } = useLanguage();
   const isAdmin = userProfile?.role === 'super_admin';
 
+  const Navigation = () => {
+    return (
+      <nav>
+        {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
+        <MainNavigation toggleMobileMenu={toggleMobileMenu} />
+      </nav>
+    );
+  };
+
   return (
     <>
       {/* Sidebar - Desktop */}
@@ -28,10 +37,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
 
         <div className="px-6">
-          <nav>
-            {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
-            <MainNavigation toggleMobileMenu={toggleMobileMenu} />
-          </nav>
+          <Navigation />
         </div>
 
         <SidebarFooter />
@@ -54,10 +60,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
 
           <div className="px-6">
-            <nav>
-              {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
-              <MainNavigation toggleMobileMenu={toggleMobileMenu} />
-            </nav>
+            <Navigation />
           </div>
 
           <SidebarFooter />
