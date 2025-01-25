@@ -139,10 +139,13 @@ export const ChecklistContainer = () => {
           {(() => {
             switch (currentStep) {
               case 1:
-                return <PasswordUpdateForm onComplete={() => {
-                  handleStepComplete();
-                  setCurrentStep(2);
-                }} />;
+                return <PasswordUpdateForm 
+                  onComplete={() => {
+                    handleStepComplete();
+                    setCurrentStep(2);
+                  }}
+                  buttonClassName="w-full xl:w-1/4 lg:w-1/2"
+                />;
               case 2:
                 return <HidingSitesSelection onComplete={() => {
                   handleStepComplete();
