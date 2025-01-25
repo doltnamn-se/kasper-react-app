@@ -7,6 +7,7 @@ export const PasswordChange = () => {
   return (
     <PasswordUpdateForm 
       className="w-full"
+      buttonClassName="w-1/2"
       onComplete={() => {
         toast({
           title: "Success",
