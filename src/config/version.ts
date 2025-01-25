@@ -50,7 +50,10 @@ export const initializeVersionTracking = async () => {
         patch: number;
       }>) => {
         console.log('Version change detected:', payload);
-        if (payload.new) {
+        if (payload.new && 
+            'major' in payload.new && 
+            'minor' in payload.new && 
+            'patch' in payload.new) {
           const { major, minor, patch } = payload.new;
           const newVersion = `${major}.${minor}.${patch}`;
           console.log('Updating to version:', newVersion);
