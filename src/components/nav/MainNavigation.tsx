@@ -10,10 +10,10 @@ import {
 } from "lucide-react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-export const MainNavigation = () => {
+export const MainNavigation = ({ toggleMobileMenu }: { toggleMobileMenu?: () => void }) => {
   const location = useLocation();
   const { t } = useLanguage();
-  const { isAdmin } = useUserProfile();
+  const { userProfile } = useUserProfile();
 
   const navigation = [
     { name: t('nav.home'), href: '/', icon: Home },
@@ -37,6 +37,7 @@ export const MainNavigation = () => {
                 : "text-[#6b7280] hover:text-[#000000] dark:text-[#98989e] dark:hover:text-white",
               "group flex items-center px-3 py-2 text-sm font-medium rounded-[4px]"
             )}
+            onClick={toggleMobileMenu}
           >
             <item.icon
               className={cn(
