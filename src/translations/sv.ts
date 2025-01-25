@@ -126,55 +126,47 @@ export const sv: Translations = {
   'step.3.title': 'Lägg till URL:er',
   'step.4.title': 'Personlig information',
   'link.to.removal': 'Länk till borttagning',
-  // Guide texts
-
   // Guide translations
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Länk: https://uppdatera.eniro.se/person',
   'guide.eniro.step2': 'Skriv in ditt namn i sökrutan',
   'guide.eniro.step3': 'Identifiera dig med Mobilt BankID',
   'guide.eniro.step4': 'Dölj dina uppgifter',
-  
   'guide.mrkoll.title': 'Mrkoll.se',
   'guide.mrkoll.step1': 'Länk: https://mrkoll.se/om/andra-uppgifter/',
   'guide.mrkoll.step2': 'Identifiera dig med Mobilt BankID',
   'guide.mrkoll.step3': 'Dölj din adress och ditt telefonnummer',
-  
   'guide.hitta.title': 'Hitta.se',
   'guide.hitta.step1': 'Länk: https://www.hitta.se/kontakta-oss/ta-bort-kontaktsida',
   'guide.hitta.step2': 'Skriv in ditt namn i sökrutan',
   'guide.hitta.step3': 'Identifiera dig med Mobilt BankID',
-  
   'guide.merinfo.title': 'Merinfo.se',
   'guide.merinfo.step1': 'Länk: https://www.merinfo.se/ta-bort-mina-uppgifter',
   'guide.merinfo.step2': 'Identifiera dig med Mobilt BankID',
-  
   'guide.ratsit.title': 'Ratsit.se',
   'guide.ratsit.step1': 'Länk: https://www.ratsit.se/redigera/dolj',
   'guide.ratsit.step2': 'Identifiera dig med Mobilt BankID.',
   'guide.ratsit.step3': 'Klicka på att dölja dina uppgifter.',
-  
   'guide.birthday.title': 'Birthday.se',
   'guide.birthday.step1': 'Länk: https://www.birthday.se/kontakta',
   'guide.birthday.step2': 'Fyll i formuläret.',
   'guide.birthday.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
-  
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Länk: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fyll i formuläret.',
   'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
-  
   'toast.copied.title': 'Kopierat',
   'toast.copied.description': 'Meddelandet har kopierats till urklipp',
-  'copy': 'Kopiera',
-  'light.mode': 'Ljust läge',
-  'messages': 'Meddelanden',
-  'notifications': 'Notiser',
+  'error.title': 'Fel',
+  'error.update.preferences': 'Det gick inte att uppdatera notifikationsinställningarna',
   'settings.notification.preferences': 'Notifikationsinställningar',
   'settings.email.notifications': 'E-postnotifikationer',
   'settings.email.notifications.description': 'Få viktiga uppdateringar och varningar via e-post',
   'settings.inapp.notifications': 'App-notifikationer',
   'settings.inapp.notifications.description': 'Få notifikationer inom applikationen',
   'settings.notifications.updated': 'Notifikationsinställningar har uppdaterats',
-  'error.update.preferences': 'Det gick inte att uppdatera notifikationsinställningarna',
+  'light.mode': 'Ljust läge',
+  'messages': 'Meddelanden',
+  'notifications': 'Notiser',
+  'copy': 'Kopiera'
 };
