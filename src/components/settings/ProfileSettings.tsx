@@ -161,11 +161,11 @@ export const ProfileSettings = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-white dark:bg-[#1c1c1e] hover:bg-white dark:hover:bg-[#1c1c1e] p-0"
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 hover:bg-transparent"
               onClick={handleDeleteAvatar}
               disabled={isDeleting}
             >
-              <X className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
+              <X className="h-4 w-4 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]" />
             </Button>
           )}
           
