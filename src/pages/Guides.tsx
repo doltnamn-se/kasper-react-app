@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 interface GuideStep {
@@ -105,13 +105,14 @@ const Guides = () => {
                 <div className="px-6 py-6">
                   <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
                   <Button 
-                    className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#3a3a3b] dark:hover:bg-[#4a4a4b] dark:text-[#FFFFFF]"
+                    className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
                     onClick={(e) => {
                       e.stopPropagation();
                       window.open(extractUrl(guide.steps[0].text), '_blank');
                     }}
                   >
                     {t('link.to.removal')}
+                    <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
                 <AccordionContent className="px-6 pb-6">
