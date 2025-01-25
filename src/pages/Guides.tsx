@@ -3,8 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ChevronDown, ArrowRight, X } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 interface GuideStep {
@@ -78,7 +77,6 @@ const guides: Guide[] = [
 const Guides = () => {
   const { t } = useLanguage();
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
-  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
 
   const extractUrl = (text: string) => {
     const match = text.match(/https?:\/\/[^\s]+/);
@@ -111,7 +109,7 @@ const Guides = () => {
                     className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (url) setSelectedUrl(url);
+                      if (url) window.open(url, '_blank');
                     }}
                   >
                     {t('link.to.removal')}
@@ -170,29 +168,6 @@ const Guides = () => {
         <GuideColumn guides={leftColumnGuides} columnIndex={0} />
         <GuideColumn guides={rightColumnGuides} columnIndex={1} />
       </div>
-
-      <Dialog open={!!selectedUrl} onOpenChange={() => setSelectedUrl(null)}>
-        <DialogContent className="max-w-[90vw] w-[1200px] h-[80vh] p-0 relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSelectedUrl(null)}
-            className="absolute right-2 top-2 z-50 h-6 w-6 bg-background/80 hover:bg-background/90 backdrop-blur-sm rounded-full"
-          >
-            <X className="h-3 w-3" />
-          </Button>
-          <div className="relative w-full h-full">
-            {selectedUrl && (
-              <iframe
-                src={selectedUrl}
-                className="w-full h-full border-0"
-                title="Website Preview"
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-              />
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </MainLayout>
   );
 };
