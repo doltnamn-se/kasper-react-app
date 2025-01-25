@@ -164,4 +164,5 @@ export interface Translations {
   'guide.upplysning.step3': string;
   'toast.copied.title': string;
   'toast.copied.description': string;
+  'copy': string;
 }
