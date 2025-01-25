@@ -9,6 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      app_changes: {
+        Row: {
+          change_count: number
+          id: number
+          last_updated: string | null
+          major: number
+          minor: number
+          patch: number
+        }
+        Insert: {
+          change_count?: number
+          id?: number
+          last_updated?: string | null
+          major?: number
+          minor?: number
+          patch?: number
+        }
+        Update: {
+          change_count?: number
+          id?: number
+          last_updated?: string | null
+          major?: number
+          minor?: number
+          patch?: number
+        }
+        Relationships: []
+      }
       checklist_items: {
         Row: {
           created_at: string

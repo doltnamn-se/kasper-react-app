@@ -1,10 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { APP_VERSION } from "@/config/version";
+import { useQuery } from "@tanstack/react-query";
+import { getAppVersion } from "@/config/version";
 
 export const AuthFooter = () => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
+
+  const { data: version } = useQuery({
+    queryKey: ['app-version'],
+    queryFn: getAppVersion,
+    initialData: "0.0.1"
+  });
 
   return (
     <div className="flex flex-col items-center space-y-3">
@@ -32,7 +39,7 @@ export const AuthFooter = () => {
         </Button>
       </div>
       <p className="text-[11px] text-gray-400">
-        {currentYear} © Doltnamn.se &nbsp;&nbsp;·&nbsp;&nbsp; App version {APP_VERSION}
+        {currentYear} © Doltnamn.se &nbsp;&nbsp;·&nbsp;&nbsp; App version {version}
       </p>
     </div>
   );
