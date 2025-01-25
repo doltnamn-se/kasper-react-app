@@ -23,10 +23,10 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const navigationItems = [
     { path: "/", icon: Home, label: t('nav.home') },
     { path: "/checklist", icon: ClipboardCheck, label: t('nav.checklist') },
-    { path: "/deindexing", icon: Link2, label: t('nav.deindexing') },
+    { path: "/deindexing", icon: Link2, label: t('nav.my.links') },
     { path: "/address-alerts", icon: Bell, label: t('nav.address.alerts') },
     { path: "/guides", icon: BookOpen, label: t('nav.guides') },
-    { path: "/settings", icon: Settings, label: t('nav.settings') }
+    { path: "/settings", icon: Settings, label: t('profile.settings') }
   ];
 
   return (
