@@ -120,7 +120,7 @@ export const SearchBar = () => {
     <>
       <div 
         className={cn(
-          "fixed inset-0 backdrop-blur-[2px] z-[39] transition-all duration-1000 ease-in-out",
+          "fixed inset-0 backdrop-blur-[2px] z-[39] transition-all duration-500 ease-in-out",
           isSearchFocused ? "opacity-100 visible" : "opacity-0 invisible"
         )}
         onClick={() => {
