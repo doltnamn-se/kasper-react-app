@@ -133,7 +133,7 @@ export const sv: Translations = {
   'step.urls.title': 'Skicka in URL:er',
   'step.urls.description': 'Skicka in URL:er där din information visas',
   'step.info.title': 'Personlig information',
-  'step.info.description': 'Uppdatera din personlig information',
+  'step.info.description': 'Uppdatera din personliga information',
   'step.1.title': 'Ange lösenord',
   'step.2.title': 'Välj webbplatser',
   'step.3.title': 'Skicka in URL:er',
@@ -188,9 +188,9 @@ export const sv: Translations = {
   'guide.upplysning.step3': 'Vänta på svar',
 
   // Subscription translations
-  'subscription.1month': 'Månadsabonnemang',
-  'subscription.6months': 'Halvårsabonnemang',
-  'subscription.12months': 'Årsabonnemang',
+  'subscription.1month': '1 MÅN',
+  'subscription.6months': '6 MÅN',
+  'subscription.12months': '12 MÅN',
   'subscription.none': 'Ingen Plan',
   'subscription.tooltip.1month': 'Månadsabonnemang',
   'subscription.tooltip.6months': 'Halvårsabonnemang',
