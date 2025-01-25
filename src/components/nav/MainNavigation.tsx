@@ -90,22 +90,22 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   return (
     <>
       <div className="mb-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Avatar className="h-10 w-10">
-            <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
-              {getUserInitials(userProfile)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col items-start">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10">
+              <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
+                {getUserInitials(userProfile)}
+              </AvatarFallback>
+            </Avatar>
             <span className="text-sm font-medium text-[#000000] dark:text-white">
               {userProfile?.display_name || userEmail}
             </span>
-            <Badge 
-              className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
-            >
-              {getSubscriptionLabel(customerData?.subscription_plan)}
-            </Badge>
           </div>
+          <Badge 
+            className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
+          >
+            {getSubscriptionLabel(customerData?.subscription_plan)}
+          </Badge>
         </div>
         <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       </div>
