@@ -167,10 +167,10 @@ const Settings = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF] font-[500]">
                   {t('settings.email.notifications')}
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-[500]">
                   {t('settings.email.notifications.description')}
                 </p>
               </div>
@@ -182,10 +182,10 @@ const Settings = () => {
 
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF] font-[500]">
                   {t('settings.inapp.notifications')}
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-[500]">
                   {t('settings.inapp.notifications.description')}
                 </p>
               </div>
