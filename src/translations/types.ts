@@ -54,6 +54,8 @@ export interface Translations {
   'overview.title': string;
   'overview.welcome': string;
   // Error messages
+  'error': string;
+  'error.title': string;
   'error.invalid.credentials': string;
   'error.email.not.confirmed': string;
   'error.user.not.found': string;
@@ -74,8 +76,8 @@ export interface Translations {
   'error.invalid.recovery.link': string;
   'error.password.requirements': string;
   'error.current.password': string;
-  'error.title': string;
   'error.update.preferences': string;
+  'error.passwords.dont.match': string;
   // Toast messages
   'toast.signed.out.title': string;
   'toast.signed.out.description': string;
@@ -100,7 +102,6 @@ export interface Translations {
   'settings.updating.password': string;
   'settings.password.updated': string;
   'settings.success': string;
-  'error.passwords.dont.match': string;
   'settings.notification.preferences': string;
   'settings.email.notifications': string;
   'settings.email.notifications.description': string;
@@ -184,7 +185,4 @@ export interface Translations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
-
-  // Error messages
-  'error.passwords.dont.match': string;
 }
