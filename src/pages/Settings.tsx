@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Settings = () => {
   const { t } = useLanguage();
@@ -158,112 +159,131 @@ const Settings = () => {
           {t('profile.settings')}
         </h1>
 
-        {/* Notification Preferences Section */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-          <h2 className="text-xl font-semibold mb-6 dark:text-white">
-            {t('settings.notification.preferences')}
-          </h2>
+        <Tabs defaultValue="profile" className="w-full">
+          <TabsList className="w-full">
+            <TabsTrigger value="profile" className="flex-1">Profil</TabsTrigger>
+            <TabsTrigger value="notifications" className="flex-1">Notiser</TabsTrigger>
+            <TabsTrigger value="password" className="flex-1">Lösenord</TabsTrigger>
+          </TabsList>
 
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <label className="text-sm text-[#000000] dark:text-[#FFFFFF] font-[500]">
-                  {t('settings.email.notifications')}
-                </label>
-                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-[500]">
-                  {t('settings.email.notifications.description')}
-                </p>
+          <TabsContent value="profile" className="mt-6">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+                Profil
+              </h2>
+              {/* Profile content will be added later */}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="notifications" className="mt-6">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+                {t('settings.notification.preferences')}
+              </h2>
+
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <label className="text-sm text-[#000000] dark:text-[#FFFFFF] font-[500]">
+                      {t('settings.email.notifications')}
+                    </label>
+                    <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-[500]">
+                      {t('settings.email.notifications.description')}
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notificationPrefs?.email_notifications ?? false}
+                    onCheckedChange={(checked) => handleNotificationPreferenceChange('email', checked)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <label className="text-sm text-[#000000] dark:text-[#FFFFFF] font-[500]">
+                      {t('settings.inapp.notifications')}
+                    </label>
+                    <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-[500]">
+                      {t('settings.inapp.notifications.description')}
+                    </p>
+                  </div>
+                  <Switch
+                    checked={notificationPrefs?.in_app_notifications ?? false}
+                    onCheckedChange={(checked) => handleNotificationPreferenceChange('inApp', checked)}
+                  />
+                </div>
               </div>
-              <Switch
-                checked={notificationPrefs?.email_notifications ?? false}
-                onCheckedChange={(checked) => handleNotificationPreferenceChange('email', checked)}
-              />
             </div>
+          </TabsContent>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <label className="text-sm text-[#000000] dark:text-[#FFFFFF] font-[500]">
-                  {t('settings.inapp.notifications')}
-                </label>
-                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-[500]">
-                  {t('settings.inapp.notifications.description')}
-                </p>
-              </div>
-              <Switch
-                checked={notificationPrefs?.in_app_notifications ?? false}
-                onCheckedChange={(checked) => handleNotificationPreferenceChange('inApp', checked)}
-              />
+          <TabsContent value="password" className="mt-6">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+                {t('settings.change.password')}
+              </h2>
+
+              {error && (
+                <Alert variant="destructive" className="mb-4">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="currentPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {t('settings.current.password')}
+                  </label>
+                  <Input
+                    id="currentPassword"
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="w-full h-12"
+                    disabled={isLoading}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {t('settings.new.password')}
+                  </label>
+                  <Input
+                    id="newPassword"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full h-12"
+                    disabled={isLoading}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {t('settings.confirm.password')}
+                  </label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full h-12"
+                    disabled={isLoading}
+                    required
+                  />
+                </div>
+
+                <Button 
+                  type="submit" 
+                  className="w-full h-12 bg-black hover:bg-black/90 text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? t('settings.updating.password') : t('settings.update.password')}
+                </Button>
+              </form>
             </div>
-          </div>
-        </div>
-
-        {/* Password Change Section */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-          <h2 className="text-xl font-semibold mb-6 dark:text-white">
-            {t('settings.change.password')}
-          </h2>
-
-          {error && (
-            <Alert variant="destructive" className="mb-4">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          <form onSubmit={handlePasswordChange} className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="currentPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {t('settings.current.password')}
-              </label>
-              <Input
-                id="currentPassword"
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full h-12"
-                disabled={isLoading}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {t('settings.new.password')}
-              </label>
-              <Input
-                id="newPassword"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full h-12"
-                disabled={isLoading}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {t('settings.confirm.password')}
-              </label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full h-12"
-                disabled={isLoading}
-                required
-              />
-            </div>
-
-            <Button 
-              type="submit" 
-              className="w-full h-12 bg-black hover:bg-black/90 text-white"
-              disabled={isLoading}
-            >
-              {isLoading ? t('settings.updating.password') : t('settings.update.password')}
-            </Button>
-          </form>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </MainLayout>
   );
