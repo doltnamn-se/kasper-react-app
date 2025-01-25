@@ -30,7 +30,7 @@ export const sv: Translations = {
   // Navigation
   'nav.home': 'Hem',
   'nav.checklist': 'Checklista',
-  'nav.my.links': 'Avindexering',
+  'nav.my.links': 'Mina länkar',
   'nav.address.alerts': 'Adresslarm',
   'nav.guides': 'Guider',
   'nav.admin.dashboard': 'Dashboard',
@@ -77,7 +77,6 @@ export const sv: Translations = {
   'error.invalid.recovery.link': 'Ogiltig eller utgången återställningslänk',
   'error.password.requirements': 'Se till att ditt lösenord uppfyller alla krav',
   'error.update.preferences': 'Det gick inte att uppdatera notifikationsinställningarna',
-  'error.passwords.dont.match': 'Lösenorden matchar inte',
   'error.invalidFileType': 'Ogiltig filtyp. Vänligen ladda upp en bild.',
   'error.fileTooLarge': 'Filen är för stor. Maximal storlek är 5MB.',
   'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
@@ -85,6 +84,7 @@ export const sv: Translations = {
   'success.avatarDeleted': 'Avatar har tagits bort',
   'error.avatarDelete': 'Det gick inte att ta bort avataren',
   'display.name': 'Namn',
+  'error.passwords.dont.match': 'Lösenorden matchar inte',
   // Toast messages
   'toast.signed.out.title': 'Du har loggats ut',
   'toast.signed.out.description': 'Du har loggats ut från ditt konto.',

@@ -30,7 +30,7 @@ export const en: Translations = {
   // Navigation
   'nav.home': 'Home',
   'nav.checklist': 'Checklist',
-  'nav.my.links': 'Deindexing',
+  'nav.my.links': 'My Links',
   'nav.address.alerts': 'Address Alerts',
   'nav.guides': 'Guides',
   'nav.admin.dashboard': 'Dashboard',
