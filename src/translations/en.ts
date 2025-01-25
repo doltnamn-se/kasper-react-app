@@ -30,7 +30,7 @@ export const en: Translations = {
   // Navigation
   'nav.home': 'Home',
   'nav.checklist': 'Checklist',
-  'nav.my.links': 'My Links',
+  'nav.my.links': 'Deindexing',
   'nav.address.alerts': 'Address Alerts',
   'nav.guides': 'Guides',
   'nav.admin.dashboard': 'Dashboard',
@@ -198,3 +198,4 @@ export const en: Translations = {
   
   'profile.upload.photo': 'Upload photo',
 } as const;
+

@@ -30,7 +30,7 @@ export const sv: Translations = {
   // Navigation
   'nav.home': 'Hem',
   'nav.checklist': 'Checklista',
-  'nav.my.links': 'Mina länkar',
+  'nav.my.links': 'Avindexering',
   'nav.address.alerts': 'Adresslarm',
   'nav.guides': 'Guider',
   'nav.admin.dashboard': 'Dashboard',
@@ -198,3 +198,4 @@ export const sv: Translations = {
   
   'profile.upload.photo': 'Ladda upp foto',
 } as const;
+
