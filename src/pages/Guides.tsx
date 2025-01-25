@@ -115,27 +115,29 @@ const Guides = () => {
                     <ArrowRight className="h-2 w-2 -rotate-45" />
                   </Button>
                 </div>
-                <AccordionContent className="px-6 pb-6">
-                  <div className="space-y-4">
-                    {guide.steps.map((step, stepIndex) => {
-                      if (stepIndex === 0) return null;
-                      return (
-                        <div 
-                          key={stepIndex} 
-                          className="flex gap-4"
-                        >
-                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center mt-0.5">
-                            <span className="text-xs font-medium">{stepIndex}</span>
-                          </div>
-                          <span 
-                            className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white flex-1"
-                            style={{ whiteSpace: 'pre-line' }}
+                <AccordionContent>
+                  <div className="px-6 pb-6">
+                    <div className="space-y-4">
+                      {guide.steps.map((step, stepIndex) => {
+                        if (stepIndex === 0) return null;
+                        return (
+                          <div 
+                            key={stepIndex} 
+                            className="flex items-start gap-4"
                           >
-                            {step.text}
-                          </span>
-                        </div>
-                      );
-                    })}
+                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
+                              <span className="text-xs font-medium">{stepIndex}</span>
+                            </div>
+                            <span 
+                              className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white"
+                              style={{ whiteSpace: 'pre-line' }}
+                            >
+                              {step.text}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </AccordionContent>
                 <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
