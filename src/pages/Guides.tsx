@@ -100,21 +100,7 @@ const Guides = () => {
             >
               <AccordionItem value={accordionId} className="border-none">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                  <div className="flex flex-col items-start text-left">
-                    <h3 className="text-lg font-semibold mb-2 text-[#000000] dark:text-white">{guide.title}</h3>
-                    <Button 
-                      variant="outline"
-                      className="w-full text-left justify-start h-auto py-1 px-0 hover:bg-transparent"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(extractUrl(guide.steps[0].text), '_blank');
-                      }}
-                    >
-                      <span className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] line-clamp-2">
-                        {guide.steps[0].text.replace(/Länk: /, '')}
-                      </span>
-                    </Button>
-                  </div>
+                  <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4">
                   <ol className="list-decimal list-inside space-y-2 mb-4">
