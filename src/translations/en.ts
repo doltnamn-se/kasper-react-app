@@ -125,5 +125,5 @@ export const en: Translations = {
   'step.2.title': 'Select Hiding Sites',
   'step.3.title': 'Submit URLs',
   'step.4.title': 'Personal Information',
-  'open.link': 'Open Link',
+  'link.to.removal': 'Link to removal',
 };

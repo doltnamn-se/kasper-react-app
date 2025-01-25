@@ -125,5 +125,5 @@ export const sv: Translations = {
   'step.2.title': 'Välj webbplatser',
   'step.3.title': 'Lägg till URL:er',
   'step.4.title': 'Personlig information',
-  'open.link': 'Öppna länk',
+  'link.to.removal': 'Länk till borttagning',
 };
