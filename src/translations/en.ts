@@ -196,5 +196,5 @@ export const en: Translations = {
   'subscription.tooltip.6months': 'Half-year plan',
   'subscription.tooltip.12months': 'Yearly plan',
   
-  'upload.photo': 'Upload photo',
+  'profile.upload.photo': 'Upload photo',
 } as const;

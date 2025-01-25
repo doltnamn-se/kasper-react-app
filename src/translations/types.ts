@@ -1,7 +1,6 @@
 export type Language = 'en' | 'sv';
 
 export interface Translations {
-  // Auth related
   'welcome.back': string;
   'sign.in': string;
   'signing.in': string;
@@ -197,4 +196,5 @@ export interface Translations {
   'subscription.tooltip.12months': string;
   
   'upload.photo': string;
-} 
+  'profile.upload.photo': string;
+}

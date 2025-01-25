@@ -196,5 +196,5 @@ export const sv: Translations = {
   'subscription.tooltip.6months': 'Halvårsabonnemang',
   'subscription.tooltip.12months': 'Årsabonnemang',
   
-  'upload.photo': 'Ladda upp foto',
+  'profile.upload.photo': 'Ladda upp foto',
 } as const;

@@ -76,7 +76,6 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate all profile-related queries
       await queryClient.invalidateQueries({ queryKey: ['profile'] });
       await queryClient.invalidateQueries({ queryKey: ['userProfile'] });
       console.log('Avatar updated successfully');
@@ -117,7 +116,6 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate all profile-related queries
       await queryClient.invalidateQueries({ queryKey: ['profile'] });
       await queryClient.invalidateQueries({ queryKey: ['userProfile'] });
       console.log('Avatar deleted successfully');
