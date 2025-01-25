@@ -1,4 +1,4 @@
-import { RealtimeChannel } from '@supabase/supabase-js';
+import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
 import { create } from 'zustand';
 
@@ -36,21 +36,26 @@ export const initializeVersionTracking = async () => {
   }
 
   // Set up real-time subscription
-  versionChannel = supabase
-    .channel('app_changes')
+  versionChannel = supabase.channel('version-tracking')
     .on(
       'postgres_changes',
-      { 
+      {
         event: '*',
         schema: 'public',
         table: 'app_changes'
       },
-      (payload: { new: { major: number; minor: number; patch: number } }) => {
+      (payload: RealtimePostgresChangesPayload<{
+        major: number;
+        minor: number;
+        patch: number;
+      }>) => {
         console.log('Version change detected:', payload);
-        const { major, minor, patch } = payload.new;
-        const newVersion = `${major}.${minor}.${patch}`;
-        console.log('Updating to version:', newVersion);
-        useVersionStore.getState().setVersion(newVersion);
+        if (payload.new) {
+          const { major, minor, patch } = payload.new;
+          const newVersion = `${major}.${minor}.${patch}`;
+          console.log('Updating to version:', newVersion);
+          useVersionStore.getState().setVersion(newVersion);
+        }
       }
     )
     .subscribe((status) => {
