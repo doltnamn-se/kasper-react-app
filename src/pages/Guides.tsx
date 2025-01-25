@@ -164,14 +164,12 @@ const Guides = () => {
                                 {step.text}
                               </span>
                               {shouldShowCopyButton(guide.title, step.text) && (
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="flex-shrink-0 h-6 w-6 mt-1"
+                                <button
                                   onClick={() => handleCopyMessage(step.text)}
+                                  className="flex-shrink-0 h-6 w-6 mt-1 flex items-center justify-center transition-colors duration-200 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
                                 >
                                   <Copy className="h-4 w-4" />
-                                </Button>
+                                </button>
                               )}
                             </div>
                           </div>
