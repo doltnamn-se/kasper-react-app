@@ -103,7 +103,7 @@ export const ProfileSettings = () => {
     <div className="space-y-6">
       <div className="flex items-start gap-8">
         <div className="relative">
-          <Avatar className="h-20 w-20 bg-[#e8e8e8] dark:bg-[#303032]">
+          <Avatar className="h-20 w-20 !bg-[#e8e8e8] dark:!bg-[#303032]">
             <AvatarImage src={userProfile?.avatar_url || undefined} />
             <AvatarFallback className="text-lg font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {getUserInitials(userProfile)}
