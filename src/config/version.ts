@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const APP_VERSION = "1.0.109"; // Updated default version
+export const APP_VERSION = "1.0.109"; // Default version
 
 export const getAppVersion = async () => {
   try {
@@ -9,8 +9,7 @@ export const getAppVersion = async () => {
       .from('app_changes')
       .select('major, minor, patch')
       .limit(1)
-      .single()
-      .throwOnError();
+      .single();
 
     if (error) {
       console.error('Error fetching app version:', error);
@@ -19,9 +18,12 @@ export const getAppVersion = async () => {
 
     if (data) {
       console.log('App version data:', data);
-      return `${data.major}.${data.minor}.${data.patch}`;
+      const version = `${data.major}.${data.minor}.${data.patch}`;
+      console.log('Constructed version string:', version);
+      return version;
     }
 
+    console.log('No version data found, using default:', APP_VERSION);
     return APP_VERSION;
   } catch (err) {
     console.error('Failed to fetch app version:', err);
