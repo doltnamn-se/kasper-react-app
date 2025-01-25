@@ -181,6 +181,16 @@ export interface Translations {
   'guide.upplysning.step3': string;
 
   // Add new subscription translations
+
+  // Add back the missing translation keys
+  'error.invalidFileType': string;
+  'error.fileTooLarge': string;
+  'error.avatarUpload': string;
+  'success.avatarUpdated': string;
+  'display.name': string;
+  'error.passwords.dont.match': string;
+
+  // Keep subscription translations
   'subscription.1month': string;
   'subscription.6months': string;
   'subscription.12months': string;

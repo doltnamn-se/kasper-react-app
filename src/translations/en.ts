@@ -180,6 +180,16 @@ export const en: Translations = {
   'guide.upplysning.step3': 'Await response',
 
   // Add subscription translations
+
+  // Add back the missing translations
+  'error.invalidFileType': 'Invalid file type. Please upload an image.',
+  'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
+  'error.avatarUpload': 'Failed to upload avatar.',
+  'success.avatarUpdated': 'Avatar updated successfully.',
+  'display.name': 'Display Name',
+  'error.passwords.dont.match': 'Passwords do not match',
+
+  // Keep subscription translations
   'subscription.1month': '1 Month Plan',
   'subscription.6months': '6 Months Plan',
   'subscription.12months': '12 Months Plan',
