@@ -40,7 +40,7 @@ export const initializeVersionTracking = async () => {
     .channel('app_changes')
     .on(
       'postgres_changes',
-      {
+      { 
         event: '*',
         schema: 'public',
         table: 'app_changes'
