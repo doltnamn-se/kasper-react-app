@@ -105,7 +105,7 @@ const Guides = () => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4">
-                  <ol className="list-decimal list-inside space-y-2">
+                  <ol className="list-decimal list-inside space-y-2 mb-4">
                     {guide.steps.map((step, stepIndex) => {
                       if (stepIndex === 0) return null; // Skip the first step as it's shown in the header
                       return (
@@ -119,6 +119,12 @@ const Guides = () => {
                       );
                     })}
                   </ol>
+                  <Button 
+                    className="w-full lg:w-1/2 xl:w-1/4 h-12"
+                    onClick={() => window.open(extractUrl(guide.steps[0].text), '_blank')}
+                  >
+                    {t('open.link')}
+                  </Button>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
