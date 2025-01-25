@@ -11,6 +11,7 @@ export const PasswordChange = () => {
       className="w-full"
       buttonClassName="w-1/2"
       buttonText={t('settings.change.password')}
+      showCurrentPassword={true}
       onComplete={() => {
         toast({
           title: t('success'),

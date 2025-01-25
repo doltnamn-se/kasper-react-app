@@ -1,151 +1,140 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 interface PasswordUpdateFormProps {
   onComplete: () => void;
   className?: string;
   buttonClassName?: string;
   buttonText?: string;
+  showCurrentPassword?: boolean;
 }
 
 export const PasswordUpdateForm = ({ 
   onComplete, 
   className = "lg:w-[75%] xl:w-1/2",
   buttonClassName = "w-full",
-  buttonText
+  buttonText,
+  showCurrentPassword = false
 }: PasswordUpdateFormProps) => {
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showCurrentPasswordField, setShowCurrentPasswordField] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-  const { t, language } = useLanguage();
-
-  const requirements = [
-    {
-      id: 1,
-      label: language === 'en' ? "At least 12 characters" : "Minst 12 tecken",
-      validate: (pass: string) => pass.length >= 12,
-    },
-    {
-      id: 2,
-      label: language === 'en' ? "A lowercase character" : "Ett gemener-tecken",
-      validate: (pass: string) => /[a-z]/.test(pass),
-    },
-    {
-      id: 3,
-      label: language === 'en' ? "A capital letter" : "Ett versaltecken",
-      validate: (pass: string) => /[A-Z]/.test(pass),
-    },
-    {
-      id: 4,
-      label: language === 'en' ? "A number or a symbol" : "Ett nummer eller en symbol",
-      validate: (pass: string) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(pass),
-    },
-  ];
+  const [error, setError] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsLoading(true);
 
     try {
-      const allRequirementsMet = requirements.every(req => req.validate(newPassword));
-      
-      if (!allRequirementsMet) {
-        toast({
-          variant: "destructive",
-          title: t('error'),
-          description: t('error.password.requirements'),
+      if (showCurrentPassword) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: (await supabase.auth.getUser()).data.user?.email || '',
+          password: currentPassword,
         });
-        return;
+
+        if (signInError) {
+          setError(t('error.invalid.credentials'));
+          setIsLoading(false);
+          return;
+        }
       }
 
-      const { error } = await supabase.auth.updateUser({ 
-        password: newPassword
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
       });
 
-      if (error) throw error;
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('No user session');
-
-      const { error: updateError } = await supabase
-        .from('customer_checklist_progress')
-        .update({ password_updated: true })
-        .eq('customer_id', session.user.id);
-
-      if (updateError) throw updateError;
-
-      toast({
-        title: t('success'),
-        description: t('password.updated'),
-      });
-      
-      onComplete();
-    } catch (error) {
-      console.error('Error updating password:', error);
-      toast({
-        variant: "destructive",
-        title: t('error'),
-        description: t('error.password.update'),
-      });
+      if (updateError) {
+        setError(updateError.message);
+      } else {
+        onComplete();
+        setNewPassword("");
+        setCurrentPassword("");
+      }
+    } catch (err) {
+      setError(t('error.password.update'));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      <div className={`w-full ${className}`}>
+    <form onSubmit={handleSubmit} className={className}>
+      {error && (
+        <div className="text-red-500 text-sm mb-4">
+          {error}
+        </div>
+      )}
+
+      {showCurrentPassword && (
+        <div className="space-y-2 mb-4">
+          <label
+            htmlFor="currentPassword"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+          >
+            {t('settings.current.password')}
+          </label>
+          <div className="relative">
+            <Input
+              id="currentPassword"
+              type={showCurrentPasswordField ? "text" : "password"}
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="pr-10"
+              placeholder={t('password.placeholder')}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowCurrentPasswordField(!showCurrentPasswordField)}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              {showCurrentPasswordField ? (
+                <EyeOffIcon className="h-4 w-4 text-gray-500" />
+              ) : (
+                <EyeIcon className="h-4 w-4 text-gray-500" />
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-2 mb-4">
+        <label
+          htmlFor="newPassword"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
+          {t('new.password')}
+        </label>
         <div className="relative">
           <Input
+            id="newPassword"
             type={showPassword ? "text" : "password"}
-            placeholder={t('new.password')}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="h-12 border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none font-medium text-[#000000A6] dark:text-[#FFFFFFA6] placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] placeholder:font-medium text-2xl pl-0 pr-10 bg-transparent"
+            className="pr-10"
+            placeholder={t('new.password.placeholder')}
+            required
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] focus:outline-none"
+            className="absolute right-3 top-1/2 -translate-y-1/2"
           >
             {showPassword ? (
-              <EyeOff className="h-5 w-5" />
+              <EyeOffIcon className="h-4 w-4 text-gray-500" />
             ) : (
-              <Eye className="h-5 w-5" />
+              <EyeIcon className="h-4 w-4 text-gray-500" />
             )}
           </button>
         </div>
-      </div>
-
-      <div className="space-y-2">
-        {requirements.map((req) => {
-          const isValid = req.validate(newPassword);
-          return (
-            <div
-              key={req.id}
-              className="flex items-center gap-2"
-            >
-              <div className={`flex items-center justify-center w-4 h-4 rounded-full border-2 ${
-                isValid 
-                  ? "border-[#219653] bg-[#219653]" 
-                  : "border-[#e0e0e0] dark:border-[#3a3a3b] bg-white dark:bg-[#1c1c1e]"
-              }`}>
-                {isValid && (
-                  <Check className="h-3 w-3 text-white stroke-[4]" />
-                )}
-              </div>
-              <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-                {req.label}
-              </span>
-            </div>
-          );
-        })}
       </div>
 
       <Button 
