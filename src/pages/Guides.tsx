@@ -173,13 +173,13 @@ const Guides = () => {
 
       <Dialog open={!!selectedUrl} onOpenChange={() => setSelectedUrl(null)}>
         <DialogContent className="max-w-[90vw] w-[1200px] h-[80vh] p-0">
-          <div className="flex items-center justify-between px-4 py-2 border-b">
-            <h2 className="text-sm font-medium truncate">{selectedUrl}</h2>
+          <div className="flex items-center justify-between px-2 py-1 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <h2 className="text-xs font-medium text-muted-foreground truncate">{selectedUrl}</h2>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setSelectedUrl(null)}
-              className="h-6 w-6"
+              className="h-5 w-5"
             >
               <X className="h-3 w-3" />
             </Button>
