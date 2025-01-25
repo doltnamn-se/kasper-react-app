@@ -16,6 +16,7 @@ export const en: Translations = {
   'phone.placeholder': 'Enter phone number',
   'token.placeholder': 'Enter verification code',
   'dark.mode': 'Dark mode',
+  'light.mode': 'Light mode',
   'forgot.password': 'Forgot your password?',
   'send.recovery.link': 'Send recovery link',
   'sending.recovery.link': 'Sending recovery link...',
@@ -99,10 +100,9 @@ export const en: Translations = {
   'settings.notification.preferences': 'Notification Preferences',
   'settings.email.notifications': 'Email Notifications',
   'settings.email.notifications.description': 'Receive important updates and alerts via email',
-  'settings.inapp.notifications': 'In-app Notifications',
+  'settings.inapp.notifications': 'App Notifications',
   'settings.inapp.notifications.description': 'Receive notifications within the application',
   'settings.notifications.updated': 'Notification preferences updated successfully',
-  'error.update.preferences': 'Failed to update notification preferences',
   // Notifications
   'notifications.title': 'Notifications',
   'notifications.mark.all.read': 'Mark all as read',
@@ -165,5 +165,9 @@ export const en: Translations = {
   'guide.upplysning.step2': 'Fill in the form.',
   'guide.upplysning.step3': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "',
   'toast.copied.title': 'Copied',
-  'toast.copied.description': 'Message has been copied to clipboard'
+  'toast.copied.description': 'Message has been copied to clipboard',
+  // UI elements
+  'messages': 'Messages',
+  'notifications': 'Notifications',
+  'copy': 'Copy'
 };
