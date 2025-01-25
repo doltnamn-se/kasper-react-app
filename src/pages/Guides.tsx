@@ -122,9 +122,9 @@ const Guides = () => {
                       return (
                         <div 
                           key={stepIndex} 
-                          className="flex items-center gap-4"
+                          className="flex items-start gap-4"
                         >
-                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center mt-0.5">
                             <span className="text-xs font-medium">{stepIndex}</span>
                           </div>
                           <span 
