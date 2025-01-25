@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNotifications } from "@/hooks/useNotifications";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -119,6 +119,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
+              <AvatarImage src={userProfile?.avatar_url} />
               <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
                 {getUserInitials(userProfile)}
               </AvatarFallback>

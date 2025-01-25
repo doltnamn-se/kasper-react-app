@@ -31,7 +31,8 @@ export const useUserProfile = () => {
         return null;
       }
       
-      console.log("Profile data fetched successfully");
+      console.log("Profile data fetched successfully", profileData);
+      console.log("Avatar URL:", profileData?.avatar_url);
       return profileData;
     },
     enabled: true
