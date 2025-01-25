@@ -4,6 +4,8 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/contexts/SidebarContext";
+import { useEffect } from "react";
+import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
 
 import Auth from "@/pages/Auth";
 import Index from "@/pages/Index";
@@ -20,6 +22,11 @@ import { AuthRoute } from "@/components/auth/AuthRoute";
 const queryClient = new QueryClient();
 
 function App() {
+  useEffect(() => {
+    initializeVersionTracking();
+    return () => cleanupVersionTracking();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>

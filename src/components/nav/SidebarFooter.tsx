@@ -1,13 +1,8 @@
 import { LanguageSwitch } from "@/components/LanguageSwitch";
-import { useQuery } from "@tanstack/react-query";
-import { getAppVersion } from "@/config/version";
+import { useVersionStore } from "@/config/version";
 
 export const SidebarFooter = () => {
-  const { data: version } = useQuery({
-    queryKey: ['app-version'],
-    queryFn: getAppVersion,
-    initialData: "0.0.1"
-  });
+  const version = useVersionStore((state) => state.version);
 
   return (
     <div className="absolute bottom-0 left-0 right-0 px-6 py-4 flex justify-between items-center">

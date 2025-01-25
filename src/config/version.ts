@@ -1,32 +1,71 @@
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
+import { create } from 'zustand';
 
-export const APP_VERSION = "1.0.109"; // Default version
+interface VersionState {
+  version: string;
+  setVersion: (version: string) => void;
+}
 
-export const getAppVersion = async () => {
-  try {
-    console.log('Fetching app version from Supabase...');
-    const { data, error } = await supabase
-      .from('app_changes')
-      .select('major, minor, patch')
-      .limit(1)
-      .maybeSingle();
+export const useVersionStore = create<VersionState>((set) => ({
+  version: '1.1.0', // Default version
+  setVersion: (version) => set({ version }),
+}));
 
-    if (error) {
-      console.error('Error fetching app version:', error);
-      return APP_VERSION;
-    }
+let versionChannel: RealtimeChannel;
 
-    if (!data) {
-      console.log('No version data found in database, using default:', APP_VERSION);
-      return APP_VERSION;
-    }
+export const initializeVersionTracking = async () => {
+  console.log('Initializing version tracking...');
+  
+  // Initial fetch
+  const { data, error } = await supabase
+    .from('app_changes')
+    .select('major, minor, patch')
+    .limit(1)
+    .maybeSingle();
 
-    console.log('Raw version data from database:', data);
-    const version = `${data.major}.${data.minor}.${data.patch}`;
-    console.log('Constructed version string:', version);
-    return version;
-  } catch (err) {
-    console.error('Failed to fetch app version:', err);
-    return APP_VERSION;
+  if (error) {
+    console.error('Error fetching initial version:', error);
+    return;
   }
+
+  if (data) {
+    const version = `${data.major}.${data.minor}.${data.patch}`;
+    console.log('Initial version:', version);
+    useVersionStore.getState().setVersion(version);
+  }
+
+  // Set up real-time subscription
+  versionChannel = supabase
+    .channel('app_changes')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'app_changes'
+      },
+      (payload) => {
+        console.log('Version change detected:', payload);
+        const { major, minor, patch } = payload.new;
+        const newVersion = `${major}.${minor}.${patch}`;
+        console.log('Updating to version:', newVersion);
+        useVersionStore.getState().setVersion(newVersion);
+      }
+    )
+    .subscribe((status) => {
+      console.log('Version subscription status:', status);
+    });
+};
+
+export const cleanupVersionTracking = () => {
+  if (versionChannel) {
+    console.log('Cleaning up version tracking...');
+    versionChannel.unsubscribe();
+  }
+};
+
+// For backwards compatibility
+export const getAppVersion = async () => {
+  return useVersionStore.getState().version;
 };

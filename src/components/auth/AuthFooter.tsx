@@ -1,17 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useQuery } from "@tanstack/react-query";
-import { getAppVersion } from "@/config/version";
+import { useVersionStore } from "@/config/version";
 
 export const AuthFooter = () => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
-
-  const { data: version } = useQuery({
-    queryKey: ['app-version'],
-    queryFn: getAppVersion,
-    initialData: "0.0.1"
-  });
+  const version = useVersionStore((state) => state.version);
 
   return (
     <div className="flex flex-col items-center space-y-3">
