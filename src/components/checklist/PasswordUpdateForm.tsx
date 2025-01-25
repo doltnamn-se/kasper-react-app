@@ -92,6 +92,20 @@ export const PasswordUpdateForm = ({
             title: t('error'),
             description: t('error.current.password'),
           });
+          setIsLoading(false);
+          return;
+        }
+
+        // Check if new password is same as current password
+        if (newPassword === currentPassword) {
+          toast({
+            variant: "destructive",
+            title: t('error'),
+            description: language === 'en' ? 
+              "New password must be different from current password" : 
+              "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
+          });
+          setIsLoading(false);
           return;
         }
       }
@@ -100,7 +114,20 @@ export const PasswordUpdateForm = ({
         password: newPassword
       });
 
-      if (error) throw error;
+      if (error) {
+        // Check if error is due to same password
+        if (error.message.includes('same_password')) {
+          toast({
+            variant: "destructive",
+            title: t('error'),
+            description: language === 'en' ? 
+              "New password must be different from current password" : 
+              "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
+          });
+          return;
+        }
+        throw error;
+      }
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
