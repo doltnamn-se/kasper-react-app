@@ -144,7 +144,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                 >
                   <Badge 
                     variant="default"
-                    className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
+                    className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold px-4 py-1.5 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
                   >
                     {getSubscriptionLabel(customerData?.subscription_plan)}
                   </Badge>
