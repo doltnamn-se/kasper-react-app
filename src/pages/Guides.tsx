@@ -115,7 +115,7 @@ const Guides = () => {
                   </Button>
                 </div>
                 <AccordionContent className="px-6 pb-6">
-                  <ol className="list-decimal list-inside space-y-2 pl-4">
+                  <ol className="list-decimal list-inside space-y-2">
                     {guide.steps.map((step, stepIndex) => {
                       if (stepIndex === 0) return null;
                       return (
@@ -134,7 +134,9 @@ const Guides = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
                     <ChevronDown 
-                      className={`h-4 w-4 shrink-0 transition-transform duration-300`}
+                      className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-180' : ''
+                      }`}
                     />
                   </div>
                 </AccordionTrigger>
