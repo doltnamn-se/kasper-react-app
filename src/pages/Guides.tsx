@@ -100,11 +100,11 @@ const Guides = () => {
               className="w-full"
             >
               <AccordionItem value={accordionId} className="border-none">
-                <AccordionTrigger className="px-6 py-4 hover:no-underline flex-col gap-2">
+                <AccordionTrigger className="px-6 py-4 hover:no-underline">
                   <div className="flex w-full items-center justify-between">
                     <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
                     <Button 
-                      className="w-32 h-10 px-6"
+                      className="px-6"
                       onClick={(e) => {
                         e.stopPropagation();
                         window.open(extractUrl(guide.steps[0].text), '_blank');
