@@ -2,6 +2,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface GuideStep {
   text: string;
@@ -74,6 +75,11 @@ const guides: Guide[] = [
 const Guides = () => {
   const { t } = useLanguage();
 
+  const extractUrl = (text: string) => {
+    const match = text.match(/https?:\/\/[^\s]+/);
+    return match ? match[0] : null;
+  };
+
   return (
     <MainLayout>
       <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
@@ -81,28 +87,43 @@ const Guides = () => {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {guides.map((guide, index) => (
-          <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-lg">
             <Accordion type="single" collapsible>
               <AccordionItem value={`guide-${index}`} className="border-none">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline">
                   <div className="flex flex-col items-start text-left">
-                    <h3 className="text-lg font-semibold mb-2">{guide.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2 opacity-70">
-                      {guide.steps[0].text}
+                    <h3 className="text-lg font-semibold mb-2 text-[#000000] dark:text-white">{guide.title}</h3>
+                    <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] line-clamp-2 opacity-70">
+                      {guide.steps[0].text.replace(/Länk: /, '')}
                     </p>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4">
                   <ol className="list-decimal list-inside space-y-2">
-                    {guide.steps.map((step, stepIndex) => (
-                      <li 
-                        key={stepIndex} 
-                        className="text-sm leading-relaxed"
-                        style={{ whiteSpace: 'pre-line' }}
-                      >
-                        {step.text}
-                      </li>
-                    ))}
+                    {guide.steps.map((step, stepIndex) => {
+                      const url = extractUrl(step.text);
+                      if (stepIndex === 0 && url) {
+                        return (
+                          <li key={stepIndex} className="text-sm leading-relaxed text-[#000000] dark:text-white">
+                            <Button 
+                              className="h-12 w-full lg:w-1/2"
+                              onClick={() => window.open(url, '_blank')}
+                            >
+                              {t('update.password')}
+                            </Button>
+                          </li>
+                        );
+                      }
+                      return (
+                        <li 
+                          key={stepIndex} 
+                          className="text-sm leading-relaxed text-[#000000] dark:text-white"
+                          style={{ whiteSpace: 'pre-line' }}
+                        >
+                          {step.text.replace(/Länk: .*/, '')}
+                        </li>
+                      );
+                    })}
                   </ol>
                 </AccordionContent>
               </AccordionItem>
