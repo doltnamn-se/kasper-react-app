@@ -54,7 +54,14 @@ export const PasswordUpdateForm = ({
       label: language === 'en' ? "A number or a symbol" : "Ett nummer eller en symbol",
       validate: (pass: string) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(pass),
     },
+    {
+      id: 5,
+      label: language === 'en' ? "Different from current password" : "Annorlunda än nuvarande lösenord",
+      validate: (pass: string) => !showCurrentPassword || pass !== currentPassword,
+    },
   ];
+
+  const allRequirementsMet = requirements.every(req => req.validate(newPassword));
 
   const resetForm = () => {
     setCurrentPassword("");
@@ -68,26 +75,11 @@ export const PasswordUpdateForm = ({
     setIsLoading(true);
 
     try {
-      const allRequirementsMet = requirements.every(req => req.validate(newPassword));
-      
       if (!allRequirementsMet) {
         toast({
           variant: "destructive",
           title: t('error'),
           description: t('error.password.requirements'),
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // If showing current password field, check if new password is different
-      if (showCurrentPassword && currentPassword === newPassword) {
-        toast({
-          variant: "destructive",
-          title: t('error'),
-          description: language === 'en' ? 
-            "New password must be different from current password" : 
-            "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
         });
         setIsLoading(false);
         return;
@@ -244,7 +236,7 @@ export const PasswordUpdateForm = ({
 
       <Button 
         type="submit" 
-        disabled={isLoading} 
+        disabled={isLoading || !allRequirementsMet} 
         className={`h-12 ${buttonClassName}`}
       >
         <div className="relative w-full h-full flex items-center justify-center">
