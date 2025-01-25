@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface GuideStep {
@@ -99,11 +100,26 @@ const Guides = () => {
               className="w-full"
             >
               <AccordionItem value={accordionId} className="border-none">
-                <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                  <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
+                <AccordionTrigger className="px-6 py-4 hover:no-underline flex-col gap-2">
+                  <div className="flex w-full items-center justify-between">
+                    <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
+                    <Button 
+                      className="w-32 h-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(extractUrl(guide.steps[0].text), '_blank');
+                      }}
+                    >
+                      {t('link.to.removal')}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    <span className="text-sm font-medium text-[#000000] dark:text-white">Steg-för-steg</span>
+                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+                  </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4">
-                  <ol className="list-decimal list-inside space-y-2 mb-4">
+                  <ol className="list-decimal list-inside space-y-2">
                     {guide.steps.map((step, stepIndex) => {
                       if (stepIndex === 0) return null;
                       return (
@@ -117,14 +133,6 @@ const Guides = () => {
                       );
                     })}
                   </ol>
-                  <div className="flex justify-center w-full">
-                    <Button 
-                      className="w-full md:w-1/2 h-12"
-                      onClick={() => window.open(extractUrl(guide.steps[0].text), '_blank')}
-                    >
-                      {t('link.to.removal')}
-                    </Button>
-                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
