@@ -104,7 +104,7 @@ const Guides = () => {
                   <div className="flex w-full items-center justify-between">
                     <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
                     <Button 
-                      className="w-32 h-10"
+                      className="w-32 h-10 px-6"
                       onClick={(e) => {
                         e.stopPropagation();
                         window.open(extractUrl(guide.steps[0].text), '_blank');
@@ -114,7 +114,7 @@ const Guides = () => {
                     </Button>
                   </div>
                   <div className="flex items-center justify-center gap-2 mt-4">
-                    <span className="text-sm font-medium text-[#000000] dark:text-white">Steg-för-steg</span>
+                    <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
                     <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
                   </div>
                 </AccordionTrigger>
