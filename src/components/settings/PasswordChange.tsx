@@ -10,6 +10,7 @@ export const PasswordChange = () => {
     <PasswordUpdateForm 
       className="w-full"
       buttonClassName="w-1/2"
+      buttonText={t('settings.change.password')}
       onComplete={() => {
         toast({
           title: t('success'),
