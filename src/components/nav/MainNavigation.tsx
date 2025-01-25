@@ -92,7 +92,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     return (
       <Link 
         to={path} 
-        className={`flex items-center justify-between gap-3 mb-3 py-2.5 rounded-md ${
+        className={`flex items-center justify-between gap-3 mb-3 py-2.5 px-3 rounded-md ${
           isActive 
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
