@@ -4,7 +4,6 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getUserInitials } from "@/utils/profileUtils";
@@ -81,7 +80,7 @@ export const ProfileSettings = () => {
           </Avatar>
           <Label 
             htmlFor="avatar-upload" 
-            className="absolute bottom-0 right-0 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full p-1.5 cursor-pointer"
+            className="absolute bottom-0 right-0 bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground rounded-full p-1.5 cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -115,22 +114,22 @@ export const ProfileSettings = () => {
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="email">{t('email')}</Label>
+          <Label htmlFor="display_name">{t('display.name')}</Label>
           <Input
-            id="email"
-            type="email"
-            value={userEmail || ''}
+            id="display_name"
+            type="text"
+            value={userProfile?.display_name || ''}
             disabled
             className="bg-muted"
           />
         </div>
         
         <div>
-          <Label htmlFor="display_name">{t('display.name')}</Label>
+          <Label htmlFor="email">{t('email')}</Label>
           <Input
-            id="display_name"
-            type="text"
-            value={userProfile?.display_name || ''}
+            id="email"
+            type="email"
+            value={userEmail || ''}
             disabled
             className="bg-muted"
           />

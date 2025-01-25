@@ -184,5 +184,5 @@ export const sv: Translations = {
   'guide.upplysning.step3': 'Vänta på svar',
 
   'success.avatarUpdated': 'Avatar har uppdaterats',
-  'display.name': 'Visningsnamn'
+  'display.name': 'Namn'
 } as const;
