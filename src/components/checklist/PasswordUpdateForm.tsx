@@ -12,6 +12,7 @@ interface PasswordUpdateFormProps {
   buttonClassName?: string;
   buttonText?: string;
   showCurrentPassword?: boolean;
+  showSuccessToast?: boolean;
 }
 
 export const PasswordUpdateForm = ({ 
@@ -19,7 +20,8 @@ export const PasswordUpdateForm = ({
   className = "lg:w-[75%] xl:w-1/2",
   buttonClassName = "w-full",
   buttonText,
-  showCurrentPassword = false
+  showCurrentPassword = false,
+  showSuccessToast = false
 }: PasswordUpdateFormProps) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -108,10 +110,12 @@ export const PasswordUpdateForm = ({
 
       if (updateError) throw updateError;
 
-      toast({
-        title: t('success'),
-        description: t('password.updated'),
-      });
+      if (showSuccessToast) {
+        toast({
+          title: t('success'),
+          description: t('password.updated'),
+        });
+      }
       
       resetForm();
       onComplete();
