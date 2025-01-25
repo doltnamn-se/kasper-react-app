@@ -139,7 +139,7 @@ export const ProfileSettings = () => {
           </Label>
         </div>
         <div className="space-y-1">
-          <h3 className="text-lg font-medium">{userProfile?.display_name || userEmail}</h3>
+          <h3 className="text-lg font-bold">{userProfile?.display_name || userEmail}</h3>
           <Badge 
             className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium py-1.5 px-3"
           >
