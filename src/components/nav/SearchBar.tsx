@@ -120,7 +120,7 @@ export const SearchBar = () => {
     <>
       {isSearchFocused && (
         <div 
-          className="fixed inset-0 backdrop-blur-sm z-40 transition-all duration-300"
+          className="fixed inset-0 backdrop-blur-sm z-[39] transition-all duration-300"
           onClick={() => {
             setIsSearchFocused(false);
             setShowResults(false);
@@ -133,7 +133,7 @@ export const SearchBar = () => {
       <div 
         className={cn(
           "relative w-full",
-          isSearchFocused && "z-50"
+          isSearchFocused && "z-[41]"
         )}
         onMouseEnter={() => setIsSearchHovered(true)}
         onMouseLeave={() => setIsSearchHovered(false)}
