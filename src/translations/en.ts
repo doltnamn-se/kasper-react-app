@@ -76,11 +76,14 @@ export const en: Translations = {
   'error.current.password': 'Current password is incorrect',
   'error.title': 'Error',
   'error.update.preferences': 'Failed to update notification preferences',
+  // Toast messages
   'toast.signed.out.title': 'Signed out successfully',
   'toast.signed.out.description': 'You have been logged out of your account.',
   'toast.error.title': 'Error',
   'toast.error.description': 'Could not sign out. Please try again.',
   'toast.error.unexpected': 'An unexpected error occurred. Please try again.',
+  'toast.copied.title': 'Copied',
+  'toast.copied.description': 'Message has been copied to clipboard',
   // Table related
   'table.userId': 'UID',
   'table.email': 'Email',
@@ -106,36 +109,12 @@ export const en: Translations = {
   'settings.notifications.updated': 'Notification preferences updated successfully',
   // Notifications
   'notifications.title': 'Notifications',
+  'notifications': 'Notifications',
   'notifications.mark.all.read': 'Mark all as read',
   'notifications.empty': 'No notifications',
-  // Checklist related
-  'your.progress': 'Your Progress',
-  'step.progress': '{current} out of {total} steps finished',
-  'getting.started': 'Steps',
-  'step.number': 'Step {number}',
-  'set.password': 'Set your password',
-  'set.password.description': 'Create your own password for easier access to the platform',
-  'step.password.title': 'Password',
-  'step.password.description': 'Create your own password for easier access to the platform',
-  'step.sites.title': 'Deindexing',
-  'step.sites.description': 'Choose which sites to hide your information from',
-  'step.urls.title': 'Search sites',
-  'step.urls.description': 'Add URLs where your information appears',
-  'step.info.title': 'Identification',
-  'step.info.description': 'Add your personal information for removal',
-  'current.password': 'Current password',
-  'confirm.password': 'Confirm password',
-  'success': 'Success',
-  'error': 'Error',
-  'error.passwords.match.description': 'The passwords you entered do not match',
-  'checklist': 'Checklist',
-  'completed': 'Completed',
-  'pending.completion': 'Pending completion',
-  'step.1.title': 'Update Password',
-  'step.2.title': 'Select Hiding Sites',
-  'step.3.title': 'Submit URLs',
-  'step.4.title': 'Personal Information',
-  'link.to.removal': 'Link to removal',
+  // UI elements
+  'messages': 'Messages',
+  'copy': 'Copy',
   // Guide translations
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Link: https://uppdatera.eniro.se/person',
@@ -164,11 +143,5 @@ export const en: Translations = {
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Link: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fill in the form.',
-  'guide.upplysning.step3': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "',
-  'toast.copied.title': 'Copied',
-  'toast.copied.description': 'Message has been copied to clipboard',
-  // UI elements
-  'messages': 'Messages',
-  'notifications': 'Notifications',
-  'copy': 'Copy'
+  'guide.upplysning.step3': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "'
 };

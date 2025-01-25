@@ -16,6 +16,7 @@ export interface Translations {
   'phone.placeholder': string;
   'token.placeholder': string;
   'dark.mode': string;
+  'light.mode': string;
   'forgot.password': string;
   'send.recovery.link': string;
   'sending.recovery.link': string;
@@ -75,6 +76,14 @@ export interface Translations {
   'error.current.password': string;
   'error.title': string;
   'error.update.preferences': string;
+  // Toast messages
+  'toast.signed.out.title': string;
+  'toast.signed.out.description': string;
+  'toast.error.title': string;
+  'toast.error.description': string;
+  'toast.error.unexpected': string;
+  'toast.copied.title': string;
+  'toast.copied.description': string;
   // Table related
   'table.userId': string;
   'table.email': string;
@@ -100,40 +109,11 @@ export interface Translations {
   'settings.notifications.updated': string;
   // Notifications
   'notifications.title': string;
+  'notifications': string;
   'notifications.mark.all.read': string;
   'notifications.empty': string;
-  // Checklist related
-  'your.progress': string;
-  'step.progress': string;
-  'getting.started': string;
-  'step.number': string;
-  'set.password': string;
-  'set.password.description': string;
-  'step.password.title': string;
-  'step.password.description': string;
-  'step.sites.title': string;
-  'step.sites.description': string;
-  'step.urls.title': string;
-  'step.urls.description': string;
-  'step.info.title': string;
-  'step.info.description': string;
-  'current.password': string;
-  'confirm.password': string;
-  'success': string;
-  'error': string;
-  'error.passwords.match.description': string;
-  'checklist': string;
-  'completed': string;
-  'pending.completion': string;
-  'step.1.title': string;
-  'step.2.title': string;
-  'step.3.title': string;
-  'step.4.title': string;
-  'link.to.removal': string;
   // UI elements
-  'light.mode': string;
   'messages': string;
-  'notifications': string;
   'copy': string;
   // Guide translations
   'guide.eniro.title': string;
@@ -164,7 +144,4 @@ export interface Translations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
-  // Toast translations
-  'toast.copied.title': string;
-  'toast.copied.description': string;
 }
