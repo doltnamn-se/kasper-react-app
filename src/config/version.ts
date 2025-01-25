@@ -1,9 +1,6 @@
-// This file manages the application version by reading from Supabase
-// Format: MAJOR.MINOR.PATCH follows semantic versioning
-
 import { supabase } from "@/integrations/supabase/client";
 
-export const APP_VERSION = "0.0.1"; // Default version
+export const APP_VERSION = "1.0.109"; // Updated default version
 
 export const getAppVersion = async () => {
   try {
@@ -12,7 +9,8 @@ export const getAppVersion = async () => {
       .from('app_changes')
       .select('major, minor, patch')
       .limit(1)
-      .single();
+      .single()
+      .throwOnError();
 
     if (error) {
       console.error('Error fetching app version:', error);
