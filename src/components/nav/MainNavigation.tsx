@@ -89,8 +89,8 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
 
   return (
     <>
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-8 px-5">
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-6 px-5">
           <Avatar className="h-10 w-10">
             <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
               {getUserInitials(userProfile)}
@@ -107,7 +107,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
             </Badge>
           </div>
         </div>
-        <Separator className="mb-4 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
+        <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       </div>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'))}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
