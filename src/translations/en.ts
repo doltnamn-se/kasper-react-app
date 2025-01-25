@@ -144,4 +144,38 @@ export const en: Translations = {
   'guide.upplysning.step1': 'Link: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fill in the form.',
   'guide.upplysning.step3': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "'
-};
+  
+  // Step related translations
+  'step.number': 'Step {number}',
+  'step.progress': 'Step {current} of {total}',
+  'step.password.title': 'Set Password',
+  'step.password.description': 'Create a secure password for your account',
+  'step.sites.title': 'Select Sites',
+  'step.sites.description': 'Choose which sites to hide your information from',
+  'step.urls.title': 'Submit URLs',
+  'step.urls.description': 'Submit URLs where your information appears',
+  'step.info.title': 'Personal Information',
+  'step.info.description': 'Update your personal information',
+  'step.1.title': 'Set Password',
+  'step.2.title': 'Select Sites',
+  'step.3.title': 'Submit URLs',
+  'step.4.title': 'Personal Information',
+  
+  // Password related
+  'set.password': 'Set Password',
+  'set.password.description': 'Create a secure password for your account',
+  'current.password': 'Current Password',
+  
+  // Status messages
+  'error': 'Error',
+  'success': 'Success',
+  'completed': 'Completed',
+  'pending.completion': 'Pending completion',
+  
+  // Checklist related
+  'checklist': 'Checklist',
+  'getting.started': 'Getting Started',
+  
+  // Links
+  'link.to.removal': 'Link to removal page',
+}

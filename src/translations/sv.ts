@@ -143,5 +143,39 @@ export const sv: Translations = {
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Länk: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fyll i formuläret.',
-  'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "'
-};
+  'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
+
+  // Step related translations
+  'step.number': 'Steg {number}',
+  'step.progress': 'Steg {current} av {total}',
+  'step.password.title': 'Ange lösenord',
+  'step.password.description': 'Skapa ett säkert lösenord för ditt konto',
+  'step.sites.title': 'Välj webbplatser',
+  'step.sites.description': 'Välj vilka webbplatser du vill dölja din information från',
+  'step.urls.title': 'Skicka in URL:er',
+  'step.urls.description': 'Skicka in URL:er där din information visas',
+  'step.info.title': 'Personlig information',
+  'step.info.description': 'Uppdatera din personliga information',
+  'step.1.title': 'Ange lösenord',
+  'step.2.title': 'Välj webbplatser',
+  'step.3.title': 'Skicka in URL:er',
+  'step.4.title': 'Personlig information',
+  
+  // Password related
+  'set.password': 'Ange lösenord',
+  'set.password.description': 'Skapa ett säkert lösenord för ditt konto',
+  'current.password': 'Nuvarande lösenord',
+  
+  // Status messages
+  'error': 'Fel',
+  'success': 'Klart',
+  'completed': 'Slutförd',
+  'pending.completion': 'Väntar på slutförande',
+  
+  // Checklist related
+  'checklist': 'Checklista',
+  'getting.started': 'Kom igång',
+  
+  // Links
+  'link.to.removal': 'Länk till borttagningssida',
+}
