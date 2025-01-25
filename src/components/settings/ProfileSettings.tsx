@@ -4,7 +4,6 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,7 +37,7 @@ export const ProfileSettings = () => {
       const fileExt = file.name.split('.').pop();
       const filePath = `${userProfile?.id}/${crypto.randomUUID()}.${fileExt}`;
       
-      const { error: uploadError, data } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
@@ -111,11 +110,6 @@ export const ProfileSettings = () => {
         </div>
         <div>
           <h3 className="text-lg font-medium">{userProfile?.display_name || userEmail}</h3>
-          {userProfile?.subscription_plan && (
-            <Badge variant="secondary" className="mt-1">
-              {userProfile.subscription_plan}
-            </Badge>
-          )}
         </div>
       </div>
 
@@ -132,7 +126,7 @@ export const ProfileSettings = () => {
         </div>
         
         <div>
-          <Label htmlFor="display_name">{t('displayName')}</Label>
+          <Label htmlFor="display_name">{t('display.name')}</Label>
           <Input
             id="display_name"
             type="text"

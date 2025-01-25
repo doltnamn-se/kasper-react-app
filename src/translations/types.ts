@@ -179,4 +179,11 @@ export interface Translations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
+
+  // Add new keys for avatar upload
+  'error.invalidFileType': string;
+  'error.fileTooLarge': string;
+  'error.avatarUpload': string;
+  'success.avatarUpdated': string;
+  'display.name': string;
 }

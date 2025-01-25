@@ -77,6 +77,9 @@ export const sv: Translations = {
   'error.invalid.recovery.link': 'Ogiltig eller utgången återställningslänk',
   'error.password.requirements': 'Se till att ditt lösenord uppfyller alla krav',
   'error.update.preferences': 'Det gick inte att uppdatera notifikationsinställningarna',
+  'error.invalidFileType': 'Ogiltig filtyp. Vänligen ladda upp en bild.',
+  'error.fileTooLarge': 'Filen är för stor. Maximal storlek är 5MB.',
+  'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
   // Toast messages
   'toast.signed.out.title': 'Du har loggats ut',
   'toast.signed.out.description': 'Du har loggats ut från ditt konto.',
