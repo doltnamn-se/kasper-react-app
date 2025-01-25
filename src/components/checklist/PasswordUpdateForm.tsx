@@ -76,6 +76,7 @@ export const PasswordUpdateForm = ({
           title: t('error'),
           description: t('error.password.requirements'),
         });
+        setIsLoading(false);
         return;
       }
 
@@ -91,19 +92,6 @@ export const PasswordUpdateForm = ({
             variant: "destructive",
             title: t('error'),
             description: t('error.current.password'),
-          });
-          setIsLoading(false);
-          return;
-        }
-
-        // Check if new password is same as current password
-        if (newPassword === currentPassword) {
-          toast({
-            variant: "destructive",
-            title: t('error'),
-            description: language === 'en' ? 
-              "New password must be different from current password" : 
-              "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
           });
           setIsLoading(false);
           return;
@@ -124,6 +112,7 @@ export const PasswordUpdateForm = ({
               "New password must be different from current password" : 
               "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
           });
+          setIsLoading(false);
           return;
         }
         throw error;
@@ -255,4 +244,3 @@ export const PasswordUpdateForm = ({
       </Button>
     </form>
   );
-};
