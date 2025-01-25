@@ -112,7 +112,7 @@ const Guides = () => {
                     }}
                   >
                     {t('link.to.removal')}
-                    <ArrowRight className="h-3 w-3 rotate-45" />
+                    <ArrowRight className="h-2 w-2 -rotate-45" />
                   </Button>
                 </div>
                 <AccordionContent className="px-6 pb-6">
