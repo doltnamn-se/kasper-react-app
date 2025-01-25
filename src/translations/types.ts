@@ -180,10 +180,9 @@ export interface Translations {
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
 
-  // Add new keys for avatar upload
-  'error.invalidFileType': string;
-  'error.fileTooLarge': string;
-  'error.avatarUpload': string;
-  'success.avatarUpdated': string;
-  'display.name': string;
+  // Add new subscription translations
+  'subscription.1month': string;
+  'subscription.6months': string;
+  'subscription.12months': string;
+  'subscription.none': string;
 }

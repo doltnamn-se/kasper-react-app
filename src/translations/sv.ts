@@ -183,6 +183,9 @@ export const sv: Translations = {
   'guide.upplysning.step2': 'Skicka borttagningsbegäran',
   'guide.upplysning.step3': 'Vänta på svar',
 
-  'success.avatarUpdated': 'Avatar har uppdaterats',
-  'display.name': 'Namn'
+  // Add subscription translations
+  'subscription.1month': '1 Månads Plan',
+  'subscription.6months': '6 Månaders Plan',
+  'subscription.12months': '12 Månaders Plan',
+  'subscription.none': 'Ingen Plan'
 } as const;
