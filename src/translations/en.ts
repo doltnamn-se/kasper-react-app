@@ -184,5 +184,6 @@ export const en: Translations = {
   'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
   'error.avatarUpload': 'Failed to upload avatar.',
   'success.avatarUpdated': 'Avatar updated successfully.',
-  'display.name': 'Display Name'
+  'display.name': 'Display Name',
+  'error.passwords.dont.match': 'Passwords do not match'
 } as const;

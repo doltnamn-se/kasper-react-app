@@ -80,6 +80,7 @@ export const sv: Translations = {
   'error.invalidFileType': 'Ogiltig filtyp. Vänligen ladda upp en bild.',
   'error.fileTooLarge': 'Filen är för stor. Maximal storlek är 5MB.',
   'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
+  'error.passwords.dont.match': 'Lösenorden matchar inte',
   // Toast messages
   'toast.signed.out.title': 'Du har loggats ut',
   'toast.signed.out.description': 'Du har loggats ut från ditt konto.',
@@ -182,6 +183,8 @@ export const sv: Translations = {
   'guide.upplysning.step2': 'Skicka borttagningsbegäran',
   'guide.upplysning.step3': 'Vänta på svar',
 
-  // Error messages
+  'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
+  'success.avatarUpdated': 'Avatar har uppdaterats',
+  'display.name': 'Visningsnamn',
   'error.passwords.dont.match': 'Lösenorden matchar inte'
 } as const;
