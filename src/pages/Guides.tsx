@@ -172,18 +172,15 @@ const Guides = () => {
       </div>
 
       <Dialog open={!!selectedUrl} onOpenChange={() => setSelectedUrl(null)}>
-        <DialogContent className="max-w-[90vw] w-[1200px] h-[80vh] p-0">
-          <div className="flex items-center justify-between px-2 py-1 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <h2 className="text-xs font-medium text-muted-foreground truncate">{selectedUrl}</h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSelectedUrl(null)}
-              className="h-5 w-5"
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          </div>
+        <DialogContent className="max-w-[90vw] w-[1200px] h-[80vh] p-0 relative">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSelectedUrl(null)}
+            className="absolute right-2 top-2 z-50 h-6 w-6 bg-background/80 hover:bg-background/90 backdrop-blur-sm rounded-full"
+          >
+            <X className="h-3 w-3" />
+          </Button>
           <div className="relative w-full h-full">
             {selectedUrl && (
               <iframe
