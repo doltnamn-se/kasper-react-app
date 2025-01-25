@@ -183,8 +183,6 @@ export const sv: Translations = {
   'guide.upplysning.step2': 'Skicka borttagningsbegäran',
   'guide.upplysning.step3': 'Vänta på svar',
 
-  'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
   'success.avatarUpdated': 'Avatar har uppdaterats',
-  'display.name': 'Visningsnamn',
-  'error.passwords.dont.match': 'Lösenorden matchar inte'
+  'display.name': 'Visningsnamn'
 } as const;
