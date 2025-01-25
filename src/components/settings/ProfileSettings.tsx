@@ -152,7 +152,7 @@ export const ProfileSettings = () => {
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="display_name">{t('name')}</Label>
+          <Label htmlFor="display_name">{t('display.name')}</Label>
           <Input
             id="display_name"
             type="text"
