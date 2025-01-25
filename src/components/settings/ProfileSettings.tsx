@@ -8,12 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getUserInitials } from "@/utils/profileUtils";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const ProfileSettings = () => {
   const { t } = useLanguage();
   const { userProfile, userEmail } = useUserProfile();
   const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const queryClient = useQueryClient();
 
   // Fetch customer data to get subscription plan
   const { data: customerData } = useQuery({
@@ -77,12 +81,56 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
+      // Invalidate queries to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      
       toast.success(t('success.avatarUpdated'));
     } catch (error) {
       console.error('Error uploading avatar:', error);
       toast.error(t('error.avatarUpload'));
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleDeleteAvatar = async () => {
+    if (!userProfile?.avatar_url) return;
+
+    try {
+      setIsDeleting(true);
+
+      // Extract the file path from the URL
+      const urlParts = userProfile.avatar_url.split('/');
+      const filePath = urlParts.slice(-2).join('/'); // Gets "userId/filename"
+
+      // Delete from storage
+      const { error: deleteStorageError } = await supabase.storage
+        .from('avatars')
+        .remove([filePath]);
+
+      if (deleteStorageError) {
+        throw deleteStorageError;
+      }
+
+      // Update profile to remove avatar_url
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: null })
+        .eq('id', userProfile.id);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      // Invalidate queries to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      
+      toast.success(t('success.avatarDeleted'));
+    } catch (error) {
+      console.error('Error deleting avatar:', error);
+      toast.error(t('error.avatarDelete'));
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -109,34 +157,47 @@ export const ProfileSettings = () => {
               {getUserInitials(userProfile)}
             </AvatarFallback>
           </Avatar>
-          <Label 
-            htmlFor="avatar-upload" 
-            className="absolute bottom-0 right-0 bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-primary dark:hover:bg-primary/90 dark:text-[#000000] rounded-full p-1.5 cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div className="flex gap-2 mt-2">
+            <Label 
+              htmlFor="avatar-upload" 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-primary dark:hover:bg-primary/90 dark:text-[#000000] rounded-full p-1.5 cursor-pointer"
             >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="17 8 12 3 7 8" />
-              <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-            <Input
-              id="avatar-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarUpload}
-              disabled={isUploading}
-            />
-          </Label>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              <Input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+                disabled={isUploading}
+              />
+            </Label>
+            {userProfile?.avatar_url && (
+              <Button
+                variant="destructive"
+                size="icon"
+                className="h-[34px] w-[34px]"
+                onClick={handleDeleteAvatar}
+                disabled={isDeleting}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
         <div className="space-y-1">
           <h3 className="text-lg font-bold">{userProfile?.display_name || userEmail}</h3>
