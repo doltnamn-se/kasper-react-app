@@ -15,19 +15,6 @@ export const useUserProfile = () => {
   const fetchUserProfile = useCallback(async (userId: string) => {
     try {
       console.log("Fetching profile for user:", userId);
-      
-      // First verify session is valid
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError) {
-        console.error("Session error:", sessionError);
-        throw sessionError;
-      }
-
-      if (!session) {
-        console.log("No valid session found");
-        throw new Error("No valid session");
-      }
-
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select()
@@ -36,23 +23,17 @@ export const useUserProfile = () => {
       
       if (profileError) {
         console.error("Error fetching profile:", profileError);
-        throw profileError;
+        toast.error("Error loading profile");
+        return null;
       }
       
-      console.log("Profile data fetched successfully:", profileData);
+      console.log("Profile data fetched successfully");
       return profileData;
     } catch (err) {
       console.error("Error in fetchUserProfile:", err);
-      // If we get here, we should sign out the user and redirect to auth
-      await supabase.auth.signOut();
-      if (mounted.current) {
-        setUserEmail(null);
-        setUserProfile(null);
-        navigate("/auth");
-      }
       return null;
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     console.log("useUserProfile: Setting up auth listener");
@@ -68,9 +49,6 @@ export const useUserProfile = () => {
           if (mounted.current && profileData) {
             setUserProfile(profileData);
           }
-        } else {
-          // No user ID in session, clear profile
-          setUserProfile(null);
         }
         
         setIsInitializing(false);
@@ -114,7 +92,7 @@ export const useUserProfile = () => {
       .subscribe();
 
     // Auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Auth state changed:", event);
       
       if (event === 'SIGNED_OUT') {
@@ -127,8 +105,8 @@ export const useUserProfile = () => {
         return;
       }
 
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        await initializeProfile(session);
+      if (event === 'SIGNED_IN') {
+        initializeProfile(session);
       }
     });
 
