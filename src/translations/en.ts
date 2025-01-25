@@ -73,6 +73,7 @@ export const en: Translations = {
   'error.missing.email': 'Please enter your email',
   'error.invalid.recovery.link': 'Invalid or expired recovery link',
   'error.password.requirements': 'Please ensure your password meets all requirements',
+  'error.current.password': 'Current password is incorrect',
   'error.title': 'Error',
   'error.update.preferences': 'Failed to update notification preferences',
   'toast.signed.out.title': 'Signed out successfully',

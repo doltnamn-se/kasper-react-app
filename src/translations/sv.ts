@@ -54,6 +54,7 @@ export const sv: Translations = {
   'overview.welcome': 'Välkommen till din översikt.',
   // Error messages
   'error.invalid.credentials': 'Felaktigt användarnamn eller lösenord',
+  'error.current.password': 'Nuvarande lösenord är felaktigt',
   'error.email.not.confirmed': 'Vänligen bekräfta din e-postadress innan du loggar in',
   'error.user.not.found': 'Ingen användare hittades med dessa uppgifter',
   'error.invalid.email.password': 'Ogiltig e-postadress eller lösenord',
