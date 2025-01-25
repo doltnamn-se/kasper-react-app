@@ -4,14 +4,33 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getUserInitials } from "@/utils/profileUtils";
+import { BadgeDollarSign } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 export const ProfileSettings = () => {
   const { t } = useLanguage();
   const { userProfile, userEmail } = useUserProfile();
   const [isUploading, setIsUploading] = useState(false);
+
+  // Fetch customer data to get subscription plan
+  const { data: customerData } = useQuery({
+    queryKey: ['customer', userProfile?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('subscription_plan')
+        .eq('id', userProfile?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!userProfile?.id
+  });
 
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -68,9 +87,22 @@ export const ProfileSettings = () => {
     }
   };
 
+  const getSubscriptionLabel = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.1month');
+      case '6_months':
+        return t('subscription.6months');
+      case '12_months':
+        return t('subscription.12months');
+      default:
+        return t('subscription.none');
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-start gap-4">
         <div className="relative">
           <Avatar className="h-20 w-20">
             <AvatarImage src={userProfile?.avatar_url || undefined} />
@@ -107,8 +139,12 @@ export const ProfileSettings = () => {
             />
           </Label>
         </div>
-        <div>
+        <div className="space-y-1">
           <h3 className="text-lg font-medium">{userProfile?.display_name || userEmail}</h3>
+          <Badge variant="secondary" className="flex items-center gap-1">
+            <BadgeDollarSign className="w-3 h-3" />
+            {getSubscriptionLabel(customerData?.subscription_plan)}
+          </Badge>
         </div>
       </div>
 
