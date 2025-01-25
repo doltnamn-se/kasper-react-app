@@ -141,7 +141,7 @@ export const ProfileSettings = () => {
         <div className="space-y-1">
           <h3 className="text-lg font-bold">{userProfile?.display_name || userEmail}</h3>
           <Badge 
-            className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium py-1.5 px-3"
+            className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1.5 px-3"
           >
             {getSubscriptionLabel(customerData?.subscription_plan)}
           </Badge>
