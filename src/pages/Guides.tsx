@@ -151,12 +151,12 @@ const Guides = () => {
                         return (
                           <div 
                             key={stepIndex} 
-                            className="flex items-start gap-4"
+                            className="flex items-center gap-4"
                           >
                             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
                               <span className="text-xs font-medium">{stepIndex}</span>
                             </div>
-                            <div className="flex-grow flex items-start gap-2">
+                            <div className="flex-grow flex items-center gap-2">
                               <span 
                                 className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white"
                                 style={{ whiteSpace: 'pre-line' }}
@@ -166,7 +166,7 @@ const Guides = () => {
                               {shouldShowCopyButton(guide.title, step.text) && (
                                 <button
                                   onClick={() => handleCopyMessage(step.text)}
-                                  className="flex-shrink-0 h-6 w-6 mt-1 flex items-center justify-center transition-colors duration-200 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+                                  className="flex-shrink-0 h-6 w-6 flex items-center justify-center transition-colors duration-200 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
                                 >
                                   <Copy className="h-4 w-4" />
                                 </button>
