@@ -126,4 +126,5 @@ export interface Translations {
   'step.2.title': string;
   'step.3.title': string;
   'step.4.title': string;
+  'open.link': string;
 }
