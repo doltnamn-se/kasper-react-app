@@ -109,7 +109,7 @@ const Guides = () => {
                       return (
                         <li 
                           key={stepIndex} 
-                          className="text-sm leading-relaxed text-[#000000] dark:text-white"
+                          className="text-sm leading-relaxed font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
                           style={{ whiteSpace: 'pre-line' }}
                         >
                           {step.text}
