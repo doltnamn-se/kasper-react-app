@@ -17,15 +17,15 @@ const Settings = () => {
 
         <Tabs defaultValue="profile" className="w-full">
           <TabsList className="w-full">
-            <TabsTrigger value="profile" className="flex-1">Profil</TabsTrigger>
-            <TabsTrigger value="notifications" className="flex-1">Notiser</TabsTrigger>
-            <TabsTrigger value="password" className="flex-1">Lösenord</TabsTrigger>
+            <TabsTrigger value="profile" className="flex-1">{t('profile.manage')}</TabsTrigger>
+            <TabsTrigger value="notifications" className="flex-1">{t('notifications')}</TabsTrigger>
+            <TabsTrigger value="password" className="flex-1">{t('password')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                Profil
+                {t('profile.manage')}
               </h2>
               <ProfileSettings />
             </div>
