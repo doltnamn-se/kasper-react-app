@@ -6,6 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNotifications } from "@/hooks/useNotifications";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { getUserInitials } from "@/utils/profileUtils";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
@@ -16,89 +20,35 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const { t } = useLanguage();
   const [isAdmin, setIsAdmin] = useState(false);
   const { notifications = [] } = useNotifications();
+  const { userProfile, userEmail } = useUserProfile();
 
-  // Fetch checklist data for generating checklist notifications
-  const { data: checklistProgress } = useQuery({
-    queryKey: ['checklist-progress-notifications'],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) return null;
-
-      const { data, error } = await supabase
-        .from('customer_checklist_progress')
-        .select('*')
-        .eq('customer_id', session.user.id)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching checklist progress:', error);
-        return null;
-      }
-
-      return data;
-    }
-  });
-
-  const { data: checklistItems = [] } = useQuery({
-    queryKey: ['checklist-items-notifications'],
+  // Fetch customer data to get subscription plan
+  const { data: customerData } = useQuery({
+    queryKey: ['customer', userProfile?.id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('checklist_items')
-        .select('*')
-        .order('order_index');
-
-      if (error) {
-        console.error('Error fetching checklist items:', error);
-        return [];
-      }
-
+        .from('customers')
+        .select('subscription_plan')
+        .eq('id', userProfile?.id)
+        .single();
+      
+      if (error) throw error;
       return data;
-    }
+    },
+    enabled: !!userProfile?.id
   });
 
-  // Get unread notifications count for each section
-  const getUnreadCount = (path: string) => {
-    // Remove the leading slash and map paths to notification types
-    const typeMap: { [key: string]: string } = {
-      'checklist': 'checklist',
-      'my-links': 'links',
-      'address-alerts': 'address',
-      'guides': 'guide'
-    };
-    
-    const type = typeMap[path.replace('/', '')];
-    if (!type) return 0;
-    
-    // Count regular notifications
-    const regularNotificationsCount = notifications.filter(n => !n.read && n.type === type).length;
-
-    // For checklist, also include incomplete checklist items
-    if (type === 'checklist') {
-      const incompleteChecklistItems = checklistItems.filter((item, index) => {
-        if (!checklistProgress) return true;
-        
-        let isCompleted = false;
-        switch (index) {
-          case 0:
-            isCompleted = checklistProgress.password_updated || false;
-            break;
-          case 1:
-            isCompleted = (checklistProgress.selected_sites?.length || 0) > 0;
-            break;
-          case 2:
-            isCompleted = (checklistProgress.removal_urls?.length || 0) > 0;
-            break;
-          case 3:
-            isCompleted = !!(checklistProgress.address && checklistProgress.personal_number);
-            break;
-        }
-        return !isCompleted;
-      }).length;
-
-      return regularNotificationsCount + incompleteChecklistItems;
+  const getSubscriptionLabel = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.1month');
+      case '6_months':
+        return t('subscription.6months');
+      case '12_months':
+        return t('subscription.12months');
+      default:
+        return t('subscription.none');
     }
-
-    return regularNotificationsCount;
   };
 
   useEffect(() => {
@@ -147,6 +97,26 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
 
   return (
     <>
+      <div className="px-5 mb-4">
+        <div className="flex items-center gap-3 mb-3">
+          <Avatar className="h-10 w-10">
+            <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
+              {getUserInitials(userProfile)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col items-start">
+            <span className="text-sm font-medium text-[#000000] dark:text-white">
+              {userProfile?.display_name || userEmail}
+            </span>
+            <Badge 
+              className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
+            >
+              {getSubscriptionLabel(customerData?.subscription_plan)}
+            </Badge>
+          </div>
+        </div>
+        <Separator className="mb-4" />
+      </div>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'))}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
       {renderNavLink("/my-links", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'))}
