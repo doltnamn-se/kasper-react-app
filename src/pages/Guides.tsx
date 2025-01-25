@@ -102,6 +102,13 @@ const Guides = () => {
     }
   };
 
+  const shouldShowCopyButton = (guideTitle: string, stepText: string) => {
+    const isBirthdayOrUpplysning = 
+      guideTitle === t('guide.birthday.title') || 
+      guideTitle === t('guide.upplysning.title');
+    return isBirthdayOrUpplysning && stepText.includes('\"');
+  };
+
   const leftColumnGuides = guides.filter((_, index) => index % 2 === 0);
   const rightColumnGuides = guides.filter((_, index) => index % 2 === 1);
 
@@ -140,7 +147,6 @@ const Guides = () => {
                     <div className="space-y-4">
                       {guide.steps.map((step, stepIndex) => {
                         if (stepIndex === 0) return null;
-                        const hasMessageTemplate = step.text.includes('meddelandefältet');
                         
                         return (
                           <div 
@@ -157,7 +163,7 @@ const Guides = () => {
                               >
                                 {step.text}
                               </span>
-                              {hasMessageTemplate && (
+                              {shouldShowCopyButton(guide.title, step.text) && (
                                 <Button
                                   variant="ghost"
                                   size="icon"
