@@ -171,7 +171,7 @@ export const ProfileSettings = () => {
           
           <Label 
             htmlFor="avatar-upload" 
-            className="absolute -bottom-2 -right-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#2563eb] hover:bg-[#2563eb]/90 dark:bg-[#bec9f9] dark:hover:bg-[#bec9f9]/90"
+            className="absolute -bottom-2 -right-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#2563eb] hover:bg-[#1d4ed8] dark:bg-[#bec9f9] dark:hover:bg-[#bec9f9]/90"
           >
             <Upload className="h-4 w-4 text-white dark:text-black" />
             <Input
