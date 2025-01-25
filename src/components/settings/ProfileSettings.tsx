@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const ProfileSettings = () => {
@@ -19,7 +19,6 @@ export const ProfileSettings = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const queryClient = useQueryClient();
 
-  // Fetch customer data to get subscription plan
   const { data: customerData } = useQuery({
     queryKey: ['customer', userProfile?.id],
     queryFn: async () => {
@@ -157,47 +156,46 @@ export const ProfileSettings = () => {
               {getUserInitials(userProfile)}
             </AvatarFallback>
           </Avatar>
-          <div className="flex gap-2 mt-2">
-            <Label 
-              htmlFor="avatar-upload" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-primary dark:hover:bg-primary/90 dark:text-[#000000] rounded-full p-1.5 cursor-pointer"
+          {userProfile?.avatar_url && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute -top-2 -right-2 h-6 w-6 p-0 hover:bg-transparent"
+              onClick={handleDeleteAvatar}
+              disabled={isDeleting}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <Input
-                id="avatar-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarUpload}
-                disabled={isUploading}
-              />
-            </Label>
-            {userProfile?.avatar_url && (
-              <Button
-                variant="destructive"
-                size="icon"
-                className="h-[34px] w-[34px]"
-                onClick={handleDeleteAvatar}
-                disabled={isDeleting}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
+              <X className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
+            </Button>
+          )}
+          <Label 
+            htmlFor="avatar-upload" 
+            className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm text-primary hover:text-primary/90 dark:text-primary dark:hover:text-primary/90"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            {t('upload.photo')}
+            <Input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarUpload}
+              disabled={isUploading}
+            />
+          </Label>
         </div>
         <div className="space-y-1">
           <h3 className="text-lg font-bold">{userProfile?.display_name || userEmail}</h3>
