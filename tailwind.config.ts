@@ -37,8 +37,8 @@ export default {
         }
       },
       animation: {
-        'accordion-down': 'accordion-down 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        'accordion-up': 'accordion-up 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        'accordion-down': 'accordion-down 300ms cubic-bezier(0.87, 0, 0.13, 1)',
+        'accordion-up': 'accordion-up 300ms cubic-bezier(0.87, 0, 0.13, 1)',
         'progress-line': 'progress-line 5s linear forwards'
       },
       colors: {
