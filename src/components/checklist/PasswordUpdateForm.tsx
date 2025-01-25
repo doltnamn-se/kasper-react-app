@@ -8,9 +8,10 @@ import { Check, Eye, EyeOff } from "lucide-react";
 
 interface PasswordUpdateFormProps {
   onComplete: () => void;
+  className?: string;
 }
 
-export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
+export const PasswordUpdateForm = ({ onComplete, className = "lg:w-[75%] xl:w-1/2" }: PasswordUpdateFormProps) => {
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +93,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      <div className="w-full lg:w-[75%] xl:w-1/2">
+      <div className={`w-full ${className}`}>
         <div className="relative">
           <Input
             type={showPassword ? "text" : "password"}
@@ -143,7 +144,7 @@ export const PasswordUpdateForm = ({ onComplete }: PasswordUpdateFormProps) => {
       <Button 
         type="submit" 
         disabled={isLoading} 
-        className="w-full lg:w-1/2 xl:w-1/4 h-12"
+        className="w-full h-12"
       >
         {isLoading ? t('updating.password') : t('update.password')}
       </Button>
