@@ -46,11 +46,11 @@ const Toast = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant }), className)}
+      className={cn(toastVariants({ variant }), "p-0", className)}
       {...props}
     >
       <div className="flex-1 p-4">{props.children}</div>
-      <div className="absolute inset-x-0 bottom-0 h-1">
+      <div className="absolute left-0 right-0 bottom-0 h-1">
         <div className="h-full w-full bg-primary animate-progress-line" />
       </div>
     </ToastPrimitives.Root>
