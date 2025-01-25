@@ -33,6 +33,16 @@ export const SearchResults = ({
 }: SearchResultsProps) => {
   const { t } = useLanguage();
 
+  const getCategoryTranslation = (category: string): string => {
+    if (category.toLowerCase() === 'pages') {
+      return t('search.category.pages');
+    }
+    if (category.toLowerCase() === 'settings') {
+      return t('search.category.settings');
+    }
+    return category;
+  };
+
   if (!showResults || !searchQuery) return null;
 
   return (
@@ -61,7 +71,7 @@ export const SearchResults = ({
                   </span>
                   {result.category && (
                     <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {t(`search.category.${result.category.toLowerCase()}`)}
+                      {getCategoryTranslation(result.category)}
                     </span>
                   )}
                 </CommandItem>
