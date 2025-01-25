@@ -57,7 +57,11 @@ export const PasswordUpdateForm = ({
     {
       id: 5,
       label: language === 'en' ? "Different from current password" : "Annorlunda än nuvarande lösenord",
-      validate: (pass: string) => !showCurrentPassword || pass !== currentPassword,
+      validate: (pass: string) => {
+        if (!showCurrentPassword) return true;
+        if (!currentPassword || !pass) return false;
+        return pass !== currentPassword;
+      },
     },
   ];
 
