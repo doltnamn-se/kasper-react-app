@@ -94,6 +94,14 @@ export interface Translations {
   'settings.password.updated': string;
   'settings.success': string;
   'error.passwords.dont.match': string;
+  'settings.notification.preferences': string;
+  'settings.email.notifications': string;
+  'settings.email.notifications.description': string;
+  'settings.inapp.notifications': string;
+  'settings.inapp.notifications.description': string;
+  'settings.notifications.updated': string;
+  'error.update.preferences': string;
+  'error.title': string;
   // Notifications
   'notifications.title': string;
   'notifications.mark.all.read': string;
@@ -126,12 +134,41 @@ export interface Translations {
   'step.3.title': string;
   'step.4.title': string;
   'link.to.removal': string;
-  // New translations
-  'settings.notification.preferences': string;
-  'settings.email.notifications': string;
-  'settings.email.notifications.description': string;
-  'settings.inapp.notifications': string;
-  'settings.inapp.notifications.description': string;
-  'settings.notifications.updated': string;
-  'error.update.preferences': string;
+  // UI elements
+  'light.mode': string;
+  'messages': string;
+  'notifications': string;
+  'copy': string;
+  // Guide translations
+  'guide.eniro.title': string;
+  'guide.eniro.step1': string;
+  'guide.eniro.step2': string;
+  'guide.eniro.step3': string;
+  'guide.eniro.step4': string;
+  'guide.mrkoll.title': string;
+  'guide.mrkoll.step1': string;
+  'guide.mrkoll.step2': string;
+  'guide.mrkoll.step3': string;
+  'guide.hitta.title': string;
+  'guide.hitta.step1': string;
+  'guide.hitta.step2': string;
+  'guide.hitta.step3': string;
+  'guide.merinfo.title': string;
+  'guide.merinfo.step1': string;
+  'guide.merinfo.step2': string;
+  'guide.ratsit.title': string;
+  'guide.ratsit.step1': string;
+  'guide.ratsit.step2': string;
+  'guide.ratsit.step3': string;
+  'guide.birthday.title': string;
+  'guide.birthday.step1': string;
+  'guide.birthday.step2': string;
+  'guide.birthday.step3': string;
+  'guide.upplysning.title': string;
+  'guide.upplysning.step1': string;
+  'guide.upplysning.step2': string;
+  'guide.upplysning.step3': string;
+  // Toast translations
+  'toast.copied.title': string;
+  'toast.copied.description': string;
 }
