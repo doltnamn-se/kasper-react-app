@@ -42,6 +42,9 @@ export const en: Translations = {
   'profile.signing.out': 'Signing out...',
   // Search
   'search.placeholder': 'Search...',
+  'search.no.results': 'No results found.',
+  'search.category.pages': 'Pages',
+  'search.category.settings': 'Settings',
   // Footer links
   'privacy': 'Privacy',
   'license': 'License',

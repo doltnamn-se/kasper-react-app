@@ -42,6 +42,9 @@ export interface Translations {
   'profile.signing.out': string;
   // Search
   'search.placeholder': string;
+  'search.no.results': string;
+  'search.category.pages': string;
+  'search.category.settings': string;
   // Footer links
   'privacy': string;
   'license': string;

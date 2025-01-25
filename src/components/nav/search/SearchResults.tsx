@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Command,
   CommandEmpty,
@@ -30,6 +31,8 @@ export const SearchResults = ({
   searchResults,
   handleSelect
 }: SearchResultsProps) => {
+  const { t } = useLanguage();
+
   if (!showResults || !searchQuery) return null;
 
   return (
@@ -39,7 +42,7 @@ export const SearchResults = ({
     >
       <Command className="border-none bg-transparent">
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>{t('search.no.results')}</CommandEmpty>
           {searchResults.length > 0 && (
             <CommandGroup>
               {searchResults.map((result) => (
@@ -58,7 +61,7 @@ export const SearchResults = ({
                   </span>
                   {result.category && (
                     <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {result.category}
+                      {t(`search.category.${result.category.toLowerCase()}`)}
                     </span>
                   )}
                 </CommandItem>

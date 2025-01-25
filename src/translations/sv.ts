@@ -25,7 +25,7 @@ export const sv: Translations = {
   'loading': 'Laddar...',
   'reset.password': 'Återställ lösenord',
   'reset.password.success': 'Återställningslänk har skickats',
-  'password.updated': 'Lösenordet har uppdaterats',
+  'password.updated': 'Återställningslänk har skickats',
   // Navigation
   'nav.home': 'Hem',
   'nav.checklist': 'Checklista',
@@ -42,6 +42,9 @@ export const sv: Translations = {
   'profile.signing.out': 'Loggar ut...',
   // Search
   'search.placeholder': 'Sök...',
+  'search.no.results': 'Inga sökresultat hittades.',
+  'search.category.pages': 'Sidor',
+  'search.category.settings': 'Inställningar',
   // Footer links
   'privacy': 'Integritet',
   'license': 'Licensvillkor',
