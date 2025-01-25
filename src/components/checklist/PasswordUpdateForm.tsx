@@ -54,14 +54,15 @@ export const PasswordUpdateForm = ({
       label: language === 'en' ? "A number or a symbol" : "Ett nummer eller en symbol",
       validate: (pass: string) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(pass),
     },
-    {
+    // Only show the "different from current password" requirement when showCurrentPassword is true
+    ...(showCurrentPassword ? [{
       id: 5,
       label: language === 'en' ? "Different from current password" : "Annorlunda än nuvarande lösenord",
       validate: (pass: string) => {
         if (!currentPassword || !pass) return false;
         return pass !== currentPassword;
       },
-    },
+    }] : []),
   ];
 
   const allRequirementsMet = requirements.every(req => req.validate(newPassword));
