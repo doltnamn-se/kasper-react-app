@@ -38,13 +38,11 @@ export const ProfileSettings = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       toast.error(t('error.invalidFileType'));
       return;
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast.error(t('error.fileTooLarge'));
       return;
@@ -54,7 +52,6 @@ export const ProfileSettings = () => {
       setIsUploading(true);
       console.log('Starting avatar upload...');
       
-      // Upload to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const filePath = `${userProfile?.id}/${crypto.randomUUID()}.${fileExt}`;
       
@@ -66,12 +63,10 @@ export const ProfileSettings = () => {
         throw uploadError;
       }
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
-      // Update profile with new avatar URL
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
@@ -81,8 +76,9 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate profile queries to refresh UI everywhere
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      // Invalidate all profile-related queries
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
+      await queryClient.invalidateQueries({ queryKey: ['userProfile'] });
       console.log('Avatar updated successfully');
       
       toast.success(t('success.avatarUpdated'));
@@ -101,11 +97,9 @@ export const ProfileSettings = () => {
       setIsDeleting(true);
       console.log('Starting avatar deletion...');
 
-      // Extract the file path from the URL
       const urlParts = userProfile.avatar_url.split('/');
-      const filePath = urlParts.slice(-2).join('/'); // Gets "userId/filename"
+      const filePath = urlParts.slice(-2).join('/');
 
-      // Delete from storage
       const { error: deleteStorageError } = await supabase.storage
         .from('avatars')
         .remove([filePath]);
@@ -114,7 +108,6 @@ export const ProfileSettings = () => {
         throw deleteStorageError;
       }
 
-      // Update profile to remove avatar_url
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: null })
@@ -124,8 +117,9 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate profile queries to refresh UI everywhere
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      // Invalidate all profile-related queries
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
+      await queryClient.invalidateQueries({ queryKey: ['userProfile'] });
       console.log('Avatar deleted successfully');
       
       toast.success(t('success.avatarDeleted'));
@@ -190,7 +184,7 @@ export const ProfileSettings = () => {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            {t('upload.photo')}
+            {t('profile.upload.photo')}
             <Input
               id="avatar-upload"
               type="file"

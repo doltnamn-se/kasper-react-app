@@ -3,22 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Profile } from "@/types/customer";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 
 export const useUserProfile = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userProfile, setUserProfile] = useState<Profile | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const navigate = useNavigate();
   const mounted = useRef(true);
 
-  const fetchUserProfile = useCallback(async (userId: string) => {
-    try {
-      console.log("Fetching profile for user:", userId);
+  const { data: userProfile, refetch: refetchProfile } = useQuery({
+    queryKey: ['userProfile'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) return null;
+
+      console.log("Fetching profile for user:", session.user.id);
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select()
-        .eq('id', userId)
+        .eq('id', session.user.id)
         .maybeSingle();
       
       if (profileError) {
@@ -29,11 +33,9 @@ export const useUserProfile = () => {
       
       console.log("Profile data fetched successfully");
       return profileData;
-    } catch (err) {
-      console.error("Error in fetchUserProfile:", err);
-      return null;
-    }
-  }, []);
+    },
+    enabled: true
+  });
 
   useEffect(() => {
     console.log("useUserProfile: Setting up auth listener");
@@ -43,14 +45,9 @@ export const useUserProfile = () => {
       
       try {
         setUserEmail(session?.user?.email ?? null);
-        
         if (session?.user?.id) {
-          const profileData = await fetchUserProfile(session.user.id);
-          if (mounted.current && profileData) {
-            setUserProfile(profileData);
-          }
+          await refetchProfile();
         }
-        
         setIsInitializing(false);
       } catch (err) {
         console.error("Error in initializeProfile:", err);
@@ -78,14 +75,7 @@ export const useUserProfile = () => {
         async (payload) => {
           console.log('Profile changed:', payload);
           if (mounted.current) {
-            const session = await supabase.auth.getSession();
-            const userId = session.data.session?.user?.id;
-            if (userId) {
-              const updatedProfile = await fetchUserProfile(userId);
-              if (mounted.current && updatedProfile) {
-                setUserProfile(updatedProfile);
-              }
-            }
+            await refetchProfile();
           }
         }
       )
@@ -98,7 +88,6 @@ export const useUserProfile = () => {
       if (event === 'SIGNED_OUT') {
         if (mounted.current) {
           setUserEmail(null);
-          setUserProfile(null);
           setIsInitializing(false);
           navigate("/auth");
         }
@@ -116,7 +105,7 @@ export const useUserProfile = () => {
       subscription.unsubscribe();
       channel.unsubscribe();
     };
-  }, [navigate, fetchUserProfile]);
+  }, [navigate, refetchProfile]);
 
   return {
     userEmail,
