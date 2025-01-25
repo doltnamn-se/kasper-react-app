@@ -195,4 +195,6 @@ export interface Translations {
   'subscription.tooltip.1month': string;
   'subscription.tooltip.6months': string;
   'subscription.tooltip.12months': string;
-}
+  
+  'upload.photo': string;
+} 

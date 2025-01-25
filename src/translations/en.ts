@@ -194,5 +194,7 @@ export const en: Translations = {
   'subscription.none': 'No Plan',
   'subscription.tooltip.1month': 'Monthly plan',
   'subscription.tooltip.6months': 'Half-year plan',
-  'subscription.tooltip.12months': 'Yearly plan'
+  'subscription.tooltip.12months': 'Yearly plan',
+  
+  'upload.photo': 'Upload photo',
 } as const;

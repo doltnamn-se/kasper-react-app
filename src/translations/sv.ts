@@ -81,6 +81,8 @@ export const sv: Translations = {
   'error.fileTooLarge': 'Filen är för stor. Maximal storlek är 5MB.',
   'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
   'success.avatarUpdated': 'Avatar har uppdaterats',
+  'success.avatarDeleted': 'Avatar har tagits bort',
+  'error.avatarDelete': 'Det gick inte att ta bort avataren',
   'display.name': 'Namn',
   'error.passwords.dont.match': 'Lösenorden matchar inte',
   // Toast messages
@@ -185,10 +187,6 @@ export const sv: Translations = {
   'guide.upplysning.step2': 'Skicka borttagningsbegäran',
   'guide.upplysning.step3': 'Vänta på svar',
 
-  // Add the new translations
-  'success.avatarDeleted': 'Avatar har tagits bort',
-  'error.avatarDelete': 'Det gick inte att ta bort avataren',
-
   // Subscription translations
   'subscription.1month': '1 MÅN',
   'subscription.6months': '6 MÅN',
@@ -196,5 +194,7 @@ export const sv: Translations = {
   'subscription.none': 'Ingen Plan',
   'subscription.tooltip.1month': 'Månadsabonnemang',
   'subscription.tooltip.6months': 'Halvårsabonnemang',
-  'subscription.tooltip.12months': 'Årsabonnemang'
+  'subscription.tooltip.12months': 'Årsabonnemang',
+  
+  'upload.photo': 'Ladda upp foto',
 } as const;
