@@ -10,12 +10,14 @@ interface PasswordUpdateFormProps {
   onComplete: () => void;
   className?: string;
   buttonClassName?: string;
+  buttonText?: string;
 }
 
 export const PasswordUpdateForm = ({ 
   onComplete, 
   className = "lg:w-[75%] xl:w-1/2",
-  buttonClassName = "w-full"
+  buttonClassName = "w-full",
+  buttonText
 }: PasswordUpdateFormProps) => {
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -151,7 +153,7 @@ export const PasswordUpdateForm = ({
         disabled={isLoading} 
         className={`h-12 ${buttonClassName}`}
       >
-        {isLoading ? t('updating.password') : t('update.password')}
+        {isLoading ? t('updating.password') : buttonText || t('update.password')}
       </Button>
     </form>
   );
