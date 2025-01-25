@@ -25,7 +25,19 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
 
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("AuthRoute: Session error:", error);
+          // If we get a refresh token error, clear the session
+          if (error.message.includes('refresh_token_not_found')) {
+            console.log("AuthRoute: Invalid refresh token, signing out");
+            await supabase.auth.signOut();
+          }
+          setSession(false);
+          setIsLoading(false);
+          return;
+        }
         
         if (currentSession) {
           console.log("AuthRoute: Active session found, redirecting to home");
@@ -44,16 +56,22 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
     checkAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("AuthRoute: Auth state changed:", event);
       
       if (event === 'SIGNED_IN') {
         console.log("AuthRoute: User signed in");
         setSession(true);
         setIsLoading(false);
-      } else if (event === 'SIGNED_OUT') {
-        console.log("AuthRoute: User signed out");
-        setSession(false);
+      } else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+        console.log("AuthRoute: User signed out or token refreshed");
+        // Recheck session after token refresh
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        if (error || !currentSession) {
+          setSession(false);
+        } else {
+          setSession(true);
+        }
         setIsLoading(false);
       }
     });
