@@ -2,7 +2,6 @@ import { useState } from "react";
 import { PasswordUpdateForm } from "../checklist/PasswordUpdateForm";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check } from "lucide-react";
 
 export const PasswordChange = () => {
   const { toast } = useToast();
@@ -23,6 +22,7 @@ export const PasswordChange = () => {
       className="w-full"
       buttonClassName="w-1/2 relative"
       buttonText={t('settings.change.password')}
+      showCurrentPassword={true}
       showSuccessToast={true}
       showSuccessAnimation={showSuccess}
       onComplete={async () => {
