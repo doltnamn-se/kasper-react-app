@@ -62,7 +62,7 @@ export const TopNav = () => {
           <SearchBar />
         </div>
         
-        <div className="flex items-center gap-2 ml-auto z-50">
+        <div className="flex items-center gap-2 ml-auto">
           <ThemeToggle />
           <NotificationButtons />
           <UserProfileMenu />

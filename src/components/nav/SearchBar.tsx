@@ -213,7 +213,7 @@ export const SearchBar = () => {
         {showResults && searchQuery && (
           <div 
             ref={searchResultsRef}
-            className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-50 transition-transform duration-300 origin-top"
+            className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-[41] transition-transform duration-300 origin-top"
           >
             <Command className="border-none bg-transparent">
               <CommandList>
