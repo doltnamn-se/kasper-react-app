@@ -23,7 +23,7 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full",
+  "group pointer-events-auto relative flex w-full items-center justify-between overflow-hidden rounded-md border shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full",
   {
     variants: {
       variant: {
@@ -46,11 +46,11 @@ const Toast = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant }), "p-0", className)}
+      className={cn(toastVariants({ variant }), "overflow-hidden p-0", className)}
       {...props}
     >
       <div className="flex-1 p-4">{props.children}</div>
-      <div className="absolute left-0 right-0 bottom-0 h-1">
+      <div className="absolute bottom-0 left-0 right-0 h-1 overflow-hidden">
         <div className="h-full w-full bg-primary animate-progress-line" />
       </div>
     </ToastPrimitives.Root>
