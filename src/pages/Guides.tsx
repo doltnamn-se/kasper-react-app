@@ -96,7 +96,7 @@ const Guides = () => {
       await navigator.clipboard.writeText(messageTemplate);
       toast({
         description: "Meddelandet har kopierats till urklipp",
-        duration: 2000,
+        duration: 5000, // Updated from 2000 to 5000ms
       });
     }
   };
