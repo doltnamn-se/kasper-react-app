@@ -118,18 +118,19 @@ export const SearchBar = () => {
 
   return (
     <>
-      {isSearchFocused && (
-        <div 
-          className="fixed inset-0 backdrop-blur-[2px] z-[39] transition-all duration-800 ease-in-out"
-          onClick={() => {
-            setIsSearchFocused(false);
-            setShowResults(false);
-            if (inputRef.current) {
-              inputRef.current.blur();
-            }
-          }}
-        />
-      )}
+      <div 
+        className={cn(
+          "fixed inset-0 backdrop-blur-[2px] z-[39] transition-all duration-1000 ease-in-out",
+          isSearchFocused ? "opacity-100 visible" : "opacity-0 invisible"
+        )}
+        onClick={() => {
+          setIsSearchFocused(false);
+          setShowResults(false);
+          if (inputRef.current) {
+            inputRef.current.blur();
+          }
+        }}
+      />
       <div 
         className={cn(
           "relative w-full",
