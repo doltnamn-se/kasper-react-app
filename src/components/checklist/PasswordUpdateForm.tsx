@@ -30,7 +30,6 @@ export const PasswordUpdateForm = ({
   const [showCurrentPasswordField, setShowCurrentPasswordField] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
 
@@ -61,41 +60,10 @@ export const PasswordUpdateForm = ({
       validate: (pass: string) => {
         if (!showCurrentPassword) return true;
         if (!currentPassword || !pass) return false;
-        if (!isCurrentPasswordValid) return false;
         return pass !== currentPassword;
       },
     },
   ];
-
-  const verifyCurrentPassword = async () => {
-    if (!currentPassword) return;
-    
-    try {
-      console.log("Verifying current password...");
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user?.email) {
-        console.error("No user email found");
-        return;
-      }
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: user.email,
-        password: currentPassword,
-      });
-
-      if (error) {
-        console.error("Current password verification failed:", error);
-        setIsCurrentPasswordValid(false);
-        return;
-      }
-
-      console.log("Current password verified successfully");
-      setIsCurrentPasswordValid(true);
-    } catch (err) {
-      console.error("Error verifying current password:", err);
-      setIsCurrentPasswordValid(false);
-    }
-  };
 
   const allRequirementsMet = requirements.every(req => req.validate(newPassword));
 
@@ -104,7 +72,6 @@ export const PasswordUpdateForm = ({
     setNewPassword("");
     setShowPassword(false);
     setShowCurrentPasswordField(false);
-    setIsCurrentPasswordValid(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -118,20 +85,28 @@ export const PasswordUpdateForm = ({
           title: t('error'),
           description: t('error.password.requirements'),
         });
+        setIsLoading(false);
         return;
       }
 
-      if (showCurrentPassword && !isCurrentPasswordValid) {
-        console.log("Current password not verified, verifying now...");
-        await verifyCurrentPassword();
-        if (!isCurrentPasswordValid) {
+      if (showCurrentPassword) {
+        console.log("Verifying current password...");
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: (await supabase.auth.getUser()).data.user?.email || '',
+          password: currentPassword,
+        });
+
+        if (signInError) {
+          console.error("Current password verification failed:", signInError);
           toast({
             variant: "destructive",
             title: t('error'),
             description: t('error.current.password'),
           });
+          setIsLoading(false);
           return;
         }
+        console.log("Current password verified successfully");
       }
 
       console.log("Attempting to update password...");
@@ -141,12 +116,18 @@ export const PasswordUpdateForm = ({
 
       if (error) {
         console.error("Password update error:", error);
-        toast({
-          variant: "destructive",
-          title: t('error'),
-          description: t('error.password.update'),
-        });
-        return;
+        if (error.message.includes('same_password')) {
+          toast({
+            variant: "destructive",
+            title: t('error'),
+            description: language === 'en' ? 
+              "New password must be different from current password" : 
+              "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
+          });
+          setIsLoading(false);
+          return;
+        }
+        throw error;
       }
 
       console.log("Password updated successfully, updating checklist progress...");
@@ -194,11 +175,7 @@ export const PasswordUpdateForm = ({
               type={showCurrentPasswordField ? "text" : "password"}
               placeholder={t('current.password')}
               value={currentPassword}
-              onChange={(e) => {
-                setCurrentPassword(e.target.value);
-                setIsCurrentPasswordValid(false); // Reset validation when password changes
-              }}
-              onBlur={verifyCurrentPassword} // Verify password when user finishes typing
+              onChange={(e) => setCurrentPassword(e.target.value)}
               className="h-12 border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none font-medium text-[#000000A6] dark:text-[#FFFFFFA6] placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] placeholder:font-medium text-2xl pl-0 pr-10 bg-transparent"
             />
             <button
@@ -263,7 +240,7 @@ export const PasswordUpdateForm = ({
 
       <Button 
         type="submit" 
-        disabled={isLoading || !allRequirementsMet || (showCurrentPassword && !isCurrentPasswordValid)} 
+        disabled={isLoading || !allRequirementsMet} 
         className={`h-12 ${buttonClassName}`}
       >
         <div className="relative w-full h-full flex items-center justify-center">
