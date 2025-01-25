@@ -107,12 +107,6 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     );
   };
 
-  // Split display name into parts
-  const displayName = userProfile?.display_name || userEmail || '';
-  const nameParts = displayName.split(' ');
-  const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(' ');
-
   return (
     <>
       <div className="mb-6">
@@ -123,16 +117,9 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                 {getUserInitials(userProfile)}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-                {firstName}
-              </span>
-              {lastName && (
-                <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-                  {lastName}
-                </span>
-              )}
-            </div>
+            <span className="text-sm font-medium text-[#000000] dark:text-white">
+              {userProfile?.display_name || userEmail}
+            </span>
           </div>
           <TooltipProvider delayDuration={300}>
             <Tooltip>
