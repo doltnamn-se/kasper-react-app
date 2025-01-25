@@ -45,7 +45,7 @@ export const initializeVersionTracking = async () => {
         schema: 'public',
         table: 'app_changes'
       },
-      (payload) => {
+      (payload: { new: { major: number; minor: number; patch: number } }) => {
         console.log('Version change detected:', payload);
         const { major, minor, patch } = payload.new;
         const newVersion = `${major}.${minor}.${patch}`;
