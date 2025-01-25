@@ -76,10 +76,13 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      await queryClient.invalidateQueries({ queryKey: ['profile'] });
-      await queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-      console.log('Avatar updated successfully');
+      // Invalidate all relevant queries
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['profile'] }),
+        queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+      ]);
       
+      console.log('Avatar updated successfully');
       toast.success(t('success.avatarUpdated'));
     } catch (error) {
       console.error('Error uploading avatar:', error);
@@ -116,10 +119,13 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      await queryClient.invalidateQueries({ queryKey: ['profile'] });
-      await queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-      console.log('Avatar deleted successfully');
+      // Invalidate all relevant queries
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['profile'] }),
+        queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+      ]);
       
+      console.log('Avatar deleted successfully');
       toast.success(t('success.avatarDeleted'));
     } catch (error) {
       console.error('Error deleting avatar:', error);
