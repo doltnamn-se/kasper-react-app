@@ -100,7 +100,7 @@ const Guides = () => {
               className="w-full"
             >
               <AccordionItem value={accordionId} className="border-none">
-                <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                <AccordionTrigger className="px-6 py-4 hover:no-underline flex-col gap-2">
                   <div className="flex w-full items-center justify-between">
                     <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
                     <Button 
@@ -112,6 +112,10 @@ const Guides = () => {
                     >
                       {t('link.to.removal')}
                     </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
+                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4">
@@ -129,10 +133,6 @@ const Guides = () => {
                       );
                     })}
                   </ol>
-                  <div className="flex items-center justify-center gap-2 mt-4">
-                    <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
-                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
