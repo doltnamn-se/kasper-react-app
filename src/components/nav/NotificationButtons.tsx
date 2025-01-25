@@ -1,4 +1,4 @@
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,10 +13,12 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NotificationIcon } from "../notifications/NotificationIcon";
 import { NotificationList } from "../notifications/NotificationList";
+import { useNavigate } from "react-router-dom";
 
 export const NotificationButtons = () => {
   const { notifications = [], unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const { data: checklistProgress } = useQuery({
     queryKey: ['checklist-progress-notifications'],
@@ -83,7 +85,6 @@ export const NotificationButtons = () => {
                      index === 2 ? 'step.3.title' :
                      'step.4.title';
 
-    // Use the checklist progress updated_at timestamp if available, otherwise use current time
     const timestamp = checklistProgress?.updated_at || now;
 
     return {
@@ -98,6 +99,10 @@ export const NotificationButtons = () => {
 
   const allNotifications = [...notifications, ...checklistNotifications];
   const totalUnreadCount = unreadCount + checklistNotifications.filter(n => !n.read).length;
+
+  const handleSettingsClick = () => {
+    navigate('/settings', { state: { defaultTab: 'notifications' } });
+  };
 
   return (
     <>
@@ -137,16 +142,26 @@ export const NotificationButtons = () => {
         <DropdownMenuContent align="end" className="w-80 dark:bg-[#1c1c1e] dark:border-[#232325]">
           <div className="flex items-center justify-between px-4 py-2">
             <h4 className="font-medium text-black dark:text-[#FFFFFF]">{t('notifications.title')}</h4>
-            {unreadCount > 0 && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={markAllAsRead}
-                className="h-8 text-xs"
+            <div className="flex items-center gap-2">
+              {unreadCount > 0 && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={markAllAsRead}
+                  className="h-8 text-xs"
+                >
+                  {t('notifications.mark.all.read')}
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSettingsClick}
+                className="h-8 w-8 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent dark:hover:bg-transparent"
               >
-                {t('notifications.mark.all.read')}
+                <Settings className="h-4 w-4" />
               </Button>
-            )}
+            </div>
           </div>
           
           <DropdownMenuSeparator className="dark:border-[#232325]" />
