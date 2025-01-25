@@ -73,11 +73,8 @@ export interface Translations {
   'error.invalid.recovery.link': string;
   'error.password.requirements': string;
   'error.current.password': string;
-  'toast.signed.out.title': string;
-  'toast.signed.out.description': string;
-  'toast.error.title': string;
-  'toast.error.description': string;
-  'toast.error.unexpected': string;
+  'error.title': string;
+  'error.update.preferences': string;
   // Table related
   'table.userId': string;
   'table.email': string;
@@ -95,6 +92,12 @@ export interface Translations {
   'settings.password.updated': string;
   'settings.success': string;
   'error.passwords.dont.match': string;
+  'settings.notification.preferences': string;
+  'settings.email.notifications': string;
+  'settings.email.notifications.description': string;
+  'settings.inapp.notifications': string;
+  'settings.inapp.notifications.description': string;
+  'settings.notifications.updated': string;
   // Notifications
   'notifications.title': string;
   'notifications.mark.all.read': string;

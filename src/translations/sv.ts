@@ -166,8 +166,4 @@ export const sv: Translations = {
   'settings.inapp.notifications': 'App-notifikationer',
   'settings.inapp.notifications.description': 'Få notifikationer inom applikationen',
   'settings.notifications.updated': 'Notifikationsinställningar har uppdaterats',
-  'light.mode': 'Ljust läge',
-  'messages': 'Meddelanden',
-  'notifications': 'Notiser',
-  'copy': 'Kopiera'
 };
