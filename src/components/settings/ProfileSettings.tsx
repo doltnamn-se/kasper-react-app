@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { X } from "lucide-react";
+import { X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const ProfileSettings = () => {
@@ -76,7 +76,6 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate all relevant queries
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['profile'] }),
         queryClient.invalidateQueries({ queryKey: ['userProfile'] })
@@ -119,7 +118,6 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate all relevant queries
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['profile'] }),
         queryClient.invalidateQueries({ queryKey: ['userProfile'] })
@@ -158,37 +156,24 @@ export const ProfileSettings = () => {
               {getUserInitials(userProfile)}
             </AvatarFallback>
           </Avatar>
+          
           {userProfile?.avatar_url && (
             <Button
               variant="ghost"
               size="icon"
-              className="absolute -top-2 -right-2 h-6 w-6 p-0 hover:bg-transparent"
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-white dark:bg-[#1c1c1e] hover:bg-white dark:hover:bg-[#1c1c1e] p-0"
               onClick={handleDeleteAvatar}
               disabled={isDeleting}
             >
               <X className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
             </Button>
           )}
+          
           <Label 
             htmlFor="avatar-upload" 
-            className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm text-primary hover:text-primary/90 dark:text-primary dark:hover:text-primary/90"
+            className="absolute -bottom-2 -right-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-[#2563eb] hover:bg-[#2563eb]/90 dark:bg-[#bec9f9] dark:hover:bg-[#bec9f9]/90"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="17 8 12 3 7 8" />
-              <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-            {t('profile.upload.photo')}
+            <Upload className="h-4 w-4 text-white dark:text-black" />
             <Input
               id="avatar-upload"
               type="file"
