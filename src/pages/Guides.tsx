@@ -85,10 +85,10 @@ const Guides = () => {
       <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.guides')}
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Accordion type="single" collapsible className="col-span-2">
+      <Accordion type="single" collapsible>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {guides.map((guide, index) => (
-            <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] mb-4">
+            <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
               <AccordionItem value={`item-${index}`} className="border-none">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline">
                   <div className="flex flex-col items-start text-left">
@@ -129,8 +129,8 @@ const Guides = () => {
               </AccordionItem>
             </Card>
           ))}
-        </Accordion>
-      </div>
+        </div>
+      </Accordion>
     </MainLayout>
   );
 };
