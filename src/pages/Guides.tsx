@@ -173,15 +173,15 @@ const Guides = () => {
 
       <Dialog open={!!selectedUrl} onOpenChange={() => setSelectedUrl(null)}>
         <DialogContent className="max-w-[90vw] w-[1200px] h-[80vh] p-0">
-          <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-lg font-semibold">{selectedUrl}</h2>
+          <div className="flex items-center justify-between px-4 py-2 border-b">
+            <h2 className="text-sm font-medium truncate">{selectedUrl}</h2>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setSelectedUrl(null)}
-              className="h-8 w-8"
+              className="h-6 w-6"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3 w-3" />
             </Button>
           </div>
           <div className="relative w-full h-full">
