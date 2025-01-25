@@ -137,7 +137,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent 
-                side="bottom" 
+                side="right" 
                 className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm"
               >
                 <p>{getSubscriptionTooltip(customerData?.subscription_plan)}</p>
