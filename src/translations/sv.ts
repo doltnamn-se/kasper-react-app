@@ -26,7 +26,7 @@ export const sv: Translations = {
   'loading': 'Laddar...',
   'reset.password': 'Återställ lösenord',
   'reset.password.success': 'Återställningslänk har skickats',
-  'password.updated': 'Återställningslänk har skickats',
+  'password.updated': 'Lösenordet har uppdaterats',
   // Navigation
   'nav.home': 'Hem',
   'nav.checklist': 'Checklista',
