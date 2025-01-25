@@ -19,7 +19,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const location = useLocation();
   const { t } = useLanguage();
   const [isAdmin, setIsAdmin] = useState(false);
-  const { notifications = [] } = useNotifications();
+  const { notifications = [], unreadCount } = useNotifications();
   const { userProfile, userEmail } = useUserProfile();
 
   // Fetch customer data to get subscription plan
@@ -67,7 +67,6 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   }
 
   const renderNavLink = (path: string, icon: React.ReactNode, label: string) => {
-    const unreadCount = getUnreadCount(path);
     const isActive = location.pathname === path;
     
     return (
@@ -84,13 +83,6 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
           <span className="text-black dark:text-white">{icon}</span>
           <span className="text-sm text-[#000000] dark:text-white font-medium">{label}</span>
         </div>
-        {unreadCount > 0 && (
-          <Badge 
-            className="h-5 w-6 p-0 pr-0.5 flex items-center justify-center text-xs leading-none bg-[#2e77d0] text-white font-medium border-0 hover:bg-[#2e77d0]"
-          >
-            {unreadCount}
-          </Badge>
-        )}
       </Link>
     );
   };
