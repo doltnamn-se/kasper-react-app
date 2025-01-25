@@ -94,6 +94,13 @@ export const en: Translations = {
   'settings.password.updated': 'Password updated successfully',
   'settings.success': 'Success',
   'error.passwords.dont.match': 'Passwords do not match',
+  'settings.notification.preferences': 'Notification Preferences',
+  'settings.email.notifications': 'Email Notifications',
+  'settings.email.notifications.description': 'Receive important updates and alerts via email',
+  'settings.inapp.notifications': 'In-app Notifications',
+  'settings.inapp.notifications.description': 'Receive notifications within the application',
+  'settings.notifications.updated': 'Notification preferences updated successfully',
+  'error.update.preferences': 'Failed to update notification preferences',
   // Notifications
   'notifications.title': 'Notifications',
   'notifications.mark.all.read': 'Mark all as read',

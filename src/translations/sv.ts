@@ -169,5 +169,12 @@ export const sv: Translations = {
   'copy': 'Kopiera',
   'light.mode': 'Ljust läge',
   'messages': 'Meddelanden',
-  'notifications': 'Notiser'
+  'notifications': 'Notiser',
+  'settings.notification.preferences': 'Notifikationsinställningar',
+  'settings.email.notifications': 'E-postnotifikationer',
+  'settings.email.notifications.description': 'Få viktiga uppdateringar och varningar via e-post',
+  'settings.inapp.notifications': 'App-notifikationer',
+  'settings.inapp.notifications.description': 'Få notifikationer inom applikationen',
+  'settings.notifications.updated': 'Notifikationsinställningar har uppdaterats',
+  'error.update.preferences': 'Det gick inte att uppdatera notifikationsinställningarna',
 };
