@@ -11,15 +11,19 @@ interface PasswordUpdateFormProps {
   className?: string;
   buttonClassName?: string;
   buttonText?: string;
+  showCurrentPassword?: boolean;
 }
 
 export const PasswordUpdateForm = ({ 
   onComplete, 
   className = "lg:w-[75%] xl:w-1/2",
   buttonClassName = "w-full",
-  buttonText
+  buttonText,
+  showCurrentPassword = false
 }: PasswordUpdateFormProps) => {
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [showCurrentPasswordField, setShowCurrentPasswordField] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -48,6 +52,13 @@ export const PasswordUpdateForm = ({
     },
   ];
 
+  const resetForm = () => {
+    setCurrentPassword("");
+    setNewPassword("");
+    setShowPassword(false);
+    setShowCurrentPasswordField(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -62,6 +73,23 @@ export const PasswordUpdateForm = ({
           description: t('error.password.requirements'),
         });
         return;
+      }
+
+      if (showCurrentPassword) {
+        // First verify the current password
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: (await supabase.auth.getUser()).data.user?.email || '',
+          password: currentPassword,
+        });
+
+        if (signInError) {
+          toast({
+            variant: "destructive",
+            title: t('error'),
+            description: t('error.current.password'),
+          });
+          return;
+        }
       }
 
       const { error } = await supabase.auth.updateUser({ 
@@ -85,6 +113,7 @@ export const PasswordUpdateForm = ({
         description: t('password.updated'),
       });
       
+      resetForm();
       onComplete();
     } catch (error) {
       console.error('Error updating password:', error);
@@ -101,6 +130,28 @@ export const PasswordUpdateForm = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <div className={`w-full ${className}`}>
+        {showCurrentPassword && (
+          <div className="relative mb-8">
+            <Input
+              type={showCurrentPasswordField ? "text" : "password"}
+              placeholder={t('current.password')}
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="h-12 border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none font-medium text-[#000000A6] dark:text-[#FFFFFFA6] placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] placeholder:font-medium text-2xl pl-0 pr-10 bg-transparent"
+            />
+            <button
+              type="button"
+              onClick={() => setShowCurrentPasswordField(!showCurrentPasswordField)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] focus:outline-none"
+            >
+              {showCurrentPasswordField ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        )}
         <div className="relative">
           <Input
             type={showPassword ? "text" : "password"}
