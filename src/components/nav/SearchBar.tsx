@@ -120,7 +120,7 @@ export const SearchBar = () => {
     <>
       {isSearchFocused && (
         <div 
-          className="fixed inset-0 backdrop-blur-sm z-[39] transition-all duration-300"
+          className="fixed inset-0 backdrop-blur-[2px] z-[39] transition-all duration-300"
           onClick={() => {
             setIsSearchFocused(false);
             setShowResults(false);
