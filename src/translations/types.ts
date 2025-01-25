@@ -131,25 +131,19 @@ export interface Translations {
   'step.2.title': string;
   'step.3.title': string;
   'step.4.title': string;
-  
   // Password related
   'set.password': string;
   'set.password.description': string;
   'current.password': string;
-  
   // Status messages
-  'error': string;
   'success': string;
   'completed': string;
   'pending.completion': string;
-  
   // Checklist related
   'checklist': string;
   'getting.started': string;
-  
   // Links
   'link.to.removal': string;
-
   // Guide related translations
   'guide.eniro.title': string;
   'guide.eniro.step1': string;
