@@ -94,12 +94,14 @@ export const PasswordUpdateForm = ({
       }
 
       if (showCurrentPassword) {
+        console.log("Verifying current password...");
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email: (await supabase.auth.getUser()).data.user?.email || '',
           password: currentPassword,
         });
 
         if (signInError) {
+          console.error("Current password verification failed:", signInError);
           toast({
             variant: "destructive",
             title: t('error'),
@@ -108,13 +110,16 @@ export const PasswordUpdateForm = ({
           setIsLoading(false);
           return;
         }
+        console.log("Current password verified successfully");
       }
 
+      console.log("Attempting to update password...");
       const { error } = await supabase.auth.updateUser({ 
         password: newPassword
       });
 
       if (error) {
+        console.error("Password update error:", error);
         if (error.message.includes('same_password')) {
           toast({
             variant: "destructive",
@@ -129,6 +134,7 @@ export const PasswordUpdateForm = ({
         throw error;
       }
 
+      console.log("Password updated successfully, updating checklist progress...");
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
@@ -137,8 +143,12 @@ export const PasswordUpdateForm = ({
         .update({ password_updated: true })
         .eq('customer_id', session.user.id);
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.error("Error updating checklist progress:", updateError);
+        throw updateError;
+      }
 
+      console.log("Checklist progress updated successfully");
       if (showSuccessToast) {
         toast({
           title: t('success'),
@@ -149,7 +159,7 @@ export const PasswordUpdateForm = ({
       resetForm();
       onComplete();
     } catch (error) {
-      console.error('Error updating password:', error);
+      console.error('Error in password update flow:', error);
       toast({
         variant: "destructive",
         title: t('error'),
