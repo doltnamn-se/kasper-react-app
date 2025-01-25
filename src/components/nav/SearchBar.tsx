@@ -120,7 +120,7 @@ export const SearchBar = () => {
     <>
       {isSearchFocused && (
         <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity duration-300"
           onClick={() => {
             setIsSearchFocused(false);
             setShowResults(false);
@@ -171,7 +171,7 @@ export const SearchBar = () => {
               "text-[#000000] dark:text-[#FFFFFF]",
               "placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6]",
               (isSearchHovered || isSearchFocused) && "placeholder:text-[#000000] dark:placeholder:text-[#FFFFFF]",
-              "transition-all outline-none",
+              "transition-all duration-300 outline-none",
               "[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden",
               "[&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden",
               isSearchFocused && "shadow-lg"
@@ -213,7 +213,7 @@ export const SearchBar = () => {
         {showResults && searchQuery && (
           <div 
             ref={searchResultsRef}
-            className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-50"
+            className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-50 transition-transform duration-300 origin-top"
           >
             <Command className="border-none bg-transparent">
               <CommandList>
@@ -227,7 +227,8 @@ export const SearchBar = () => {
                         className={cn(
                           "cursor-pointer flex items-center justify-between py-2",
                           "hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d]",
-                          "data-[selected=true]:bg-[#f3f4f6] dark:data-[selected=true]:bg-[#2d2d2d]"
+                          "data-[selected=true]:bg-[#f3f4f6] dark:data-[selected=true]:bg-[#2d2d2d]",
+                          "transition-colors duration-200"
                         )}
                       >
                         <span className="font-medium text-[#000000] dark:text-[#FFFFFF]">
