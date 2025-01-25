@@ -1,7 +1,6 @@
-// This file manages the application version
-// Format: MAJOR.MINOR.PATCH
-// MAJOR: Breaking changes
-// MINOR: New features
-// PATCH: Bug fixes and minor changes
+// This file manages the application version by reading from package.json
+// Format: MAJOR.MINOR.PATCH follows semantic versioning
 
-export const APP_VERSION = "1.0.1";
+import { version } from '../../../package.json';
+
+export const APP_VERSION = version;
