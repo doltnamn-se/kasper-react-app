@@ -16,6 +16,7 @@ export const sv: Translations = {
   'phone.placeholder': 'Ange telefonnummer',
   'token.placeholder': 'Ange verifieringskod',
   'dark.mode': 'Mörkt läge',
+  'light.mode': 'Ljust läge',
   'forgot.password': 'Glömt ditt lösenord?',
   'send.recovery.link': 'Skicka återställningslänk',
   'sending.recovery.link': 'Skickar återställningslänk...',
@@ -155,12 +156,12 @@ export const sv: Translations = {
   'guide.birthday.title': 'Birthday.se',
   'guide.birthday.step1': 'Länk: https://www.birthday.se/kontakta',
   'guide.birthday.step2': 'Fyll i formuläret.',
-  'guide.birthday.step3': 'Skriv detta i meddelandefältet:\n\" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. \"',
+  'guide.birthday.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
   
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Länk: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fyll i formuläret.',
-  'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n\" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. \"',
+  'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
   
   'toast.copied.title': 'Kopierat',
   'toast.copied.description': 'Meddelandet har kopierats till urklipp',

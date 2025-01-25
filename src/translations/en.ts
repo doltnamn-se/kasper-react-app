@@ -155,14 +155,17 @@ export const en: Translations = {
   'guide.birthday.title': 'Birthday.se',
   'guide.birthday.step1': 'Link: https://www.birthday.se/kontakta',
   'guide.birthday.step2': 'Fill in the form.',
-  'guide.birthday.step3': 'Write this in the message field:\n\" I request that my personal information be removed from Birthday.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. \"',
+  'guide.birthday.step3': 'Write this in the message field:\n" I request that my personal information be removed from Birthday.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "',
   
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Link: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fill in the form.',
-  'guide.upplysning.step3': 'Write this in the message field:\n\" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. \"',
+  'guide.upplysning.step3': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "',
   
   'toast.copied.title': 'Copied',
   'toast.copied.description': 'Message has been copied to clipboard',
   'copy': 'Copy',
+  'light.mode': 'Light mode',
+  'messages': 'Messages',
+  'notifications': 'Notifications',
 };

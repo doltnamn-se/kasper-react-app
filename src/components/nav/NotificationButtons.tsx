@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useQuery } from "@tanstack/react-query";
@@ -100,24 +101,38 @@ export const NotificationButtons = () => {
 
   return (
     <>
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent dark:hover:bg-transparent hover:bg-transparent"
-      >
-        <MessageSquare className="w-4 h-4" />
-      </Button>
-      
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <Tooltip>
+        <TooltipTrigger asChild>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="relative hover:bg-transparent dark:hover:bg-transparent"
+            className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent dark:hover:bg-transparent hover:bg-transparent"
           >
-            <NotificationIcon unreadCount={totalUnreadCount} />
+            <MessageSquare className="w-4 h-4" />
           </Button>
-        </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{t('messages')}</p>
+        </TooltipContent>
+      </Tooltip>
+      
+      <DropdownMenu>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative hover:bg-transparent dark:hover:bg-transparent"
+              >
+                <NotificationIcon unreadCount={totalUnreadCount} />
+              </Button>
+            </DropdownMenuTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('notifications')}</p>
+          </TooltipContent>
+        </Tooltip>
         
         <DropdownMenuContent align="end" className="w-80 dark:bg-[#1c1c1e] dark:border-[#232325]">
           <div className="flex items-center justify-between px-4 py-2">
