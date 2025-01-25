@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -123,12 +124,17 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Badge 
-                  variant="default"
-                  className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark cursor-default"
+                <Button 
+                  variant="ghost" 
+                  className="p-0 h-auto hover:bg-transparent"
                 >
-                  {getSubscriptionLabel(customerData?.subscription_plan)}
-                </Badge>
+                  <Badge 
+                    variant="default"
+                    className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
+                  >
+                    {getSubscriptionLabel(customerData?.subscription_plan)}
+                  </Badge>
+                </Button>
               </TooltipTrigger>
               <TooltipContent 
                 side="bottom" 
