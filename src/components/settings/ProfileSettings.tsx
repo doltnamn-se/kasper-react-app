@@ -141,7 +141,9 @@ export const ProfileSettings = () => {
         </div>
         <div className="space-y-1">
           <h3 className="text-lg font-medium">{userProfile?.display_name || userEmail}</h3>
-          <Badge variant="secondary" className="flex items-center gap-1">
+          <Badge 
+            className="flex items-center gap-1 bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium"
+          >
             <BadgeDollarSign className="w-3 h-3" />
             {getSubscriptionLabel(customerData?.subscription_plan)}
           </Badge>
@@ -150,22 +152,22 @@ export const ProfileSettings = () => {
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="display_name">{t('display.name')}</Label>
+          <Label htmlFor="email">{t('email')}</Label>
           <Input
-            id="display_name"
-            type="text"
-            value={userProfile?.display_name || ''}
+            id="email"
+            type="email"
+            value={userEmail || ''}
             disabled
             className="bg-muted"
           />
         </div>
 
         <div>
-          <Label htmlFor="email">{t('email')}</Label>
+          <Label htmlFor="display_name">{t('display.name')}</Label>
           <Input
-            id="email"
-            type="email"
-            value={userEmail || ''}
+            id="display_name"
+            type="text"
+            value={userProfile?.display_name || ''}
             disabled
             className="bg-muted"
           />
