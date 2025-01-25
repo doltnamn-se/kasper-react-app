@@ -93,34 +93,28 @@ const Guides = () => {
                 <AccordionTrigger className="px-6 py-4 hover:no-underline">
                   <div className="flex flex-col items-start text-left">
                     <h3 className="text-lg font-semibold mb-2 text-[#000000] dark:text-white">{guide.title}</h3>
-                    <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] line-clamp-2 opacity-70">
-                      {guide.steps[0].text.replace(/Länk: /, '')}
-                    </p>
+                    <Button 
+                      variant="outline"
+                      className="w-full text-left justify-start h-auto py-1 px-0 hover:bg-transparent"
+                      onClick={() => window.open(extractUrl(guide.steps[0].text), '_blank')}
+                    >
+                      <span className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] line-clamp-2">
+                        {guide.steps[0].text.replace(/Länk: /, '')}
+                      </span>
+                    </Button>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-4">
                   <ol className="list-decimal list-inside space-y-2">
                     {guide.steps.map((step, stepIndex) => {
-                      const url = extractUrl(step.text);
-                      if (stepIndex === 0 && url) {
-                        return (
-                          <li key={stepIndex} className="text-sm leading-relaxed text-[#000000] dark:text-white">
-                            <Button 
-                              className="h-12 w-full lg:w-1/2"
-                              onClick={() => window.open(url, '_blank')}
-                            >
-                              {t('update.password')}
-                            </Button>
-                          </li>
-                        );
-                      }
+                      if (stepIndex === 0) return null; // Skip the first step as it's shown in the header
                       return (
                         <li 
                           key={stepIndex} 
                           className="text-sm leading-relaxed text-[#000000] dark:text-white"
                           style={{ whiteSpace: 'pre-line' }}
                         >
-                          {step.text.replace(/Länk: .*/, '')}
+                          {step.text}
                         </li>
                       );
                     })}
