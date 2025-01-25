@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowRight, Copy } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface GuideStep {
   text: string;
@@ -164,12 +165,21 @@ const Guides = () => {
                                 {step.text}
                               </span>
                               {shouldShowCopyButton(guide.title, step.text) && (
-                                <button
-                                  onClick={() => handleCopyMessage(step.text)}
-                                  className="flex-shrink-0 h-6 w-6 flex items-center justify-center transition-colors duration-200 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-                                >
-                                  <Copy className="h-4 w-4" />
-                                </button>
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <button
+                                        onClick={() => handleCopyMessage(step.text)}
+                                        className="flex-shrink-0 h-6 w-6 flex items-center justify-center transition-colors duration-200 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+                                      >
+                                        <Copy className="h-4 w-4" />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>{t('copy')}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               )}
                             </div>
                           </div>

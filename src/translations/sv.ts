@@ -164,4 +164,5 @@ export const sv: Translations = {
   
   'toast.copied.title': 'Kopierat',
   'toast.copied.description': 'Meddelandet har kopierats till urklipp',
+  'copy': 'Kopiera',
 };
