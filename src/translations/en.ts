@@ -166,5 +166,8 @@ export const en: Translations = {
   
   'toast.copied.title': 'Copied',
   'toast.copied.description': 'Message has been copied to clipboard',
-  'copy': 'Copy'
+  'copy': 'Copy',
+  'light.mode': 'Light mode',
+  'messages': 'Messages',
+  'notifications': 'Notifications'
 };
