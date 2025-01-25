@@ -20,7 +20,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
     <>
       <DropdownMenuGroup>
         <DropdownMenuItem 
-          onClick={() => navigate("/profile")} 
+          onClick={() => navigate("/settings", { state: { defaultTab: "profile" } })} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <UserCircle className="mr-3 h-4 w-4" />
