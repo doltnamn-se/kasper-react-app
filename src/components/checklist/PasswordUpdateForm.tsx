@@ -80,6 +80,19 @@ export const PasswordUpdateForm = ({
         return;
       }
 
+      // If showing current password field, check if new password is different
+      if (showCurrentPassword && currentPassword === newPassword) {
+        toast({
+          variant: "destructive",
+          title: t('error'),
+          description: language === 'en' ? 
+            "New password must be different from current password" : 
+            "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       if (showCurrentPassword) {
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email: (await supabase.auth.getUser()).data.user?.email || '',
