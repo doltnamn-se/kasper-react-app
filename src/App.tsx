@@ -11,7 +11,6 @@ import Checklist from "@/pages/Checklist";
 import MyLinks from "@/pages/MyLinks";
 import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
-import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import PasswordTest from "@/pages/PasswordTest";
 
@@ -34,7 +33,6 @@ function App() {
                 <Route path="/my-links" element={<ProtectedRoute><MyLinks /></ProtectedRoute>} />
                 <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
                 <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
-                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                 <Route path="/password-test" element={<PasswordTest />} />
               </Routes>
