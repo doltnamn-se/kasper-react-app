@@ -150,22 +150,22 @@ export const ProfileSettings = () => {
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="email">{t('email')}</Label>
-          <Input
-            id="email"
-            type="email"
-            value={userEmail || ''}
-            disabled
-            className="bg-muted"
-          />
-        </div>
-        
-        <div>
           <Label htmlFor="display_name">{t('display.name')}</Label>
           <Input
             id="display_name"
             type="text"
             value={userProfile?.display_name || ''}
+            disabled
+            className="bg-muted"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="email">{t('email')}</Label>
+          <Input
+            id="email"
+            type="email"
+            value={userEmail || ''}
             disabled
             className="bg-muted"
           />
