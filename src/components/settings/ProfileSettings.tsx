@@ -52,6 +52,7 @@ export const ProfileSettings = () => {
 
     try {
       setIsUploading(true);
+      console.log('Starting avatar upload...');
       
       // Upload to Supabase Storage
       const fileExt = file.name.split('.').pop();
@@ -80,8 +81,9 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate queries to refresh the UI
+      // Invalidate profile queries to refresh UI everywhere
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      console.log('Avatar updated successfully');
       
       toast.success(t('success.avatarUpdated'));
     } catch (error) {
@@ -97,6 +99,7 @@ export const ProfileSettings = () => {
 
     try {
       setIsDeleting(true);
+      console.log('Starting avatar deletion...');
 
       // Extract the file path from the URL
       const urlParts = userProfile.avatar_url.split('/');
@@ -121,8 +124,9 @@ export const ProfileSettings = () => {
         throw updateError;
       }
 
-      // Invalidate queries to refresh the UI
+      // Invalidate profile queries to refresh UI everywhere
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      console.log('Avatar deleted successfully');
       
       toast.success(t('success.avatarDeleted'));
     } catch (error) {
