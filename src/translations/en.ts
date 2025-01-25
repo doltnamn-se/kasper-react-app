@@ -186,7 +186,7 @@ export const en: Translations = {
   'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
   'error.avatarUpload': 'Failed to upload avatar.',
   'success.avatarUpdated': 'Avatar updated successfully.',
-  'display.name': 'Display Name',
+  'display.name': 'Name',
   'error.passwords.dont.match': 'Passwords do not match',
 
   // Keep subscription translations
@@ -195,3 +195,4 @@ export const en: Translations = {
   'subscription.12months': '12 Months Plan',
   'subscription.none': 'No Plan'
 } as const;
+
