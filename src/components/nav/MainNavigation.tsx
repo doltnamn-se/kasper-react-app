@@ -10,6 +10,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
@@ -51,6 +57,19 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     }
   };
 
+  const getSubscriptionTooltip = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.tooltip.1month');
+      case '6_months':
+        return t('subscription.tooltip.6months');
+      case '12_months':
+        return t('subscription.tooltip.12months');
+      default:
+        return t('subscription.none');
+    }
+  };
+
   useEffect(() => {
     const checkAdminStatus = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -72,7 +91,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     return (
       <Link 
         to={path} 
-        className={`flex items-center justify-between gap-3 mb-3 px-5 py-2.5 rounded-md ${
+        className={`flex items-center justify-between gap-3 mb-3 py-2.5 rounded-md ${
           isActive 
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
@@ -101,11 +120,20 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
               {userProfile?.display_name || userEmail}
             </span>
           </div>
-          <Badge 
-            className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
-          >
-            {getSubscriptionLabel(customerData?.subscription_plan)}
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge 
+                  className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold py-1 px-2 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
+                >
+                  {getSubscriptionLabel(customerData?.subscription_plan)}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{getSubscriptionTooltip(customerData?.subscription_plan)}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       </div>

@@ -186,8 +186,13 @@ export const sv: Translations = {
   'guide.upplysning.step3': 'Vänta på svar',
 
   // Add subscription translations
+
+  // Subscription translations
   'subscription.1month': '1 MÅN',
   'subscription.6months': '6 MÅN',
   'subscription.12months': '12 MÅN',
-  'subscription.none': 'Ingen Plan'
+  'subscription.none': 'Ingen Plan',
+  'subscription.tooltip.1month': 'Månadsabonnemang',
+  'subscription.tooltip.6months': 'Halvårsabonnemang',
+  'subscription.tooltip.12months': 'Årsabonnemang'
 } as const;

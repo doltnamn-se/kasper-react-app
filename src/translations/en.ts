@@ -75,8 +75,6 @@ export const en: Translations = {
   'error.missing.email': 'Please enter your email',
   'error.invalid.recovery.link': 'Invalid or expired recovery link',
   'error.password.requirements': 'Please ensure your password meets all requirements',
-  'error.current.password': 'Current password is incorrect',
-  'error.update.preferences': 'Failed to update notification preferences',
   // Toast messages
   'toast.signed.out.title': 'Signed out successfully',
   'toast.signed.out.description': 'You have been logged out of your account.',
@@ -179,17 +177,12 @@ export const en: Translations = {
   'guide.upplysning.step2': 'Send removal request',
   'guide.upplysning.step3': 'Await response',
 
-  // Add back the missing translations
-  'error.invalidFileType': 'Invalid file type. Please upload an image.',
-  'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
-  'error.avatarUpload': 'Failed to upload avatar.',
-  'success.avatarUpdated': 'Avatar updated successfully.',
-  'display.name': 'Name',
-  'error.passwords.dont.match': 'Passwords do not match',
-
-  // Keep subscription translations
+  // Subscription translations
   'subscription.1month': '1 MO',
   'subscription.6months': '6 MO',
   'subscription.12months': '12 MO',
-  'subscription.none': 'No Plan'
+  'subscription.none': 'No Plan',
+  'subscription.tooltip.1month': 'Monthly plan',
+  'subscription.tooltip.6months': 'Half-year plan',
+  'subscription.tooltip.12months': 'Yearly plan'
 } as const;

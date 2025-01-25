@@ -188,8 +188,13 @@ export interface Translations {
   'display.name': string;
 
   // Keep subscription translations
+
+  // Subscription translations
   'subscription.1month': string;
   'subscription.6months': string;
   'subscription.12months': string;
   'subscription.none': string;
+  'subscription.tooltip.1month': string;
+  'subscription.tooltip.6months': string;
+  'subscription.tooltip.12months': string;
 }
