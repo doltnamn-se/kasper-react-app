@@ -16,69 +16,69 @@ interface Guide {
   steps: GuideStep[];
 }
 
-const guides: Guide[] = [
-  {
-    title: "Eniro.se",
-    steps: [
-      { text: "Länk: https://uppdatera.eniro.se/person" },
-      { text: "Skriv in ditt namn i sökrutan" },
-      { text: "Identifiera dig med Mobilt BankID" },
-      { text: "Dölj dina uppgifter" }
-    ]
-  },
-  {
-    title: "Mrkoll.se",
-    steps: [
-      { text: "Länk: https://mrkoll.se/om/andra-uppgifter/" },
-      { text: "Identifiera dig med Mobilt BankID" },
-      { text: "Dölj din adress och ditt telefonnummer" }
-    ]
-  },
-  {
-    title: "Hitta.se",
-    steps: [
-      { text: "Länk: https://www.hitta.se/kontakta-oss/ta-bort-kontaktsida" },
-      { text: "Skriv in ditt namn i sökrutan" },
-      { text: "Identifiera dig med Mobilt BankID" }
-    ]
-  },
-  {
-    title: "Merinfo.se",
-    steps: [
-      { text: "Länk: https://www.merinfo.se/ta-bort-mina-uppgifter" },
-      { text: "Identifiera dig med Mobilt BankID" }
-    ]
-  },
-  {
-    title: "Ratsit.se",
-    steps: [
-      { text: "Länk: https://www.ratsit.se/redigera/dolj" },
-      { text: "Identifiera dig med Mobilt BankID." },
-      { text: "Klicka på att dölja dina uppgifter." }
-    ]
-  },
-  {
-    title: "Birthday.se",
-    steps: [
-      { text: "Länk: https://www.birthday.se/kontakta" },
-      { text: "Fyll i formuläret." },
-      { text: "Skriv detta i meddelandefältet:\n\" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. \"" }
-    ]
-  },
-  {
-    title: "Upplysning.se",
-    steps: [
-      { text: "Länk: https://www.upplysning.se/kontakta-oss" },
-      { text: "Fyll i formuläret." },
-      { text: "Skriv detta i meddelandefältet:\n\" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. \"" }
-    ]
-  }
-];
-
 const Guides = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
+
+  const guides: Guide[] = [
+    {
+      title: t('guide.eniro.title'),
+      steps: [
+        { text: t('guide.eniro.step1') },
+        { text: t('guide.eniro.step2') },
+        { text: t('guide.eniro.step3') },
+        { text: t('guide.eniro.step4') }
+      ]
+    },
+    {
+      title: t('guide.mrkoll.title'),
+      steps: [
+        { text: t('guide.mrkoll.step1') },
+        { text: t('guide.mrkoll.step2') },
+        { text: t('guide.mrkoll.step3') }
+      ]
+    },
+    {
+      title: t('guide.hitta.title'),
+      steps: [
+        { text: t('guide.hitta.step1') },
+        { text: t('guide.hitta.step2') },
+        { text: t('guide.hitta.step3') }
+      ]
+    },
+    {
+      title: t('guide.merinfo.title'),
+      steps: [
+        { text: t('guide.merinfo.step1') },
+        { text: t('guide.merinfo.step2') }
+      ]
+    },
+    {
+      title: t('guide.ratsit.title'),
+      steps: [
+        { text: t('guide.ratsit.step1') },
+        { text: t('guide.ratsit.step2') },
+        { text: t('guide.ratsit.step3') }
+      ]
+    },
+    {
+      title: t('guide.birthday.title'),
+      steps: [
+        { text: t('guide.birthday.step1') },
+        { text: t('guide.birthday.step2') },
+        { text: t('guide.birthday.step3') }
+      ]
+    },
+    {
+      title: t('guide.upplysning.title'),
+      steps: [
+        { text: t('guide.upplysning.step1') },
+        { text: t('guide.upplysning.step2') },
+        { text: t('guide.upplysning.step3') }
+      ]
+    }
+  ];
 
   const extractUrl = (text: string) => {
     const match = text.match(/https?:\/\/[^\s]+/);
