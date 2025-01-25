@@ -188,9 +188,9 @@ export const en: Translations = {
   'guide.upplysning.step3': 'Await response',
 
   // Subscription translations
-  'subscription.1month': '1 MO',
-  'subscription.6months': '6 MO',
-  'subscription.12months': '12 MO',
+  'subscription.1month': '1 Mo',
+  'subscription.6months': '6 Mo',
+  'subscription.12months': '12 Mo',
   'subscription.none': 'No Plan',
   'subscription.tooltip.1month': 'Monthly plan',
   'subscription.tooltip.6months': 'Half-year plan',
