@@ -86,10 +86,10 @@ const Guides = () => {
         {t('nav.guides')}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {guides.map((guide, index) => (
-          <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
-            <Accordion type="single" collapsible>
-              <AccordionItem value={`guide-${index}`} className="border-none">
+        <Accordion type="single" collapsible className="space-y-4">
+          {guides.map((guide, index) => (
+            <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
+              <AccordionItem value={`item-${index}`} className="border-none">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline">
                   <div className="flex flex-col items-start text-left">
                     <h3 className="text-lg font-semibold mb-2 text-[#000000] dark:text-white">{guide.title}</h3>
@@ -123,13 +123,13 @@ const Guides = () => {
                     className="w-full lg:w-1/2 xl:w-1/4 h-12"
                     onClick={() => window.open(extractUrl(guide.steps[0].text), '_blank')}
                   >
-                    {t('open.link')}
+                    {t('link.to.removal')}
                   </Button>
                 </AccordionContent>
               </AccordionItem>
-            </Accordion>
-          </Card>
-        ))}
+            </Card>
+          ))}
+        </Accordion>
       </div>
     </MainLayout>
   );
