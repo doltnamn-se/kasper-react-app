@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getUserInitials } from "@/utils/profileUtils";
-import { BadgeDollarSign } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 export const ProfileSettings = () => {
@@ -142,9 +141,8 @@ export const ProfileSettings = () => {
         <div className="space-y-1">
           <h3 className="text-lg font-medium">{userProfile?.display_name || userEmail}</h3>
           <Badge 
-            className="flex items-center gap-1 bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium"
+            className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-medium py-1.5 px-3"
           >
-            <BadgeDollarSign className="w-3 h-3" />
             {getSubscriptionLabel(customerData?.subscription_plan)}
           </Badge>
         </div>
