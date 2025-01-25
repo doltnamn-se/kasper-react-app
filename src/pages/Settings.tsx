@@ -4,9 +4,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NotificationPreferences } from "@/components/settings/NotificationPreferences";
 import { PasswordChange } from "@/components/settings/PasswordChange";
 import { ProfileSettings } from "@/components/settings/ProfileSettings";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Settings = () => {
   const { t } = useLanguage();
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("profile");
+
+  useEffect(() => {
+    // Check if there's a default tab in the location state
+    const state = location.state as { defaultTab?: string };
+    if (state?.defaultTab) {
+      setActiveTab(state.defaultTab);
+    }
+  }, [location]);
 
   return (
     <MainLayout>
@@ -15,7 +27,7 @@ const Settings = () => {
           {t('profile.settings')}
         </h1>
 
-        <Tabs defaultValue="profile" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="w-full">
             <TabsTrigger value="profile" className="flex-1">{t('profile.manage')}</TabsTrigger>
             <TabsTrigger value="notifications" className="flex-1">{t('notifications')}</TabsTrigger>
