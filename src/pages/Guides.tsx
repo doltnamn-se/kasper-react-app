@@ -85,9 +85,9 @@ const Guides = () => {
       <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.guides')}
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {guides.map((guide, index) => (
-          <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-lg">
+          <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
             <Accordion type="single" collapsible>
               <AccordionItem value={`guide-${index}`} className="border-none">
                 <AccordionTrigger className="px-6 py-4 hover:no-underline">
@@ -107,7 +107,7 @@ const Guides = () => {
                 <AccordionContent className="px-6 pb-4">
                   <ol className="list-decimal list-inside space-y-2 mb-4">
                     {guide.steps.map((step, stepIndex) => {
-                      if (stepIndex === 0) return null; // Skip the first step as it's shown in the header
+                      if (stepIndex === 0) return null;
                       return (
                         <li 
                           key={stepIndex} 
