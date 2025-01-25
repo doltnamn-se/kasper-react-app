@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowRight, Copy } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface GuideStep {
   text: string;
@@ -95,8 +95,9 @@ const Guides = () => {
     if (messageTemplate) {
       await navigator.clipboard.writeText(messageTemplate);
       toast({
+        title: "Kopierat",
         description: "Meddelandet har kopierats till urklipp",
-        duration: 5000, // Updated from 2000 to 5000ms
+        duration: 5000,
       });
     }
   };
