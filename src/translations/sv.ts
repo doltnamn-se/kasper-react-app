@@ -185,7 +185,9 @@ export const sv: Translations = {
   'guide.upplysning.step2': 'Skicka borttagningsbegäran',
   'guide.upplysning.step3': 'Vänta på svar',
 
-  // Add subscription translations
+  // Add the new translations
+  'success.avatarDeleted': 'Avatar har tagits bort',
+  'error.avatarDelete': 'Det gick inte att ta bort avataren',
 
   // Subscription translations
   'subscription.1month': '1 MÅN',

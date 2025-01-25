@@ -78,6 +78,13 @@ export interface Translations {
   'error.current.password': string;
   'error.update.preferences': string;
   'error.passwords.dont.match': string;
+  'error.invalidFileType': string;
+  'error.fileTooLarge': string;
+  'error.avatarUpload': string;
+  'success.avatarUpdated': string;
+  'success.avatarDeleted': string;
+  'error.avatarDelete': string;
+  'display.name': string;
   // Toast messages
   'toast.signed.out.title': string;
   'toast.signed.out.description': string;
@@ -179,15 +186,6 @@ export interface Translations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
-
-  // Add back the missing translation keys
-  'error.invalidFileType': string;
-  'error.fileTooLarge': string;
-  'error.avatarUpload': string;
-  'success.avatarUpdated': string;
-  'display.name': string;
-
-  // Keep subscription translations
 
   // Subscription translations
   'subscription.1month': string;

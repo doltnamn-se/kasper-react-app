@@ -82,6 +82,8 @@ export const en: Translations = {
   'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
   'error.avatarUpload': 'Failed to upload avatar.',
   'success.avatarUpdated': 'Avatar has been updated',
+  'success.avatarDeleted': 'Avatar has been deleted',
+  'error.avatarDelete': 'Failed to delete avatar',
   'display.name': 'Display Name',
   // Toast messages
   'toast.signed.out.title': 'Signed out successfully',
