@@ -16,7 +16,6 @@ export const sv: Translations = {
   'phone.placeholder': 'Ange telefonnummer',
   'token.placeholder': 'Ange verifieringskod',
   'dark.mode': 'Mörkt läge',
-  'light.mode': 'Ljust läge',
   'forgot.password': 'Glömt ditt lösenord?',
   'send.recovery.link': 'Skicka återställningslänk',
   'sending.recovery.link': 'Skickar återställningslänk...',
