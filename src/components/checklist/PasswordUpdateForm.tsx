@@ -81,7 +81,6 @@ export const PasswordUpdateForm = ({
       }
 
       if (showCurrentPassword) {
-        // First verify the current password
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email: (await supabase.auth.getUser()).data.user?.email || '',
           password: currentPassword,
@@ -103,7 +102,6 @@ export const PasswordUpdateForm = ({
       });
 
       if (error) {
-        // Check if error is due to same password
         if (error.message.includes('same_password')) {
           toast({
             variant: "destructive",
@@ -244,3 +242,4 @@ export const PasswordUpdateForm = ({
       </Button>
     </form>
   );
+};
