@@ -121,7 +121,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
               {userProfile?.display_name || userEmail}
             </span>
           </div>
-          <TooltipProvider>
+          <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button 
