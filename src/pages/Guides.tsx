@@ -117,12 +117,14 @@ const Guides = () => {
                       );
                     })}
                   </ol>
-                  <Button 
-                    className="w-full lg:w-1/2 xl:w-1/4 h-12"
-                    onClick={() => window.open(extractUrl(guide.steps[0].text), '_blank')}
-                  >
-                    {t('link.to.removal')}
-                  </Button>
+                  <div className="flex justify-center w-full">
+                    <Button 
+                      className="w-full md:w-1/2 h-12"
+                      onClick={() => window.open(extractUrl(guide.steps[0].text), '_blank')}
+                    >
+                      {t('link.to.removal')}
+                    </Button>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
