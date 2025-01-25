@@ -100,27 +100,19 @@ const Guides = () => {
               className="w-full"
             >
               <AccordionItem value={accordionId} className="border-none">
-                <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                  <div className="flex w-full items-center justify-between">
-                    <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{guide.title}</h3>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
-                        <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-                      </div>
-                      <Button 
-                        className="px-6"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(extractUrl(guide.steps[0].text), '_blank');
-                        }}
-                      >
-                        {t('link.to.removal')}
-                      </Button>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4">
+                <div className="px-6 py-6">
+                  <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
+                  <Button 
+                    className="px-6"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(extractUrl(guide.steps[0].text), '_blank');
+                    }}
+                  >
+                    {t('link.to.removal')}
+                  </Button>
+                </div>
+                <AccordionContent className="px-6 pb-6">
                   <ol className="list-decimal list-inside space-y-2">
                     {guide.steps.map((step, stepIndex) => {
                       if (stepIndex === 0) return null;
@@ -136,6 +128,12 @@ const Guides = () => {
                     })}
                   </ol>
                 </AccordionContent>
+                <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
+                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+                  </div>
+                </AccordionTrigger>
               </AccordionItem>
             </Accordion>
           </Card>
