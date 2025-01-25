@@ -161,4 +161,7 @@ export const en: Translations = {
   'guide.upplysning.step1': 'Link: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fill in the form.',
   'guide.upplysning.step3': 'Write this in the message field:\n\" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. \"',
+  
+  'toast.copied.title': 'Copied',
+  'toast.copied.description': 'Message has been copied to clipboard',
 };

@@ -162,4 +162,6 @@ export interface Translations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
+  'toast.copied.title': string;
+  'toast.copied.description': string;
 }

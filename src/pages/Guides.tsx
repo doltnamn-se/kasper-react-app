@@ -95,8 +95,8 @@ const Guides = () => {
     if (messageTemplate) {
       await navigator.clipboard.writeText(messageTemplate);
       toast({
-        title: "Kopierat",
-        description: "Meddelandet har kopierats till urklipp",
+        title: t('toast.copied.title'),
+        description: t('toast.copied.description'),
         duration: 5000,
       });
     }

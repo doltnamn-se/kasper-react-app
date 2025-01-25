@@ -161,4 +161,7 @@ export const sv: Translations = {
   'guide.upplysning.step1': 'Länk: https://www.upplysning.se/kontakta-oss',
   'guide.upplysning.step2': 'Fyll i formuläret.',
   'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n\" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. \"',
+  
+  'toast.copied.title': 'Kopierat',
+  'toast.copied.description': 'Meddelandet har kopierats till urklipp',
 };
