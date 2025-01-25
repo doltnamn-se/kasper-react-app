@@ -13,6 +13,7 @@ interface PasswordUpdateFormProps {
   buttonText?: string;
   showCurrentPassword?: boolean;
   showSuccessToast?: boolean;
+  showSuccessAnimation?: boolean;
 }
 
 export const PasswordUpdateForm = ({ 
@@ -21,7 +22,8 @@ export const PasswordUpdateForm = ({
   buttonClassName = "w-full",
   buttonText,
   showCurrentPassword = false,
-  showSuccessToast = false
+  showSuccessToast = false,
+  showSuccessAnimation = false
 }: PasswordUpdateFormProps) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -208,7 +210,21 @@ export const PasswordUpdateForm = ({
         disabled={isLoading} 
         className={`h-12 ${buttonClassName}`}
       >
-        {isLoading ? t('updating.password') : buttonText || t('update.password')}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <span
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
+              showSuccessAnimation ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            {isLoading ? t('updating.password') : buttonText || t('update.password')}
+          </span>
+          
+          <Check 
+            className={`absolute inset-0 m-auto h-6 w-6 transition-opacity duration-200 ${
+              showSuccessAnimation ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </div>
       </Button>
     </form>
   );
