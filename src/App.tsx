@@ -8,7 +8,7 @@ import { SidebarProvider } from "@/contexts/SidebarContext";
 import Auth from "@/pages/Auth";
 import Index from "@/pages/Index";
 import Checklist from "@/pages/Checklist";
-import MyLinks from "@/pages/MyLinks";
+import Deindexing from "@/pages/Deindexing";
 import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
 import Settings from "@/pages/Settings";
@@ -30,7 +30,7 @@ function App() {
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
                 <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
                 <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
-                <Route path="/my-links" element={<ProtectedRoute><MyLinks /></ProtectedRoute>} />
+                <Route path="/deindexing" element={<ProtectedRoute><Deindexing /></ProtectedRoute>} />
                 <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
                 <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
                 <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />

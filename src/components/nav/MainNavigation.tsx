@@ -163,7 +163,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
       </div>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'))}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
-      {renderNavLink("/my-links", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'))}
+      {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'))}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'))}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'))}
     </>
