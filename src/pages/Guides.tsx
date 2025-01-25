@@ -116,7 +116,7 @@ const Guides = () => {
                   </Button>
                 </div>
                 <AccordionContent className="px-6 pb-6">
-                  <div className="space-y-2">
+                  <div className="space-y-4">
                     {guide.steps.map((step, stepIndex) => {
                       if (stepIndex === 0) return null;
                       return (
