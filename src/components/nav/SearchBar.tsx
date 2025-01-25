@@ -177,7 +177,7 @@ export const SearchBar = () => {
       </div>
 
       {showResults && searchQuery && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden z-50">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-50">
           <Command className="border-none">
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
