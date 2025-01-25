@@ -129,7 +129,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                   {getSubscriptionLabel(customerData?.subscription_plan)}
                 </Badge>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="bottom">
                 <p>{getSubscriptionTooltip(customerData?.subscription_plan)}</p>
               </TooltipContent>
             </Tooltip>
