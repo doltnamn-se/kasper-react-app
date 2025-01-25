@@ -54,6 +54,8 @@ export const sv: Translations = {
   'overview.title': 'Översikt',
   'overview.welcome': 'Välkommen till din översikt.',
   // Error messages
+  'error': 'Fel',
+  'error.title': 'Fel',
   'error.invalid.credentials': 'Felaktigt användarnamn eller lösenord',
   'error.current.password': 'Nuvarande lösenord är felaktigt',
   'error.email.not.confirmed': 'Vänligen bekräfta din e-postadress innan du loggar in',
@@ -74,7 +76,6 @@ export const sv: Translations = {
   'error.missing.email': 'Vänligen ange din e-postadress',
   'error.invalid.recovery.link': 'Ogiltig eller utgången återställningslänk',
   'error.password.requirements': 'Se till att ditt lösenord uppfyller alla krav',
-  'error.title': 'Fel',
   'error.update.preferences': 'Det gick inte att uppdatera notifikationsinställningarna',
   // Toast messages
   'toast.signed.out.title': 'Du har loggats ut',
@@ -100,7 +101,6 @@ export const sv: Translations = {
   'settings.updating.password': 'Uppdaterar lösenord...',
   'settings.success': 'Klart',
   'settings.password.updated': 'Lösenordet har uppdaterats',
-  'error.passwords.dont.match': 'Lösenorden matchar inte',
   'settings.notification.preferences': 'Notifikationsinställningar',
   'settings.email.notifications': 'E-postnotifikationer',
   'settings.email.notifications.description': 'Få viktiga uppdateringar och varningar via e-post',
@@ -115,36 +115,6 @@ export const sv: Translations = {
   // UI elements
   'messages': 'Meddelanden',
   'copy': 'Kopiera',
-  // Guide translations
-  'guide.eniro.title': 'Eniro.se',
-  'guide.eniro.step1': 'Länk: https://uppdatera.eniro.se/person',
-  'guide.eniro.step2': 'Skriv in ditt namn i sökrutan',
-  'guide.eniro.step3': 'Identifiera dig med Mobilt BankID',
-  'guide.eniro.step4': 'Dölj dina uppgifter',
-  'guide.mrkoll.title': 'Mrkoll.se',
-  'guide.mrkoll.step1': 'Länk: https://mrkoll.se/om/andra-uppgifter/',
-  'guide.mrkoll.step2': 'Identifiera dig med Mobilt BankID',
-  'guide.mrkoll.step3': 'Dölj din adress och ditt telefonnummer',
-  'guide.hitta.title': 'Hitta.se',
-  'guide.hitta.step1': 'Länk: https://www.hitta.se/kontakta-oss/ta-bort-kontaktsida',
-  'guide.hitta.step2': 'Skriv in ditt namn i sökrutan',
-  'guide.hitta.step3': 'Identifiera dig med Mobilt BankID',
-  'guide.merinfo.title': 'Merinfo.se',
-  'guide.merinfo.step1': 'Länk: https://www.merinfo.se/ta-bort-mina-uppgifter',
-  'guide.merinfo.step2': 'Identifiera dig med Mobilt BankID',
-  'guide.ratsit.title': 'Ratsit.se',
-  'guide.ratsit.step1': 'Länk: https://www.ratsit.se/redigera/dolj',
-  'guide.ratsit.step2': 'Identifiera dig med Mobilt BankID.',
-  'guide.ratsit.step3': 'Klicka på att dölja dina uppgifter.',
-  'guide.birthday.title': 'Birthday.se',
-  'guide.birthday.step1': 'Länk: https://www.birthday.se/kontakta',
-  'guide.birthday.step2': 'Fyll i formuläret.',
-  'guide.birthday.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
-  'guide.upplysning.title': 'Upplysning.se',
-  'guide.upplysning.step1': 'Länk: https://www.upplysning.se/kontakta-oss',
-  'guide.upplysning.step2': 'Fyll i formuläret.',
-  'guide.upplysning.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
-
   // Step related translations
   'step.number': 'Steg {number}',
   'step.progress': 'Steg {current} av {total}',
@@ -160,22 +130,17 @@ export const sv: Translations = {
   'step.2.title': 'Välj webbplatser',
   'step.3.title': 'Skicka in URL:er',
   'step.4.title': 'Personlig information',
-  
   // Password related
   'set.password': 'Ange lösenord',
   'set.password.description': 'Skapa ett säkert lösenord för ditt konto',
   'current.password': 'Nuvarande lösenord',
-  
   // Status messages
-  'error': 'Fel',
   'success': 'Klart',
   'completed': 'Slutförd',
   'pending.completion': 'Väntar på slutförande',
-  
   // Checklist related
   'checklist': 'Checklista',
   'getting.started': 'Kom igång',
-  
   // Links
-  'link.to.removal': 'Länk till borttagningssida',
-}
+  'link.to.removal': 'Länk till borttagningssida'
+} as const;

@@ -54,6 +54,8 @@ export const en: Translations = {
   'overview.title': 'Overview',
   'overview.welcome': 'Welcome to your overview.',
   // Error messages
+  'error': 'Error',
+  'error.title': 'Error',
   'error.invalid.credentials': 'Invalid login credentials',
   'error.email.not.confirmed': 'Please confirm your email before logging in',
   'error.user.not.found': 'No user found with these credentials',
@@ -74,7 +76,6 @@ export const en: Translations = {
   'error.invalid.recovery.link': 'Invalid or expired recovery link',
   'error.password.requirements': 'Please ensure your password meets all requirements',
   'error.current.password': 'Current password is incorrect',
-  'error.title': 'Error',
   'error.update.preferences': 'Failed to update notification preferences',
   // Toast messages
   'toast.signed.out.title': 'Signed out successfully',
@@ -100,7 +101,6 @@ export const en: Translations = {
   'settings.updating.password': 'Updating password...',
   'settings.password.updated': 'Password updated successfully',
   'settings.success': 'Success',
-  'error.passwords.dont.match': 'Passwords do not match',
   'settings.notification.preferences': 'Notification Preferences',
   'settings.email.notifications': 'Email Notifications',
   'settings.email.notifications.description': 'Receive important updates and alerts via email',
@@ -115,36 +115,6 @@ export const en: Translations = {
   // UI elements
   'messages': 'Messages',
   'copy': 'Copy',
-  // Guide translations
-  'guide.eniro.title': 'Eniro.se',
-  'guide.eniro.step1': 'Link: https://uppdatera.eniro.se/person',
-  'guide.eniro.step2': 'Enter your name in the search field',
-  'guide.eniro.step3': 'Identify yourself with Mobile BankID',
-  'guide.eniro.step4': 'Hide your information',
-  'guide.mrkoll.title': 'Mrkoll.se',
-  'guide.mrkoll.step1': 'Link: https://mrkoll.se/om/andra-uppgifter/',
-  'guide.mrkoll.step2': 'Identify yourself with Mobile BankID',
-  'guide.mrkoll.step3': 'Hide your address and phone number',
-  'guide.hitta.title': 'Hitta.se',
-  'guide.hitta.step1': 'Link: https://www.hitta.se/kontakta-oss/ta-bort-kontaktsida',
-  'guide.hitta.step2': 'Enter your name in the search field',
-  'guide.hitta.step3': 'Identify yourself with Mobile BankID',
-  'guide.merinfo.title': 'Merinfo.se',
-  'guide.merinfo.step1': 'Link: https://www.merinfo.se/ta-bort-mina-uppgifter',
-  'guide.merinfo.step2': 'Identify yourself with Mobile BankID',
-  'guide.ratsit.title': 'Ratsit.se',
-  'guide.ratsit.step1': 'Link: https://www.ratsit.se/redigera/dolj',
-  'guide.ratsit.step2': 'Identify yourself with Mobile BankID.',
-  'guide.ratsit.step3': 'Click to hide your information.',
-  'guide.birthday.title': 'Birthday.se',
-  'guide.birthday.step1': 'Link: https://www.birthday.se/kontakta',
-  'guide.birthday.step2': 'Fill in the form.',
-  'guide.birthday.step3': 'Write this in the message field:\n" I request that my personal information be removed from Birthday.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "',
-  'guide.upplysning.title': 'Upplysning.se',
-  'guide.upplysning.step1': 'Link: https://www.upplysning.se/kontakta-oss',
-  'guide.upplysning.step2': 'Fill in the form.',
-  'guide.upplysning.step3': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is XXXXXX-XXXX. "'
-  
   // Step related translations
   'step.number': 'Step {number}',
   'step.progress': 'Step {current} of {total}',
@@ -160,22 +130,17 @@ export const en: Translations = {
   'step.2.title': 'Select Sites',
   'step.3.title': 'Submit URLs',
   'step.4.title': 'Personal Information',
-  
   // Password related
   'set.password': 'Set Password',
   'set.password.description': 'Create a secure password for your account',
   'current.password': 'Current Password',
-  
   // Status messages
-  'error': 'Error',
   'success': 'Success',
   'completed': 'Completed',
   'pending.completion': 'Pending completion',
-  
   // Checklist related
   'checklist': 'Checklist',
   'getting.started': 'Getting Started',
-  
   // Links
-  'link.to.removal': 'Link to removal page',
-}
+  'link.to.removal': 'Link to removal page'
+} as const;
