@@ -89,7 +89,7 @@ const Guides = () => {
         {guides.map((guide, index) => (
           <div key={index} className="h-fit">
             <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
-              <Accordion type="single" className="w-full">
+              <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value={`item-${index}`} className="border-none">
                   <AccordionTrigger className="px-6 py-4 hover:no-underline">
                     <div className="flex flex-col items-start text-left">
