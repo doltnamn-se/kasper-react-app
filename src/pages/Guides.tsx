@@ -165,7 +165,7 @@ const Guides = () => {
                                 {step.text}
                               </span>
                               {shouldShowCopyButton(guide.title, step.text) && (
-                                <TooltipProvider>
+                                <TooltipProvider delayDuration={300}>
                                   <Tooltip>
                                     <TooltipTrigger asChild>
                                       <button
