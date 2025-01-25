@@ -49,8 +49,8 @@ const Toast = React.forwardRef<
       className={cn(toastVariants({ variant }), className)}
       {...props}
     >
-      <div className="flex-1 p-4 pb-2">{props.children}</div>
-      <div className="absolute inset-x-0 bottom-0 h-1 overflow-hidden">
+      <div className="flex-1 p-4">{props.children}</div>
+      <div className="absolute inset-x-0 bottom-0 h-1">
         <div className="h-full w-full bg-primary animate-progress-line" />
       </div>
     </ToastPrimitives.Root>
