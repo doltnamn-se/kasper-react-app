@@ -3,7 +3,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { ChevronDown, ArrowRight, X } from "lucide-react";
 import { useState } from "react";
 
 interface GuideStep {
@@ -77,6 +78,7 @@ const guides: Guide[] = [
 const Guides = () => {
   const { t } = useLanguage();
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
+  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
 
   const extractUrl = (text: string) => {
     const match = text.match(/https?:\/\/[^\s]+/);
@@ -91,6 +93,7 @@ const Guides = () => {
       {guides.map((guide, index) => {
         const accordionId = `${columnIndex}-${index}`;
         const isOpen = openAccordion === accordionId;
+        const url = extractUrl(guide.steps[0].text);
         
         return (
           <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
@@ -108,7 +111,7 @@ const Guides = () => {
                     className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(extractUrl(guide.steps[0].text), '_blank');
+                      if (url) setSelectedUrl(url);
                     }}
                   >
                     {t('link.to.removal')}
@@ -167,6 +170,32 @@ const Guides = () => {
         <GuideColumn guides={leftColumnGuides} columnIndex={0} />
         <GuideColumn guides={rightColumnGuides} columnIndex={1} />
       </div>
+
+      <Dialog open={!!selectedUrl} onOpenChange={() => setSelectedUrl(null)}>
+        <DialogContent className="max-w-[90vw] w-[1200px] h-[80vh] p-0">
+          <div className="flex items-center justify-between p-4 border-b">
+            <h2 className="text-lg font-semibold">{selectedUrl}</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSelectedUrl(null)}
+              className="h-8 w-8"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="relative w-full h-full">
+            {selectedUrl && (
+              <iframe
+                src={selectedUrl}
+                className="w-full h-full border-0"
+                title="Website Preview"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   );
 };
