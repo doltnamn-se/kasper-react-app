@@ -50,8 +50,8 @@ const Toast = React.forwardRef<
       {...props}
     >
       <div className="flex-1 pb-2">{props.children}</div>
-      <div className="absolute left-0 right-0 bottom-0 h-1 overflow-hidden">
-        <div className="h-full w-full bg-primary animate-progress-line" />
+      <div className="absolute inset-x-0 bottom-0 h-1">
+        <div className="h-full w-full bg-primary animate-progress-line rounded-b-md" />
       </div>
     </ToastPrimitives.Root>
   )
