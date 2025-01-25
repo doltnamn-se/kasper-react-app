@@ -90,6 +90,8 @@ const Guides = () => {
     <div className="flex flex-col gap-4">
       {guides.map((guide, index) => {
         const accordionId = `${columnIndex}-${index}`;
+        const isOpen = openAccordion === accordionId;
+        
         return (
           <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
             <Accordion 
@@ -131,7 +133,11 @@ const Guides = () => {
                 <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
-                    <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+                    <ChevronDown 
+                      className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-180' : ''
+                      }`}
+                    />
                   </div>
                 </AccordionTrigger>
               </AccordionItem>
