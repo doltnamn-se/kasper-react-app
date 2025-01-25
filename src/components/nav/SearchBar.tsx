@@ -28,6 +28,7 @@ export const SearchBar = () => {
   const navigate = useNavigate();
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchResultsRef = useRef<HTMLDivElement>(null);
   const [showResults, setShowResults] = useState(false);
 
   const getSearchResults = (query: string): SearchResult[] => {
@@ -79,6 +80,21 @@ export const SearchBar = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchResultsRef.current && 
+        !searchResultsRef.current.contains(event.target as Node) &&
+        !inputRef.current?.contains(event.target as Node)
+      ) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const clearSearch = () => {
@@ -177,7 +193,10 @@ export const SearchBar = () => {
       </div>
 
       {showResults && searchQuery && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-50">
+        <div 
+          ref={searchResultsRef}
+          className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] overflow-hidden z-50"
+        >
           <Command className="border-none bg-transparent">
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
