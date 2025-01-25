@@ -127,6 +127,8 @@ export const en: Translations = {
   'step.4.title': 'Personal Information',
   'link.to.removal': 'Link to removal',
   // Guide texts
+
+  // Guide translations
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Link: https://uppdatera.eniro.se/person',
   'guide.eniro.step2': 'Enter your name in the search field',
@@ -164,8 +166,5 @@ export const en: Translations = {
   
   'toast.copied.title': 'Copied',
   'toast.copied.description': 'Message has been copied to clipboard',
-  'copy': 'Copy',
-  'light.mode': 'Light mode',
-  'messages': 'Messages',
-  'notifications': 'Notifications',
+  'copy': 'Copy'
 };

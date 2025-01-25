@@ -128,6 +128,8 @@ export const sv: Translations = {
   'step.4.title': 'Personlig information',
   'link.to.removal': 'Länk till borttagning',
   // Guide texts
+
+  // Guide translations
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Länk: https://uppdatera.eniro.se/person',
   'guide.eniro.step2': 'Skriv in ditt namn i sökrutan',
@@ -165,5 +167,5 @@ export const sv: Translations = {
   
   'toast.copied.title': 'Kopierat',
   'toast.copied.description': 'Meddelandet har kopierats till urklipp',
-  'copy': 'Kopiera',
+  'copy': 'Kopiera'
 };

@@ -6,7 +6,7 @@ import { ThemeToggle } from "./nav/ThemeToggle";
 import { NotificationButtons } from "./nav/NotificationButtons";
 import { UserProfileMenu } from "./nav/UserProfileMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu } from "lucide-react";
+import { Menu, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
