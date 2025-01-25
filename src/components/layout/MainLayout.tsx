@@ -34,7 +34,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           <AuthLogo className="relative h-8" />
         </div>
 
-        <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-6 mb-8 transition-colors duration-200" />
+        <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
 
         <div className="px-6">
           <Navigation />
@@ -57,7 +57,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             <AuthLogo className="relative h-8" />
           </div>
 
-          <div className="h-px bg-[#e5e7eb] dark:bg-[#232325] mx-6 mb-8 transition-colors duration-200" />
+          <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
 
           <div className="px-6">
             <Navigation />

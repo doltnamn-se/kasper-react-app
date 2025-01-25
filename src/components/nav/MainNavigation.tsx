@@ -107,7 +107,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
             </Badge>
           </div>
         </div>
-        <Separator className="mb-4" />
+        <Separator className="mb-4 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       </div>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'))}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
