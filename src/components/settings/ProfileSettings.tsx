@@ -102,11 +102,11 @@ export const ProfileSettings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-8">
         <div className="relative">
-          <Avatar className="h-20 w-20">
+          <Avatar className="h-20 w-20 bg-[#e8e8e8] dark:bg-[#303032]">
             <AvatarImage src={userProfile?.avatar_url || undefined} />
-            <AvatarFallback className="text-lg">
+            <AvatarFallback className="text-lg font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {getUserInitials(userProfile)}
             </AvatarFallback>
           </Avatar>
@@ -152,22 +152,22 @@ export const ProfileSettings = () => {
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="email">{t('email')}</Label>
+          <Label htmlFor="display_name">{t('name')}</Label>
           <Input
-            id="email"
-            type="email"
-            value={userEmail || ''}
+            id="display_name"
+            type="text"
+            value={userProfile?.display_name || ''}
             disabled
             className="bg-muted"
           />
         </div>
 
         <div>
-          <Label htmlFor="display_name">{t('display.name')}</Label>
+          <Label htmlFor="email">{t('email')}</Label>
           <Input
-            id="display_name"
-            type="text"
-            value={userProfile?.display_name || ''}
+            id="email"
+            type="email"
+            value={userEmail || ''}
             disabled
             className="bg-muted"
           />
