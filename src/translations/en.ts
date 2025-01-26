@@ -196,7 +196,7 @@ export const en: Translations = {
   // URL related
   'url.input.placeholder': 'Paste the URL (https://...)',
   'url.add.another': 'Add another link',
-  'save.urls': 'Save URLs',
+  'save.urls': 'Save',
   'saving': 'Saving...',
   'url.limit.message': 'Your subscription allows up to {limit} URLs.',
   'url.no.plan': 'Your current subscription does not allow URL submissions. Upgrade to a 6 or 12-month plan to add URLs.',
