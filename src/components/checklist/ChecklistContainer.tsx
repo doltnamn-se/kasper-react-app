@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ArrowLeft, ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import confetti from 'canvas-confetti';
 
 interface ChecklistProgress {
@@ -177,81 +177,30 @@ export const ChecklistContainer = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card className="p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
-            <div className="space-y-8">
-              {renderCurrentStep()}
-              <div className="py-8">
-                <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
-              </div>
-              <div className="flex justify-between">
-                {currentStep > 1 && (
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
-                    className="gap-2"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    {language === 'en' ? 'Back' : 'Tillbaka'}
-                  </Button>
-                )}
-                {currentStep === 1 && <div />}
-                <Button
-                  onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
-                  disabled={currentStep === 4}
-                  className="gap-2"
-                >
-                  {language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`}
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
-            <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
-            <div className="space-y-4">
-              {[
-                { step: 1, title: t('step.1.title'), description: t('step.password.description'), completed: checklistProgress?.password_updated },
-                { step: 2, title: "Avindexering", description: "Lägg in de länkar från Google du önskar ta bort", completed: checklistProgress?.selected_sites?.length > 0 },
-                { step: 3, title: t('step.3.title'), description: t('step.urls.description'), completed: checklistProgress?.removal_urls?.length > 0 },
-                { step: 4, title: t('step.4.title'), description: t('step.info.description'), completed: checklistProgress?.address && checklistProgress?.personal_number },
-              ].map((item) => (
-                <div 
-                  key={item.step} 
-                  className={`flex items-center justify-between p-4 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
-                      <span className="text-xs xl:text-sm font-medium">{item.step}</span>
-                    </div>
-                    <div className={item.completed ? 'opacity-40' : ''}>
-                      <p className="text-sm xl:text-base font-medium">{item.title}</p>
-                      <p className="text-xs text-[#616166] dark:text-[#FFFFFFA6] font-medium hidden xl:block">{item.description}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    {item.completed ? (
-                      <div className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full bg-[#219653] flex items-center justify-center">
-                        <Check className="w-4 h-4 xl:w-6 xl:h-6 text-white" />
-                      </div>
-                    ) : (
-                      <button 
-                        onClick={() => setCurrentStep(item.step)}
-                        className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors"
-                      >
-                        <ChevronRight className="w-4 h-4 xl:w-6 xl:h-6" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
+      {renderCurrentStep()}
+      <div className="py-8">
+        <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
+      </div>
+      <div className="flex justify-between">
+        {currentStep > 1 && (
+          <Button
+            variant="outline"
+            onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {language === 'en' ? 'Back' : 'Tillbaka'}
+          </Button>
+        )}
+        {currentStep === 1 && <div />}
+        <Button
+          onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
+          disabled={currentStep === 4}
+          className="gap-2"
+        >
+          {language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`}
+          <ArrowRight className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
