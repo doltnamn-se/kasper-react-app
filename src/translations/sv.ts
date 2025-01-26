@@ -190,26 +190,15 @@ export const sv: Translations = {
   'guide.upplysning.step2': 'Skicka borttagningsbegäran',
   'guide.upplysning.step3': 'Vänta på svar',
 
-  // Subscription translations
-  'subscription.1month': '1 Mån',
-  'subscription.6months': '6 Mån',
-  'subscription.12months': '12 Mån',
-  'subscription.none': 'Ingen Plan',
-  'subscription.tooltip.1month': 'Månadsabonnemang',
-  'subscription.tooltip.6months': 'Halvårsabonnemang',
-  'subscription.tooltip.12months': 'Årsabonnemang',
-  
-  'profile.upload.photo': 'Ladda upp foto',
-
   // Deindexing related
   'deindexing.incoming.links': 'Inkomna länkar',
   'deindexing.deindexed.links': 'Borttagna länkar',
 
-  // URL limit related
-  'url.limit.message': 'Din prenumeration tillåter upp till {limit} URL:er.',
-  'url.no.plan': 'Din nuvarande prenumeration tillåter inte URL-inlämningar. Uppgradera till en 6- eller 12-månaders plan för att lägga till URL:er.',
+  // URL related
   'url.input.placeholder': 'Klistra in URL (https://...)',
   'url.add.another': 'Lägg till ytterligare en länk',
   'save.urls': 'Spara URL:er',
   'saving': 'Sparar...',
+  'url.limit.message': 'Din prenumeration tillåter upp till {limit} URL:er.',
+  'url.no.plan': 'Din nuvarande prenumeration tillåter inte URL-inlämningar. Uppgradera till en 6- eller 12-månaders plan för att lägga till URL:er.',
 } as const;
