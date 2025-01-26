@@ -125,10 +125,16 @@ export const ChecklistContainer = () => {
           </Badge>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">
-              {currentStep === 1 ? t('step.1.title') : currentStep === 2 ? t('step.deindexing.title') : t('set.password')}
+              {currentStep === 1 ? t('step.1.title') : 
+               currentStep === 2 ? t('step.deindexing.title') : 
+               currentStep === 3 ? t('step.3.title') : 
+               t('step.4.title')}
             </h3>
             <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {currentStep === 2 ? t('step.deindexing.description') : t('set.password.description')}
+              {currentStep === 1 ? t('set.password.description') :
+               currentStep === 2 ? t('step.deindexing.description') :
+               currentStep === 3 ? t('step.urls.description') :
+               t('step.info.description')}
             </p>
             {currentItem.requires_subscription_plan && (
               <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded w-fit">
@@ -186,7 +192,7 @@ export const ChecklistContainer = () => {
             {language === 'en' ? 'Back' : 'Tillbaka'}
           </Button>
         )}
-        {currentStep === 1 && <div />} {/* Empty div to maintain spacing when button is hidden */}
+        {currentStep === 1 && <div />}
         <Button
           onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
           disabled={currentStep === 4}
