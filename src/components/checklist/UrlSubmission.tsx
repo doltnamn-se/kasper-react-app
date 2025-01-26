@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 interface UrlSubmissionProps {
   onComplete: () => void;
@@ -14,6 +15,37 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // Fetch customer subscription plan
+  const { data: customerData } = useQuery({
+    queryKey: ['customer'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      const { data, error } = await supabase
+        .from('customers')
+        .select('subscription_plan')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  const getUrlLimit = () => {
+    switch (customerData?.subscription_plan) {
+      case '6_months':
+        return 2;
+      case '12_months':
+        return 4;
+      default:
+        return 0;
+    }
+  };
+
+  const urlLimit = getUrlLimit();
+
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
     newUrls[index] = value;
@@ -21,6 +53,14 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   const addUrlField = () => {
+    if (urls.length >= urlLimit) {
+      toast({
+        title: "URL limit reached",
+        description: `Your subscription plan allows up to ${urlLimit} URLs.`,
+        variant: "destructive",
+      });
+      return;
+    }
     setUrls([...urls, '']);
   };
 
@@ -39,12 +79,30 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       const validUrls = urls.filter(url => url.trim() !== '');
       
-      const { error } = await supabase
+      if (validUrls.length > urlLimit) {
+        throw new Error(`Your subscription plan allows up to ${urlLimit} URLs.`);
+      }
+
+      // First update the checklist progress
+      const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ removal_urls: validUrls })
         .eq('customer_id', session.user.id);
 
-      if (error) throw error;
+      if (progressError) throw progressError;
+
+      // Then insert into removal_urls table
+      const urlRows = validUrls.map(url => ({
+        customer_id: session.user.id,
+        url,
+        display_in_incoming: true
+      }));
+
+      const { error: urlsError } = await supabase
+        .from('removal_urls')
+        .insert(urlRows);
+
+      if (urlsError) throw urlsError;
 
       toast({
         title: "URLs saved",
@@ -52,20 +110,34 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       });
       
       onComplete();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving URLs:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to save URLs. Please try again.",
+        description: error.message || "Failed to save URLs. Please try again.",
       });
     } finally {
       setIsLoading(false);
     }
   };
 
+  if (urlLimit === 0) {
+    return (
+      <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+        <p className="text-sm text-yellow-800 dark:text-yellow-200">
+          Your current subscription plan does not allow URL submissions. Please upgrade to a 6-month or 12-month plan to add URLs.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        Your subscription plan allows up to {urlLimit} URLs.
+      </div>
+      
       {urls.map((url, index) => (
         <div key={index} className="flex gap-2">
           <Input
@@ -88,19 +160,21 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         </div>
       ))}
       
-      <Button
-        type="button"
-        variant="outline"
-        onClick={addUrlField}
-        className="w-full"
-      >
-        <Plus className="h-4 w-4 mr-2" />
-        Add Another URL
-      </Button>
+      {urls.length < urlLimit && (
+        <Button
+          type="button"
+          variant="outline"
+          onClick={addUrlField}
+          className="w-full"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add Another URL
+        </Button>
+      )}
       
       <Button
         type="submit"
-        disabled={isLoading || urls.every(url => url.trim() === '')}
+        disabled={isLoading || urls.every(url => url.trim() === '') || urls.length > urlLimit}
         className="w-full"
       >
         {isLoading ? "Saving..." : "Save URLs"}

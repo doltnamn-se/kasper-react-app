@@ -267,6 +267,7 @@ export type Database = {
         Row: {
           created_at: string
           customer_id: string | null
+          display_in_incoming: boolean | null
           id: string
           status: string | null
           updated_at: string
@@ -275,6 +276,7 @@ export type Database = {
         Insert: {
           created_at?: string
           customer_id?: string | null
+          display_in_incoming?: boolean | null
           id?: string
           status?: string | null
           updated_at?: string
@@ -283,6 +285,7 @@ export type Database = {
         Update: {
           created_at?: string
           customer_id?: string | null
+          display_in_incoming?: boolean | null
           id?: string
           status?: string | null
           updated_at?: string
