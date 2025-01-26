@@ -12,27 +12,23 @@ export const ProfileSettings = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        console.log("Fetching user profile...");
         const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session?.user?.id) {
-          console.log("No active session found");
-          return;
-        }
+        if (!session?.user?.id) return;
 
-        const { data: profile, error } = await supabase
+        console.log("Fetching profile for user:", session.user.id);
+        const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select()
           .eq('id', session.user.id)
           .single();
 
-        if (error) {
-          console.error("Error fetching profile:", error);
-          throw error;
+        if (profileError) {
+          console.error("Error fetching profile:", profileError);
+          throw profileError;
         }
 
-        console.log("Profile fetched successfully:", profile);
-        setUserProfile(profile);
+        console.log("Profile data:", profileData);
+        setUserProfile(profileData);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }
@@ -41,9 +37,9 @@ export const ProfileSettings = () => {
     fetchProfile();
   }, []);
 
-  const handleAvatarUpdate = (url: string | null) => {
+  const handleAvatarUpdate = (avatarUrl: string | null) => {
     if (userProfile) {
-      setUserProfile({ ...userProfile, avatar_url: url });
+      setUserProfile({ ...userProfile, avatar_url: avatarUrl });
     }
   };
 
@@ -55,7 +51,7 @@ export const ProfileSettings = () => {
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] rounded-lg border border-[#e5e7eb] dark:border-[#232325] p-6">
-      <h2 className="text-xl font-semibold mb-6 dark:text-white">
+      <h2 className="text-xl font-semibold mb-6 text-[#000000] dark:text-white">
         {t('profile')}
       </h2>
       <div className="space-y-6">

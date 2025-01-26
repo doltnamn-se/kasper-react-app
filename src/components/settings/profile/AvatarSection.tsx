@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { getUserInitials } from "@/utils/profileUtils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Profile } from "@/types/customer";
+import { getUserInitials } from "@/utils/profileUtils";
+import { Upload } from "lucide-react";
 
 interface AvatarSectionProps {
   userProfile: Profile | null;
@@ -22,7 +23,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
       if (!file) return;
 
       setIsUploading(true);
-      console.log("Starting avatar upload...");
+      console.log("Uploading avatar...");
 
       const fileExt = file.name.split('.').pop();
       const filePath = `${userProfile?.id}-${Math.random()}.${fileExt}`;
@@ -40,20 +41,18 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         .from('avatars')
         .getPublicUrl(filePath);
 
-      console.log("Avatar uploaded successfully, updating profile...");
-
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
         .eq('id', userProfile?.id);
 
       if (updateError) {
-        console.error("Error updating profile with new avatar:", updateError);
+        console.error("Error updating profile with avatar URL:", updateError);
         throw updateError;
       }
 
       onAvatarUpdate(publicUrl);
-      toast.success(t('success.avatarUpdated'));
+      toast.success(t('success'));
     } catch (error) {
       console.error("Avatar upload failed:", error);
       toast.error(t('error.generic'));
@@ -64,48 +63,46 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
 
   const handleAvatarDelete = async () => {
     try {
-      if (!userProfile?.avatar_url) return;
+      console.log("Deleting avatar...");
 
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: null })
-        .eq('id', userProfile.id);
+        .eq('id', userProfile?.id);
 
       if (updateError) {
-        console.error("Error removing avatar from profile:", updateError);
+        console.error("Error removing avatar URL:", updateError);
         throw updateError;
       }
 
       onAvatarUpdate(null);
-      toast.success(t('success.avatarDeleted'));
+      toast.success(t('success'));
     } catch (error) {
       console.error("Avatar deletion failed:", error);
-      toast.error(t('error.avatarDelete'));
+      toast.error(t('error.generic'));
     }
   };
 
   return (
     <div className="flex items-center gap-4">
-      <Avatar className="h-20 w-20">
-        <AvatarImage src={userProfile?.avatar_url ?? undefined} />
-        <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
-          {getUserInitials(userProfile)}
-        </AvatarFallback>
+      <Avatar className="h-16 w-16">
+        <AvatarImage src={userProfile?.avatar_url || undefined} />
+        <AvatarFallback>{getUserInitials(userProfile)}</AvatarFallback>
       </Avatar>
-      <div className="space-y-2">
+      <div className="flex items-center gap-2">
         <div>
           <Button
             variant="outline"
-            size="sm"
-            className="relative"
+            className="bg-[#f4f4f4] hover:bg-[#e4e4e4] border-0 dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b]"
             disabled={isUploading}
           >
-            {isUploading ? t('loading') : t('profile.upload.photo')}
+            <Upload className="h-4 w-4 mr-2" />
+            {t('upload')}
             <input
               type="file"
-              className="absolute inset-0 w-full opacity-0 cursor-pointer"
-              accept="image/*"
+              className="absolute inset-0 opacity-0 cursor-pointer"
               onChange={handleAvatarUpload}
+              accept="image/*"
               disabled={isUploading}
             />
           </Button>
@@ -113,7 +110,6 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         {userProfile?.avatar_url && (
           <Button
             variant="ghost"
-            size="sm"
             onClick={handleAvatarDelete}
             className="text-red-500 hover:text-red-600 hover:bg-transparent p-0"
           >

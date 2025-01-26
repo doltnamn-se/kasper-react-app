@@ -51,13 +51,13 @@ export const DisplayNameSection = ({ userProfile, onDisplayNameUpdate }: Display
           id="displayName"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          className="flex-1"
+          className="flex-1 bg-[#f4f4f4] dark:bg-[#2a2a2b] border-0"
           placeholder={t('display.name')}
         />
         <Button
           onClick={handleDisplayNameUpdate}
           disabled={isUpdating || !displayName || displayName === userProfile?.display_name}
-          variant="secondary"
+          className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-white"
         >
           {isUpdating ? t('loading') : t('save')}
         </Button>
