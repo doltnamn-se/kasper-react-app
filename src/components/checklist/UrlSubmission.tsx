@@ -177,7 +177,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       <Button
         type="submit"
         disabled={isLoading || urls.every(url => url.trim() === '') || urls.length > urlLimit}
-        className="w-full"
+        className="w-full py-6"
       >
         {isLoading ? t('saving') : t('save.urls')}
       </Button>
