@@ -135,9 +135,12 @@ export const en: Translations = {
   'step.info.title': 'Personal Information',
   'step.info.description': 'Update your personal information',
   'step.1.title': 'Set Password',
-  'step.2.title': 'Select Sites',
+  'step.2.title': 'Deindexing',
   'step.3.title': 'Submit URLs',
   'step.4.title': 'Personal Information',
+  // New translations for step 2
+  'step.deindexing.title': 'Deindexing',
+  'step.deindexing.description': 'Submit the Google links you want to remove',
   // Password related
   'set.password': 'Set Password',
   'set.password.description': 'Create a secure password for your account',
