@@ -197,5 +197,8 @@ export const sv: Translations = {
   'subscription.tooltip.12months': 'Årsabonnemang',
   
   'profile.upload.photo': 'Ladda upp foto',
-} as const;
 
+  // Deindexing related
+  'deindexing.incoming.links': 'Inkomna länkar',
+  'deindexing.deindexed.links': 'Avindexerade länkar',
+} as const;

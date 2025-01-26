@@ -197,5 +197,8 @@ export const en: Translations = {
   'subscription.tooltip.12months': 'Yearly plan',
   
   'profile.upload.photo': 'Upload photo',
-} as const;
 
+  // Deindexing related
+  'deindexing.incoming.links': 'Incoming Links',
+  'deindexing.deindexed.links': 'Deindexed Links',
+} as const;

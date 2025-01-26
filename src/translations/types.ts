@@ -188,6 +188,11 @@ export interface Translations {
   'guide.upplysning.step3': string;
 
   // Subscription translations
+  
+  // Deindexing related
+  'deindexing.incoming.links': string;
+  'deindexing.deindexed.links': string;
+  
   'subscription.1month': string;
   'subscription.6months': string;
   'subscription.12months': string;
