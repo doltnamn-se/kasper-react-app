@@ -48,7 +48,5 @@ export const ui: UITranslations = {
   'error.avatarDelete': 'Failed to delete profile photo',
   'toast.copied.title': 'Copied',
   'toast.copied.description': 'Text copied to clipboard',
-  'overview.welcome': 'Welcome to your dashboard',
-  'current.password': 'Current Password',
-  'set.password.description': 'Set a secure password for your account'
+  'overview.welcome': 'Welcome to your dashboard'
 };

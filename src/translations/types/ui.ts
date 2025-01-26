@@ -47,6 +47,4 @@ export interface UITranslations {
   'toast.copied.title': string;
   'toast.copied.description': string;
   'overview.welcome': string;
-  'current.password': string;
-  'set.password.description': string;
 }
