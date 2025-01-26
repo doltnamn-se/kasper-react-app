@@ -21,5 +21,5 @@ export const auth: AuthTranslations = {
   'updating.password': 'Uppdaterar lösenord...',
   'reset.password': 'Återställ lösenord',
   'reset.password.success': 'Återställningslänk har skickats',
-  'password.updated': 'Lösenordet har uppdaterats',
+  'password.updated': 'Lösenordet har uppdaterats'
 };
