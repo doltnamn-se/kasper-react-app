@@ -77,6 +77,7 @@ export const en: Translations = {
   'error.invalid.recovery.link': 'Invalid or expired recovery link',
   'error.password.requirements': 'Make sure your password meets all requirements',
   'error.update.preferences': 'Failed to update notification settings',
+  'error.passwords.dont.match': 'Passwords do not match',
   'error.invalidFileType': 'Invalid file type. Please upload an image.',
   'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
   'error.avatarUpload': 'Failed to upload avatar.',
@@ -84,7 +85,6 @@ export const en: Translations = {
   'success.avatarDeleted': 'Avatar has been deleted',
   'error.avatarDelete': 'Failed to delete avatar',
   'display.name': 'Name',
-  'error.passwords.dont.match': 'Passwords do not match',
   // Toast messages
   'toast.signed.out.title': 'You have signed out',
   'toast.signed.out.description': 'You have signed out of your account.',
@@ -155,4 +155,56 @@ export const en: Translations = {
   // URL limit related
   'url.limit.message': 'Your subscription plan allows up to {limit} URLs.',
   'url.no.plan': 'Your current subscription plan does not allow URL submissions. Please upgrade to a 6-month or 12-month plan to add URLs.',
+  // Links
+  'link.to.removal': 'Link to removal page',
+  // Guide related translations
+  'guide.eniro.title': 'Eniro',
+  'guide.eniro.step1': 'Visit https://www.eniro.se/person/removal',
+  'guide.eniro.step2': 'Fill in your personal information',
+  'guide.eniro.step3': 'Submit the form',
+  'guide.eniro.step4': 'Wait for confirmation',
+  
+  'guide.mrkoll.title': 'Mrkoll',
+  'guide.mrkoll.step1': 'Visit https://www.mrkoll.se/person/removal',
+  'guide.mrkoll.step2': 'Enter your information',
+  'guide.mrkoll.step3': 'Submit request',
+  
+  'guide.hitta.title': 'Hitta.se',
+  'guide.hitta.step1': 'Visit https://www.hitta.se/removal',
+  'guide.hitta.step2': 'Fill in the form',
+  'guide.hitta.step3': 'Submit and wait',
+  
+  'guide.merinfo.title': 'Merinfo',
+  'guide.merinfo.step1': 'Go to https://www.merinfo.se/removal',
+  'guide.merinfo.step2': 'Follow the removal process',
+  
+  'guide.ratsit.title': 'Ratsit',
+  'guide.ratsit.step1': 'Visit https://www.ratsit.se/removal',
+  'guide.ratsit.step2': 'Fill in the removal form',
+  'guide.ratsit.step3': 'Submit request',
+  
+  'guide.birthday.title': 'Birthday',
+  'guide.birthday.step1': 'Visit the website',
+  'guide.birthday.step2': 'Send message: "Please remove my information"',
+  'guide.birthday.step3': 'Wait for confirmation',
+  
+  'guide.upplysning.title': 'Upplysning',
+  'guide.upplysning.step1': 'Go to the website',
+  'guide.upplysning.step2': 'Send removal request',
+  'guide.upplysning.step3': 'Wait for response',
+
+  // Subscription translations
+  'subscription.1month': '1 Month',
+  'subscription.6months': '6 Months',
+  'subscription.12months': '12 Months',
+  'subscription.none': 'No Plan',
+  'subscription.tooltip.1month': 'Monthly subscription',
+  'subscription.tooltip.6months': 'Six-month subscription',
+  'subscription.tooltip.12months': 'Annual subscription',
+  
+  'profile.upload.photo': 'Upload photo',
+
+  // Deindexing related
+  'deindexing.incoming.links': 'Incoming links',
+  'deindexing.deindexed.links': 'Deindexed links',
 } as const;
