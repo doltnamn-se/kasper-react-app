@@ -4,7 +4,7 @@ export const auth: AuthTranslations = {
   'welcome.back': 'Welcome back',
   'sign.in': 'Sign in to your account',
   'signing.in': 'Signing in...',
-  'no.account': 'Don't have an account?',
+  'no.account': "Don't have an account?",
   'register': 'Get started',
   'email': 'Email',
   'password': 'Password',
