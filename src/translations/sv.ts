@@ -1,7 +1,6 @@
 import { Translations } from './types';
 
 export const sv: Translations = {
-  // Auth related
   'welcome.back': 'Välkommen tillbaka',
   'sign.in': 'Logga in på ditt konto',
   'signing.in': 'Loggar in...',
@@ -201,4 +200,15 @@ export const sv: Translations = {
   'saving': 'Sparar...',
   'url.limit.message': 'Din prenumeration tillåter upp till {limit} URL:er.',
   'url.no.plan': 'Din nuvarande prenumeration tillåter inte URL-inlämningar. Uppgradera till en 6- eller 12-månaders plan för att lägga till URL:er.',
+
+  // Subscription translations
+  'subscription.1month': '1 Mån',
+  'subscription.6months': '6 Mån',
+  'subscription.12months': '12 Mån',
+  'subscription.none': 'Ingen Plan',
+  'subscription.tooltip.1month': 'Månadsabonnemang',
+  'subscription.tooltip.6months': 'Halvårsabonnemang',
+  'subscription.tooltip.12months': 'Årsabonnemang',
+  
+  'profile.upload.photo': 'Ladda upp foto'
 } as const;
