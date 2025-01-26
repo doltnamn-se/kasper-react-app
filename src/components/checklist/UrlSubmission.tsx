@@ -144,7 +144,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         <div key={index} className="flex gap-2">
           <Input
             type="url"
-            placeholder="Enter URL"
+            placeholder={t('url.input.placeholder')}
             value={url}
             onChange={(e) => handleUrlChange(index, e.target.value)}
             required
@@ -170,7 +170,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
           className="w-full"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add Another URL
+          {t('url.add.another')}
         </Button>
       )}
       
@@ -179,7 +179,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         disabled={isLoading || urls.every(url => url.trim() === '') || urls.length > urlLimit}
         className="w-full"
       >
-        {isLoading ? "Saving..." : "Save URLs"}
+        {isLoading ? t('saving') : t('save.urls')}
       </Button>
     </form>
   );
