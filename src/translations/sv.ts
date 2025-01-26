@@ -135,9 +135,12 @@ export const sv: Translations = {
   'step.info.title': 'Personlig information',
   'step.info.description': 'Uppdatera din personliga information',
   'step.1.title': 'Ange lösenord',
-  'step.2.title': 'Välj webbplatser',
+  'step.2.title': 'Avindexering',
   'step.3.title': 'Skicka in URL:er',
   'step.4.title': 'Personlig information',
+  // New translations for step 2
+  'step.deindexing.title': 'Avindexering',
+  'step.deindexing.description': 'Lägg in de länkar från Google du önskar ta bort',
   // Password related
   'set.password': 'Ange lösenord',
   'set.password.description': 'Skapa ett säkert lösenord för ditt konto',

@@ -138,6 +138,9 @@ export interface Translations {
   'step.2.title': string;
   'step.3.title': string;
   'step.4.title': string;
+  // New translations for step 2
+  'step.deindexing.title': string;
+  'step.deindexing.description': string;
   // Password related
   'set.password': string;
   'set.password.description': string;
