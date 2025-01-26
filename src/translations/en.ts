@@ -150,9 +150,9 @@ export const en: Translations = {
   'pending.completion': 'Pending completion',
   // Checklist related
   'checklist': 'Checklist',
-  'getting.started': 'Get started',
-  // URL related
-  
+  'getting.started': 'Steps',
+  // Links
+  'link.to.removal': 'Link to removal page',
   // Guide related translations
   'guide.eniro.title': 'Eniro',
   'guide.eniro.step1': 'Visit https://www.eniro.se/person/removal',
@@ -188,9 +188,6 @@ export const en: Translations = {
   'guide.upplysning.step1': 'Go to website',
   'guide.upplysning.step2': 'Send removal request',
   'guide.upplysning.step3': 'Wait for response',
-
-  // Links
-  'link.to.removal': 'Link to removal page',
 
   // Deindexing related
   'deindexing.incoming.links': 'Incoming links',

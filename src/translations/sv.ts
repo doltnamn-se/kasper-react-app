@@ -150,7 +150,7 @@ export const sv: Translations = {
   'pending.completion': 'Väntar på slutförande',
   // Checklist related
   'checklist': 'Checklista',
-  'getting.started': 'Kom igång',
+  'getting.started': 'Steg',
   // Links
   'link.to.removal': 'Länk till borttagningssida',
   // Guide related translations
