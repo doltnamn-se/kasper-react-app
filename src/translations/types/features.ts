@@ -60,4 +60,8 @@ export interface FeaturesTranslations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
+
+  // Password related
+  'set.password.description': string;
+  'current.password': string;
 }

@@ -30,6 +30,10 @@ export const features: FeaturesTranslations = {
   'deindexing.incoming.links': 'Inkomna länkar',
   'deindexing.deindexed.links': 'Borttagna länkar',
   
+  // Password related
+  'set.password.description': 'Skapa ett säkert lösenord för ditt konto',
+  'current.password': 'Nuvarande lösenord',
+  
   // Guide translations
   'guide.eniro.title': 'Eniro',
   'guide.eniro.step1': 'Besök https://www.eniro.se/person/removal',
