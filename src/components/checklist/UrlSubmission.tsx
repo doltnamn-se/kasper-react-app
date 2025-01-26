@@ -136,7 +136,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+      <div className="text-sm text-black dark:text-white mb-4">
         {t('url.limit.message', { limit: urlLimit })}
       </div>
       
