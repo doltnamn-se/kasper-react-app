@@ -207,6 +207,12 @@ export interface Translations {
   'profile.upload.photo': string;
 
   // URL limit related
+  
+  // URL related
+  'url.input.placeholder': string;
+  'url.add.another': string;
+  'save.urls': string;
+  'saving': string;
   'url.limit.message': string;
   'url.no.plan': string;
 }
