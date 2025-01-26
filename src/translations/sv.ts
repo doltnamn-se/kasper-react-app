@@ -200,5 +200,5 @@ export const sv: Translations = {
 
   // Deindexing related
   'deindexing.incoming.links': 'Inkomna länkar',
-  'deindexing.deindexed.links': 'Avindexerade länkar',
+  'deindexing.deindexed.links': 'Borttagna länkar',
 } as const;
