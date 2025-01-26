@@ -152,7 +152,52 @@ export const en: Translations = {
   'checklist': 'Checklist',
   'getting.started': 'Get started',
   // URL related
-  'url.input.placeholder': 'Paste the URL (https://...)',
+
+  // Links
+  'link.to.removal': 'Link to removal page',
+
+  // Guide related translations
+  'guide.eniro.title': 'Eniro',
+  'guide.eniro.step1': 'Visit https://www.eniro.se/person/removal',
+  'guide.eniro.step2': 'Fill in your personal information',
+  'guide.eniro.step3': 'Submit the form',
+  'guide.eniro.step4': 'Wait for confirmation',
+  
+  'guide.mrkoll.title': 'Mrkoll',
+  'guide.mrkoll.step1': 'Visit https://www.mrkoll.se/person/removal',
+  'guide.mrkoll.step2': 'Enter your information',
+  'guide.mrkoll.step3': 'Submit request',
+  
+  'guide.hitta.title': 'Hitta.se',
+  'guide.hitta.step1': 'Visit https://www.hitta.se/removal',
+  'guide.hitta.step2': 'Fill out the form',
+  'guide.hitta.step3': 'Submit and wait',
+  
+  'guide.merinfo.title': 'Merinfo',
+  'guide.merinfo.step1': 'Go to https://www.merinfo.se/removal',
+  'guide.merinfo.step2': 'Follow removal process',
+  
+  'guide.ratsit.title': 'Ratsit',
+  'guide.ratsit.step1': 'Visit https://www.ratsit.se/removal',
+  'guide.ratsit.step2': 'Fill out removal form',
+  'guide.ratsit.step3': 'Submit request',
+  
+  'guide.birthday.title': 'Birthday',
+  'guide.birthday.step1': 'Visit the website',
+  'guide.birthday.step2': 'Send message: "Please remove my information"',
+  'guide.birthday.step3': 'Wait for confirmation',
+  
+  'guide.upplysning.title': 'Upplysning',
+  'guide.upplysning.step1': 'Go to website',
+  'guide.upplysning.step2': 'Send removal request',
+  'guide.upplysning.step3': 'Wait for response',
+
+  // Deindexing related
+  'deindexing.incoming.links': 'Incoming links',
+  'deindexing.deindexed.links': 'Removed links',
+
+  // URL related
+  'url.input.placeholder': 'Paste URL (https://...)',
   'url.add.another': 'Add another link',
   'save.urls': 'Save links',
   'saving': 'Saving...',
