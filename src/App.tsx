@@ -37,7 +37,7 @@ function App() {
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
                 <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
                 <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
-                <Route path="/deindexing" element={<ProtectedRoute><Deindexing /></ProtectedRoute>} />
+                <Route path="/avindexering" element={<ProtectedRoute><Deindexing /></ProtectedRoute>} />
                 <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
                 <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
                 <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
