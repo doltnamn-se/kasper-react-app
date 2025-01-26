@@ -49,4 +49,7 @@ export interface UITranslations {
   'overview.welcome': string;
   'current.password': string;
   'set.password.description': string;
+  'profile': string;
+  'delete': string;
+  'save': string;
 }

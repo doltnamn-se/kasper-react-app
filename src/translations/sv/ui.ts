@@ -50,5 +50,8 @@ export const ui: UITranslations = {
   'toast.copied.description': 'Text kopierad till urklipp',
   'overview.welcome': 'Välkommen till din översikt',
   'current.password': 'Nuvarande Lösenord',
-  'set.password.description': 'Välj ett säkert lösenord för ditt konto'
+  'set.password.description': 'Välj ett säkert lösenord för ditt konto',
+  'profile': 'Profil',
+  'delete': 'Ta bort',
+  'save': 'Spara'
 };

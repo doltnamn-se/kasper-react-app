@@ -50,5 +50,8 @@ export const ui: UITranslations = {
   'toast.copied.description': 'Text copied to clipboard',
   'overview.welcome': 'Welcome to your dashboard',
   'current.password': 'Current Password',
-  'set.password.description': 'Set a secure password for your account'
+  'set.password.description': 'Set a secure password for your account',
+  'profile': 'Profile',
+  'delete': 'Delete',
+  'save': 'Save'
 };
