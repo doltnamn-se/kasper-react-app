@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface UrlSubmissionProps {
   onComplete: () => void;
@@ -14,6 +15,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const [urls, setUrls] = useState<string[]>(['']);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   // Fetch customer subscription plan
   const { data: customerData } = useQuery({
@@ -56,7 +58,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     if (urls.length >= urlLimit) {
       toast({
         title: "URL limit reached",
-        description: `Your subscription plan allows up to ${urlLimit} URLs.`,
+        description: t('url.limit.message', { limit: urlLimit }),
         variant: "destructive",
       });
       return;
@@ -80,7 +82,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       const validUrls = urls.filter(url => url.trim() !== '');
       
       if (validUrls.length > urlLimit) {
-        throw new Error(`Your subscription plan allows up to ${urlLimit} URLs.`);
+        throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
       // First update the checklist progress
@@ -126,7 +128,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     return (
       <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
         <p className="text-sm text-yellow-800 dark:text-yellow-200">
-          Your current subscription plan does not allow URL submissions. Please upgrade to a 6-month or 12-month plan to add URLs.
+          {t('url.no.plan')}
         </p>
       </div>
     );
@@ -135,7 +137,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-        Your subscription plan allows up to {urlLimit} URLs.
+        {t('url.limit.message', { limit: urlLimit })}
       </div>
       
       {urls.map((url, index) => (

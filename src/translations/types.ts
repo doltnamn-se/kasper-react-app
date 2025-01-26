@@ -107,8 +107,8 @@ export interface Translations {
   'settings.confirm.password': string;
   'settings.update.password': string;
   'settings.updating.password': string;
-  'settings.password.updated': string;
   'settings.success': string;
+  'settings.password.updated': string;
   'settings.notification.preferences': string;
   'settings.email.notifications': string;
   'settings.email.notifications.description': string;
@@ -205,4 +205,8 @@ export interface Translations {
   'subscription.tooltip.12months': string;
   
   'profile.upload.photo': string;
+
+  // URL limit related
+  'url.limit.message': string;
+  'url.no.plan': string;
 }
