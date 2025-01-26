@@ -134,7 +134,7 @@ export const en: Translations = {
   'step.urls.description': 'Submit URLs where your information appears',
   'step.info.title': 'Personal information',
   'step.info.description': 'Update your personal information',
-  'step.1.title': 'Enter password',
+  'step.1.title': 'Set your password',
   'step.2.title': 'Deindexing',
   'step.3.title': 'Submit URLs',
   'step.4.title': 'Personal information',
