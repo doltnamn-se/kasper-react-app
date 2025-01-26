@@ -125,7 +125,7 @@ export const ChecklistContainer = () => {
           </Badge>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">
-              {currentStep === 2 ? t('step.deindexing.title') : t('set.password')}
+              {currentStep === 1 ? t('step.1.title') : currentStep === 2 ? t('step.deindexing.title') : t('set.password')}
             </h3>
             <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {currentStep === 2 ? t('step.deindexing.description') : t('set.password.description')}
