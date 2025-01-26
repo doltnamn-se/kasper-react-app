@@ -7,10 +7,17 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
 
 const Checklist = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    document.title = language === 'sv' ? 
+      "Checklista | Doltnamn.se" : 
+      "Checklist | Doltnamn.se";
+  }, [language]);
 
   const { data: checklistProgress } = useQuery({
     queryKey: ['checklist-progress'],

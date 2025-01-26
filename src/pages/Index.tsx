@@ -1,8 +1,15 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useEffect } from "react";
 
 const Index = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  useEffect(() => {
+    document.title = language === 'sv' ? 
+      "Översikt | Doltnamn.se" : 
+      "Overview | Doltnamn.se";
+  }, [language]);
 
   return (
     <MainLayout>

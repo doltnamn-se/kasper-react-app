@@ -4,7 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowRight, Copy } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -18,9 +18,15 @@ interface Guide {
 }
 
 const Guides = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { toast } = useToast();
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    document.title = language === 'sv' ? 
+      "Guider | Doltnamn.se" : 
+      "Guides | Doltnamn.se";
+  }, [language]);
 
   const guides: Guide[] = [
     {

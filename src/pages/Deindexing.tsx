@@ -1,13 +1,19 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
 
 const Deindexing = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
+
+  useEffect(() => {
+    document.title = language === 'sv' ? 
+      "Avindexering | Doltnamn.se" : 
+      "Deindexing | Doltnamn.se";
+  }, [language]);
 
   return (
     <MainLayout>

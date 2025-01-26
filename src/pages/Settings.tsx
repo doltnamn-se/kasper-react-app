@@ -8,9 +8,15 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Settings = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("profile");
+
+  useEffect(() => {
+    document.title = language === 'sv' ? 
+      "Inställningar | Doltnamn.se" : 
+      "Settings | Doltnamn.se";
+  }, [language]);
 
   useEffect(() => {
     // Check if there's a default tab in the location state
