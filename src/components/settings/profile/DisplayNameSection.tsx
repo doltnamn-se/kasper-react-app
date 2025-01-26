@@ -57,6 +57,7 @@ export const DisplayNameSection = ({ userProfile, onDisplayNameUpdate }: Display
         <Button
           onClick={handleDisplayNameUpdate}
           disabled={isUpdating || !displayName || displayName === userProfile?.display_name}
+          variant="secondary"
         >
           {isUpdating ? t('loading') : t('save')}
         </Button>

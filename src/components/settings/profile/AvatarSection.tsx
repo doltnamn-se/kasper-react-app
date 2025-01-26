@@ -96,6 +96,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         <div>
           <Button
             variant="outline"
+            size="sm"
             className="relative"
             disabled={isUploading}
           >
@@ -112,8 +113,9 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         {userProfile?.avatar_url && (
           <Button
             variant="ghost"
+            size="sm"
             onClick={handleAvatarDelete}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20"
+            className="text-red-500 hover:text-red-600 hover:bg-transparent p-0"
           >
             {t('delete')}
           </Button>

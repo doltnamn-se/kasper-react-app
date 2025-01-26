@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Profile } from "@/types/customer";
 import { supabase } from "@/integrations/supabase/client";
 import { AvatarSection } from "./profile/AvatarSection";
@@ -55,11 +54,11 @@ export const ProfileSettings = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('profile')}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="bg-white dark:bg-[#1c1c1e] rounded-lg border border-[#e5e7eb] dark:border-[#232325] p-6">
+      <h2 className="text-xl font-semibold mb-6 dark:text-white">
+        {t('profile')}
+      </h2>
+      <div className="space-y-6">
         <AvatarSection 
           userProfile={userProfile} 
           onAvatarUpdate={handleAvatarUpdate} 
@@ -68,7 +67,7 @@ export const ProfileSettings = () => {
           userProfile={userProfile} 
           onDisplayNameUpdate={handleDisplayNameUpdate} 
         />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
