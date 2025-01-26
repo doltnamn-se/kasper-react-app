@@ -126,13 +126,13 @@ export const ChecklistContainer = () => {
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">
               {currentStep === 1 ? t('step.1.title') : 
-               currentStep === 2 ? t('step.deindexing.title') : 
+               currentStep === 2 ? "Avindexering" : 
                currentStep === 3 ? t('step.3.title') : 
                t('step.4.title')}
             </h3>
             <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {currentStep === 1 ? t('set.password.description') :
-               currentStep === 2 ? t('step.deindexing.description') :
+               currentStep === 2 ? "Lägg in de länkar från Google du önskar ta bort" :
                currentStep === 3 ? t('step.urls.description') :
                t('step.info.description')}
             </p>
