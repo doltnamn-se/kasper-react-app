@@ -147,12 +147,12 @@ export const ChecklistContainer = () => {
                   buttonClassName="w-full xl:w-1/4 lg:w-1/2"
                 />;
               case 2:
-                return <HidingSitesSelection onComplete={() => {
+                return <UrlSubmission onComplete={() => {
                   handleStepComplete();
                   setCurrentStep(3);
                 }} />;
               case 3:
-                return <UrlSubmission onComplete={() => {
+                return <HidingSitesSelection onComplete={() => {
                   handleStepComplete();
                   setCurrentStep(4);
                 }} />;
