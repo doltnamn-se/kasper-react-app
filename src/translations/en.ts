@@ -152,10 +152,7 @@ export const en: Translations = {
   'checklist': 'Checklist',
   'getting.started': 'Get started',
   // URL related
-
-  // Links
-  'link.to.removal': 'Link to removal page',
-
+  
   // Guide related translations
   'guide.eniro.title': 'Eniro',
   'guide.eniro.step1': 'Visit https://www.eniro.se/person/removal',
@@ -170,7 +167,7 @@ export const en: Translations = {
   
   'guide.hitta.title': 'Hitta.se',
   'guide.hitta.step1': 'Visit https://www.hitta.se/removal',
-  'guide.hitta.step2': 'Fill out the form',
+  'guide.hitta.step2': 'Fill in the form',
   'guide.hitta.step3': 'Submit and wait',
   
   'guide.merinfo.title': 'Merinfo',
@@ -179,7 +176,7 @@ export const en: Translations = {
   
   'guide.ratsit.title': 'Ratsit',
   'guide.ratsit.step1': 'Visit https://www.ratsit.se/removal',
-  'guide.ratsit.step2': 'Fill out removal form',
+  'guide.ratsit.step2': 'Fill in removal form',
   'guide.ratsit.step3': 'Submit request',
   
   'guide.birthday.title': 'Birthday',
@@ -192,16 +189,19 @@ export const en: Translations = {
   'guide.upplysning.step2': 'Send removal request',
   'guide.upplysning.step3': 'Wait for response',
 
+  // Links
+  'link.to.removal': 'Link to removal page',
+
   // Deindexing related
   'deindexing.incoming.links': 'Incoming links',
-  'deindexing.deindexed.links': 'Removed links',
-
+  'deindexing.deindexed.links': 'Deindexed links',
+  
   // URL related
-  'url.input.placeholder': 'Paste URL (https://...)',
+  'url.input.placeholder': 'Paste the URL (https://...)',
   'url.add.another': 'Add another link',
-  'save.urls': 'Save links',
+  'save.urls': 'Save URLs',
   'saving': 'Saving...',
-  'url.limit.message': 'Your subscription allows up to {limit} URLs',
+  'url.limit.message': 'Your subscription allows up to {limit} URLs.',
   'url.no.plan': 'Your current subscription does not allow URL submissions. Upgrade to a 6 or 12-month plan to add URLs.',
 
   // Subscription translations

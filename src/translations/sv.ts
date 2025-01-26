@@ -196,9 +196,9 @@ export const sv: Translations = {
   // URL related
   'url.input.placeholder': 'Klistra in URL (https://...)',
   'url.add.another': 'Lägg till ytterligare en länk',
-  'save.urls': 'Spara länkar',
+  'save.urls': 'Spara URL:er',
   'saving': 'Sparar...',
-  'url.limit.message': 'Din prenumeration tillåter upp till {limit} URL:er',
+  'url.limit.message': 'Din prenumeration tillåter upp till {limit} URL:er.',
   'url.no.plan': 'Din nuvarande prenumeration tillåter inte URL-inlämningar. Uppgradera till en 6- eller 12-månaders plan för att lägga till URL:er.',
 
   // Subscription translations
