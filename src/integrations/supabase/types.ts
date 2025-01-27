@@ -116,6 +116,8 @@ export type Database = {
           checklist_step: number | null
           created_at: string | null
           created_by: string | null
+          customer_type: string
+          has_address_alert: boolean | null
           id: string
           identification_info: Json | null
           onboarding_completed: boolean | null
@@ -130,6 +132,8 @@ export type Database = {
           checklist_step?: number | null
           created_at?: string | null
           created_by?: string | null
+          customer_type?: string
+          has_address_alert?: boolean | null
           id: string
           identification_info?: Json | null
           onboarding_completed?: boolean | null
@@ -144,6 +148,8 @@ export type Database = {
           checklist_step?: number | null
           created_at?: string | null
           created_by?: string | null
+          customer_type?: string
+          has_address_alert?: boolean | null
           id?: string
           identification_info?: Json | null
           onboarding_completed?: boolean | null

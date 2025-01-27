@@ -8,20 +8,23 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const [formData, setFormData] = useState({
     email: "",
     displayName: "",
-    subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months"
+    subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months",
+    customerType: "private" as "private" | "business",
+    hasAddressAlert: false
   });
 
   const resetForm = () => {
     setFormData({
       email: "",
       displayName: "",
-      subscriptionPlan: "1_month"
+      subscriptionPlan: "1_month",
+      customerType: "private",
+      hasAddressAlert: false
     });
   };
 
   const generateSimplePassword = () => {
-    // Generate a simple 6-character password with only uppercase letters and numbers
-    const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // Removed confusing characters like 0,O,1,I
+    const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
     let password = '';
     for (let i = 0; i < 6; i++) {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -40,17 +43,17 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      // Generate a simpler password
       const generatedPassword = generateSimplePassword();
-      console.log("Generated simple password:", generatedPassword); // Added for debugging
+      console.log("Generated simple password:", generatedPassword);
 
-      // Step 1: Create customer
       console.log("Creating auth user...");
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
           email: formData.email,
           displayName: formData.displayName,
           subscriptionPlan: formData.subscriptionPlan,
+          customerType: formData.customerType,
+          hasAddressAlert: formData.hasAddressAlert,
           createdBy: user.id,
           password: generatedPassword
         }
@@ -63,7 +66,6 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       console.log("Customer created successfully:", createData);
 
-      // Step 2: Send welcome email with credentials
       console.log("Sending welcome email...");
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {

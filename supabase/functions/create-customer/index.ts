@@ -11,7 +11,6 @@ const corsHeaders = {
 serve(async (req) => {
   console.log("Received request to create-customer function");
   
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS request");
     return new Response(null, { 
@@ -25,14 +24,22 @@ serve(async (req) => {
     const requestData = await req.json();
     console.log("Received request data:", requestData);
 
-    const { email, displayName, subscriptionPlan, createdBy, password } = requestData;
+    const { 
+      email, 
+      displayName, 
+      subscriptionPlan, 
+      customerType,
+      hasAddressAlert,
+      createdBy, 
+      password 
+    } = requestData;
 
-    if (!email || !displayName || !subscriptionPlan || !createdBy || !password) {
-      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy });
+    if (!email || !displayName || !subscriptionPlan || !createdBy || !password || !customerType) {
+      console.error("Missing required fields:", { email, displayName, subscriptionPlan, createdBy, customerType });
       return new Response(
         JSON.stringify({
           error: "Missing required fields",
-          received: { email, displayName, subscriptionPlan, createdBy }
+          received: { email, displayName, subscriptionPlan, createdBy, customerType }
         }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -46,7 +53,6 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Create auth user with the simple password from the request
     console.log("Creating auth user with provided password...");
     const { data: { user }, error: createUserError } = await supabase.auth.admin.createUser({
       email,
@@ -81,13 +87,14 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", user.id);
 
-    // Step 2: Update customer subscription plan
-    console.log("Updating customer subscription plan...");
+    console.log("Updating customer subscription plan and type...");
     const { error: updateError } = await supabase
       .from('customers')
       .update({ 
         subscription_plan: subscriptionPlan,
-        created_by: createdBy 
+        created_by: createdBy,
+        customer_type: customerType,
+        has_address_alert: hasAddressAlert
       })
       .eq('id', user.id);
 
@@ -102,7 +109,6 @@ serve(async (req) => {
       );
     }
 
-    // Step 3: Create profile for the user
     console.log("Creating profile for user...");
     const { error: profileError } = await supabase
       .from('profiles')
@@ -115,8 +121,6 @@ serve(async (req) => {
 
     if (profileError) {
       console.error("Error creating profile:", profileError);
-      // Don't return error here as the user and customer are already created
-      // Just log it for debugging
     }
 
     return new Response(

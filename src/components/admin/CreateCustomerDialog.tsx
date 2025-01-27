@@ -4,7 +4,6 @@ import { UserPlus } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useState } from "react";
-import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -37,9 +36,13 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
             email={formData.email}
             displayName={formData.displayName}
             subscriptionPlan={formData.subscriptionPlan}
+            customerType={formData.customerType}
+            hasAddressAlert={formData.hasAddressAlert}
             onEmailChange={(email) => setFormData(prev => ({ ...prev, email }))}
             onDisplayNameChange={(displayName) => setFormData(prev => ({ ...prev, displayName }))}
             onSubscriptionPlanChange={(subscriptionPlan) => setFormData(prev => ({ ...prev, subscriptionPlan }))}
+            onCustomerTypeChange={(customerType) => setFormData(prev => ({ ...prev, customerType }))}
+            onHasAddressAlertChange={(hasAddressAlert) => setFormData(prev => ({ ...prev, hasAddressAlert }))}
           />
           <Button 
             className="w-full" 

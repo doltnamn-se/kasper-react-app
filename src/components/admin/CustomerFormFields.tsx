@@ -6,21 +6,61 @@ interface CustomerFormFieldsProps {
   email: string;
   displayName: string;
   subscriptionPlan: "1_month" | "6_months" | "12_months";
+  customerType: "private" | "business";
+  hasAddressAlert: boolean;
   onEmailChange: (value: string) => void;
   onDisplayNameChange: (value: string) => void;
   onSubscriptionPlanChange: (value: "1_month" | "6_months" | "12_months") => void;
+  onCustomerTypeChange: (value: "private" | "business") => void;
+  onHasAddressAlertChange: (value: boolean) => void;
 }
 
 export const CustomerFormFields = ({
   email,
   displayName,
   subscriptionPlan,
+  customerType,
+  hasAddressAlert,
   onEmailChange,
   onDisplayNameChange,
   onSubscriptionPlanChange,
+  onCustomerTypeChange,
+  onHasAddressAlertChange,
 }: CustomerFormFieldsProps) => {
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="customerType">Customer Type</Label>
+        <Select
+          value={customerType}
+          onValueChange={onCustomerTypeChange}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select customer type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="private">Private Customer</SelectItem>
+            <SelectItem value="business">Business Client</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="hasAddressAlert">Address Alert</Label>
+        <Select
+          value={hasAddressAlert ? "yes" : "no"}
+          onValueChange={(value) => onHasAddressAlertChange(value === "yes")}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select address alert status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="yes">Yes</SelectItem>
+            <SelectItem value="no">No</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -31,6 +71,7 @@ export const CustomerFormFields = ({
           onChange={(e) => onEmailChange(e.target.value)}
         />
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="displayName">Display Name</Label>
         <Input
@@ -40,6 +81,7 @@ export const CustomerFormFields = ({
           onChange={(e) => onDisplayNameChange(e.target.value)}
         />
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
         <Select
