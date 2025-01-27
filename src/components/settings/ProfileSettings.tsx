@@ -50,20 +50,15 @@ export const ProfileSettings = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] rounded-lg border border-[#e5e7eb] dark:border-[#232325] p-6">
-      <h2 className="text-xl font-semibold mb-6 text-[#000000] dark:text-white">
-        {t('profile')}
-      </h2>
-      <div className="space-y-6">
-        <AvatarSection 
-          userProfile={userProfile} 
-          onAvatarUpdate={handleAvatarUpdate} 
-        />
-        <DisplayNameSection 
-          userProfile={userProfile} 
-          onDisplayNameUpdate={handleDisplayNameUpdate} 
-        />
-      </div>
+    <div className="space-y-6">
+      <AvatarSection 
+        userProfile={userProfile} 
+        onAvatarUpdate={handleAvatarUpdate} 
+      />
+      <DisplayNameSection 
+        userProfile={userProfile} 
+        onDisplayNameUpdate={handleDisplayNameUpdate} 
+      />
     </div>
   );
 };
