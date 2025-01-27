@@ -15,6 +15,7 @@ import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
 import Settings from "@/pages/Settings";
 import PasswordTest from "@/pages/PasswordTest";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
@@ -36,6 +37,7 @@ function App() {
               <Routes>
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
                 <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+                <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
                 <Route path="/deindexing" element={<ProtectedRoute><Deindexing /></ProtectedRoute>} />
                 <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
