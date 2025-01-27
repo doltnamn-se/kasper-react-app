@@ -53,5 +53,6 @@ export const ui: UITranslations = {
   'set.password.description': 'Set a secure password for your account',
   'profile': 'Profile',
   'delete': 'Delete',
-  'save': 'Save'
+  'save': 'Save',
+  'upload': 'Upload'
 };

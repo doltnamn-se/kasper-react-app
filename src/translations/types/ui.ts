@@ -52,4 +52,5 @@ export interface UITranslations {
   'profile': string;
   'delete': string;
   'save': string;
+  'upload': string;
 }

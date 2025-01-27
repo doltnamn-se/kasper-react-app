@@ -53,5 +53,6 @@ export const ui: UITranslations = {
   'set.password.description': 'Välj ett säkert lösenord för ditt konto',
   'profile': 'Profil',
   'delete': 'Ta bort',
-  'save': 'Spara'
+  'save': 'Spara',
+  'upload': 'Ladda upp'
 };
