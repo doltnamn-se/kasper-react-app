@@ -153,10 +153,10 @@ const Checklist = () => {
             <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">
               {[
-                { step: 1, title: t('step.password.title'), description: t('step.password.description'), completed: checklistProgress?.password_updated },
-                { step: 2, title: t('step.sites.title'), description: t('step.sites.description'), completed: checklistProgress?.selected_sites?.length > 0 },
-                { step: 3, title: t('step.urls.title'), description: t('step.urls.description'), completed: checklistProgress?.removal_urls?.length > 0 },
-                { step: 4, title: t('step.info.title'), description: t('step.info.description'), completed: checklistProgress?.address && checklistProgress?.personal_number },
+                { step: 1, title: t('step.1.title'), description: t('set.password.description'), completed: checklistProgress?.password_updated },
+                { step: 2, title: t('step.2.title'), description: t('step.2.description'), completed: checklistProgress?.removal_urls?.length > 0 },
+                { step: 3, title: t('step.3.title'), description: t('step.3.description'), completed: checklistProgress?.selected_sites?.length > 0 },
+                { step: 4, title: t('step.4.title'), description: t('step.4.description'), completed: checklistProgress?.address && checklistProgress?.personal_number },
               ].map((item) => (
                 <div 
                   key={item.step} 
