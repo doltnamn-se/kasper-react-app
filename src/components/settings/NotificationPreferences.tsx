@@ -11,14 +11,44 @@ export const NotificationPreferences = () => {
     queryKey: ['notificationPreferences'],
     queryFn: async () => {
       console.log('Fetching notification preferences...');
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.log('No user found, cannot fetch preferences');
+        throw new Error('No user found');
+      }
+
+      // First try to get existing preferences
       const { data, error } = await supabase
         .from('notification_preferences')
         .select('*')
-        .single();
+        .eq('user_id', user.id)
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching notification preferences:', error);
         throw error;
+      }
+
+      // If no preferences exist, create default ones
+      if (!data) {
+        console.log('No preferences found, creating defaults...');
+        const { data: newPrefs, error: insertError } = await supabase
+          .from('notification_preferences')
+          .insert({
+            user_id: user.id,
+            email_notifications: true,
+            in_app_notifications: true
+          })
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('Error creating default preferences:', insertError);
+          throw insertError;
+        }
+
+        console.log('Created default preferences:', newPrefs);
+        return newPrefs;
       }
 
       console.log('Notification preferences:', data);
@@ -34,6 +64,9 @@ export const NotificationPreferences = () => {
       emailNotifications: boolean; 
       inAppNotifications: boolean; 
     }) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user found');
+
       console.log('Updating notification preferences:', { emailNotifications, inAppNotifications });
       const { data, error } = await supabase
         .from('notification_preferences')
@@ -42,7 +75,7 @@ export const NotificationPreferences = () => {
           in_app_notifications: inAppNotifications,
           updated_at: new Date().toISOString()
         })
-        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
+        .eq('user_id', user.id)
         .select()
         .single();
 
