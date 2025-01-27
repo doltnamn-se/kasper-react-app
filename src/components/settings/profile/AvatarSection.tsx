@@ -123,8 +123,8 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         
         {/* Upload button */}
         <div className="absolute -bottom-1 -right-1">
-          <div className="relative">
-            <div className="bg-white dark:bg-[#2a2a2b] rounded-full p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-[#3a3a3b]">
+          <label className="relative block cursor-pointer">
+            <div className="bg-[#e0e0e0] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] rounded-full p-2 transition-colors">
               <Upload className="h-4 w-4" />
             </div>
             <input
@@ -135,7 +135,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
               disabled={isUploading}
               aria-label={t('upload')}
             />
-          </div>
+          </label>
         </div>
 
         {/* Delete button */}
@@ -155,7 +155,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         </h3>
         <Badge 
           variant="secondary"
-          className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text"
+          className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
         >
           {getSubscriptionLabel(customerData?.subscription_plan)}
         </Badge>
