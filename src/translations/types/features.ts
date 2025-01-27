@@ -14,8 +14,11 @@ export interface FeaturesTranslations {
   'step.info.description': string;
   'step.1.title': string;
   'step.2.title': string;
+  'step.2.description': string;
   'step.3.title': string;
+  'step.3.description': string;
   'step.4.title': string;
+  'step.4.description': string;
   'step.deindexing.title': string;
   'step.deindexing.description': string;
   
