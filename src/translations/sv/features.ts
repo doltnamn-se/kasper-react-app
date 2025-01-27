@@ -15,8 +15,11 @@ export const features: FeaturesTranslations = {
   'step.info.description': 'Uppdatera din personlig information',
   'step.1.title': 'Välj ditt lösenord',
   'step.2.title': 'Avindexering',
-  'step.3.title': 'Skicka in URL:er',
-  'step.4.title': 'Personlig information',
+  'step.2.description': 'Länkar från Google du önskar ta bort, t.ex. Lexbase, Krimfup etc.',
+  'step.3.title': 'Upplysningssidor',
+  'step.3.description': 'Välj de sidor du behöver hjälp att dölja dig från',
+  'step.4.title': 'Identifiering',
+  'step.4.description': 'Dela din adress eller ditt personnummer med oss så att vi kan säkerställa att vi tittar på rätt person online när vi ska dölja dina uppgifter',
   'step.deindexing.title': 'Avindexering',
   'step.deindexing.description': 'Lägg in de länkar från Google du önskar ta bort',
   
