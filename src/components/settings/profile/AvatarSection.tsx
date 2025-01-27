@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Profile } from "@/types/customer";
 import { getUserInitials } from "@/utils/profileUtils";
-import { Upload } from "lucide-react";
+import { Upload, X } from "lucide-react";
 
 interface AvatarSectionProps {
   userProfile: Profile | null;
@@ -84,39 +84,54 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <Avatar className="h-16 w-16">
-        <AvatarImage src={userProfile?.avatar_url || undefined} />
-        <AvatarFallback>{getUserInitials(userProfile)}</AvatarFallback>
-      </Avatar>
-      <div className="flex items-center gap-2">
-        <div className="relative">
-          <Button
-            variant="outline"
-            className="bg-[#f4f4f4] hover:bg-[#e4e4e4] border-0 dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b]"
-            disabled={isUploading}
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            {t('upload')}
-          </Button>
-          <input
-            type="file"
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            onChange={handleAvatarUpload}
-            accept="image/*"
-            disabled={isUploading}
-            aria-label={t('upload')}
-          />
+    <div className="flex items-start gap-6">
+      <div className="relative">
+        <Avatar className="h-24 w-24">
+          <AvatarImage src={userProfile?.avatar_url || undefined} />
+          <AvatarFallback>{getUserInitials(userProfile)}</AvatarFallback>
+        </Avatar>
+        
+        {/* Upload button */}
+        <div className="absolute -bottom-1 -right-1">
+          <div className="relative">
+            <div className="bg-white dark:bg-[#2a2a2b] rounded-full p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-[#3a3a3b]">
+              <Upload className="h-4 w-4" />
+            </div>
+            <input
+              type="file"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              onChange={handleAvatarUpload}
+              accept="image/*"
+              disabled={isUploading}
+              aria-label={t('upload')}
+            />
+          </div>
         </div>
+
+        {/* Delete button */}
         {userProfile?.avatar_url && (
-          <Button
-            variant="ghost"
+          <button
             onClick={handleAvatarDelete}
-            className="text-red-500 hover:text-red-600 hover:bg-transparent p-0"
+            className="absolute -top-1 -right-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
-            {t('delete')}
-          </Button>
+            <X className="h-4 w-4" />
+          </button>
         )}
+      </div>
+
+      <div className="space-y-1.5">
+        <h3 className="text-lg font-semibold">
+          {userProfile?.display_name}
+        </h3>
+        <Badge 
+          variant="secondary"
+          className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text"
+        >
+          {t('subscription.active')}
+        </Badge>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {userProfile?.email}
+        </p>
       </div>
     </div>
   );

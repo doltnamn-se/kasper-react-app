@@ -3,7 +3,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Profile } from "@/types/customer";
 import { supabase } from "@/integrations/supabase/client";
 import { AvatarSection } from "./profile/AvatarSection";
-import { DisplayNameSection } from "./profile/DisplayNameSection";
 
 export const ProfileSettings = () => {
   const { t } = useLanguage();
@@ -43,21 +42,11 @@ export const ProfileSettings = () => {
     }
   };
 
-  const handleDisplayNameUpdate = (name: string) => {
-    if (userProfile) {
-      setUserProfile({ ...userProfile, display_name: name });
-    }
-  };
-
   return (
     <div className="space-y-6">
       <AvatarSection 
         userProfile={userProfile} 
         onAvatarUpdate={handleAvatarUpdate} 
-      />
-      <DisplayNameSection 
-        userProfile={userProfile} 
-        onDisplayNameUpdate={handleDisplayNameUpdate} 
       />
     </div>
   );
