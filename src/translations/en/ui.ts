@@ -11,6 +11,7 @@ export const ui: UITranslations = {
   'display.name': 'Display Name',
   'profile.upload.photo': 'Upload Photo',
   'link.to.removal': 'Link to removal page',
+  'subscription.active': 'Active',
   'subscription.1month': '1 Month',
   'subscription.6months': '6 Months',
   'subscription.12months': '12 Months',

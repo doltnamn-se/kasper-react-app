@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Profile } from "@/types/customer";
 import { getUserInitials } from "@/utils/profileUtils";
 import { Upload, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 interface AvatarSectionProps {
   userProfile: Profile | null;
@@ -16,6 +17,22 @@ interface AvatarSectionProps {
 export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProps) => {
   const { t } = useLanguage();
   const [isUploading, setIsUploading] = useState(false);
+
+  // Fetch customer data to get subscription plan
+  const { data: customerData } = useQuery({
+    queryKey: ['customer', userProfile?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('subscription_plan')
+        .eq('id', userProfile?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!userProfile?.id
+  });
 
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -83,6 +100,19 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
     }
   };
 
+  const getSubscriptionLabel = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.1month');
+      case '6_months':
+        return t('subscription.6months');
+      case '12_months':
+        return t('subscription.12months');
+      default:
+        return t('subscription.none');
+    }
+  };
+
   return (
     <div className="flex items-start gap-6">
       <div className="relative">
@@ -127,7 +157,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
           variant="secondary"
           className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text"
         >
-          {t('subscription.active')}
+          {getSubscriptionLabel(customerData?.subscription_plan)}
         </Badge>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {userProfile?.email}
