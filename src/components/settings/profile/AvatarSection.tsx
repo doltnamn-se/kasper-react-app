@@ -90,7 +90,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         <AvatarFallback>{getUserInitials(userProfile)}</AvatarFallback>
       </Avatar>
       <div className="flex items-center gap-2">
-        <div>
+        <div className="relative">
           <Button
             variant="outline"
             className="bg-[#f4f4f4] hover:bg-[#e4e4e4] border-0 dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b]"
@@ -98,14 +98,15 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
           >
             <Upload className="h-4 w-4 mr-2" />
             {t('upload')}
-            <input
-              type="file"
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              onChange={handleAvatarUpload}
-              accept="image/*"
-              disabled={isUploading}
-            />
           </Button>
+          <input
+            type="file"
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            onChange={handleAvatarUpload}
+            accept="image/*"
+            disabled={isUploading}
+            aria-label={t('upload')}
+          />
         </div>
         {userProfile?.avatar_url && (
           <Button
