@@ -12,6 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose
 } from "@/components/ui/sheet";
 
 interface AddressFormData {
@@ -123,9 +124,11 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
               </p>
             )}
           </div>
-          <Button type="submit" className="w-full">
-            {language === 'sv' ? 'Spara' : 'Save'}
-          </Button>
+          <SheetClose asChild>
+            <Button type="submit" className="w-full">
+              {language === 'sv' ? 'Spara' : 'Save'}
+            </Button>
+          </SheetClose>
         </form>
       </SheetContent>
     </Sheet>

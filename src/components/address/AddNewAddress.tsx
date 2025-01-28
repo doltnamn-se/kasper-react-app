@@ -7,7 +7,7 @@ import { AddressForm } from "./AddressForm";
 interface AddNewAddressProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
+  onSuccess: () => Promise<void>;
 }
 
 export const AddNewAddress = ({ isOpen, onOpenChange, onSuccess }: AddNewAddressProps) => {

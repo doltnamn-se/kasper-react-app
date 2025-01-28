@@ -12,6 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose
 } from "@/components/ui/sheet";
 
 interface PersonalInfoFormData {
@@ -108,9 +109,11 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
               </p>
             )}
           </div>
-          <Button type="submit" className="w-full">
-            {language === 'sv' ? 'Spara' : 'Save'}
-          </Button>
+          <SheetClose asChild>
+            <Button type="submit" className="w-full">
+              {language === 'sv' ? 'Spara' : 'Save'}
+            </Button>
+          </SheetClose>
         </form>
       </SheetContent>
     </Sheet>
