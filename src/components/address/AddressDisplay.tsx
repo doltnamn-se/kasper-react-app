@@ -38,6 +38,20 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         return;
       }
 
+      // First, let's check if any records exist for this user
+      const { data: allData, error: checkError } = await supabase
+        .from('customer_checklist_progress')
+        .select('*')
+        .eq('customer_id', session.user.id);
+
+      console.log('All user records:', allData);
+
+      if (checkError) {
+        console.error('Error checking records:', checkError);
+        return;
+      }
+
+      // Now fetch the active address
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, created_at, deleted_at, address_history')
