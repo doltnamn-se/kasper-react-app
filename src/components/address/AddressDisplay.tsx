@@ -115,7 +115,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     addressData?.street_address && 
     addressData?.postal_code && 
     addressData?.city && 
-    !addressData?.deleted_at
+    addressData?.deleted_at === null
   );
   const hasAddressHistory = Boolean(addressData?.address_history?.length > 0);
 
