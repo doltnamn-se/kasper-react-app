@@ -37,7 +37,6 @@ export const AddressSearchInput = ({
   const [open, setOpen] = useState(false);
   const [results, setResults] = useState<AddressResult[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const searchAddress = async (query: string) => {
     if (!query || query.length < 3) {
@@ -68,7 +67,6 @@ export const AddressSearchInput = ({
   };
 
   const handleSearch = (searchValue: string) => {
-    setSearchQuery(searchValue);
     onChange(searchValue);
     searchAddress(searchValue);
   };
@@ -98,16 +96,13 @@ export const AddressSearchInput = ({
             placeholder ||
             (language === "sv" ? "Sök din adress..." : "Search your address...")
           }
-          className={cn(
-            "w-full justify-between",
-            className
-          )}
+          className={cn("w-full justify-between", className)}
         />
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" align="start">
-        <Command shouldFilter={false}>
+        <Command>
           <CommandInput
-            value={searchQuery}
+            value={value}
             onValueChange={handleSearch}
             placeholder={
               language === "sv"
@@ -124,13 +119,13 @@ export const AddressSearchInput = ({
               ? "Inga resultat"
               : "No results"}
           </CommandEmpty>
-          {results.length > 0 && (
+          {results && results.length > 0 && (
             <CommandGroup>
               {results.map((result) => (
                 <CommandItem
                   key={result.display_name}
+                  value={result.display_name}
                   onSelect={() => handleSelect(result)}
-                  className="cursor-pointer"
                 >
                   <Check
                     className={cn(
