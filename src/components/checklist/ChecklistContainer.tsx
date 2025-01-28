@@ -15,6 +15,7 @@ export const ChecklistContainer = () => {
   const { checklistItems } = useChecklistItems();
 
   const handleGuideComplete = async (siteId: string) => {
+    console.log('Completing guide for site:', siteId);
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) return;
 
@@ -105,6 +106,12 @@ export const ChecklistContainer = () => {
     return guides.find(guide => guide.title.toLowerCase().includes(siteId.toLowerCase()));
   };
 
+  const onStepCompleted = async () => {
+    console.log('Step completed, current step:', currentStep);
+    await handleStepComplete();
+    setCurrentStep(prev => prev + 1);
+  };
+
   return (
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
@@ -121,7 +128,7 @@ export const ChecklistContainer = () => {
                 selectedSites={checklistProgress?.selected_sites || []}
                 completedGuides={checklistProgress?.completed_guides}
                 onGuideComplete={handleGuideComplete}
-                onStepComplete={handleStepComplete}
+                onStepComplete={onStepCompleted}
                 checklistItems={checklistItems || []}
                 getGuideForSite={getGuideForSite}
               />
