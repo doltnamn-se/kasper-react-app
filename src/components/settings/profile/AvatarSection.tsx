@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Profile } from "@/types/customer";
@@ -9,6 +8,7 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useQuery } from "@tanstack/react-query";
 import { AvatarUploadButton } from "./AvatarUploadButton";
 import { AvatarDeleteButton } from "./AvatarDeleteButton";
+import { ProfileInfo } from "./ProfileInfo";
 
 interface AvatarSectionProps {
   userProfile: Profile | null;
@@ -100,19 +100,6 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
     }
   };
 
-  const getSubscriptionLabel = (plan: string | null) => {
-    switch(plan) {
-      case '1_month':
-        return t('subscription.1month');
-      case '6_months':
-        return t('subscription.6months');
-      case '12_months':
-        return t('subscription.12months');
-      default:
-        return t('subscription.none');
-    }
-  };
-
   return (
     <div className="flex items-start gap-6">
       <div className="relative">
@@ -132,20 +119,10 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         />
       </div>
 
-      <div className="space-y-1.5">
-        <h3 className="text-lg font-semibold">
-          {userProfile?.display_name}
-        </h3>
-        <Badge 
-          variant="secondary"
-          className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
-        >
-          {getSubscriptionLabel(customerData?.subscription_plan)}
-        </Badge>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {userProfile?.email}
-        </p>
-      </div>
+      <ProfileInfo 
+        userProfile={userProfile}
+        subscriptionPlan={customerData?.subscription_plan}
+      />
     </div>
   );
 };
