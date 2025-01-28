@@ -28,6 +28,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     addressData.city && 
     !addressData.deleted_at;
 
+  console.log('Raw addressData:', addressData);
   console.log('Address display state:', {
     addressData,
     hasCurrentAddress,
@@ -36,7 +37,11 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       hasStreet: Boolean(addressData?.street_address),
       hasPostal: Boolean(addressData?.postal_code),
       hasCity: Boolean(addressData?.city),
-      notDeleted: !addressData?.deleted_at
+      notDeleted: !addressData?.deleted_at,
+      streetValue: addressData?.street_address,
+      postalValue: addressData?.postal_code,
+      cityValue: addressData?.city,
+      deletedAtValue: addressData?.deleted_at
     }
   });
 
