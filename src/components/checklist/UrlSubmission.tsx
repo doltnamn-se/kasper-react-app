@@ -12,14 +12,13 @@ interface UrlSubmissionProps {
 }
 
 export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const {
     urls,
     setUrls,
     isLoading,
     setIsLoading,
-    customerData,
     existingUrls,
     getUrlLimit
   } = useUrlSubmission();
@@ -99,22 +98,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     }
   };
 
-  const handleSkipStep = async () => {
-    setIsLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('No user session');
-      
-      onComplete();
-    } catch (error: any) {
-      console.error('Error skipping step:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   if (urlLimit === 0) {
-    return <UpgradePrompt onSkip={handleSkipStep} isLoading={isLoading} />;
+    return <UpgradePrompt onSkip={onComplete} isLoading={isLoading} />;
   }
 
   return (

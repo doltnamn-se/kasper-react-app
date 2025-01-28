@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface UpgradePromptProps {
-  onSkip: () => Promise<void>;
+  onSkip: () => void;
   isLoading: boolean;
 }
 
