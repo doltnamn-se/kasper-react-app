@@ -42,7 +42,6 @@ export const useAddressData = () => {
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
-        .is('deleted_at', null)
         .maybeSingle();
 
       if (error) {

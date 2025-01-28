@@ -21,12 +21,8 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     onAddressUpdate();
   };
 
-  const hasCurrentAddress = Boolean(
-    addressData?.street_address && 
-    addressData?.postal_code && 
-    addressData?.city && 
-    !addressData?.deleted_at
-  );
+  // Check if there's a current active address
+  const hasCurrentAddress = addressData && !addressData.deleted_at && addressData.street_address;
 
   console.log('Address display state:', {
     addressData,
@@ -34,8 +30,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     conditions: {
       hasData: Boolean(addressData),
       hasStreet: Boolean(addressData?.street_address),
-      hasPostal: Boolean(addressData?.postal_code),
-      hasCity: Boolean(addressData?.city),
       notDeleted: !addressData?.deleted_at
     }
   });
