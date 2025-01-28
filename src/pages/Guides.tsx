@@ -14,13 +14,25 @@ interface Guide {
 
 const Guides = () => {
   const { t, language } = useLanguage();
-  const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     document.title = language === 'sv' ? 
       "Guider | Doltnamn.se" : 
       "Guides | Doltnamn.se";
   }, [language]);
+
+  const handleAccordionChange = (accordionId: string) => {
+    setOpenAccordions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(accordionId)) {
+        newSet.delete(accordionId);
+      } else {
+        newSet.add(accordionId);
+      }
+      return newSet;
+    });
+  };
 
   const guides: Guide[] = [
     {
@@ -96,8 +108,8 @@ const Guides = () => {
               key={index}
               guide={guide}
               accordionId={`0-${index}`}
-              openAccordion={openAccordion}
-              onAccordionChange={setOpenAccordion}
+              isOpen={openAccordions.has(`0-${index}`)}
+              onAccordionChange={handleAccordionChange}
             />
           ))}
         </div>
@@ -107,8 +119,8 @@ const Guides = () => {
               key={index}
               guide={guide}
               accordionId={`1-${index}`}
-              openAccordion={openAccordion}
-              onAccordionChange={setOpenAccordion}
+              isOpen={openAccordions.has(`1-${index}`)}
+              onAccordionChange={handleAccordionChange}
             />
           ))}
         </div>

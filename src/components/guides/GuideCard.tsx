@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,22 +14,21 @@ interface GuideCardProps {
     title: string;
     steps: GuideStep[];
   };
-  accordionId?: string;
-  openAccordion?: string;
-  onAccordionChange?: (value: string) => void;
+  accordionId: string;
+  isOpen: boolean;
+  onAccordionChange: (value: string) => void;
   variant?: 'default' | 'checklist';
 }
 
 export const GuideCard = ({ 
   guide, 
-  accordionId = '', 
-  openAccordion, 
+  accordionId, 
+  isOpen,
   onAccordionChange,
   variant = 'default' 
 }: GuideCardProps) => {
   const { t } = useLanguage();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
-  const [isOpen, setIsOpen] = useState(false);
 
   const shouldShowCopyButton = (guideTitle: string, stepText: string) => {
     const isBirthdayOrUpplysning = 
@@ -42,11 +40,6 @@ export const GuideCard = ({
   const handleButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (url) window.open(url, '_blank');
-  };
-
-  const handleAccordionChange = (value: string) => {
-    setIsOpen(value === accordionId);
-    onAccordionChange?.(value);
   };
 
   const content = (
@@ -95,7 +88,7 @@ export const GuideCard = ({
         type="single" 
         collapsible 
         value={isOpen ? accordionId : ""}
-        onValueChange={handleAccordionChange}
+        onValueChange={onAccordionChange}
         className="w-full"
       >
         <AccordionItem value={accordionId} className="border-none">
