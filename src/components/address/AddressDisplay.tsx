@@ -137,7 +137,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         return;
       }
       
-      setAddressHistory(data?.address_history || []);
+      // Type assertion to ensure the data matches our expected structure
+      const history = (data?.address_history || []) as AddressHistoryEntry[];
+      setAddressHistory(history);
     };
     
     fetchHistory();
