@@ -25,7 +25,15 @@ const AddressAlerts = () => {
   const { userProfile } = useUserProfile();
   const [customerData, setCustomerData] = useState<Customer | null>(null);
   const { toast } = useToast();
-  const form = useForm<AddressFormData>();
+  
+  // Initialize form with default values
+  const form = useForm<AddressFormData>({
+    defaultValues: {
+      street_address: '',
+      postal_code: '',
+      city: ''
+    }
+  });
 
   useEffect(() => {
     document.title = language === 'sv' ? 
