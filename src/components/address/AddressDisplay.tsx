@@ -42,7 +42,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
       console.log('Fetching address for user:', session.user.id);
       
-      // First try to get existing record
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
@@ -55,30 +54,14 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         return;
       }
 
-      // If no record exists, create one
       if (!data) {
-        console.log('No record found, creating new one');
-        const { data: newData, error: insertError } = await supabase
-          .from('customer_checklist_progress')
-          .insert([{ 
-            customer_id: session.user.id,
-            address_history: []
-          }])
-          .select()
-          .single();
-
-        if (insertError) {
-          console.error('Error creating record:', insertError);
-          return;
-        }
-
-        console.log('Created new record:', newData);
+        console.log('No address data found');
         setAddressData({
           street_address: null,
           postal_code: null,
           city: null,
           address: null,
-          created_at: newData.created_at,
+          created_at: new Date().toISOString(),
           deleted_at: null,
           address_history: []
         });
@@ -194,7 +177,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       notDeleted: !addressData?.deleted_at
     }
   });
-  
+
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <h2 className="text-xl font-semibold mb-6 dark:text-white">
