@@ -22,7 +22,6 @@ interface GuideCardProps {
 
 export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange }: GuideCardProps) => {
   const { t } = useLanguage();
-  const isOpen = openAccordion === accordionId;
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
   const shouldShowCopyButton = (guideTitle: string, stepText: string) => {
@@ -42,16 +41,8 @@ export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange
       <Accordion 
         type="single" 
         collapsible 
-        value={openAccordion === accordionId ? accordionId : undefined}
-        onValueChange={(value) => {
-          if (value === "") {
-            onAccordionChange("");
-          } else if (value === accordionId) {
-            onAccordionChange(isOpen ? "" : accordionId);
-          } else {
-            onAccordionChange(value);
-          }
-        }}
+        value={openAccordion === accordionId ? accordionId : ""}
+        onValueChange={(value) => onAccordionChange(value)}
         className="w-full"
       >
         <AccordionItem value={accordionId} className="border-none">
@@ -89,7 +80,7 @@ export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange
               <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
               <ChevronDown 
                 className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
-                  isOpen ? 'rotate-180' : ''
+                  openAccordion === accordionId ? 'rotate-180' : ''
                 }`}
               />
             </div>
