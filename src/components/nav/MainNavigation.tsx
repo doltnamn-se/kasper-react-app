@@ -31,33 +31,27 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
 
   const navigationItems = [
     {
-      name: t('navigation.home'),
+      name: t('nav.home'),
       path: '/',
       icon: Home
     },
     {
-      name: t('navigation.monitoring'),
+      name: t('nav.monitoring'),
       path: '/monitoring',
       icon: Eye
     },
     {
-      name: t('navigation.deindexing'),
+      name: t('nav.my.links'),
       path: '/deindexing',
       icon: FileSearch
     },
     {
-      name: t('navigation.address.alerts'),
+      name: t('nav.address.alerts'),
       path: '/address-alerts',
       icon: ShieldAlert
     },
     {
-      name: t('navigation.notifications'),
-      path: '/notifications',
-      icon: Bell,
-      showNotification: unreadCount > 0
-    },
-    {
-      name: t('navigation.guides'),
+      name: t('nav.guides'),
       path: '/guides',
       icon: BookOpen
     },
@@ -83,7 +77,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         >
           <item.icon className="w-5 h-5 mr-3" />
           <span>{item.name}</span>
-          {item.showNotification && (
+          {item.path === '/notifications' && unreadCount > 0 && (
             <div className="absolute right-3 top-1/2 -mt-1 h-2 w-2 rounded-full bg-[#2e77d0]" />
           )}
         </button>
