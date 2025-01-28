@@ -1,23 +1,53 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useEffect } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useEffect } from "react";
 
 const AddressAlerts = () => {
   const { t, language } = useLanguage();
+  const [activeTab, setActiveTab] = useState("address");
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Adressbevakning | Doltnamn.se" : 
+      "Adresslarm | Doltnamn.se" : 
       "Address Alerts | Doltnamn.se";
   }, [language]);
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {t('nav.address.alerts')}
-      </h1>
-      <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-        {/* Content will be added later */}
+      <div className="max-w-md mx-auto space-y-8">
+        <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+          {t('nav.address.alerts')}
+        </h1>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full">
+            <TabsTrigger value="address" className="flex-1">
+              {language === 'sv' ? 'Din Adress' : 'Your Address'}
+            </TabsTrigger>
+            <TabsTrigger value="alerts" className="flex-1">
+              {language === 'sv' ? 'Alarm' : 'Alerts'}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="address" className="mt-6">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+                {language === 'sv' ? 'Din Adress' : 'Your Address'}
+              </h2>
+              {/* Address content will be added later */}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="alerts" className="mt-6">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+                {language === 'sv' ? 'Alarm' : 'Alerts'}
+              </h2>
+              {/* Alerts content will be added later */}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </MainLayout>
   );

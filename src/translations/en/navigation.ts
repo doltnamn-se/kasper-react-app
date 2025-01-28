@@ -5,7 +5,7 @@ export const navigation: NavigationTranslations = {
   'nav.checklist': 'Checklist',
   'nav.monitoring': 'Monitoring',
   'nav.my.links': 'Deindexing',
-  'nav.address.alerts': 'Address alerts',
+  'nav.address.alerts': 'Address Alerts',
   'nav.guides': 'Guides',
   'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Customers',
