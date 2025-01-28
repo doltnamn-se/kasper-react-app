@@ -15,9 +15,6 @@ export const StepProgress = ({ progress }: StepProgressProps) => {
 
   return (
     <div className="flex flex-wrap items-center gap-8 mb-6">
-      <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
-        {t('nav.checklist')}
-      </h1>
       <div className={`relative ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}>
         <div className="absolute inset-0 flex items-center justify-center">
           <span className={`font-black ${isMobile ? 'text-sm' : 'text-base'}`}>{progress}%</span>
@@ -87,11 +84,6 @@ export const StepProgress = ({ progress }: StepProgressProps) => {
           </Pie>
         </PieChart>
       </div>
-      {!isMobile && (
-        <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-          {t('step.progress', { current: progress / 25, total: 4 })}
-        </span>
-      )}
     </div>
   );
 };
