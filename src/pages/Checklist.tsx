@@ -36,6 +36,19 @@ const Checklist = () => {
     }
   });
 
+  const { data: checklistItems } = useQuery({
+    queryKey: ['checklist-items'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('checklist_items')
+        .select('*')
+        .order('order_index');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   const calculateProgress = () => {
     if (!checklistProgress) return 0;
     let completedSteps = 0;
@@ -43,12 +56,20 @@ const Checklist = () => {
     if (checklistProgress.selected_sites?.length > 0) completedSteps++;
     if (checklistProgress.removal_urls?.length > 0) completedSteps++;
     if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
-    return Math.round((completedSteps / 4) * 100);
+    
+    const totalSteps = 4 + (checklistProgress.selected_sites?.length || 0);
+    return Math.round((completedSteps / totalSteps) * 100);
   };
 
   const progress = calculateProgress();
   const progressData = [{ value: progress }, { value: 100 - progress }];
   const COLORS = ['url(#progressGradient)', 'url(#backgroundGradient)'];
+
+  const getTotalSteps = () => {
+    const baseSteps = 4; // Password, URLs, Sites Selection, Personal Info
+    const selectedSitesCount = checklistProgress?.selected_sites?.length || 0;
+    return baseSteps + selectedSitesCount;
+  };
 
   const handleStepClick = (stepNumber: number) => {
     const container = document.querySelector('.checklist-container');
@@ -134,7 +155,7 @@ const Checklist = () => {
         </div>
         {!isMobile && (
           <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('step.progress', { current: calculateProgress() / 25, total: 4 })}
+            {t('step.progress', { current: Math.ceil(progress / (100 / getTotalSteps())), total: getTotalSteps() })}
           </span>
         )}
       </div>
@@ -157,6 +178,12 @@ const Checklist = () => {
                 { step: 2, title: t('step.2.title'), description: t('step.2.description'), completed: checklistProgress?.removal_urls?.length > 0 },
                 { step: 3, title: t('step.3.title'), description: t('step.3.description'), completed: checklistProgress?.selected_sites?.length > 0 },
                 { step: 4, title: t('step.4.title'), description: t('step.4.description'), completed: checklistProgress?.address && checklistProgress?.personal_number },
+                ...(checklistProgress?.selected_sites || []).map((site, index) => ({
+                  step: 5 + index,
+                  title: t(`guide.${site}.title`),
+                  description: t(`guide.${site}.step1`),
+                  completed: checklistProgress?.completed_guides?.includes(site)
+                }))
               ].map((item) => (
                 <div 
                   key={item.step} 
