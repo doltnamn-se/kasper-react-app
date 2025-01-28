@@ -174,19 +174,17 @@ const Checklist = () => {
             <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
             <div className="space-y-4">
               {[
-                { step: 1, title: t('step.1.title'), description: t('set.password.description'), completed: checklistProgress?.password_updated },
-                { step: 2, title: t('step.2.title'), description: t('step.2.description'), completed: checklistProgress?.removal_urls?.length > 0 },
-                { step: 3, title: t('step.3.title'), description: t('step.3.description'), completed: checklistProgress?.selected_sites?.length > 0 },
+                { step: 1, title: t('step.1.title'), completed: checklistProgress?.password_updated },
+                { step: 2, title: t('step.2.title'), completed: checklistProgress?.removal_urls?.length > 0 },
+                { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
                 ...(checklistProgress?.selected_sites || []).map((site, index) => ({
                   step: 4 + index,
                   title: t(`guide.${site}.title`),
-                  description: t(`guide.${site}.step1`),
                   completed: checklistProgress?.completed_guides?.includes(site)
                 })),
                 { 
                   step: 4 + (checklistProgress?.selected_sites?.length || 0), 
                   title: t('step.4.title'), 
-                  description: t('step.4.description'), 
                   completed: checklistProgress?.address && checklistProgress?.personal_number 
                 }
               ].map((item) => (
@@ -200,7 +198,6 @@ const Checklist = () => {
                     </div>
                     <div className={item.completed ? 'opacity-40' : ''}>
                       <p className="text-sm xl:text-base font-medium">{item.title}</p>
-                      <p className="text-xs text-[#616166] dark:text-[#FFFFFFA6] font-medium hidden xl:block">{item.description}</p>
                     </div>
                   </div>
                   <div className="flex items-center">
