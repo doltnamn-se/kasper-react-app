@@ -40,8 +40,10 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
   };
 
   const handleNoneSelection = () => {
-    setNoneSelected(true);
-    setSelectedSites([]);
+    setNoneSelected(prev => !prev);
+    if (!noneSelected) {
+      setSelectedSites([]);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
