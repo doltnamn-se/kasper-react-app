@@ -18,9 +18,9 @@ type AddressHistoryEntry = {
 }
 
 interface AddressData {
-  street_address: string;
-  postal_code: string;
-  city: string;
+  street_address: string | null;
+  postal_code: string | null;
+  city: string | null;
   created_at: string;
   deleted_at: string | null;
   address_history: AddressHistoryEntry[];
@@ -77,9 +77,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       if (!addressData) return;
 
       const historyEntry: AddressHistoryEntry = {
-        street_address: addressData.street_address,
-        postal_code: addressData.postal_code,
-        city: addressData.city,
+        street_address: addressData.street_address!,
+        postal_code: addressData.postal_code!,
+        city: addressData.city!,
         created_at: addressData.created_at,
         deleted_at: new Date().toISOString(),
       };
@@ -132,6 +132,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   };
 
   const hasCurrentAddress = addressData?.street_address && !addressData?.deleted_at;
+  const hasAddressHistory = addressData?.address_history && addressData.address_history.length > 0;
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
@@ -168,7 +169,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
             </div>
           </div>
 
-          {addressData.address_history && addressData.address_history.length > 0 && (
+          {hasAddressHistory && (
             <div className="mt-8">
               <h3 className="text-lg font-medium mb-4 dark:text-white">
                 {language === 'sv' ? 'Tidigare adresser' : 'Previous addresses'}
