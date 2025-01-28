@@ -113,6 +113,13 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
     }
   };
 
+  const handleUploadClick = () => {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   return (
     <div className="flex items-start gap-6">
       <div className="relative">
@@ -135,7 +142,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
             <button 
               className="absolute inset-0 w-full h-full bg-[#e0e0e0] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] rounded-full flex items-center justify-center transition-colors cursor-pointer"
               type="button"
-              onClick={() => document.querySelector('input[type="file"]')?.click()}
+              onClick={handleUploadClick}
             >
               <Upload className="h-4 w-4" />
             </button>
