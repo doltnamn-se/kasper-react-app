@@ -167,13 +167,21 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      // Update checklist progress to mark step as completed with empty URLs
+      // First update the checklist progress
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ removal_urls: [] })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
+
+      // Then clear any existing URLs
+      const { error: deleteError } = await supabase
+        .from('removal_urls')
+        .delete()
+        .eq('customer_id', session.user.id);
+
+      if (deleteError) throw deleteError;
       
       onComplete();
     } catch (error: any) {
@@ -197,14 +205,14 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         <div className="flex flex-col gap-2">
           <Button
             variant="default"
-            onClick={() => window.location.href = 'https://buy.stripe.com/dR67tr1Cc8KtguY147'}
+            onClick={() => window.open('https://buy.stripe.com/dR67tr1Cc8KtguY147', '_blank')}
             className="w-full"
           >
             {language === 'sv' ? 'Uppgradera till 6 mån' : 'Upgrade to 6 mo'}
           </Button>
           <Button
             variant="default"
-            onClick={() => window.location.href = 'https://buy.stripe.com/3cs5lj2Gg3q9diMeUY'}
+            onClick={() => window.open('https://buy.stripe.com/3cs5lj2Gg3q9diMeUY', '_blank')}
             className="w-full"
           >
             {language === 'sv' ? 'Uppgradera till 12 mån' : 'Upgrade to 12 mo'}
