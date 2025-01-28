@@ -82,14 +82,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         deleted_at: new Date().toISOString(),
       };
 
-      console.log('Creating history entry:', historyEntry);
-      console.log('Current address_history:', addressData.address_history);
-
       const newHistory = addressData.address_history 
         ? [...addressData.address_history, historyEntry]
         : [historyEntry];
-
-      console.log('New address_history:', newHistory);
 
       const { error } = await supabase
         .from('customer_checklist_progress')
@@ -130,7 +125,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   };
 
   // Check if there's a current active address (not deleted)
-  const hasCurrentAddress = addressData && addressData.street_address && !addressData.deleted_at;
+  const hasCurrentAddress = addressData?.street_address && !addressData?.deleted_at;
   
   // Check if there's any address history
   const hasAddressHistory = addressData?.address_history && addressData.address_history.length > 0;
@@ -151,7 +146,32 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         {language === 'sv' ? 'Din adress' : 'Your Address'}
       </h2>
       
-      {hasCurrentAddress ? (
+      {!hasCurrentAddress ? (
+        <>
+          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mb-4">
+            {language === 'sv' 
+              ? 'Du har inte angett din adress ännu'
+              : 'You have not provided your address yet'
+            }
+          </p>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button className="w-full">
+                <HousePlus className="mr-2 h-4 w-4" />
+                {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>
+                  {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
+                </SheetTitle>
+              </SheetHeader>
+              <AddressForm onSuccess={handleAddressUpdate} />
+            </SheetContent>
+          </Sheet>
+        </>
+      ) : (
         <div className="space-y-6">
           <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] relative">
             <Button
@@ -180,31 +200,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
             </div>
           </div>
         </div>
-      ) : (
-        <>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mb-4">
-            {language === 'sv' 
-              ? 'Du har inte angett din adress ännu'
-              : 'You have not provided your address yet'
-            }
-          </p>
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button className="w-full">
-                <HousePlus className="mr-2 h-4 w-4" />
-                {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>
-                  {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
-                </SheetTitle>
-              </SheetHeader>
-              <AddressForm onSuccess={handleAddressUpdate} />
-            </SheetContent>
-          </Sheet>
-        </>
       )}
 
       {hasAddressHistory && (
