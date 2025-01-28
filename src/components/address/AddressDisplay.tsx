@@ -34,7 +34,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
   const fetchAddress = async () => {
     try {
-      console.log('Fetching address data...');
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return;
 
@@ -68,7 +67,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
   const handleDeleteAddress = async () => {
     try {
-      console.log('Deleting address...');
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return;
 
@@ -125,10 +123,10 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   };
 
   // Check if there's a current active address (not deleted)
-  const hasCurrentAddress = addressData?.street_address && !addressData?.deleted_at;
+  const hasCurrentAddress = Boolean(addressData?.street_address && !addressData?.deleted_at);
   
   // Check if there's any address history
-  const hasAddressHistory = addressData?.address_history && addressData.address_history.length > 0;
+  const hasAddressHistory = Boolean(addressData?.address_history?.length > 0);
 
   console.log('Display conditions:', {
     hasCurrentAddress,
@@ -146,7 +144,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         {language === 'sv' ? 'Din adress' : 'Your Address'}
       </h2>
       
-      {!hasCurrentAddress ? (
+      {!hasCurrentAddress && (
         <>
           <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mb-4">
             {language === 'sv' 
@@ -171,7 +169,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
             </SheetContent>
           </Sheet>
         </>
-      ) : (
+      )}
+
+      {hasCurrentAddress && addressData && (
         <div className="space-y-6">
           <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] relative">
             <Button
@@ -184,17 +184,17 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
             </Button>
             <div className="space-y-2 mb-4">
               <p className="text-[#111827] dark:text-white text-base font-medium">
-                {addressData?.street_address}
+                {addressData.street_address}
               </p>
               <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                {addressData?.postal_code} {addressData?.city}
+                {addressData.postal_code} {addressData.city}
               </p>
             </div>
             <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
               <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
                 {language === 'sv' 
-                  ? `Adresslarm aktivt sedan ${formatDate(addressData!.created_at)}`
-                  : `Address alert active since ${formatDate(addressData!.created_at)}`
+                  ? `Adresslarm aktivt sedan ${formatDate(addressData.created_at)}`
+                  : `Address alert active since ${formatDate(addressData.created_at)}`
                 }
               </p>
             </div>
