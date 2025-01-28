@@ -1,13 +1,10 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Button } from "@/components/ui/button";
-import { HousePlus, Trash2 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { AddressForm } from "./AddressForm";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-import { sv, enUS } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
+import { CurrentAddress } from "./CurrentAddress";
+import { AddressHistory } from "./AddressHistory";
+import { AddNewAddress } from "./AddNewAddress";
 
 type AddressHistoryEntry = {
   street_address: string;
@@ -43,12 +40,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         .eq('customer_id', session.user.id)
         .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching address:', error);
-        throw error;
-      }
+      if (error) throw error;
       
-      console.log('Address data fetched:', data);
+      console.log('Address data:', data);
       setAddressData(data as AddressData);
     } catch (error) {
       console.error('Error fetching address:', error);
@@ -117,15 +111,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return format(date, 'PP', { locale: language === 'sv' ? sv : enUS });
-  };
-
-  // Check if there's a current active address (not deleted)
   const hasCurrentAddress = Boolean(addressData?.street_address && !addressData?.deleted_at);
-  
-  // Check if there's any address history
   const hasAddressHistory = Boolean(addressData?.address_history?.length > 0);
 
   console.log('Display conditions:', {
@@ -145,94 +131,27 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       </h2>
       
       {!hasCurrentAddress && (
-        <>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mb-4">
-            {language === 'sv' 
-              ? 'Du har inte angett din adress ännu'
-              : 'You have not provided your address yet'
-            }
-          </p>
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button className="w-full">
-                <HousePlus className="mr-2 h-4 w-4" />
-                {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>
-                  {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
-                </SheetTitle>
-              </SheetHeader>
-              <AddressForm onSuccess={handleAddressUpdate} />
-            </SheetContent>
-          </Sheet>
-        </>
+        <AddNewAddress 
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          onSuccess={handleAddressUpdate}
+        />
       )}
 
       {hasCurrentAddress && addressData && (
-        <div className="space-y-6">
-          <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
-              onClick={handleDeleteAddress}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-            <div className="space-y-2 mb-4">
-              <p className="text-[#111827] dark:text-white text-base font-medium">
-                {addressData.street_address}
-              </p>
-              <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                {addressData.postal_code} {addressData.city}
-              </p>
-            </div>
-            <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
-              <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                {language === 'sv' 
-                  ? `Adresslarm aktivt sedan ${formatDate(addressData.created_at)}`
-                  : `Address alert active since ${formatDate(addressData.created_at)}`
-                }
-              </p>
-            </div>
-          </div>
-        </div>
+        <CurrentAddress 
+          addressData={{
+            street_address: addressData.street_address!,
+            postal_code: addressData.postal_code!,
+            city: addressData.city!,
+            created_at: addressData.created_at
+          }}
+          onDelete={handleDeleteAddress}
+        />
       )}
 
-      {hasAddressHistory && (
-        <div className="mt-8">
-          <h3 className="text-lg font-medium mb-4 dark:text-white">
-            {language === 'sv' ? 'Tidigare adresser' : 'Previous addresses'}
-          </h3>
-          <div className="space-y-4">
-            {addressData?.address_history.map((historyEntry, index) => (
-              <div 
-                key={index}
-                className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] opacity-75"
-              >
-                <div className="space-y-2 mb-4">
-                  <p className="text-[#111827] dark:text-white text-base font-medium">
-                    {historyEntry.street_address}
-                  </p>
-                  <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                    {historyEntry.postal_code} {historyEntry.city}
-                  </p>
-                </div>
-                <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
-                  <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                    {language === 'sv'
-                      ? `Aktiv ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
-                      : `Active ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
-                    }
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {hasAddressHistory && addressData?.address_history && (
+        <AddressHistory history={addressData.address_history} />
       )}
     </div>
   );
