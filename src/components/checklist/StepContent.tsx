@@ -46,9 +46,7 @@ export const StepContent = ({
         </Badge>
         <GuideCard
           guide={guide}
-          accordionId={`guide-${siteId}`}
-          openAccordion={`guide-${siteId}`}
-          onAccordionChange={() => {}}
+          variant="checklist"
         />
         <Button
           onClick={() => onGuideComplete(siteId)}

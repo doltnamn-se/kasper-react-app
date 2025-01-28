@@ -15,12 +15,19 @@ interface GuideCardProps {
     title: string;
     steps: GuideStep[];
   };
-  accordionId: string;
+  accordionId?: string;
   openAccordion?: string;
-  onAccordionChange: (value: string) => void;
+  onAccordionChange?: (value: string) => void;
+  variant?: 'default' | 'checklist';
 }
 
-export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange }: GuideCardProps) => {
+export const GuideCard = ({ 
+  guide, 
+  accordionId, 
+  openAccordion, 
+  onAccordionChange,
+  variant = 'default' 
+}: GuideCardProps) => {
   const { t } = useLanguage();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
@@ -36,45 +43,57 @@ export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange
     if (url) window.open(url, '_blank');
   };
 
+  const content = (
+    <>
+      <div className="px-6 py-6">
+        <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
+        <Button 
+          className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
+          onClick={handleButtonClick}
+        >
+          {t('link.to.removal')}
+          <ArrowRight className="h-2 w-2 -rotate-45" />
+        </Button>
+      </div>
+      <div className="px-6 pb-6">
+        <div className="space-y-4">
+          {guide.steps.map((step, stepIndex) => {
+            if (stepIndex === 0) return null;
+            
+            return (
+              <GuideStep
+                key={stepIndex}
+                stepIndex={stepIndex}
+                text={step.text}
+                showCopyButton={shouldShowCopyButton(guide.title, step.text)}
+                guideTitle={guide.title}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+
+  if (variant === 'checklist') {
+    return (
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px]">
+        {content}
+      </div>
+    );
+  }
+
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
       <Accordion 
         type="single" 
         collapsible 
         value={openAccordion === accordionId ? accordionId : ""}
-        onValueChange={(value) => onAccordionChange(value)}
+        onValueChange={(value) => onAccordionChange?.(value)}
         className="w-full"
       >
-        <AccordionItem value={accordionId} className="border-none">
-          <div className="px-6 py-6">
-            <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
-            <Button 
-              className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
-              onClick={handleButtonClick}
-            >
-              {t('link.to.removal')}
-              <ArrowRight className="h-2 w-2 -rotate-45" />
-            </Button>
-          </div>
-          <AccordionContent>
-            <div className="px-6 pb-6">
-              <div className="space-y-4">
-                {guide.steps.map((step, stepIndex) => {
-                  if (stepIndex === 0) return null;
-                  
-                  return (
-                    <GuideStep
-                      key={stepIndex}
-                      stepIndex={stepIndex}
-                      text={step.text}
-                      showCopyButton={shouldShowCopyButton(guide.title, step.text)}
-                      guideTitle={guide.title}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          </AccordionContent>
+        <AccordionItem value={accordionId || ''} className="border-none">
+          {content}
           <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
