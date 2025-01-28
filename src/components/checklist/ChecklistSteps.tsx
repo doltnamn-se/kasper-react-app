@@ -42,37 +42,50 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
     }
   ];
 
+  // Calculate if all steps are completed
+  const isChecklistCompleted = steps.every(step => step.completed);
+
   return (
-    <div className="space-y-4">
-      {steps.map((item) => (
-        <div 
-          key={item.step} 
-          className={`flex items-center justify-between p-4 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
-        >
-          <div className="flex items-center gap-4">
-            <div className={`flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
-              <span className="text-xs xl:text-sm font-medium">{item.step}</span>
-            </div>
-            <div className={item.completed ? 'opacity-40' : ''}>
-              <p className="text-sm xl:text-base font-medium">{item.title}</p>
-            </div>
-          </div>
-          <div className="flex items-center">
-            {item.completed ? (
-              <div className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full bg-[#219653] flex items-center justify-center">
-                <Check className="w-4 h-4 xl:w-6 xl:h-6 text-white" />
-              </div>
-            ) : (
-              <button 
-                onClick={() => onStepClick(item.step)}
-                className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <ChevronRight className="w-4 h-4 xl:w-6 xl:h-6" />
-              </button>
-            )}
-          </div>
+    <div className="relative">
+      {isChecklistCompleted && (
+        <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
+          <p className="text-lg font-semibold text-center px-4">
+            {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
+          </p>
         </div>
-      ))}
+      )}
+      <div className="space-y-4">
+        {steps.map((item) => (
+          <div 
+            key={item.step} 
+            className={`flex items-center justify-between p-4 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
+          >
+            <div className="flex items-center gap-4">
+              <div className={`flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
+                <span className="text-xs xl:text-sm font-medium">{item.step}</span>
+              </div>
+              <div className={item.completed ? 'opacity-40' : ''}>
+                <p className="text-sm xl:text-base font-medium">{item.title}</p>
+              </div>
+            </div>
+            <div className="flex items-center">
+              {item.completed ? (
+                <div className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full bg-[#219653] flex items-center justify-center">
+                  <Check className="w-4 h-4 xl:w-6 xl:h-6 text-white" />
+                </div>
+              ) : (
+                <button 
+                  onClick={() => !isChecklistCompleted && onStepClick(item.step)}
+                  className={`flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors ${isChecklistCompleted ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                  disabled={isChecklistCompleted}
+                >
+                  <ChevronRight className="w-4 h-4 xl:w-6 xl:h-6" />
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
