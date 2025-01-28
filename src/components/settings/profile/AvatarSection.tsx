@@ -6,8 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Profile } from "@/types/customer";
 import { getUserInitials } from "@/utils/profileUtils";
-import { Upload, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { AvatarUploadButton } from "./AvatarUploadButton";
+import { AvatarDeleteButton } from "./AvatarDeleteButton";
 
 interface AvatarSectionProps {
   userProfile: Profile | null;
@@ -18,7 +19,6 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
   const { t } = useLanguage();
   const [isUploading, setIsUploading] = useState(false);
 
-  // Fetch customer data to get subscription plan
   const { data: customerData } = useQuery({
     queryKey: ['customer', userProfile?.id],
     queryFn: async () => {
@@ -113,13 +113,6 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
     }
   };
 
-  const handleUploadClick = () => {
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
   return (
     <div className="flex items-start gap-6">
       <div className="relative">
@@ -128,36 +121,15 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
           <AvatarFallback>{getUserInitials(userProfile)}</AvatarFallback>
         </Avatar>
         
-        {/* Upload button */}
-        <div className="absolute -bottom-1 -right-1">
-          <div className="relative w-8 h-8">
-            <input
-              type="file"
-              onChange={handleAvatarUpload}
-              accept="image/*"
-              disabled={isUploading}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-              aria-label={t('upload')}
-            />
-            <button 
-              className="absolute inset-0 w-full h-full bg-[#e0e0e0] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] rounded-full flex items-center justify-center transition-colors cursor-pointer"
-              type="button"
-              onClick={handleUploadClick}
-            >
-              <Upload className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
+        <AvatarUploadButton 
+          isUploading={isUploading}
+          onUpload={handleAvatarUpload}
+        />
 
-        {/* Delete button */}
-        {userProfile?.avatar_url && (
-          <button
-            onClick={handleAvatarDelete}
-            className="absolute -top-1 -right-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
+        <AvatarDeleteButton 
+          onDelete={handleAvatarDelete}
+          show={!!userProfile?.avatar_url}
+        />
       </div>
 
       <div className="space-y-1.5">
