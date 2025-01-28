@@ -41,43 +41,71 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       }
 
       console.log('Fetching address for user:', session.user.id);
+      
+      // First try to get existing record
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
         .is('deleted_at', null)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching address:', error);
         return;
       }
+
+      // If no record exists, create one
+      if (!data) {
+        console.log('No record found, creating new one');
+        const { data: newData, error: insertError } = await supabase
+          .from('customer_checklist_progress')
+          .insert([{ 
+            customer_id: session.user.id,
+            address_history: []
+          }])
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('Error creating record:', insertError);
+          return;
+        }
+
+        console.log('Created new record:', newData);
+        setAddressData({
+          street_address: null,
+          postal_code: null,
+          city: null,
+          address: null,
+          created_at: newData.created_at,
+          deleted_at: null,
+          address_history: []
+        });
+        return;
+      }
       
       console.log('Raw data from database:', data);
       
-      if (data) {
-        const typedData: AddressData = {
-          street_address: data.street_address || null,
-          postal_code: data.postal_code || null,
-          city: data.city || null,
-          address: data.address || null,
-          created_at: data.created_at,
-          deleted_at: data.deleted_at,
-          address_history: Array.isArray(data.address_history) 
-            ? data.address_history.map((entry: any) => ({
-                street_address: entry.street_address,
-                postal_code: entry.postal_code,
-                city: entry.city,
-                created_at: entry.created_at,
-                deleted_at: entry.deleted_at
-              }))
-            : []
-        };
-        console.log('Processed address data:', typedData);
-        setAddressData(typedData);
-      } else {
-        console.log('No address data found');
-      }
+      const typedData: AddressData = {
+        street_address: data.street_address || null,
+        postal_code: data.postal_code || null,
+        city: data.city || null,
+        address: data.address || null,
+        created_at: data.created_at,
+        deleted_at: data.deleted_at,
+        address_history: Array.isArray(data.address_history) 
+          ? data.address_history.map((entry: any) => ({
+              street_address: entry.street_address,
+              postal_code: entry.postal_code,
+              city: entry.city,
+              created_at: entry.created_at,
+              deleted_at: entry.deleted_at
+            }))
+          : []
+      };
+      console.log('Processed address data:', typedData);
+      setAddressData(typedData);
     } catch (error) {
       console.error('Error in fetchAddress:', error);
     }
