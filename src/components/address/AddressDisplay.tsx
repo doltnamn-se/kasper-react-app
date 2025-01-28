@@ -18,6 +18,7 @@ interface AddressData {
   street_address: string | null;
   postal_code: string | null;
   city: string | null;
+  address: string | null;
   created_at: string;
   deleted_at: string | null;
   address_history: AddressHistoryEntry[];
@@ -38,23 +39,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         return;
       }
 
-      // First, let's check if any records exist for this user
-      const { data: allData, error: checkError } = await supabase
-        .from('customer_checklist_progress')
-        .select('*')
-        .eq('customer_id', session.user.id);
-
-      console.log('All user records:', allData);
-
-      if (checkError) {
-        console.error('Error checking records:', checkError);
-        return;
-      }
-
-      // Now fetch the active address
       const { data, error } = await supabase
         .from('customer_checklist_progress')
-        .select('street_address, postal_code, city, created_at, deleted_at, address_history')
+        .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
         .is('deleted_at', null)
         .maybeSingle();
@@ -107,6 +94,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
           street_address: null,
           postal_code: null,
           city: null,
+          address: null,
           deleted_at: new Date().toISOString(),
           address_history: newHistory
         })
@@ -154,33 +142,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     }
   });
   
-  // Fetch address history separately
-  const [addressHistory, setAddressHistory] = useState<AddressHistoryEntry[]>([]);
-  
-  useEffect(() => {
-    const fetchHistory = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user?.id) return;
-      
-      const { data, error } = await supabase
-        .from('customer_checklist_progress')
-        .select('address_history')
-        .eq('customer_id', session.user.id)
-        .single();
-        
-      if (error) {
-        console.error('Error fetching address history:', error);
-        return;
-      }
-      
-      // Type assertion to ensure the data matches our expected structure
-      const history = (data?.address_history || []) as AddressHistoryEntry[];
-      setAddressHistory(history);
-    };
-    
-    fetchHistory();
-  }, []);
-
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <h2 className="text-xl font-semibold mb-6 dark:text-white">
@@ -207,8 +168,8 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         />
       )}
 
-      {addressHistory.length > 0 && (
-        <AddressHistory history={addressHistory} />
+      {addressData?.address_history && addressData.address_history.length > 0 && (
+        <AddressHistory history={addressData.address_history} />
       )}
     </div>
   );
