@@ -5,6 +5,7 @@ import { PasswordUpdateForm } from "./PasswordUpdateForm";
 import { HidingSitesSelection } from "./HidingSitesSelection";
 import { UrlSubmission } from "./UrlSubmission";
 import { PersonalInfoForm } from "./PersonalInfoForm";
+import { GuideCard } from "@/components/guides/GuideCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +22,7 @@ interface ChecklistProgress {
   is_address_hidden: boolean;
   personal_number: string | null;
   completed_at: string | null;
+  completed_guides?: string[];
 }
 
 export const ChecklistContainer = () => {
@@ -113,8 +115,140 @@ export const ChecklistContainer = () => {
     }
   };
 
+  const handleGuideComplete = async (siteId: string) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    const completedGuides = checklistProgress?.completed_guides || [];
+    
+    const { error } = await supabase
+      .from('customer_checklist_progress')
+      .update({ 
+        completed_guides: [...completedGuides, siteId] 
+      })
+      .eq('customer_id', session.user.id);
+
+    if (error) {
+      console.error('Error updating completed guides:', error);
+      return;
+    }
+
+    await refetchProgress();
+    setCurrentStep(prev => prev + 1);
+  };
+
+  const getTotalSteps = () => {
+    const baseSteps = 4; // Password, URLs, Sites Selection, Personal Info
+    const selectedSitesCount = checklistProgress?.selected_sites?.length || 0;
+    return baseSteps + selectedSitesCount;
+  };
+
+  const getGuideForSite = (siteId: string) => {
+    const guides = [
+      {
+        title: t('guide.eniro.title'),
+        steps: [
+          { text: 'https://uppdatera.eniro.se/person' },
+          { text: t('guide.eniro.step1') },
+          { text: t('guide.eniro.step2') },
+          { text: t('guide.eniro.step3') }
+        ]
+      },
+      {
+        title: t('guide.mrkoll.title'),
+        steps: [
+          { text: 'https://mrkoll.se/om/andra-uppgifter/' },
+          { text: t('guide.mrkoll.step1') },
+          { text: t('guide.mrkoll.step2') }
+        ]
+      },
+      {
+        title: t('guide.hitta.title'),
+        steps: [
+          { text: 'https://www.hitta.se/kontakta-oss/ta-bort-kontaktsida' },
+          { text: t('guide.hitta.step1') },
+          { text: t('guide.hitta.step2') }
+        ]
+      },
+      {
+        title: t('guide.merinfo.title'),
+        steps: [
+          { text: 'https://www.merinfo.se/ta-bort-mina-uppgifter' },
+          { text: t('guide.merinfo.step1') }
+        ]
+      },
+      {
+        title: t('guide.ratsit.title'),
+        steps: [
+          { text: 'https://www.ratsit.se/redigera/dolj' },
+          { text: t('guide.ratsit.step1') },
+          { text: t('guide.ratsit.step2') }
+        ]
+      },
+      {
+        title: t('guide.birthday.title'),
+        steps: [
+          { text: 'https://www.birthday.se/kontakta' },
+          { text: t('guide.birthday.step1') },
+          { text: t('guide.birthday.step2') }
+        ]
+      },
+      {
+        title: t('guide.upplysning.title'),
+        steps: [
+          { text: 'https://www.upplysning.se/kontakta-oss' },
+          { text: t('guide.upplysning.step1') },
+          { text: t('guide.upplysning.step2') }
+        ]
+      }
+    ];
+
+    return guides.find(guide => guide.title.toLowerCase().includes(siteId.toLowerCase()));
+  };
+
   const renderCurrentStep = () => {
-    const currentItem = checklistItems?.[currentStep - 1];
+    const baseSteps = 4;
+    const selectedSites = checklistProgress?.selected_sites || [];
+    
+    // If we're on a guide step
+    if (currentStep > 3 && currentStep < baseSteps + selectedSites.length) {
+      const guideIndex = currentStep - 4;
+      const siteId = selectedSites[guideIndex];
+      const guide = getGuideForSite(siteId);
+      
+      if (!guide) return null;
+
+      const isGuideCompleted = checklistProgress?.completed_guides?.includes(siteId);
+      
+      return (
+        <div className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
+              {t('step.number', { number: currentStep })}
+            </Badge>
+            <GuideCard
+              guide={guide}
+              accordionId={`guide-${siteId}`}
+              openAccordion={`guide-${siteId}`}
+              onAccordionChange={() => {}}
+            />
+            <Button
+              onClick={() => handleGuideComplete(siteId)}
+              disabled={isGuideCompleted}
+              className="w-full xl:w-1/4 lg:w-1/2"
+            >
+              {isGuideCompleted ? 
+                (language === 'sv' ? 'Klart' : 'Completed') : 
+                (language === 'sv' ? 'Markera som klar' : 'Mark as completed')}
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    // Adjust the step number for the identification step
+    const finalStepNumber = currentStep > 3 ? 4 : currentStep;
+    const currentItem = checklistItems?.[finalStepNumber - 1];
     if (!currentItem) return null;
 
     return (
@@ -125,27 +259,22 @@ export const ChecklistContainer = () => {
           </Badge>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">
-              {currentStep === 1 ? t('step.1.title') : 
-               currentStep === 2 ? t('step.2.title') : 
-               currentStep === 3 ? t('step.3.title') : 
+              {finalStepNumber === 1 ? t('step.1.title') : 
+               finalStepNumber === 2 ? t('step.2.title') : 
+               finalStepNumber === 3 ? t('step.3.title') : 
                t('step.4.title')}
             </h3>
             <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {currentStep === 1 ? t('set.password.description') :
-               currentStep === 2 ? t('step.2.description') :
-               currentStep === 3 ? t('step.3.description') :
+              {finalStepNumber === 1 ? t('set.password.description') :
+               finalStepNumber === 2 ? t('step.2.description') :
+               finalStepNumber === 3 ? t('step.3.description') :
                t('step.4.description')}
             </p>
-            {currentItem.requires_subscription_plan && (
-              <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded w-fit">
-                {currentItem.requires_subscription_plan.join(', ')}
-              </span>
-            )}
           </div>
         </div>
         <div className="pt-4">
           {(() => {
-            switch (currentStep) {
+            switch (finalStepNumber) {
               case 1:
                 return <PasswordUpdateForm 
                   onComplete={() => {
@@ -194,8 +323,8 @@ export const ChecklistContainer = () => {
         )}
         {currentStep === 1 && <div />}
         <Button
-          onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
-          disabled={currentStep === 4}
+          onClick={() => setCurrentStep((prev) => Math.min(getTotalSteps(), prev + 1))}
+          disabled={currentStep === getTotalSteps()}
           className="gap-2"
         >
           {language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`}
