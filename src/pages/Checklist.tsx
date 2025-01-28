@@ -1,6 +1,5 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
 import { Check, ChevronRight } from "lucide-react";
 import { PieChart, Pie, Cell } from 'recharts';
@@ -59,6 +58,22 @@ const Checklist = () => {
     } else {
       console.log('Step element not found');
     }
+  };
+
+  const getGuideTitle = (site: string): string => {
+    // Map site identifiers to their corresponding translation keys
+    const siteTranslationKeys: Record<string, keyof Translations> = {
+      'eniro': 'guide.eniro.title',
+      'mrkoll': 'guide.mrkoll.title',
+      'hitta': 'guide.hitta.title',
+      'merinfo': 'guide.merinfo.title',
+      'ratsit': 'guide.ratsit.title',
+      'birthday': 'guide.birthday.title',
+      'upplysning': 'guide.upplysning.title'
+    };
+
+    const translationKey = siteTranslationKeys[site.toLowerCase()];
+    return translationKey ? t(translationKey) : site;
   };
 
   return (
@@ -164,7 +179,7 @@ const Checklist = () => {
                 { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
                 ...(checklistProgress?.selected_sites || []).map((site, index) => ({
                   step: 4 + index,
-                  title: t(`guide.${site}.title`),
+                  title: getGuideTitle(site),
                   completed: checklistProgress?.completed_guides?.includes(site)
                 })),
                 { 
