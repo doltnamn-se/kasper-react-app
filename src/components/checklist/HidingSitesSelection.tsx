@@ -3,25 +3,29 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface HidingSitesSelectionProps {
   onComplete: () => void;
 }
 
-type HidingSite = "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo";
+type HidingSite = "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo" | "mrkoll" | "upplysning";
 
-const HIDING_SITES: { id: HidingSite; name: string; description: string }[] = [
-  { id: 'eniro', name: 'Eniro', description: 'Phone directory and people search' },
-  { id: 'hitta', name: 'Hitta.se', description: 'People and business search' },
-  { id: 'birthday', name: 'Birthday.se', description: 'Birthday calendar' },
-  { id: 'ratsit', name: 'Ratsit', description: 'Credit information' },
-  { id: 'merinfo', name: 'Merinfo', description: 'Company and people information' }
+const HIDING_SITES: { id: HidingSite; name: string }[] = [
+  { id: 'eniro', name: 'Eniro.se' },
+  { id: 'hitta', name: 'Hitta.se' },
+  { id: 'mrkoll', name: 'Mrkoll.se' },
+  { id: 'merinfo', name: 'Merinfo.se' },
+  { id: 'ratsit', name: 'Ratsit.se' },
+  { id: 'birthday', name: 'Birthday.se' },
+  { id: 'upplysning', name: 'Upplysning.se' }
 ];
 
 export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) => {
   const [selectedSites, setSelectedSites] = useState<HidingSite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleSiteToggle = (siteId: HidingSite) => {
     setSelectedSites(prev =>
@@ -66,7 +70,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {HIDING_SITES.map((site) => (
           <button
             key={site.id}
@@ -78,12 +82,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
                 : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
             }`}
           >
-            <div>
-              <h3 className="font-medium">{site.name}</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {site.description}
-              </p>
-            </div>
+            <span className="font-medium">{site.name}</span>
             {selectedSites.includes(site.id) && (
               <Check className="h-4 w-4 text-green-500" />
             )}
