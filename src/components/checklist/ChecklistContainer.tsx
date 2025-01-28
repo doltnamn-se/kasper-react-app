@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const ChecklistContainer = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { checklistProgress, handleStepComplete, calculateProgress, refetchProgress } = useChecklistProgress();
   const { checklistItems } = useChecklistItems();
 
@@ -105,49 +105,37 @@ export const ChecklistContainer = () => {
     return guides.find(guide => guide.title.toLowerCase().includes(siteId.toLowerCase()));
   };
 
-  const progress = calculateProgress();
-  const isChecklistCompleted = progress === 100;
-
   return (
     <div className="space-y-6">
-      <StepProgress progress={progress} />
-      <div className="relative">
-        <div className="space-y-8">
-          <div className="step-content-wrapper bg-white dark:bg-[#1C1C1D] rounded-lg p-6">
-            {[...Array(getTotalSteps())].map((_, index) => (
-              <div 
-                key={index + 1}
-                data-step={index + 1}
-                style={{ display: currentStep === index + 1 ? 'block' : 'none' }}
-              >
-                <StepContent
-                  currentStep={index + 1}
-                  selectedSites={checklistProgress?.selected_sites || []}
-                  completedGuides={checklistProgress?.completed_guides}
-                  onGuideComplete={handleGuideComplete}
-                  onStepComplete={handleStepComplete}
-                  checklistItems={checklistItems || []}
-                  getGuideForSite={getGuideForSite}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="py-8">
-            <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
-          </div>
-          <StepNavigation
-            currentStep={currentStep}
-            totalSteps={getTotalSteps()}
-            onStepChange={setCurrentStep}
-          />
+      <StepProgress progress={calculateProgress()} />
+      <div className="space-y-8">
+        <div className="step-content-wrapper bg-white dark:bg-[#1C1C1D] rounded-lg p-6">
+          {[...Array(getTotalSteps())].map((_, index) => (
+            <div 
+              key={index + 1}
+              data-step={index + 1}
+              style={{ display: currentStep === index + 1 ? 'block' : 'none' }}
+            >
+              <StepContent
+                currentStep={index + 1}
+                selectedSites={checklistProgress?.selected_sites || []}
+                completedGuides={checklistProgress?.completed_guides}
+                onGuideComplete={handleGuideComplete}
+                onStepComplete={handleStepComplete}
+                checklistItems={checklistItems || []}
+                getGuideForSite={getGuideForSite}
+              />
+            </div>
+          ))}
         </div>
-        {isChecklistCompleted && (
-          <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
-            <p className="text-lg font-semibold text-center px-4">
-              {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
-            </p>
-          </div>
-        )}
+        <div className="py-8">
+          <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
+        </div>
+        <StepNavigation
+          currentStep={currentStep}
+          totalSteps={getTotalSteps()}
+          onStepChange={setCurrentStep}
+        />
       </div>
     </div>
   );
