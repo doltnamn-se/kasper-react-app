@@ -46,6 +46,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
+        .is('deleted_at', null)
         .maybeSingle();
 
       if (error) {
@@ -54,14 +55,8 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       }
 
       console.log('Raw data from database:', data);
-
-      // If no data exists, the trigger will create it
-      if (!data) {
-        console.log('No address data found, waiting for trigger to create record');
-        return;
-      }
       
-      const typedData: AddressData = {
+      const typedData: AddressData = data ? {
         street_address: data.street_address,
         postal_code: data.postal_code,
         city: data.city,
@@ -77,7 +72,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
               deleted_at: entry.deleted_at
             }))
           : []
-      };
+      } : null;
       
       console.log('Processed address data:', typedData);
       setAddressData(typedData);
@@ -150,13 +145,10 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     }
   };
 
-  const hasCurrentAddress = Boolean(
-    addressData && 
-    addressData.street_address && 
-    addressData.postal_code && 
-    addressData.city &&
-    !addressData.deleted_at
-  );
+  const hasCurrentAddress = Boolean(addressData?.street_address && 
+    addressData?.postal_code && 
+    addressData?.city && 
+    !addressData?.deleted_at);
 
   console.log('Address display state:', {
     addressData,
@@ -170,7 +162,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     }
   });
 
-  // Don't render anything until we have the initial data
   if (addressData === null) {
     return null;
   }
