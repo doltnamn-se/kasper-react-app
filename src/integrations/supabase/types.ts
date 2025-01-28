@@ -65,40 +65,43 @@ export type Database = {
       }
       customer_checklist_progress: {
         Row: {
+          customer_id: string
+          password_updated: boolean | null
+          selected_sites: Database["public"]["Enums"]["hiding_site"][] | null
+          removal_urls: string[] | null
           address: string | null
+          is_address_hidden: boolean | null
+          personal_number: string | null
           completed_at: string | null
           created_at: string
-          customer_id: string
-          is_address_hidden: boolean | null
-          password_updated: boolean | null
-          personal_number: string | null
-          removal_urls: string[] | null
-          selected_sites: Database["public"]["Enums"]["hiding_site"][] | null
           updated_at: string
+          completed_guides: string[] | null
         }
         Insert: {
+          customer_id: string
+          password_updated?: boolean | null
+          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
+          removal_urls?: string[] | null
           address?: string | null
+          is_address_hidden?: boolean | null
+          personal_number?: string | null
           completed_at?: string | null
           created_at?: string
-          customer_id: string
-          is_address_hidden?: boolean | null
-          password_updated?: boolean | null
-          personal_number?: string | null
-          removal_urls?: string[] | null
-          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
           updated_at?: string
+          completed_guides?: string[] | null
         }
         Update: {
+          customer_id?: string
+          password_updated?: boolean | null
+          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
+          removal_urls?: string[] | null
           address?: string | null
+          is_address_hidden?: boolean | null
+          personal_number?: string | null
           completed_at?: string | null
           created_at?: string
-          customer_id?: string
-          is_address_hidden?: boolean | null
-          password_updated?: boolean | null
-          personal_number?: string | null
-          removal_urls?: string[] | null
-          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
           updated_at?: string
+          completed_guides?: string[] | null
         }
         Relationships: [
           {
@@ -107,7 +110,7 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "customers"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       customers: {
@@ -348,7 +351,7 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -360,10 +363,10 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
+      Row: infer R
+    }
+    ? R
+    : never
     : never
 
 export type TablesInsert<
@@ -381,10 +384,10 @@ export type TablesInsert<
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
+      Insert: infer I
+    }
+    ? I
+    : never
     : never
 
 export type TablesUpdate<
@@ -402,10 +405,10 @@ export type TablesUpdate<
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
+      Update: infer U
+    }
+    ? U
+    : never
     : never
 
 export type Enums<
