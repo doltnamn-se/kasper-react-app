@@ -8,6 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { RefObject } from "react";
+import { House, BadgeCheck, Activity, QrCode, MapPinHouse, MousePointerClick, Settings } from "lucide-react";
 
 export type SearchResult = {
   id: string;
@@ -24,6 +25,28 @@ interface SearchResultsProps {
   handleSelect: (url: string) => void;
 }
 
+const getIconForUrl = (url: string) => {
+  switch (url) {
+    case "/":
+      return <House className="h-4 w-4 mr-2" />;
+    case "/checklist":
+      return <BadgeCheck className="h-4 w-4 mr-2" />;
+    case "/monitoring":
+      return <Activity className="h-4 w-4 mr-2" />;
+    case "/my-links":
+    case "/deindexing":
+      return <QrCode className="h-4 w-4 mr-2" />;
+    case "/address-alerts":
+      return <MapPinHouse className="h-4 w-4 mr-2" />;
+    case "/guides":
+      return <MousePointerClick className="h-4 w-4 mr-2" />;
+    case "/settings":
+      return <Settings className="h-4 w-4 mr-2" />;
+    default:
+      return <House className="h-4 w-4 mr-2" />;
+  }
+};
+
 export const SearchResults = ({
   searchResultsRef,
   showResults,
@@ -32,16 +55,6 @@ export const SearchResults = ({
   handleSelect
 }: SearchResultsProps) => {
   const { t } = useLanguage();
-
-  const getCategoryTranslation = (category: string): string => {
-    if (category.toLowerCase() === 'pages') {
-      return t('search.category.pages');
-    }
-    if (category.toLowerCase() === 'settings') {
-      return t('search.category.settings');
-    }
-    return category;
-  };
 
   if (!showResults || !searchQuery) return null;
 
@@ -66,12 +79,15 @@ export const SearchResults = ({
                     "transition-colors duration-200"
                   )}
                 >
-                  <span className="font-medium text-[#000000] dark:text-[#FFFFFF]">
-                    {result.title}
-                  </span>
+                  <div className="flex items-center">
+                    {getIconForUrl(result.url)}
+                    <span className="font-medium text-[#000000] dark:text-[#FFFFFF]">
+                      {result.title}
+                    </span>
+                  </div>
                   {result.category && (
                     <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {getCategoryTranslation(result.category)}
+                      {result.category}
                     </span>
                   )}
                 </CommandItem>
