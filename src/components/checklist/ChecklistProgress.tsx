@@ -13,7 +13,7 @@ export const ChecklistProgress = ({ progress }: ChecklistProgressProps) => {
   return (
     <div className={`relative ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className={`font-black ${isMobile ? 'text-sm' : 'text-base'}`}>{progress}%</span>
+        <span className={`font-black ${isMobile ? 'text-xs' : 'text-sm'}`}>{progress}%</span>
       </div>
       <PieChart width={isMobile ? 64 : 80} height={isMobile ? 64 : 80}>
         <defs>
