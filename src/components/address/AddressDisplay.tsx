@@ -50,9 +50,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       }
       
       console.log('Address data fetched:', data);
-      if (data) {
-        setAddressData(data as AddressData);
-      }
+      setAddressData(data as AddressData);
     } catch (error) {
       console.error('Error fetching address:', error);
     }
@@ -137,10 +135,14 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   // Check if there's any address history
   const hasAddressHistory = addressData?.address_history && addressData.address_history.length > 0;
 
-  console.log('Current address status:', {
+  console.log('Display conditions:', {
     hasCurrentAddress,
     hasAddressHistory,
-    addressData
+    addressData: {
+      street_address: addressData?.street_address,
+      deleted_at: addressData?.deleted_at,
+      address_history: addressData?.address_history
+    }
   });
 
   return (
@@ -177,39 +179,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
               </p>
             </div>
           </div>
-
-          {hasAddressHistory && (
-            <div className="mt-8">
-              <h3 className="text-lg font-medium mb-4 dark:text-white">
-                {language === 'sv' ? 'Tidigare adresser' : 'Previous addresses'}
-              </h3>
-              <div className="space-y-4">
-                {addressData?.address_history.map((historyEntry, index) => (
-                  <div 
-                    key={index}
-                    className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] opacity-75"
-                  >
-                    <div className="space-y-2 mb-4">
-                      <p className="text-[#111827] dark:text-white text-base font-medium">
-                        {historyEntry.street_address}
-                      </p>
-                      <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                        {historyEntry.postal_code} {historyEntry.city}
-                      </p>
-                    </div>
-                    <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
-                      <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
-                        {language === 'sv'
-                          ? `Aktiv ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
-                          : `Active ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
-                        }
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       ) : (
         <>
@@ -236,6 +205,39 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
             </SheetContent>
           </Sheet>
         </>
+      )}
+
+      {hasAddressHistory && (
+        <div className="mt-8">
+          <h3 className="text-lg font-medium mb-4 dark:text-white">
+            {language === 'sv' ? 'Tidigare adresser' : 'Previous addresses'}
+          </h3>
+          <div className="space-y-4">
+            {addressData?.address_history.map((historyEntry, index) => (
+              <div 
+                key={index}
+                className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] opacity-75"
+              >
+                <div className="space-y-2 mb-4">
+                  <p className="text-[#111827] dark:text-white text-base font-medium">
+                    {historyEntry.street_address}
+                  </p>
+                  <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+                    {historyEntry.postal_code} {historyEntry.city}
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
+                  <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+                    {language === 'sv'
+                      ? `Aktiv ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
+                      : `Active ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
+                    }
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
