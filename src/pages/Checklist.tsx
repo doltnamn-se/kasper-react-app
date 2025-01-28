@@ -1,5 +1,6 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
 import { Check, ChevronRight } from "lucide-react";
 import { PieChart, Pie, Cell } from 'recharts';
@@ -7,6 +8,7 @@ import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useChecklistItems } from "@/hooks/useChecklistItems";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect } from "react";
+import { Translations } from "@/translations/types";
 
 const Checklist = () => {
   const { t, language } = useLanguage();
@@ -61,8 +63,8 @@ const Checklist = () => {
   };
 
   const getGuideTitle = (site: string): string => {
-    // Map site identifiers to their corresponding translation keys
-    const siteTranslationKeys: Record<string, keyof Translations> = {
+    type GuideKeys = Extract<keyof Translations, `guide.${string}.title`>;
+    const siteTranslationKeys: Record<string, GuideKeys> = {
       'eniro': 'guide.eniro.title',
       'mrkoll': 'guide.mrkoll.title',
       'hitta': 'guide.hitta.title',
