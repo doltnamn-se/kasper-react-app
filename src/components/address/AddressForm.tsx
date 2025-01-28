@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SheetClose } from "@/components/ui/sheet";
+import { useState } from "react";
 
 interface AddressFormData {
   street_address: string;
@@ -16,6 +17,7 @@ interface AddressFormData {
 export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { language } = useLanguage();
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<AddressFormData>({
     defaultValues: {
@@ -27,6 +29,7 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
   const onSubmit = async (data: AddressFormData) => {
     try {
+      setIsSubmitting(true);
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return;
 
@@ -58,6 +61,8 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
           "Could not save the address",
         variant: "destructive"
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -106,7 +111,7 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
               {language === 'sv' ? 'Avbryt' : 'Cancel'}
             </Button>
           </SheetClose>
-          <Button type="submit">
+          <Button type="submit" disabled={isSubmitting}>
             {language === 'sv' ? 'Spara' : 'Save'}
           </Button>
         </div>
