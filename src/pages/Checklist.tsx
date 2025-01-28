@@ -73,20 +73,18 @@ const Checklist = () => {
 
   const handleStepClick = (stepNumber: number) => {
     console.log('Clicking step:', stepNumber);
-    const checklistContainer = document.querySelector('.checklist-container');
+    const checklistContainer = document.querySelector('.step-content-wrapper');
     if (!checklistContainer) {
       console.log('Container not found');
       return;
     }
 
-    // Find the step element within the container
     const stepElement = checklistContainer.querySelector(`[data-step="${stepNumber}"]`);
     if (stepElement) {
       console.log('Found step element, scrolling to it');
       stepElement.scrollIntoView({ behavior: 'smooth' });
       
-      // Update the current step in the ChecklistContainer
-      const containerInstance = checklistContainer.querySelector('.checklist-component') as any;
+      const containerInstance = document.querySelector('.checklist-component') as any;
       if (containerInstance && containerInstance.__reactFiber$) {
         const instance = containerInstance.__reactFiber$.child?.stateNode;
         if (instance && instance.setCurrentStep) {

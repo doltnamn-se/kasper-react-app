@@ -215,16 +215,24 @@ export const ChecklistContainer = () => {
   return (
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
-      <div data-step={currentStep}>
-        <StepContent
-          currentStep={currentStep}
-          selectedSites={checklistProgress?.selected_sites || []}
-          completedGuides={checklistProgress?.completed_guides}
-          onGuideComplete={handleGuideComplete}
-          onStepComplete={handleStepComplete}
-          checklistItems={checklistItems || []}
-          getGuideForSite={getGuideForSite}
-        />
+      <div className="step-content-wrapper">
+        {[...Array(getTotalSteps())].map((_, index) => (
+          <div 
+            key={index + 1}
+            data-step={index + 1}
+            style={{ display: currentStep === index + 1 ? 'block' : 'none' }}
+          >
+            <StepContent
+              currentStep={index + 1}
+              selectedSites={checklistProgress?.selected_sites || []}
+              completedGuides={checklistProgress?.completed_guides}
+              onGuideComplete={handleGuideComplete}
+              onStepComplete={handleStepComplete}
+              checklistItems={checklistItems || []}
+              getGuideForSite={getGuideForSite}
+            />
+          </div>
+        ))}
       </div>
       <div className="py-8">
         <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
