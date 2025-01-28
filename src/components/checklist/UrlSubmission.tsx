@@ -79,10 +79,17 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
+      // Filter out empty URLs
       const validUrls = urls.filter(url => url.trim() !== '');
       
+      // Check if the number of valid URLs exceeds the limit
       if (validUrls.length > urlLimit) {
         throw new Error(t('url.limit.message', { limit: urlLimit }));
+      }
+
+      // Check if user has no URL allowance
+      if (urlLimit === 0) {
+        throw new Error(t('url.no.plan'));
       }
 
       // First update the checklist progress
@@ -94,6 +101,15 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       if (progressError) throw progressError;
 
       // Then insert into removal_urls table
+      // First delete existing URLs
+      const { error: deleteError } = await supabase
+        .from('removal_urls')
+        .delete()
+        .eq('customer_id', session.user.id);
+
+      if (deleteError) throw deleteError;
+
+      // Then insert new URLs
       const urlRows = validUrls.map(url => ({
         customer_id: session.user.id,
         url,
