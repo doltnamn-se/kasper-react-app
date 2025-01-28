@@ -66,15 +66,28 @@ const Checklist = () => {
   const COLORS = ['url(#progressGradient)', 'url(#backgroundGradient)'];
 
   const getTotalSteps = () => {
-    const baseSteps = 4; // Password, URLs, Sites Selection, Personal Info
+    const baseSteps = 4;
     const selectedSitesCount = checklistProgress?.selected_sites?.length || 0;
     return baseSteps + selectedSitesCount;
   };
 
   const handleStepClick = (stepNumber: number) => {
-    const container = document.querySelector('.checklist-container');
-    if (container) {
-      container.querySelector(`[data-step="${stepNumber}"]`)?.scrollIntoView({ behavior: 'smooth' });
+    const checklistContainer = document.querySelector('.checklist-container');
+    if (!checklistContainer) return;
+
+    // Find the step element within the container
+    const stepElement = checklistContainer.querySelector(`[data-step="${stepNumber}"]`);
+    if (stepElement) {
+      stepElement.scrollIntoView({ behavior: 'smooth' });
+      
+      // Update the current step in the ChecklistContainer
+      const checklistContainerComponent = checklistContainer as any;
+      if (checklistContainerComponent.__reactFiber$) {
+        const instance = checklistContainerComponent.__reactFiber$.child?.stateNode;
+        if (instance && instance.setCurrentStep) {
+          instance.setCurrentStep(stepNumber);
+        }
+      }
     }
   };
 
@@ -163,7 +176,7 @@ const Checklist = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Card className="p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
-            <div className="space-y-8">
+            <div className="space-y-8 checklist-container">
               <ChecklistContainer />
             </div>
           </Card>
@@ -208,7 +221,7 @@ const Checklist = () => {
                     ) : (
                       <button 
                         onClick={() => handleStepClick(item.step)}
-                        className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors"
+                        className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors cursor-pointer"
                       >
                         <ChevronRight className="w-4 h-4 xl:w-6 xl:h-6" />
                       </button>

@@ -134,7 +134,7 @@ export const ChecklistContainer = () => {
   };
 
   const getTotalSteps = () => {
-    const baseSteps = 4; // Password, URLs, Sites Selection, Personal Info
+    const baseSteps = 4;
     const selectedSitesCount = checklistProgress?.selected_sites?.length || 0;
     return baseSteps + selectedSitesCount;
   };
@@ -215,15 +215,17 @@ export const ChecklistContainer = () => {
   return (
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
-      <StepContent
-        currentStep={currentStep}
-        selectedSites={checklistProgress?.selected_sites || []}
-        completedGuides={checklistProgress?.completed_guides}
-        onGuideComplete={handleGuideComplete}
-        onStepComplete={handleStepComplete}
-        checklistItems={checklistItems || []}
-        getGuideForSite={getGuideForSite}
-      />
+      <div data-step={currentStep}>
+        <StepContent
+          currentStep={currentStep}
+          selectedSites={checklistProgress?.selected_sites || []}
+          completedGuides={checklistProgress?.completed_guides}
+          onGuideComplete={handleGuideComplete}
+          onStepComplete={handleStepComplete}
+          checklistItems={checklistItems || []}
+          getGuideForSite={getGuideForSite}
+        />
+      </div>
       <div className="py-8">
         <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
       </div>
