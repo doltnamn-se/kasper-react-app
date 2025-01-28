@@ -17,7 +17,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const { toast } = useToast();
   const { t, language } = useLanguage();
 
-  // Fetch customer subscription plan
   const { data: customerData } = useQuery({
     queryKey: ['customer'],
     queryFn: async () => {
@@ -35,7 +34,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     }
   });
 
-  // Fetch existing URLs
   const { data: existingUrls } = useQuery({
     queryKey: ['existing-urls'],
     queryFn: async () => {
@@ -62,8 +60,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         return 0;
     }
   };
-
-  const urlLimit = getUrlLimit();
 
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
@@ -163,6 +159,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   const handleSkipStep = async () => {
+    setIsLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
@@ -170,7 +167,11 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       // First update the checklist progress
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({ removal_urls: [] })
+        .update({ 
+          removal_urls: [],
+          // Ensure the step is marked as completed
+          completed_at: new Date().toISOString()
+        })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
@@ -183,6 +184,13 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (deleteError) throw deleteError;
       
+      toast({
+        title: language === 'sv' ? "Steg hoppat över" : "Step skipped",
+        description: language === 'sv' ? 
+          "Du kan alltid komma tillbaka senare" : 
+          "You can always come back later",
+      });
+      
       onComplete();
     } catch (error: any) {
       console.error('Error skipping step:', error);
@@ -191,6 +199,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         title: "Error",
         description: "Failed to skip step. Please try again.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -220,9 +230,12 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
           <Button
             variant="outline"
             onClick={handleSkipStep}
+            disabled={isLoading}
             className="w-full"
           >
-            {language === 'sv' ? 'Hoppa över steg' : 'Skip this step'}
+            {isLoading ? 
+              (language === 'sv' ? 'Hoppar över...' : 'Skipping...') : 
+              (language === 'sv' ? 'Hoppa över steg' : 'Skip this step')}
           </Button>
         </div>
       </div>
