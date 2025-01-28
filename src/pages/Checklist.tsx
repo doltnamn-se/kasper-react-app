@@ -60,7 +60,7 @@ const Checklist = () => {
           {t('nav.checklist')}
         </h1>
         <ChecklistProgress progress={progress} />
-        {!isMobile && (
+        {!isMobile && progress !== 100 && (
           <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('step.progress', { 
               current: Math.ceil(progress / (100 / (4 + (checklistProgress?.selected_sites?.length || 0)))), 
