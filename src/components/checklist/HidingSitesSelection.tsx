@@ -25,7 +25,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
   const [selectedSites, setSelectedSites] = useState<HidingSite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const handleSiteToggle = (siteId: HidingSite) => {
     setSelectedSites(prev =>
@@ -94,7 +94,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
         disabled={isLoading || selectedSites.length === 0}
         className="w-full"
       >
-        {isLoading ? "Saving..." : "Save Preferences"}
+        {isLoading ? t('saving') : language === 'sv' ? 'Välj' : 'Choose'}
       </Button>
     </form>
   );
