@@ -31,19 +31,26 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
   const fetchAddress = async () => {
     try {
+      console.log('Fetching address...');
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user?.id) return;
+      if (!session?.user?.id) {
+        console.log('No user session found');
+        return;
+      }
 
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
-        .is('deleted_at', null)  // Only fetch active address
+        .is('deleted_at', null)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching address:', error);
+        throw error;
+      }
       
-      console.log('Address data:', data);
+      console.log('Fetched address data:', data);
       setAddressData(data as AddressData);
     } catch (error) {
       console.error('Error fetching address:', error);
@@ -55,6 +62,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   }, []);
 
   const handleAddressUpdate = () => {
+    console.log('Address updated, refetching...');
     fetchAddress();
     setIsOpen(false);
     onAddressUpdate();
@@ -113,10 +121,24 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   };
 
   const hasCurrentAddress = Boolean(
-    addressData?.street_address && 
-    addressData?.postal_code && 
-    addressData?.city
+    addressData && 
+    addressData.street_address && 
+    addressData.postal_code && 
+    addressData.city &&
+    !addressData.deleted_at
   );
+
+  console.log('Current address conditions:', {
+    addressData,
+    hasCurrentAddress,
+    conditions: {
+      hasData: Boolean(addressData),
+      hasStreet: Boolean(addressData?.street_address),
+      hasPostal: Boolean(addressData?.postal_code),
+      hasCity: Boolean(addressData?.city),
+      notDeleted: !addressData?.deleted_at
+    }
+  });
   
   // Fetch address history separately
   const [addressHistory, setAddressHistory] = useState<AddressHistoryEntry[]>([]);
@@ -144,17 +166,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     
     fetchHistory();
   }, []);
-
-  console.log('Display conditions:', {
-    hasCurrentAddress,
-    addressData: {
-      street_address: addressData?.street_address,
-      postal_code: addressData?.postal_code,
-      city: addressData?.city,
-      deleted_at: addressData?.deleted_at,
-      address_history: addressData?.address_history
-    }
-  });
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
