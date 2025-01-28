@@ -38,6 +38,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
+        .is('deleted_at', null)  // Only fetch active address
         .maybeSingle();
 
       if (error) throw error;
@@ -114,14 +115,36 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   const hasCurrentAddress = Boolean(
     addressData?.street_address && 
     addressData?.postal_code && 
-    addressData?.city && 
-    addressData?.deleted_at === null
+    addressData?.city
   );
-  const hasAddressHistory = Boolean(addressData?.address_history?.length > 0);
+  
+  // Fetch address history separately
+  const [addressHistory, setAddressHistory] = useState<AddressHistoryEntry[]>([]);
+  
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) return;
+      
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('address_history')
+        .eq('customer_id', session.user.id)
+        .single();
+        
+      if (error) {
+        console.error('Error fetching address history:', error);
+        return;
+      }
+      
+      setAddressHistory(data?.address_history || []);
+    };
+    
+    fetchHistory();
+  }, []);
 
   console.log('Display conditions:', {
     hasCurrentAddress,
-    hasAddressHistory,
     addressData: {
       street_address: addressData?.street_address,
       postal_code: addressData?.postal_code,
@@ -157,8 +180,8 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         />
       )}
 
-      {hasAddressHistory && addressData?.address_history && (
-        <AddressHistory history={addressData.address_history} />
+      {addressHistory.length > 0 && (
+        <AddressHistory history={addressHistory} />
       )}
     </div>
   );
