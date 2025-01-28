@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface HidingSitesSelectionProps {
@@ -24,15 +24,24 @@ const HIDING_SITES: { id: HidingSite; name: string }[] = [
 export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) => {
   const [selectedSites, setSelectedSites] = useState<HidingSite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [noneSelected, setNoneSelected] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
 
   const handleSiteToggle = (siteId: HidingSite) => {
+    if (noneSelected) {
+      setNoneSelected(false);
+    }
     setSelectedSites(prev =>
       prev.includes(siteId)
         ? prev.filter(id => id !== siteId)
         : [...prev, siteId]
     );
+  };
+
+  const handleNoneSelection = () => {
+    setNoneSelected(true);
+    setSelectedSites([]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,7 +54,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
 
       const { error } = await supabase
         .from('customer_checklist_progress')
-        .update({ selected_sites: selectedSites })
+        .update({ selected_sites: noneSelected ? [] : selectedSites })
         .eq('customer_id', session.user.id);
 
       if (error) throw error;
@@ -76,11 +85,12 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
             key={site.id}
             type="button"
             onClick={() => handleSiteToggle(site.id)}
+            disabled={noneSelected}
             className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
               selectedSites.includes(site.id)
                 ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800'
                 : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-            }`}
+            } ${noneSelected ? 'opacity-50' : ''}`}
           >
             <span className="font-medium">{site.name}</span>
             {selectedSites.includes(site.id) && (
@@ -88,10 +98,24 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
             )}
           </button>
         ))}
+        <button
+          type="button"
+          onClick={handleNoneSelection}
+          className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
+            noneSelected
+              ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800'
+              : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+          }`}
+        >
+          <span className="font-medium">{language === 'sv' ? 'Ingen' : 'None'}</span>
+          {noneSelected && (
+            <X className="h-4 w-4 text-gray-500" />
+          )}
+        </button>
       </div>
       <Button
         type="submit"
-        disabled={isLoading || selectedSites.length === 0}
+        disabled={isLoading || (!noneSelected && selectedSites.length === 0)}
         className="w-full"
       >
         {isLoading ? t('saving') : language === 'sv' ? 'Välj' : 'Choose'}
