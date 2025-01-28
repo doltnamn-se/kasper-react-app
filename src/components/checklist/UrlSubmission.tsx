@@ -61,6 +61,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     }
   };
 
+  const urlLimit = getUrlLimit();
+
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
     newUrls[index] = value;
