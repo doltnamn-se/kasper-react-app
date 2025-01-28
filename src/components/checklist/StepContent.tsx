@@ -96,22 +96,13 @@ export const StepContent = ({
           switch (finalStepNumber) {
             case 1:
               return <PasswordUpdateForm 
-                onComplete={() => {
-                  onStepComplete();
-                  onStepComplete();
-                }}
+                onComplete={onStepComplete}
                 buttonClassName="w-full xl:w-1/4 lg:w-1/2"
               />;
             case 2:
-              return <UrlSubmission onComplete={() => {
-                onStepComplete();
-                onStepComplete();
-              }} />;
+              return <UrlSubmission onComplete={onStepComplete} />;
             case 3:
-              return <HidingSitesSelection onComplete={() => {
-                onStepComplete();
-                onStepComplete();
-              }} />;
+              return <HidingSitesSelection onComplete={onStepComplete} />;
             case 4:
               return <PersonalInfoForm onComplete={onStepComplete} />;
             default:
