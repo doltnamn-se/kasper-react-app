@@ -42,42 +42,44 @@ export const GuideCard = ({
     if (url) window.open(url, '_blank');
   };
 
-  const content = (
-    <>
-      <div className="px-6 py-6">
-        <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
-        <Button 
-          className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
-          onClick={handleButtonClick}
-        >
-          {t('link.to.removal')}
-          <ArrowRight className="h-2 w-2 -rotate-45" />
-        </Button>
+  const stepsContent = (
+    <div className="px-6 pb-6">
+      <div className="space-y-4">
+        {guide.steps.map((step, stepIndex) => {
+          if (stepIndex === 0) return null;
+          
+          return (
+            <GuideStep
+              key={stepIndex}
+              stepIndex={stepIndex}
+              text={step.text}
+              showCopyButton={shouldShowCopyButton(guide.title, step.text)}
+              guideTitle={guide.title}
+            />
+          );
+        })}
       </div>
-      <div className="px-6 pb-6">
-        <div className="space-y-4">
-          {guide.steps.map((step, stepIndex) => {
-            if (stepIndex === 0) return null;
-            
-            return (
-              <GuideStep
-                key={stepIndex}
-                stepIndex={stepIndex}
-                text={step.text}
-                showCopyButton={shouldShowCopyButton(guide.title, step.text)}
-                guideTitle={guide.title}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </>
+    </div>
+  );
+
+  const headerContent = (
+    <div className="px-6 py-6">
+      <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
+      <Button 
+        className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
+        onClick={handleButtonClick}
+      >
+        {t('link.to.removal')}
+        <ArrowRight className="h-2 w-2 -rotate-45" />
+      </Button>
+    </div>
   );
 
   if (variant === 'checklist') {
     return (
       <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px]">
-        {content}
+        {headerContent}
+        {stepsContent}
       </div>
     );
   }
@@ -86,22 +88,25 @@ export const GuideCard = ({
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
       <Accordion 
         type="single" 
-        collapsible 
+        collapsible
         value={isOpen ? accordionId : ""}
         onValueChange={onAccordionChange}
       >
         <AccordionItem value={accordionId} className="border-none">
-          <div>{content}</div>
-          <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
-              <ChevronDown 
-                className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
-                  isOpen ? 'rotate-180' : ''
-                }`}
-              />
-            </div>
+          <AccordionTrigger className="w-full">
+            {headerContent}
           </AccordionTrigger>
+          <AccordionContent>
+            {stepsContent}
+          </AccordionContent>
+          <div className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] flex justify-center items-center gap-2">
+            <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
+            <ChevronDown 
+              className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
+                isOpen ? 'rotate-180' : ''
+              }`}
+            />
+          </div>
         </AccordionItem>
       </Accordion>
     </Card>
