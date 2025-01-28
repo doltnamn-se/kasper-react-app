@@ -8,7 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect } from "react";
 import { ChecklistProgress } from "@/components/checklist/ChecklistProgress";
 import { ChecklistSteps } from "@/components/checklist/ChecklistSteps";
-import { BookmarkCheck } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 
 const Checklist = () => {
   const { t, language } = useLanguage();
@@ -82,7 +82,7 @@ const Checklist = () => {
             {progress === 100 && (
               <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-[4px] flex items-center justify-center">
                 <div className="flex items-center gap-2">
-                  <BookmarkCheck className="w-6 h-6" />
+                  <BadgeCheck className="w-6 h-6" />
                   <p className="text-lg font-black">
                     {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
                   </p>
