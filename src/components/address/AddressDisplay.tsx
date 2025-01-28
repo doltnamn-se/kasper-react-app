@@ -14,9 +14,9 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     fetchAddress();
   }, []);
 
-  const handleAddressUpdate = () => {
+  const handleAddressUpdate = async () => {
     console.log('Address updated, refetching...');
-    fetchAddress();
+    await fetchAddress();
     setIsOpen(false);
     onAddressUpdate();
   };
