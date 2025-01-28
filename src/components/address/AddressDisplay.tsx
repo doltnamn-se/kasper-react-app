@@ -32,29 +32,31 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
   const fetchAddress = async () => {
     try {
-      console.log('Fetching address...');
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('Current session:', session);
+      
       if (!session?.user?.id) {
         console.log('No user session found');
         return;
       }
 
+      console.log('Fetching address for user:', session.user.id);
       const { data, error } = await supabase
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
         .is('deleted_at', null)
-        .maybeSingle();
+        .single();
 
       if (error) {
         console.error('Error fetching address:', error);
-        throw error;
+        return;
       }
       
-      console.log('Fetched address data:', data);
+      console.log('Raw data from database:', data);
+      
       if (data) {
         const typedData: AddressData = {
-          ...data,
           street_address: data.street_address || null,
           postal_code: data.postal_code || null,
           city: data.city || null,
@@ -71,10 +73,13 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
               }))
             : []
         };
+        console.log('Processed address data:', typedData);
         setAddressData(typedData);
+      } else {
+        console.log('No address data found');
       }
     } catch (error) {
-      console.error('Error fetching address:', error);
+      console.error('Error in fetchAddress:', error);
     }
   };
 
@@ -150,7 +155,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     !addressData.deleted_at
   );
 
-  console.log('Current address conditions:', {
+  console.log('Address display state:', {
     addressData,
     hasCurrentAddress,
     conditions: {
