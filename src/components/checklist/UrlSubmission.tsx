@@ -15,7 +15,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const [urls, setUrls] = useState<string[]>(['']);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // Fetch customer subscription plan
   const { data: customerData } = useQuery({
@@ -162,12 +162,61 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     }
   };
 
+  const handleSkipStep = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      // Update checklist progress to mark step as completed with empty URLs
+      const { error: progressError } = await supabase
+        .from('customer_checklist_progress')
+        .update({ removal_urls: [] })
+        .eq('customer_id', session.user.id);
+
+      if (progressError) throw progressError;
+      
+      onComplete();
+    } catch (error: any) {
+      console.error('Error skipping step:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to skip step. Please try again.",
+      });
+    }
+  };
+
   if (urlLimit === 0) {
     return (
-      <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-        <p className="text-sm text-yellow-800 dark:text-yellow-200">
-          {t('url.no.plan')}
-        </p>
+      <div className="space-y-4">
+        <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+            {t('url.no.plan')}
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Button
+            variant="default"
+            onClick={() => window.location.href = 'https://buy.stripe.com/dR67tr1Cc8KtguY147'}
+            className="w-full"
+          >
+            {language === 'sv' ? 'Uppgradera till 6 mån' : 'Upgrade to 6 mo'}
+          </Button>
+          <Button
+            variant="default"
+            onClick={() => window.location.href = 'https://buy.stripe.com/3cs5lj2Gg3q9diMeUY'}
+            className="w-full"
+          >
+            {language === 'sv' ? 'Uppgradera till 12 mån' : 'Upgrade to 12 mo'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleSkipStep}
+            className="w-full"
+          >
+            {language === 'sv' ? 'Hoppa över steg' : 'Skip this step'}
+          </Button>
+        </div>
       </div>
     );
   }
