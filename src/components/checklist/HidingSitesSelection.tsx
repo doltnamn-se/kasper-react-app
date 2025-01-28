@@ -90,7 +90,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
             disabled={noneSelected}
             className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
               selectedSites.includes(site.id)
-                ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800'
+                ? 'border-black dark:border-white bg-[#f8f8f7] dark:bg-[#2A2A2B]'
                 : 'border-gray-200 dark:border-[#232325] hover:border-gray-300 dark:hover:border-[#2A2A2B]'
             } ${noneSelected ? 'opacity-50' : ''}`}
           >
@@ -105,7 +105,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
           onClick={handleNoneSelection}
           className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
             noneSelected
-              ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800'
+              ? 'border-black dark:border-white bg-[#f8f8f7] dark:bg-[#2A2A2B]'
               : 'border-gray-200 dark:border-[#232325] hover:border-gray-300 dark:hover:border-[#2A2A2B]'
           }`}
         >
