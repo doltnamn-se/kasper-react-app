@@ -161,20 +161,10 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({ 
-          removal_urls: [],
-          completed_at: new Date().toISOString()
-        })
+        .update({ completed_at: new Date().toISOString() })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
-
-      const { error: deleteError } = await supabase
-        .from('removal_urls')
-        .delete()
-        .eq('customer_id', session.user.id);
-
-      if (deleteError) throw deleteError;
       
       onComplete();
     } catch (error: any) {
