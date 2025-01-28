@@ -57,7 +57,7 @@ export const AddressSearchInput = ({
         }
       );
       const data = await response.json();
-      setResults(data);
+      setResults(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error searching address:", error);
       setResults([]);
