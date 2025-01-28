@@ -108,7 +108,43 @@ export const ChecklistContainer = () => {
 
   const onStepCompleted = async () => {
     console.log('Step completed, current step:', currentStep);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    // Update the progress in the database based on the current step
+    const updateData: any = {};
+    
+    switch (currentStep) {
+      case 1:
+        updateData.password_updated = true;
+        break;
+      case 2:
+        // For URL submission step, we don't need to update anything here
+        // as it's handled in the UrlSubmission component
+        break;
+      case 3:
+        // For site selection step, we don't need to update anything here
+        // as it's handled in the HidingSitesSelection component
+        break;
+      default:
+        // For other steps, no specific updates needed
+        break;
+    }
+
+    if (Object.keys(updateData).length > 0) {
+      const { error } = await supabase
+        .from('customer_checklist_progress')
+        .update(updateData)
+        .eq('customer_id', session.user.id);
+
+      if (error) {
+        console.error('Error updating checklist progress:', error);
+        return;
+      }
+    }
+
     await handleStepComplete();
+    await refetchProgress();
     setCurrentStep(prev => prev + 1);
   };
 
