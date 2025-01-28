@@ -111,7 +111,12 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     }
   };
 
-  const hasCurrentAddress = Boolean(addressData?.street_address && !addressData?.deleted_at);
+  const hasCurrentAddress = Boolean(
+    addressData?.street_address && 
+    addressData?.postal_code && 
+    addressData?.city && 
+    !addressData?.deleted_at
+  );
   const hasAddressHistory = Boolean(addressData?.address_history?.length > 0);
 
   console.log('Display conditions:', {
@@ -119,6 +124,8 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     hasAddressHistory,
     addressData: {
       street_address: addressData?.street_address,
+      postal_code: addressData?.postal_code,
+      city: addressData?.city,
       deleted_at: addressData?.deleted_at,
       address_history: addressData?.address_history
     }
