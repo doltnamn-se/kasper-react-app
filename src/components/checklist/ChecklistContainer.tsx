@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const ChecklistContainer = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { checklistProgress, handleStepComplete, calculateProgress, refetchProgress } = useChecklistProgress();
   const { checklistItems } = useChecklistItems();
 
@@ -105,10 +105,20 @@ export const ChecklistContainer = () => {
     return guides.find(guide => guide.title.toLowerCase().includes(siteId.toLowerCase()));
   };
 
+  const progress = calculateProgress();
+  const isChecklistCompleted = progress === 100;
+
   return (
     <div className="space-y-6">
-      <StepProgress progress={calculateProgress()} />
-      <div className="step-content-wrapper">
+      <StepProgress progress={progress} />
+      <div className="step-content-wrapper relative">
+        {isChecklistCompleted && (
+          <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
+            <p className="text-lg font-semibold text-center px-4">
+              {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
+            </p>
+          </div>
+        )}
         {[...Array(getTotalSteps())].map((_, index) => (
           <div 
             key={index + 1}
