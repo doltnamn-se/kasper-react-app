@@ -89,10 +89,9 @@ export const GuideCard = ({
         collapsible 
         value={isOpen ? accordionId : ""}
         onValueChange={onAccordionChange}
-        className="w-full"
       >
         <AccordionItem value={accordionId} className="border-none">
-          {content}
+          <div>{content}</div>
           <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>

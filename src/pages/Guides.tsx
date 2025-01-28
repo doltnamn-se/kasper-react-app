@@ -107,8 +107,8 @@ const Guides = () => {
             <GuideCard
               key={index}
               guide={guide}
-              accordionId={`0-${index}`}
-              isOpen={openAccordions.has(`0-${index}`)}
+              accordionId={`left-${index}`}
+              isOpen={openAccordions.has(`left-${index}`)}
               onAccordionChange={handleAccordionChange}
             />
           ))}
@@ -118,8 +118,8 @@ const Guides = () => {
             <GuideCard
               key={index}
               guide={guide}
-              accordionId={`1-${index}`}
-              isOpen={openAccordions.has(`1-${index}`)}
+              accordionId={`right-${index}`}
+              isOpen={openAccordions.has(`right-${index}`)}
               onAccordionChange={handleAccordionChange}
             />
           ))}
