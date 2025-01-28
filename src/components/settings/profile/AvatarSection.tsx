@@ -123,19 +123,19 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         
         {/* Upload button */}
         <div className="absolute -bottom-1 -right-1">
-          <label className="relative block cursor-pointer group">
-            <div className="bg-[#e0e0e0] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] rounded-full p-2 transition-colors cursor-pointer">
-              <Upload className="h-4 w-4 pointer-events-none" />
-            </div>
+          <div className="relative">
             <input
               type="file"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               onChange={handleAvatarUpload}
               accept="image/*"
               disabled={isUploading}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               aria-label={t('upload')}
             />
-          </label>
+            <div className="w-8 h-8 bg-[#e0e0e0] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] rounded-full flex items-center justify-center transition-colors cursor-pointer">
+              <Upload className="h-4 w-4" />
+            </div>
+          </div>
         </div>
 
         {/* Delete button */}
