@@ -7,12 +7,36 @@ import { Customer } from "@/types/customer";
 import { supabase } from "@/integrations/supabase/client";
 import { AddressDisplay } from "@/components/address/AddressDisplay";
 import { AlertsDisplay } from "@/components/address/AlertsDisplay";
+import { Button } from "@/components/ui/button";
+
+// Utility function to get Stripe URL
+const getStripeUrl = () => {
+  // This is a placeholder URL - replace with your actual Stripe URL
+  return "https://billing.stripe.com/p/login/test_XXXXX";
+};
 
 const AddressAlerts = () => {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState("address");
   const { userProfile } = useUserProfile();
   const [customerData, setCustomerData] = useState<Customer | null>(null);
+
+  const fetchCustomerData = async () => {
+    if (!userProfile?.id) return;
+
+    const { data, error } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('id', userProfile.id)
+      .single();
+
+    if (error) {
+      console.error('Error fetching customer data:', error);
+      return;
+    }
+
+    setCustomerData(data);
+  };
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -21,23 +45,6 @@ const AddressAlerts = () => {
   }, [language]);
 
   useEffect(() => {
-    const fetchCustomerData = async () => {
-      if (!userProfile?.id) return;
-
-      const { data, error } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('id', userProfile.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching customer data:', error);
-        return;
-      }
-
-      setCustomerData(data);
-    };
-
     fetchCustomerData();
   }, [userProfile?.id]);
 
@@ -80,7 +87,7 @@ const AddressAlerts = () => {
           </TabsList>
 
           <TabsContent value="address" className="mt-6">
-            <AddressDisplay onAddressUpdate={() => fetchCustomerData()} />
+            <AddressDisplay onAddressUpdate={fetchCustomerData} />
           </TabsContent>
 
           <TabsContent value="alerts" className="mt-6">
