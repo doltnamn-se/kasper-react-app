@@ -1,6 +1,8 @@
 import { Check, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Translations } from "@/translations/types";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ChecklistStepsProps {
   checklistProgress: any;
@@ -9,6 +11,23 @@ interface ChecklistStepsProps {
 
 export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStepsProps) => {
   const { t } = useLanguage();
+
+  const { data: customerData } = useQuery({
+    queryKey: ['customer-data'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+  });
 
   const getGuideTitle = (site: string): string => {
     type GuideKeys = Extract<keyof Translations, `guide.${string}.title`>;
@@ -37,8 +56,10 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
     })),
     { 
       step: 4 + (checklistProgress?.selected_sites?.length || 0), 
-      title: t('step.4.title'), 
-      completed: checklistProgress?.address && checklistProgress?.personal_number 
+      title: customerData?.has_address_alert ? t('step.4.title') : t('step.identification.title'), 
+      completed: customerData?.has_address_alert ? 
+        Boolean(checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city) :
+        Boolean(checklistProgress?.address && checklistProgress?.personal_number)
     }
   ];
 

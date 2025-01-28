@@ -6,7 +6,10 @@ import { PasswordUpdateForm } from "./PasswordUpdateForm";
 import { UrlSubmission } from "./UrlSubmission";
 import { HidingSitesSelection } from "./HidingSitesSelection";
 import { PersonalInfoForm } from "./PersonalInfoForm";
+import { AddressForm } from "@/components/address/AddressForm";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface StepContentProps {
   currentStep: number;
@@ -30,6 +33,23 @@ export const StepContent = ({
   const { t, language } = useLanguage();
   const baseSteps = 4;
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+
+  const { data: customerData } = useQuery({
+    queryKey: ['customer-data'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+  });
 
   const handleAccordionChange = (accordionId: string) => {
     setOpenAccordions(prev => {
@@ -94,13 +114,15 @@ export const StepContent = ({
           {finalStepNumber === 1 ? t('step.1.title') : 
            finalStepNumber === 2 ? t('step.2.title') : 
            finalStepNumber === 3 ? t('step.3.title') : 
-           t('step.4.title')}
+           customerData?.has_address_alert ? t('step.4.title') :
+           t('step.identification.title')}
         </h3>
         <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {finalStepNumber === 1 ? t('set.password.description') :
            finalStepNumber === 2 ? t('step.2.description') :
            finalStepNumber === 3 ? t('step.3.description') :
-           t('step.4.description')}
+           customerData?.has_address_alert ? t('step.4.description') :
+           t('step.identification.description')}
         </p>
       </div>
       <div className="pt-4">
@@ -116,7 +138,11 @@ export const StepContent = ({
             case 3:
               return <HidingSitesSelection onComplete={onStepComplete} />;
             case 4:
-              return <PersonalInfoForm onComplete={onStepComplete} />;
+              return customerData?.has_address_alert ? (
+                <AddressForm onSuccess={onStepComplete} />
+              ) : (
+                <PersonalInfoForm onComplete={onStepComplete} />
+              );
             default:
               return null;
           }
