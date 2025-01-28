@@ -35,6 +35,23 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     }
   });
 
+  // Fetch existing URLs
+  const { data: existingUrls } = useQuery({
+    queryKey: ['existing-urls'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      const { data, error } = await supabase
+        .from('removal_urls')
+        .select('url')
+        .eq('customer_id', session.user.id);
+      
+      if (error) throw error;
+      return data || [];
+    }
+  });
+
   const getUrlLimit = () => {
     switch (customerData?.subscription_plan) {
       case '6_months':
@@ -55,7 +72,11 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   const addUrlField = () => {
-    if (urls.length >= urlLimit) {
+    const currentValidUrls = urls.filter(url => url.trim() !== '');
+    const existingUrlCount = existingUrls?.length || 0;
+    const totalUrls = currentValidUrls.length + existingUrlCount;
+
+    if (totalUrls >= urlLimit) {
       toast({
         title: "URL limit reached",
         description: t('url.limit.message', { limit: urlLimit }),
@@ -82,14 +103,15 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       // Filter out empty URLs
       const validUrls = urls.filter(url => url.trim() !== '');
       
-      // Check if the number of valid URLs exceeds the limit
-      if (validUrls.length > urlLimit) {
-        throw new Error(t('url.limit.message', { limit: urlLimit }));
-      }
-
       // Check if user has no URL allowance
       if (urlLimit === 0) {
         throw new Error(t('url.no.plan'));
+      }
+
+      // Check if the total number of URLs (existing + new) exceeds the limit
+      const existingUrlCount = existingUrls?.length || 0;
+      if (validUrls.length > urlLimit) {
+        throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
       // First update the checklist progress
@@ -178,7 +200,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         </div>
       ))}
       
-      {urls.length < urlLimit && (
+      {urls.filter(url => url.trim() !== '').length < urlLimit && (
         <Button
           type="button"
           variant="outline"
@@ -192,7 +214,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       <Button
         type="submit"
-        disabled={isLoading || urls.every(url => url.trim() === '') || urls.length > urlLimit}
+        disabled={isLoading || urls.every(url => url.trim() === '') || urls.filter(url => url.trim() !== '').length > urlLimit}
         className="w-full py-6"
       >
         {isLoading ? t('saving') : t('save.urls')}
