@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { House, BadgeCheck, QrCode, MapPinHouse, MousePointerClick } from "lucide-react";
+import { House, BadgeCheck, Activity, QrCode, MapPinHouse, MousePointerClick } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -163,6 +163,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
       </div>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'))}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
+      {renderNavLink("/monitoring", <Activity className="w-[18px] h-[18px]" />, t('nav.monitoring'))}
       {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'))}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'))}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'))}

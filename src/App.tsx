@@ -10,6 +10,7 @@ import { initializeVersionTracking, cleanupVersionTracking } from "@/config/vers
 import Auth from "@/pages/Auth";
 import Index from "@/pages/Index";
 import Checklist from "@/pages/Checklist";
+import Monitoring from "@/pages/Monitoring";
 import Deindexing from "@/pages/Deindexing";
 import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/checklist" element={<ProtectedRoute><Checklist /></ProtectedRoute>} />
+                <Route path="/monitoring" element={<ProtectedRoute><Monitoring /></ProtectedRoute>} />
                 <Route path="/deindexing" element={<ProtectedRoute><Deindexing /></ProtectedRoute>} />
                 <Route path="/address-alerts" element={<ProtectedRoute><AddressAlerts /></ProtectedRoute>} />
                 <Route path="/guides" element={<ProtectedRoute><Guides /></ProtectedRoute>} />
