@@ -56,7 +56,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
       icon: BookOpen
     },
     {
-      name: t('navigation.settings'),
+      name: t('nav.settings'),
       path: '/settings',
       icon: Settings
     }

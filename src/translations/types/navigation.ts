@@ -7,6 +7,7 @@ export interface NavigationTranslations {
   'nav.guides': string;
   'nav.admin.dashboard': string;
   'nav.admin.customers': string;
+  'nav.settings': string;
   'dark.mode': string;
   'light.mode': string;
 }
