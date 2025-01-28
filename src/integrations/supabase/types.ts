@@ -322,7 +322,14 @@ export type Database = {
       }
     }
     Enums: {
-      hiding_site: "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo"
+      hiding_site:
+        | "eniro"
+        | "hitta"
+        | "birthday"
+        | "ratsit"
+        | "merinfo"
+        | "mrkoll"
+        | "upplysning"
       subscription_plan: "1_month" | "6_months" | "12_months"
       user_role: "super_admin" | "customer"
     }
