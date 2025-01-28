@@ -1,22 +1,32 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { HousePlus } from "lucide-react";
+import { HousePlus, Trash2 } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { AddressForm } from "./AddressForm";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 interface AddressData {
   street_address: string;
   postal_code: string;
   city: string;
   created_at: string;
+  deleted_at: string | null;
+  address_history: Array<{
+    street_address: string;
+    postal_code: string;
+    city: string;
+    created_at: string;
+    deleted_at: string;
+  }>;
 }
 
 export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => void }) => {
   const { language } = useLanguage();
+  const { toast } = useToast();
   const [addressData, setAddressData] = useState<AddressData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,12 +37,12 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
       const { data, error } = await supabase
         .from('customer_checklist_progress')
-        .select('street_address, postal_code, city, created_at')
+        .select('street_address, postal_code, city, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
         .single();
 
       if (error) throw error;
-      if (data && data.street_address && data.postal_code && data.city) {
+      if (data) {
         setAddressData(data);
       }
     } catch (error) {
@@ -50,10 +60,62 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     onAddressUpdate();
   };
 
+  const handleDeleteAddress = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) return;
+
+      if (!addressData) return;
+
+      const historyEntry = {
+        street_address: addressData.street_address,
+        postal_code: addressData.postal_code,
+        city: addressData.city,
+        created_at: addressData.created_at,
+        deleted_at: new Date().toISOString(),
+      };
+
+      const { error } = await supabase
+        .from('customer_checklist_progress')
+        .update({
+          street_address: null,
+          postal_code: null,
+          city: null,
+          deleted_at: new Date().toISOString(),
+          address_history: addressData.address_history 
+            ? [...addressData.address_history, historyEntry]
+            : [historyEntry]
+        })
+        .eq('customer_id', session.user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: language === 'sv' ? "Adress borttagen" : "Address deleted",
+        description: language === 'sv' 
+          ? "Din adress har tagits bort och sparats i historiken" 
+          : "Your address has been deleted and saved in history",
+      });
+
+      fetchAddress();
+    } catch (error) {
+      console.error('Error deleting address:', error);
+      toast({
+        title: language === 'sv' ? "Ett fel uppstod" : "An error occurred",
+        description: language === 'sv' 
+          ? "Det gick inte att ta bort adressen" 
+          : "Could not delete the address",
+        variant: "destructive"
+      });
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return format(date, 'PP', { locale: language === 'sv' ? sv : enUS });
   };
+
+  const hasCurrentAddress = addressData?.street_address && !addressData?.deleted_at;
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
@@ -61,9 +123,17 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         {language === 'sv' ? 'Din adress' : 'Your Address'}
       </h2>
       
-      {addressData ? (
+      {hasCurrentAddress ? (
         <div className="space-y-6">
-          <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30]">
+          <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
+              onClick={handleDeleteAddress}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
             <div className="space-y-2 mb-4">
               <p className="text-[#111827] dark:text-white text-base font-medium">
                 {addressData.street_address}
@@ -81,6 +151,39 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
               </p>
             </div>
           </div>
+
+          {addressData.address_history && addressData.address_history.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-lg font-medium mb-4 dark:text-white">
+                {language === 'sv' ? 'Tidigare adresser' : 'Previous addresses'}
+              </h3>
+              <div className="space-y-4">
+                {addressData.address_history.map((historyEntry, index) => (
+                  <div 
+                    key={index}
+                    className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] opacity-75"
+                  >
+                    <div className="space-y-2 mb-4">
+                      <p className="text-[#111827] dark:text-white text-base font-medium">
+                        {historyEntry.street_address}
+                      </p>
+                      <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+                        {historyEntry.postal_code} {historyEntry.city}
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
+                      <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+                        {language === 'sv'
+                          ? `Aktiv ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
+                          : `Active ${formatDate(historyEntry.created_at)} - ${formatDate(historyEntry.deleted_at)}`
+                        }
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <>

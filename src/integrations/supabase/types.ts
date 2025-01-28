@@ -66,11 +66,13 @@ export type Database = {
       customer_checklist_progress: {
         Row: {
           address: string | null
+          address_history: Json[] | null
           city: string | null
           completed_at: string | null
           completed_guides: string[] | null
           created_at: string
           customer_id: string
+          deleted_at: string | null
           is_address_hidden: boolean | null
           password_updated: boolean | null
           personal_number: string | null
@@ -82,11 +84,13 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          address_history?: Json[] | null
           city?: string | null
           completed_at?: string | null
           completed_guides?: string[] | null
           created_at?: string
           customer_id: string
+          deleted_at?: string | null
           is_address_hidden?: boolean | null
           password_updated?: boolean | null
           personal_number?: string | null
@@ -98,11 +102,13 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          address_history?: Json[] | null
           city?: string | null
           completed_at?: string | null
           completed_guides?: string[] | null
           created_at?: string
           customer_id?: string
+          deleted_at?: string | null
           is_address_hidden?: boolean | null
           password_updated?: boolean | null
           personal_number?: string | null
