@@ -72,22 +72,34 @@ const Checklist = () => {
   };
 
   const handleStepClick = (stepNumber: number) => {
+    console.log('Clicking step:', stepNumber);
     const checklistContainer = document.querySelector('.checklist-container');
-    if (!checklistContainer) return;
+    if (!checklistContainer) {
+      console.log('Container not found');
+      return;
+    }
 
     // Find the step element within the container
     const stepElement = checklistContainer.querySelector(`[data-step="${stepNumber}"]`);
     if (stepElement) {
+      console.log('Found step element, scrolling to it');
       stepElement.scrollIntoView({ behavior: 'smooth' });
       
       // Update the current step in the ChecklistContainer
-      const checklistContainerComponent = checklistContainer as any;
-      if (checklistContainerComponent.__reactFiber$) {
-        const instance = checklistContainerComponent.__reactFiber$.child?.stateNode;
+      const containerInstance = checklistContainer.querySelector('.checklist-component') as any;
+      if (containerInstance && containerInstance.__reactFiber$) {
+        const instance = containerInstance.__reactFiber$.child?.stateNode;
         if (instance && instance.setCurrentStep) {
+          console.log('Updating current step to:', stepNumber);
           instance.setCurrentStep(stepNumber);
+        } else {
+          console.log('setCurrentStep not found on instance');
         }
+      } else {
+        console.log('Container instance not found');
       }
+    } else {
+      console.log('Step element not found');
     }
   };
 
@@ -177,7 +189,9 @@ const Checklist = () => {
         <div className="lg:col-span-2">
           <Card className="p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
             <div className="space-y-8 checklist-container">
-              <ChecklistContainer />
+              <div className="checklist-component">
+                <ChecklistContainer />
+              </div>
             </div>
           </Card>
         </div>
