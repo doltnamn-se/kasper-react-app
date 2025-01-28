@@ -111,7 +111,7 @@ export const ChecklistContainer = () => {
   return (
     <div className="space-y-6">
       <StepProgress progress={progress} />
-      <div className="step-content-wrapper relative">
+      <div className="step-content-wrapper relative bg-white dark:bg-[#1C1C1D] rounded-lg p-6">
         {isChecklistCompleted && (
           <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
             <p className="text-lg font-semibold text-center px-4">
