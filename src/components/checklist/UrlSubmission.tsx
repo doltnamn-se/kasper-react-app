@@ -98,21 +98,17 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      // Filter out empty URLs
       const validUrls = urls.filter(url => url.trim() !== '');
       
-      // Check if user has no URL allowance
       if (urlLimit === 0) {
         throw new Error(t('url.no.plan'));
       }
 
-      // Check if the total number of URLs (existing + new) exceeds the limit
       const existingUrlCount = existingUrls?.length || 0;
       if (validUrls.length > urlLimit) {
         throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
-      // First update the checklist progress
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ removal_urls: validUrls })
@@ -120,8 +116,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (progressError) throw progressError;
 
-      // Then insert into removal_urls table
-      // First delete existing URLs
       const { error: deleteError } = await supabase
         .from('removal_urls')
         .delete()
@@ -129,7 +123,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (deleteError) throw deleteError;
 
-      // Then insert new URLs
       const urlRows = validUrls.map(url => ({
         customer_id: session.user.id,
         url,
@@ -166,19 +159,16 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      // First update the checklist progress
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ 
           removal_urls: [],
-          // Ensure the step is marked as completed
           completed_at: new Date().toISOString()
         })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
 
-      // Then clear any existing URLs
       const { error: deleteError } = await supabase
         .from('removal_urls')
         .delete()
@@ -186,21 +176,9 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (deleteError) throw deleteError;
       
-      toast({
-        title: language === 'sv' ? "Steg hoppat över" : "Step skipped",
-        description: language === 'sv' ? 
-          "Du kan alltid komma tillbaka senare" : 
-          "You can always come back later",
-      });
-      
       onComplete();
     } catch (error: any) {
       console.error('Error skipping step:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to skip step. Please try again.",
-      });
     } finally {
       setIsLoading(false);
     }
