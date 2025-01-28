@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CurrentAddress } from "./CurrentAddress";
 import { AddressHistory } from "./AddressHistory";
 import { AddNewAddress } from "./AddNewAddress";
+import { Json } from "@/integrations/supabase/types";
 
 type AddressHistoryEntry = {
   street_address: string;
@@ -52,7 +53,14 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       }
       
       console.log('Fetched address data:', data);
-      setAddressData(data);
+      // Cast the address_history to the correct type
+      if (data) {
+        const typedData: AddressData = {
+          ...data,
+          address_history: data.address_history as AddressHistoryEntry[] || []
+        };
+        setAddressData(typedData);
+      }
     } catch (error) {
       console.error('Error fetching address:', error);
     }
