@@ -5,11 +5,14 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { AddressForm } from "./AddressForm";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
 
 interface AddressData {
   street_address: string;
   postal_code: string;
   city: string;
+  created_at: string;
 }
 
 export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => void }) => {
@@ -24,7 +27,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
       const { data, error } = await supabase
         .from('customer_checklist_progress')
-        .select('street_address, postal_code, city')
+        .select('street_address, postal_code, city, created_at')
         .eq('customer_id', session.user.id)
         .single();
 
@@ -47,6 +50,11 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
     onAddressUpdate();
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'PP', { locale: language === 'sv' ? sv : enUS });
+  };
+
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <h2 className="text-xl font-semibold mb-6 dark:text-white">
@@ -54,13 +62,25 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       </h2>
       
       {addressData ? (
-        <div className="space-y-2">
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
-            {addressData.street_address}
-          </p>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
-            {addressData.postal_code} {addressData.city}
-          </p>
+        <div className="space-y-6">
+          <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30]">
+            <div className="space-y-2 mb-4">
+              <p className="text-[#111827] dark:text-white text-base font-medium">
+                {addressData.street_address}
+              </p>
+              <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+                {addressData.postal_code} {addressData.city}
+              </p>
+            </div>
+            <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
+              <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+                {language === 'sv' 
+                  ? `Adresslarm aktivt sedan ${formatDate(addressData.created_at)}`
+                  : `Address alert active since ${formatDate(addressData.created_at)}`
+                }
+              </p>
+            </div>
+          </div>
         </div>
       ) : (
         <>
