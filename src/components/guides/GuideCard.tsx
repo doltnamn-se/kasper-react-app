@@ -23,13 +23,14 @@ interface GuideCardProps {
 
 export const GuideCard = ({ 
   guide, 
-  accordionId, 
+  accordionId = '', 
   openAccordion, 
   onAccordionChange,
   variant = 'default' 
 }: GuideCardProps) => {
   const { t } = useLanguage();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
+  const [isOpen, setIsOpen] = useState(false);
 
   const shouldShowCopyButton = (guideTitle: string, stepText: string) => {
     const isBirthdayOrUpplysning = 
@@ -41,6 +42,11 @@ export const GuideCard = ({
   const handleButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (url) window.open(url, '_blank');
+  };
+
+  const handleAccordionChange = (value: string) => {
+    setIsOpen(value === accordionId);
+    onAccordionChange?.(value);
   };
 
   const content = (
@@ -88,18 +94,18 @@ export const GuideCard = ({
       <Accordion 
         type="single" 
         collapsible 
-        value={openAccordion === accordionId ? accordionId : ""}
-        onValueChange={(value) => onAccordionChange?.(value)}
+        value={isOpen ? accordionId : ""}
+        onValueChange={handleAccordionChange}
         className="w-full"
       >
-        <AccordionItem value={accordionId || ''} className="border-none">
+        <AccordionItem value={accordionId} className="border-none">
           {content}
           <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
               <ChevronDown 
                 className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
-                  openAccordion === accordionId ? 'rotate-180' : ''
+                  isOpen ? 'rotate-180' : ''
                 }`}
               />
             </div>
