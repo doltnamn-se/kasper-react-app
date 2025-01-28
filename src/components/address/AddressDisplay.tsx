@@ -56,7 +56,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
       console.log('Raw data from database:', data);
       
-      const typedData: AddressData = data ? {
+      const typedData: AddressData | null = data ? {
         street_address: data.street_address,
         postal_code: data.postal_code,
         city: data.city,
@@ -161,10 +161,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       notDeleted: !addressData?.deleted_at
     }
   });
-
-  if (addressData === null) {
-    return null;
-  }
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
