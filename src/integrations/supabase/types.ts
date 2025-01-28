@@ -63,56 +63,58 @@ export type Database = {
         }
         Relationships: []
       }
+
       customer_checklist_progress: {
         Row: {
-          customer_id: string
-          password_updated: boolean | null
-          selected_sites: Database["public"]["Enums"]["hiding_site"][] | null
-          removal_urls: string[] | null
-          address: string | null
-          is_address_hidden: boolean | null
-          personal_number: string | null
-          completed_at: string | null
-          created_at: string
-          updated_at: string
-          completed_guides: string[] | null
-        }
+          customer_id: string;
+          password_updated: boolean | null;
+          selected_sites: Database["public"]["Enums"]["hiding_site"][] | null;
+          removal_urls: string[] | null;
+          address: string | null;
+          is_address_hidden: boolean | null;
+          personal_number: string | null;
+          completed_at: string | null;
+          created_at: string;
+          updated_at: string;
+          completed_guides: string[] | null;
+        };
         Insert: {
-          customer_id: string
-          password_updated?: boolean | null
-          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
-          removal_urls?: string[] | null
-          address?: string | null
-          is_address_hidden?: boolean | null
-          personal_number?: string | null
-          completed_at?: string | null
-          created_at?: string
-          updated_at?: string
-          completed_guides?: string[] | null
-        }
+          customer_id: string;
+          password_updated?: boolean | null;
+          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null;
+          removal_urls?: string[] | null;
+          address?: string | null;
+          is_address_hidden?: boolean | null;
+          personal_number?: string | null;
+          completed_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          completed_guides?: string[] | null;
+        };
         Update: {
-          customer_id?: string
-          password_updated?: boolean | null
-          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
-          removal_urls?: string[] | null
-          address?: string | null
-          is_address_hidden?: boolean | null
-          personal_number?: string | null
-          completed_at?: string | null
-          created_at?: string
-          updated_at?: string
-          completed_guides?: string[] | null
-        }
+          customer_id?: string;
+          password_updated?: boolean | null;
+          selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null;
+          removal_urls?: string[] | null;
+          address?: string | null;
+          is_address_hidden?: boolean | null;
+          personal_number?: string | null;
+          completed_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          completed_guides?: string[] | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "customer_checklist_progress_customer_id_fkey"
-            columns: ["customer_id"]
-            isOneToOne: true
-            referencedRelation: "customers"
-            referencedColumns: ["id"]
+            foreignKeyName: "customer_checklist_progress_customer_id_fkey";
+            columns: ["customer_id"];
+            isOneToOne: true;
+            referencedRelation: "customers";
+            referencedColumns: ["id"];
           }
-        ]
-      }
+        ];
+      };
+
       customers: {
         Row: {
           checklist_completed: boolean | null
@@ -438,3 +440,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+

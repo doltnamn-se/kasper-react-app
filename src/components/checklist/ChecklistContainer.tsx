@@ -22,7 +22,7 @@ interface ChecklistProgress {
   is_address_hidden: boolean;
   personal_number: string | null;
   completed_at: string | null;
-  completed_guides?: string[];
+  completed_guides: string[] | null;
 }
 
 export const ChecklistContainer = () => {
