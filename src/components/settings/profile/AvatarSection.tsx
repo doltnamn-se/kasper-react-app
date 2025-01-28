@@ -123,9 +123,9 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
         
         {/* Upload button */}
         <div className="absolute -bottom-1 -right-1">
-          <label className="relative block cursor-pointer">
+          <label className="relative block cursor-pointer group">
             <div className="bg-[#e0e0e0] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] rounded-full p-2 transition-colors cursor-pointer">
-              <Upload className="h-4 w-4" />
+              <Upload className="h-4 w-4 pointer-events-none" />
             </div>
             <input
               type="file"
