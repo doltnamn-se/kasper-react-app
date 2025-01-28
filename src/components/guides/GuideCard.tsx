@@ -1,7 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { GuideStep } from "./GuideStep";
 
@@ -97,7 +97,7 @@ export const GuideCard = ({
           </AccordionContent>
           <div 
             className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] flex justify-center items-center gap-2 cursor-pointer"
-            onClick={() => onAccordionChange(isOpen ? "" : accordionId)}
+            onClick={() => onAccordionChange(accordionId)}
           >
             <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
             <ChevronDown 
