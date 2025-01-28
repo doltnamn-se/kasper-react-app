@@ -4,7 +4,7 @@ export const DeindexedLinks = () => {
   const { t } = useLanguage();
   
   return (
-    <div>
+    <div className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm">
       {/* Content will be implemented later */}
     </div>
   );

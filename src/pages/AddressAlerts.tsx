@@ -35,7 +35,7 @@ const AddressAlerts = () => {
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
                 {language === 'sv' ? 'Din Adress' : 'Your Address'}
               </h2>
-              <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm">
                 {language === 'sv' 
                   ? 'Du har inte angett din adress ännu'
                   : 'You have not provided your address yet'
@@ -49,7 +49,7 @@ const AddressAlerts = () => {
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
                 {language === 'sv' ? 'Larm' : 'Alarm'}
               </h2>
-              <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm">
                 {language === 'sv'
                   ? 'Det finns inga tidigare larm rörande din adress'
                   : 'There are no previous alarms regarding your address'
