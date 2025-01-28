@@ -46,7 +46,6 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, address, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
-        .is('deleted_at', null)
         .maybeSingle();
 
       if (error) {
@@ -54,27 +53,19 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         return;
       }
 
+      console.log('Raw data from database:', data);
+
+      // If no data exists, the trigger will create it
       if (!data) {
-        console.log('No address data found');
-        setAddressData({
-          street_address: null,
-          postal_code: null,
-          city: null,
-          address: null,
-          created_at: new Date().toISOString(),
-          deleted_at: null,
-          address_history: []
-        });
+        console.log('No address data found, waiting for trigger to create record');
         return;
       }
       
-      console.log('Raw data from database:', data);
-      
       const typedData: AddressData = {
-        street_address: data.street_address || null,
-        postal_code: data.postal_code || null,
-        city: data.city || null,
-        address: data.address || null,
+        street_address: data.street_address,
+        postal_code: data.postal_code,
+        city: data.city,
+        address: data.address,
         created_at: data.created_at,
         deleted_at: data.deleted_at,
         address_history: Array.isArray(data.address_history) 
@@ -87,6 +78,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
             }))
           : []
       };
+      
       console.log('Processed address data:', typedData);
       setAddressData(typedData);
     } catch (error) {
@@ -177,6 +169,11 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       notDeleted: !addressData?.deleted_at
     }
   });
+
+  // Don't render anything until we have the initial data
+  if (addressData === null) {
+    return null;
+  }
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
