@@ -33,6 +33,9 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return;
 
+      // Create the combined address string
+      const combinedAddress = `${data.street_address}, ${data.postal_code} ${data.city}`;
+
       const { error } = await supabase
         .from('customer_checklist_progress')
         .upsert({
@@ -40,6 +43,7 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
           street_address: data.street_address,
           postal_code: data.postal_code,
           city: data.city,
+          address: combinedAddress,
         });
 
       if (error) throw error;

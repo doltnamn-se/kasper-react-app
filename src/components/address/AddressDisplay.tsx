@@ -52,7 +52,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
       }
       
       console.log('Fetched address data:', data);
-      setAddressData(data as AddressData);
+      setAddressData(data);
     } catch (error) {
       console.error('Error fetching address:', error);
     }
