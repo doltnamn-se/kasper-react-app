@@ -42,6 +42,7 @@ export const features: FeaturesTranslations = {
   'guide.eniro.step1': 'Skriv in ditt namn i sökrutan',
   'guide.eniro.step2': 'Identifiera dig med Mobilt BankID',
   'guide.eniro.step3': 'Dölj dina uppgifter',
+  'guide.eniro.step4': '',
   
   'guide.mrkoll.title': 'Mrkoll.se',
   'guide.mrkoll.step1': 'Identifiera dig med Mobilt BankID',

@@ -38,12 +38,11 @@ export const features: FeaturesTranslations = {
   'current.password': 'Current password',
   
   // Guide translations
-  
-  // Guide translations
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Enter your name in the search box',
   'guide.eniro.step2': 'Identify yourself with Mobile BankID',
   'guide.eniro.step3': 'Hide your information',
+  'guide.eniro.step4': '',
   
   'guide.mrkoll.title': 'Mrkoll.se',
   'guide.mrkoll.step1': 'Identify yourself with Mobile BankID',
