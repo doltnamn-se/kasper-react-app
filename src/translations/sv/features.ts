@@ -22,6 +22,8 @@ export const features: FeaturesTranslations = {
   'step.4.description': 'Lägg till din adress för att aktivera adressövervakning',
   'step.identification.title': 'Identifiering',
   'step.identification.description': 'Dela din adress eller ditt personnummer med oss så att vi kan säkerställa att vi tittar på rätt person online när vi ska dölja dina uppgifter',
+  'step.deindexing.title': 'Avindexering',
+  'step.deindexing.description': 'Skicka in URL:er för avindexering',
   'url.input.placeholder': 'Klistra in URL (https://...)',
   'url.add.another': 'Lägg till ytterligare en länk',
   'save.urls': 'Spara',
@@ -30,8 +32,6 @@ export const features: FeaturesTranslations = {
   'url.no.plan': 'Din nuvarande prenumeration tillåter inte URL-inlämningar. Uppgradera till en 6- eller 12-månaders plan för att lägga till URL:er.',
   'deindexing.incoming.links': 'Inkomna länkar',
   'deindexing.deindexed.links': 'Borttagna länkar',
-  'set.password.description': 'Skapa ett säkert lösenord för ditt konto',
-  'current.password': 'Nuvarande lösenord',
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Skriv in ditt namn i sökrutan',
   'guide.eniro.step2': 'Identifiera dig med Mobilt BankID',
@@ -60,4 +60,6 @@ export const features: FeaturesTranslations = {
   'guide.upplysning.step1': 'Fyll i formuläret.',
   'guide.upplysning.step2': 'Skriv detta i meddelandefältet: " Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX. "',
   'guide.upplysning.step3': '',
+  'set.password.description': 'Skapa ett säkert lösenord för ditt konto',
+  'current.password': 'Nuvarande lösenord'
 };
