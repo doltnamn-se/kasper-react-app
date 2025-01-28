@@ -91,7 +91,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
             className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
               selectedSites.includes(site.id)
                 ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800'
-                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                : 'border-gray-200 dark:border-[#232325] hover:border-gray-300 dark:hover:border-[#2A2A2B]'
             } ${noneSelected ? 'opacity-50' : ''}`}
           >
             <span className="font-medium">{site.name}</span>
@@ -106,7 +106,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
           className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
             noneSelected
               ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800'
-              : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+              : 'border-gray-200 dark:border-[#232325] hover:border-gray-300 dark:hover:border-[#2A2A2B]'
           }`}
         >
           <span className="font-medium">{language === 'sv' ? 'Ingen' : 'None'}</span>
