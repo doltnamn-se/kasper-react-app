@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SheetClose } from "@/components/ui/sheet";
-import { AddressSearchInput } from "./AddressSearchInput";
 
 interface AddressFormData {
   street_address: string;
@@ -62,12 +61,6 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
     }
   };
 
-  const handleAddressSelect = (address: { street: string; postalCode: string; city: string }) => {
-    form.setValue('street_address', address.street);
-    form.setValue('postal_code', address.postalCode);
-    form.setValue('city', address.city);
-  };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -78,11 +71,7 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
             <FormItem>
               <FormLabel>{language === 'sv' ? 'Adress' : 'Address'}</FormLabel>
               <FormControl>
-                <AddressSearchInput
-                  value={field.value}
-                  onChange={field.onChange}
-                  onAddressSelect={handleAddressSelect}
-                />
+                <Input {...field} />
               </FormControl>
             </FormItem>
           )}
