@@ -66,6 +66,7 @@ export type Database = {
       customer_checklist_progress: {
         Row: {
           address: string | null
+          city: string | null
           completed_at: string | null
           completed_guides: string[] | null
           created_at: string
@@ -73,12 +74,15 @@ export type Database = {
           is_address_hidden: boolean | null
           password_updated: boolean | null
           personal_number: string | null
+          postal_code: string | null
           removal_urls: string[] | null
           selected_sites: Database["public"]["Enums"]["hiding_site"][] | null
+          street_address: string | null
           updated_at: string
         }
         Insert: {
           address?: string | null
+          city?: string | null
           completed_at?: string | null
           completed_guides?: string[] | null
           created_at?: string
@@ -86,12 +90,15 @@ export type Database = {
           is_address_hidden?: boolean | null
           password_updated?: boolean | null
           personal_number?: string | null
+          postal_code?: string | null
           removal_urls?: string[] | null
           selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
+          street_address?: string | null
           updated_at?: string
         }
         Update: {
           address?: string | null
+          city?: string | null
           completed_at?: string | null
           completed_guides?: string[] | null
           created_at?: string
@@ -99,8 +106,10 @@ export type Database = {
           is_address_hidden?: boolean | null
           password_updated?: boolean | null
           personal_number?: string | null
+          postal_code?: string | null
           removal_urls?: string[] | null
           selected_sites?: Database["public"]["Enums"]["hiding_site"][] | null
+          street_address?: string | null
           updated_at?: string
         }
         Relationships: [
