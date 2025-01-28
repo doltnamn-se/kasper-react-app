@@ -6,6 +6,7 @@ import { PasswordUpdateForm } from "./PasswordUpdateForm";
 import { UrlSubmission } from "./UrlSubmission";
 import { HidingSitesSelection } from "./HidingSitesSelection";
 import { PersonalInfoForm } from "./PersonalInfoForm";
+import { useState } from "react";
 
 interface StepContentProps {
   currentStep: number;
@@ -28,6 +29,19 @@ export const StepContent = ({
 }: StepContentProps) => {
   const { t, language } = useLanguage();
   const baseSteps = 4;
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+
+  const handleAccordionChange = (accordionId: string) => {
+    setOpenAccordions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(accordionId)) {
+        newSet.delete(accordionId);
+      } else {
+        newSet.add(accordionId);
+      }
+      return newSet;
+    });
+  };
 
   // If we're on a guide step
   if (currentStep > 3 && currentStep < baseSteps + selectedSites.length) {
@@ -38,6 +52,7 @@ export const StepContent = ({
     if (!guide) return null;
 
     const isGuideCompleted = completedGuides?.includes(siteId);
+    const accordionId = `checklist-${siteId}`;
     
     return (
       <div className="space-y-4">
@@ -47,6 +62,9 @@ export const StepContent = ({
         <GuideCard
           guide={guide}
           variant="checklist"
+          accordionId={accordionId}
+          isOpen={openAccordions.has(accordionId)}
+          onAccordionChange={handleAccordionChange}
         />
         <Button
           onClick={() => onGuideComplete(siteId)}

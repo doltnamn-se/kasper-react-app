@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GuideCard } from "@/components/guides/GuideCard";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 
 interface StepGuideProps {
   currentStep: number;
@@ -19,8 +20,23 @@ export const StepGuide = ({
   onGuideComplete
 }: StepGuideProps) => {
   const { t, language } = useLanguage();
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
+
+  const handleAccordionChange = (accordionId: string) => {
+    setOpenAccordions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(accordionId)) {
+        newSet.delete(accordionId);
+      } else {
+        newSet.add(accordionId);
+      }
+      return newSet;
+    });
+  };
 
   if (!guide) return null;
+
+  const accordionId = `guide-${siteId}`;
 
   return (
     <div className="space-y-4">
@@ -30,6 +46,9 @@ export const StepGuide = ({
       <GuideCard
         guide={guide}
         variant="checklist"
+        accordionId={accordionId}
+        isOpen={openAccordions.has(accordionId)}
+        onAccordionChange={handleAccordionChange}
       />
       <Button
         onClick={() => onGuideComplete(siteId)}
