@@ -1,12 +1,7 @@
+import { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ArrowRight, Copy } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { GuideCard } from "@/components/guides/GuideCard";
 
 interface GuideStep {
   text: string;
@@ -19,7 +14,6 @@ interface Guide {
 
 const Guides = () => {
   const { t, language } = useLanguage();
-  const { toast } = useToast();
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -87,130 +81,8 @@ const Guides = () => {
     }
   ];
 
-  const extractUrl = (text: string) => {
-    const match = text.match(/https?:\/\/[^\s]+/);
-    return match ? match[0] : null;
-  };
-
-  const extractMessageTemplate = (text: string) => {
-    const match = text.match(/\"([^"]+)\"/);
-    return match ? match[1].trim() : null;
-  };
-
-  const handleCopyMessage = async (text: string) => {
-    const messageTemplate = extractMessageTemplate(text);
-    if (messageTemplate) {
-      await navigator.clipboard.writeText(messageTemplate);
-      toast({
-        title: t('toast.copied.title'),
-        description: t('toast.copied.description'),
-        duration: 5000,
-      });
-    }
-  };
-
-  const shouldShowCopyButton = (guideTitle: string, stepText: string) => {
-    const isBirthdayOrUpplysning = 
-      guideTitle === t('guide.birthday.title') || 
-      guideTitle === t('guide.upplysning.title');
-    return isBirthdayOrUpplysning && stepText.includes('\"');
-  };
-
   const leftColumnGuides = guides.filter((_, index) => index % 2 === 0);
   const rightColumnGuides = guides.filter((_, index) => index % 2 === 1);
-
-  const GuideColumn = ({ guides, columnIndex }: { guides: Guide[], columnIndex: number }) => (
-    <div className="flex flex-col gap-4">
-      {guides.map((guide, index) => {
-        const accordionId = `${columnIndex}-${index}`;
-        const isOpen = openAccordion === accordionId;
-        const url = extractUrl(guide.steps[0].text);
-        
-        return (
-          <Card key={index} className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
-            <Accordion 
-              type="single" 
-              collapsible 
-              value={openAccordion === accordionId ? accordionId : undefined}
-              onValueChange={(value) => setOpenAccordion(value)}
-              className="w-full"
-            >
-              <AccordionItem value={accordionId} className="border-none">
-                <div className="px-6 py-6">
-                  <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
-                  <Button 
-                    className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (url) window.open(url, '_blank');
-                    }}
-                  >
-                    {t('link.to.removal')}
-                    <ArrowRight className="h-2 w-2 -rotate-45" />
-                  </Button>
-                </div>
-                <AccordionContent>
-                  <div className="px-6 pb-6">
-                    <div className="space-y-4">
-                      {guide.steps.map((step, stepIndex) => {
-                        if (stepIndex === 0) return null;
-                        
-                        return (
-                          <div 
-                            key={stepIndex} 
-                            className="flex items-center gap-4"
-                          >
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
-                              <span className="text-xs font-medium">{stepIndex}</span>
-                            </div>
-                            <div className="flex-grow flex items-center gap-2">
-                              <span 
-                                className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white"
-                                style={{ whiteSpace: 'pre-line' }}
-                              >
-                                {step.text}
-                              </span>
-                              {shouldShowCopyButton(guide.title, step.text) && (
-                                <TooltipProvider delayDuration={300}>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <button
-                                        onClick={() => handleCopyMessage(step.text)}
-                                        className="flex-shrink-0 h-6 w-6 flex items-center justify-center transition-colors duration-200 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-                                      >
-                                        <Copy className="h-4 w-4" />
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>{t('copy')}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </AccordionContent>
-                <AccordionTrigger className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] justify-center">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
-                    <ChevronDown 
-                      className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </div>
-                </AccordionTrigger>
-              </AccordionItem>
-            </Accordion>
-          </Card>
-        );
-      })}
-    </div>
-  );
 
   return (
     <MainLayout>
@@ -218,8 +90,28 @@ const Guides = () => {
         {t('nav.guides')}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <GuideColumn guides={leftColumnGuides} columnIndex={0} />
-        <GuideColumn guides={rightColumnGuides} columnIndex={1} />
+        <div className="flex flex-col gap-4">
+          {leftColumnGuides.map((guide, index) => (
+            <GuideCard
+              key={index}
+              guide={guide}
+              accordionId={`0-${index}`}
+              openAccordion={openAccordion}
+              onAccordionChange={setOpenAccordion}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col gap-4">
+          {rightColumnGuides.map((guide, index) => (
+            <GuideCard
+              key={index}
+              guide={guide}
+              accordionId={`1-${index}`}
+              openAccordion={openAccordion}
+              onAccordionChange={setOpenAccordion}
+            />
+          ))}
+        </div>
       </div>
     </MainLayout>
   );
