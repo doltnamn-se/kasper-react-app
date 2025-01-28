@@ -42,26 +42,6 @@ export const GuideCard = ({
     if (url) window.open(url, '_blank');
   };
 
-  const stepsContent = (
-    <div className="px-6 pb-6">
-      <div className="space-y-4">
-        {guide.steps.map((step, stepIndex) => {
-          if (stepIndex === 0) return null;
-          
-          return (
-            <GuideStep
-              key={stepIndex}
-              stepIndex={stepIndex}
-              text={step.text}
-              showCopyButton={shouldShowCopyButton(guide.title, step.text)}
-              guideTitle={guide.title}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
-
   const headerContent = (
     <div className="px-6 py-6">
       <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
@@ -72,6 +52,24 @@ export const GuideCard = ({
         {t('link.to.removal')}
         <ArrowRight className="h-2 w-2 -rotate-45" />
       </Button>
+    </div>
+  );
+
+  const stepsContent = (
+    <div className="space-y-4 px-6 pb-6">
+      {guide.steps.map((step, stepIndex) => {
+        if (stepIndex === 0) return null;
+        
+        return (
+          <GuideStep
+            key={stepIndex}
+            stepIndex={stepIndex}
+            text={step.text}
+            showCopyButton={shouldShowCopyButton(guide.title, step.text)}
+            guideTitle={guide.title}
+          />
+        );
+      })}
     </div>
   );
 
@@ -93,13 +91,14 @@ export const GuideCard = ({
         onValueChange={onAccordionChange}
       >
         <AccordionItem value={accordionId} className="border-none">
-          <AccordionTrigger className="w-full">
-            {headerContent}
-          </AccordionTrigger>
+          {headerContent}
           <AccordionContent>
             {stepsContent}
           </AccordionContent>
-          <div className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] flex justify-center items-center gap-2">
+          <div 
+            className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] flex justify-center items-center gap-2 cursor-pointer"
+            onClick={() => onAccordionChange(isOpen ? "" : accordionId)}
+          >
             <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
             <ChevronDown 
               className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
