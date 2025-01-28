@@ -26,7 +26,7 @@ const AddressAlerts = () => {
               {language === 'sv' ? 'Din Adress' : 'Your Address'}
             </TabsTrigger>
             <TabsTrigger value="alerts" className="flex-1">
-              {language === 'sv' ? 'Alarm' : 'Alerts'}
+              {language === 'sv' ? 'Larm' : 'Alarm'}
             </TabsTrigger>
           </TabsList>
 
@@ -35,16 +35,26 @@ const AddressAlerts = () => {
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
                 {language === 'sv' ? 'Din Adress' : 'Your Address'}
               </h2>
-              {/* Address content will be added later */}
+              <p className="text-gray-600 dark:text-gray-400">
+                {language === 'sv' 
+                  ? 'Du har inte angett din adress ännu'
+                  : 'You have not provided your address yet'
+                }
+              </p>
             </div>
           </TabsContent>
 
           <TabsContent value="alerts" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                {language === 'sv' ? 'Alarm' : 'Alerts'}
+                {language === 'sv' ? 'Larm' : 'Alarm'}
               </h2>
-              {/* Alerts content will be added later */}
+              <p className="text-gray-600 dark:text-gray-400">
+                {language === 'sv'
+                  ? 'Det finns inga tidigare larm rörande din adress'
+                  : 'There are no previous alarms regarding your address'
+                }
+              </p>
             </div>
           </TabsContent>
         </Tabs>
