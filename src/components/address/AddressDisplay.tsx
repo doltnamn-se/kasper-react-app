@@ -34,6 +34,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
   const fetchAddress = async () => {
     try {
+      console.log('Fetching address data...');
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return;
 
@@ -41,9 +42,14 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         .from('customer_checklist_progress')
         .select('street_address, postal_code, city, created_at, deleted_at, address_history')
         .eq('customer_id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching address:', error);
+        throw error;
+      }
+      
+      console.log('Address data fetched:', data);
       if (data) {
         setAddressData(data as AddressData);
       }
@@ -64,6 +70,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
   const handleDeleteAddress = async () => {
     try {
+      console.log('Deleting address...');
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return;
 
@@ -77,6 +84,15 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
         deleted_at: new Date().toISOString(),
       };
 
+      console.log('Creating history entry:', historyEntry);
+      console.log('Current address_history:', addressData.address_history);
+
+      const newHistory = addressData.address_history 
+        ? [...addressData.address_history, historyEntry]
+        : [historyEntry];
+
+      console.log('New address_history:', newHistory);
+
       const { error } = await supabase
         .from('customer_checklist_progress')
         .update({
@@ -84,9 +100,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
           postal_code: null,
           city: null,
           deleted_at: new Date().toISOString(),
-          address_history: addressData.address_history 
-            ? [...addressData.address_history, historyEntry]
-            : [historyEntry]
+          address_history: newHistory
         })
         .eq('customer_id', session.user.id);
 
