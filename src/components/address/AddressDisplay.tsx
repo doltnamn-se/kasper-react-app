@@ -9,19 +9,21 @@ import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 
+type AddressHistoryEntry = {
+  street_address: string;
+  postal_code: string;
+  city: string;
+  created_at: string;
+  deleted_at: string;
+}
+
 interface AddressData {
   street_address: string;
   postal_code: string;
   city: string;
   created_at: string;
   deleted_at: string | null;
-  address_history: Array<{
-    street_address: string;
-    postal_code: string;
-    city: string;
-    created_at: string;
-    deleted_at: string;
-  }>;
+  address_history: AddressHistoryEntry[];
 }
 
 export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => void }) => {
@@ -43,7 +45,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
       if (error) throw error;
       if (data) {
-        setAddressData(data);
+        setAddressData(data as AddressData);
       }
     } catch (error) {
       console.error('Error fetching address:', error);
@@ -67,7 +69,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
 
       if (!addressData) return;
 
-      const historyEntry = {
+      const historyEntry: AddressHistoryEntry = {
         street_address: addressData.street_address,
         postal_code: addressData.postal_code,
         city: addressData.city,
