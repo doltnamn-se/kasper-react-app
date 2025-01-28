@@ -1,6 +1,7 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";
+import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 
 const Index = () => {
   const { t, language } = useLanguage();
@@ -20,6 +21,7 @@ const Index = () => {
         <p className="text-[#000000] dark:text-gray-400 mb-4">
           {t('overview.welcome')}
         </p>
+        <ChecklistContainer />
       </div>
     </MainLayout>
   );
