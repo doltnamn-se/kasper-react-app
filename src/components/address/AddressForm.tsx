@@ -44,6 +44,7 @@ export const AddressForm = ({ onSuccess }: { onSuccess: () => void }) => {
           postal_code: data.postal_code,
           city: data.city,
           address: combinedAddress,
+          deleted_at: null
         });
 
       if (error) throw error;

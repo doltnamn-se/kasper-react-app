@@ -1,7 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import { CurrentAddress } from "./CurrentAddress";
 import { AddressHistory } from "./AddressHistory";
 import { AddNewAddress } from "./AddNewAddress";

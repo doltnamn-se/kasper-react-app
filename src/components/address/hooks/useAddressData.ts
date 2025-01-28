@@ -52,26 +52,28 @@ export const useAddressData = () => {
 
       console.log('Raw data from database:', data);
       
-      const typedData: AddressData | null = data ? {
-        street_address: data.street_address,
-        postal_code: data.postal_code,
-        city: data.city,
-        address: data.address,
-        created_at: data.created_at,
-        deleted_at: data.deleted_at,
-        address_history: Array.isArray(data.address_history) 
-          ? data.address_history.map((entry: any) => ({
-              street_address: entry.street_address,
-              postal_code: entry.postal_code,
-              city: entry.city,
-              created_at: entry.created_at,
-              deleted_at: entry.deleted_at
-            }))
-          : []
-      } : null;
-      
-      console.log('Processed address data:', typedData);
-      setAddressData(typedData);
+      if (data) {
+        const typedData: AddressData = {
+          street_address: data.street_address,
+          postal_code: data.postal_code,
+          city: data.city,
+          address: data.address,
+          created_at: data.created_at,
+          deleted_at: data.deleted_at,
+          address_history: Array.isArray(data.address_history) 
+            ? data.address_history.map((entry: any) => ({
+                street_address: entry.street_address,
+                postal_code: entry.postal_code,
+                city: entry.city,
+                created_at: entry.created_at,
+                deleted_at: entry.deleted_at
+              }))
+            : []
+        };
+        
+        console.log('Processed address data:', typedData);
+        setAddressData(typedData);
+      }
     } catch (error) {
       console.error('Error in fetchAddress:', error);
     }
