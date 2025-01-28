@@ -37,6 +37,7 @@ export const AddressSearchInput = ({
   const [open, setOpen] = useState(false);
   const [results, setResults] = useState<AddressResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const searchAddress = async (query: string) => {
     if (!query || query.length < 3) {
@@ -67,6 +68,7 @@ export const AddressSearchInput = ({
   };
 
   const handleSearch = (searchValue: string) => {
+    setSearchQuery(searchValue);
     onChange(searchValue);
     searchAddress(searchValue);
   };
@@ -105,13 +107,13 @@ export const AddressSearchInput = ({
       <PopoverContent className="w-full p-0" align="start">
         <Command shouldFilter={false}>
           <CommandInput
+            value={searchQuery}
+            onValueChange={handleSearch}
             placeholder={
               language === "sv"
                 ? "Sök din adress..."
                 : "Search your address..."
             }
-            value={value}
-            onValueChange={handleSearch}
           />
           <CommandEmpty>
             {loading
@@ -122,25 +124,27 @@ export const AddressSearchInput = ({
               ? "Inga resultat"
               : "No results"}
           </CommandEmpty>
-          <CommandGroup>
-            {results.map((result) => (
-              <CommandItem
-                key={result.display_name}
-                onSelect={() => handleSelect(result)}
-                className="cursor-pointer"
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === result.display_name
-                      ? "opacity-100"
-                      : "opacity-0"
-                  )}
-                />
-                {result.display_name}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          {results.length > 0 && (
+            <CommandGroup>
+              {results.map((result) => (
+                <CommandItem
+                  key={result.display_name}
+                  onSelect={() => handleSelect(result)}
+                  className="cursor-pointer"
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === result.display_name
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                  {result.display_name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
         </Command>
       </PopoverContent>
     </Popover>
