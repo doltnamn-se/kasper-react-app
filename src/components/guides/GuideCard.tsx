@@ -32,13 +32,25 @@ export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange
     return isBirthdayOrUpplysning && stepText.includes('\"');
   };
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (url) window.open(url, '_blank');
+  };
+
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
       <Accordion 
         type="single" 
         collapsible 
         value={openAccordion === accordionId ? accordionId : undefined}
-        onValueChange={onAccordionChange}
+        onValueChange={(value) => {
+          // If the accordion is already open and we click it, close it
+          if (isOpen && value === accordionId) {
+            onAccordionChange("");
+          } else {
+            onAccordionChange(value);
+          }
+        }}
         className="w-full"
       >
         <AccordionItem value={accordionId} className="border-none">
@@ -46,10 +58,7 @@ export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange
             <h3 className="text-lg font-semibold text-[#000000] dark:text-white mb-4">{guide.title}</h3>
             <Button 
               className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (url) window.open(url, '_blank');
-              }}
+              onClick={handleButtonClick}
             >
               {t('link.to.removal')}
               <ArrowRight className="h-2 w-2 -rotate-45" />
