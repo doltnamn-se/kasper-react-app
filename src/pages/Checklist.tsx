@@ -4,62 +4,22 @@ import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
 import { Check, ChevronRight } from "lucide-react";
 import { PieChart, Pie, Cell } from 'recharts';
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useChecklistProgress } from "@/hooks/useChecklistProgress";
+import { useChecklistItems } from "@/hooks/useChecklistItems";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect } from "react";
 
 const Checklist = () => {
   const { t, language } = useLanguage();
   const isMobile = useIsMobile();
+  const { checklistProgress, calculateProgress } = useChecklistProgress();
+  const { checklistItems } = useChecklistItems();
 
   useEffect(() => {
     document.title = language === 'sv' ? 
       "Checklista | Doltnamn.se" : 
       "Checklist | Doltnamn.se";
   }, [language]);
-
-  const { data: checklistProgress } = useQuery({
-    queryKey: ['checklist-progress'],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('No user session');
-
-      const { data, error } = await supabase
-        .from('customer_checklist_progress')
-        .select('*')
-        .eq('customer_id', session.user.id)
-        .single();
-      
-      if (error) throw error;
-      return data;
-    }
-  });
-
-  const { data: checklistItems } = useQuery({
-    queryKey: ['checklist-items'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('checklist_items')
-        .select('*')
-        .order('order_index');
-      
-      if (error) throw error;
-      return data;
-    }
-  });
-
-  const calculateProgress = () => {
-    if (!checklistProgress) return 0;
-    let completedSteps = 0;
-    if (checklistProgress.password_updated) completedSteps++;
-    if (checklistProgress.selected_sites?.length > 0) completedSteps++;
-    if (checklistProgress.removal_urls?.length > 0) completedSteps++;
-    if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
-    
-    const totalSteps = 4 + (checklistProgress.selected_sites?.length || 0);
-    return Math.round((completedSteps / totalSteps) * 100);
-  };
 
   const progress = calculateProgress();
   const progressData = [{ value: progress }, { value: 100 - progress }];
