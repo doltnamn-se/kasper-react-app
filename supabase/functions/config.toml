@@ -2,6 +2,3 @@ project_id = "upfapfohwnkiugvebujh"
 
 [functions.create-customer]
 verify_jwt = false
-
-[functions.send-activation-email]
-verify_jwt = false
