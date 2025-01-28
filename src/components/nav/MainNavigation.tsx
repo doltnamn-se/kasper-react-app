@@ -86,7 +86,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     return null;
   }
 
-  const renderNavLink = (path: string, icon: React.ReactNode, label: string) => {
+  const renderNavLink = (path: string, icon: React.ReactNode, label: string, showNotification: boolean = false) => {
     const isActive = location.pathname === path;
     
     return (
@@ -103,6 +103,9 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
           <span className="text-black dark:text-white">{icon}</span>
           <span className="text-sm text-[#000000] dark:text-white font-medium">{label}</span>
         </div>
+        {showNotification && unreadCount > 0 && (
+          <div className="h-2 w-2 rounded-full bg-[#2e77d0]" />
+        )}
       </Link>
     );
   };
@@ -165,7 +168,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
       {renderNavLink("/monitoring", <Activity className="w-[18px] h-[18px]" />, t('nav.monitoring'))}
       {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'))}
-      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'))}
+      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), true)}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'))}
     </>
   );
