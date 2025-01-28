@@ -44,9 +44,10 @@ export const GuideCard = ({ guide, accordionId, openAccordion, onAccordionChange
         collapsible 
         value={openAccordion === accordionId ? accordionId : undefined}
         onValueChange={(value) => {
-          // If the accordion is already open and we click it, close it
-          if (isOpen && value === accordionId) {
+          if (value === "") {
             onAccordionChange("");
+          } else if (value === accordionId) {
+            onAccordionChange(isOpen ? "" : accordionId);
           } else {
             onAccordionChange(value);
           }
