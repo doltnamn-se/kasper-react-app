@@ -9,7 +9,6 @@ export const navigation: NavigationTranslations = {
   'nav.guides': 'Guider',
   'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Kunder',
-  'nav.settings': 'Inställningar',
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
 };
