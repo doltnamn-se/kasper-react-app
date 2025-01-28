@@ -99,7 +99,29 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   if (urlLimit === 0) {
-    return <UpgradePrompt onSkip={onComplete} isLoading={isLoading} />;
+    return (
+      <UpgradePrompt 
+        onSkip={async () => {
+          try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session?.user) return;
+
+            // When skipping, add an empty array to mark the step as complete
+            const { error: progressError } = await supabase
+              .from('customer_checklist_progress')
+              .update({ removal_urls: ['skipped'] })
+              .eq('customer_id', session.user.id);
+
+            if (progressError) throw progressError;
+            
+            onComplete();
+          } catch (error) {
+            console.error('Error skipping URL submission:', error);
+          }
+        }} 
+        isLoading={isLoading} 
+      />
+    );
   }
 
   return (
