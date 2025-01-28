@@ -47,27 +47,27 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
       {steps.map((item) => (
         <div 
           key={item.step} 
-          className={`flex items-center justify-between p-4 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
+          className={`flex items-center justify-between p-3 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
         >
           <div className="flex items-center gap-4">
-            <div className={`flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
-              <span className="text-xs xl:text-sm font-medium">{item.step}</span>
+            <div className={`flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
+              <span className="text-xs font-medium">{item.step}</span>
             </div>
             <div className={item.completed ? 'opacity-40' : ''}>
-              <p className="text-sm xl:text-base font-medium">{item.title}</p>
+              <p className="text-xs xl:text-sm font-medium">{item.title}</p>
             </div>
           </div>
           <div className="flex items-center">
             {item.completed ? (
-              <div className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full bg-[#219653] flex items-center justify-center">
-                <Check className="w-4 h-4 xl:w-6 xl:h-6 text-white" />
+              <div className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full bg-[#219653] flex items-center justify-center">
+                <Check className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
               </div>
             ) : (
               <button 
                 onClick={() => onStepClick(item.step)}
-                className="flex-shrink-0 w-8 h-8 xl:w-10 xl:h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors cursor-pointer"
+                className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors cursor-pointer"
               >
-                <ChevronRight className="w-4 h-4 xl:w-6 xl:h-6" />
+                <ChevronRight className="w-3 h-3 xl:w-4 xl:h-4" />
               </button>
             )}
           </div>
