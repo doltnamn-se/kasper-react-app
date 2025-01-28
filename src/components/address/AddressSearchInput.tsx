@@ -39,7 +39,7 @@ export const AddressSearchInput = ({
   const [loading, setLoading] = useState(false);
 
   const searchAddress = async (query: string) => {
-    if (query.length < 3) {
+    if (!query || query.length < 3) {
       setResults([]);
       return;
     }
@@ -66,9 +66,9 @@ export const AddressSearchInput = ({
     }
   };
 
-  const handleSearch = (value: string) => {
-    onChange(value);
-    searchAddress(value);
+  const handleSearch = (searchValue: string) => {
+    onChange(searchValue);
+    searchAddress(searchValue);
   };
 
   const handleSelect = (result: AddressResult) => {
@@ -82,6 +82,7 @@ export const AddressSearchInput = ({
       city: result.address.city || "",
     });
     
+    onChange(result.display_name);
     setOpen(false);
   };
 
@@ -102,7 +103,7 @@ export const AddressSearchInput = ({
         />
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" align="start">
-        <Command>
+        <Command shouldFilter={false}>
           <CommandInput
             placeholder={
               language === "sv"
