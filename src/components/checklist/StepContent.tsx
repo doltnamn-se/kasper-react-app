@@ -41,26 +41,24 @@ export const StepContent = ({
     
     return (
       <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
-            {t('step.number', { number: currentStep })}
-          </Badge>
-          <GuideCard
-            guide={guide}
-            accordionId={`guide-${siteId}`}
-            openAccordion={`guide-${siteId}`}
-            onAccordionChange={() => {}}
-          />
-          <Button
-            onClick={() => onGuideComplete(siteId)}
-            disabled={isGuideCompleted}
-            className="w-full xl:w-1/4 lg:w-1/2"
-          >
-            {isGuideCompleted ? 
-              (language === 'sv' ? 'Klart' : 'Completed') : 
-              (language === 'sv' ? 'Markera som klar' : 'Mark as completed')}
-          </Button>
-        </div>
+        <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
+          {t('step.number', { number: currentStep })}
+        </Badge>
+        <GuideCard
+          guide={guide}
+          accordionId={`guide-${siteId}`}
+          openAccordion={`guide-${siteId}`}
+          onAccordionChange={() => {}}
+        />
+        <Button
+          onClick={() => onGuideComplete(siteId)}
+          disabled={isGuideCompleted}
+          className="w-full xl:w-1/4 lg:w-1/2"
+        >
+          {isGuideCompleted ? 
+            (language === 'sv' ? 'Klart' : 'Completed') : 
+            (language === 'sv' ? 'Markera som klar' : 'Mark as completed')}
+        </Button>
       </div>
     );
   }
@@ -72,24 +70,22 @@ export const StepContent = ({
 
   return (
     <div className="space-y-4">
+      <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
+        {t('step.number', { number: currentStep })}
+      </Badge>
       <div className="flex flex-col gap-2">
-        <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
-          {t('step.number', { number: currentStep })}
-        </Badge>
-        <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-semibold">
-            {finalStepNumber === 1 ? t('step.1.title') : 
-             finalStepNumber === 2 ? t('step.2.title') : 
-             finalStepNumber === 3 ? t('step.3.title') : 
-             t('step.4.title')}
-          </h3>
-          <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {finalStepNumber === 1 ? t('set.password.description') :
-             finalStepNumber === 2 ? t('step.2.description') :
-             finalStepNumber === 3 ? t('step.3.description') :
-             t('step.4.description')}
-          </p>
-        </div>
+        <h3 className="text-lg font-semibold">
+          {finalStepNumber === 1 ? t('step.1.title') : 
+           finalStepNumber === 2 ? t('step.2.title') : 
+           finalStepNumber === 3 ? t('step.3.title') : 
+           t('step.4.title')}
+        </h3>
+        <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {finalStepNumber === 1 ? t('set.password.description') :
+           finalStepNumber === 2 ? t('step.2.description') :
+           finalStepNumber === 3 ? t('step.3.description') :
+           t('step.4.description')}
+        </p>
       </div>
       <div className="pt-4">
         {(() => {
