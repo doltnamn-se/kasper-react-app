@@ -4,11 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { Customer } from "@/types/customer";
 
 const AddressAlerts = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("address");
   const { userProfile } = useUserProfile();
+  const [customerData, setCustomerData] = useState<Customer | null>(null);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -16,8 +19,29 @@ const AddressAlerts = () => {
       "Address Alerts | Doltnamn.se";
   }, [language]);
 
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      if (!userProfile?.id) return;
+
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', userProfile.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching customer data:', error);
+        return;
+      }
+
+      setCustomerData(data);
+    };
+
+    fetchCustomerData();
+  }, [userProfile?.id]);
+
   const getStripeUrl = () => {
-    switch (userProfile?.subscription_plan) {
+    switch (customerData?.subscription_plan) {
       case "1_month":
         return "https://buy.stripe.com/aEU3db0y86Cl1A4cMR";
       case "6_months":
@@ -29,7 +53,7 @@ const AddressAlerts = () => {
     }
   };
 
-  const hasAddressAlert = userProfile?.has_address_alert;
+  const hasAddressAlert = customerData?.has_address_alert;
 
   return (
     <MainLayout>
