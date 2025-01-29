@@ -26,18 +26,29 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
-      const { error } = await supabase
+      // Update address in customer_checklist_progress
+      const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({
           street_address: data.streetAddress,
           postal_code: data.postalCode,
           city: data.city,
           address: `${data.streetAddress}, ${data.postalCode} ${data.city}`,
-          completed_at: new Date().toISOString() // Mark as completed when address is saved
+          completed_at: new Date().toISOString()
         })
         .eq('customer_id', session.user.id);
 
-      if (error) throw error;
+      if (progressError) throw progressError;
+
+      // Update checklist completion status in customers table
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({
+          checklist_completed: true
+        })
+        .eq('id', session.user.id);
+
+      if (customerError) throw customerError;
 
       toast({
         title: language === 'sv' ? 'Adress sparad' : 'Address saved',
@@ -101,7 +112,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
         )}
       </div>
       <Button type="submit" className="w-full">
-        {language === 'sv' ? 'Spara' : 'Save'}
+        {language === 'sv' ? 'Slutför' : 'Finish'}
       </Button>
     </form>
   );

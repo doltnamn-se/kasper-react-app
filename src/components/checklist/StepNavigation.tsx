@@ -10,7 +10,6 @@ interface StepNavigationProps {
 
 export const StepNavigation = ({ currentStep, totalSteps, onStepChange }: StepNavigationProps) => {
   const { language } = useLanguage();
-
   const isLastStep = currentStep === totalSteps;
 
   return (
