@@ -64,6 +64,10 @@ export const ChecklistContainer = () => {
     handleStepProgression();
   };
 
+  console.log('ChecklistContainer - Current step:', currentStep);
+  console.log('ChecklistContainer - Selected sites:', checklistProgress?.selected_sites);
+  console.log('ChecklistContainer - Completed guides:', checklistProgress?.completed_guides);
+
   return (
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
