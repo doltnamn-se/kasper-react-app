@@ -34,7 +34,12 @@ export const ChecklistContainer = () => {
     }
 
     await refetchProgress();
-    setCurrentStep(prev => prev + 1);
+    
+    // Only increment step if there are more steps
+    const totalSteps = getTotalSteps();
+    if (currentStep < totalSteps) {
+      setCurrentStep(prev => prev + 1);
+    }
   };
 
   const getTotalSteps = () => {
@@ -145,7 +150,12 @@ export const ChecklistContainer = () => {
 
     await handleStepComplete();
     await refetchProgress();
-    setCurrentStep(prev => prev + 1);
+    
+    // Only increment step if there are more steps
+    const totalSteps = getTotalSteps();
+    if (currentStep < totalSteps) {
+      setCurrentStep(prev => prev + 1);
+    }
   };
 
   return (

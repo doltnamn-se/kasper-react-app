@@ -62,13 +62,21 @@ export const useChecklistProgress = () => {
     await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
     
     if (checklistProgress && !checklistProgress.completed_at) {
+      const totalSteps = 4 + (checklistProgress.selected_sites?.length || 0);
       let completedSteps = 0;
+      
       if (checklistProgress.password_updated) completedSteps++;
-      if (checklistProgress.selected_sites?.length > 0) completedSteps++;
       if (checklistProgress.removal_urls?.length > 0) completedSteps++;
+      if (checklistProgress.selected_sites?.length > 0) completedSteps++;
+      
+      // Count completed guides
+      const completedGuidesCount = checklistProgress.completed_guides?.length || 0;
+      completedSteps += completedGuidesCount;
+      
+      // Check if address/personal info is complete
       if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
       
-      if (completedSteps === 4) {
+      if (completedSteps === totalSteps) {
         confetti({
           particleCount: 100,
           spread: 70,
@@ -85,12 +93,22 @@ export const useChecklistProgress = () => {
 
   const calculateProgress = () => {
     if (!checklistProgress) return 0;
+    
+    const totalSteps = 4 + (checklistProgress.selected_sites?.length || 0);
     let completedSteps = 0;
+    
     if (checklistProgress.password_updated) completedSteps++;
-    if (checklistProgress.selected_sites?.length > 0) completedSteps++;
     if (checklistProgress.removal_urls?.length > 0) completedSteps++;
+    if (checklistProgress.selected_sites?.length > 0) completedSteps++;
+    
+    // Count completed guides
+    const completedGuidesCount = checklistProgress.completed_guides?.length || 0;
+    completedSteps += completedGuidesCount;
+    
+    // Check if address/personal info is complete
     if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
-    return Math.round((completedSteps / 4) * 100);
+    
+    return Math.round((completedSteps / totalSteps) * 100);
   };
 
   return {
