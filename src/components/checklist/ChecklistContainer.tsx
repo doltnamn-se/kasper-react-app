@@ -169,8 +169,31 @@ export const ChecklistContainer = () => {
     const totalSteps = getTotalSteps();
     if (currentStep < totalSteps) {
       // If we're on step 3 (site selection), we should move to the first guide step
-      if (currentStep === 3 && checklistProgress?.selected_sites?.length > 0) {
-        setCurrentStep(4); // Move to the first guide
+      if (currentStep === 3) {
+        const selectedSites = checklistProgress?.selected_sites || [];
+        if (selectedSites.length > 0) {
+          console.log('Moving to first guide step (4)');
+          setCurrentStep(4);
+        } else {
+          // If no sites selected, move to the final step
+          console.log('No sites selected, moving to final step');
+          setCurrentStep(prev => prev + 1);
+        }
+      } else if (currentStep > 3) {
+        // For guide steps, only increment if the current guide is completed
+        const selectedSites = checklistProgress?.selected_sites || [];
+        const completedGuides = checklistProgress?.completed_guides || [];
+        const currentGuideIndex = currentStep - 4;
+        
+        if (currentGuideIndex < selectedSites.length) {
+          const currentSite = selectedSites[currentGuideIndex];
+          if (completedGuides.includes(currentSite)) {
+            console.log('Guide completed, moving to next step');
+            setCurrentStep(prev => prev + 1);
+          } else {
+            console.log('Guide not completed yet, staying on current step');
+          }
+        }
       } else {
         setCurrentStep(prev => prev + 1);
       }
