@@ -68,25 +68,22 @@ export const ChecklistContainer = () => {
     
     const selectedSites = checklistProgress?.selected_sites || [];
     const baseSteps = 3; // Password, URLs, Site Selection
-    const currentGuideIndex = currentStep - baseSteps - 1;
     
-    console.log('Current guide index:', currentGuideIndex);
-    console.log('Selected sites:', selectedSites);
-    console.log('Current step:', currentStep);
+    // Find the index of the completed guide in the selected sites array
+    const completedGuideIndex = selectedSites.findIndex(site => site === siteId);
+    console.log('Completed guide index:', completedGuideIndex);
     
-    // Move to next guide step
-    const nextStep = currentStep + 1;
-    console.log('Moving to next step:', nextStep);
-    
-    // Check if we've completed all guides
-    if (currentGuideIndex >= selectedSites.length - 1) {
+    // If there are more guides to complete
+    if (completedGuideIndex < selectedSites.length - 1) {
+      // Move to the next guide's step
+      const nextStep = baseSteps + completedGuideIndex + 2; // +2 because we want the next guide
+      console.log('Moving to next guide step:', nextStep);
+      handleStepChange(nextStep);
+    } else {
       // All guides completed, move to final step
       const finalStep = baseSteps + selectedSites.length + 1;
       console.log('All guides completed, moving to final step:', finalStep);
       handleStepChange(finalStep);
-    } else {
-      // More guides to complete, move to next guide
-      handleStepChange(nextStep);
     }
   };
 
