@@ -55,18 +55,39 @@ export const ChecklistContainer = () => {
 
     await handleStepComplete();
     await refetchProgress();
-    handleStepProgression();
+    
+    // Only progress to next step for non-guide steps
+    if (currentStep <= 3) {
+      handleStepProgression();
+    }
   };
 
   const onGuideCompleted = async (siteId: string) => {
     console.log('Guide completed for site:', siteId);
     await handleGuideComplete(siteId);
-    handleStepProgression();
+    
+    // Calculate if we should move to the next step
+    const selectedSites = checklistProgress?.selected_sites || [];
+    const completedGuides = checklistProgress?.completed_guides || [];
+    const currentGuideIndex = currentStep - 4;
+    
+    console.log('Guide completion - Current guide index:', currentGuideIndex);
+    console.log('Guide completion - Selected sites:', selectedSites);
+    console.log('Guide completion - Completed guides:', completedGuides);
+    
+    // If there are more guides to show, move to the next one
+    if (currentGuideIndex < selectedSites.length - 1) {
+      handleStepChange(currentStep + 1);
+    } else {
+      // If all guides are completed, move to the final step
+      handleStepChange(totalSteps);
+    }
   };
 
   console.log('ChecklistContainer - Current step:', currentStep);
   console.log('ChecklistContainer - Selected sites:', checklistProgress?.selected_sites);
   console.log('ChecklistContainer - Completed guides:', checklistProgress?.completed_guides);
+  console.log('ChecklistContainer - Total steps:', totalSteps);
 
   return (
     <div className="space-y-6">
