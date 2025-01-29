@@ -6,7 +6,7 @@ import { PasswordUpdateForm } from "./PasswordUpdateForm";
 import { UrlSubmission } from "./UrlSubmission";
 import { HidingSitesSelection } from "./HidingSitesSelection";
 import { PersonalInfoForm } from "./PersonalInfoForm";
-import { AddressForm } from "@/components/address/AddressForm";
+import { ChecklistAddressForm } from "./ChecklistAddressForm";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -63,43 +63,6 @@ export const StepContent = ({
     });
   };
 
-  // If we're on a guide step
-  if (currentStep > 3 && currentStep < baseSteps + selectedSites.length) {
-    const guideIndex = currentStep - 4;
-    const siteId = selectedSites[guideIndex];
-    const guide = getGuideForSite(siteId);
-    
-    if (!guide) return null;
-
-    const isGuideCompleted = completedGuides?.includes(siteId);
-    const accordionId = `checklist-${siteId}`;
-    
-    return (
-      <div className="space-y-4 animate-fade-in">
-        <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
-          {t('step.number', { number: currentStep })}
-        </Badge>
-        <GuideCard
-          guide={guide}
-          variant="checklist"
-          accordionId={accordionId}
-          isOpen={openAccordions.has(accordionId)}
-          onAccordionChange={handleAccordionChange}
-        />
-        <Button
-          onClick={() => onGuideComplete(siteId)}
-          disabled={isGuideCompleted}
-          className="w-full xl:w-1/4 lg:w-1/2"
-        >
-          {isGuideCompleted ? 
-            (language === 'sv' ? 'Klart' : 'Completed') : 
-            (language === 'sv' ? 'Markera som klar' : 'Mark as completed')}
-        </Button>
-      </div>
-    );
-  }
-
-  // Adjust the step number for the identification step
   const finalStepNumber = currentStep > 3 ? 4 : currentStep;
   const currentItem = checklistItems?.[finalStepNumber - 1];
   if (!currentItem) return null;
@@ -141,7 +104,7 @@ export const StepContent = ({
               if (customerData?.has_address_alert) {
                 return (
                   <div className="space-y-4">
-                    <AddressForm onSuccess={onStepComplete} />
+                    <ChecklistAddressForm onSuccess={onStepComplete} />
                   </div>
                 );
               }
