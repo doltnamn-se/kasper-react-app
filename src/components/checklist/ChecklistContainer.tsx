@@ -67,11 +67,13 @@ export const ChecklistContainer = () => {
     await refetchProgress();
     
     const selectedSites = checklistProgress?.selected_sites || [];
-    const baseSteps = 3;
-    const currentGuideIndex = currentStep - baseSteps - 1;
+    const baseSteps = 3; // Password, URLs, Site Selection
     
+    // Calculate the current guide index (0-based)
+    const currentGuideIndex = currentStep - baseSteps - 1;
     console.log('Current guide index:', currentGuideIndex);
     console.log('Selected sites:', selectedSites);
+    console.log('Current step:', currentStep);
     
     // If there are more guides to complete
     if (currentGuideIndex < selectedSites.length - 1) {
@@ -101,23 +103,28 @@ export const ChecklistContainer = () => {
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
         <div className="step-content-wrapper bg-white dark:bg-[#1C1C1D] rounded-lg p-6">
-          {[...Array(actualTotalSteps)].map((_, index) => (
-            <div 
-              key={index + 1}
-              data-step={index + 1}
-              style={{ display: currentStep === index + 1 ? 'block' : 'none' }}
-            >
-              <StepContent
-                currentStep={index + 1}
-                selectedSites={checklistProgress?.selected_sites || []}
-                completedGuides={checklistProgress?.completed_guides}
-                onGuideComplete={onGuideCompleted}
-                onStepComplete={onStepCompleted}
-                checklistItems={checklistItems || []}
-                getGuideForSite={getGuideForSite}
-              />
-            </div>
-          ))}
+          {[...Array(actualTotalSteps)].map((_, index) => {
+            const stepNumber = index + 1;
+            console.log('Rendering step:', stepNumber, 'Current step:', currentStep);
+            
+            return (
+              <div 
+                key={stepNumber}
+                data-step={stepNumber}
+                style={{ display: currentStep === stepNumber ? 'block' : 'none' }}
+              >
+                <StepContent
+                  currentStep={stepNumber}
+                  selectedSites={selectedSites}
+                  completedGuides={checklistProgress?.completed_guides}
+                  onGuideComplete={onGuideCompleted}
+                  onStepComplete={onStepCompleted}
+                  checklistItems={checklistItems || []}
+                  getGuideForSite={getGuideForSite}
+                />
+              </div>
+            );
+          })}
         </div>
         <div className="py-8">
           <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
