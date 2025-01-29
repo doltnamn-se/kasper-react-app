@@ -66,32 +66,24 @@ export const ChecklistContainer = () => {
     await handleGuideComplete(siteId);
     await refetchProgress();
     
-    // Get the list of selected sites in the correct order
-    const siteOrder = [
-      'eniro',
-      'hitta',
-      'mrkoll',
-      'merinfo',
-      'ratsit',
-      'birthday',
-      'upplysning'
-    ];
-    
     const selectedSites = checklistProgress?.selected_sites || [];
-    const orderedSelectedSites = [...selectedSites].sort((a, b) => 
-      siteOrder.indexOf(a) - siteOrder.indexOf(b)
-    );
+    const baseSteps = 3;
+    const currentGuideIndex = currentStep - baseSteps - 1;
     
-    // Calculate the current guide index (0-based)
-    const currentGuideIndex = currentStep - 4;
+    console.log('Current guide index:', currentGuideIndex);
+    console.log('Selected sites:', selectedSites);
     
-    // If there are more guides after this one
-    if (currentGuideIndex < orderedSelectedSites.length - 1) {
-      // Move to the next guide step
-      handleStepChange(currentStep + 1);
+    // If there are more guides to complete
+    if (currentGuideIndex < selectedSites.length - 1) {
+      // Move to next guide step
+      const nextStep = currentStep + 1;
+      console.log('Moving to next guide step:', nextStep);
+      handleStepChange(nextStep);
     } else {
       // All guides completed, move to final step
-      handleStepChange(totalSteps);
+      const finalStep = baseSteps + selectedSites.length + 1;
+      console.log('Moving to final step:', finalStep);
+      handleStepChange(finalStep);
     }
   };
 
