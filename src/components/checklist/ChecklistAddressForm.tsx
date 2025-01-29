@@ -26,7 +26,7 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
-      // Save address data
+      // First update the checklist progress
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({
@@ -38,18 +38,27 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         })
         .eq('customer_id', session.user.id);
 
-      if (progressError) throw progressError;
+      if (progressError) {
+        console.error('Error updating checklist progress:', progressError);
+        throw progressError;
+      }
 
-      // Mark checklist as completed
+      // Then update the customer record
       const { error: customerError } = await supabase
         .from('customers')
         .update({
           checklist_completed: true,
-          has_address_alert: true // Enable address monitoring
+          has_address_alert: true,
+          checklist_step: 4 // Ensure we're on the final step
         })
         .eq('id', session.user.id);
 
-      if (customerError) throw customerError;
+      if (customerError) {
+        console.error('Error updating customer:', customerError);
+        throw customerError;
+      }
+
+      console.log('Successfully completed checklist and enabled address monitoring');
 
       toast({
         title: language === 'sv' ? 'Checklista slutförd' : 'Checklist completed',
