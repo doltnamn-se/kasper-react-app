@@ -39,6 +39,10 @@ export const StepContent = ({
     }
   });
 
+  console.log('StepContent - Current step:', currentStep);
+  console.log('StepContent - Selected sites:', selectedSites);
+  console.log('StepContent - Completed guides:', completedGuides);
+
   // Calculate the actual step number for the final step
   const baseSteps = 3;
   const finalStepNumber = currentStep > baseSteps ? 

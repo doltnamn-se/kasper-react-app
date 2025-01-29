@@ -19,6 +19,7 @@ export const GuideStepContent = ({
   console.log('GuideStepContent - Rendering guide step:', currentStep);
   console.log('GuideStepContent - Selected sites:', selectedSites);
   
+  // Adjust the index calculation to account for the first 3 steps
   const siteIndex = currentStep - 4;
   console.log('GuideStepContent - Site index:', siteIndex);
   
