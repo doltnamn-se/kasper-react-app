@@ -34,26 +34,6 @@ export const ChecklistContainer = () => {
     }
 
     await refetchProgress();
-    
-    // Only increment step if there are more steps and all guides for the current step are completed
-    const totalSteps = getTotalSteps();
-    if (currentStep < totalSteps) {
-      const selectedSites = checklistProgress?.selected_sites || [];
-      const completedGuidesAfterUpdate = [...completedGuides, siteId];
-      
-      // Calculate the guide step index range
-      const baseSteps = 3; // Steps before guides
-      const currentGuideIndex = currentStep - baseSteps;
-      
-      // Check if we're on a guide step
-      if (currentGuideIndex >= 0 && currentGuideIndex < selectedSites.length) {
-        // Only move to next step if the current guide is completed
-        const currentSite = selectedSites[currentGuideIndex];
-        if (completedGuidesAfterUpdate.includes(currentSite)) {
-          setCurrentStep(prev => prev + 1);
-        }
-      }
-    }
   };
 
   const getTotalSteps = () => {
@@ -138,15 +118,13 @@ export const ChecklistContainer = () => {
         updateData.password_updated = true;
         break;
       case 2:
-        // For URL submission step, we don't need to update anything here
-        // as it's handled in the UrlSubmission component
+        // For URL submission step, handled in UrlSubmission component
         break;
       case 3:
-        // For site selection step, we don't need to update anything here
-        // as it's handled in the HidingSitesSelection component
+        // For site selection step, handled in HidingSitesSelection component
         break;
       default:
-        // For other steps, no specific updates needed
+        // For guide steps, no specific updates needed here
         break;
     }
 
@@ -165,22 +143,20 @@ export const ChecklistContainer = () => {
     await handleStepComplete();
     await refetchProgress();
     
-    // Only increment step if there are more steps
+    // Handle step progression
     const totalSteps = getTotalSteps();
     if (currentStep < totalSteps) {
-      // If we're on step 3 (site selection), we should move to the first guide step
       if (currentStep === 3) {
         const selectedSites = checklistProgress?.selected_sites || [];
         if (selectedSites.length > 0) {
           console.log('Moving to first guide step (4)');
           setCurrentStep(4);
         } else {
-          // If no sites selected, move to the final step
           console.log('No sites selected, moving to final step');
-          setCurrentStep(prev => prev + 1);
+          setCurrentStep(totalSteps);
         }
       } else if (currentStep > 3) {
-        // For guide steps, only increment if the current guide is completed
+        // For guide steps
         const selectedSites = checklistProgress?.selected_sites || [];
         const completedGuides = checklistProgress?.completed_guides || [];
         const currentGuideIndex = currentStep - 4;
@@ -188,13 +164,20 @@ export const ChecklistContainer = () => {
         if (currentGuideIndex < selectedSites.length) {
           const currentSite = selectedSites[currentGuideIndex];
           if (completedGuides.includes(currentSite)) {
-            console.log('Guide completed, moving to next step');
-            setCurrentStep(prev => prev + 1);
+            // Move to next guide step or final step
+            const nextStep = currentStep + 1;
+            console.log('Guide completed, moving to step:', nextStep);
+            setCurrentStep(nextStep);
           } else {
-            console.log('Guide not completed yet, staying on current step');
+            console.log('Current guide not completed yet, staying on step:', currentStep);
           }
+        } else {
+          // All guides completed, move to final step
+          console.log('All guides completed, moving to final step');
+          setCurrentStep(totalSteps);
         }
       } else {
+        // For steps 1-2
         setCurrentStep(prev => prev + 1);
       }
     }
