@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
+import { UserProfileMenu } from "@/components/nav/UserProfileMenu";
 
 const AdminLayout = () => {
   return (
@@ -7,8 +8,9 @@ const AdminLayout = () => {
       <div className="flex">
         {/* Admin Sidebar */}
         <div className="hidden md:block w-64 min-h-screen bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325]">
-          <div className="p-6">
+          <div className="p-6 flex justify-between items-center">
             <h1 className="text-xl font-bold text-black dark:text-white">Admin Dashboard</h1>
+            <UserProfileMenu />
           </div>
           <AdminNavigation toggleMobileMenu={() => {}} />
         </div>
