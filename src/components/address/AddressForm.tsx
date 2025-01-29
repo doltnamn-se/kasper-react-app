@@ -32,7 +32,8 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           street_address: data.streetAddress,
           postal_code: data.postalCode,
           city: data.city,
-          address: `${data.streetAddress}, ${data.postalCode} ${data.city}`
+          address: `${data.streetAddress}, ${data.postalCode} ${data.city}`,
+          completed_at: new Date().toISOString() // Mark as completed when address is saved
         })
         .eq('customer_id', session.user.id);
 

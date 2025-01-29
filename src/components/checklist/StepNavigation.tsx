@@ -26,16 +26,15 @@ export const StepNavigation = ({ currentStep, totalSteps, onStepChange }: StepNa
         </Button>
       )}
       {currentStep === 1 && <div />}
-      <Button
-        onClick={() => onStepChange(Math.min(totalSteps, currentStep + 1))}
-        disabled={isLastStep}
-        className="gap-2"
-      >
-        {isLastStep ? 
-          (language === 'en' ? 'Finish' : 'Slutför') :
-          (language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`)}
-        <ArrowRight className="h-4 w-4" />
-      </Button>
+      {!isLastStep && (
+        <Button
+          onClick={() => onStepChange(Math.min(totalSteps, currentStep + 1))}
+          className="gap-2"
+        >
+          {language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`}
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
