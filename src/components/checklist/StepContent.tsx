@@ -77,27 +77,34 @@ export const StepContent = ({
     console.log('Rendering guide step:', currentStep);
     console.log('Selected sites:', selectedSites);
     const siteIndex = currentStep - 4;
-    const siteId = selectedSites[siteIndex];
-    console.log('Current site ID:', siteId);
-    const guide = getGuideForSite(siteId);
-    console.log('Guide data:', guide);
-    const isGuideCompleted = completedGuides?.includes(siteId);
-    console.log('Is guide completed:', isGuideCompleted);
+    
+    // Make sure we have a valid site index
+    if (siteIndex >= 0 && siteIndex < selectedSites.length) {
+      const siteId = selectedSites[siteIndex];
+      console.log('Current site ID:', siteId);
+      const guide = getGuideForSite(siteId);
+      console.log('Guide data:', guide);
+      const isGuideCompleted = completedGuides?.includes(siteId);
+      console.log('Is guide completed:', isGuideCompleted);
 
-    if (!guide) {
-      console.error('No guide found for site:', siteId);
+      if (!guide) {
+        console.error('No guide found for site:', siteId);
+        return null;
+      }
+
+      return (
+        <StepGuide
+          currentStep={currentStep}
+          siteId={siteId}
+          guide={guide}
+          isGuideCompleted={Boolean(isGuideCompleted)}
+          onGuideComplete={onGuideComplete}
+        />
+      );
+    } else {
+      console.error('Invalid site index:', siteIndex, 'for selected sites:', selectedSites);
       return null;
     }
-
-    return (
-      <StepGuide
-        currentStep={currentStep}
-        siteId={siteId}
-        guide={guide}
-        isGuideCompleted={Boolean(isGuideCompleted)}
-        onGuideComplete={onGuideComplete}
-      />
-    );
   }
 
   return (
