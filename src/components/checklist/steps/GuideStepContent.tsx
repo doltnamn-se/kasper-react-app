@@ -16,33 +16,18 @@ export const GuideStepContent = ({
   onGuideComplete,
   getGuideForSite
 }: GuideStepContentProps) => {
-  // Define the correct order of sites
-  const siteOrder = [
-    'eniro',
-    'hitta',
-    'mrkoll',
-    'merinfo',
-    'ratsit',
-    'birthday',
-    'upplysning'
-  ];
-
   // First 3 steps are other content, so we need to adjust the index
-  const guideStepIndex = currentStep - 4;
-  console.log('GuideStepContent - Guide step index:', guideStepIndex);
+  const guideIndex = currentStep - 4;
+  console.log('GuideStepContent - Current step:', currentStep);
+  console.log('GuideStepContent - Guide index:', guideIndex);
+  console.log('GuideStepContent - Selected sites:', selectedSites);
   
-  // Get ordered selected sites based on predefined order
-  const orderedSelectedSites = [...selectedSites].sort((a, b) => 
-    siteOrder.indexOf(a) - siteOrder.indexOf(b)
-  );
-  console.log('GuideStepContent - Ordered selected sites:', orderedSelectedSites);
-
-  // Get the current site based on the guide step index
-  const currentSiteId = orderedSelectedSites[guideStepIndex];
+  // Get the current site based on the guide index
+  const currentSiteId = selectedSites[guideIndex];
   console.log('GuideStepContent - Current site ID:', currentSiteId);
 
   // If no current site ID or invalid index, return null
-  if (!currentSiteId || guideStepIndex < 0 || guideStepIndex >= orderedSelectedSites.length) {
+  if (!currentSiteId || guideIndex < 0 || guideIndex >= selectedSites.length) {
     console.log('GuideStepContent - No valid site for current step');
     return null;
   }
