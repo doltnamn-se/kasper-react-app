@@ -138,11 +138,14 @@ export const StepContent = ({
             case 3:
               return <HidingSitesSelection onComplete={onStepComplete} />;
             case 4:
-              return customerData?.has_address_alert ? (
-                <AddressForm onSuccess={onStepComplete} />
-              ) : (
-                <PersonalInfoForm onComplete={onStepComplete} />
-              );
+              if (customerData?.has_address_alert) {
+                return (
+                  <div className="space-y-4">
+                    <AddressForm onSuccess={onStepComplete} />
+                  </div>
+                );
+              }
+              return <PersonalInfoForm onComplete={onStepComplete} />;
             default:
               return null;
           }
