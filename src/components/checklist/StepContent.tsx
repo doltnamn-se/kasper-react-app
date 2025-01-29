@@ -75,7 +75,7 @@ export const StepContent = ({
     const accordionId = `checklist-${siteId}`;
     
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 animate-fade-in">
         <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
           {t('step.number', { number: currentStep })}
         </Badge>
@@ -105,7 +105,7 @@ export const StepContent = ({
   if (!currentItem) return null;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-fade-in">
       <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
         {t('step.number', { number: currentStep })}
       </Badge>
