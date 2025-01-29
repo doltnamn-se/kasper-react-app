@@ -65,21 +65,28 @@ export const ChecklistContainer = () => {
   const onGuideCompleted = async (siteId: string) => {
     console.log('Guide completed for site:', siteId);
     await handleGuideComplete(siteId);
+    await refetchProgress();
     
-    // Calculate if we should move to the next step
+    // Get the list of sites that still need to be completed
     const selectedSites = checklistProgress?.selected_sites || [];
     const completedGuides = checklistProgress?.completed_guides || [];
-    const currentGuideIndex = currentStep - 4;
+    const remainingSites = selectedSites.filter(site => !completedGuides.includes(site));
     
-    console.log('Guide completion - Current guide index:', currentGuideIndex);
-    console.log('Guide completion - Selected sites:', selectedSites);
-    console.log('Guide completion - Completed guides:', completedGuides);
+    console.log('Remaining sites after completion:', remainingSites);
     
-    // If there are more guides to show, move to the next one
-    if (currentGuideIndex < selectedSites.length - 1) {
-      handleStepChange(currentStep + 1);
+    // If there are more guides to complete
+    if (remainingSites.length > 0) {
+      // Find the index of the next uncompleted guide
+      const nextGuideIndex = selectedSites.findIndex(site => !completedGuides.includes(site));
+      if (nextGuideIndex !== -1) {
+        // Calculate the next step number (base steps + guide index)
+        const nextStep = 4 + nextGuideIndex;
+        console.log('Moving to next guide step:', nextStep);
+        handleStepChange(nextStep);
+      }
     } else {
-      // If all guides are completed, move to the final step
+      // All guides are completed, move to the final step
+      console.log('All guides completed, moving to final step:', totalSteps);
       handleStepChange(totalSteps);
     }
   };
