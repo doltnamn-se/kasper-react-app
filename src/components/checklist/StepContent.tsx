@@ -10,6 +10,7 @@ import { ChecklistAddressForm } from "./ChecklistAddressForm";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { StepGuide } from "./StepGuide";
 
 interface StepContentProps {
   currentStep: number;
@@ -31,7 +32,6 @@ export const StepContent = ({
   getGuideForSite
 }: StepContentProps) => {
   const { t, language } = useLanguage();
-  const baseSteps = 4;
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
 
   const { data: customerData } = useQuery({
@@ -63,9 +63,32 @@ export const StepContent = ({
     });
   };
 
-  const finalStepNumber = currentStep > 3 ? 4 : currentStep;
+  // Calculate the actual step number for the final step
+  const baseSteps = 3;
+  const finalStepNumber = currentStep > baseSteps ? 
+    (currentStep <= baseSteps + selectedSites.length ? currentStep : baseSteps + selectedSites.length + 1) : 
+    currentStep;
+
   const currentItem = checklistItems?.[finalStepNumber - 1];
   if (!currentItem) return null;
+
+  // For guide steps (after step 3)
+  if (currentStep > 3 && currentStep <= baseSteps + selectedSites.length) {
+    const siteIndex = currentStep - 4;
+    const siteId = selectedSites[siteIndex];
+    const guide = getGuideForSite(siteId);
+    const isGuideCompleted = completedGuides?.includes(siteId);
+
+    return (
+      <StepGuide
+        currentStep={currentStep}
+        siteId={siteId}
+        guide={guide}
+        isGuideCompleted={Boolean(isGuideCompleted)}
+        onGuideComplete={onGuideComplete}
+      />
+    );
+  }
 
   return (
     <div className="space-y-4 animate-fade-in">
@@ -100,7 +123,7 @@ export const StepContent = ({
               return <UrlSubmission onComplete={onStepComplete} />;
             case 3:
               return <HidingSitesSelection onComplete={onStepComplete} />;
-            case 4:
+            default:
               if (customerData?.has_address_alert) {
                 return (
                   <div className="space-y-4">
@@ -109,8 +132,6 @@ export const StepContent = ({
                 );
               }
               return <PersonalInfoForm onComplete={onStepComplete} />;
-            default:
-              return null;
           }
         })()}
       </div>
