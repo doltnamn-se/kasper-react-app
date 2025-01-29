@@ -1,6 +1,5 @@
-import { MainLayout } from "@/components/layout/MainLayout";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
@@ -10,7 +9,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <MainLayout>
+    <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.admin.dashboard')}
@@ -19,10 +18,10 @@ const AdminDashboard = () => {
       </div>
       <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
         <p className="text-gray-600 dark:text-gray-300">
-          Välkommen till din översikt.
+          Welcome to the admin dashboard.
         </p>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 
