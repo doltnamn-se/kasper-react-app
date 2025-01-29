@@ -74,10 +74,20 @@ export const StepContent = ({
 
   // For guide steps (after step 3)
   if (currentStep > 3 && currentStep <= baseSteps + selectedSites.length) {
+    console.log('Rendering guide step:', currentStep);
+    console.log('Selected sites:', selectedSites);
     const siteIndex = currentStep - 4;
     const siteId = selectedSites[siteIndex];
+    console.log('Current site ID:', siteId);
     const guide = getGuideForSite(siteId);
+    console.log('Guide data:', guide);
     const isGuideCompleted = completedGuides?.includes(siteId);
+    console.log('Is guide completed:', isGuideCompleted);
+
+    if (!guide) {
+      console.error('No guide found for site:', siteId);
+      return null;
+    }
 
     return (
       <StepGuide
