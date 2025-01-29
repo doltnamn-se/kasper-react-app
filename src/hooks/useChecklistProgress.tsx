@@ -62,21 +62,29 @@ export const useChecklistProgress = () => {
     await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
     
     if (checklistProgress && !checklistProgress.completed_at) {
-      const totalSteps = 4 + (checklistProgress.selected_sites?.length || 0);
+      const totalSteps = 4; // Fixed number of base steps
       let completedSteps = 0;
       
+      // Count base steps
       if (checklistProgress.password_updated) completedSteps++;
       if (checklistProgress.removal_urls?.length > 0) completedSteps++;
       if (checklistProgress.selected_sites?.length > 0) completedSteps++;
-      
-      // Count completed guides
-      const completedGuidesCount = checklistProgress.completed_guides?.length || 0;
-      completedSteps += completedGuidesCount;
-      
-      // Check if address/personal info is complete
       if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
       
-      if (completedSteps === totalSteps) {
+      // Check if all selected sites have corresponding completed guides
+      const selectedSitesCount = checklistProgress.selected_sites?.length || 0;
+      const completedGuidesCount = checklistProgress.completed_guides?.length || 0;
+      
+      console.log('Progress calculation:', {
+        completedSteps,
+        totalSteps,
+        selectedSitesCount,
+        completedGuidesCount
+      });
+      
+      // Only trigger completion if all base steps and all guides are completed
+      if (completedSteps === totalSteps && 
+          (selectedSitesCount === 0 || completedGuidesCount === selectedSitesCount)) {
         confetti({
           particleCount: 100,
           spread: 70,
@@ -94,19 +102,25 @@ export const useChecklistProgress = () => {
   const calculateProgress = () => {
     if (!checklistProgress) return 0;
     
-    const totalSteps = 4 + (checklistProgress.selected_sites?.length || 0);
+    const baseSteps = 4; // Fixed number of base steps
     let completedSteps = 0;
     
+    // Count completed base steps
     if (checklistProgress.password_updated) completedSteps++;
     if (checklistProgress.removal_urls?.length > 0) completedSteps++;
     if (checklistProgress.selected_sites?.length > 0) completedSteps++;
-    
-    // Count completed guides
-    const completedGuidesCount = checklistProgress.completed_guides?.length || 0;
-    completedSteps += completedGuidesCount;
-    
-    // Check if address/personal info is complete
     if (checklistProgress.address && checklistProgress.personal_number) completedSteps++;
+    
+    // Calculate total steps (base steps only)
+    const totalSteps = baseSteps;
+    
+    console.log('Progress calculation:', {
+      completedSteps,
+      totalSteps,
+      baseSteps,
+      selectedSites: checklistProgress.selected_sites,
+      completedGuides: checklistProgress.completed_guides
+    });
     
     return Math.round((completedSteps / totalSteps) * 100);
   };
