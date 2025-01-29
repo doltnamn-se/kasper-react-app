@@ -11,6 +11,8 @@ interface StepNavigationProps {
 export const StepNavigation = ({ currentStep, totalSteps, onStepChange }: StepNavigationProps) => {
   const { language } = useLanguage();
 
+  const isLastStep = currentStep === totalSteps;
+
   return (
     <div className="flex justify-between">
       {currentStep > 1 && (
@@ -26,10 +28,12 @@ export const StepNavigation = ({ currentStep, totalSteps, onStepChange }: StepNa
       {currentStep === 1 && <div />}
       <Button
         onClick={() => onStepChange(Math.min(totalSteps, currentStep + 1))}
-        disabled={currentStep === totalSteps}
+        disabled={isLastStep}
         className="gap-2"
       >
-        {language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`}
+        {isLastStep ? 
+          (language === 'en' ? 'Finish' : 'Slutför') :
+          (language === 'en' ? `Step ${currentStep + 1}` : `Steg ${currentStep + 1}`)}
         <ArrowRight className="h-4 w-4" />
       </Button>
     </div>

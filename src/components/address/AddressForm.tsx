@@ -22,6 +22,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
 
   const onSubmit = async (data: AddressFormData) => {
     try {
+      console.log('Submitting address form data:', data);
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
@@ -44,7 +45,10 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           'Your address has been saved and will be monitored'
       });
 
-      if (onSuccess) await onSuccess();
+      if (onSuccess) {
+        console.log('Calling onSuccess callback after saving address');
+        await onSuccess();
+      }
     } catch (error) {
       console.error('Error saving address:', error);
       toast({
