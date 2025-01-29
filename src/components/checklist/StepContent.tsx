@@ -1,16 +1,7 @@
-import { Badge } from "@/components/ui/badge";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { GuideCard } from "@/components/guides/GuideCard";
-import { Button } from "@/components/ui/button";
-import { PasswordUpdateForm } from "./PasswordUpdateForm";
-import { UrlSubmission } from "./UrlSubmission";
-import { HidingSitesSelection } from "./HidingSitesSelection";
-import { PersonalInfoForm } from "./PersonalInfoForm";
-import { ChecklistAddressForm } from "./ChecklistAddressForm";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { StepGuide } from "./StepGuide";
+import { GuideStepContent } from "./steps/GuideStepContent";
+import { BasicStepContent } from "./steps/BasicStepContent";
 
 interface StepContentProps {
   currentStep: number;
@@ -31,9 +22,6 @@ export const StepContent = ({
   checklistItems,
   getGuideForSite
 }: StepContentProps) => {
-  const { t, language } = useLanguage();
-  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
-
   const { data: customerData } = useQuery({
     queryKey: ['customer-data'],
     queryFn: async () => {
@@ -51,18 +39,6 @@ export const StepContent = ({
     }
   });
 
-  const handleAccordionChange = (accordionId: string) => {
-    setOpenAccordions(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(accordionId)) {
-        newSet.delete(accordionId);
-      } else {
-        newSet.add(accordionId);
-      }
-      return newSet;
-    });
-  };
-
   // Calculate the actual step number for the final step
   const baseSteps = 3;
   const finalStepNumber = currentStep > baseSteps ? 
@@ -74,84 +50,24 @@ export const StepContent = ({
 
   // For guide steps (after step 3)
   if (currentStep > 3 && currentStep <= baseSteps + selectedSites.length) {
-    console.log('Rendering guide step:', currentStep);
-    console.log('Selected sites:', selectedSites);
-    const siteIndex = currentStep - 4;
-    
-    // Make sure we have a valid site index
-    if (siteIndex >= 0 && siteIndex < selectedSites.length) {
-      const siteId = selectedSites[siteIndex];
-      console.log('Current site ID:', siteId);
-      const guide = getGuideForSite(siteId);
-      console.log('Guide data:', guide);
-      const isGuideCompleted = completedGuides?.includes(siteId);
-      console.log('Is guide completed:', isGuideCompleted);
-
-      if (!guide) {
-        console.error('No guide found for site:', siteId);
-        return null;
-      }
-
-      return (
-        <StepGuide
-          currentStep={currentStep}
-          siteId={siteId}
-          guide={guide}
-          isGuideCompleted={Boolean(isGuideCompleted)}
-          onGuideComplete={onGuideComplete}
-        />
-      );
-    } else {
-      console.error('Invalid site index:', siteIndex, 'for selected sites:', selectedSites);
-      return null;
-    }
+    console.log('StepContent - Rendering guide step content');
+    return (
+      <GuideStepContent
+        currentStep={currentStep}
+        selectedSites={selectedSites}
+        completedGuides={completedGuides}
+        onGuideComplete={onGuideComplete}
+        getGuideForSite={getGuideForSite}
+      />
+    );
   }
 
+  // For basic steps (1-3 and final step)
   return (
-    <div className="space-y-4 animate-fade-in">
-      <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
-        {t('step.number', { number: currentStep })}
-      </Badge>
-      <div className="flex flex-col gap-2">
-        <h3 className="text-lg font-semibold">
-          {finalStepNumber === 1 ? t('step.1.title') : 
-           finalStepNumber === 2 ? t('step.2.title') : 
-           finalStepNumber === 3 ? t('step.3.title') : 
-           customerData?.has_address_alert ? t('step.4.title') :
-           t('step.identification.title')}
-        </h3>
-        <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-          {finalStepNumber === 1 ? t('set.password.description') :
-           finalStepNumber === 2 ? t('step.2.description') :
-           finalStepNumber === 3 ? t('step.3.description') :
-           customerData?.has_address_alert ? t('step.4.description') :
-           t('step.identification.description')}
-        </p>
-      </div>
-      <div className="pt-4">
-        {(() => {
-          switch (finalStepNumber) {
-            case 1:
-              return <PasswordUpdateForm 
-                onComplete={onStepComplete}
-                buttonClassName="w-full xl:w-1/4 lg:w-1/2"
-              />;
-            case 2:
-              return <UrlSubmission onComplete={onStepComplete} />;
-            case 3:
-              return <HidingSitesSelection onComplete={onStepComplete} />;
-            default:
-              if (customerData?.has_address_alert) {
-                return (
-                  <div className="space-y-4">
-                    <ChecklistAddressForm onSuccess={onStepComplete} />
-                  </div>
-                );
-              }
-              return <PersonalInfoForm onComplete={onStepComplete} />;
-          }
-        })()}
-      </div>
-    </div>
+    <BasicStepContent
+      currentStep={finalStepNumber}
+      onStepComplete={onStepComplete}
+      customerData={customerData}
+    />
   );
 };
