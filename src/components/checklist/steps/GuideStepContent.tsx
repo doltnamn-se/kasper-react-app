@@ -31,17 +31,15 @@ export const GuideStepContent = ({
     'upplysning'
   ];
 
-  // Filter selected sites to match the order and remove completed guides
-  const orderedSelectedSites = siteOrder.filter(site => 
-    selectedSites.includes(site) && 
-    !(completedGuides || []).includes(site)
-  );
-
-  console.log('GuideStepContent - Ordered selected sites:', orderedSelectedSites);
-
-  // Calculate which guide to show (steps 1-3 are for other content)
+  // Get the current guide index (steps 1-3 are for other content)
   const guideIndex = currentStep - 4;
   console.log('GuideStepContent - Guide index:', guideIndex);
+
+  // Get the ordered list of selected sites
+  const orderedSelectedSites = selectedSites.sort((a, b) => 
+    siteOrder.indexOf(a) - siteOrder.indexOf(b)
+  );
+  console.log('GuideStepContent - Ordered selected sites:', orderedSelectedSites);
 
   // Validate the index
   if (guideIndex < 0 || guideIndex >= orderedSelectedSites.length) {
