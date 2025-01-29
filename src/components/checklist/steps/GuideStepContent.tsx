@@ -19,16 +19,34 @@ export const GuideStepContent = ({
   console.log('GuideStepContent - Rendering guide step:', currentStep);
   console.log('GuideStepContent - Selected sites:', selectedSites);
   
-  // Adjust the index calculation to account for the first 3 steps
+  // Define the correct order of sites
+  const siteOrder = [
+    'eniro',
+    'mrkoll',
+    'hitta',
+    'merinfo',
+    'ratsit',
+    'birthday',
+    'upplysning'
+  ];
+
+  // Filter and sort selected sites based on the defined order
+  const orderedSites = siteOrder.filter(site => 
+    selectedSites.some(selected => selected.toLowerCase() === site)
+  );
+
+  console.log('GuideStepContent - Ordered sites:', orderedSites);
+  
+  // Calculate the index in our ordered sites array (subtract 4 for the first 3 steps)
   const siteIndex = currentStep - 4;
   console.log('GuideStepContent - Site index:', siteIndex);
   
-  if (siteIndex < 0 || siteIndex >= selectedSites.length) {
-    console.error('GuideStepContent - Invalid site index:', siteIndex, 'for selected sites:', selectedSites);
+  if (siteIndex < 0 || siteIndex >= orderedSites.length) {
+    console.error('GuideStepContent - Invalid site index:', siteIndex);
     return null;
   }
 
-  const siteId = selectedSites[siteIndex];
+  const siteId = orderedSites[siteIndex];
   console.log('GuideStepContent - Current site ID:', siteId);
   
   const guide = getGuideForSite(siteId);
