@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ChecklistAddressFormData {
   streetAddress: string;
@@ -18,6 +19,7 @@ interface ChecklistAddressFormProps {
 export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { register, handleSubmit, formState: { errors } } = useForm<ChecklistAddressFormData>();
 
   const onSubmit = async (data: ChecklistAddressFormData) => {
@@ -59,6 +61,12 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
       }
 
       console.log('Successfully completed checklist and enabled address monitoring');
+
+      // Invalidate relevant queries to trigger UI updates
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
+        queryClient.invalidateQueries({ queryKey: ['customer-data'] })
+      ]);
 
       toast({
         title: language === 'sv' ? 'Checklista slutförd' : 'Checklist completed',
