@@ -31,9 +31,10 @@ export const GuideStepContent = ({
     'upplysning'
   ];
 
-  // Filter selected sites to match the order
+  // Filter selected sites to match the order and remove completed guides
   const orderedSelectedSites = siteOrder.filter(site => 
-    selectedSites.includes(site)
+    selectedSites.includes(site) && 
+    !(completedGuides || []).includes(site)
   );
 
   console.log('GuideStepContent - Ordered selected sites:', orderedSelectedSites);
