@@ -34,6 +34,10 @@ export const StepGuide = ({
     });
   };
 
+  const handleComplete = async () => {
+    await onGuideComplete(siteId);
+  };
+
   if (!guide) return null;
 
   const accordionId = `guide-${siteId}`;
@@ -51,7 +55,7 @@ export const StepGuide = ({
         onAccordionChange={handleAccordionChange}
       />
       <Button
-        onClick={() => onGuideComplete(siteId)}
+        onClick={handleComplete}
         disabled={isGuideCompleted}
         className="w-full xl:w-1/4 lg:w-1/2"
       >

@@ -58,6 +58,12 @@ export const ChecklistContainer = () => {
     handleStepProgression();
   };
 
+  const onGuideCompleted = async (siteId: string) => {
+    console.log('Guide completed for site:', siteId);
+    await handleGuideComplete(siteId);
+    handleStepProgression();
+  };
+
   return (
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
@@ -73,7 +79,7 @@ export const ChecklistContainer = () => {
                 currentStep={index + 1}
                 selectedSites={checklistProgress?.selected_sites || []}
                 completedGuides={checklistProgress?.completed_guides}
-                onGuideComplete={handleGuideComplete}
+                onGuideComplete={onGuideCompleted}
                 onStepComplete={onStepCompleted}
                 checklistItems={checklistItems || []}
                 getGuideForSite={getGuideForSite}
