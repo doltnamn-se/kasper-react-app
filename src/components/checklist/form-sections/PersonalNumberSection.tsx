@@ -21,11 +21,11 @@ export const PersonalNumberSection = ({ register, errors }: PersonalNumberSectio
             pattern: {
               value: /^\d{8}-\d{4}$/,
               message: language === 'sv' 
-                ? 'Personnummer måste vara i formatet ÅÅMMDD-XXXX (t.ex. 19930404-1917)' 
-                : 'Personal number must be in the format YYMMDD-XXXX (e.g. 19930404-1917)'
+                ? 'Personnummer måste vara i formatet ÅÅÅÅMMDD-XXXX' 
+                : 'Personal number must be in the format YYYYMMDD-XXXX'
             }
           })}
-          placeholder={language === 'sv' ? 'ÅÅMMDD-XXXX' : 'YYMMDD-XXXX'}
+          placeholder={language === 'sv' ? 'ÅÅÅÅMMDD-XXXX' : 'YYYYMMDD-XXXX'}
           className={errors.personalNumber ? "border-red-500" : ""}
         />
         {errors.personalNumber && (
