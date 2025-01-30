@@ -24,6 +24,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   } = useUrlSubmission();
 
   const urlLimit = getUrlLimit();
+  const existingUrlCount = existingUrls?.length || 0;
+  const remainingUrls = Math.max(0, urlLimit - existingUrlCount);
 
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
@@ -33,10 +35,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
   const addUrlField = () => {
     const currentValidUrls = urls.filter(url => url.trim() !== '');
-    const existingUrlCount = existingUrls?.length || 0;
-    const totalUrls = currentValidUrls.length + existingUrlCount;
-
-    if (totalUrls >= urlLimit) {
+    
+    if (currentValidUrls.length >= remainingUrls) {
       toast({
         title: "URL limit reached",
         description: t('url.limit.message', { limit: urlLimit }),
@@ -64,6 +64,10 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       if (urlLimit === 0) {
         throw new Error(t('url.no.plan'));
+      }
+
+      if (validUrls.length + existingUrlCount > urlLimit) {
+        throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
       const { error: progressError } = await supabase
@@ -106,7 +110,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session?.user) return;
 
-            // When skipping, add an empty array to mark the step as complete
             const { error: progressError } = await supabase
               .from('customer_checklist_progress')
               .update({ removal_urls: ['skipped'] })
@@ -124,10 +127,17 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     );
   }
 
+  const validUrlCount = urls.filter(url => url.trim() !== '').length;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mb-4">
         {t('url.limit.message', { limit: urlLimit })}
+        {existingUrlCount > 0 && (
+          <div className="mt-2">
+            {t('url.remaining.message', { count: remainingUrls })}
+          </div>
+        )}
       </div>
       
       {urls.map((url, index) => (
@@ -141,7 +151,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         />
       ))}
       
-      {urls.filter(url => url.trim() !== '').length < urlLimit && (
+      {validUrlCount < remainingUrls && (
         <Button
           type="button"
           variant="outline"
@@ -155,7 +165,11 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       <Button
         type="submit"
-        disabled={isLoading || urls.every(url => url.trim() === '') || urls.filter(url => url.trim() !== '').length > urlLimit}
+        disabled={
+          isLoading || 
+          urls.every(url => url.trim() === '') || 
+          validUrlCount > remainingUrls
+        }
         className="w-full py-6"
       >
         {isLoading ? t('saving') : t('save.urls')}

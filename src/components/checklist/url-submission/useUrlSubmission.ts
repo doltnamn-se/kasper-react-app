@@ -6,23 +6,29 @@ export const useUrlSubmission = () => {
   const [urls, setUrls] = useState<string[]>(['']);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: customerData } = useQuery({
-    queryKey: ['customer'],
+  // Fetch URL limits from the database
+  const { data: urlLimits } = useQuery({
+    queryKey: ['url-limits'],
     queryFn: async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
       const { data, error } = await supabase
-        .from('customers')
-        .select('subscription_plan')
-        .eq('id', session.user.id)
-        .single();
+        .from('user_url_limits')
+        .select('additional_urls')
+        .eq('customer_id', session.user.id)
+        .maybeSingle();
       
-      if (error) throw error;
-      return data;
+      if (error) {
+        console.error('Error fetching URL limits:', error);
+        return { additional_urls: 0 };
+      }
+      
+      return data || { additional_urls: 0 };
     }
   });
 
+  // Fetch existing URLs to count against the limit
   const { data: existingUrls } = useQuery({
     queryKey: ['existing-urls'],
     queryFn: async () => {
@@ -40,14 +46,7 @@ export const useUrlSubmission = () => {
   });
 
   const getUrlLimit = () => {
-    switch (customerData?.subscription_plan) {
-      case '6_months':
-        return 2;
-      case '12_months':
-        return 4;
-      default:
-        return 0;
-    }
+    return urlLimits?.additional_urls || 0;
   };
 
   return {
@@ -55,7 +54,6 @@ export const useUrlSubmission = () => {
     setUrls,
     isLoading,
     setIsLoading,
-    customerData,
     existingUrls,
     getUrlLimit,
   };
