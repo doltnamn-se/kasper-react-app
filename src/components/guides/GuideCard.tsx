@@ -6,6 +6,7 @@ import { GuideStep } from "./GuideStep";
 import { GuideHeader } from "./GuideHeader";
 import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { useGuideUtils } from "@/utils/guideUtils";
+import { Badge } from "@/components/ui/badge";
 
 interface GuideStep {
   text: string;
@@ -20,6 +21,7 @@ interface GuideCardProps {
   isOpen: boolean;
   onAccordionChange: (value: string) => void;
   variant?: 'default' | 'checklist';
+  isCompleted?: boolean;
 }
 
 export const GuideCard = ({ 
@@ -27,9 +29,10 @@ export const GuideCard = ({
   accordionId, 
   isOpen,
   onAccordionChange,
-  variant = 'default' 
+  variant = 'default',
+  isCompleted = false
 }: GuideCardProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { handleGuideComplete } = useGuideCompletion();
   const { getGuideId, shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
@@ -60,7 +63,14 @@ export const GuideCard = ({
 
   if (variant === 'checklist') {
     return (
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px]">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] relative">
+        {isCompleted && (
+          <Badge 
+            className="absolute top-4 right-4 bg-green-500 hover:bg-green-600 text-white border-none"
+          >
+            {language === 'sv' ? 'Klart' : 'Done'}
+          </Badge>
+        )}
         <GuideHeader 
           title={guide.title}
           url={url}
@@ -72,7 +82,14 @@ export const GuideCard = ({
   }
 
   return (
-    <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px]">
+    <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
+      {isCompleted && (
+        <Badge 
+          className="absolute top-4 right-4 bg-green-500 hover:bg-green-600 text-white border-none"
+        >
+          {language === 'sv' ? 'Klart' : 'Done'}
+        </Badge>
+      )}
       <Accordion 
         type="single" 
         collapsible

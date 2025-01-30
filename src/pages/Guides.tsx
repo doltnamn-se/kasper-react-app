@@ -58,6 +58,19 @@ const Guides = () => {
     });
   };
 
+  const getGuideId = (title: string): string => {
+    const titleToId: { [key: string]: string } = {
+      [t('guide.eniro.title')]: 'eniro',
+      [t('guide.mrkoll.title')]: 'mrkoll',
+      [t('guide.hitta.title')]: 'hitta',
+      [t('guide.merinfo.title')]: 'merinfo',
+      [t('guide.ratsit.title')]: 'ratsit',
+      [t('guide.birthday.title')]: 'birthday',
+      [t('guide.upplysning.title')]: 'upplysning'
+    };
+    return titleToId[title] || '';
+  };
+
   const guides: Guide[] = [
     {
       title: t('guide.eniro.title'),
@@ -117,20 +130,6 @@ const Guides = () => {
     }
   ];
 
-  const getGuideId = (title: string): string => {
-    // Convert guide titles to IDs matching those in the database
-    const titleToId: { [key: string]: string } = {
-      [t('guide.eniro.title')]: 'eniro',
-      [t('guide.mrkoll.title')]: 'mrkoll',
-      [t('guide.hitta.title')]: 'hitta',
-      [t('guide.merinfo.title')]: 'merinfo',
-      [t('guide.ratsit.title')]: 'ratsit',
-      [t('guide.birthday.title')]: 'birthday',
-      [t('guide.upplysning.title')]: 'upplysning'
-    };
-    return titleToId[title] || '';
-  };
-
   const leftColumnGuides = guides.filter((_, index) => index % 2 === 0);
   const rightColumnGuides = guides.filter((_, index) => index % 2 === 1);
 
@@ -142,40 +141,26 @@ const Guides = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           {leftColumnGuides.map((guide, index) => (
-            <div key={index} className="relative">
-              <GuideCard
-                guide={guide}
-                accordionId={`left-${index}`}
-                isOpen={openAccordions.has(`left-${index}`)}
-                onAccordionChange={handleAccordionChange}
-              />
-              {completedGuides.includes(getGuideId(guide.title)) && (
-                <Badge 
-                  className="absolute top-4 right-4 bg-green-500 text-white border-none"
-                >
-                  {language === 'sv' ? 'Klart' : 'Done'}
-                </Badge>
-              )}
-            </div>
+            <GuideCard
+              key={index}
+              guide={guide}
+              accordionId={`left-${index}`}
+              isOpen={openAccordions.has(`left-${index}`)}
+              onAccordionChange={handleAccordionChange}
+              isCompleted={completedGuides.includes(getGuideId(guide.title))}
+            />
           ))}
         </div>
         <div className="flex flex-col gap-4">
           {rightColumnGuides.map((guide, index) => (
-            <div key={index} className="relative">
-              <GuideCard
-                guide={guide}
-                accordionId={`right-${index}`}
-                isOpen={openAccordions.has(`right-${index}`)}
-                onAccordionChange={handleAccordionChange}
-              />
-              {completedGuides.includes(getGuideId(guide.title)) && (
-                <Badge 
-                  className="absolute top-4 right-4 bg-green-500 text-white border-none"
-                >
-                  {language === 'sv' ? 'Klart' : 'Done'}
-                </Badge>
-              )}
-            </div>
+            <GuideCard
+              key={index}
+              guide={guide}
+              accordionId={`right-${index}`}
+              isOpen={openAccordions.has(`right-${index}`)}
+              onAccordionChange={handleAccordionChange}
+              isCompleted={completedGuides.includes(getGuideId(guide.title))}
+            />
           ))}
         </div>
       </div>
