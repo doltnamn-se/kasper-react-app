@@ -6,16 +6,12 @@ import { StepNavigation } from "./StepNavigation";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useChecklistItems } from "@/hooks/useChecklistItems";
 import { useChecklistSteps } from "@/hooks/useChecklistSteps";
-import { useGuideService } from "@/services/guideService";
-import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { supabase } from "@/integrations/supabase/client";
 
 export const ChecklistContainer = () => {
   const { checklistProgress, handleStepComplete, calculateProgress, refetchProgress } = useChecklistProgress();
   const { checklistItems } = useChecklistItems();
   const { currentStep, totalSteps, handleStepChange } = useChecklistSteps();
-  const { getGuideForSite } = useGuideService();
-  const { handleGuideComplete } = useGuideCompletion();
 
   const onStepCompleted = async () => {
     console.log('Step completed, current step:', currentStep);
@@ -34,8 +30,10 @@ export const ChecklistContainer = () => {
       case 3:
         // For site selection step, handled in HidingSitesSelection component
         break;
+      case 4:
+        // For address/identification step, handled in respective components
+        break;
       default:
-        // For guide steps, no specific updates needed here
         break;
     }
 
@@ -54,49 +52,18 @@ export const ChecklistContainer = () => {
     await handleStepComplete();
     await refetchProgress();
     
-    // Only progress to next step for non-guide steps
-    if (currentStep <= 3) {
+    // Progress to next step if not on final step
+    if (currentStep < 4) {
       handleStepChange(currentStep + 1);
     }
   };
 
-  const onGuideCompleted = async (siteId: string) => {
-    console.log('Guide completed for site:', siteId);
-    await handleGuideComplete(siteId);
-    await refetchProgress();
-    
-    const selectedSites = checklistProgress?.selected_sites || [];
-    const completedGuides = checklistProgress?.completed_guides || [];
-    const baseSteps = 3; // Password, URLs, Site Selection
-    
-    // Get current guide index
-    const currentGuideIndex = currentStep - baseSteps - 1;
-    console.log('Current guide index:', currentGuideIndex);
-    
-    // If there are more guides to complete
-    if (currentGuideIndex < selectedSites.length - 1) {
-      // Move to next guide
-      const nextStep = currentStep + 1;
-      console.log('Moving to next guide step:', nextStep);
-      handleStepChange(nextStep);
-    } else {
-      // All guides completed, move to final step
-      const finalStep = baseSteps + selectedSites.length + 1;
-      console.log('Moving to final step:', finalStep);
-      handleStepChange(finalStep);
-    }
-  };
-
-  // Calculate the actual total number of steps
-  const baseSteps = 3; // Password, URLs, Site Selection
-  const selectedSites = checklistProgress?.selected_sites || [];
-  const actualTotalSteps = baseSteps + selectedSites.length + 1; // +1 for final step
+  // Calculate total steps (now fixed at 4)
+  const totalStepsCount = 4; // Password, URLs, Site Selection, Address/Identification
 
   console.log('ChecklistContainer state:', {
     currentStep,
-    selectedSites,
-    actualTotalSteps,
-    completedGuides: checklistProgress?.completed_guides
+    totalStepsCount
   });
 
   return (
@@ -104,7 +71,7 @@ export const ChecklistContainer = () => {
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
         <div className="step-content-wrapper bg-white dark:bg-[#1C1C1D] rounded-lg p-6">
-          {[...Array(actualTotalSteps)].map((_, index) => {
+          {[...Array(totalStepsCount)].map((_, index) => {
             const stepNumber = index + 1;
             console.log('Rendering step:', stepNumber, 'Current step:', currentStep);
             
@@ -116,12 +83,8 @@ export const ChecklistContainer = () => {
               >
                 <StepContent
                   currentStep={stepNumber}
-                  selectedSites={selectedSites}
-                  completedGuides={checklistProgress?.completed_guides}
-                  onGuideComplete={onGuideCompleted}
                   onStepComplete={onStepCompleted}
                   checklistItems={checklistItems || []}
-                  getGuideForSite={getGuideForSite}
                 />
               </div>
             );
@@ -132,7 +95,7 @@ export const ChecklistContainer = () => {
         </div>
         <StepNavigation
           currentStep={currentStep}
-          totalSteps={actualTotalSteps}
+          totalSteps={totalStepsCount}
           onStepChange={handleStepChange}
         />
       </div>
