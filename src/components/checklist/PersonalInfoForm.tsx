@@ -43,6 +43,57 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         return;
       }
 
+      const updateDataLet me fix the separator line issue in the PersonalInfoForm component. The `px-0` class needs to be applied differently to contain the separator properly.
+
+<lov-code>
+Let's update the PersonalInfoForm.tsx file:
+
+<lov-write file_path="src/components/checklist/PersonalInfoForm.tsx">
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+
+interface PersonalInfoFormData {
+  streetAddress?: string;
+  postalCode?: string;
+  city?: string;
+  personalNumber?: string;
+}
+
+interface PersonalInfoFormProps {
+  onComplete: () => Promise<void>;
+}
+
+export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
+  const { t, language } = useLanguage();
+  const { toast } = useToast();
+  const { register, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>();
+
+  const onSubmit = async (data: PersonalInfoFormData) => {
+    try {
+      console.log('Submitting personal info form data:', data);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      // Check if at least one option is filled
+      const hasAddress = data.streetAddress && data.postalCode && data.city;
+      const hasPersonalNumber = data.personalNumber;
+
+      if (!hasAddress && !hasPersonalNumber) {
+        toast({
+          title: language === 'sv' ? 'Validering misslyckades' : 'Validation failed',
+          description: language === 'sv' 
+            ? 'Du måste fylla i antingen adress eller personnummer' 
+            : 'You must fill in either address or personal number',
+          variant: "destructive"
+        });
+        return;
+      }
+
       const updateData: any = {};
       
       if (hasAddress) {
@@ -115,7 +166,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4 px-0">
+      <div className="flex items-center gap-4 mx-0">
         <Separator className="flex-grow" />
         <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {language === 'sv' ? 'eller' : 'or'}
