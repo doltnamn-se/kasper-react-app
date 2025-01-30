@@ -69,20 +69,22 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
+      // Update checklist progress with URLs or empty array
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({ removal_urls: validUrls })
+        .update({ removal_urls: validUrls.length > 0 ? validUrls : [] })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
 
-      const urlRows = validUrls.map(url => ({
-        customer_id: session.user.id,
-        url,
-        display_in_incoming: true
-      }));
-
+      // Only insert URLs if there are valid ones
       if (validUrls.length > 0) {
+        const urlRows = validUrls.map(url => ({
+          customer_id: session.user.id,
+          url,
+          display_in_incoming: true
+        }));
+
         const { error: urlsError } = await supabase
           .from('removal_urls')
           .insert(urlRows);
@@ -164,7 +166,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       <Button
         type="submit"
-        disabled={isLoading || (urls.length > 0 && urls.every(url => url.trim() === ''))}
+        disabled={isLoading || (currentValidUrls.length > remainingUrls)}
         className="w-full py-6"
       >
         {isLoading ? t('saving') : t('save.urls')}
