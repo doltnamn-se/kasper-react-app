@@ -77,6 +77,8 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       if (customerError) throw customerError;
 
+      console.log('Successfully updated customer and checklist progress');
+
       toast({
         title: language === 'sv' ? 'Information sparad' : 'Information saved',
         description: language === 'sv' ? 
