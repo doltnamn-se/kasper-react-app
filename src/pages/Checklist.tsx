@@ -1,5 +1,5 @@
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
@@ -10,7 +10,7 @@ import { ChecklistProgress } from "@/components/checklist/ChecklistProgress";
 import { ChecklistSteps } from "@/components/checklist/ChecklistSteps";
 import { BadgeCheck } from "lucide-react";
 
-const Checklist = () => {
+const ChecklistContent = () => {
   const { t, language } = useLanguage();
   const isMobile = useIsMobile();
   const { checklistProgress, calculateProgress } = useChecklistProgress();
@@ -103,6 +103,14 @@ const Checklist = () => {
         </div>
       </div>
     </MainLayout>
+  );
+};
+
+const Checklist = () => {
+  return (
+    <LanguageProvider>
+      <ChecklistContent />
+    </LanguageProvider>
   );
 };
 
