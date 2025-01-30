@@ -58,7 +58,7 @@ export const BasicStepContent = ({
               return <UrlSubmission onComplete={onStepComplete} />;
             case 3:
               return <HidingSitesSelection onComplete={onStepComplete} />;
-            default:
+            case 4:
               if (customerData?.has_address_alert) {
                 return (
                   <div className="space-y-4">
@@ -67,6 +67,8 @@ export const BasicStepContent = ({
                 );
               }
               return <PersonalInfoForm onComplete={onStepComplete} />;
+            default:
+              return null;
           }
         })()}
       </div>
