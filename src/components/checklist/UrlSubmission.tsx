@@ -26,6 +26,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const urlLimit = getUrlLimit();
   const existingUrlCount = existingUrls?.length || 0;
   const remainingUrls = Math.max(0, urlLimit - existingUrlCount);
+  const currentValidUrls = urls.filter(url => url.trim() !== '');
 
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
@@ -34,9 +35,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   const addUrlField = () => {
-    const currentValidUrls = urls.filter(url => url.trim() !== '');
-    
-    if (currentValidUrls.length >= remainingUrls) {
+    if (urls.length >= remainingUrls) {
       toast({
         title: "URL limit reached",
         description: t('url.limit.message', { limit: urlLimit }),
@@ -127,8 +126,6 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     );
   }
 
-  const validUrlCount = urls.filter(url => url.trim() !== '').length;
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mb-4">
@@ -151,7 +148,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         />
       ))}
       
-      {validUrlCount < remainingUrls && (
+      {urls.length < remainingUrls && (
         <Button
           type="button"
           variant="outline"
@@ -168,7 +165,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         disabled={
           isLoading || 
           urls.every(url => url.trim() === '') || 
-          validUrlCount > remainingUrls
+          currentValidUrls.length > remainingUrls
         }
         className="w-full py-6"
       >
