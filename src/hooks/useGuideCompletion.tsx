@@ -5,11 +5,15 @@ export const useGuideCompletion = () => {
   const { checklistProgress, refetchProgress } = useChecklistProgress();
 
   const handleGuideComplete = async (siteId: string) => {
-    console.log('Completing guide for site:', siteId);
+    console.log('Starting guide completion for site:', siteId);
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) return;
+    if (!session?.user) {
+      console.error('No user session found');
+      return;
+    }
 
     const completedGuides = checklistProgress?.completed_guides || [];
+    console.log('Current completed guides:', completedGuides);
     
     const { error } = await supabase
       .from('customer_checklist_progress')
@@ -23,6 +27,7 @@ export const useGuideCompletion = () => {
       return;
     }
 
+    console.log('Successfully marked guide as completed:', siteId);
     await refetchProgress();
   };
 
