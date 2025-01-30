@@ -17,7 +17,7 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
     { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
     { 
       step: 4, 
-      title: t('step.identification.title'),
+      title: t('step.4.title'),
       completed: Boolean(checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city)
     }
   ];
