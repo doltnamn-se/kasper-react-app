@@ -25,7 +25,8 @@ export const ChecklistContainer = () => {
         updateData.password_updated = true;
         break;
       case 2:
-        // For URL submission step, handled in UrlSubmission component
+        // For URL submission step, we consider it complete even with empty array
+        updateData.removal_urls = checklistProgress?.removal_urls || [];
         break;
       case 3:
         // For site selection step, handled in HidingSitesSelection component
