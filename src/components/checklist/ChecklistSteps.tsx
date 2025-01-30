@@ -13,7 +13,7 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
 
   const steps = [
     { step: 1, title: t('step.1.title'), completed: checklistProgress?.password_updated },
-    { step: 2, title: t('step.2.title'), completed: checklistProgress?.removal_urls?.length > 0 },
+    { step: 2, title: t('step.2.title'), completed: Array.isArray(checklistProgress?.removal_urls) },
     { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
     { 
       step: 4, 
