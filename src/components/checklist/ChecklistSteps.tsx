@@ -1,6 +1,5 @@
 import { Check, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Translations } from "@/translations/types";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -29,33 +28,12 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
     }
   });
 
-  const getGuideTitle = (site: string): string => {
-    type GuideKeys = Extract<keyof Translations, `guide.${string}.title`>;
-    const siteTranslationKeys: Record<string, GuideKeys> = {
-      'eniro': 'guide.eniro.title',
-      'mrkoll': 'guide.mrkoll.title',
-      'hitta': 'guide.hitta.title',
-      'merinfo': 'guide.merinfo.title',
-      'ratsit': 'guide.ratsit.title',
-      'birthday': 'guide.birthday.title',
-      'upplysning': 'guide.upplysning.title'
-    };
-
-    const translationKey = siteTranslationKeys[site.toLowerCase()];
-    return translationKey ? t(translationKey) : site;
-  };
-
   const steps = [
     { step: 1, title: t('step.1.title'), completed: checklistProgress?.password_updated },
     { step: 2, title: t('step.2.title'), completed: checklistProgress?.removal_urls?.length > 0 },
     { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
-    ...(checklistProgress?.selected_sites || []).map((site: string, index: number) => ({
-      step: 4 + index,
-      title: getGuideTitle(site),
-      completed: checklistProgress?.completed_guides?.includes(site)
-    })),
     { 
-      step: 4 + (checklistProgress?.selected_sites?.length || 0), 
+      step: 4, 
       title: customerData?.has_address_alert ? t('step.4.title') : t('step.identification.title'), 
       completed: customerData?.has_address_alert ? 
         Boolean(checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city) :
