@@ -60,6 +60,8 @@ export const features: FeaturesTranslations = {
   'guide.upplysning.step1': 'Fill out the form.',
   'guide.upplysning.step2': 'Write this in the message field: "I want my personal information to be removed from Upplysning.se and my information hidden from the public search results. My personal number is XXXXXX-XXXX."',
   'guide.upplysning.step3': '',
+  'guide.completed': 'Guide completed successfully',
+  'guide.completion.error': 'Failed to complete guide',
   'set.password.description': 'Create a secure password for your account',
   'current.password': 'Current password'
 };
