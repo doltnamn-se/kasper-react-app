@@ -95,7 +95,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
           <Separator className="w-full" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-4 text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'sv' ? 'eller' : 'or'}
           </span>
         </div>

@@ -19,13 +19,13 @@ export const PersonalNumberSection = ({ register, errors }: PersonalNumberSectio
         <Input
           {...register("personalNumber", {
             pattern: {
-              value: /^\d{6}-\d{4}$/,
+              value: /^\d{8}-\d{4}$/,
               message: language === 'sv' 
-                ? 'Personnummer måste vara i formatet XXXXXX-XXXX' 
-                : 'Personal number must be in the format XXXXXX-XXXX'
+                ? 'Personnummer måste vara i formatet ÅÅMMDD-XXXX (t.ex. 19930404-1917)' 
+                : 'Personal number must be in the format YYMMDD-XXXX (e.g. 19930404-1917)'
             }
           })}
-          placeholder={language === 'sv' ? 'XXXXXX-XXXX' : 'XXXXXX-XXXX'}
+          placeholder={language === 'sv' ? 'ÅÅMMDD-XXXX' : 'YYMMDD-XXXX'}
           className={errors.personalNumber ? "border-red-500" : ""}
         />
         {errors.personalNumber && (
