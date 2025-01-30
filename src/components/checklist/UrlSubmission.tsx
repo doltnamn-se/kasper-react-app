@@ -82,11 +82,13 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         display_in_incoming: true
       }));
 
-      const { error: urlsError } = await supabase
-        .from('removal_urls')
-        .insert(urlRows);
+      if (validUrls.length > 0) {
+        const { error: urlsError } = await supabase
+          .from('removal_urls')
+          .insert(urlRows);
 
-      if (urlsError) throw urlsError;
+        if (urlsError) throw urlsError;
+      }
       
       onComplete();
     } catch (error: any) {
@@ -162,11 +164,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       <Button
         type="submit"
-        disabled={
-          isLoading || 
-          urls.every(url => url.trim() === '') || 
-          currentValidUrls.length > remainingUrls
-        }
+        disabled={isLoading || (urls.length > 0 && urls.every(url => url.trim() === ''))}
         className="w-full py-6"
       >
         {isLoading ? t('saving') : t('save.urls')}
