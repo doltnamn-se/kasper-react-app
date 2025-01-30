@@ -90,7 +90,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
-          {language === 'sv' ? 'Alternativ 1: Adress' : 'Option 1: Address'}
+          {language === 'sv' ? 'Adress' : 'Address'}
         </h3>
         <div>
           <Input
@@ -115,9 +115,9 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 px-0">
         <Separator className="flex-grow" />
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {language === 'sv' ? 'eller' : 'or'}
         </span>
         <Separator className="flex-grow" />
@@ -125,7 +125,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
-          {language === 'sv' ? 'Alternativ 2: Personnummer' : 'Option 2: Personal Number'}
+          {language === 'sv' ? 'Personnummer' : 'Personal Number'}
         </h3>
         <div>
           <Input
