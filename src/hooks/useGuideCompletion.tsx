@@ -15,15 +15,29 @@ export const useGuideCompletion = () => {
     const completedGuides = checklistProgress?.completed_guides || [];
     console.log('Current completed guides:', completedGuides);
     
-    const { error } = await supabase
+    // Update both customer_checklist_progress and customers tables
+    const { error: progressError } = await supabase
       .from('customer_checklist_progress')
       .update({ 
         completed_guides: [...completedGuides, siteId] 
       })
       .eq('customer_id', session.user.id);
 
-    if (error) {
-      console.error('Error updating completed guides:', error);
+    if (progressError) {
+      console.error('Error updating checklist progress:', progressError);
+      return;
+    }
+
+    // Update customers table
+    const { error: customerError } = await supabase
+      .from('customers')
+      .update({ 
+        completed_guides: [...completedGuides, siteId] 
+      })
+      .eq('id', session.user.id);
+
+    if (customerError) {
+      console.error('Error updating customer:', customerError);
       return;
     }
 
