@@ -36,6 +36,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
 
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      if (!userProfile?.id) return;
       const file = event.target.files?.[0];
       if (!file) return;
 
@@ -43,7 +44,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
       console.log("Uploading avatar...");
 
       const fileExt = file.name.split('.').pop();
-      const filePath = `${userProfile?.id}-${Math.random()}.${fileExt}`;
+      const filePath = `${userProfile.id}-${Math.random()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
@@ -60,8 +61,11 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
 
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', userProfile?.id);
+        .update({ 
+          id: userProfile.id,
+          avatar_url: publicUrl 
+        })
+        .eq('id', userProfile.id);
 
       if (updateError) {
         console.error("Error updating profile with avatar URL:", updateError);
@@ -80,12 +84,16 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
 
   const handleAvatarDelete = async () => {
     try {
+      if (!userProfile?.id) return;
       console.log("Deleting avatar...");
 
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: null })
-        .eq('id', userProfile?.id);
+        .update({ 
+          id: userProfile.id,
+          avatar_url: null 
+        })
+        .eq('id', userProfile.id);
 
       if (updateError) {
         console.error("Error removing avatar URL:", updateError);

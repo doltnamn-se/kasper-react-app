@@ -18,13 +18,17 @@ export const DisplayNameSection = ({ userProfile, onDisplayNameUpdate }: Display
 
   const handleDisplayNameUpdate = async () => {
     try {
+      if (!userProfile?.id) return;
       setIsUpdating(true);
       console.log("Updating display name...");
 
       const { error } = await supabase
         .from('profiles')
-        .update({ display_name: displayName })
-        .eq('id', userProfile?.id);
+        .update({ 
+          id: userProfile.id,
+          display_name: displayName 
+        })
+        .eq('id', userProfile.id);
 
       if (error) {
         console.error("Error updating display name:", error);

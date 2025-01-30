@@ -23,6 +23,7 @@ export const EditCustomerDialog = ({ customer, onCustomerUpdated }: EditCustomer
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
+          id: customer.id,
           display_name: displayName,
         })
         .eq('id', customer.id);
