@@ -4,7 +4,6 @@ import { PasswordUpdateForm } from "../PasswordUpdateForm";
 import { UrlSubmission } from "../UrlSubmission";
 import { HidingSitesSelection } from "../HidingSitesSelection";
 import { PersonalInfoForm } from "../PersonalInfoForm";
-import { ChecklistAddressForm } from "../ChecklistAddressForm";
 
 interface BasicStepContentProps {
   currentStep: number;
@@ -23,14 +22,14 @@ export const BasicStepContent = ({
     if (step === 1) return t('step.1.title');
     if (step === 2) return t('step.2.title');
     if (step === 3) return t('step.3.title');
-    return customerData?.has_address_alert ? t('step.4.title') : t('step.identification.title');
+    return t('step.identification.title');
   };
 
   const getStepDescription = (step: number) => {
     if (step === 1) return t('set.password.description');
     if (step === 2) return t('step.2.description');
     if (step === 3) return t('step.3.description');
-    return customerData?.has_address_alert ? t('step.4.description') : t('step.identification.description');
+    return t('step.identification.description');
   };
 
   return (
@@ -59,13 +58,6 @@ export const BasicStepContent = ({
             case 3:
               return <HidingSitesSelection onComplete={onStepComplete} />;
             case 4:
-              if (customerData?.has_address_alert) {
-                return (
-                  <div className="space-y-4">
-                    <ChecklistAddressForm onSuccess={onStepComplete} />
-                  </div>
-                );
-              }
               return <PersonalInfoForm onComplete={onStepComplete} />;
             default:
               return null;
