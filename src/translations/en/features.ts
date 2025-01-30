@@ -21,7 +21,7 @@ export const features: FeaturesTranslations = {
   'step.4.title': 'Address Alert',
   'step.4.description': 'Add your address to enable address monitoring',
   'step.identification.title': 'Identification',
-  'step.identification.description': 'Share your address or social security number with us so we can ensure we\'re looking at the right person online when hiding your details',
+  'step.identification.description': 'We need your address to ensure that we identify the correct person when hiding your information',
   'step.deindexing.title': 'Deindexing',
   'step.deindexing.description': 'Submit URLs for deindexing',
   'url.input.placeholder': 'Paste URL (https://...)',

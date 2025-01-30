@@ -11,33 +11,14 @@ interface ChecklistStepsProps {
 export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStepsProps) => {
   const { t } = useLanguage();
 
-  const { data: customerData } = useQuery({
-    queryKey: ['customer-data'],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('No user session');
-
-      const { data, error } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    }
-  });
-
   const steps = [
     { step: 1, title: t('step.1.title'), completed: checklistProgress?.password_updated },
     { step: 2, title: t('step.2.title'), completed: checklistProgress?.removal_urls?.length > 0 },
     { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
     { 
       step: 4, 
-      title: customerData?.has_address_alert ? t('step.4.title') : t('step.identification.title'), 
-      completed: customerData?.has_address_alert ? 
-        Boolean(checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city) :
-        Boolean(checklistProgress?.address && checklistProgress?.personal_number)
+      title: t('step.identification.title'),
+      completed: Boolean(checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city)
     }
   ];
 

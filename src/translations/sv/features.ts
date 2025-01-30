@@ -23,7 +23,7 @@ export const features: FeaturesTranslations = {
   'step.4.title': 'Adresslarm',
   'step.4.description': 'Lägg till din adress för att aktivera adressövervakning',
   'step.identification.title': 'Identifiering',
-  'step.identification.description': 'Dela din adress eller ditt personnummer med oss så att vi kan säkerställa att vi tittar på rätt person online när vi ska dölja dina uppgifter',
+  'step.identification.description': 'Vi behöver din adress för att säkerställa att vi identifierar rätt person när vi ska dölja dina uppgifter',
   'step.deindexing.title': 'Avindexering',
   'step.deindexing.description': 'Skicka in URL:er för avindexering',
   'url.input.placeholder': 'Klistra in URL (https://...)',
