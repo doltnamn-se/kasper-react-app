@@ -72,7 +72,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       // Update checklist progress with URLs or empty array
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({ removal_urls: validUrls.length > 0 ? validUrls : [] })
+        .update({ removal_urls: validUrls })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
@@ -149,6 +149,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
           showRemove={urls.length > 1}
           onChange={handleUrlChange}
           onRemove={removeUrlField}
+          required={false}
         />
       ))}
       
@@ -166,7 +167,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       <Button
         type="submit"
-        disabled={isLoading || (currentValidUrls.length > remainingUrls)}
+        disabled={isLoading}
         className="w-full py-6"
       >
         {isLoading ? t('saving') : t('save.urls')}

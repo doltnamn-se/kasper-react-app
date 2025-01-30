@@ -9,9 +9,17 @@ interface UrlInputProps {
   showRemove: boolean;
   onChange: (index: number, value: string) => void;
   onRemove: (index: number) => void;
+  required?: boolean;
 }
 
-export const UrlInput = ({ url, index, showRemove, onChange, onRemove }: UrlInputProps) => {
+export const UrlInput = ({ 
+  url, 
+  index, 
+  showRemove, 
+  onChange, 
+  onRemove,
+  required = false 
+}: UrlInputProps) => {
   const { t } = useLanguage();
   
   return (
@@ -21,7 +29,7 @@ export const UrlInput = ({ url, index, showRemove, onChange, onRemove }: UrlInpu
         placeholder={t('url.input.placeholder')}
         value={url}
         onChange={(e) => onChange(index, e.target.value)}
-        required
+        required={required}
       />
       {showRemove && (
         <Button
