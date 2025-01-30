@@ -87,15 +87,18 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-full">
       <AddressSection register={register} errors={errors} />
 
-      <div className="flex items-center gap-4 mx-0">
-        <Separator className="flex-grow" />
-        <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-          {language === 'sv' ? 'eller' : 'or'}
-        </span>
-        <Separator className="flex-grow" />
+      <div className="relative w-full py-4">
+        <div className="absolute inset-0 flex items-center px-6">
+          <Separator className="w-full" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-background px-4 text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {language === 'sv' ? 'eller' : 'or'}
+          </span>
+        </div>
       </div>
 
       <PersonalNumberSection register={register} errors={errors} />
