@@ -284,7 +284,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
-          id?: string
+          id: string
           role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string
         }
@@ -319,6 +319,32 @@ export type Database = {
           url?: string
         }
         Relationships: []
+      }
+      user_url_limits: {
+        Row: {
+          customer_id: string
+          additional_urls: number
+          created_at: string
+        }
+        Insert: {
+          customer_id: string
+          additional_urls?: number
+          created_at?: string
+        }
+        Update: {
+          customer_id?: string
+          additional_urls?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_url_limits_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: true
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
@@ -369,7 +395,7 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -381,10 +407,10 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
+      Row: infer R
+    }
+    ? R
+    : never
     : never
 
 export type TablesInsert<
