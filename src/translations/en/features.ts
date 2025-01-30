@@ -29,6 +29,7 @@ export const features: FeaturesTranslations = {
   'save.urls': 'Save',
   'saving': 'Saving...',
   'url.limit.message': 'Your subscription allows up to {limit} URLs.',
+  'url.remaining.message': 'You have {count} URLs remaining.',
   'url.no.plan': 'Your current subscription does not allow URL submissions. Upgrade to a 6 or 12-month plan to add URLs.',
   'deindexing.incoming.links': 'Incoming Links',
   'deindexing.deindexed.links': 'Deindexed Links',

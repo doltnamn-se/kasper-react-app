@@ -320,6 +320,32 @@ export type Database = {
         }
         Relationships: []
       }
+      user_url_limits: {
+        Row: {
+          customer_id: string
+          additional_urls: number
+          created_at: string
+        }
+        Insert: {
+          customer_id: string
+          additional_urls?: number
+          created_at?: string
+        }
+        Update: {
+          customer_id?: string
+          additional_urls?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_url_limits_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: true
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       admin_cache: {
@@ -369,7 +395,7 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -423,10 +449,10 @@ export type TablesUpdate<
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
+      Update: infer U
+    }
+    ? U
+    : never
     : never
 
 export type Enums<

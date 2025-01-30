@@ -27,6 +27,7 @@ export interface FeaturesTranslations {
   'save.urls': string;
   'saving': string;
   'url.limit.message': string;
+  'url.remaining.message': string;
   'url.no.plan': string;
   'deindexing.incoming.links': string;
   'deindexing.deindexed.links': string;
