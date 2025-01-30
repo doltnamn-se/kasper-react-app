@@ -12,7 +12,7 @@ export const supabase = createClient<Database>(
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      storage: localStorage,
+      storage: window?.localStorage,
       storageKey: 'supabase.auth.token',
       flowType: 'pkce'
     },
@@ -46,7 +46,7 @@ export const supabase = createClient<Database>(
     console.log('Supabase client initialized successfully with URL:', SUPABASE_URL);
     
     if (session) {
-      console.log('Active session found');
+      console.log('Active session found:', session.user.id);
       try {
         // Test the profiles table access
         const { data: profileData, error: profileError } = await supabase
@@ -58,7 +58,7 @@ export const supabase = createClient<Database>(
         if (profileError) {
           console.error('Error testing profiles access:', profileError);
         } else {
-          console.log('Successfully tested profiles access');
+          console.log('Successfully tested profiles access:', profileData);
         }
       } catch (err) {
         console.error('Error testing database access:', err);
