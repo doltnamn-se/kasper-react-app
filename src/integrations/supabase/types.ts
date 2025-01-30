@@ -132,6 +132,7 @@ export type Database = {
         Row: {
           checklist_completed: boolean | null
           checklist_step: number | null
+          completed_guides: string[] | null
           created_at: string | null
           created_by: string | null
           customer_type: string
@@ -148,6 +149,7 @@ export type Database = {
         Insert: {
           checklist_completed?: boolean | null
           checklist_step?: number | null
+          completed_guides?: string[] | null
           created_at?: string | null
           created_by?: string | null
           customer_type?: string
@@ -164,6 +166,7 @@ export type Database = {
         Update: {
           checklist_completed?: boolean | null
           checklist_step?: number | null
+          completed_guides?: string[] | null
           created_at?: string | null
           created_by?: string | null
           customer_type?: string
