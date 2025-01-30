@@ -43,7 +43,9 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         return;
       }
 
-      const updateData: any = {};
+      const updateData: any = {
+        completed_at: new Date().toISOString()
+      };
       
       if (hasAddress) {
         updateData.street_address = data.streetAddress;
@@ -56,15 +58,24 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         updateData.personal_number = data.personalNumber;
       }
 
-      const { error } = await supabase
+      // Update checklist progress
+      const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({
-          ...updateData,
-          completed_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('customer_id', session.user.id);
 
-      if (error) throw error;
+      if (progressError) throw progressError;
+
+      // Update customer record to mark checklist as completed
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({
+          checklist_completed: true,
+          checklist_step: 4
+        })
+        .eq('id', session.user.id);
+
+      if (customerError) throw customerError;
 
       toast({
         title: language === 'sv' ? 'Information sparad' : 'Information saved',

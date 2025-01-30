@@ -13,7 +13,7 @@ export const PersonalNumberSection = ({ register, errors }: PersonalNumberSectio
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">
-        {language === 'sv' ? 'Personnummer' : 'Personal Number'}
+        {language === 'sv' ? 'Personnummer' : 'Personal number'}
       </h3>
       <div>
         <Input
@@ -29,7 +29,7 @@ export const PersonalNumberSection = ({ register, errors }: PersonalNumberSectio
           className={errors.personalNumber ? "border-red-500" : ""}
         />
         {errors.personalNumber && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className="mt-1 text-sm text-red-500">
             {errors.personalNumber.message}
           </p>
         )}
