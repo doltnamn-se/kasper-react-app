@@ -11,10 +11,9 @@ import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { supabase } from "@/integrations/supabase/client";
 
 export const ChecklistContainer = () => {
-  const { t } = useLanguage();
   const { checklistProgress, handleStepComplete, calculateProgress, refetchProgress } = useChecklistProgress();
   const { checklistItems } = useChecklistItems();
-  const { currentStep, totalSteps, handleStepChange, handleStepProgression } = useChecklistSteps();
+  const { currentStep, totalSteps, handleStepChange } = useChecklistSteps();
   const { getGuideForSite } = useGuideService();
   const { handleGuideComplete } = useGuideCompletion();
 
@@ -57,7 +56,7 @@ export const ChecklistContainer = () => {
     
     // Only progress to next step for non-guide steps
     if (currentStep <= 3) {
-      handleStepProgression();
+      handleStepChange(currentStep + 1);
     }
   };
 
@@ -67,32 +66,28 @@ export const ChecklistContainer = () => {
     await refetchProgress();
     
     const selectedSites = checklistProgress?.selected_sites || [];
-    const baseSteps = 3; // Password, URLs, Site Selection
     const completedGuides = checklistProgress?.completed_guides || [];
+    const baseSteps = 3; // Password, URLs, Site Selection
     
-    console.log('Selected sites:', selectedSites);
-    console.log('Completed guides:', completedGuides);
-    
-    // Count how many guides from selected sites are completed
-    const completedSelectedGuides = selectedSites.filter(site => 
-      completedGuides.includes(site)
-    ).length;
-    
-    console.log('Completed selected guides:', completedSelectedGuides);
-    
-    if (completedSelectedGuides < selectedSites.length) {
-      // Find the next uncompleted guide
-      const nextGuideIndex = selectedSites.findIndex(site => 
-        !completedGuides.includes(site)
-      );
-      
-      if (nextGuideIndex !== -1) {
-        const nextStep = baseSteps + nextGuideIndex + 1;
-        console.log('Moving to next uncompleted guide step:', nextStep);
-        handleStepChange(nextStep);
-      }
+    console.log('Current state:', {
+      selectedSites,
+      completedGuides,
+      currentStep,
+      baseSteps
+    });
+
+    // Find the next uncompleted guide
+    const nextUncompleted = selectedSites.find(site => !completedGuides.includes(site));
+    console.log('Next uncompleted guide:', nextUncompleted);
+
+    if (nextUncompleted) {
+      // Calculate the step number for the next uncompleted guide
+      const nextGuideIndex = selectedSites.indexOf(nextUncompleted);
+      const nextStep = baseSteps + nextGuideIndex + 1;
+      console.log('Moving to next guide step:', nextStep);
+      handleStepChange(nextStep);
     } else {
-      // All selected guides are completed, move to final step
+      // All guides are completed, move to final step
       const finalStep = baseSteps + selectedSites.length + 1;
       console.log('All guides completed, moving to final step:', finalStep);
       handleStepChange(finalStep);
@@ -104,9 +99,12 @@ export const ChecklistContainer = () => {
   const selectedSites = checklistProgress?.selected_sites || [];
   const actualTotalSteps = baseSteps + selectedSites.length + 1; // +1 for final step
 
-  console.log('ChecklistContainer - Current step:', currentStep);
-  console.log('ChecklistContainer - Selected sites:', selectedSites);
-  console.log('ChecklistContainer - Actual total steps:', actualTotalSteps);
+  console.log('ChecklistContainer state:', {
+    currentStep,
+    selectedSites,
+    actualTotalSteps,
+    completedGuides: checklistProgress?.completed_guides
+  });
 
   return (
     <div className="space-y-6">
