@@ -98,47 +98,13 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     enabled: !!userProfile?.id
   });
 
-  // Fetch customer data to get subscription plan
-  const { data: customerData } = useQuery({
-    queryKey: ['customer', userProfile?.id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('customers')
-        .select('subscription_plan')
-        .eq('id', userProfile?.id)
-        .single();
-      
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!userProfile?.id
-  });
-
-  const getSubscriptionLabel = (plan: string | null) => {
-    switch(plan) {
-      case '1_month':
-        return t('subscription.1month');
-      case '6_months':
-        return t('subscription.6months');
-      case '12_months':
-        return t('subscription.12months');
-      default:
-        return t('subscription.none');
-    }
-  };
-
-  const getSubscriptionTooltip = (plan: string | null) => {
-    switch(plan) {
-      case '1_month':
-        return t('subscription.tooltip.1month');
-      case '6_months':
-        return t('subscription.tooltip.6months');
-      case '12_months':
-        return t('subscription.tooltip.12months');
-      default:
-        return t('subscription.none');
-    }
-  };
+  // Calculate total unread notifications
+  const totalUnreadNotifications = 
+    unreadGuideNotifications + 
+    unreadChecklistNotifications + 
+    unreadMonitoringNotifications + 
+    unreadDeindexingNotifications + 
+    unreadCount;
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -234,7 +200,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         </div>
         <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       </div>
-      {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), 0)}
+      {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), totalUnreadNotifications)}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'), unreadChecklistNotifications)}
       {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadMonitoringNotifications)}
       {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadDeindexingNotifications)}
