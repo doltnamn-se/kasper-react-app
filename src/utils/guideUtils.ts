@@ -16,7 +16,7 @@ export const useGuideUtils = () => {
     return titleToId[title] || '';
   };
 
-  const shouldShowCopyButton = (guideTitle: string, stepText: string) => {
+  const shouldShowCopyButton = (guideTitle: string, stepText: string): boolean => {
     const isBirthdayOrUpplysning = 
       guideTitle === t('guide.birthday.title') || 
       guideTitle === t('guide.upplysning.title');

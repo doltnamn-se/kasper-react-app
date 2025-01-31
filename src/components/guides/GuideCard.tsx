@@ -34,7 +34,7 @@ export const GuideCard = ({
 }: GuideCardProps) => {
   const { t, language } = useLanguage();
   const { handleGuideComplete } = useGuideCompletion();
-  const { getGuideId } = useGuideUtils();
+  const { getGuideId, shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
   const handleComplete = async () => {
