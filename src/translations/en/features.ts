@@ -63,6 +63,8 @@ export const features: FeaturesTranslations = {
   'guide.upplysning.step3': '',
   'guide.completed': 'Guide completed successfully',
   'guide.completion.error': 'Failed to complete guide',
+  'guide.completion.needed': 'Guide completion needed',
+  'guide.completion.message': 'Complete the guide for {site} to hide your information.',
   'set.password.description': 'Create a secure password for your account',
   'current.password': 'Current password'
 };

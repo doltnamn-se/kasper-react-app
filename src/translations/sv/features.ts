@@ -3,6 +3,8 @@ import { FeaturesTranslations } from '../types/features';
 export const features: FeaturesTranslations = {
   'checklist': 'Checklista',
   'guide.completed': 'Guide slutförd',
+  'guide.completion.needed': 'Guide behöver slutföras',
+  'guide.completion.message': 'Slutför guiden för {site} för att dölja din information.',
   'guide.completion.error': 'Det gick inte att slutföra guiden',
   'getting.started': 'Steg',
   'step.number': 'Steg {number}',

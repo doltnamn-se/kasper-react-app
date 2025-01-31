@@ -2,6 +2,7 @@ import React from 'react';
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NotificationItemProps {
   notification: {
@@ -18,6 +19,7 @@ interface NotificationItemProps {
 
 export const NotificationItem = ({ notification, language, onMarkAsRead }: NotificationItemProps) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const formatTimestamp = (timestamp: string) => {
     try {
@@ -32,18 +34,36 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
     }
   };
 
+  const getTranslatedTitle = (type: string, originalTitle: string) => {
+    if (type === 'guide_completion') {
+      return t('guide.completion.needed');
+    }
+    return originalTitle;
+  };
+
+  const getTranslatedMessage = (type: string, originalMessage: string) => {
+    if (type === 'guide_completion') {
+      // Extract the site name from the original message
+      const siteMatch = originalMessage.match(/for (.+) to hide/);
+      const siteName = siteMatch ? siteMatch[1] : '';
+      return t('guide.completion.message', { site: siteName });
+    }
+    return originalMessage;
+  };
+
   const handleClick = () => {
     onMarkAsRead(notification.id);
     
     // Handle navigation based on notification type
-    if (notification.type === 'checklist') {
+    if (notification.type === 'guide_completion') {
+      navigate('/guides');
+    } else if (notification.type === 'checklist') {
       navigate('/checklist');
     } else if (notification.type === 'address_alert') {
       navigate('/address-alerts');
     } else if (notification.type === 'removal') {
       navigate('/my-links');
     }
-    // Add more navigation cases as needed
   };
 
   return (
@@ -57,14 +77,14 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
             ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
             : 'text-[#000000] dark:text-[#FFFFFF]'
         }`}>
-          {notification.title}
+          {getTranslatedTitle(notification.type || '', notification.title)}
         </p>
         <p className={`text-xs mt-1 font-medium ${
           notification.read 
             ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
             : 'text-[#000000] dark:text-[#FFFFFF]'
         }`}>
-          {notification.message}
+          {getTranslatedMessage(notification.type || '', notification.message)}
         </p>
         <p className={`text-xs mt-1 font-medium ${
           notification.read 

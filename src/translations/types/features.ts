@@ -35,7 +35,8 @@ export interface FeaturesTranslations {
   'guide.completion.error': string;
   'set.password.description': string;
   'current.password': string;
-  // Guide translations
+  'guide.completion.needed': string;
+  'guide.completion.message': string;
   'guide.eniro.title': string;
   'guide.eniro.step1': string;
   'guide.eniro.step2': string;
