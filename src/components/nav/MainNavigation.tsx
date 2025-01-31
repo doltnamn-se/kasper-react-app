@@ -1,23 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { House, BadgeCheck, UserRoundSearch, QrCode, MapPinHouse, MousePointerClick } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { getUserInitials } from "@/utils/profileUtils";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { Button } from "@/components/ui/button";
-import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
-import { Translations } from "@/translations/types";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { ProfileSection } from "./profile/ProfileSection";
+import { SubscriptionTooltip } from "./subscription/SubscriptionTooltip";
+import { NavigationLink } from "./navigation/NavigationLink";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
@@ -141,97 +132,62 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     return null;
   }
 
-  const getSubscriptionTooltipKey = (plan: string | null | undefined): keyof Translations => {
-    switch (plan) {
-      case '6_months':
-        return 'subscription.tooltip.6months';
-      case '12_months':
-        return 'subscription.tooltip.12months';
-      default:
-        return 'subscription.tooltip.1month';
+  const navigationLinks = [
+    {
+      path: "/",
+      icon: House,
+      label: t('nav.home'),
+      unreadCount: totalUnreadNotifications
+    },
+    {
+      path: "/checklist",
+      icon: BadgeCheck,
+      label: t('nav.checklist'),
+      unreadCount: unreadChecklistNotifications
+    },
+    {
+      path: "/monitoring",
+      icon: UserRoundSearch,
+      label: t('nav.monitoring'),
+      unreadCount: unreadMonitoringNotifications
+    },
+    {
+      path: "/deindexing",
+      icon: QrCode,
+      label: t('nav.my.links'),
+      unreadCount: unreadDeindexingNotifications
+    },
+    {
+      path: "/address-alerts",
+      icon: MapPinHouse,
+      label: t('nav.address.alerts'),
+      unreadCount: unreadCount
+    },
+    {
+      path: "/guides",
+      icon: MousePointerClick,
+      label: t('nav.guides'),
+      unreadCount: unreadGuideNotifications
     }
-  };
-
-  const renderNavLink = (path: string, icon: React.ReactNode, label: string, unreadCount: number = 0) => {
-    const isActive = location.pathname === path;
-    const hasNotification = unreadCount > 0;
-    
-    return (
-      <Link 
-        to={path} 
-        className={`flex items-center justify-between gap-3 mb-3 py-2.5 px-3 rounded-md ${
-          isActive 
-            ? "bg-gray-100 dark:bg-[#2d2d2d]" 
-            : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
-        }`}
-        onClick={toggleMobileMenu}
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-black dark:text-white">{icon}</span>
-          <span className="text-sm text-[#000000] dark:text-white font-medium">{label}</span>
-        </div>
-        {hasNotification && (
-          <div className="h-2 w-2 rounded-full bg-[#2e77d0]" />
-        )}
-      </Link>
-    );
-  };
-
-  // Split display name into parts
-  const displayName = userProfile?.display_name || userEmail || '';
-  const nameParts = displayName.split(' ');
-  const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(' ');
+  ];
 
   return (
     <>
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={userProfile?.avatar_url} />
-              <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
-                {getUserInitials(userProfile)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-                {firstName}
-              </span>
-              {lastName && (
-                <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-                  {lastName}
-                </span>
-              )}
-            </div>
-          </div>
-          <TooltipProvider delayDuration={300}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="p-0 h-auto hover:bg-transparent"
-                >
-                  <SubscriptionBadge plan={customerData?.subscription_plan} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent 
-                side="right" 
-                className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm"
-              >
-                <p>{t(getSubscriptionTooltipKey(customerData?.subscription_plan))}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
+      <ProfileSection userProfile={userProfile} userEmail={userEmail} />
+      <div className="flex items-center justify-between mb-6">
+        <SubscriptionTooltip plan={customerData?.subscription_plan} />
       </div>
-      {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), totalUnreadNotifications)}
-      {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'), unreadChecklistNotifications)}
-      {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadMonitoringNotifications)}
-      {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadDeindexingNotifications)}
-      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCount)}
-      {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadGuideNotifications)}
+      {navigationLinks.map((link) => (
+        <NavigationLink
+          key={link.path}
+          to={link.path}
+          icon={link.icon}
+          label={link.label}
+          isActive={location.pathname === link.path}
+          unreadCount={link.unreadCount}
+          onClick={toggleMobileMenu}
+        />
+      ))}
     </>
   );
 };
