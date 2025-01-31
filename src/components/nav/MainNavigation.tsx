@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Button } from "@/components/ui/button";
+import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
 import {
   Tooltip,
   TooltipContent,
@@ -181,19 +182,14 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                   variant="ghost" 
                   className="p-0 h-auto hover:bg-transparent"
                 >
-                  <Badge 
-                    variant="default"
-                    className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text font-bold px-3 py-1.5 hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
-                  >
-                    {getSubscriptionLabel(customerData?.subscription_plan)}
-                  </Badge>
+                  <SubscriptionBadge plan={userProfile?.subscription_plan} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent 
                 side="right" 
                 className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm"
               >
-                <p>{getSubscriptionTooltip(customerData?.subscription_plan)}</p>
+                <p>{t(`subscription.tooltip.${userProfile?.subscription_plan || 'none'}`)}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
