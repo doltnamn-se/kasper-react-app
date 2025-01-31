@@ -173,11 +173,9 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
 
   return (
     <>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <ProfileSection userProfile={userProfile} userEmail={userEmail} />
-          <SubscriptionTooltip plan={customerData?.subscription_plan} />
-        </div>
+      <div className="flex items-center justify-between mb-6">
+        <ProfileSection userProfile={userProfile} userEmail={userEmail} />
+        <SubscriptionTooltip plan={customerData?.subscription_plan} />
       </div>
       {navigationLinks.map((link) => (
         <NavigationLink
