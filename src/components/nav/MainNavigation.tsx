@@ -140,6 +140,17 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     return null;
   }
 
+  const getSubscriptionTooltipKey = (plan: string | null | undefined): keyof Translations => {
+    switch (plan) {
+      case '6_months':
+        return 'subscription.tooltip.6_months';
+      case '12_months':
+        return 'subscription.tooltip.12_months';
+      default:
+        return 'subscription.tooltip.none';
+    }
+  };
+
   const renderNavLink = (path: string, icon: React.ReactNode, label: string, unreadCount: number = 0) => {
     const isActive = location.pathname === path;
     const hasNotification = unreadCount > 0;
@@ -207,7 +218,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                 side="right" 
                 className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm"
               >
-                <p>{t('subscription.tooltip.' + (customerData?.subscription_plan || 'none'))}</p>
+                <p>{t(getSubscriptionTooltipKey(customerData?.subscription_plan))}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
