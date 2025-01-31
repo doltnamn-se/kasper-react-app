@@ -24,7 +24,7 @@ export const SubscriptionBadge = ({ plan }: SubscriptionBadgeProps) => {
   return (
     <Badge 
       variant="secondary"
-      className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark"
+      className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1.5"
     >
       {getSubscriptionLabel(plan)}
     </Badge>
