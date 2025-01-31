@@ -1,13 +1,9 @@
-import { useLanguage } from "@/contexts/LanguageContext";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
-import { GuideStep } from "./GuideStep";
 import { GuideHeader } from "./GuideHeader";
-import { useGuideCompletion } from "@/hooks/useGuideCompletion";
-import { useGuideUtils } from "@/utils/guideUtils";
-import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { GuideSteps } from "./GuideSteps";
+import { GuideToggle } from "./GuideToggle";
+import { GuideAccordionFooter } from "./GuideAccordionFooter";
 
 interface GuideStep {
   text: string;
@@ -33,86 +29,21 @@ export const GuideCard = ({
   variant = 'default',
   isCompleted = false
 }: GuideCardProps) => {
-  const { t, language } = useLanguage();
-  const { handleGuideComplete } = useGuideCompletion();
-  const { getGuideId, shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
-  const [isToggling, setIsToggling] = useState(false);
-  const [localCompleted, setLocalCompleted] = useState(isCompleted);
-
-  const handleComplete = async (checked: boolean) => {
-    if (isToggling) return;
-    setIsToggling(true);
-    setLocalCompleted(checked);
-    
-    console.log('Toggle clicked, current completion status:', checked);
-    const guideId = getGuideId(guide.title);
-    if (!guideId) {
-      setIsToggling(false);
-      setLocalCompleted(!checked); // Revert on error
-      return;
-    }
-    
-    try {
-      await handleGuideComplete(guideId);
-    } catch (error) {
-      console.error('Error toggling guide completion:', error);
-      setLocalCompleted(!checked); // Revert on error
-    } finally {
-      setIsToggling(false);
-    }
-  };
-
-  const stepsContent = (
-    <div className="space-y-4 px-6 pb-6">
-      {guide.steps.map((step, stepIndex) => {
-        if (stepIndex === 0) return null;
-        
-        return (
-          <GuideStep
-            key={stepIndex}
-            stepIndex={stepIndex}
-            text={step.text}
-            showCopyButton={shouldShowCopyButton(guide.title, step.text)}
-            guideTitle={guide.title}
-          />
-        );
-      })}
-    </div>
-  );
-
-  const toggleSwitch = (
-    <div className="absolute top-4 right-4 flex items-center gap-2">
-      <span className="text-sm text-[#4c4c49] dark:text-[#67676c]">
-        {localCompleted 
-          ? (language === 'sv' ? 'Klar' : 'Done')
-          : (language === 'sv' ? 'Ej klar' : 'Not done')}
-      </span>
-      <Switch
-        checked={localCompleted}
-        onCheckedChange={handleComplete}
-        disabled={isToggling}
-        className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200"
-      />
-    </div>
-  );
 
   if (variant === 'checklist') {
     return (
       <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] relative">
-        {toggleSwitch}
-        <GuideHeader 
-          title={guide.title}
-          url={url}
-        />
-        {stepsContent}
+        <GuideToggle guideTitle={guide.title} isCompleted={isCompleted} />
+        <GuideHeader title={guide.title} url={url} />
+        <GuideSteps steps={guide.steps} guideTitle={guide.title} />
       </div>
     );
   }
 
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
-      {toggleSwitch}
+      <GuideToggle guideTitle={guide.title} isCompleted={isCompleted} />
       <Accordion 
         type="single" 
         collapsible
@@ -120,24 +51,14 @@ export const GuideCard = ({
         onValueChange={onAccordionChange}
       >
         <AccordionItem value={accordionId} className="border-none">
-          <GuideHeader 
-            title={guide.title}
-            url={url}
-          />
+          <GuideHeader title={guide.title} url={url} />
           <AccordionContent>
-            {stepsContent}
+            <GuideSteps steps={guide.steps} guideTitle={guide.title} />
           </AccordionContent>
-          <div 
-            className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] flex justify-center items-center gap-2 cursor-pointer"
-            onClick={() => onAccordionChange(accordionId)}
-          >
-            <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
-            <ChevronDown 
-              className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
-                isOpen ? 'rotate-180' : ''
-              }`}
-            />
-          </div>
+          <GuideAccordionFooter 
+            isOpen={isOpen} 
+            onAccordionChange={() => onAccordionChange(accordionId)} 
+          />
         </AccordionItem>
       </Accordion>
     </Card>
