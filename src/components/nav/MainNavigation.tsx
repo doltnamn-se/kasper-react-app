@@ -4,7 +4,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNotifications } from "@/hooks/useNotifications";
-import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -30,7 +29,26 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const { notifications = [], unreadCount } = useNotifications();
   const { userProfile, userEmail } = useUserProfile();
 
-  // Fetch unread notifications for different sections
+  // Fetch customer data to get subscription plan
+  const { data: customerData } = useQuery({
+    queryKey: ['customer'],
+    queryFn: async () => {
+      if (!userProfile?.id) return null;
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', userProfile.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching customer:', error);
+        return null;
+      }
+      return data;
+    },
+    enabled: !!userProfile?.id
+  });
+
   const { data: unreadGuideNotifications = 0 } = useQuery({
     queryKey: ['unread-guide-notifications'],
     queryFn: async () => {
@@ -182,14 +200,14 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
                   variant="ghost" 
                   className="p-0 h-auto hover:bg-transparent"
                 >
-                  <SubscriptionBadge plan={userProfile?.subscription_plan} />
+                  <SubscriptionBadge plan={customerData?.subscription_plan} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent 
                 side="right" 
                 className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm"
               >
-                <p>{t(`subscription.tooltip.${userProfile?.subscription_plan || 'none'}`)}</p>
+                <p>{t('subscription.tooltip.' + (customerData?.subscription_plan || 'none'))}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
