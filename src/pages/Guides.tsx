@@ -3,7 +3,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { GuideCard } from "@/components/guides/GuideCard";
 import { supabase } from "@/integrations/supabase/client";
-import { Badge } from "@/components/ui/badge";
+import { useQuery } from "@tanstack/react-query";
 
 interface GuideStep {
   text: string;
@@ -17,43 +17,37 @@ interface Guide {
 const Guides = () => {
   const { t, language } = useLanguage();
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
-  const [completedGuides, setCompletedGuides] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch completed guides using React Query
+  const { data: completedGuides = [], isLoading } = useQuery({
+    queryKey: ['completed-guides'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return [];
+
+      console.log('Fetching completed guides for user:', session.user.id);
+      
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('completed_guides')
+        .eq('customer_id', session.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching completed guides:', error);
+        return [];
+      }
+
+      console.log('Fetched completed guides:', data?.completed_guides);
+      return data?.completed_guides || [];
+    }
+  });
 
   useEffect(() => {
     document.title = language === 'sv' ? 
       "Guider | Doltnamn.se" : 
       "Guides | Doltnamn.se";
     
-    const fetchCompletedGuides = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user) return;
-
-        console.log('Fetching completed guides for user:', session.user.id);
-        
-        const { data, error } = await supabase
-          .from('customer_checklist_progress')
-          .select('completed_guides')
-          .eq('customer_id', session.user.id)
-          .single();
-
-        if (error) {
-          console.error('Error fetching completed guides:', error);
-          return;
-        }
-
-        console.log('Fetched completed guides:', data?.completed_guides);
-        setCompletedGuides(data?.completed_guides || []);
-      } catch (error) {
-        console.error('Error in fetchCompletedGuides:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCompletedGuides();
-
     // Subscribe to realtime changes
     const channel = supabase
       .channel('guides_changes')
@@ -62,12 +56,10 @@ const Guides = () => {
         {
           event: 'UPDATE',
           schema: 'public',
-          table: 'customer_checklist_progress',
-          filter: `customer_id=eq.${supabase.auth.getSession().then(({ data }) => data.session?.user.id)}`
+          table: 'customer_checklist_progress'
         },
         (payload) => {
           console.log('Realtime update received:', payload);
-          setCompletedGuides(payload.new.completed_guides || []);
         }
       )
       .subscribe();

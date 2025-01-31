@@ -5,6 +5,7 @@ import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { useGuideUtils } from "@/utils/guideUtils";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface GuideToggleProps {
   guideTitle: string;
@@ -14,6 +15,7 @@ interface GuideToggleProps {
 export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
   const { language } = useLanguage();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { getGuideId } = useGuideUtils();
   const [isToggling, setIsToggling] = useState(false);
   const [localCompleted, setLocalCompleted] = useState(isCompleted);
@@ -86,18 +88,28 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
       setLocalCompleted(checked);
       console.log('Successfully updated guide completion status');
       
+      // Invalidate relevant queries to trigger refetch
+      await queryClient.invalidateQueries({ queryKey: ['completed-guides'] });
+      await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
+      
       toast({
-        title: checked ? "Guide marked as completed" : "Guide marked as incomplete",
-        description: `Successfully ${checked ? 'completed' : 'uncompleted'} the guide`,
+        title: checked ? 
+          (language === 'sv' ? "Guide markerad som slutförd" : "Guide marked as completed") :
+          (language === 'sv' ? "Guide markerad som ej slutförd" : "Guide marked as incomplete"),
+        description: checked ?
+          (language === 'sv' ? "Guiden har markerats som slutförd" : "Successfully completed the guide") :
+          (language === 'sv' ? "Guiden har markerats som ej slutförd" : "Successfully uncompleted the guide"),
       });
 
     } catch (error) {
       console.error('Error updating guide completion:', error);
-      setLocalCompleted(!checked); // Revert on error
+      setLocalCompleted(!checked);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to update guide status. Please try again.",
+        title: language === 'sv' ? "Ett fel uppstod" : "Error",
+        description: language === 'sv' ? 
+          "Det gick inte att uppdatera guidens status. Försök igen." : 
+          "Failed to update guide status. Please try again.",
       });
     } finally {
       setIsToggling(false);
