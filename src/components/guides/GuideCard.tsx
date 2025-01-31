@@ -38,15 +38,18 @@ export const GuideCard = ({
   const { getGuideId, shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
   const [isToggling, setIsToggling] = useState(false);
+  const [localCompleted, setLocalCompleted] = useState(isCompleted);
 
-  const handleComplete = async () => {
+  const handleComplete = async (checked: boolean) => {
     if (isToggling) return;
     setIsToggling(true);
+    setLocalCompleted(checked);
     
-    console.log('Toggle clicked, current completion status:', isCompleted);
+    console.log('Toggle clicked, current completion status:', checked);
     const guideId = getGuideId(guide.title);
     if (!guideId) {
       setIsToggling(false);
+      setLocalCompleted(!checked); // Revert on error
       return;
     }
     
@@ -54,6 +57,7 @@ export const GuideCard = ({
       await handleGuideComplete(guideId);
     } catch (error) {
       console.error('Error toggling guide completion:', error);
+      setLocalCompleted(!checked); // Revert on error
     } finally {
       setIsToggling(false);
     }
@@ -80,12 +84,12 @@ export const GuideCard = ({
   const toggleSwitch = (
     <div className="absolute top-4 right-4 flex items-center gap-2">
       <span className="text-sm text-[#4c4c49] dark:text-[#67676c]">
-        {isCompleted 
+        {localCompleted 
           ? (language === 'sv' ? 'Klar' : 'Done')
           : (language === 'sv' ? 'Ej klar' : 'Not done')}
       </span>
       <Switch
-        checked={isCompleted}
+        checked={localCompleted}
         onCheckedChange={handleComplete}
         disabled={isToggling}
         className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200"
