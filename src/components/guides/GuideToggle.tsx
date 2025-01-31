@@ -64,6 +64,21 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
         ? [...new Set([...completedGuides, guideId])]
         : completedGuides.filter(id => id !== guideId);
 
+      // Mark related notification as read if completing the guide
+      if (checked) {
+        console.log('Marking guide notification as read for guide:', guideId);
+        const { error: notificationError } = await supabase
+          .from('notifications')
+          .update({ read: true })
+          .eq('user_id', userId)
+          .eq('type', 'guide_completion')
+          .ilike('message', `%${guideId}%`);
+
+        if (notificationError) {
+          console.error('Error marking notification as read:', notificationError);
+        }
+      }
+
       // Update both tables in a transaction-like manner
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
@@ -91,6 +106,7 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
       // Invalidate relevant queries to trigger refetch
       await queryClient.invalidateQueries({ queryKey: ['completed-guides'] });
       await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
+      await queryClient.invalidateQueries({ queryKey: ['notifications'] });
       
       toast({
         title: checked ? 
