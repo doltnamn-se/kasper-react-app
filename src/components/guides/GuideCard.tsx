@@ -6,7 +6,7 @@ import { GuideStep } from "./GuideStep";
 import { GuideHeader } from "./GuideHeader";
 import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { useGuideUtils } from "@/utils/guideUtils";
-import { Toggle } from "@/components/ui/toggle";
+import { Switch } from "@/components/ui/switch";
 
 interface GuideStep {
   text: string;
@@ -61,22 +61,25 @@ export const GuideCard = ({
     </div>
   );
 
-  const toggleButton = (
-    <Toggle
-      pressed={isCompleted}
-      onPressedChange={handleComplete}
-      className="absolute top-4 right-4 bg-transparent hover:bg-transparent data-[state=on]:bg-green-500 data-[state=on]:text-white data-[state=on]:hover:bg-green-600"
-    >
-      {isCompleted 
-        ? (language === 'sv' ? 'Klar' : 'Done')
-        : (language === 'sv' ? 'Att göra' : 'To-do')}
-    </Toggle>
+  const toggleSwitch = (
+    <div className="absolute top-4 right-4 flex items-center gap-2">
+      <span className="text-sm text-[#4c4c49] dark:text-[#67676c]">
+        {isCompleted 
+          ? (language === 'sv' ? 'Klar' : 'Done')
+          : (language === 'sv' ? 'Att göra' : 'To-do')}
+      </span>
+      <Switch
+        checked={isCompleted}
+        onCheckedChange={handleComplete}
+        className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200"
+      />
+    </div>
   );
 
   if (variant === 'checklist') {
     return (
       <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] relative">
-        {toggleButton}
+        {toggleSwitch}
         <GuideHeader 
           title={guide.title}
           url={url}
@@ -89,7 +92,7 @@ export const GuideCard = ({
 
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
-      {toggleButton}
+      {toggleSwitch}
       <Accordion 
         type="single" 
         collapsible
