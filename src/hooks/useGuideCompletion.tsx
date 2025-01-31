@@ -1,8 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
 import { useChecklistProgress } from "./useChecklistProgress";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useGuideCompletion = () => {
   const { checklistProgress, refetchProgress } = useChecklistProgress();
+  const queryClient = useQueryClient();
 
   const handleGuideComplete = async (siteId: string) => {
     console.log('Starting guide completion for site:', siteId);
@@ -44,6 +46,13 @@ export const useGuideCompletion = () => {
     }
 
     console.log('Successfully updated guide completion status:', siteId);
+    
+    // Invalidate both relevant queries
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
+      queryClient.invalidateQueries({ queryKey: ['guides'] })
+    ]);
+    
     await refetchProgress();
   };
 
