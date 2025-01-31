@@ -1,7 +1,5 @@
 import { Check, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 
 interface ChecklistStepsProps {
   checklistProgress: any;
@@ -11,16 +9,41 @@ interface ChecklistStepsProps {
 export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStepsProps) => {
   const { t } = useLanguage();
 
-  const steps = [
-    { step: 1, title: t('step.1.title'), completed: checklistProgress?.password_updated },
-    { step: 2, title: t('step.2.title'), completed: Array.isArray(checklistProgress?.removal_urls) },
-    { step: 3, title: t('step.3.title'), completed: checklistProgress?.selected_sites?.length > 0 },
-    { 
-      step: 4, 
-      title: t('step.4.title'),
-      completed: Boolean(checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city)
+  const isStepCompleted = (step: number) => {
+    if (!checklistProgress) return false;
+
+    switch (step) {
+      case 1:
+        return checklistProgress.password_updated;
+      case 2:
+        // For URL removal step, consider it complete if array exists (even if empty)
+        return Array.isArray(checklistProgress.removal_urls);
+      case 3:
+        // For site selection step, check if there are selected sites
+        return checklistProgress.selected_sites?.length > 0;
+      case 4:
+        // For address/identification step
+        return Boolean(
+          checklistProgress.street_address && 
+          checklistProgress.postal_code && 
+          checklistProgress.city
+        );
+      default:
+        return false;
     }
+  };
+
+  const steps = [
+    { step: 1, title: t('step.1.title'), completed: isStepCompleted(1) },
+    { step: 2, title: t('step.2.title'), completed: isStepCompleted(2) },
+    { step: 3, title: t('step.3.title'), completed: isStepCompleted(3) },
+    { step: 4, title: t('step.4.title'), completed: isStepCompleted(4) }
   ];
+
+  console.log('ChecklistSteps - Progress state:', {
+    checklistProgress,
+    steps: steps.map(s => ({ step: s.step, completed: s.completed }))
+  });
 
   return (
     <div className="space-y-4">
