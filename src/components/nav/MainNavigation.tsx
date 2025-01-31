@@ -29,7 +29,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const { notifications = [], unreadCount } = useNotifications();
   const { userProfile, userEmail } = useUserProfile();
 
-  // Fetch unread guide notifications
+  // Fetch unread notifications for different sections
   const { data: unreadGuideNotifications = 0 } = useQuery({
     queryKey: ['unread-guide-notifications'],
     queryFn: async () => {
@@ -45,8 +45,54 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         console.error('Error fetching unread guide notifications:', error);
         return 0;
       }
+      return data?.length || 0;
+    },
+    enabled: !!userProfile?.id
+  });
 
-      console.log('Unread guide notifications count:', data?.length);
+  const { data: unreadChecklistNotifications = 0 } = useQuery({
+    queryKey: ['unread-checklist-notifications'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('id', { count: 'exact' })
+        .eq('user_id', userProfile?.id)
+        .eq('type', 'checklist')
+        .eq('read', false);
+
+      if (error) return 0;
+      return data?.length || 0;
+    },
+    enabled: !!userProfile?.id
+  });
+
+  const { data: unreadMonitoringNotifications = 0 } = useQuery({
+    queryKey: ['unread-monitoring-notifications'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('id', { count: 'exact' })
+        .eq('user_id', userProfile?.id)
+        .eq('type', 'monitoring')
+        .eq('read', false);
+
+      if (error) return 0;
+      return data?.length || 0;
+    },
+    enabled: !!userProfile?.id
+  });
+
+  const { data: unreadDeindexingNotifications = 0 } = useQuery({
+    queryKey: ['unread-deindexing-notifications'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('id', { count: 'exact' })
+        .eq('user_id', userProfile?.id)
+        .eq('type', 'deindexing')
+        .eq('read', false);
+
+      if (error) return 0;
       return data?.length || 0;
     },
     enabled: !!userProfile?.id
@@ -109,10 +155,9 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     return null;
   }
 
-  const renderNavLink = (path: string, icon: React.ReactNode, label: string, showNotification: boolean = false) => {
+  const renderNavLink = (path: string, icon: React.ReactNode, label: string, unreadCount: number = 0) => {
     const isActive = location.pathname === path;
-    const hasNotification = (path === '/address-alerts' && unreadCount > 0) || 
-                          (path === '/guides' && unreadGuideNotifications > 0);
+    const hasNotification = unreadCount > 0;
     
     return (
       <Link 
@@ -128,7 +173,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
           <span className="text-black dark:text-white">{icon}</span>
           <span className="text-sm text-[#000000] dark:text-white font-medium">{label}</span>
         </div>
-        {showNotification && hasNotification && (
+        {hasNotification && (
           <div className="h-2 w-2 rounded-full bg-[#2e77d0]" />
         )}
       </Link>
@@ -189,12 +234,12 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         </div>
         <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       </div>
-      {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'))}
-      {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
-      {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'))}
-      {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'))}
-      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), true)}
-      {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), true)}
+      {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), 0)}
+      {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'), unreadChecklistNotifications)}
+      {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadMonitoringNotifications)}
+      {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadDeindexingNotifications)}
+      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCount)}
+      {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadGuideNotifications)}
     </>
   );
 };
