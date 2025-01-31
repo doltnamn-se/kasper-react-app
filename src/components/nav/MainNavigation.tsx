@@ -144,11 +144,11 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   const getSubscriptionTooltipKey = (plan: string | null | undefined): keyof Translations => {
     switch (plan) {
       case '6_months':
-        return 'subscription.tooltip.6_months';
+        return 'subscription.tooltip.6months';
       case '12_months':
-        return 'subscription.tooltip.12_months';
+        return 'subscription.tooltip.12months';
       default:
-        return 'subscription.tooltip.none';
+        return 'subscription.tooltip.1month';
     }
   };
 
