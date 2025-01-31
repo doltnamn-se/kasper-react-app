@@ -13,14 +13,18 @@ export const useGuideCompletion = () => {
     }
 
     const completedGuides = checklistProgress?.completed_guides || [];
+    const isCurrentlyCompleted = completedGuides.includes(siteId);
     console.log('Current completed guides:', completedGuides);
+    console.log('Is currently completed:', isCurrentlyCompleted);
+    
+    const newCompletedGuides = isCurrentlyCompleted
+      ? completedGuides.filter(id => id !== siteId)
+      : [...completedGuides, siteId];
     
     // Update both customer_checklist_progress and customers tables
     const { error: progressError } = await supabase
       .from('customer_checklist_progress')
-      .update({ 
-        completed_guides: [...completedGuides, siteId] 
-      })
+      .update({ completed_guides: newCompletedGuides })
       .eq('customer_id', session.user.id);
 
     if (progressError) {
@@ -31,9 +35,7 @@ export const useGuideCompletion = () => {
     // Update customers table
     const { error: customerError } = await supabase
       .from('customers')
-      .update({ 
-        completed_guides: [...completedGuides, siteId] 
-      })
+      .update({ completed_guides: newCompletedGuides })
       .eq('id', session.user.id);
 
     if (customerError) {
@@ -41,7 +43,7 @@ export const useGuideCompletion = () => {
       return;
     }
 
-    console.log('Successfully marked guide as completed:', siteId);
+    console.log('Successfully updated guide completion status:', siteId);
     await refetchProgress();
   };
 

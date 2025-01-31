@@ -38,6 +38,7 @@ export const GuideCard = ({
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
   const handleComplete = async () => {
+    console.log('Toggle clicked, current completion status:', isCompleted);
     const guideId = getGuideId(guide.title);
     if (!guideId) return;
     await handleGuideComplete(guideId);
