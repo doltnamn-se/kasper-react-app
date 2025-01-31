@@ -34,7 +34,7 @@ export const GuideCard = ({
 }: GuideCardProps) => {
   const { t, language } = useLanguage();
   const { handleGuideComplete } = useGuideCompletion();
-  const { getGuideId, shouldShowCopyButton } = useGuideUtils();
+  const { getGuideId } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
   const handleComplete = async () => {
@@ -66,7 +66,7 @@ export const GuideCard = ({
       <span className="text-sm text-[#4c4c49] dark:text-[#67676c]">
         {isCompleted 
           ? (language === 'sv' ? 'Klar' : 'Done')
-          : (language === 'sv' ? 'Att göra' : 'To-do')}
+          : (language === 'sv' ? 'Ej klar' : 'Not done')}
       </span>
       <Switch
         checked={isCompleted}
@@ -83,7 +83,6 @@ export const GuideCard = ({
         <GuideHeader 
           title={guide.title}
           url={url}
-          onComplete={handleComplete}
         />
         {stepsContent}
       </div>
@@ -103,7 +102,6 @@ export const GuideCard = ({
           <GuideHeader 
             title={guide.title}
             url={url}
-            onComplete={handleComplete}
           />
           <AccordionContent>
             {stepsContent}
