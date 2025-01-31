@@ -11,6 +11,7 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Button } from "@/components/ui/button";
 import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
+import { Translations } from "@/translations/types";
 import {
   Tooltip,
   TooltipContent,
