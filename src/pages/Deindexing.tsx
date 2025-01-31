@@ -23,16 +23,14 @@ const Deindexing = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="max-w-md mx-auto">
-            <TabsList className="w-full">
-              <TabsTrigger value="incoming" className="flex-1">
-                {t('deindexing.incoming.links')}
-              </TabsTrigger>
-              <TabsTrigger value="deindexed" className="flex-1">
-                {t('deindexing.deindexed.links')}
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="w-full max-w-md">
+            <TabsTrigger value="incoming" className="flex-1">
+              {t('deindexing.incoming.links')}
+            </TabsTrigger>
+            <TabsTrigger value="deindexed" className="flex-1">
+              {t('deindexing.deindexed.links')}
+            </TabsTrigger>
+          </TabsList>
 
           <TabsContent value="incoming" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
