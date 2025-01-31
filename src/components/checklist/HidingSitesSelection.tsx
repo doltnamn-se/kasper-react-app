@@ -54,12 +54,33 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      const { error } = await supabase
+      // Get all site IDs
+      const allSiteIds = HIDING_SITES.map(site => site.id);
+      
+      // Calculate which sites should be marked as completed (the ones NOT selected)
+      const completedSites = noneSelected ? allSiteIds : allSiteIds.filter(id => !selectedSites.includes(id));
+
+      console.log('Marking sites as completed:', completedSites);
+      console.log('Selected sites (not completed):', selectedSites);
+
+      // Update checklist progress with selected sites
+      const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({ selected_sites: noneSelected ? [] : selectedSites })
+        .update({ 
+          selected_sites: noneSelected ? [] : selectedSites,
+          completed_guides: completedSites
+        })
         .eq('customer_id', session.user.id);
 
-      if (error) throw error;
+      if (progressError) throw progressError;
+
+      // Update customer record to reflect completed guides
+      const { error: customerError } = await supabase
+        .from('customers')
+        .update({ completed_guides: completedSites })
+        .eq('id', session.user.id);
+
+      if (customerError) throw customerError;
 
       toast({
         title: "Sites selected",
