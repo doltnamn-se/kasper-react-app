@@ -7,6 +7,7 @@ import { GuideHeader } from "./GuideHeader";
 import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { useGuideUtils } from "@/utils/guideUtils";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
 
 interface GuideStep {
   text: string;
@@ -36,12 +37,26 @@ export const GuideCard = ({
   const { handleGuideComplete } = useGuideCompletion();
   const { getGuideId, shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
+  const [isToggling, setIsToggling] = useState(false);
 
   const handleComplete = async () => {
+    if (isToggling) return;
+    setIsToggling(true);
+    
     console.log('Toggle clicked, current completion status:', isCompleted);
     const guideId = getGuideId(guide.title);
-    if (!guideId) return;
-    await handleGuideComplete(guideId);
+    if (!guideId) {
+      setIsToggling(false);
+      return;
+    }
+    
+    try {
+      await handleGuideComplete(guideId);
+    } catch (error) {
+      console.error('Error toggling guide completion:', error);
+    } finally {
+      setIsToggling(false);
+    }
   };
 
   const stepsContent = (
@@ -72,6 +87,7 @@ export const GuideCard = ({
       <Switch
         checked={isCompleted}
         onCheckedChange={handleComplete}
+        disabled={isToggling}
         className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200"
       />
     </div>

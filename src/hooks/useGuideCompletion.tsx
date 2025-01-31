@@ -21,12 +21,17 @@ export const useGuideCompletion = () => {
     
     const newCompletedGuides = isCurrentlyCompleted
       ? completedGuides.filter(id => id !== siteId)
-      : [...completedGuides, siteId];
+      : [...new Set([...completedGuides, siteId])]; // Use Set to ensure uniqueness
     
-    // Update both customer_checklist_progress and customers tables
+    console.log('New completed guides:', newCompletedGuides);
+
+    // Update customer_checklist_progress table
     const { error: progressError } = await supabase
       .from('customer_checklist_progress')
-      .update({ completed_guides: newCompletedGuides })
+      .update({ 
+        completed_guides: newCompletedGuides,
+        updated_at: new Date().toISOString()
+      })
       .eq('customer_id', session.user.id);
 
     if (progressError) {
@@ -37,7 +42,10 @@ export const useGuideCompletion = () => {
     // Update customers table
     const { error: customerError } = await supabase
       .from('customers')
-      .update({ completed_guides: newCompletedGuides })
+      .update({ 
+        completed_guides: newCompletedGuides,
+        updated_at: new Date().toISOString()
+      })
       .eq('id', session.user.id);
 
     if (customerError) {
