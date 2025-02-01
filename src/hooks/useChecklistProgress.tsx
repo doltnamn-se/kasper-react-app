@@ -15,6 +15,7 @@ interface ChecklistProgress {
   street_address: string | null;
   postal_code: string | null;
   city: string | null;
+  has_address_alert?: boolean;
 }
 
 export const useChecklistProgress = () => {
@@ -83,33 +84,41 @@ export const useChecklistProgress = () => {
     let completedSteps = 0;
     
     // Step 1: Password updated
-    if (checklistProgress.password_updated) completedSteps++;
+    if (checklistProgress.password_updated) {
+      console.log('Step 1 completed: Password updated');
+      completedSteps++;
+    }
     
     // Step 2: URLs submitted or skipped
     if (checklistProgress.removal_urls && 
         (checklistProgress.removal_urls.length > 0 || 
          checklistProgress.removal_urls.includes('skipped'))) {
+      console.log('Step 2 completed: URLs submitted or skipped');
       completedSteps++;
     }
     
     // Step 3: Sites selected
-    if (checklistProgress.selected_sites?.length > 0) completedSteps++;
+    if (checklistProgress.selected_sites?.length > 0) {
+      console.log('Step 3 completed: Sites selected');
+      completedSteps++;
+    }
     
     // Step 4: Final step (address or personal info)
     if (checklistProgress.has_address_alert) {
       if (checklistProgress.street_address && 
           checklistProgress.postal_code && 
           checklistProgress.city) {
+        console.log('Step 4 completed: Address provided');
         completedSteps++;
       }
     } else {
       if (checklistProgress.address && checklistProgress.personal_number) {
+        console.log('Step 4 completed: Personal info provided');
         completedSteps++;
       }
     }
 
     const progress = Math.round((completedSteps / totalSteps) * 100);
-    
     console.log('Progress calculation:', {
       completedSteps,
       totalSteps,
