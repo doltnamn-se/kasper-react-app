@@ -31,6 +31,7 @@ export interface FeaturesTranslations {
   'url.no.plan': string;
   'deindexing.incoming.links': string;
   'deindexing.deindexed.links': string;
+  'deindexing.no.incoming.links': string;
   'guide.completed': string;
   'guide.completion.error': string;
   'set.password.description': string;

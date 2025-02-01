@@ -33,6 +33,7 @@ export const features: FeaturesTranslations = {
   'url.no.plan': 'Your current subscription does not allow URL submissions. Upgrade to a 6 or 12-month plan to add URLs.',
   'deindexing.incoming.links': 'Incoming Links',
   'deindexing.deindexed.links': 'Deindexed Links',
+  'deindexing.no.incoming.links': 'When new links about you appear, you will receive a notification and see the link here',
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Enter your name in the search box',
   'guide.eniro.step2': 'Identify yourself with Mobile BankID',

@@ -37,6 +37,7 @@ export const features: FeaturesTranslations = {
   'url.no.plan': 'Din nuvarande prenumeration tillåter inte URL-inlämningar. Uppgradera till en 6- eller 12-månaders plan för att lägga till URL:er.',
   'deindexing.incoming.links': 'Inkomna länkar',
   'deindexing.deindexed.links': 'Borttagna länkar',
+  'deindexing.no.incoming.links': 'När det dyker upp nya länkar om dig kommer du att få en notis och se länken här',
   'guide.eniro.title': 'Eniro.se',
   'guide.eniro.step1': 'Skriv in ditt namn i sökrutan',
   'guide.eniro.step2': 'Identifiera dig med Mobilt BankID',
