@@ -12,6 +12,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { Button } from "@/components/ui/button";
 import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
 import { Translations } from "@/translations/types";
+import { DeindexingProgress } from "./DeindexingProgress";
 import {
   Tooltip,
   TooltipContent,
@@ -232,6 +233,8 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
       {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadDeindexingNotifications)}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCount)}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadGuideNotifications)}
+      
+      <DeindexingProgress />
     </>
   );
 };

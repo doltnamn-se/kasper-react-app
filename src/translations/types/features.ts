@@ -32,6 +32,9 @@ export interface FeaturesTranslations {
   'deindexing.incoming.links': string;
   'deindexing.deindexed.links': string;
   'deindexing.no.incoming.links': string;
+  'deindexing.used.title': string;
+  'deindexing.used.counter': string;
+  'deindexing.need.more': string;
   'guide.completed': string;
   'guide.completion.error': string;
   'set.password.description': string;
