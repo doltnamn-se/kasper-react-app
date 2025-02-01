@@ -4,6 +4,22 @@ import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// Define the allowed status steps based on the database enum
+type URLStatusStep = "received" | "case_started" | "request_submitted" | "removal_approved";
+
+const mapStatusToEnum = (status: string): URLStatusStep => {
+  switch (status) {
+    case "received":
+      return "received";
+    case "in_progress":
+      return "case_started";
+    case "completed":
+      return "removal_approved";
+    default:
+      return "received";
+  }
+};
+
 export const useURLManagement = () => {
   const { t } = useLanguage();
 
@@ -91,7 +107,7 @@ export const useURLManagement = () => {
         .update({
           status: newStatus,
           status_history: newStatusHistory,
-          current_status: newStatus
+          current_status: mapStatusToEnum(newStatus)
         })
         .eq('id', urlId);
 
