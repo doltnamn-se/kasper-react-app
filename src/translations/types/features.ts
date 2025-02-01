@@ -79,4 +79,6 @@ export interface FeaturesTranslations {
   'error.update.status': string;
   'error.unexpected': string;
   'success.update.status': string;
+  'notifications.url.status.title': string;
+  'notifications.url.status.message': string;
 }

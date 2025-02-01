@@ -19,7 +19,7 @@ const features: FeaturesTranslations = {
   'step.3.title': 'Välj webbplatser',
   'step.3.description': 'Välj vilka webbplatser du vill dölja din information från',
   'step.4.title': 'Personlig information',
-  'step.4.description': 'Ange din personliga information',
+  'step.4.description': 'Ange din personlig information',
   'step.identification.title': 'Identifiering',
   'step.identification.description': 'Verifiera din identitet',
   'step.deindexing.title': 'Avindexering',
@@ -80,7 +80,9 @@ const features: FeaturesTranslations = {
   'guide.upplysning.step1': 'Fyll i formuläret',
   'guide.upplysning.step2': 'Skriv detta i meddelandefältet: "Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN."',
   'guide.upplysning.step3': '',
-  'step.2.skip': 'Hoppa över detta steg'
+  'step.2.skip': 'Hoppa över detta steg',
+  'notifications.url.status.title': 'URL-status uppdaterad',
+  'notifications.url.status.message': 'En URL-borttagningsbegäran har uppdaterats till status: {status}',
 };
 
 export default features;

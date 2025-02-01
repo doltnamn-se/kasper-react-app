@@ -22,8 +22,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
         .from('notifications')
         .insert({
           user_id: customerId,
-          title: 'URL Status Updated',
-          message: `A URL removal request has been updated to status: ${newStatus}`,
+          title: t('notifications.url.status.title'),
+          message: t('notifications.url.status.message', { status: newStatus }),
           type: 'removal',
           read: false
         });
@@ -31,8 +31,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       if (notificationError) {
         console.error('Error creating notification:', notificationError);
         toast({
-          title: "Error",
-          description: "Failed to create notification",
+          title: t('error'),
+          description: t('error.update.status'),
           variant: "destructive",
         });
       }
@@ -41,8 +41,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
     } catch (error) {
       console.error('Error updating status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update status",
+        title: t('error'),
+        description: t('error.unexpected'),
         variant: "destructive",
       });
     }
