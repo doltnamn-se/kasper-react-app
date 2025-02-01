@@ -1,3 +1,5 @@
+import { Json } from "@/integrations/supabase/types";
+
 export type URLStatusStep = "received" | "case_started" | "request_submitted" | "removal_approved";
 
 export type URLStatus = "received" | "in_progress" | "completed" | "failed";
