@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
