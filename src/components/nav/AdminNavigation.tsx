@@ -1,30 +1,38 @@
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Link, useLocation } from "react-router-dom";
+import { 
+  Users, 
+  LayoutDashboard,
+  Link as LinkIcon
+} from "lucide-react";
 
-interface AdminNavigationProps {
-  toggleMobileMenu: () => void;
-}
-
-export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
+export const AdminNavigation = () => {
   const { t } = useLanguage();
-  const location = useLocation();
-
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
 
   return (
-    <nav className="space-y-1">
+    <nav className="space-y-2">
       <Link
         to="/admin"
-        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-          isActive("/admin")
-            ? "bg-[#e5e5e5] dark:bg-[#303032] text-black dark:text-white"
-            : "text-gray-600 hover:bg-[#e5e5e5] dark:hover:bg-[#303032] dark:text-gray-300"
-        }`}
-        onClick={toggleMobileMenu}
+        className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
       >
-        {t('nav.admin.dashboard')}
+        <LayoutDashboard className="w-4 h-4" />
+        <span>{t('navigation.dashboard')}</span>
+      </Link>
+      
+      <Link
+        to="/admin/customers"
+        className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
+      >
+        <Users className="w-4 h-4" />
+        <span>{t('navigation.customers')}</span>
+      </Link>
+
+      <Link
+        to="/admin/deindexing"
+        className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
+      >
+        <LinkIcon className="w-4 h-4" />
+        <span>{t('navigation.url_management')}</span>
       </Link>
     </nav>
   );
