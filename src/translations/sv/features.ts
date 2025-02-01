@@ -85,6 +85,8 @@ const features: FeaturesTranslations = {
   'deindexing.status.case.started': 'Ärende påbörjat',
   'deindexing.status.request.submitted': 'Begäran inskickad',
   'deindexing.status.removal.approved': 'Borttagning godkänd',
+  'notifications.url.status.title': 'URL-status uppdaterad',
+  'notifications.url.status.message': 'En URL-borttagningsbegäran har uppdaterats till status: {status}'
 };
 
 export default features;
