@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { ExternalLink } from "lucide-react";
+import { CircleFadingArrowUp } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export const DeindexingProgress = () => {
@@ -55,10 +55,10 @@ export const DeindexingProgress = () => {
       <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       <div className="px-3">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-sm font-medium text-[#000000] dark:text-white">
+          <h3 className="text-sm font-bold text-[#000000] dark:text-white">
             {t('deindexing.used.title')}
           </h3>
-          <span className="text-sm text-[#000000] dark:text-white">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'sv' 
               ? `${usedUrls} av ${urlLimit}` 
               : `${usedUrls} out of ${urlLimit}`}
@@ -67,15 +67,20 @@ export const DeindexingProgress = () => {
         
         <Progress value={progressPercentage} className="h-2" />
         
-        <a
-          href="https://buy.stripe.com/7sI00ZdkU1i11A4eV2"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center text-sm text-[#2e77d0] hover:text-[#1d4ed8] dark:text-[#60a5fa] dark:hover:text-[#93c5fd] mt-2"
-        >
-          {t('deindexing.need.more')}
-          <ExternalLink className="ml-1 h-3 w-3" />
-        </a>
+        <div className="flex items-center gap-1 mt-2 text-xs">
+          <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('deindexing.need.more')}
+          </span>
+          <a
+            href="https://buy.stripe.com/7sI00ZdkU1i11A4eV2"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-[#000000] hover:text-[#1d4ed8] dark:text-white dark:hover:text-[#93c5fd]"
+          >
+            {language === 'sv' ? 'Lägg till' : 'Add more'}
+            <CircleFadingArrowUp className="ml-1 h-3 w-3" />
+          </a>
+        </div>
       </div>
     </div>
   );
