@@ -293,28 +293,34 @@ export type Database = {
       removal_urls: {
         Row: {
           created_at: string
+          current_status: Database["public"]["Enums"]["url_status_step"] | null
           customer_id: string | null
           display_in_incoming: boolean | null
           id: string
           status: string | null
+          status_history: Json[] | null
           updated_at: string
           url: string
         }
         Insert: {
           created_at?: string
+          current_status?: Database["public"]["Enums"]["url_status_step"] | null
           customer_id?: string | null
           display_in_incoming?: boolean | null
           id?: string
           status?: string | null
+          status_history?: Json[] | null
           updated_at?: string
           url: string
         }
         Update: {
           created_at?: string
+          current_status?: Database["public"]["Enums"]["url_status_step"] | null
           customer_id?: string | null
           display_in_incoming?: boolean | null
           id?: string
           status?: string | null
+          status_history?: Json[] | null
           updated_at?: string
           url?: string
         }
@@ -378,6 +384,11 @@ export type Database = {
         | "mrkoll"
         | "upplysning"
       subscription_plan: "1_month" | "6_months" | "12_months"
+      url_status_step:
+        | "received"
+        | "case_started"
+        | "request_submitted"
+        | "removal_approved"
       user_role: "super_admin" | "customer"
     }
     CompositeTypes: {

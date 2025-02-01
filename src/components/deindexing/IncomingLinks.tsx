@@ -1,10 +1,73 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const statusSteps = {
+  received: 0,
+  case_started: 1,
+  request_submitted: 2,
+  removal_approved: 3,
+} as const;
+
+const StatusStepper = ({ currentStatus }: { currentStatus: keyof typeof statusSteps }) => {
+  const { language } = useLanguage();
+  const currentStep = statusSteps[currentStatus];
+
+  const steps = [
+    { key: 'received', label: language === 'sv' ? 'Mottagen' : 'Received' },
+    { key: 'case_started', label: language === 'sv' ? 'Ärende påbörjat' : 'Case started' },
+    { key: 'request_submitted', label: language === 'sv' ? 'Begäran inskickad' : 'Request submitted' },
+    { key: 'removal_approved', label: language === 'sv' ? 'Borttagning godkänd' : 'Removal approved' },
+  ];
+
+  return (
+    <div className="flex items-center space-x-2">
+      {steps.map((step, index) => {
+        const isCompleted = statusSteps[currentStatus] >= index;
+        const isLast = index === steps.length - 1;
+
+        return (
+          <div key={step.key} className="flex items-center">
+            <div
+              className={`flex items-center justify-center w-6 h-6 rounded-full ${
+                isCompleted
+                  ? 'bg-black dark:bg-white text-white dark:text-black'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+              }`}
+            >
+              {isCompleted ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                <span className="text-xs">{index + 1}</span>
+              )}
+            </div>
+            {!isLast && (
+              <ChevronRight
+                className={`w-4 h-4 ${
+                  statusSteps[currentStatus] > index
+                    ? 'text-black dark:text-white'
+                    : 'text-gray-300 dark:text-gray-600'
+                }`}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export const IncomingLinks = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data: incomingUrls, isLoading } = useQuery({
     queryKey: ['incoming-urls'],
@@ -48,26 +111,36 @@ export const IncomingLinks = () => {
   }
 
   return (
-    <div className="space-y-4">
-      {incomingUrls.map((url) => (
-        <div 
-          key={url.id} 
-          className="flex items-center justify-between p-4 bg-white dark:bg-[#1c1c1e] rounded-md border border-[#e5e7eb] dark:border-[#232325]"
-        >
-          <a 
-            href={url.url} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-2"
-          >
-            {url.url}
-            <ExternalLink className="h-4 w-4" />
-          </a>
-          <span className="text-sm text-gray-500">
-            {new Date(url.created_at).toLocaleDateString()}
-          </span>
-        </div>
-      ))}
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>URL</TableHead>
+          <TableHead>{language === 'sv' ? 'Tillagd' : 'Submitted'}</TableHead>
+          <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {incomingUrls.map((url) => (
+          <TableRow key={url.id}>
+            <TableCell className="font-medium">
+              <a 
+                href={url.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                {url.url}
+              </a>
+            </TableCell>
+            <TableCell>
+              {new Date(url.created_at).toLocaleDateString()}
+            </TableCell>
+            <TableCell>
+              <StatusStepper currentStatus={url.current_status || 'received'} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
