@@ -41,7 +41,7 @@ export const AdminDeindexingView = () => {
           *,
           customers (
             id,
-            profiles (
+            profiles:profiles (
               email,
               display_name
             )
@@ -66,7 +66,7 @@ export const AdminDeindexingView = () => {
         .from('removal_urls')
         .update({ 
           current_status: newStatus,
-          status_history: supabase.sql`array_append(COALESCE(status_history, ARRAY[]::jsonb[]), jsonb_build_object('status', ${newStatus}, 'timestamp', now()))`
+          status_history: `array_append(COALESCE(status_history, ARRAY[]::jsonb[]), jsonb_build_object('status', '${newStatus}', 'timestamp', now()))`
         })
         .eq('id', urlId)
         .select()
