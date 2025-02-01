@@ -101,7 +101,7 @@ const Deindexing = () => {
                     onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
                   >
                     <span>{language === 'sv' ? 'Lägg till' : 'Add more'}</span>
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 -rotate-45" />
                   </Button>
                 </div>
               </div>
