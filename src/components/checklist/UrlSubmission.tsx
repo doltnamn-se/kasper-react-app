@@ -112,7 +112,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (progressError) throw progressError;
 
-      // Insert URLs
+      // Insert URLs into removal_urls table
       const urlRows = validUrls.map(url => ({
         customer_id: session.user.id,
         url,
@@ -166,7 +166,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         />
       ))}
       
-      {urls.length < remainingUrls && (
+      {remainingUrls > urls.length && (
         <Button
           type="button"
           variant="outline"
