@@ -83,8 +83,8 @@ const Deindexing = () => {
               <div className="flex flex-col items-end">
                 <div className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
                   {language === 'sv' 
-                    ? `${usedUrls} av ${urlLimit} kvar`
-                    : `${usedUrls} out of ${urlLimit} left`}
+                    ? `${usedUrls} av ${urlLimit} använda`
+                    : `${usedUrls} out of ${urlLimit} used`}
                 </div>
                 <div className="flex gap-2">
                   <Button 
