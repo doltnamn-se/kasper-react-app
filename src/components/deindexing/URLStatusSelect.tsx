@@ -2,6 +2,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { URLStatusStep } from "@/types/url-management";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -13,7 +14,7 @@ interface URLStatusSelectProps {
 export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChange }: URLStatusSelectProps) => {
   const { t } = useLanguage();
 
-  const handleStatusChange = async (newStatus: string) => {
+  const handleStatusChange = async (newStatus: URLStatusStep) => {
     try {
       console.log('Updating URL status:', { urlId, newStatus });
       
@@ -50,14 +51,14 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
   return (
     <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px] bg-background">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="received">Received</SelectItem>
-        <SelectItem value="in_progress">In Progress</SelectItem>
-        <SelectItem value="completed">Completed</SelectItem>
-        <SelectItem value="failed">Failed</SelectItem>
+        <SelectItem value="received">{t('deindexing.status.received')}</SelectItem>
+        <SelectItem value="case_started">{t('deindexing.status.case.started')}</SelectItem>
+        <SelectItem value="request_submitted">{t('deindexing.status.request.submitted')}</SelectItem>
+        <SelectItem value="removal_approved">{t('deindexing.status.removal.approved')}</SelectItem>
       </SelectContent>
     </Select>
   );
