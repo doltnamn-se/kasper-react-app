@@ -3,6 +3,7 @@ import { URLStatusSelect } from "./URLStatusSelect";
 import { formatDistanceToNow } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { StatusStepper } from "./StatusStepper";
 
 interface URLTableRowProps {
   url: {
@@ -32,16 +33,19 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
 
   return (
     <TableRow>
-      <TableCell>{url.url}</TableCell>
-      <TableCell>{url.customer.profiles.email}</TableCell>
-      <TableCell>{formatDate(url.created_at)}</TableCell>
-      <TableCell>
-        <URLStatusSelect
-          currentStatus={url.status}
-          urlId={url.id}
-          customerId={url.customer.id}
-          onStatusChange={(newStatus) => onStatusChange(url.id, newStatus)}
-        />
+      <TableCell className="max-w-[200px] truncate">{url.url}</TableCell>
+      <TableCell className="max-w-[200px] truncate">{url.customer.profiles.email}</TableCell>
+      <TableCell className="whitespace-nowrap">{formatDate(url.created_at)}</TableCell>
+      <TableCell className="w-full">
+        <div className="flex items-center justify-between gap-4">
+          <StatusStepper currentStatus={url.status} />
+          <URLStatusSelect
+            currentStatus={url.status}
+            urlId={url.id}
+            customerId={url.customer.id}
+            onStatusChange={(newStatus) => onStatusChange(url.id, newStatus)}
+          />
+        </div>
       </TableCell>
     </TableRow>
   );
