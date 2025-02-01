@@ -67,8 +67,8 @@ export const DeindexingProgress = () => {
         
         <Progress 
           value={progressPercentage} 
-          className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31]" 
-          indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5]"
+          className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden" 
+          indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5] rounded-full"
         />
         
         <div className="flex items-center gap-1 mt-4 text-xs">
