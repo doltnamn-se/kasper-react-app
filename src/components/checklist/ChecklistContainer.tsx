@@ -14,7 +14,7 @@ export const ChecklistContainer = () => {
   const { toast } = useToast();
   const { checklistProgress, handleStepComplete, calculateProgress, refetchProgress } = useChecklistProgress();
   const { checklistItems } = useChecklistItems();
-  const { currentStep, totalSteps, handleStepChange } = useChecklistSteps();
+  const { currentStep, handleStepChange } = useChecklistSteps();
 
   const onStepCompleted = async () => {
     console.log('Step completed, current step:', currentStep);
@@ -96,6 +96,7 @@ export const ChecklistContainer = () => {
     }
   };
 
+  // Fixed total steps count to 4 main steps
   const totalStepsCount = 4;
 
   console.log('ChecklistContainer state:', {
