@@ -36,7 +36,7 @@ const features: FeaturesTranslations = {
   'deindexing.no.incoming.links': 'Inga inkommande länkar hittades',
   'deindexing.used.title': 'Länkar',
   'deindexing.used.counter': '{used} av {limit}',
-  'deindexing.need.more': 'Behöver du fler länkar? Lägg till',
+  'deindexing.need.more': 'Behöver du fler länkar?',
   'guide.completed': 'Guide slutförd',
   'guide.completion.error': 'Fel vid slutförande av guide',
   'set.password.description': 'Ange ett nytt lösenord',

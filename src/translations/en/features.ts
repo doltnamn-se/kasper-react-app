@@ -36,7 +36,7 @@ const features: FeaturesTranslations = {
   'deindexing.no.incoming.links': 'No incoming links found',
   'deindexing.used.title': 'Links',
   'deindexing.used.counter': '{used} out of {limit}',
-  'deindexing.need.more': 'Need more links? Add more',
+  'deindexing.need.more': 'Need more links?',
   'guide.completed': 'Guide completed',
   'guide.completion.error': 'Error completing guide',
   'set.password.description': 'Set a new password',
