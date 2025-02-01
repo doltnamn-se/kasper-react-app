@@ -70,7 +70,7 @@ const Deindexing = () => {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex flex-col space-y-4">
-            <div className="flex flex-col md:flex-row justify-between md:items-end w-full gap-4 md:gap-0">
+            <div className="flex flex-col-reverse md:flex-row justify-between md:items-end w-full gap-4 md:gap-0">
               <TabsList className="h-10 w-full md:w-auto">
                 <TabsTrigger value="incoming" className="flex-1">
                   {t('deindexing.incoming.links')}
