@@ -67,7 +67,7 @@ export const DeindexingProgress = () => {
         
         <Progress 
           value={progressPercentage} 
-          className="h-3 bg-[#e8e8e5] dark:bg-[#2f2e31]" 
+          className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31]" 
           indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5]"
         />
         
@@ -79,10 +79,10 @@ export const DeindexingProgress = () => {
             href="https://buy.stripe.com/7sI00ZdkU1i11A4eV2"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-[#000000] hover:text-[#1d4ed8] dark:text-white dark:hover:text-[#93c5fd]"
+            className="inline-flex items-center font-medium text-[#000000] dark:text-white group"
           >
             {language === 'sv' ? 'Lägg till' : 'Add more'}
-            <ArrowRight className="ml-1 h-3 w-3" />
+            <ArrowRight className="ml-1 h-3 w-3 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
           </a>
         </div>
       </div>
