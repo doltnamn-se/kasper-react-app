@@ -51,6 +51,34 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
     setUrls(newUrls);
   };
 
+  const handleSkip = async () => {
+    setIsLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      const { error: progressError } = await supabase
+        .from('customer_checklist_progress')
+        .update({ 
+          removal_urls: ['skipped'],
+          completed_at: new Date().toISOString()
+        })
+        .eq('customer_id', session.user.id);
+
+      if (progressError) throw progressError;
+      onComplete();
+    } catch (error: any) {
+      console.error('Error skipping URL submission:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to skip. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -61,39 +89,38 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       const validUrls = urls.filter(url => url.trim() !== '');
       
-      if (urlLimit === 0) {
-        throw new Error(t('url.no.plan'));
+      // If no URLs are provided, treat it as a skip
+      if (validUrls.length === 0) {
+        return handleSkip();
       }
 
       if (validUrls.length + existingUrlCount > urlLimit) {
         throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
-      // Update checklist progress with URLs or ['skipped'] if no URLs provided
+      // Update checklist progress with URLs
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ 
-          removal_urls: validUrls.length > 0 ? validUrls : ['skipped'],
+          removal_urls: validUrls,
           completed_at: new Date().toISOString()
         })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
 
-      // Only insert URLs if there are valid ones
-      if (validUrls.length > 0) {
-        const urlRows = validUrls.map(url => ({
-          customer_id: session.user.id,
-          url,
-          display_in_incoming: true
-        }));
+      // Insert URLs
+      const urlRows = validUrls.map(url => ({
+        customer_id: session.user.id,
+        url,
+        display_in_incoming: true
+      }));
 
-        const { error: urlsError } = await supabase
-          .from('removal_urls')
-          .insert(urlRows);
+      const { error: urlsError } = await supabase
+        .from('removal_urls')
+        .insert(urlRows);
 
-        if (urlsError) throw urlsError;
-      }
+      if (urlsError) throw urlsError;
       
       onComplete();
     } catch (error: any) {
@@ -109,28 +136,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   if (urlLimit === 0) {
-    return (
-      <UpgradePrompt 
-        onSkip={async () => {
-          try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session?.user) return;
-
-            const { error: progressError } = await supabase
-              .from('customer_checklist_progress')
-              .update({ removal_urls: ['skipped'] })
-              .eq('customer_id', session.user.id);
-
-            if (progressError) throw progressError;
-            
-            onComplete();
-          } catch (error) {
-            console.error('Error skipping URL submission:', error);
-          }
-        }} 
-        isLoading={isLoading} 
-      />
-    );
+    return <UpgradePrompt onSkip={handleSkip} isLoading={isLoading} />;
   }
 
   return (
@@ -173,7 +179,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         disabled={isLoading}
         className="w-full py-6"
       >
-        {isLoading ? t('saving') : (currentValidUrls.length > 0 ? t('save.urls') : t('step.2.skip'))}
+        {isLoading ? t('saving') : t('step.2.skip')}
       </Button>
     </form>
   );
