@@ -56,7 +56,7 @@ export const DeindexingProgress = () => {
       <div className="px-3">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-sm font-bold text-[#000000] dark:text-white">
-            {t('deindexing.used.title')}
+            {language === 'sv' ? 'Avindexering' : 'Deindexing'}
           </h3>
           <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'sv' 
@@ -67,11 +67,11 @@ export const DeindexingProgress = () => {
         
         <Progress 
           value={progressPercentage} 
-          className="h-2 bg-[#e8e8e5] dark:bg-[#2f2e31]" 
+          className="h-3 bg-[#e8e8e5] dark:bg-[#2f2e31]" 
           indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5]"
         />
         
-        <div className="flex items-center gap-1 mt-2 text-xs">
+        <div className="flex items-center gap-1 mt-4 text-xs">
           <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('deindexing.need.more')}
           </span>
