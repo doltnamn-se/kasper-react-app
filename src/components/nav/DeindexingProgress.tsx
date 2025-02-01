@@ -81,7 +81,7 @@ export const DeindexingProgress = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center text-[#000000] hover:text-[#1d4ed8] dark:text-white dark:hover:text-[#93c5fd]"
           >
-            {t('deindexing.add.more')}
+            {language === 'sv' ? 'Lägg till' : 'Add more'}
             <ArrowRight className="ml-1 h-3 w-3" />
           </a>
         </div>
