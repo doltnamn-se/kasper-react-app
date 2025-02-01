@@ -82,7 +82,7 @@ export const DeindexingProgress = () => {
             className="inline-flex items-center font-medium text-[#000000] dark:text-white group"
           >
             {language === 'sv' ? 'Lägg till' : 'Add more'}
-            <ArrowRight className="ml-1 h-3 w-3 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
+            <ArrowRight className="ml-1 h-3 w-3 transition-transform duration-300 ease-in-out group-hover:translate-x-1 -rotate-45" />
           </a>
         </div>
       </div>
