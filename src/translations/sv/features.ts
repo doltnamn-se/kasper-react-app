@@ -65,11 +65,11 @@ const features: FeaturesTranslations = {
   'guide.ratsit.step3': '',
   'guide.birthday.title': 'Birthday.se',
   'guide.birthday.step1': 'Fyll i formuläret',
-  'guide.birthday.step2': 'Skriv detta i meddelandefältet: "Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX."',
+  'guide.birthday.step2': 'Skriv detta i meddelandefältet: "Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN."',
   'guide.birthday.step3': '',
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Fyll i formuläret',
-  'guide.upplysning.step2': 'Skriv detta i meddelandefältet: "Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX."',
+  'guide.upplysning.step2': 'Skriv detta i meddelandefältet: "Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN."',
   'guide.upplysning.step3': '',
   'step.2.skip': 'Hoppa över detta steg'
 };
