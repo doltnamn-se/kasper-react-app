@@ -16,10 +16,10 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
       case 1:
         return checklistProgress.password_updated;
       case 2:
-        // For URL removal step, consider it complete only if there are actual URLs or it was skipped
+        // For URL removal step, consider it complete if there are URLs or if it was explicitly skipped
         return Array.isArray(checklistProgress.removal_urls) && 
           (checklistProgress.removal_urls.length > 0 || 
-           (checklistProgress.removal_urls.length === 1 && checklistProgress.removal_urls[0] === 'skipped'));
+           checklistProgress.removal_urls.includes('skipped'));
       case 3:
         // For site selection step, check if there are selected sites
         return checklistProgress.selected_sites?.length > 0;
@@ -44,7 +44,8 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
 
   console.log('ChecklistSteps - Progress state:', {
     checklistProgress,
-    steps: steps.map(s => ({ step: s.step, completed: s.completed }))
+    steps: steps.map(s => ({ step: s.step, completed: s.completed })),
+    removal_urls: checklistProgress?.removal_urls
   });
 
   return (
