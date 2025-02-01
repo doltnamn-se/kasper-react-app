@@ -21,6 +21,7 @@ import PasswordTest from "@/pages/PasswordTest";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminCustomers from "@/pages/admin/AdminCustomers";
+import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
@@ -47,6 +48,7 @@ function App() {
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="customers" element={<AdminCustomers />} />
+                  <Route path="deindexing" element={<AdminDeindexingView />} />
                 </Route>
 
                 {/* Customer routes */}
