@@ -27,7 +27,8 @@ export const useURLManagement = () => {
             )
           )
         `)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .order('id', { ascending: true }); // Add secondary sort by ID for stability
 
       if (error) {
         console.error('Error fetching URLs:', error);
