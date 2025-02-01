@@ -53,7 +53,9 @@ export const useURLManagement = () => {
           refetch();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Realtime subscription status:', status);
+      });
 
     return () => {
       console.log('Cleaning up URL subscription');
@@ -67,9 +69,13 @@ export const useURLManagement = () => {
       
       const { data: currentUrl } = await supabase
         .from('removal_urls')
-        .select('status_history')
+        .select('status_history, customer_id')
         .eq('id', urlId)
         .single();
+
+      if (!currentUrl) {
+        throw new Error('URL not found');
+      }
 
       const statusHistory = currentUrl?.status_history || [];
       const newStatusHistory = [
@@ -98,13 +104,28 @@ export const useURLManagement = () => {
         return;
       }
 
+      // Create notification for the customer
+      const { error: notificationError } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: currentUrl.customer_id,
+          title: t('notifications.url.status.title'),
+          message: t('notifications.url.status.message', { status: newStatus }),
+          type: 'removal',
+          read: false
+        });
+
+      if (notificationError) {
+        console.error('Error creating notification:', notificationError);
+      }
+
       console.log('URL status updated successfully');
       toast({
         title: t('success'),
         description: t('success.update.status'),
       });
 
-      refetch();
+      // No need to call refetch() here as the real-time subscription will handle it
     } catch (error) {
       console.error('Error in handleStatusChange:', error);
       toast({
