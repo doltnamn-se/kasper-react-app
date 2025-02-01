@@ -62,11 +62,35 @@ export const AdminDeindexingView = () => {
   const updateStatus = useMutation({
     mutationFn: async ({ urlId, newStatus }: { urlId: string, newStatus: StatusStep }) => {
       console.log('Updating URL status:', { urlId, newStatus });
+      
+      // First, get the current status_history
+      const { data: currentUrl, error: fetchError } = await supabase
+        .from('removal_urls')
+        .select('status_history')
+        .eq('id', urlId)
+        .single();
+
+      if (fetchError) {
+        console.error('Error fetching current URL:', fetchError);
+        throw fetchError;
+      }
+
+      // Prepare the new status history entry
+      const newHistoryEntry = {
+        status: newStatus,
+        timestamp: new Date().toISOString()
+      };
+
+      // Create the updated status_history array
+      const updatedHistory = currentUrl.status_history || [];
+      updatedHistory.push(newHistoryEntry);
+
+      // Update the record with the new status and history
       const { data, error } = await supabase
         .from('removal_urls')
         .update({ 
           current_status: newStatus,
-          status_history: `array_append(COALESCE(status_history, ARRAY[]::jsonb[]), jsonb_build_object('status', '${newStatus}', 'timestamp', now()))`
+          status_history: updatedHistory
         })
         .eq('id', urlId)
         .select()
