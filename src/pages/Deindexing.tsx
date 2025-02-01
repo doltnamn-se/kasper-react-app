@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
+import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 import { Button } from "@/components/ui/button";
 import { Link2, Link2Off, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +13,27 @@ import { supabase } from "@/integrations/supabase/client";
 const Deindexing = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
+
+  const { data: profile } = useQuery({
+    queryKey: ['user-profile'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return null;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return null;
+      }
+
+      return data;
+    }
+  });
 
   const { data: urlLimits } = useQuery({
     queryKey: ['url-limits'],
@@ -60,6 +82,22 @@ const Deindexing = () => {
 
   const urlLimit = urlLimits?.additional_urls || 0;
   const hasReachedLimit = usedUrls >= urlLimit;
+  const isAdmin = profile?.role === 'super_admin';
+
+  if (isAdmin) {
+    return (
+      <MainLayout>
+        <div className="space-y-8">
+          <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+            {t('nav.my.links')} - Admin View
+          </h1>
+          <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+            <AdminDeindexingView />
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
