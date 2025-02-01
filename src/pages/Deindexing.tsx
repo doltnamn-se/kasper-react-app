@@ -69,42 +69,43 @@ const Deindexing = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex items-center justify-between">
-            <TabsList className="w-full max-w-md">
-              <TabsTrigger value="incoming" className="flex-1">
-                {t('deindexing.incoming.links')}
-              </TabsTrigger>
-              <TabsTrigger value="deindexed" className="flex-1">
-                {t('deindexing.deindexed.links')}
-              </TabsTrigger>
-            </TabsList>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="flex items-center justify-between w-full max-w-3xl">
+              <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                {language === 'sv' 
+                  ? `${usedUrls} av ${urlLimit} kvar`
+                  : `${usedUrls} out of ${urlLimit} left`}
+              </span>
+            </div>
+            
+            <div className="flex items-center justify-between w-full max-w-3xl">
+              <TabsList className="h-10">
+                <TabsTrigger value="incoming" className="flex-1">
+                  {t('deindexing.incoming.links')}
+                </TabsTrigger>
+                <TabsTrigger value="deindexed" className="flex-1">
+                  {t('deindexing.deindexed.links')}
+                </TabsTrigger>
+              </TabsList>
 
-            <div className="flex items-end gap-2">
-              <div className="flex flex-col">
-                <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
-                  {language === 'sv' 
-                    ? `${usedUrls} av ${urlLimit} kvar`
-                    : `${usedUrls} out of ${urlLimit} left`}
-                </span>
+              <div className="flex gap-2">
                 <Button 
                   variant="default" 
-                  size="sm"
+                  className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
                   disabled={hasReachedLimit}
-                  className="flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
                 >
                   {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
                   {language === 'sv' ? 'Ny länk' : 'New link'}
                 </Button>
+                <Button
+                  variant="default"
+                  className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+                  onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
+                >
+                  <Plus className="h-4 w-4" />
+                  {language === 'sv' ? 'Skaffa mer' : 'Get more'}
+                </Button>
               </div>
-              <Button
-                variant="default"
-                size="sm"
-                className="flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
-              >
-                <Plus className="h-4 w-4" />
-                {language === 'sv' ? 'Skaffa mer' : 'Get more'}
-              </Button>
             </div>
           </div>
 
