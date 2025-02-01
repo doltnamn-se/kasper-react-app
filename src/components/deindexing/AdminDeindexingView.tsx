@@ -68,22 +68,24 @@ export const AdminDeindexingView = () => {
     try {
       console.log('Updating URL status:', { urlId, newStatus });
       
+      const statusUpdate = {
+        status: newStatus,
+        status_history: [{
+          status: newStatus,
+          timestamp: new Date().toISOString()
+        }]
+      };
+
       const { error: updateError } = await supabase
         .from('removal_urls')
-        .update({
-          status: newStatus,
-          status_history: supabase.rpc('append_status_history', {
-            url_id: urlId,
-            new_status: newStatus
-          })
-        })
+        .update(statusUpdate)
         .eq('id', urlId);
 
       if (updateError) {
         console.error('Error updating URL status:', updateError);
         toast({
-          title: "Error",
-          description: "Failed to update URL status",
+          title: t('error'),
+          description: t('error.update.status'),
           variant: "destructive",
         });
         return;
@@ -91,16 +93,16 @@ export const AdminDeindexingView = () => {
 
       console.log('URL status updated successfully');
       toast({
-        title: "Success",
-        description: "URL status updated successfully",
+        title: t('success'),
+        description: t('success.update.status'),
       });
 
       refetch();
     } catch (error) {
       console.error('Error in handleStatusChange:', error);
       toast({
-        title: "Error",
-        description: "An unexpected error occurred",
+        title: t('error'),
+        description: t('error.unexpected'),
         variant: "destructive",
       });
     }
@@ -111,10 +113,10 @@ export const AdminDeindexingView = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('url')}</TableHead>
-            <TableHead>{t('customer')}</TableHead>
-            <TableHead>{t('submitted')}</TableHead>
-            <TableHead>{t('status')}</TableHead>
+            <TableHead>{t('deindexing.url')}</TableHead>
+            <TableHead>{t('deindexing.customer')}</TableHead>
+            <TableHead>{t('deindexing.submitted')}</TableHead>
+            <TableHead>{t('deindexing.status')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

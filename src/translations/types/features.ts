@@ -70,4 +70,13 @@ export interface FeaturesTranslations {
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
   'step.2.skip': string;
+  'deindexing.url': string;
+  'deindexing.customer': string;
+  'deindexing.submitted': string;
+  'deindexing.status': string;
+  'error': string;
+  'success': string;
+  'error.update.status': string;
+  'error.unexpected': string;
+  'success.update.status': string;
 }
