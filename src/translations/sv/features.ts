@@ -81,8 +81,10 @@ const features: FeaturesTranslations = {
   'guide.upplysning.step2': 'Skriv detta i meddelandefältet: "Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN."',
   'guide.upplysning.step3': '',
   'step.2.skip': 'Hoppa över detta steg',
-  'notifications.url.status.title': 'URL-status uppdaterad',
-  'notifications.url.status.message': 'En URL-borttagningsbegäran har uppdaterats till status: {status}',
+  'deindexing.status.received': 'Mottagen',
+  'deindexing.status.case.started': 'Ärende påbörjat',
+  'deindexing.status.request.submitted': 'Begäran inskickad',
+  'deindexing.status.removal.approved': 'Borttagning godkänd',
 };
 
 export default features;

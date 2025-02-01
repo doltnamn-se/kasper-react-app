@@ -74,6 +74,10 @@ export interface FeaturesTranslations {
   'deindexing.customer': string;
   'deindexing.submitted': string;
   'deindexing.status': string;
+  'deindexing.status.received': string;
+  'deindexing.status.case.started': string;
+  'deindexing.status.request.submitted': string;
+  'deindexing.status.removal.approved': string;
   'error': string;
   'success': string;
   'error.update.status': string;
