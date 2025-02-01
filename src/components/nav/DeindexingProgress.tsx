@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { CircleFadingArrowUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export const DeindexingProgress = () => {
@@ -65,7 +64,11 @@ export const DeindexingProgress = () => {
           </span>
         </div>
         
-        <Progress value={progressPercentage} className="h-2" />
+        <Progress 
+          value={progressPercentage} 
+          className="h-2 bg-[#e8e8e5] dark:bg-[#2f2e31]" 
+          indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5]"
+        />
         
         <div className="flex items-center gap-1 mt-2 text-xs">
           <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -78,7 +81,7 @@ export const DeindexingProgress = () => {
             className="inline-flex items-center text-[#000000] hover:text-[#1d4ed8] dark:text-white dark:hover:text-[#93c5fd]"
           >
             {language === 'sv' ? 'Lägg till' : 'Add more'}
-            <CircleFadingArrowUp className="ml-1 h-3 w-3" />
+            <ArrowRight className="ml-1 h-3 w-3" />
           </a>
         </div>
       </div>
