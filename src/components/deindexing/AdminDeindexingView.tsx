@@ -68,17 +68,27 @@ export const AdminDeindexingView = () => {
     try {
       console.log('Updating URL status:', { urlId, newStatus });
       
-      const statusUpdate = {
-        status: newStatus,
-        status_history: [{
+      const { data: currentUrl } = await supabase
+        .from('removal_urls')
+        .select('status_history')
+        .eq('id', urlId)
+        .single();
+
+      const statusHistory = currentUrl?.status_history || [];
+      const newStatusHistory = [
+        ...statusHistory,
+        {
           status: newStatus,
           timestamp: new Date().toISOString()
-        }]
-      };
+        }
+      ];
 
       const { error: updateError } = await supabase
         .from('removal_urls')
-        .update(statusUpdate)
+        .update({
+          status: newStatus,
+          status_history: newStatusHistory
+        })
         .eq('id', urlId);
 
       if (updateError) {
