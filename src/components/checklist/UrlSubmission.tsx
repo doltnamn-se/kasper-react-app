@@ -69,10 +69,13 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
-      // Update checklist progress with URLs or empty array
+      // Update checklist progress with URLs or ['skipped'] if no URLs provided
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .update({ removal_urls: validUrls })
+        .update({ 
+          removal_urls: validUrls.length > 0 ? validUrls : ['skipped'],
+          completed_at: new Date().toISOString()
+        })
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
@@ -170,7 +173,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         disabled={isLoading}
         className="w-full py-6"
       >
-        {isLoading ? t('saving') : t('save.urls')}
+        {isLoading ? t('saving') : (currentValidUrls.length > 0 ? t('save.urls') : t('step.2.skip'))}
       </Button>
     </form>
   );
