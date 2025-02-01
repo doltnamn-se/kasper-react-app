@@ -4,28 +4,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-
-const statusSteps = {
-  received: 0,
-  case_started: 1,
-  request_submitted: 2,
-  removal_approved: 3,
-} as const;
-
-type StatusStep = keyof typeof statusSteps;
+import { URLTableRow } from "./URLTableRow";
+import type { StatusStep } from "./URLStatusSelect";
 
 export const AdminDeindexingView = () => {
   const { t, language } = useLanguage();
@@ -141,50 +126,14 @@ export const AdminDeindexingView = () => {
       </TableHeader>
       <TableBody>
         {urls?.map((url) => (
-          <TableRow key={url.id}>
-            <TableCell className="font-medium">
-              <a 
-                href={url.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                {url.url}
-              </a>
-            </TableCell>
-            <TableCell>
-              {url.customers?.profiles?.display_name || url.customers?.profiles?.email || 'N/A'}
-            </TableCell>
-            <TableCell>
-              {new Date(url.created_at).toLocaleDateString()}
-            </TableCell>
-            <TableCell>
-              <Select
-                value={url.current_status || 'received'}
-                onValueChange={(value: StatusStep) => {
-                  updateStatus.mutate({ urlId: url.id, newStatus: value });
-                }}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="received">
-                    {language === 'sv' ? 'Mottagen' : 'Received'}
-                  </SelectItem>
-                  <SelectItem value="case_started">
-                    {language === 'sv' ? 'Ärende påbörjat' : 'Case started'}
-                  </SelectItem>
-                  <SelectItem value="request_submitted">
-                    {language === 'sv' ? 'Begäran inskickad' : 'Request submitted'}
-                  </SelectItem>
-                  <SelectItem value="removal_approved">
-                    {language === 'sv' ? 'Borttagning godkänd' : 'Removal approved'}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </TableCell>
-          </TableRow>
+          <URLTableRow
+            key={url.id}
+            url={url}
+            onStatusChange={(urlId, newStatus) => 
+              updateStatus.mutate({ urlId, newStatus })
+            }
+            isLoading={updateStatus.isPending}
+          />
         ))}
       </TableBody>
     </Table>
