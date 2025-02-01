@@ -3,6 +3,7 @@ export type URLStatusStep = "received" | "case_started" | "request_submitted" | 
 export type URLStatus = "received" | "in_progress" | "completed" | "failed";
 
 export interface URLStatusHistory {
+  [key: string]: string; // This makes it compatible with Json type
   status: string;
   timestamp: string;
 }

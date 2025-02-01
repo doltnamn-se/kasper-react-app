@@ -79,7 +79,7 @@ export const useURLManagement = () => {
         throw new Error('URL not found');
       }
 
-      const statusHistory = currentUrl.status_history || [];
+      const statusHistory: URLStatusHistory[] = currentUrl.status_history || [];
       const newStatusHistory: URLStatusHistory[] = [
         ...statusHistory,
         {
