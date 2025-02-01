@@ -90,7 +90,8 @@ export const useURLManagement = () => {
         .from('removal_urls')
         .update({
           status: newStatus,
-          status_history: newStatusHistory
+          status_history: newStatusHistory,
+          current_status: newStatus
         })
         .eq('id', urlId);
 
@@ -125,7 +126,6 @@ export const useURLManagement = () => {
         description: t('success.update.status'),
       });
 
-      // No need to call refetch() here as the real-time subscription will handle it
     } catch (error) {
       console.error('Error in handleStatusChange:', error);
       toast({

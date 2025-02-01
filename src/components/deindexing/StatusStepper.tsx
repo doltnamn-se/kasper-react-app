@@ -37,7 +37,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         {/* Steps container */}
         <div className="flex justify-between mb-2">
           {STEPS.map((step, index) => {
-            const isCompleted = currentStepIndex > index;
+            const isCompleted = currentStepIndex >= index;
             const isCurrent = currentStepIndex === index;
             
             return (
@@ -51,7 +51,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
                 {/* Step circle */}
                 <div 
                   className={cn(
-                    "w-8 h-8 rounded-full border-2 flex items-center justify-center mb-2",
+                    "w-8 h-8 rounded-full border-2 flex items-center justify-center mb-2 transition-all duration-300",
                     isCompleted ? "bg-black dark:bg-[#c2c9f5] border-black dark:border-[#c2c9f5]" : 
                     isCurrent ? "border-black dark:border-[#c2c9f5] bg-white dark:bg-[#1c1c1e]" : 
                     "border-gray-300 dark:border-gray-600"
