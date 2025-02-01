@@ -27,6 +27,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const existingUrlCount = existingUrls?.length || 0;
   const remainingUrls = Math.max(0, urlLimit - existingUrlCount);
   const currentValidUrls = urls.filter(url => url.trim() !== '');
+  const hasValidUrls = currentValidUrls.length > 0;
 
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
@@ -179,7 +180,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         disabled={isLoading}
         className="w-full py-6"
       >
-        {isLoading ? t('saving') : t('step.2.skip')}
+        {isLoading ? t('saving') : hasValidUrls ? t('save.urls') : t('step.2.skip')}
       </Button>
     </form>
   );

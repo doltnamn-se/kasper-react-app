@@ -19,7 +19,8 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
         // For URL removal step, consider it complete if there are URLs or if it was explicitly skipped
         return Array.isArray(checklistProgress.removal_urls) && 
           (checklistProgress.removal_urls.length > 0 || 
-           checklistProgress.removal_urls.includes('skipped'));
+           (checklistProgress.removal_urls.length === 1 && 
+            checklistProgress.removal_urls[0] === 'skipped'));
       case 3:
         // For site selection step, check if there are selected sites
         return checklistProgress.selected_sites?.length > 0;
