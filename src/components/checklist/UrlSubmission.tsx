@@ -67,6 +67,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         .eq('customer_id', session.user.id);
 
       if (progressError) throw progressError;
+      
+      console.log('Successfully skipped URL submission');
       onComplete();
     } catch (error: any) {
       console.error('Error skipping URL submission:', error);
@@ -123,6 +125,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (urlsError) throw urlsError;
       
+      console.log('Successfully saved URLs:', validUrls);
       onComplete();
     } catch (error: any) {
       console.error('Error saving URLs:', error);
