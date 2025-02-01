@@ -79,14 +79,9 @@ export const useURLManagement = () => {
         throw new Error('URL not found');
       }
 
-      // Convert the JSON array to URLStatusHistory array with proper typing
-      const statusHistory: URLStatusHistory[] = (currentUrl.status_history as any[] || []).map(item => ({
-        status: item.status,
-        timestamp: item.timestamp
-      }));
+      const statusHistory = (currentUrl.status_history || []) as URLStatusHistory[];
 
-      // Create new status history entry with proper typing
-      const newStatusHistory: { status: string; timestamp: string; }[] = [
+      const newStatusHistory = [
         ...statusHistory,
         {
           status: newStatus,
@@ -127,6 +122,9 @@ export const useURLManagement = () => {
       if (notificationError) {
         console.error('Error creating notification:', notificationError);
       }
+
+      // Immediately refetch the data to update the UI
+      await refetch();
 
       console.log('URL status updated successfully');
       toast({
