@@ -53,6 +53,8 @@ const ChecklistContent = () => {
   };
 
   const progress = calculateProgress();
+  // Fixed total steps count to 4 main steps
+  const totalSteps = 4;
 
   return (
     <MainLayout>
@@ -64,8 +66,8 @@ const ChecklistContent = () => {
         {!isMobile && progress !== 100 && (
           <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('step.progress', { 
-              current: Math.ceil(progress / (100 / (4 + (checklistProgress?.selected_sites?.length || 0)))), 
-              total: 4 + (checklistProgress?.selected_sites?.length || 0) 
+              current: Math.ceil(progress / 25), // Calculate current step based on progress percentage
+              total: totalSteps // Use fixed total steps
             })}
           </span>
         )}
