@@ -70,7 +70,7 @@ const Deindexing = () => {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex flex-col space-y-2">
-            <div className="flex items-center justify-between w-full">
+            <div className="flex justify-between items-end w-full">
               <TabsList className="h-10">
                 <TabsTrigger value="incoming" className="flex-1">
                   {t('deindexing.incoming.links')}
@@ -81,11 +81,11 @@ const Deindexing = () => {
               </TabsList>
 
               <div className="flex flex-col items-end">
-                <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2 self-start">
+                <div className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
                   {language === 'sv' 
                     ? `${usedUrls} av ${urlLimit} kvar`
                     : `${usedUrls} out of ${urlLimit} left`}
-                </span>
+                </div>
                 <div className="flex gap-2">
                   <Button 
                     variant="default" 
