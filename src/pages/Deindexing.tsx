@@ -4,10 +4,53 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
+import { Button } from "@/components/ui/button";
+import { Link2, Link2Off, Plus } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Deindexing = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
+
+  const { data: urlLimits } = useQuery({
+    queryKey: ['url-limits'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return null;
+      
+      const { data, error } = await supabase
+        .from('user_url_limits')
+        .select('additional_urls')
+        .eq('customer_id', session.user.id)
+        .single();
+        
+      if (error) {
+        console.error('Error fetching URL limits:', error);
+        return null;
+      }
+      return data;
+    }
+  });
+
+  const { data: usedUrls = 0 } = useQuery({
+    queryKey: ['used-urls'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return 0;
+      
+      const { data, error } = await supabase
+        .from('removal_urls')
+        .select('id', { count: 'exact' })
+        .eq('customer_id', session.user.id);
+        
+      if (error) {
+        console.error('Error fetching used URLs:', error);
+        return 0;
+      }
+      return data?.length || 0;
+    }
+  });
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -15,12 +58,46 @@ const Deindexing = () => {
       "Deindexing | Doltnamn.se";
   }, [language]);
 
+  const urlLimit = urlLimits?.additional_urls || 0;
+  const hasReachedLimit = usedUrls >= urlLimit;
+
   return (
     <MainLayout>
       <div className="space-y-8">
-        <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-          {t('nav.my.links')}
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
+            {t('nav.my.links')}
+          </h1>
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-end">
+              <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
+                {language === 'sv' 
+                  ? `${usedUrls} av ${urlLimit} kvar`
+                  : `${usedUrls} out of ${urlLimit} left`}
+              </span>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  disabled={hasReachedLimit}
+                  className="flex items-center gap-2"
+                >
+                  {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+                  {language === 'sv' ? 'Ny länk' : 'New link'}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
+                >
+                  <Plus className="h-4 w-4" />
+                  {language === 'sv' ? 'Skaffa mer' : 'Get more'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="w-full max-w-md">
