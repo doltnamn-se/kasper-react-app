@@ -36,29 +36,35 @@ export const UserProfileMenu = () => {
       setIsSigningOut(true);
       console.log("Attempting to sign out...");
       
+      // First check if we have an active session
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError) {
         console.error("Error getting session:", sessionError);
-        toast.error(t('error.signout'));
+        // If there's an error getting the session, just redirect to auth
+        window.location.href = '/auth';
         return;
       }
 
+      // If there's no active session, just redirect to auth page
       if (!session) {
         console.log("No active session found, redirecting to auth page");
         window.location.href = '/auth';
         return;
       }
+
+      // Only attempt to sign out if we have an active session
+      const { error: signOutError } = await supabase.auth.signOut();
       
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error("Error signing out:", error);
+      if (signOutError) {
+        console.error("Error signing out:", signOutError);
         toast.error(t('error.signout'));
         return;
       }
       
       console.log("Sign out successful");
+      // Clear any local state if needed
+      localStorage.removeItem('supabase.auth.token');
       window.location.href = '/auth';
       
     } catch (err) {
