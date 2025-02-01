@@ -12,9 +12,11 @@ import {
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const ProfileSection = () => {
   const { userProfile, userEmail } = useUserProfile();
+  const { t } = useLanguage();
 
   const { data: customerData } = useQuery({
     queryKey: ['customer'],
@@ -44,11 +46,11 @@ export const ProfileSection = () => {
   const getSubscriptionTooltipKey = (plan: string | null | undefined) => {
     switch (plan) {
       case '6_months':
-        return 'subscription.tooltip.12months';
+        return t('subscription.tooltip.6months');
       case '12_months':
-        return 'subscription.tooltip.12months';
+        return t('subscription.tooltip.12months');
       default:
-        return 'subscription.tooltip.1month';
+        return t('subscription.tooltip.1month');
     }
   };
 
