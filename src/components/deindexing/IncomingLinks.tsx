@@ -57,7 +57,7 @@ export const IncomingLinks = () => {
               {new Date(url.created_at).toLocaleDateString()}
             </TableCell>
             <TableCell>
-              <StatusStepper currentStatus={url.current_status} />
+              <StatusStepper currentStatus={url.status} />
             </TableCell>
           </TableRow>
         ))}
