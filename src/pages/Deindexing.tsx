@@ -69,16 +69,8 @@ const Deindexing = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center justify-between w-full max-w-3xl">
-              <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                {language === 'sv' 
-                  ? `${usedUrls} av ${urlLimit} kvar`
-                  : `${usedUrls} out of ${urlLimit} left`}
-              </span>
-            </div>
-            
-            <div className="flex items-center justify-between w-full max-w-3xl">
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center justify-between w-full">
               <TabsList className="h-10">
                 <TabsTrigger value="incoming" className="flex-1">
                   {t('deindexing.incoming.links')}
@@ -88,23 +80,30 @@ const Deindexing = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="flex gap-2">
-                <Button 
-                  variant="default" 
-                  className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                  disabled={hasReachedLimit}
-                >
-                  {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
-                  {language === 'sv' ? 'Ny länk' : 'New link'}
-                </Button>
-                <Button
-                  variant="default"
-                  className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                  onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
-                >
-                  <Plus className="h-4 w-4" />
-                  {language === 'sv' ? 'Skaffa mer' : 'Get more'}
-                </Button>
+              <div className="flex flex-col items-end">
+                <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2 self-start">
+                  {language === 'sv' 
+                    ? `${usedUrls} av ${urlLimit} kvar`
+                    : `${usedUrls} out of ${urlLimit} left`}
+                </span>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="default" 
+                    className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+                    disabled={hasReachedLimit}
+                  >
+                    {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+                    {language === 'sv' ? 'Ny länk' : 'New link'}
+                  </Button>
+                  <Button
+                    variant="default"
+                    className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+                    onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
+                  >
+                    <Plus className="h-4 w-4" />
+                    {language === 'sv' ? 'Skaffa mer' : 'Get more'}
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
