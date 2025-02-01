@@ -82,11 +82,20 @@ export const useChecklistProgress = () => {
     const totalSteps = 4;
     let completedSteps = 0;
     
+    // Step 1: Password updated
     if (checklistProgress.password_updated) completedSteps++;
-    if (Array.isArray(checklistProgress.removal_urls)) completedSteps++;
+    
+    // Step 2: URLs submitted or skipped
+    if (checklistProgress.removal_urls && 
+        (checklistProgress.removal_urls.length > 0 || 
+         checklistProgress.removal_urls.includes('skipped'))) {
+      completedSteps++;
+    }
+    
+    // Step 3: Sites selected
     if (checklistProgress.selected_sites?.length > 0) completedSteps++;
     
-    // Check final step based on has_address_alert flag
+    // Step 4: Final step (address or personal info)
     if (checklistProgress.has_address_alert) {
       if (checklistProgress.street_address && 
           checklistProgress.postal_code && 
