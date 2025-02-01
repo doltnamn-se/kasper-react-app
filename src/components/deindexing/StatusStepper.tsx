@@ -32,7 +32,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   return (
-    <div className="w-full max-w-3xl">
+    <div className="w-full max-w-4xl">
       <div className="relative">
         {/* Steps container */}
         <div className="flex justify-between mb-2">
@@ -75,14 +75,32 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           })}
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar background */}
         <div className="absolute top-4 left-0 w-full h-[2px] bg-gray-200 dark:bg-gray-700 -z-10">
+          {/* Animated progress bar with gradient/striped effect */}
           <div 
-            className="h-full bg-black dark:bg-[#c2c9f5] transition-all duration-300"
+            className="h-full bg-gradient-to-r from-green-500 to-green-300 dark:from-[#c2c9f5] dark:to-[#8e99f3] transition-all duration-300 relative overflow-hidden"
             style={{ 
               width: `${(currentStepIndex / (STEPS.length - 1)) * 100}%`,
             }}
-          />
+          >
+            {/* Animated stripes */}
+            <div 
+              className="absolute inset-0 bg-[length:10px_10px] animate-progress-line"
+              style={{
+                backgroundImage: `linear-gradient(
+                  45deg,
+                  rgba(255,255,255,0.2) 25%,
+                  transparent 25%,
+                  transparent 50%,
+                  rgba(255,255,255,0.2) 50%,
+                  rgba(255,255,255,0.2) 75%,
+                  transparent 75%,
+                  transparent
+                )`
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
