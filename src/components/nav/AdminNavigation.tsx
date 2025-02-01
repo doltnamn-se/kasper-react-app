@@ -6,7 +6,11 @@ import {
   Link as LinkIcon
 } from "lucide-react";
 
-export const AdminNavigation = () => {
+interface AdminNavigationProps {
+  toggleMobileMenu?: () => void;
+}
+
+export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
   const { t } = useLanguage();
 
   return (
@@ -14,25 +18,28 @@ export const AdminNavigation = () => {
       <Link
         to="/admin"
         className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
+        onClick={toggleMobileMenu}
       >
         <LayoutDashboard className="w-4 h-4" />
-        <span>{t('navigation.dashboard')}</span>
+        <span>{t('nav.admin.dashboard')}</span>
       </Link>
       
       <Link
         to="/admin/customers"
         className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
+        onClick={toggleMobileMenu}
       >
         <Users className="w-4 h-4" />
-        <span>{t('navigation.customers')}</span>
+        <span>{t('nav.admin.customers')}</span>
       </Link>
 
       <Link
         to="/admin/deindexing"
         className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
+        onClick={toggleMobileMenu}
       >
         <LinkIcon className="w-4 h-4" />
-        <span>{t('navigation.url_management')}</span>
+        <span>{t('nav.my.links')}</span>
       </Link>
     </nav>
   );
