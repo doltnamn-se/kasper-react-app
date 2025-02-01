@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
 import { Button } from "@/components/ui/button";
-import { Link2, Link2Off, Plus } from "lucide-react";
+import { Link2, Link2Off, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -100,8 +100,8 @@ const Deindexing = () => {
                     className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
                     onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
                   >
-                    <Plus className="h-4 w-4" />
-                    {language === 'sv' ? 'Skaffa mer' : 'Get more'}
+                    <span>{language === 'sv' ? 'Lägg till' : 'Add more'}</span>
+                    <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
