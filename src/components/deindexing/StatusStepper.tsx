@@ -1,68 +1,39 @@
-import { Check, Loader } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 type StatusStepperProps = {
   currentStatus: string;
 };
 
 export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
-  // Map admin status to step number
-  const getStepNumber = (status: string) => {
+  // Map status to progress percentage
+  const getProgressPercentage = (status: string) => {
     switch (status) {
       case 'received':
-        return 1;
+        return 25;
       case 'in_progress':
-        return 2;
+        return 50;
       case 'completed':
-        return 4;
+        return 100;
       case 'failed':
-        return 4; // Show as last step but with different styling
+        return 100; // Full width but with different styling
       default:
-        return 1;
+        return 25;
     }
   };
 
-  const currentStep = getStepNumber(currentStatus);
-
-  const steps = [1, 2, 3, 4].map(step => ({
-    number: step,
-    isActive: step <= currentStep,
-    isCurrent: step === currentStep
-  }));
+  const progressPercentage = getProgressPercentage(currentStatus);
 
   return (
-    <div className="flex items-center space-x-2">
-      {steps.map((step, index) => (
-        <div key={step.number} className="flex items-center">
-          <div
-            className={`flex items-center justify-center w-6 h-6 rounded-full 
-              ${step.isActive 
-                ? currentStatus === 'failed'
-                  ? 'bg-red-500 text-white'
-                  : 'bg-green-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
-              }`}
-          >
-            {step.isCurrent && currentStatus === 'in_progress' ? (
-              <Loader className="w-4 h-4 animate-spin" />
-            ) : step.isActive ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              <span className="text-sm">{step.number}</span>
-            )}
-          </div>
-          {index < steps.length - 1 && (
-            <div 
-              className={`w-4 h-0.5 mx-1
-                ${step.isActive && steps[index + 1].isActive
-                  ? currentStatus === 'failed'
-                    ? 'bg-red-500'
-                    : 'bg-green-500'
-                  : 'bg-gray-200 dark:bg-gray-700'
-                }`}
-            />
-          )}
-        </div>
-      ))}
+    <div className="w-32">
+      <Progress 
+        value={progressPercentage} 
+        className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden" 
+        indicatorClassName={
+          currentStatus === 'failed'
+            ? 'bg-red-500 rounded-full'
+            : 'bg-[#000000] dark:bg-[#c2c9f5] rounded-full'
+        }
+      />
     </div>
   );
 };
