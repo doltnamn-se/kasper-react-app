@@ -79,7 +79,12 @@ export const useURLManagement = () => {
         throw new Error('URL not found');
       }
 
-      const statusHistory: URLStatusHistory[] = currentUrl.status_history || [];
+      // Convert the JSON array to URLStatusHistory array
+      const statusHistory: URLStatusHistory[] = (currentUrl.status_history as any[] || []).map(item => ({
+        status: item.status,
+        timestamp: item.timestamp
+      }));
+
       const newStatusHistory: URLStatusHistory[] = [
         ...statusHistory,
         {
