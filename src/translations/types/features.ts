@@ -65,4 +65,5 @@ export interface FeaturesTranslations {
   'guide.upplysning.step1': string;
   'guide.upplysning.step2': string;
   'guide.upplysning.step3': string;
+  'step.2.skip': string;
 }

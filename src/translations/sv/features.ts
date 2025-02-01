@@ -66,5 +66,6 @@ export const features: FeaturesTranslations = {
   'guide.upplysning.step2': 'Skriv detta i meddelandefältet: " Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är XXXXXX-XXXX."',
   'guide.upplysning.step3': '',
   'set.password.description': 'Skapa ett säkert lösenord för ditt konto',
-  'current.password': 'Nuvarande lösenord'
+  'current.password': 'Nuvarande lösenord',
+  'step.2.skip': 'Hoppa över',
 };
