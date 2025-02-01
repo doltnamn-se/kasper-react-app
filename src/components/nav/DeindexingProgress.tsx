@@ -54,33 +54,28 @@ export const DeindexingProgress = () => {
     <div className="mt-6">
       <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       <div className="px-3">
-        <h3 className="text-sm font-medium text-[#000000] dark:text-white mb-4">
-          {language === 'sv' ? 'Använd Avindexering' : 'Used Deindexing'}
-        </h3>
-        
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm text-[#000000] dark:text-white">
-            <span>
-              {language === 'sv' 
-                ? `${usedUrls} av ${urlLimit}` 
-                : `${usedUrls} out of ${urlLimit}`}
-            </span>
-          </div>
-          
-          <Progress value={progressPercentage} className="h-2" />
-          
-          <a
-            href="https://buy.stripe.com/7sI00ZdkU1i11A4eV2"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-sm text-[#2e77d0] hover:text-[#1d4ed8] dark:text-[#60a5fa] dark:hover:text-[#93c5fd] mt-2"
-          >
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-sm font-medium text-[#000000] dark:text-white">
+            {t('deindexing.used.title')}
+          </h3>
+          <span className="text-sm text-[#000000] dark:text-white">
             {language === 'sv' 
-              ? 'Behöver du fler länkar? Lägg till' 
-              : 'Need more links? Add more'}
-            <ExternalLink className="ml-1 h-3 w-3" />
-          </a>
+              ? `${usedUrls} av ${urlLimit}` 
+              : `${usedUrls} out of ${urlLimit}`}
+          </span>
         </div>
+        
+        <Progress value={progressPercentage} className="h-2" />
+        
+        <a
+          href="https://buy.stripe.com/7sI00ZdkU1i11A4eV2"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-sm text-[#2e77d0] hover:text-[#1d4ed8] dark:text-[#60a5fa] dark:hover:text-[#93c5fd] mt-2"
+        >
+          {t('deindexing.need.more')}
+          <ExternalLink className="ml-1 h-3 w-3" />
+        </a>
       </div>
     </div>
   );
