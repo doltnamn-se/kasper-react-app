@@ -1,48 +1,46 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { URLStatusSelect } from "./URLStatusSelect";
-import type { StatusStep } from "./URLStatusSelect";
+import { formatDistanceToNow } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface URLTableRowProps {
   url: {
     id: string;
     url: string;
-    current_status: StatusStep;
+    status: string;
     created_at: string;
-    customers?: {
-      profiles?: {
-        email?: string;
-        display_name?: string;
+    customer: {
+      id: string;
+      profiles: {
+        email: string;
       };
     };
   };
-  onStatusChange: (urlId: string, newStatus: StatusStep) => void;
-  isLoading?: boolean;
+  onStatusChange: (urlId: string, newStatus: string) => void;
 }
 
-export const URLTableRow = ({ url, onStatusChange, isLoading }: URLTableRowProps) => {
+export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
+  const { language } = useLanguage();
+  
+  const formatDate = (date: string) => {
+    return formatDistanceToNow(new Date(date), {
+      addSuffix: true,
+      locale: language === 'sv' ? sv : enUS
+    });
+  };
+
   return (
-    <TableRow key={url.id}>
-      <TableCell className="font-medium">
-        <a 
-          href={url.url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="text-blue-600 dark:text-blue-400 hover:underline"
-        >
-          {url.url}
-        </a>
-      </TableCell>
-      <TableCell>
-        {url.customers?.profiles?.display_name || url.customers?.profiles?.email || 'N/A'}
-      </TableCell>
-      <TableCell>
-        {new Date(url.created_at).toLocaleDateString()}
-      </TableCell>
+    <TableRow>
+      <TableCell>{url.url}</TableCell>
+      <TableCell>{url.customer.profiles.email}</TableCell>
+      <TableCell>{formatDate(url.created_at)}</TableCell>
       <TableCell>
         <URLStatusSelect
-          currentStatus={url.current_status || 'received'}
-          onStatusChange={(status) => onStatusChange(url.id, status)}
-          isLoading={isLoading}
+          currentStatus={url.status}
+          urlId={url.id}
+          customerId={url.customer.id}
+          onStatusChange={(newStatus) => onStatusChange(url.id, newStatus)}
         />
       </TableCell>
     </TableRow>

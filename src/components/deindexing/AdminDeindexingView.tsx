@@ -1,34 +1,29 @@
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import { URLTableRow } from "./URLTableRow";
-import type { StatusStep } from "./URLStatusSelect";
 
 export const AdminDeindexingView = () => {
-  const { t, language } = useLanguage();
-  const queryClient = useQueryClient();
+  const { t } = useLanguage();
 
-  const { data: urls, isLoading } = useQuery({
+  const { data: urls = [], refetch } = useQuery({
     queryKey: ['admin-urls'],
     queryFn: async () => {
-      console.log('Fetching all URLs for admin...');
+      console.log('Fetching URLs for admin view');
       const { data, error } = await supabase
         .from('removal_urls')
         .select(`
-          *,
-          customers (
+          id,
+          url,
+          status,
+          created_at,
+          customer:customers (
             id,
-            profiles:profiles (
-              email,
-              display_name
+            profiles (
+              email
             )
           )
         `)
@@ -44,98 +39,94 @@ export const AdminDeindexingView = () => {
     }
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ urlId, newStatus }: { urlId: string, newStatus: StatusStep }) => {
+  // Set up real-time subscription for URL updates
+  useEffect(() => {
+    console.log('Setting up real-time subscription for URLs');
+    const channel = supabase
+      .channel('admin-urls-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'removal_urls'
+        },
+        (payload) => {
+          console.log('URL change detected:', payload);
+          refetch();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('Cleaning up URL subscription');
+      supabase.removeChannel(channel);
+    };
+  }, [refetch]);
+
+  const handleStatusChange = async (urlId: string, newStatus: string) => {
+    try {
       console.log('Updating URL status:', { urlId, newStatus });
       
-      // First, get the current status_history
-      const { data: currentUrl, error: fetchError } = await supabase
+      const { error: updateError } = await supabase
         .from('removal_urls')
-        .select('status_history')
-        .eq('id', urlId)
-        .single();
-
-      if (fetchError) {
-        console.error('Error fetching current URL:', fetchError);
-        throw fetchError;
-      }
-
-      // Prepare the new status history entry
-      const newHistoryEntry = {
-        status: newStatus,
-        timestamp: new Date().toISOString()
-      };
-
-      // Create the updated status_history array
-      const updatedHistory = currentUrl.status_history || [];
-      updatedHistory.push(newHistoryEntry);
-
-      // Update the record with the new status and history
-      const { data, error } = await supabase
-        .from('removal_urls')
-        .update({ 
-          current_status: newStatus,
-          status_history: updatedHistory
+        .update({
+          status: newStatus,
+          status_history: supabase.rpc('append_status_history', {
+            url_id: urlId,
+            new_status: newStatus
+          })
         })
-        .eq('id', urlId)
-        .select()
-        .single();
+        .eq('id', urlId);
 
-      if (error) {
-        console.error('Error updating URL status:', error);
-        throw error;
+      if (updateError) {
+        console.error('Error updating URL status:', updateError);
+        toast({
+          title: "Error",
+          description: "Failed to update URL status",
+          variant: "destructive",
+        });
+        return;
       }
 
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+      console.log('URL status updated successfully');
       toast({
-        title: t('success'),
-        description: language === 'sv' ? 'Status uppdaterad' : 'Status updated',
+        title: "Success",
+        description: "URL status updated successfully",
       });
-    },
-    onError: (error) => {
-      console.error('Error in updateStatus mutation:', error);
-      toast({
-        title: t('error.title'),
-        description: language === 'sv' ? 'Kunde inte uppdatera status' : 'Failed to update status',
-        variant: 'destructive',
-      });
-    },
-  });
 
-  if (isLoading) {
-    return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-      </div>
-    );
-  }
+      refetch();
+    } catch (error) {
+      console.error('Error in handleStatusChange:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>URL</TableHead>
-          <TableHead>{language === 'sv' ? 'Användare' : 'User'}</TableHead>
-          <TableHead>{language === 'sv' ? 'Tillagd' : 'Submitted'}</TableHead>
-          <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {urls?.map((url) => (
-          <URLTableRow
-            key={url.id}
-            url={url}
-            onStatusChange={(urlId, newStatus) => 
-              updateStatus.mutate({ urlId, newStatus })
-            }
-            isLoading={updateStatus.isPending}
-          />
-        ))}
-      </TableBody>
-    </Table>
+    <div className="container mx-auto py-6">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{t('url')}</TableHead>
+            <TableHead>{t('customer')}</TableHead>
+            <TableHead>{t('submitted')}</TableHead>
+            <TableHead>{t('status')}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {urls.map((url) => (
+            <URLTableRow
+              key={url.id}
+              url={url}
+              onStatusChange={handleStatusChange}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
