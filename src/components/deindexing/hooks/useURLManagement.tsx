@@ -3,22 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-// Define the allowed status steps based on the database enum
-type URLStatusStep = "received" | "case_started" | "request_submitted" | "removal_approved";
-
-const mapStatusToEnum = (status: string): URLStatusStep => {
-  switch (status) {
-    case "received":
-      return "received";
-    case "in_progress":
-      return "case_started";
-    case "completed":
-      return "removal_approved";
-    default:
-      return "received";
-  }
-};
+import { mapStatusToEnum } from "@/utils/statusMapping";
+import { URL, URLStatus, URLStatusHistory } from "@/types/url-management";
 
 export const useURLManagement = () => {
   const { t } = useLanguage();
@@ -49,7 +35,7 @@ export const useURLManagement = () => {
       }
 
       console.log('Fetched URLs:', data);
-      return data;
+      return data as URL[];
     }
   });
 
@@ -79,7 +65,7 @@ export const useURLManagement = () => {
     };
   }, [refetch]);
 
-  const handleStatusChange = async (urlId: string, newStatus: string) => {
+  const handleStatusChange = async (urlId: string, newStatus: URLStatus) => {
     try {
       console.log('Updating URL status:', { urlId, newStatus });
       
@@ -93,8 +79,8 @@ export const useURLManagement = () => {
         throw new Error('URL not found');
       }
 
-      const statusHistory = currentUrl?.status_history || [];
-      const newStatusHistory = [
+      const statusHistory = currentUrl.status_history || [];
+      const newStatusHistory: URLStatusHistory[] = [
         ...statusHistory,
         {
           status: newStatus,
