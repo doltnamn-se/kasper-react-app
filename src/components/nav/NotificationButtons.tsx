@@ -13,13 +13,15 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NotificationIcon } from "../notifications/NotificationIcon";
 import { NotificationList } from "../notifications/NotificationList";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useNotificationFiltering } from "@/hooks/useNotificationFiltering";
 
 export const NotificationButtons = () => {
-  const { notifications = [], unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const { notifications = [], markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const location = useLocation();
+  
+  const { filteredNotifications, totalUnreadCount } = useNotificationFiltering(notifications);
 
   const { data: checklistProgress } = useQuery({
     queryKey: ['checklist-progress-notifications'],
@@ -58,36 +60,6 @@ export const NotificationButtons = () => {
       return data;
     }
   });
-
-  // Get the current timestamp for checklist notifications
-  const now = new Date().toISOString();
-
-  // Filter notifications based on the current route
-  const filteredNotifications = notifications.filter(n => {
-    // Filter out checklist notifications
-    if (n.type === 'checklist') return false;
-
-    // On deindexing page, show only removal notifications
-    if (location.pathname === '/deindexing') {
-      return n.type === 'removal';
-    }
-    
-    // On address-alerts page, show only address_alert notifications
-    // and exclude checklist step 4 notifications
-    if (location.pathname === '/address-alerts') {
-      return n.type === 'address_alert' && !n.message?.includes('step 4');
-    }
-
-    // On other pages, show all notifications except removal ones
-    return n.type !== 'removal';
-  });
-  
-  // Calculate unread count based on filtered notifications
-  const totalUnreadCount = filteredNotifications.filter(n => !n.read).length;
-
-  console.log('Current route:', location.pathname);
-  console.log('Filtered notifications:', filteredNotifications);
-  console.log('Total unread count:', totalUnreadCount);
 
   const handleSettingsClick = () => {
     navigate('/settings', { state: { defaultTab: 'notifications' } });
