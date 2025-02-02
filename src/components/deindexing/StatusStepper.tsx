@@ -11,9 +11,10 @@ const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as c
 export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const { t } = useLanguage();
 
-  console.log('Current status received:', currentStatus);
+  console.log('Current status received:', currentStatus); // Debug log
 
   const getStepIndex = (status: string) => {
+    // Map the database status to our step status
     let mappedStatus = status;
     switch (status) {
       case 'case_started':
@@ -26,9 +27,9 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         mappedStatus = status;
     }
 
-    console.log('Mapped status:', mappedStatus);
+    console.log('Mapped status:', mappedStatus); // Debug log
     const index = STEPS.indexOf(mappedStatus as typeof STEPS[number]);
-    console.log('Step index:', index);
+    console.log('Step index:', index); // Debug log
     
     return index >= 0 ? index : 0;
   };
@@ -36,7 +37,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const currentStepIndex = getStepIndex(currentStatus);
   const progressPercentage = ((currentStepIndex + 1) * 100) / STEPS.length;
   
-  console.log('Progress percentage:', progressPercentage);
+  console.log('Progress percentage:', progressPercentage); // Debug log
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -59,10 +60,12 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         {`
           .deindexing-progress {
             background-color: #97ee88;
+          }
+          .deindexing-progress-indicator {
             position: relative;
             overflow: hidden;
           }
-          .deindexing-progress::before {
+          .deindexing-progress-indicator::before {
             content: '';
             position: absolute;
             top: 0;
@@ -72,13 +75,13 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             background-color: #08a621;
             z-index: 1;
           }
-          .deindexing-progress::after {
+          .deindexing-progress-indicator::after {
             content: '';
             position: absolute;
             top: 0;
             left: ${(currentStepIndex + 1) * 25}%;
             right: 0;
-            height: 100%;
+            bottom: 0;
             background: linear-gradient(
               -45deg,
               #08a621 25%,
@@ -91,7 +94,6 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             );
             background-size: 7px 7px;
             animation: moveStripes 1.8s linear infinite;
-            z-index: 0;
           }
           @keyframes moveStripes {
             0% { background-position: 0 0; }
@@ -102,7 +104,8 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
       <div className="relative">
         <Progress 
           value={progressPercentage} 
-          className="h-3 rounded-full overflow-hidden deindexing-progress"
+          className="h-3 rounded-full overflow-hidden mb-4 deindexing-progress"
+          indicatorClassName="deindexing-progress-indicator dark:bg-white"
         />
         <div 
           className="absolute top-1/2 h-3 flex items-center -translate-y-1/2" 
