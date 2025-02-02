@@ -17,20 +17,23 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
     try {
-      console.log('Updating URL status:', { urlId, newStatus, currentStatus });
+      console.log('Handling status change:', { urlId, newStatus, currentStatus });
       
-      // Only proceed if status actually changed
-      if (newStatus !== currentStatus) {
-        // Get translated status text for notification
-        const translatedStatus = getStatusText(newStatus, t);
-        console.log('Creating notification with translated status:', translatedStatus);
-
-        // First update the status
-        onStatusChange(newStatus);
-        
-        // Then create the notification
-        await createStatusNotification(customerId, translatedStatus);
+      // Skip if status hasn't changed
+      if (newStatus === currentStatus) {
+        console.log('Status unchanged, skipping update');
+        return;
       }
+
+      // First update the status
+      onStatusChange(newStatus);
+      
+      // Get translated status text for notification
+      const translatedStatus = getStatusText(newStatus, t);
+      console.log('Creating notification with translated status:', translatedStatus);
+      
+      // Create the notification
+      await createStatusNotification(customerId, translatedStatus);
     } catch (error) {
       console.error('Error updating status:', error);
       showErrorToast();
