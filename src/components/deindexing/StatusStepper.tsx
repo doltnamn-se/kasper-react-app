@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
 
 type StatusStepperProps = {
   currentStatus: string;
@@ -15,6 +15,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
+  const progressPercentage = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -32,77 +33,20 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   return (
-    <div className="w-full max-w-4xl">
-      <div className="relative">
-        {/* Steps container */}
-        <div className="flex justify-between mb-2">
-          {STEPS.map((step, index) => {
-            const isCompleted = currentStepIndex >= index;
-            const isCurrent = currentStepIndex === index;
-            
-            return (
-              <div 
-                key={step} 
-                className={cn(
-                  "flex flex-col items-center relative z-10",
-                  (isCompleted || isCurrent) ? "text-black dark:text-white" : "text-gray-400"
-                )}
-              >
-                {/* Step circle */}
-                <div 
-                  className={cn(
-                    "w-8 h-8 rounded-full border-2 flex items-center justify-center mb-2 transition-all duration-300",
-                    isCompleted ? "bg-black dark:bg-[#c2c9f5] border-black dark:border-[#c2c9f5]" : 
-                    isCurrent ? "border-black dark:border-[#c2c9f5] bg-white dark:bg-[#1c1c1e]" : 
-                    "border-gray-300 dark:border-gray-600"
-                  )}
-                >
-                  {isCompleted ? (
-                    <svg className="w-4 h-4 text-white dark:text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
-                    </svg>
-                  ) : (
-                    <span className={cn(
-                      "text-sm",
-                      isCurrent ? "text-black dark:text-white" : "text-gray-400"
-                    )}>{index + 1}</span>
-                  )}
-                </div>
-                {/* Step label */}
-                <span className="text-sm text-center w-24">{getStatusText(step)}</span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Progress bar background */}
-        <div className="absolute top-4 left-0 w-full h-[2px] bg-gray-200 dark:bg-gray-700 -z-10">
-          {/* Animated progress bar with gradient/striped effect */}
-          <div 
-            className="h-full bg-gradient-to-r from-green-500 to-green-300 dark:from-[#c2c9f5] dark:to-[#8e99f3] transition-all duration-300 relative overflow-hidden"
-            style={{ 
-              width: `${(currentStepIndex / (STEPS.length - 1)) * 100}%`,
-            }}
-          >
-            {/* Animated stripes */}
-            <div 
-              className="absolute inset-0 bg-[length:10px_10px] animate-progress-line"
-              style={{
-                backgroundImage: `linear-gradient(
-                  45deg,
-                  rgba(255,255,255,0.2) 25%,
-                  transparent 25%,
-                  transparent 50%,
-                  rgba(255,255,255,0.2) 50%,
-                  rgba(255,255,255,0.2) 75%,
-                  transparent 75%,
-                  transparent
-                )`
-              }}
-            />
-          </div>
-        </div>
+    <div className="w-full max-w-sm">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-sm font-medium">
+          {getStatusText(currentStatus)}
+        </span>
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {Math.round(progressPercentage)}%
+        </span>
       </div>
+      <Progress 
+        value={progressPercentage} 
+        className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden" 
+        indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5] rounded-full"
+      />
     </div>
   );
 };
