@@ -3,6 +3,7 @@ import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getStatusText } from '@/components/deindexing/utils/statusUtils';
 
 interface NotificationItemProps {
   notification: {
@@ -46,6 +47,15 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
       const siteMatch = originalMessage.match(/for (.+) to hide/);
       const siteName = siteMatch ? siteMatch[1] : '';
       return t('guide.completion.message', { site: siteName });
+    }
+    if (type === 'removal') {
+      // Extract the status from the message
+      const statusMatch = originalMessage.match(/status: (.+)$/);
+      if (statusMatch) {
+        const rawStatus = statusMatch[1];
+        const translatedStatus = getStatusText(rawStatus, t);
+        return t('notifications.url.status.message', { status: translatedStatus });
+      }
     }
     return originalMessage;
   };
