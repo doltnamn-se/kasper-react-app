@@ -33,7 +33,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full">
       <Progress 
         value={progressPercentage} 
         className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden mb-4" 
