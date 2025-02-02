@@ -40,7 +40,10 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = (currentStepIndex * 100 + 50) / STEPS.length;
+  // Adjust progress calculation for the last step
+  const progressPercentage = currentStepIndex === STEPS.length - 1 ? 
+    100 : // If it's the last step, fill the bar completely
+    (currentStepIndex * 100 + 50) / STEPS.length; // Otherwise, use the original calculation
   
   console.log('Progress percentage:', progressPercentage);
 
