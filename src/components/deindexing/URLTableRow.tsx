@@ -43,7 +43,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
 
   return (
     <TableRow>
-      <TableCell className="w-[180px] truncate">
+      <TableCell className="w-[120px] truncate">
         <a 
           href={url.url} 
           target="_blank" 
@@ -55,8 +55,8 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
       </TableCell>
       <TableCell className="w-[180px] truncate">{url.customer.profiles.email}</TableCell>
       <TableCell className="w-[120px] whitespace-nowrap">{formatDate(url.created_at)}</TableCell>
-      <TableCell className="w-full -ml-[80px]">
-        <div className="flex items-center justify-between gap-2 -ml-[10px]">
+      <TableCell>
+        <div className="flex items-center justify-between gap-2">
           <div className="flex-grow">
             <StatusStepper 
               currentStatus={url.status} 
