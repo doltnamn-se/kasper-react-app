@@ -11,23 +11,23 @@ const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as c
 export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const { t } = useLanguage();
 
+  console.log('Current status received:', currentStatus); // Debug log
+
   const getStepIndex = (status: string) => {
-    switch (status) {
-      case 'received':
-        return 0;
-      case 'in_progress':
-        return 1;
-      case 'request_submitted':
-        return 2;
-      case 'completed':
-        return 3;
-      default:
-        return 0;
-    }
+    // Normalize the status to match our expected values
+    const normalizedStatus = status.toLowerCase();
+    console.log('Normalized status:', normalizedStatus); // Debug log
+
+    const index = STEPS.indexOf(normalizedStatus as typeof STEPS[number]);
+    console.log('Step index:', index); // Debug log
+    
+    return index >= 0 ? index : 0;
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
   const progressPercentage = ((currentStepIndex + 1) * 100) / STEPS.length;
+  
+  console.log('Progress percentage:', progressPercentage); // Debug log
 
   const getStatusText = (status: string) => {
     switch (status) {
