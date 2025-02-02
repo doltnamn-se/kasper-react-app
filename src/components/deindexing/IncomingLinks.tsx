@@ -10,6 +10,7 @@ import {
 import { StatusStepper } from "./StatusStepper";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 import { URLStatusHistory } from "@/types/url-management";
+import { Link2 } from "lucide-react";
 
 export const IncomingLinks = () => {
   const { t, language } = useLanguage();
@@ -54,8 +55,9 @@ export const IncomingLinks = () => {
                 href={url.url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block"
+                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
               >
+                <Link2 className="h-3 w-3" />
                 {url.url}
               </a>
             </TableCell>
