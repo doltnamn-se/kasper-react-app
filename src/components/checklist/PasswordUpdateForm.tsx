@@ -89,7 +89,7 @@ export const PasswordUpdateForm = ({
           toast({
             variant: "destructive",
             title: t('error'),
-            description: t('language') === 'en' ? 
+            description: t('current.language') === 'en' ? 
               "New password must be different from current password" : 
               "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
           });
