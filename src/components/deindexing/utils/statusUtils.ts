@@ -1,7 +1,8 @@
 import { URLStatusStep } from "@/types/url-management";
 
 export const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as const;
-export type Step = typeof STEPS[number];
+export type Step = (typeof STEPS)[number];
+export type Steps = readonly Step[];
 
 export const getStepIndex = (status: string): number => {
   let mappedStatus = status;
