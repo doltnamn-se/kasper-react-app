@@ -19,7 +19,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
           <div 
             key={`${type}-${step}`}
             className={cn(
-              "w-[25%] text-xs text-center",
+              "w-[25%] text-sm text-center", // Updated from text-xs to text-sm
               type === "label" ? (
                 index === currentStepIndex 
                   ? "font-bold text-[#000000] dark:text-white" 
