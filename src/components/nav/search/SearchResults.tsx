@@ -8,7 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { RefObject } from "react";
-import { House, BadgeCheck, Activity, QrCode, MapPinHouse, MousePointerClick, Settings } from "lucide-react";
+import { House, BadgeCheck, Activity, EyeOff, MapPinHouse, MousePointerClick, Settings } from "lucide-react";
 
 export type SearchResult = {
   id: string;
@@ -35,7 +35,7 @@ const getIconForUrl = (url: string) => {
       return <Activity className="h-4 w-4 mr-2" />;
     case "/my-links":
     case "/deindexing":
-      return <QrCode className="h-4 w-4 mr-2" />;
+      return <EyeOff className="h-4 w-4 mr-2" />;
     case "/address-alerts":
       return <MapPinHouse className="h-4 w-4 mr-2" />;
     case "/guides":
