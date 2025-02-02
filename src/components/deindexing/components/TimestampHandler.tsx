@@ -35,7 +35,9 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
         try {
           const formattedTime = formatDistanceToNow(new Date(firstEntry.timestamp), {
             addSuffix: true,
-            locale: language === 'sv' ? sv : enUS
+            locale: language === 'sv' ? sv : enUS,
+            includeSeconds: false,
+            addPrefix: false
           });
           console.log('Formatted time for received step:', formattedTime);
           return formattedTime;
@@ -50,7 +52,9 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
       try {
         const formattedTime = formatDistanceToNow(new Date(historyEntry.timestamp), {
           addSuffix: true,
-          locale: language === 'sv' ? sv : enUS
+          locale: language === 'sv' ? sv : enUS,
+          includeSeconds: false,
+          addPrefix: false
         });
         console.log('Formatted time for step', step, ':', formattedTime);
         return formattedTime;
