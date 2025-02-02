@@ -36,11 +36,10 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
           const formattedTime = formatDistanceToNow(new Date(firstEntry.timestamp), {
             addSuffix: true,
             locale: language === 'sv' ? sv : enUS,
-            includeSeconds: false,
-            addPrefix: false
+            includeSeconds: false
           });
           console.log('Formatted time for received step:', formattedTime);
-          return formattedTime;
+          return formattedTime.replace('about ', '').replace('ungefär ', '');
         } catch (error) {
           console.error('Error formatting timestamp for received step:', error);
           return '';
@@ -53,11 +52,10 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
         const formattedTime = formatDistanceToNow(new Date(historyEntry.timestamp), {
           addSuffix: true,
           locale: language === 'sv' ? sv : enUS,
-          includeSeconds: false,
-          addPrefix: false
+          includeSeconds: false
         });
         console.log('Formatted time for step', step, ':', formattedTime);
-        return formattedTime;
+        return formattedTime.replace('about ', '').replace('ungefär ', '');
       } catch (error) {
         console.error('Error formatting timestamp for step', step, ':', error);
         return '';
