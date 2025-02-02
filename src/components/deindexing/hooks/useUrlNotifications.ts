@@ -14,22 +14,36 @@ export const useUrlNotifications = () => {
     });
     
     try {
-      const { error: notificationError } = await supabase
+      // First check if there's a recent notification of the same type
+      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      const { data: recentNotifications } = await supabase
         .from('notifications')
-        .insert({
-          user_id: customerId,
-          title: t('deindexing.status.notification.title'),
-          message: t('deindexing.status.notification.message'),
-          type: 'removal',
-          read: false
-        });
+        .select('*')
+        .eq('user_id', customerId)
+        .eq('type', 'removal')
+        .gte('created_at', tenMinutesAgo);
 
-      if (notificationError) {
-        console.error('useUrlNotifications - Error creating notification:', notificationError);
-        throw notificationError;
+      // Only create a new notification if there isn't a recent one
+      if (!recentNotifications || recentNotifications.length === 0) {
+        const { error: notificationError } = await supabase
+          .from('notifications')
+          .insert({
+            user_id: customerId,
+            title: t('deindexing.status.notification.title'),
+            message: t('deindexing.status.notification.message'),
+            type: 'removal',
+            read: false
+          });
+
+        if (notificationError) {
+          console.error('useUrlNotifications - Error creating notification:', notificationError);
+          throw notificationError;
+        }
+        
+        console.log('useUrlNotifications - Notification created successfully');
+      } else {
+        console.log('useUrlNotifications - Skipping notification creation due to recent similar notification');
       }
-      
-      console.log('useUrlNotifications - Notification created successfully');
     } catch (error) {
       console.error('useUrlNotifications - Error in createStatusNotification:', error);
       toast({
