@@ -43,11 +43,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         {STEPS.map((step) => (
           <div 
             key={step}
-            className={`text-xs text-center ${
-              getStepIndex(step) <= currentStepIndex
-                ? "text-black dark:text-white"
-                : "text-[#00000080] dark:text-[#FFFFFF80]"
-            }`}
+            className="text-xs text-center text-black dark:text-white"
             style={{ width: '25%' }}
           >
             {getStatusText(step)}
