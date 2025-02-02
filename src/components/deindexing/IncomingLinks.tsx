@@ -15,10 +15,16 @@ export const IncomingLinks = () => {
   const { t, language } = useLanguage();
   const { incomingUrls, isLoading } = useIncomingUrls();
 
-  console.log('Incoming URLs with status history:', incomingUrls?.map(url => ({
+  // Sort URLs by creation date (newest first)
+  const sortedUrls = incomingUrls?.sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
+
+  console.log('Incoming URLs with status history:', sortedUrls?.map(url => ({
     id: url.id,
     status: url.status,
-    statusHistory: url.status_history
+    statusHistory: url.status_history,
+    createdAt: url.created_at
   })));
 
   if (isLoading) {
@@ -30,7 +36,7 @@ export const IncomingLinks = () => {
     );
   }
 
-  if (!incomingUrls?.length) {
+  if (!sortedUrls?.length) {
     return (
       <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
         {t('deindexing.no.incoming.links')}
@@ -48,7 +54,7 @@ export const IncomingLinks = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {incomingUrls.map((url) => (
+          {sortedUrls.map((url) => (
             <TableRow key={url.id} className="hover:bg-transparent">
               <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
                 <a 
