@@ -15,7 +15,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = (currentStepIndex / (STEPS.length - 1)) * 100;
+  const progressPercentage = ((currentStepIndex + 1) / STEPS.length) * 100;
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -36,14 +36,18 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
     <div className="w-full">
       <Progress 
         value={progressPercentage} 
-        className="h-2.5 bg-[#E8E8E5] dark:bg-[#2F2E31] rounded-full overflow-hidden mb-4" 
-        indicatorClassName="bg-black dark:bg-white rounded-full"
+        className="h-2.5 rounded-full overflow-hidden mb-4"
       />
       <div className="flex justify-between mt-2">
-        {STEPS.map((step) => (
+        {STEPS.map((step, index) => (
           <div 
             key={step}
-            className="text-xs text-center text-black dark:text-white"
+            className={cn(
+              "text-xs text-center",
+              index <= currentStepIndex 
+                ? "text-black dark:text-white" 
+                : "text-gray-400 dark:text-gray-600"
+            )}
             style={{ width: '25%' }}
           >
             {getStatusText(step)}
