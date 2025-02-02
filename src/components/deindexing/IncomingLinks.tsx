@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { StatusStepper } from "./StatusStepper";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
+import { formatDistanceToNow } from "date-fns";
+import { sv } from "date-fns/locale";
 
 export const IncomingLinks = () => {
   const { t, language } = useLanguage();
@@ -35,15 +37,15 @@ export const IncomingLinks = () => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>URL</TableHead>
-          <TableHead>{language === 'sv' ? 'Tillagd' : 'Submitted'}</TableHead>
-          <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
+          <TableHead className="w-[45%]">URL</TableHead>
+          <TableHead className="w-[25%]">{language === 'sv' ? 'Tillagd' : 'Submitted'}</TableHead>
+          <TableHead className="w-[30%]">{language === 'sv' ? 'Status' : 'Status'}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {incomingUrls.map((url) => (
           <TableRow key={url.id}>
-            <TableCell className="font-medium">
+            <TableCell className="font-medium align-middle">
               <a 
                 href={url.url} 
                 target="_blank" 
@@ -53,10 +55,15 @@ export const IncomingLinks = () => {
                 {url.url}
               </a>
             </TableCell>
-            <TableCell>
-              {new Date(url.created_at).toLocaleDateString()}
+            <TableCell className="align-middle">
+              {`${language === 'sv' ? 'ungefär ' : 'about '}${
+                formatDistanceToNow(new Date(url.created_at), {
+                  addSuffix: false,
+                  locale: language === 'sv' ? sv : undefined
+                })
+              }${language === 'sv' ? ' sedan' : ' ago'}`}
             </TableCell>
-            <TableCell>
+            <TableCell className="align-middle py-6">
               <StatusStepper currentStatus={url.status} />
             </TableCell>
           </TableRow>
