@@ -32,7 +32,7 @@ export const PasswordUpdateForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const resetForm = () => {
     setCurrentPassword("");
@@ -89,7 +89,7 @@ export const PasswordUpdateForm = ({
           toast({
             variant: "destructive",
             title: t('error'),
-            description: t('current.language') === 'en' ? 
+            description: language === 'en' ? 
               "New password must be different from current password" : 
               "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
           });
