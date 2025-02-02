@@ -85,4 +85,6 @@ export interface FeaturesTranslations {
   'success.update.status': string;
   'notifications.url.status.title': string;
   'notifications.url.status.message': string;
+  'deindexing.status.notification.title': string;
+  'deindexing.status.notification.message': string;
 }

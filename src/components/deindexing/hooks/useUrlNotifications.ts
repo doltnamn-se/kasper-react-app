@@ -8,7 +8,9 @@ export const useUrlNotifications = () => {
   const createStatusNotification = async (customerId: string) => {
     console.log('useUrlNotifications - Creating status notification:', { 
       customerId,
-      currentLanguage: language
+      currentLanguage: language,
+      translatedTitle: t('deindexing.status.notification.title'),
+      translatedMessage: t('deindexing.status.notification.message')
     });
     
     try {
@@ -16,10 +18,8 @@ export const useUrlNotifications = () => {
         .from('notifications')
         .insert({
           user_id: customerId,
-          title: language === 'en' ? 'Link status updated' : 'Länk status uppdaterad',
-          message: language === 'en' 
-            ? 'The status of a link removal request has been updated'
-            : 'Statusen för en begäran om länkborttagning har uppdaterats',
+          title: t('deindexing.status.notification.title'),
+          message: t('deindexing.status.notification.message'),
           type: 'removal',
           read: false
         });

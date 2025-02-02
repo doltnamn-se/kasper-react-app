@@ -39,6 +39,8 @@ const features: FeaturesTranslations = {
   'deindexing.status.case.started': 'Ärende påbörjat',
   'deindexing.status.request.submitted': 'Begäran inskickad',
   'deindexing.status.removal.approved': 'Borttagning godkänd',
+  'deindexing.status.notification.title': 'Länk status uppdaterad',
+  'deindexing.status.notification.message': 'Statusen för en begäran om länkborttagning har uppdaterats',
   'notifications.url.status.title': 'Länk status uppdaterad',
   'notifications.url.status.message': 'Statusen för en begäran om länkborttagning har uppdaterats',
   'guide.completed': 'Guide slutförd',
