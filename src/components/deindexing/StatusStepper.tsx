@@ -78,7 +78,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             height: 100%;
             background-color: #00540c;
             z-index: 1;
-            clip-path: polygon(0 0, calc(${currentStepIndex * 25}%) 0, calc(${currentStepIndex * 25}%) 100%, 0 100%);
+            clip-path: polygon(0 0, calc(${(currentStepIndex + 0.5) * 25}%) 0, calc(${(currentStepIndex + 0.5) * 25}%) 100%, 0 100%);
           }
           .deindexing-progress-indicator::after {
             content: '';
