@@ -17,14 +17,17 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
     try {
-      console.log('Updating URL status:', { urlId, newStatus });
+      console.log('Updating URL status:', { urlId, newStatus, currentStatus });
       
-      // Get translated status text for notification
-      const translatedStatus = getStatusText(newStatus, t);
-      console.log('Translated status:', translatedStatus);
+      // Only create notification if status actually changed
+      if (newStatus !== currentStatus) {
+        // Get translated status text for notification
+        const translatedStatus = getStatusText(newStatus, t);
+        console.log('Creating notification with translated status:', translatedStatus);
 
-      // Create notification for status change using the hook
-      await createStatusNotification(customerId, translatedStatus);
+        // Create notification for status change using the hook
+        await createStatusNotification(customerId, translatedStatus);
+      }
       
       onStatusChange(newStatus);
     } catch (error) {
@@ -34,7 +37,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
   };
 
   return (
-    <Select defaultValue={currentStatus || 'received'} onValueChange={handleStatusChange}>
+    <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
       <SelectTrigger className="w-[180px] bg-background">
         <SelectValue />
       </SelectTrigger>
