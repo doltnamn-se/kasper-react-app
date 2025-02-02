@@ -101,11 +101,11 @@ export const DeindexedLinks = () => {
       <TableHeader>
         <TableRow className="hover:bg-transparent">
           <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
-          <TableHead className="w-[150px] h-14">
-            {language === 'sv' ? 'Ledtid' : 'Lead time'}
-          </TableHead>
           <TableHead className="h-14">
             {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
+          </TableHead>
+          <TableHead className="w-[150px] h-14">
+            {language === 'sv' ? 'Ledtid' : 'Lead time'}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -124,11 +124,15 @@ export const DeindexedLinks = () => {
                 <span className="truncate">{url.url}</span>
               </a>
             </TableCell>
-            <TableCell className="py-6 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {calculateLeadTime(url.status_history as URLStatusHistory[])}
+            <TableCell className="py-6">
+              <span className="text-lg font-bold text-[#000000] dark:text-[#FFFFFF]">
+                {getRemovalDate(url.status_history as URLStatusHistory[])}
+              </span>
             </TableCell>
-            <TableCell className="py-6 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {getRemovalDate(url.status_history as URLStatusHistory[])}
+            <TableCell className="py-6">
+              <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs">
+                {calculateLeadTime(url.status_history as URLStatusHistory[])}
+              </span>
             </TableCell>
           </TableRow>
         ))}
