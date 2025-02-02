@@ -5,24 +5,29 @@ export const useIncomingUrls = () => {
   const { data: incomingUrls, isLoading } = useQuery({
     queryKey: ['incoming-urls'],
     queryFn: async () => {
-      console.log('Fetching incoming URLs');
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('No user session');
+      if (!session?.user) return [];
 
-      const { data: urls, error } = await supabase
+      const { data, error } = await supabase
         .from('removal_urls')
-        .select('*')
+        .select(`
+          id,
+          url,
+          status,
+          created_at,
+          status_history
+        `)
         .eq('customer_id', session.user.id)
         .eq('display_in_incoming', true)
         .order('created_at', { ascending: false });
 
       if (error) {
         console.error('Error fetching incoming URLs:', error);
-        throw error;
+        return [];
       }
 
-      console.log('Fetched incoming URLs:', urls);
-      return urls;
+      console.log('Fetched incoming URLs with status history:', data);
+      return data;
     }
   });
 

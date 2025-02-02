@@ -14,6 +14,12 @@ export const IncomingLinks = () => {
   const { t, language } = useLanguage();
   const { incomingUrls, isLoading } = useIncomingUrls();
 
+  console.log('Incoming URLs with status history:', incomingUrls?.map(url => ({
+    id: url.id,
+    status: url.status,
+    statusHistory: url.status_history
+  })));
+
   if (isLoading) {
     return (
       <div className="animate-pulse space-y-4">
@@ -53,7 +59,10 @@ export const IncomingLinks = () => {
               </a>
             </TableCell>
             <TableCell className="w-full">
-              <StatusStepper currentStatus={url.status} />
+              <StatusStepper 
+                currentStatus={url.status} 
+                statusHistory={url.status_history}
+              />
             </TableCell>
           </TableRow>
         ))}
