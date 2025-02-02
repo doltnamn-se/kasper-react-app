@@ -37,13 +37,13 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
             )}
           >
             {type === "label" ? (
-              <div className="flex items-center justify-center gap-2">
-                <div className="flex items-center justify-center w-4 h-4 rounded-full bg-[#e0e0e0] dark:bg-[#2a2a2b]">
-                  <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+              <div className="flex items-center justify-center gap-3">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#e0e0e0] dark:bg-[#2a2a2b]">
+                  <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
                     {index + 1}
                   </span>
                 </div>
-                <span className="relative -left-1">
+                <span className="relative">
                   {getStatusText(step)}
                 </span>
               </div>
