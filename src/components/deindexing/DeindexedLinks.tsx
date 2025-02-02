@@ -11,6 +11,7 @@ import { StatusStepper } from "./StatusStepper";
 import { Link2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { URLStatusHistory } from "@/types/url-management";
 
 export const DeindexedLinks = () => {
   const { t, language } = useLanguage();
@@ -89,7 +90,7 @@ export const DeindexedLinks = () => {
             <TableCell>
               <StatusStepper 
                 currentStatus={url.status} 
-                statusHistory={url.status_history}
+                statusHistory={url.status_history as URLStatusHistory[]}
               />
             </TableCell>
           </TableRow>
