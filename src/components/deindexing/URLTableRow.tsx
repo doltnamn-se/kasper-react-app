@@ -33,7 +33,16 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
 
   return (
     <TableRow>
-      <TableCell className="max-w-[200px] truncate">{url.url}</TableCell>
+      <TableCell className="max-w-[200px] truncate">
+        <a 
+          href={url.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white decoration-dashed underline-offset-4 underline"
+        >
+          {url.url}
+        </a>
+      </TableCell>
       <TableCell className="max-w-[200px] truncate">{url.customer.profiles.email}</TableCell>
       <TableCell className="whitespace-nowrap">{formatDate(url.created_at)}</TableCell>
       <TableCell className="w-full">
