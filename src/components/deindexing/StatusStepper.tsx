@@ -66,12 +66,26 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             background-color: #97ee88;
           }
           .deindexing-progress-indicator {
+            position: relative;
+          }
+          .deindexing-progress-indicator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 70%;
+            height: 100%;
+            background-color: #00540c;
+            z-index: 1;
+          }
+          .deindexing-progress-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(
-              90deg,
-              #00540c 70%,
-              transparent 70%
-            ),
-            linear-gradient(
               -45deg,
               #08a621 25%,
               #97ee86 25%,
@@ -81,7 +95,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
               #97ee86 75%,
               #97ee86 100%
             );
-            background-size: 100% 100%, 7px 7px;
+            background-size: 7px 7px;
             animation: moveStripes 1.8s linear infinite;
           }
         `}
