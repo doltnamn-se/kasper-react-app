@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { URL } from "@/types/url-management";
 
 export const fetchAdminUrls = async () => {
-  console.log('Fetching URLs for admin view');
+  console.log('urlQueries - Fetching URLs for admin view');
   const { data, error } = await supabase
     .from('removal_urls')
     .select(`
@@ -22,11 +22,11 @@ export const fetchAdminUrls = async () => {
     .order('id', { ascending: true }); // Secondary sort by ID for stability
 
   if (error) {
-    console.error('Error fetching URLs:', error);
+    console.error('urlQueries - Error fetching URLs:', error);
     throw error;
   }
 
-  console.log('Fetched URLs with status history:', data?.map(url => ({
+  console.log('urlQueries - Fetched URLs with status history:', data?.map(url => ({
     id: url.id,
     status: url.status,
     statusHistory: url.status_history
@@ -40,23 +40,33 @@ export const updateUrlStatus = async (
   newStatus: string, 
   customerId: string
 ) => {
-  console.log('Updating URL status:', { urlId, newStatus });
+  console.log('urlQueries - updateUrlStatus called with:', { 
+    urlId, 
+    newStatus,
+    customerId 
+  });
   
   // First, get the current status history
   const { data: currentUrl, error: fetchError } = await supabase
     .from('removal_urls')
-    .select('status_history')
+    .select('status, status_history')
     .eq('id', urlId)
     .single();
 
   if (fetchError) {
-    console.error('Error fetching current URL:', fetchError);
+    console.error('urlQueries - Error fetching current URL:', fetchError);
     throw fetchError;
+  }
+
+  // Don't update if status hasn't changed
+  if (currentUrl.status === newStatus) {
+    console.log('urlQueries - Status unchanged, skipping update');
+    return null;
   }
 
   // Initialize history array if it doesn't exist
   const currentHistory = currentUrl.status_history || [];
-  console.log('Current status history:', currentHistory);
+  console.log('urlQueries - Current status history:', currentHistory);
 
   // Prepare the new status history entry
   const newHistoryEntry = {
@@ -64,7 +74,7 @@ export const updateUrlStatus = async (
     timestamp: new Date().toISOString()
   };
 
-  console.log('Adding new history entry:', newHistoryEntry);
+  console.log('urlQueries - Adding new history entry:', newHistoryEntry);
 
   // Update the URL with new status and history
   const { error: updateError } = await supabase
@@ -76,10 +86,10 @@ export const updateUrlStatus = async (
     .eq('id', urlId);
 
   if (updateError) {
-    console.error('Error updating URL status:', updateError);
+    console.error('urlQueries - Error updating URL status:', updateError);
     throw updateError;
   }
 
-  console.log('Successfully updated status history:', [...currentHistory, newHistoryEntry]);
+  console.log('urlQueries - Successfully updated status history:', [...currentHistory, newHistoryEntry]);
   return { urlId, newStatus };
 };

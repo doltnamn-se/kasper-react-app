@@ -24,15 +24,35 @@ export const useURLManagement = () => {
 
   const handleStatusChange = async (urlId: string, newStatus: URLStatus) => {
     try {
-      const url = urls.find(u => u.id === urlId);
-      if (!url?.customer?.id) return;
+      console.log('useURLManagement - handleStatusChange called with:', { 
+        urlId, 
+        newStatus 
+      });
 
-      await updateUrlStatus(urlId, newStatus, url.customer.id);
-      await createStatusNotification(url.customer.id, newStatus);
-      await refetch();
-      showSuccessToast();
+      const url = urls.find(u => u.id === urlId);
+      if (!url?.customer?.id) {
+        console.log('useURLManagement - No customer ID found for URL:', urlId);
+        return;
+      }
+
+      console.log('useURLManagement - Current URL data:', url);
+
+      // Skip if status hasn't changed
+      if (url.status === newStatus) {
+        console.log('useURLManagement - Status unchanged, skipping update');
+        return;
+      }
+
+      console.log('useURLManagement - Updating URL status');
+      const result = await updateUrlStatus(urlId, newStatus, url.customer.id);
+      
+      if (result) {
+        console.log('useURLManagement - Status updated successfully, refreshing data');
+        await refetch();
+        showSuccessToast();
+      }
     } catch (error) {
-      console.error('Error in handleStatusChange:', error);
+      console.error('useURLManagement - Error in handleStatusChange:', error);
       showErrorToast();
     }
   };

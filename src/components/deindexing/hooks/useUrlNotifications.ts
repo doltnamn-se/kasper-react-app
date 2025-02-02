@@ -6,7 +6,10 @@ export const useUrlNotifications = () => {
   const { t } = useLanguage();
 
   const createStatusNotification = async (customerId: string, newStatus: string) => {
-    console.log('Creating status notification:', { customerId, newStatus });
+    console.log('useUrlNotifications - Creating status notification:', { 
+      customerId, 
+      newStatus 
+    });
     
     try {
       const { error: notificationError } = await supabase
@@ -20,11 +23,13 @@ export const useUrlNotifications = () => {
         });
 
       if (notificationError) {
-        console.error('Error creating notification:', notificationError);
+        console.error('useUrlNotifications - Error creating notification:', notificationError);
         throw notificationError;
       }
+      
+      console.log('useUrlNotifications - Notification created successfully');
     } catch (error) {
-      console.error('Error in createStatusNotification:', error);
+      console.error('useUrlNotifications - Error in createStatusNotification:', error);
       toast({
         title: t('error'),
         description: t('error.update.status'),
