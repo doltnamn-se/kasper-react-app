@@ -13,6 +13,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
     <div className="flex justify-between">
       {STEPS.map((step, index) => {
         const isActive = index <= currentStepIndex;
+        const isCurrent = index === currentStepIndex;
         const shouldShow = type === "label" || (type === "timestamp" && index <= currentStepIndex);
         
         return (
@@ -21,11 +22,13 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
             className={cn(
               "w-[25%] text-xs text-center",
               type === "label" ? (
-                index === currentStepIndex 
-                  ? "font-bold text-[#000000] dark:text-white" 
-                  : "text-[#000000] dark:text-[#FFFFFFA6]"
+                isCurrent 
+                  ? "font-black text-[#000000] dark:text-white" 
+                  : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ) : (
-                "text-[#000000A6] dark:text-[#FFFFFFA6]"
+                isActive
+                  ? "font-black text-[#000000] dark:text-white"
+                  : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
               !shouldShow && "invisible"
             )}
