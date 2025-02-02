@@ -125,12 +125,12 @@ export const DeindexedLinks = () => {
               </a>
             </TableCell>
             <TableCell className="py-6">
-              <span className="text-lg font-bold text-[#000000] dark:text-[#FFFFFF]">
+              <span className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">
                 {getRemovalDate(url.status_history as URLStatusHistory[])}
               </span>
             </TableCell>
             <TableCell className="py-6">
-              <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs">
+              <span className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark px-2 py-1 rounded-full text-xs">
                 {calculateLeadTime(url.status_history as URLStatusHistory[])}
               </span>
             </TableCell>
