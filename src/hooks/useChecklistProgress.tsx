@@ -1,22 +1,8 @@
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import confetti from 'canvas-confetti';
-
-interface ChecklistProgress {
-  password_updated: boolean;
-  selected_sites: string[];
-  removal_urls: string[];
-  address: string | null;
-  is_address_hidden: boolean;
-  personal_number: string | null;
-  completed_at: string | null;
-  completed_guides: string[] | null;
-  street_address: string | null;
-  postal_code: string | null;
-  city: string | null;
-  has_address_alert?: boolean;
-}
 
 export const useChecklistProgress = () => {
   const { toast } = useToast();
@@ -71,14 +57,11 @@ export const useChecklistProgress = () => {
     }
   });
 
-  const handleStepComplete = async () => {
-    console.log('Step completed, refetching progress...');
-    await refetchProgress();
-    await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
-  };
-
   const calculateProgress = () => {
-    if (!checklistProgress) return 0;
+    if (!checklistProgress) {
+      console.log('No checklist progress data available');
+      return 0;
+    }
     
     const totalSteps = 4;
     let completedSteps = 0;
@@ -87,6 +70,8 @@ export const useChecklistProgress = () => {
     if (checklistProgress.password_updated) {
       console.log('Step 1 completed: Password updated');
       completedSteps++;
+    } else {
+      console.log('Step 1 not completed: Password not updated');
     }
     
     // Step 2: URLs submitted or skipped
@@ -95,12 +80,16 @@ export const useChecklistProgress = () => {
          checklistProgress.removal_urls.includes('skipped'))) {
       console.log('Step 2 completed: URLs submitted or skipped');
       completedSteps++;
+    } else {
+      console.log('Step 2 not completed: No URLs submitted or skipped');
     }
     
     // Step 3: Sites selected
     if (checklistProgress.selected_sites?.length > 0) {
-      console.log('Step 3 completed: Sites selected');
+      console.log('Step 3 completed: Sites selected:', checklistProgress.selected_sites);
       completedSteps++;
+    } else {
+      console.log('Step 3 not completed: No sites selected');
     }
     
     // Step 4: Final step (address or personal info)
@@ -110,11 +99,15 @@ export const useChecklistProgress = () => {
           checklistProgress.city) {
         console.log('Step 4 completed: Address provided');
         completedSteps++;
+      } else {
+        console.log('Step 4 not completed: Address not provided');
       }
     } else {
       if (checklistProgress.address && checklistProgress.personal_number) {
         console.log('Step 4 completed: Personal info provided');
         completedSteps++;
+      } else {
+        console.log('Step 4 not completed: Personal info not provided');
       }
     }
 
@@ -132,7 +125,6 @@ export const useChecklistProgress = () => {
   return {
     checklistProgress,
     refetchProgress,
-    handleStepComplete,
     calculateProgress
   };
 };
