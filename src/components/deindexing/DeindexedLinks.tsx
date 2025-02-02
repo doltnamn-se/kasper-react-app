@@ -7,12 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { StatusStepper } from "./StatusStepper";
 import { Link2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { URLStatusHistory } from "@/types/url-management";
-import { formatDistanceStrict } from "date-fns";
+import { formatDistanceStrict, format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 
 export const DeindexedLinks = () => {
@@ -63,6 +62,19 @@ export const DeindexedLinks = () => {
     });
   };
 
+  const getRemovalDate = (statusHistory: URLStatusHistory[]) => {
+    const removalEntry = statusHistory.find(entry => entry.status === 'removal_approved');
+    if (!removalEntry) return '';
+
+    const date = new Date(removalEntry.timestamp);
+    
+    if (language === 'sv') {
+      return format(date, 'd MMMM yyyy', { locale: sv });
+    } else {
+      return format(date, 'do MMMM yyyy', { locale: enUS });
+    }
+  };
+
   console.log('Component state:', { isLoading, deindexedUrls });
 
   if (isLoading) {
@@ -92,7 +104,9 @@ export const DeindexedLinks = () => {
           <TableHead className="w-[150px] h-14">
             {language === 'sv' ? 'Ledtid' : 'Lead time'}
           </TableHead>
-          <TableHead className="h-14">{language === 'sv' ? 'Status' : 'Status'}</TableHead>
+          <TableHead className="h-14">
+            {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -113,11 +127,8 @@ export const DeindexedLinks = () => {
             <TableCell className="py-6 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
               {calculateLeadTime(url.status_history as URLStatusHistory[])}
             </TableCell>
-            <TableCell className="py-6">
-              <StatusStepper 
-                currentStatus={url.status} 
-                statusHistory={url.status_history as URLStatusHistory[]}
-              />
+            <TableCell className="py-6 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {getRemovalDate(url.status_history as URLStatusHistory[])}
             </TableCell>
           </TableRow>
         ))}
