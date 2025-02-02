@@ -52,6 +52,31 @@ export const DeindexingProgress = () => {
 
   return (
     <div className="mt-6">
+      <style>
+        {`
+          @keyframes gradientFlow {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+          .progress-indicator {
+            background: linear-gradient(90deg, #000000, #4d4d4d, #000000);
+            background-size: 200% 100%;
+            animation: gradientFlow 3s linear infinite;
+          }
+          .dark .progress-indicator {
+            background: linear-gradient(90deg, #FFFFFF, #CCCCCC, #FFFFFF);
+            background-size: 200% 100%;
+            animation: gradientFlow 3s linear infinite;
+          }
+        `}
+      </style>
       <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
       <div className="px-3">
         <div className="flex justify-between items-center mb-4">
@@ -68,7 +93,7 @@ export const DeindexingProgress = () => {
         <Progress 
           value={progressPercentage} 
           className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden" 
-          indicatorClassName="bg-[#000000] dark:bg-[#c2c9f5] rounded-full"
+          indicatorClassName="progress-indicator rounded-full"
         />
         
         <div className="flex items-center gap-1 mt-4 text-xs">
