@@ -63,10 +63,10 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           indicatorClassName="bg-black dark:bg-white"
         />
         <div 
-          className="absolute top-0 h-3 flex items-center" 
-          style={{ left: `${progressPercentage}%`, transform: 'translateX(-50%)' }}
+          className="absolute top-1/2 h-3 flex items-center -translate-y-1/2" 
+          style={{ left: `${progressPercentage}%`, transform: 'translate(-50%, -50%)' }}
         >
-          <div className="w-4 h-4 rounded-full bg-black dark:bg-white border-2 border-white dark:border-[#1c1c1e]"></div>
+          <div className="w-6 h-6 rounded-full bg-black dark:bg-white border-4 border-white dark:border-[#1c1c1e] shadow-[0_0_10px_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)]"></div>
         </div>
       </div>
       <div className="flex justify-between mt-2">
