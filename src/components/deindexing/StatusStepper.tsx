@@ -81,27 +81,6 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           }
         `}
       </style>
-      {/* Step labels above the bar */}
-      <div className="flex justify-between mb-2">
-        {STEPS.map((step, index) => {
-          const isActive = index <= currentStepIndex;
-          const isCurrentStep = index === currentStepIndex;
-          const shouldShow = index <= currentStepIndex;
-          return (
-            <div 
-              key={`label-${step}`}
-              className={cn(
-                "text-xs text-center font-normal",
-                isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000] dark:text-[#FFFFFFA6]",
-                !shouldShow && "invisible",
-                "w-[25%]"
-              )}
-            >
-              {getStatusText(step)}
-            </div>
-          );
-        })}
-      </div>
       <div className="relative">
         <Progress 
           value={progressPercentage} 
@@ -115,19 +94,25 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           <div className="w-4 h-4 rounded-full bg-[#000000] dark:bg-[#FFFFFF] border-2 border-white dark:border-[#222224] shadow-[0_0_10px_rgba(0,0,0,0.25)] dark:shadow-[0_0_10px_rgba(34,34,36,0.25)]"></div>
         </div>
       </div>
-      {/* Time labels below the bar */}
       <div className="flex justify-between mt-2">
-        {STEPS.map((step, index) => (
-          <div 
-            key={`time-${step}`}
-            className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] w-[25%] text-center"
-          >
-            {index === 0 ? "Day 1" : 
-             index === 1 ? "Day 2-3" :
-             index === 2 ? "Day 4-7" :
-             "Day 8-14"}
-          </div>
-        ))}
+        {STEPS.map((step, index) => {
+          const isActive = index <= currentStepIndex;
+          const isCurrentStep = index === currentStepIndex;
+          const shouldShow = index <= currentStepIndex;
+          return (
+            <div 
+              key={step}
+              className={cn(
+                "text-xs text-center font-normal",
+                isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000] dark:text-[#FFFFFFA6]",
+                !shouldShow && "invisible",
+                "w-[25%]"
+              )}
+            >
+              {getStatusText(step)}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
