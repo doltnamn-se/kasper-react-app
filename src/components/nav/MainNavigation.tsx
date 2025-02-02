@@ -64,11 +64,6 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     enabled: !!userProfile?.id
   });
 
-  // Calculate total unread notifications for home page (excluding deindexing and address alerts)
-  const totalUnreadNotifications = 
-    unreadGuideNotifications + 
-    unreadMonitoringNotifications;
-
   useEffect(() => {
     const checkAdminStatus = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -85,7 +80,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   }
 
   const unreadCounts = {
-    total: totalUnreadNotifications, // Now only includes guides and monitoring
+    total: 0, // Home page has no notifications
     monitoring: unreadMonitoringNotifications,
     deindexing: unreadDeindexingNotifications,
     addressAlerts: unreadCount,
