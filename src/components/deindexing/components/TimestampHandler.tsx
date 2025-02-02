@@ -26,6 +26,25 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
     });
     
     console.log('History entry found for step', step, ':', historyEntry);
+
+    // If we're looking for the 'received' step and there's no history entry,
+    // use the first entry's timestamp or fall back to the current time
+    if (step === 'received' && !historyEntry?.timestamp) {
+      const firstEntry = statusHistory?.[0];
+      if (firstEntry?.timestamp) {
+        try {
+          const formattedTime = formatDistanceToNow(new Date(firstEntry.timestamp), {
+            addSuffix: true,
+            locale: language === 'sv' ? sv : enUS
+          });
+          console.log('Formatted time for received step:', formattedTime);
+          return formattedTime;
+        } catch (error) {
+          console.error('Error formatting timestamp for received step:', error);
+          return '';
+        }
+      }
+    }
     
     if (historyEntry?.timestamp) {
       try {
