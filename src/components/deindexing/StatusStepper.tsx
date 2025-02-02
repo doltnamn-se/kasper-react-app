@@ -14,11 +14,21 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   console.log('Current status received:', currentStatus); // Debug log
 
   const getStepIndex = (status: string) => {
-    // Normalize the status to match our expected values
-    const normalizedStatus = status.toLowerCase();
-    console.log('Normalized status:', normalizedStatus); // Debug log
+    // Map the database status to our step status
+    let mappedStatus = status;
+    switch (status) {
+      case 'case_started':
+        mappedStatus = 'in_progress';
+        break;
+      case 'removal_approved':
+        mappedStatus = 'completed';
+        break;
+      default:
+        mappedStatus = status;
+    }
 
-    const index = STEPS.indexOf(normalizedStatus as typeof STEPS[number]);
+    console.log('Mapped status:', mappedStatus); // Debug log
+    const index = STEPS.indexOf(mappedStatus as typeof STEPS[number]);
     console.log('Step index:', index); // Debug log
     
     return index >= 0 ? index : 0;
