@@ -117,7 +117,6 @@ export const DeindexedLinks = () => {
               <StatusStepper 
                 currentStatus={url.status} 
                 statusHistory={url.status_history as URLStatusHistory[]}
-                showOnlyFinalStep={true}
               />
             </TableCell>
           </TableRow>

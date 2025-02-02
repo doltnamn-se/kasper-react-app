@@ -1,6 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLStatusHistory } from "@/types/url-management";
-import { getStepIndex, getStatusText, STEPS, Step, Steps } from "./utils/statusUtils";
+import { getStepIndex, getStatusText, STEPS } from "./utils/statusUtils";
 import { ProgressIndicator } from "./components/ProgressIndicator";
 import { StepLabels } from "./components/StepLabels";
 import { useTimestampHandler } from "./components/TimestampHandler";
@@ -8,14 +8,9 @@ import { useTimestampHandler } from "./components/TimestampHandler";
 type StatusStepperProps = {
   currentStatus: string;
   statusHistory?: URLStatusHistory[];
-  showOnlyFinalStep?: boolean;
 };
 
-export const StatusStepper = ({ 
-  currentStatus, 
-  statusHistory = [],
-  showOnlyFinalStep = false 
-}: StatusStepperProps) => {
+export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepperProps) => {
   const { t, language } = useLanguage();
   const { getTimestampForStep } = useTimestampHandler({ statusHistory, language });
 
@@ -23,11 +18,11 @@ export const StatusStepper = ({
   console.log('Status history:', statusHistory);
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = 100; // Always 100% for completed items
+  const progressPercentage = currentStepIndex === STEPS.length - 1 ? 
+    100 : 
+    (currentStepIndex * 100 + 50) / STEPS.length;
   
   console.log('Progress percentage:', progressPercentage);
-
-  const stepsToShow: Steps = showOnlyFinalStep ? [STEPS[STEPS.length - 1]] : STEPS;
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -35,7 +30,6 @@ export const StatusStepper = ({
         currentStepIndex={currentStepIndex}
         getStatusText={(step) => getStatusText(step, t)}
         type="label"
-        stepsToShow={stepsToShow}
       />
 
       <ProgressIndicator progressPercentage={progressPercentage} />
@@ -46,7 +40,6 @@ export const StatusStepper = ({
           getStatusText={(step) => getStatusText(step, t)}
           type="timestamp"
           getTimestamp={getTimestampForStep}
-          stepsToShow={stepsToShow}
         />
       </div>
     </div>
