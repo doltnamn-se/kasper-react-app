@@ -38,7 +38,7 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
         </div>
         {hasNotification && (
           <div className="flex items-center justify-center h-5 px-2.5 rounded-full bg-[#000000] dark:bg-[#FFFFFF] text-white dark:text-black text-xs font-medium">
-            <span className="pr-[0.5px]">{unreadCount}</span>
+            <span className="pr-[0.5px] pt-[0.5px]">{unreadCount}</span>
           </div>
         )}
       </Link>
