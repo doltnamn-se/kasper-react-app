@@ -36,27 +36,22 @@ export const PasswordUpdateForm = ({
   const requirements = [
     {
       id: 1,
-      label: language === 'en' ? "At least 12 characters" : "Minst 12 tecken",
-      validate: (pass: string) => pass.length >= 12,
+      label: language === 'en' ? "At least 8 characters" : "Minst 8 tecken",
+      validate: (pass: string) => pass.length >= 8,
     },
     {
       id: 2,
-      label: language === 'en' ? "A lowercase character" : "Ett gemener-tecken",
-      validate: (pass: string) => /[a-z]/.test(pass),
-    },
-    {
-      id: 3,
       label: language === 'en' ? "A capital letter" : "Ett versaltecken",
       validate: (pass: string) => /[A-Z]/.test(pass),
     },
     {
-      id: 4,
+      id: 3,
       label: language === 'en' ? "A number or a symbol" : "Ett nummer eller en symbol",
       validate: (pass: string) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(pass),
     },
     // Only show the "different from current password" requirement when showCurrentPassword is true
     ...(showCurrentPassword ? [{
-      id: 5,
+      id: 4,
       label: language === 'en' ? "Different from current password" : "Annorlunda än nuvarande lösenord",
       validate: (pass: string) => {
         if (!currentPassword || !pass) return false;
