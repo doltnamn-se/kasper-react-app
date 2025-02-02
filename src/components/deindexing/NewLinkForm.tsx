@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { SearchBackdrop } from "@/components/nav/search/SearchBackdrop";
 
 interface NewLinkFormProps {
   onClose: () => void;
@@ -62,9 +61,12 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
 
   return (
     <>
-      <SearchBackdrop isSearchFocused={true} onClose={onClose} />
+      <div 
+        className="fixed inset-0" 
+        onClick={onClose}
+      />
       <div className="absolute z-40 w-[300px] right-[195px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-4 mt-2">
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
           <Input
             type="url"
             value={url}
