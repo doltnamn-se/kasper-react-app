@@ -1,9 +1,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
 import { URLStatusStep } from "@/types/url-management";
 import { getStatusText } from "./utils/statusUtils";
+import { useUrlNotifications } from "./hooks/useUrlNotifications";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -14,6 +13,7 @@ interface URLStatusSelectProps {
 
 export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChange }: URLStatusSelectProps) => {
   const { t } = useLanguage();
+  const { createStatusNotification, showErrorToast } = useUrlNotifications();
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
     try {
@@ -23,34 +23,13 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       const translatedStatus = getStatusText(newStatus, t);
       console.log('Translated status:', translatedStatus);
 
-      // Create notification for status change
-      const { error: notificationError } = await supabase
-        .from('notifications')
-        .insert({
-          user_id: customerId,
-          title: t('notifications.url.status.title'),
-          message: t('notifications.url.status.message', { status: translatedStatus }),
-          type: 'removal',
-          read: false
-        });
-
-      if (notificationError) {
-        console.error('Error creating notification:', notificationError);
-        toast({
-          title: t('error'),
-          description: t('error.update.status'),
-          variant: "destructive",
-        });
-      }
-
+      // Create notification for status change using the hook
+      await createStatusNotification(customerId, translatedStatus);
+      
       onStatusChange(newStatus);
     } catch (error) {
       console.error('Error updating status:', error);
-      toast({
-        title: t('error'),
-        description: t('error.unexpected'),
-        variant: "destructive",
-      });
+      showErrorToast();
     }
   };
 

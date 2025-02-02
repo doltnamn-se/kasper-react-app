@@ -6,6 +6,8 @@ export const useUrlNotifications = () => {
   const { t } = useLanguage();
 
   const createStatusNotification = async (customerId: string, newStatus: string) => {
+    console.log('Creating status notification:', { customerId, newStatus });
+    
     const { error: notificationError } = await supabase
       .from('notifications')
       .insert({
