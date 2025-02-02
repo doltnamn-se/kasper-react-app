@@ -66,7 +66,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
         className="fixed inset-0" 
         onClick={onClose}
       />
-      <div className="absolute z-40 w-[400px] right-[150px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-2 mt-2">
+      <div className="absolute z-40 w-[400px] right-[165px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-2 mt-2">
         <form onSubmit={handleSubmit} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
           <Input
             type="url"
@@ -81,7 +81,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
             disabled={isSubmitting}
             className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-black"
           >
-            Enter
+            {language === 'sv' ? 'Spara' : 'Save'}
             <CornerDownLeft className="h-4 w-4" />
           </Button>
         </form>
