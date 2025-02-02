@@ -97,12 +97,14 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         {STEPS.map((step, index) => {
           const isActive = index <= currentStepIndex;
           const isCurrentStep = index === currentStepIndex;
+          const shouldShow = index <= currentStepIndex;
           return (
             <div 
               key={step}
               className={cn(
                 "text-xs text-center font-medium",
-                isCurrentStep ? "text-[#000000] dark:text-white" : "text-[#000000A6] dark:text-[#FFFFFFA6]",
+                isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000A6] dark:text-[#FFFFFFA6]",
+                !shouldShow && "invisible",
                 "w-[25%]"
               )}
             >
