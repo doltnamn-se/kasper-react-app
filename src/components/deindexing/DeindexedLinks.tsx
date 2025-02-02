@@ -1,13 +1,100 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { StatusStepper } from "./StatusStepper";
+import { Link2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const DeindexedLinks = () => {
-  const { language } = useLanguage();
-  
+  const { t, language } = useLanguage();
+
+  const { data: deindexedUrls, isLoading } = useQuery({
+    queryKey: ['deindexed-urls'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return [];
+
+      const { data, error } = await supabase
+        .from('removal_urls')
+        .select(`
+          id,
+          url,
+          status,
+          created_at,
+          status_history
+        `)
+        .eq('customer_id', session.user.id)
+        .eq('display_in_incoming', false)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching deindexed URLs:', error);
+        return [];
+      }
+
+      console.log('Fetched deindexed URLs:', data);
+      return data;
+    }
+  });
+
+  if (isLoading) {
+    return (
+      <div className="animate-pulse space-y-4">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+      </div>
+    );
+  }
+
+  if (!deindexedUrls?.length) {
+    return (
+      <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
+        {language === 'sv' 
+          ? "När vi tar bort nya länkar som dykt upp om dig, kommer du att se de här"
+          : "When we remove new links that have appeared about you, you will see them here"}
+      </p>
+    );
+  }
+
   return (
-    <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
-      {language === 'sv' 
-        ? "När vi tar bort nya länkar som dykt upp om dig, kommer du att se de här"
-        : "When we remove new links that have appeared about you, you will see them here"}
-    </p>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[250px]">{t('deindexing.url')}</TableHead>
+          <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {deindexedUrls.map((url) => (
+          <TableRow key={url.id}>
+            <TableCell className="font-medium w-[250px] max-w-[250px]">
+              <a 
+                href={url.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
+                title={url.url}
+              >
+                <Link2 className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{url.url}</span>
+              </a>
+            </TableCell>
+            <TableCell>
+              <StatusStepper 
+                currentStatus={url.status} 
+                statusHistory={url.status_history}
+              />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
