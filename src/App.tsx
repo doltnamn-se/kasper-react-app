@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
 
 import Auth from "@/pages/Auth";
+import ResetPassword from "@/pages/ResetPassword";
 import Index from "@/pages/Index";
 import Checklist from "@/pages/Checklist";
 import Monitoring from "@/pages/Monitoring";
@@ -41,8 +42,9 @@ function App() {
           <SidebarProvider>
             <Router>
               <Routes>
-                {/* Auth route */}
+                {/* Auth routes */}
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
+                <Route path="/auth/reset-password" element={<ResetPassword />} />
                 
                 {/* Admin routes */}
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
