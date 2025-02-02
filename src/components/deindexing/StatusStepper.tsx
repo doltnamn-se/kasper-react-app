@@ -1,17 +1,23 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 type StatusStepperProps = {
   currentStatus: string;
+  statusHistory?: Array<{
+    status: string;
+    timestamp: string;
+  }>;
 };
 
 const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as const;
 
-export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
+export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepperProps) => {
   const { t } = useLanguage();
 
   console.log('Current status received:', currentStatus);
+  console.log('Status history:', statusHistory);
 
   const getStepIndex = (status: string) => {
     let mappedStatus = status;
@@ -34,7 +40,6 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  // Calculate progress to align with the center of the current step's label
   const progressPercentage = (currentStepIndex * 100 + 50) / STEPS.length;
   
   console.log('Progress percentage:', progressPercentage);
@@ -52,6 +57,17 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
       default:
         return t('deindexing.status.received');
     }
+  };
+
+  const getTimestampForStep = (step: string) => {
+    const historyEntry = statusHistory.find(entry => {
+      const mappedStatus = entry.status === 'case_started' ? 'in_progress' : 
+                          entry.status === 'removal_approved' ? 'completed' : 
+                          entry.status;
+      return mappedStatus === step;
+    });
+    
+    return historyEntry ? format(new Date(historyEntry.timestamp), 'yyyy-MM-dd HH:mm') : '';
   };
 
   return (
@@ -81,10 +97,34 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           }
         `}
       </style>
+      
+      {/* Step Labels above the progress bar */}
+      <div className="flex justify-between mb-2">
+        {STEPS.map((step, index) => {
+          const isActive = index <= currentStepIndex;
+          const isCurrentStep = index === currentStepIndex;
+          const shouldShow = index <= currentStepIndex;
+          return (
+            <div 
+              key={`label-${step}`}
+              className={cn(
+                "text-xs text-center font-normal",
+                isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000] dark:text-[#FFFFFFA6]",
+                !shouldShow && "invisible",
+                "w-[25%]"
+              )}
+            >
+              {getStatusText(step)}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Progress Bar */}
       <div className="relative">
         <Progress 
           value={progressPercentage} 
-          className="h-2 rounded-full overflow-hidden mb-4 bg-[#e8e8e5] dark:bg-[#2f2e31]"
+          className="h-2 rounded-full overflow-hidden bg-[#e8e8e5] dark:bg-[#2f2e31]"
           indicatorClassName="progress-indicator"
         />
         <div 
@@ -94,22 +134,22 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           <div className="w-4 h-4 rounded-full bg-[#000000] dark:bg-[#FFFFFF] border-2 border-white dark:border-[#222224] shadow-[0_0_10px_rgba(0,0,0,0.25)] dark:shadow-[0_0_10px_rgba(34,34,36,0.25)]"></div>
         </div>
       </div>
+
+      {/* Timestamps below the progress bar */}
       <div className="flex justify-between mt-2">
         {STEPS.map((step, index) => {
-          const isActive = index <= currentStepIndex;
-          const isCurrentStep = index === currentStepIndex;
           const shouldShow = index <= currentStepIndex;
+          const timestamp = getTimestampForStep(step);
           return (
             <div 
-              key={step}
+              key={`timestamp-${step}`}
               className={cn(
-                "text-xs text-center font-normal",
-                isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000] dark:text-[#FFFFFFA6]",
+                "text-xs text-center text-[#000000A6] dark:text-[#FFFFFFA6]",
                 !shouldShow && "invisible",
                 "w-[25%]"
               )}
             >
-              {getStatusText(step)}
+              {timestamp}
             </div>
           );
         })}
