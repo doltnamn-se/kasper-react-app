@@ -45,12 +45,11 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         throw progressError;
       }
 
-      // Then update the customer record
+      // Then update the customer record - removed has_address_alert setting
       const { error: customerError } = await supabase
         .from('customers')
         .update({
           checklist_completed: true,
-          has_address_alert: true,
           checklist_step: 4 // Ensure we're on the final step
         })
         .eq('id', session.user.id);
@@ -60,7 +59,7 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         throw customerError;
       }
 
-      console.log('Successfully completed checklist and enabled address monitoring');
+      console.log('Successfully completed checklist');
 
       // Invalidate relevant queries to trigger UI updates
       await Promise.all([
