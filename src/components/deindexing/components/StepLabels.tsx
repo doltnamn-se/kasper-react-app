@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { STEPS } from "../utils/statusUtils";
+import { Circle } from "lucide-react";
 
 interface StepLabelsProps {
   currentStepIndex: number;
@@ -25,18 +26,27 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
               "w-[25%] text-xs",
               type === "label" ? (
                 isCurrent 
-                  ? "font-black text-[#000000] dark:text-white" 
+                  ? "font-bold text-[#000000] dark:text-white" 
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ) : (
                 index === currentStepIndex
-                  ? "font-black text-[#000000] dark:text-white"
+                  ? "font-bold text-[#000000] dark:text-white"
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
               "text-center",
               !shouldShow && "invisible" // Make it invisible but preserve the space
             )}
           >
-            {type === "label" ? getStatusText(step) : getTimestamp?.(step)}
+            {type === "label" ? (
+              <div className="flex items-center justify-center gap-2">
+                <Circle className="h-4 w-4 fill-current" />
+                <span className="relative -left-1">
+                  {getStatusText(step)}
+                </span>
+              </div>
+            ) : (
+              getTimestamp?.(step)
+            )}
           </div>
         );
       })}
