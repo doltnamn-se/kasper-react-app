@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 interface NavigationLinksProps {
   unreadCounts: {
     total: number;
-    checklist: number;
+    checklist?: number; // Made optional
     monitoring: number;
     deindexing: number;
     addressAlerts: number;
@@ -50,7 +50,7 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
   return (
     <>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), unreadCounts.total)}
-      {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'), unreadCounts.checklist)}
+      {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
       {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadCounts.monitoring)}
       {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
