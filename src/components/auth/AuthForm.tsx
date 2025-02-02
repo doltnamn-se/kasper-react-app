@@ -42,10 +42,11 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
         console.log("Password updated successfully");
         toast.success(t('password.updated'));
         
-        // Clear any existing session
+        // Clear any existing session since we want them to log in with new password
         await supabase.auth.signOut();
         
-        window.location.href = '/auth';
+        // Redirect to login page with success message
+        window.location.href = '/auth?reset_success=true';
         return;
       }
 
@@ -80,6 +81,10 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
     }
   };
 
+  // Check for reset success message
+  const urlParams = new URLSearchParams(window.location.search);
+  const showResetSuccess = urlParams.get('reset_success') === 'true';
+
   if (showResetForm) {
     return <PasswordResetForm onCancel={() => setShowResetForm(false)} initialError={errorMessage} />;
   }
@@ -96,6 +101,14 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
         {errorMessage && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {showResetSuccess && (
+          <Alert className="mb-4 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900/50">
+            <AlertDescription className="text-green-800 dark:text-green-200">
+              {t('password.updated')}
+            </AlertDescription>
           </Alert>
         )}
 
