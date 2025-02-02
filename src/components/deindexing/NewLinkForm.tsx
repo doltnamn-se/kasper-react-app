@@ -28,13 +28,20 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
+      const timestamp = new Date().toISOString();
+      const initialStatus = {
+        status: 'received',
+        timestamp: timestamp
+      };
+
       const { error } = await supabase
         .from('removal_urls')
         .insert({
           customer_id: session.user.id,
           url: url,
           status: 'received',
-          display_in_incoming: true
+          display_in_incoming: true,
+          status_history: [initialStatus]
         });
 
       if (error) throw error;
