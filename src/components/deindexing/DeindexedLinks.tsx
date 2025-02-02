@@ -50,6 +50,11 @@ export const DeindexedLinks = () => {
     }
   });
 
+  // Sort URLs by creation date (newest first)
+  const sortedUrls = deindexedUrls?.sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
+
   const calculateLeadTime = (statusHistory: URLStatusHistory[]) => {
     const startDate = new Date(statusHistory[0]?.timestamp || '');
     const endDate = statusHistory[statusHistory.length - 1]?.timestamp;
@@ -75,7 +80,7 @@ export const DeindexedLinks = () => {
     }
   };
 
-  console.log('Component state:', { isLoading, deindexedUrls });
+  console.log('Component state:', { isLoading, deindexedUrls: sortedUrls });
 
   if (isLoading) {
     return (
@@ -86,7 +91,7 @@ export const DeindexedLinks = () => {
     );
   }
 
-  if (!deindexedUrls?.length) {
+  if (!sortedUrls?.length) {
     return (
       <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
         {language === 'sv' 
@@ -111,7 +116,7 @@ export const DeindexedLinks = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {deindexedUrls.map((url) => (
+          {sortedUrls.map((url) => (
             <TableRow key={url.id} className="hover:bg-transparent">
               <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
                 <a 
