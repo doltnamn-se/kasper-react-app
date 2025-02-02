@@ -43,6 +43,8 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
     );
   };
 
+  console.log('Unread counts:', unreadCounts); // Debug log to verify counts
+
   return (
     <>
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), unreadCounts.total)}

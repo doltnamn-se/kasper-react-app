@@ -71,7 +71,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         .from('notifications')
         .select('id', { count: 'exact' })
         .eq('user_id', userProfile?.id)
-        .eq('type', 'deindexing')
+        .eq('type', 'removal')
         .eq('read', false);
 
       if (error) return 0;
@@ -111,6 +111,8 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     addressAlerts: unreadCount,
     guides: unreadGuideNotifications,
   };
+
+  console.log('Unread deindexing notifications:', unreadDeindexingNotifications); // Debug log
 
   return (
     <>
