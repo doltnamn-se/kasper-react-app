@@ -130,7 +130,7 @@ export const DeindexedLinks = () => {
               </span>
             </TableCell>
             <TableCell className="py-6">
-              <span className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark px-2 py-1.5 rounded-full text-xs font-semibold">
+              <span className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark px-3 py-1.5 rounded-full text-xs font-semibold">
                 {calculateLeadTime(url.status_history as URLStatusHistory[])}
               </span>
             </TableCell>
