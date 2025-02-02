@@ -63,6 +63,9 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
   };
 
   const getTimestampForStep = (step: string) => {
+    console.log('Getting timestamp for step:', step);
+    console.log('Status history:', statusHistory);
+    
     const historyEntry = statusHistory.find(entry => {
       const mappedStatus = entry.status === 'case_started' ? 'in_progress' : 
                           entry.status === 'removal_approved' ? 'completed' : 
@@ -70,10 +73,20 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
       return mappedStatus === step;
     });
     
-    return historyEntry ? formatDistanceToNow(new Date(historyEntry.timestamp), {
-      addSuffix: true,
-      locale: language === 'sv' ? sv : enUS
-    }) : '';
+    console.log('History entry found:', historyEntry);
+    
+    if (historyEntry) {
+      try {
+        return formatDistanceToNow(new Date(historyEntry.timestamp), {
+          addSuffix: true,
+          locale: language === 'sv' ? sv : enUS
+        });
+      } catch (error) {
+        console.error('Error formatting timestamp:', error);
+        return '';
+      }
+    }
+    return '';
   };
 
   return (
