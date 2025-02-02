@@ -19,8 +19,12 @@ export const DeindexedLinks = () => {
   const { data: deindexedUrls, isLoading } = useQuery({
     queryKey: ['deindexed-urls'],
     queryFn: async () => {
+      console.log('Fetching deindexed URLs...');
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) return [];
+      if (!session?.user) {
+        console.log('No session found');
+        return [];
+      }
 
       const { data, error } = await supabase
         .from('removal_urls')
@@ -44,6 +48,8 @@ export const DeindexedLinks = () => {
       return data;
     }
   });
+
+  console.log('Component state:', { isLoading, deindexedUrls });
 
   if (isLoading) {
     return (
