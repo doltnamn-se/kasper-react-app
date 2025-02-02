@@ -26,11 +26,11 @@ export const getStatusText = (status: string, t: (key: string) => string): strin
   switch (status) {
     case 'received':
       return t('deindexing.status.received');
-    case 'in_progress':
+    case 'case_started':
       return t('deindexing.status.case.started');
     case 'request_submitted':
       return t('deindexing.status.request.submitted');
-    case 'completed':
+    case 'removal_approved':
       return t('deindexing.status.removal.approved');
     default:
       return t('deindexing.status.received'); // Default to 'received' for unknown statuses
