@@ -25,33 +25,7 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
   console.log('Progress percentage:', progressPercentage);
 
   return (
-    <div className="w-full">
-      <style>
-        {`
-          @keyframes gradientFlow {
-            0% {
-              background-position: 0% 50%;
-            }
-            50% {
-              background-position: 100% 50%;
-            }
-            100% {
-              background-position: 0% 50%;
-            }
-          }
-          .progress-indicator {
-            background: linear-gradient(90deg, #000000, #4d4d4d, #000000);
-            background-size: 200% 100%;
-            animation: gradientFlow 5s linear infinite;
-          }
-          .dark .progress-indicator {
-            background: linear-gradient(90deg, #FFFFFF, #CCCCCC, #FFFFFF);
-            background-size: 200% 100%;
-            animation: gradientFlow 5s linear infinite;
-          }
-        `}
-      </style>
-      
+    <div className="w-full space-y-2">
       <StepLabels 
         currentStepIndex={currentStepIndex}
         getStatusText={(step) => getStatusText(step, t)}

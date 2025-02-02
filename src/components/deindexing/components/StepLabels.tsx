@@ -14,17 +14,21 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
       {STEPS.map((step, index) => {
         const isActive = index <= currentStepIndex;
         const isCurrentStep = index === currentStepIndex;
-        const shouldShow = index <= currentStepIndex;
+        const shouldShow = type === "label" ? true : index <= currentStepIndex;
         
         return (
           <div 
             key={`${type}-${step}`}
             className={cn(
-              type === "label" ? "text-xs text-center font-normal" : "text-xs text-center text-[#000000A6] dark:text-[#FFFFFFA6]",
-              type === "label" && isCurrentStep && "font-bold text-[#000000] dark:text-white",
-              type === "label" && !isCurrentStep && "text-[#000000] dark:text-[#FFFFFFA6]",
-              !shouldShow && "invisible",
-              "w-[25%]"
+              "w-[25%] text-xs text-center",
+              type === "label" ? (
+                isCurrentStep 
+                  ? "font-bold text-[#000000] dark:text-white" 
+                  : "text-[#000000] dark:text-[#FFFFFFA6]"
+              ) : (
+                "text-[#000000A6] dark:text-[#FFFFFFA6]"
+              ),
+              !shouldShow && "invisible"
             )}
           >
             {type === "label" ? getStatusText(step) : getTimestamp?.(step)}
