@@ -56,11 +56,19 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
 
   return (
     <div className="w-full">
-      <Progress 
-        value={progressPercentage} 
-        className="h-3 rounded-full overflow-hidden mb-4"
-        indicatorClassName="bg-black dark:bg-white"
-      />
+      <div className="relative">
+        <Progress 
+          value={progressPercentage} 
+          className="h-3 rounded-full overflow-hidden mb-4"
+          indicatorClassName="bg-black dark:bg-white"
+        />
+        <div 
+          className="absolute top-0 h-3 flex items-center" 
+          style={{ left: `${progressPercentage}%`, transform: 'translateX(-50%)' }}
+        >
+          <div className="w-4 h-4 rounded-full bg-black dark:bg-white border-2 border-white dark:border-[#1c1c1e]"></div>
+        </div>
+      </div>
       <div className="flex justify-between mt-2">
         {STEPS.map((step, index) => {
           const isActive = index <= currentStepIndex;
