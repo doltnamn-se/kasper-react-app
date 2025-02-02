@@ -64,12 +64,10 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     enabled: !!userProfile?.id
   });
 
-  // Calculate total unread notifications (excluding checklist notifications)
+  // Calculate total unread notifications for home page (excluding deindexing and address alerts)
   const totalUnreadNotifications = 
     unreadGuideNotifications + 
-    unreadMonitoringNotifications + 
-    unreadDeindexingNotifications + 
-    unreadCount;
+    unreadMonitoringNotifications;
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -87,7 +85,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
   }
 
   const unreadCounts = {
-    total: totalUnreadNotifications,
+    total: totalUnreadNotifications, // Now only includes guides and monitoring
     monitoring: unreadMonitoringNotifications,
     deindexing: unreadDeindexingNotifications,
     addressAlerts: unreadCount,
