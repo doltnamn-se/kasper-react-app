@@ -28,9 +28,9 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   ? "font-bold text-[#000000] dark:text-white" 
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ) : (
-                index === currentStepIndex
-                  ? "font-bold text-[#000000] dark:text-white"
-                  : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
+                isCurrent
+                  ? "font-medium text-[#000000] dark:text-white" // Added font-medium (500) for current timestamp
+                  : "text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
               "text-center",
               !shouldShow && "invisible" // Make it invisible but preserve the space
