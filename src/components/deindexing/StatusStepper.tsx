@@ -25,7 +25,7 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
   console.log('Progress percentage:', progressPercentage);
 
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full flex flex-col gap-2">
       <StepLabels 
         currentStepIndex={currentStepIndex}
         getStatusText={(step) => getStatusText(step, t)}
@@ -34,12 +34,14 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
 
       <ProgressIndicator progressPercentage={progressPercentage} />
 
-      <StepLabels 
-        currentStepIndex={currentStepIndex}
-        getStatusText={(step) => getStatusText(step, t)}
-        type="timestamp"
-        getTimestamp={getTimestampForStep}
-      />
+      <div className="mt-1">
+        <StepLabels 
+          currentStepIndex={currentStepIndex}
+          getStatusText={(step) => getStatusText(step, t)}
+          type="timestamp"
+          getTimestamp={getTimestampForStep}
+        />
+      </div>
     </div>
   );
 };

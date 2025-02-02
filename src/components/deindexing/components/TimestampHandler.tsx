@@ -20,16 +20,18 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
       return mappedStatus === step;
     });
     
-    console.log('History entry found:', historyEntry);
+    console.log('History entry found for step', step, ':', historyEntry);
     
     if (historyEntry?.timestamp) {
       try {
-        return formatDistanceToNow(new Date(historyEntry.timestamp), {
+        const formattedTime = formatDistanceToNow(new Date(historyEntry.timestamp), {
           addSuffix: true,
           locale: language === 'sv' ? sv : enUS
         });
+        console.log('Formatted time for step', step, ':', formattedTime);
+        return formattedTime;
       } catch (error) {
-        console.error('Error formatting timestamp:', error);
+        console.error('Error formatting timestamp for step', step, ':', error);
         return '';
       }
     }
