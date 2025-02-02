@@ -50,7 +50,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
   };
 
   return (
-    <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
+    <Select defaultValue={currentStatus || 'received'} onValueChange={handleStatusChange}>
       <SelectTrigger className="w-[180px] bg-background">
         <SelectValue />
       </SelectTrigger>

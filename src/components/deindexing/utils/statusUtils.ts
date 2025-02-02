@@ -11,9 +11,6 @@ export const getStepIndex = (status: string): number => {
     case 'removal_approved':
       mappedStatus = 'completed';
       break;
-    case 'pending':
-      mappedStatus = 'received';
-      break;
     default:
       mappedStatus = status;
   }
@@ -22,7 +19,7 @@ export const getStepIndex = (status: string): number => {
   const index = STEPS.indexOf(mappedStatus as typeof STEPS[number]);
   console.log('Step index:', index);
   
-  return index >= 0 ? index : 0;
+  return index >= 0 ? index : 0; // Default to first step if status is unknown
 };
 
 export const getStatusText = (status: string, t: (key: string) => string): string => {
@@ -36,6 +33,6 @@ export const getStatusText = (status: string, t: (key: string) => string): strin
     case 'completed':
       return t('deindexing.status.removal.approved');
     default:
-      return t('deindexing.status.received');
+      return t('deindexing.status.received'); // Default to 'received' for unknown statuses
   }
 };
