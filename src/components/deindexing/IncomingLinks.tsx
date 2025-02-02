@@ -39,37 +39,41 @@ export const IncomingLinks = () => {
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="hover:bg-transparent">
-          <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
-          <TableHead className="h-14">{language === 'sv' ? 'Status' : 'Status'}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {incomingUrls.map((url) => (
-          <TableRow key={url.id} className="hover:bg-transparent">
-            <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
-              <a 
-                href={url.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
-                title={url.url}
-              >
-                <Link2 className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">{url.url}</span>
-              </a>
-            </TableCell>
-            <TableCell className="py-6">
-              <StatusStepper 
-                currentStatus={url.status} 
-                statusHistory={url.status_history}
-              />
-            </TableCell>
+    <div className="overflow-x-auto">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="min-w-[200px] lg:w-[250px] h-14">{t('deindexing.url')}</TableHead>
+            <TableHead className="h-14">{language === 'sv' ? 'Status' : 'Status'}</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {incomingUrls.map((url) => (
+            <TableRow key={url.id} className="hover:bg-transparent">
+              <TableCell className="font-medium min-w-[200px] lg:w-[250px] py-6">
+                <a 
+                  href={url.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
+                  title={url.url}
+                >
+                  <Link2 className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{url.url}</span>
+                </a>
+              </TableCell>
+              <TableCell className="py-6">
+                <div className="min-w-[280px]">
+                  <StatusStepper 
+                    currentStatus={url.status} 
+                    statusHistory={url.status_history}
+                  />
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
