@@ -66,7 +66,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
         className="fixed inset-0" 
         onClick={onClose}
       />
-      <div className="absolute z-40 w-[400px] right-[165px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-2 mt-2">
+      <div className="absolute z-40 w-[400px] right-[164px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-2 mt-2">
         <form onSubmit={handleSubmit} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
           <Input
             type="url"
