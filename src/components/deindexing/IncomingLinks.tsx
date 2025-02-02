@@ -43,7 +43,7 @@ export const IncomingLinks = () => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[250px]">URL</TableHead>
+          <TableHead className="w-[250px]">{t('deindexing.url')}</TableHead>
           <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
         </TableRow>
       </TableHeader>
