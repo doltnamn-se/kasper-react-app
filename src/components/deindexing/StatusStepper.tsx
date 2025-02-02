@@ -14,34 +14,33 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const getStepIndex = (status: string) => {
     switch (status) {
       case 'received':
-        return 1; // Start at 1 for 25%
+        return 1;
       case 'in_progress':
-        return 2; // 50%
+        return 2;
       case 'request_submitted':
-        return 3; // 75%
+        return 3;
       case 'completed':
-        return 4; // 100%
+        return 4;
       default:
-        return 1; // Default to first step (25%)
+        return 1;
     }
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  // For 4 steps, we want progress to be 25%, 50%, 75%, or 100%
   const progressPercentage = currentStepIndex * 25;
 
   const getStatusText = (status: string) => {
     switch (status) {
       case 'received':
-        return 'Mottagen';
+        return t('deindexing.status.received');
       case 'in_progress':
-        return 'Ärende påbörjat';
+        return t('deindexing.status.case.started');
       case 'request_submitted':
-        return 'Begäran inskickad';
+        return t('deindexing.status.request.submitted');
       case 'completed':
-        return 'Borttagning godkänd';
+        return t('deindexing.status.removal.approved');
       default:
-        return 'Mottagen';
+        return t('deindexing.status.received');
     }
   };
 
@@ -49,7 +48,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
     <div className="w-full">
       <Progress 
         value={progressPercentage} 
-        className="h-2 rounded-full overflow-hidden mb-4 bg-[#E8E8E5] dark:bg-[#2F2E31]"
+        className="h-2 rounded-full overflow-hidden mb-4"
         indicatorClassName="bg-black dark:bg-white"
       />
       <div className="flex justify-between mt-2">
@@ -61,7 +60,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
               key={step}
               className={cn(
                 "text-xs text-center",
-                isActive ? "text-[#000000] dark:text-white" : "text-[#616166]",
+                isActive ? "text-black dark:text-white" : "text-[#616166]",
                 isCurrentStep ? "font-medium" : "",
                 "w-[25%]"
               )}
