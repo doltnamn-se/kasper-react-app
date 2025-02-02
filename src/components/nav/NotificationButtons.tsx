@@ -61,44 +61,14 @@ export const NotificationButtons = () => {
   // Get the current timestamp for checklist notifications
   const now = new Date().toISOString();
 
-  const checklistNotifications = checklistItems.map((item, index) => {
-    let isCompleted = false;
-    if (checklistProgress) {
-      switch (index) {
-        case 0:
-          isCompleted = checklistProgress.password_updated || false;
-          break;
-        case 1:
-          isCompleted = (checklistProgress.selected_sites?.length || 0) > 0;
-          break;
-        case 2:
-          isCompleted = (checklistProgress.removal_urls?.length || 0) > 0;
-          break;
-        case 3:
-          isCompleted = !!(checklistProgress.address && checklistProgress.personal_number);
-          break;
-      }
-    }
+  // Filter out checklist notifications
+  const filteredNotifications = notifications.filter(n => n.type !== 'checklist');
+  
+  // Calculate unread count only from non-checklist notifications
+  const totalUnreadCount = filteredNotifications.filter(n => !n.read).length;
 
-    const stepTitle = index === 0 ? 'step.1.title' :
-                     index === 1 ? 'step.2.title' :
-                     index === 2 ? 'step.3.title' :
-                     'step.4.title';
-
-    const timestamp = checklistProgress?.updated_at || now;
-
-    return {
-      id: `checklist-${item.id}`,
-      title: `${t('checklist')}: ${t(stepTitle)}`,
-      message: isCompleted ? t('completed') : t('pending.completion'),
-      read: isCompleted,
-      created_at: timestamp,
-      type: 'checklist'
-    };
-  });
-
-  const allNotifications = [...notifications, ...checklistNotifications];
-  const totalUnreadCount = unreadCount + checklistNotifications.filter(n => !n.read).length;
+  console.log('Filtered notifications:', filteredNotifications);
+  console.log('Total unread count:', totalUnreadCount);
 
   const handleSettingsClick = () => {
     navigate('/settings', { state: { defaultTab: 'notifications' } });
@@ -143,7 +113,7 @@ export const NotificationButtons = () => {
           <div className="flex items-center justify-between px-4 py-2">
             <h4 className="font-medium text-black dark:text-[#FFFFFF]">{t('notifications.title')}</h4>
             <div className="flex items-center gap-2">
-              {unreadCount > 0 && (
+              {totalUnreadCount > 0 && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
@@ -167,7 +137,7 @@ export const NotificationButtons = () => {
           <DropdownMenuSeparator className="dark:border-[#232325]" />
           
           <NotificationList 
-            notifications={allNotifications}
+            notifications={filteredNotifications}
             onMarkAsRead={markAsRead}
           />
         </DropdownMenuContent>
