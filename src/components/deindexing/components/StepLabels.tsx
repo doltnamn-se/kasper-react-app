@@ -18,8 +18,6 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
           index <= currentStepIndex : // For labels, show only up to current step
           (type === "timestamp" && index <= currentStepIndex); // For timestamps, show only up to current step
         
-        if (!shouldShow) return null; // Don't render future steps
-
         return (
           <div 
             key={`${type}-${step}`}
@@ -34,7 +32,8 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   ? "font-black text-[#000000] dark:text-white"
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
-              "text-center"
+              "text-center",
+              !shouldShow && "invisible" // Make it invisible but preserve the space
             )}
           >
             {type === "label" ? getStatusText(step) : getTimestamp?.(step)}
