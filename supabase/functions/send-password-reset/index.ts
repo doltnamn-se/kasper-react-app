@@ -23,12 +23,12 @@ serve(async (req) => {
     const origin = req.headers.get('origin');
     console.log("Request origin:", origin);
 
-    // Generate password reset link with direct callback URL
+    // Generate password reset link with direct callback URL to the new reset page
     const { data, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
       options: {
-        redirectTo: `${origin}/auth?type=recovery`,
+        redirectTo: `${origin}/auth/reset-password`,
       }
     });
 
