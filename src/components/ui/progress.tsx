@@ -16,9 +16,31 @@ const Progress = React.forwardRef<
     )}
     {...props}
   >
+    <style>
+      {`
+        @keyframes moveStripes {
+          0% { background-position: 0 0; }
+          100% { background-position: 30px 0; }
+        }
+        .striped-progress {
+          background-image: linear-gradient(
+            45deg,
+            #08a621 25%,
+            #97ee86 25%,
+            #97ee86 50%,
+            #08a621 50%,
+            #08a621 75%,
+            #97ee86 75%,
+            #97ee86 100%
+          );
+          background-size: 30px 30px;
+          animation: moveStripes 1s linear infinite;
+        }
+      `}
+    </style>
     <ProgressPrimitive.Indicator
       className={cn(
-        "h-full bg-black dark:bg-white transition-all duration-300 ease-in-out",
+        "h-full transition-all duration-300 ease-in-out striped-progress dark:bg-white",
         indicatorClassName
       )}
       style={{ width: `${value || 0}%` }}
