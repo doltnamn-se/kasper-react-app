@@ -37,7 +37,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
       <Progress 
         value={progressPercentage} 
         className="h-2.5 bg-[#E8E8E5] dark:bg-[#2F2E31] rounded-full overflow-hidden mb-4" 
-        indicatorClassName="bg-black dark:bg-white rounded-full w-full"
+        indicatorClassName="bg-black dark:bg-white rounded-full"
       />
       <div className="flex justify-between mt-2">
         {STEPS.map((step) => (
