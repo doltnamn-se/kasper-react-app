@@ -36,7 +36,6 @@ export const IncomingLinks = () => {
       <TableHeader>
         <TableRow>
           <TableHead>URL</TableHead>
-          <TableHead>{language === 'sv' ? 'Tillagd' : 'Submitted'}</TableHead>
           <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
         </TableRow>
       </TableHeader>
@@ -53,10 +52,7 @@ export const IncomingLinks = () => {
                 {url.url}
               </a>
             </TableCell>
-            <TableCell>
-              {new Date(url.created_at).toLocaleDateString()}
-            </TableCell>
-            <TableCell>
+            <TableCell className="w-full">
               <StatusStepper currentStatus={url.status} />
             </TableCell>
           </TableRow>
