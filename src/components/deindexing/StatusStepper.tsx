@@ -34,14 +34,6 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-sm font-medium">
-          {getStatusText(currentStatus)}
-        </span>
-        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-          {Math.round(progressPercentage)}%
-        </span>
-      </div>
       <Progress 
         value={progressPercentage} 
         className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden mb-4" 
