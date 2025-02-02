@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -52,7 +51,8 @@ export const useChecklistProgress = () => {
         return { ...newProgress, has_address_alert: customerData.has_address_alert };
       }
       
-      console.log('Checklist progress fetched:', { ...data, has_address_alert: customerData.has_address_alert });
+      console.log('Raw checklist progress data:', data);
+      console.log('Customer data:', customerData);
       return { ...data, has_address_alert: customerData.has_address_alert };
     }
   });
@@ -62,6 +62,8 @@ export const useChecklistProgress = () => {
       console.log('No checklist progress data available');
       return 0;
     }
+    
+    console.log('Calculating progress with data:', checklistProgress);
     
     const totalSteps = 4;
     let completedSteps = 0;
@@ -81,7 +83,9 @@ export const useChecklistProgress = () => {
       console.log('Step 2 completed: URLs submitted or skipped');
       completedSteps++;
     } else {
-      console.log('Step 2 not completed: No URLs submitted or skipped');
+      console.log('Step 2 not completed: No URLs submitted or skipped', {
+        urls: checklistProgress.removal_urls
+      });
     }
     
     // Step 3: Sites selected
@@ -97,17 +101,28 @@ export const useChecklistProgress = () => {
       if (checklistProgress.street_address && 
           checklistProgress.postal_code && 
           checklistProgress.city) {
-        console.log('Step 4 completed: Address provided');
+        console.log('Step 4 completed: Address provided', {
+          street: checklistProgress.street_address,
+          postal: checklistProgress.postal_code,
+          city: checklistProgress.city
+        });
         completedSteps++;
       } else {
-        console.log('Step 4 not completed: Address not provided');
+        console.log('Step 4 not completed: Address not provided', {
+          street: checklistProgress.street_address,
+          postal: checklistProgress.postal_code,
+          city: checklistProgress.city
+        });
       }
     } else {
       if (checklistProgress.address && checklistProgress.personal_number) {
         console.log('Step 4 completed: Personal info provided');
         completedSteps++;
       } else {
-        console.log('Step 4 not completed: Personal info not provided');
+        console.log('Step 4 not completed: Personal info not provided', {
+          address: checklistProgress.address,
+          personalNumber: checklistProgress.personal_number
+        });
       }
     }
 
