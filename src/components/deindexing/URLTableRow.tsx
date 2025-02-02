@@ -28,6 +28,12 @@ interface URLTableRowProps {
 export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
   const { language } = useLanguage();
   
+  console.log('URL data in URLTableRow:', {
+    id: url.id,
+    status: url.status,
+    statusHistory: url.status_history
+  });
+  
   const formatDate = (date: string) => {
     return formatDistanceToNow(new Date(date), {
       addSuffix: true,

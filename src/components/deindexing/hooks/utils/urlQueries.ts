@@ -26,7 +26,12 @@ export const fetchAdminUrls = async () => {
     throw error;
   }
 
-  console.log('Fetched URLs:', data);
+  console.log('Fetched URLs with status history:', data?.map(url => ({
+    id: url.id,
+    status: url.status,
+    statusHistory: url.status_history
+  })));
+  
   return data as URL[];
 };
 
@@ -55,6 +60,9 @@ export const updateUrlStatus = async (
     timestamp: new Date().toISOString()
   };
 
+  console.log('Current status history:', currentUrl.status_history);
+  console.log('Adding new history entry:', newHistoryEntry);
+
   // Combine existing history with new entry
   const updatedHistory = [
     ...(currentUrl.status_history || []),
@@ -75,5 +83,6 @@ export const updateUrlStatus = async (
     throw updateError;
   }
 
+  console.log('Successfully updated status history:', updatedHistory);
   return { urlId, newStatus };
 };
