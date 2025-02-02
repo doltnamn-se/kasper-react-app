@@ -58,7 +58,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
     <div className="w-full">
       <Progress 
         value={progressPercentage} 
-        className="h-2 rounded-full overflow-hidden mb-4"
+        className="h-3 rounded-full overflow-hidden mb-4"
         indicatorClassName="bg-black dark:bg-white"
       />
       <div className="flex justify-between mt-2">
