@@ -35,29 +35,26 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
     }
   };
 
-  const getTranslatedTitle = (type: string, originalTitle: string) => {
+  const getTranslatedTitle = (type: string) => {
     if (type === 'guide_completion') {
       return t('guide.completion.needed');
     }
-    return originalTitle;
+    if (type === 'removal') {
+      return t('deindexing.status.notification.title');
+    }
+    return notification.title;
   };
 
-  const getTranslatedMessage = (type: string, originalMessage: string) => {
+  const getTranslatedMessage = (type: string) => {
     if (type === 'guide_completion') {
-      const siteMatch = originalMessage.match(/for (.+) to hide/);
+      const siteMatch = notification.message.match(/for (.+) to hide/);
       const siteName = siteMatch ? siteMatch[1] : '';
       return t('guide.completion.message', { site: siteName });
     }
     if (type === 'removal') {
-      // Extract the status from the message
-      const statusMatch = originalMessage.match(/status: (.+)$/);
-      if (statusMatch) {
-        const rawStatus = statusMatch[1];
-        const translatedStatus = getStatusText(rawStatus, t);
-        return t('notifications.url.status.message', { status: translatedStatus });
-      }
+      return t('deindexing.status.notification.message');
     }
-    return originalMessage;
+    return notification.message;
   };
 
   const handleClick = () => {
@@ -85,14 +82,14 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
             ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
             : 'text-[#000000] dark:text-[#FFFFFF]'
         }`}>
-          {getTranslatedTitle(notification.type || '', notification.title)}
+          {getTranslatedTitle(notification.type || '')}
         </p>
         <p className={`text-xs mt-1 font-medium ${
           notification.read 
             ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
             : 'text-[#000000] dark:text-[#FFFFFF]'
         }`}>
-          {getTranslatedMessage(notification.type || '', notification.message)}
+          {getTranslatedMessage(notification.type || '')}
         </p>
         <p className={`text-xs mt-1 font-medium ${
           notification.read 
