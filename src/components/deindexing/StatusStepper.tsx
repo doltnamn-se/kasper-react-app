@@ -34,8 +34,8 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  // Adjust progress percentage to align with label centers
-  const progressPercentage = ((currentStepIndex + 1) * 100 - (100 / STEPS.length / 2)) / STEPS.length;
+  // Calculate progress to align with the center of the current step's label
+  const progressPercentage = (currentStepIndex * 100 + 50) / STEPS.length;
   
   console.log('Progress percentage:', progressPercentage);
 
@@ -103,7 +103,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             <div 
               key={step}
               className={cn(
-                "text-xs text-center font-medium",
+                "text-xs text-center",
                 isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000A6] dark:text-[#FFFFFFA6]",
                 !shouldShow && "invisible",
                 "w-[25%]"
