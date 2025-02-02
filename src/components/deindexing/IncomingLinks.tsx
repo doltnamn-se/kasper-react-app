@@ -48,7 +48,7 @@ export const IncomingLinks = () => {
                 href={url.url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white decoration-dashed underline-offset-4 underline"
+                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white"
               >
                 {url.url}
               </a>
