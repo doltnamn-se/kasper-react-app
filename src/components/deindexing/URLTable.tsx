@@ -28,7 +28,7 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
           <TableHead className="w-[180px]">{t('deindexing.url')}</TableHead>
           <TableHead className="w-[180px]">{t('deindexing.customer')}</TableHead>
           <TableHead className="w-[120px]">{t('deindexing.submitted')}</TableHead>
-          <TableHead className="-ml-[50px]">{t('deindexing.status')}</TableHead>
+          <TableHead className="-ml-[20px]">{t('deindexing.status')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
