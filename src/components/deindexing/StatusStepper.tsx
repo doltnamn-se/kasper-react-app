@@ -27,20 +27,20 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = ((currentStepIndex + 1) / STEPS.length) * 100;
+  const progressPercentage = ((currentStepIndex) / (STEPS.length - 1)) * 100;
 
   const getStatusText = (status: string) => {
     switch (status) {
       case 'received':
-        return t('deindexing.status.received');
+        return 'Mottagen';
       case 'in_progress':
-        return t('deindexing.status.case.started');
+        return 'Ärende påbörjat';
       case 'request_submitted':
-        return t('deindexing.status.request.submitted');
+        return 'Begäran inskickad';
       case 'completed':
-        return t('deindexing.status.removal.approved');
+        return 'Borttagning godkänd';
       default:
-        return t('deindexing.status.received');
+        return 'Mottagen';
     }
   };
 
@@ -48,17 +48,20 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
     <div className="w-full">
       <Progress 
         value={progressPercentage} 
-        className="h-2.5 rounded-full overflow-hidden mb-4"
+        className="h-2 rounded-full overflow-hidden mb-4 bg-[#2F2E31]"
+        indicatorClassName="bg-white"
       />
       <div className="flex justify-between mt-2">
         {STEPS.map((step, index) => {
           const isActive = index <= currentStepIndex;
+          const isCurrentStep = index === currentStepIndex;
           return (
             <div 
               key={step}
               className={cn(
                 "text-xs text-center",
-                isActive ? "text-black dark:text-white" : "text-gray-400 dark:text-gray-600",
+                isActive ? "text-white" : "text-[#616166]",
+                isCurrentStep ? "font-medium" : "",
                 "w-[25%]"
               )}
             >
