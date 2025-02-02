@@ -12,6 +12,8 @@ import { Link2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { URLStatusHistory } from "@/types/url-management";
+import { formatDistanceStrict } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
 
 export const DeindexedLinks = () => {
   const { t, language } = useLanguage();
@@ -49,6 +51,18 @@ export const DeindexedLinks = () => {
     }
   });
 
+  const calculateLeadTime = (statusHistory: URLStatusHistory[]) => {
+    const startDate = new Date(statusHistory[0]?.timestamp || '');
+    const endDate = statusHistory[statusHistory.length - 1]?.timestamp;
+    
+    if (!endDate) return '';
+
+    return formatDistanceStrict(new Date(endDate), startDate, {
+      locale: language === 'sv' ? sv : enUS,
+      addSuffix: false
+    });
+  };
+
   console.log('Component state:', { isLoading, deindexedUrls });
 
   if (isLoading) {
@@ -75,6 +89,9 @@ export const DeindexedLinks = () => {
       <TableHeader>
         <TableRow className="hover:bg-transparent">
           <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
+          <TableHead className="w-[150px] h-14">
+            {language === 'sv' ? 'Ledtid' : 'Lead time'}
+          </TableHead>
           <TableHead className="h-14">{language === 'sv' ? 'Status' : 'Status'}</TableHead>
         </TableRow>
       </TableHeader>
@@ -92,6 +109,9 @@ export const DeindexedLinks = () => {
                 <Link2 className="h-3 w-3 flex-shrink-0" />
                 <span className="truncate">{url.url}</span>
               </a>
+            </TableCell>
+            <TableCell className="py-6 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {calculateLeadTime(url.status_history as URLStatusHistory[])}
             </TableCell>
             <TableCell className="py-6">
               <StatusStepper 
