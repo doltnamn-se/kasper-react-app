@@ -67,6 +67,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           }
           .deindexing-progress-indicator {
             position: relative;
+            overflow: hidden;
           }
           .deindexing-progress-indicator::before {
             content: '';
@@ -83,8 +84,8 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: linear-gradient(
               -45deg,
               #08a621 25%,
