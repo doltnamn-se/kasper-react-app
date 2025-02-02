@@ -43,7 +43,6 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
 
   const getTranslatedMessage = (type: string, originalMessage: string) => {
     if (type === 'guide_completion') {
-      // Extract the site name from the original message
       const siteMatch = originalMessage.match(/for (.+) to hide/);
       const siteName = siteMatch ? siteMatch[1] : '';
       return t('guide.completion.message', { site: siteName });
@@ -54,7 +53,6 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
   const handleClick = () => {
     onMarkAsRead(notification.id);
     
-    // Handle navigation based on notification type
     if (notification.type === 'guide_completion') {
       navigate('/guides');
     } else if (notification.type === 'checklist') {
