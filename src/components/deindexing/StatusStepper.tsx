@@ -56,11 +56,36 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
 
   return (
     <div className="w-full">
+      <style>
+        {`
+          @keyframes moveStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 0; }
+          }
+          .deindexing-progress {
+            background-color: #97ee88;
+          }
+          .deindexing-progress-indicator {
+            background-image: linear-gradient(
+              45deg,
+              #08a621 25%,
+              #97ee86 25%,
+              #97ee86 50%,
+              #08a621 50%,
+              #08a621 75%,
+              #97ee86 75%,
+              #97ee86 100%
+            );
+            background-size: 30px 30px;
+            animation: moveStripes 1s linear infinite;
+          }
+        `}
+      </style>
       <div className="relative">
         <Progress 
           value={progressPercentage} 
-          className="h-3 rounded-full overflow-hidden mb-4"
-          indicatorClassName="bg-black dark:bg-white"
+          className="h-3 rounded-full overflow-hidden mb-4 deindexing-progress"
+          indicatorClassName="deindexing-progress-indicator dark:bg-white"
         />
         <div 
           className="absolute top-1/2 h-3 flex items-center -translate-y-1/2" 
