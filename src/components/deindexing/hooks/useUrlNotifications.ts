@@ -3,11 +3,12 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 
 export const useUrlNotifications = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const createStatusNotification = async (customerId: string) => {
     console.log('useUrlNotifications - Creating status notification:', { 
-      customerId
+      customerId,
+      currentLanguage: language
     });
     
     try {
@@ -15,8 +16,10 @@ export const useUrlNotifications = () => {
         .from('notifications')
         .insert({
           user_id: customerId,
-          title: t('notifications.url.status.title'),
-          message: t('notifications.url.status.message'),
+          title: language === 'en' ? 'Link status updated' : 'Länk status uppdaterad',
+          message: language === 'en' 
+            ? 'The status of a link removal request has been updated'
+            : 'Statusen för en begäran om länkborttagning har uppdaterats',
           type: 'removal',
           read: false
         });
