@@ -29,7 +29,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ) : (
                 isCurrent
-                  ? "font-medium text-[#000000] dark:text-white" // Added font-medium (500) for current timestamp
+                  ? "font-medium text-[#000000] dark:text-white"
                   : "text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
               "text-center",
@@ -48,7 +48,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                     "text-xs font-medium",
                     isCurrent
                       ? "text-white dark:text-[#000000]" // Active step number colors
-                      : "text-[#000000] dark:text-[#FFFFFF]" // Inactive step number colors
+                      : "text-[#000000A6] dark:text-[#FFFFFFA6]" // Updated inactive step number colors
                   )}>
                     {index + 1}
                   </span>
