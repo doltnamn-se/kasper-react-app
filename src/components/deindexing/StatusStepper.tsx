@@ -104,6 +104,7 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
           const isActive = index <= currentStepIndex;
           const isCurrentStep = index === currentStepIndex;
           const shouldShow = index <= currentStepIndex;
+          const isLastStep = index === STEPS.length - 1;
           return (
             <div 
               key={`label-${step}`}
@@ -111,7 +112,8 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
                 "text-xs text-center font-normal",
                 isCurrentStep ? "font-bold text-[#000000] dark:text-white" : "text-[#000000] dark:text-[#FFFFFFA6]",
                 !shouldShow && "invisible",
-                "w-[25%]"
+                "w-[25%]",
+                isLastStep && "-mr-[50%] pl-[50%]" // Center the last label at the end of the bar
               )}
             >
               {getStatusText(step)}
@@ -140,13 +142,15 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
         {STEPS.map((step, index) => {
           const shouldShow = index <= currentStepIndex;
           const timestamp = getTimestampForStep(step);
+          const isLastStep = index === STEPS.length - 1;
           return (
             <div 
               key={`timestamp-${step}`}
               className={cn(
                 "text-xs text-center text-[#000000A6] dark:text-[#FFFFFFA6]",
                 !shouldShow && "invisible",
-                "w-[25%]"
+                "w-[25%]",
+                isLastStep && "-mr-[50%] pl-[50%]" // Center the last timestamp at the end of the bar
               )}
             >
               {timestamp}
