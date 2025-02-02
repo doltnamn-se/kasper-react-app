@@ -145,7 +145,7 @@ const Deindexing = () => {
                     className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
                     onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
                   >
-                    <span>{language === 'sv' ? 'Uppgradera' : 'Upgrade'}</span>
+                    <span>{language === 'sv' ? 'Lägg till' : 'Add more'}</span>
                     <ArrowRight className="h-4 w-4 -rotate-45" />
                   </Button>
                 </div>

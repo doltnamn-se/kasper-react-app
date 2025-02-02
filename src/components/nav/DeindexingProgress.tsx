@@ -106,7 +106,7 @@ export const DeindexingProgress = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center font-medium text-[#000000] dark:text-white group"
           >
-            {language === 'sv' ? 'Uppgradera' : 'Upgrade'}
+            {language === 'sv' ? 'Lägg till' : 'Add more'}
             <ArrowRight className="ml-1 h-3 w-3 transition-transform duration-300 ease-in-out group-hover:translate-x-[0.2rem] group-hover:translate-y-[-0.2rem] -rotate-45" />
           </a>
         </div>
