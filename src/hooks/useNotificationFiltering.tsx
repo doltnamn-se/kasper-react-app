@@ -37,11 +37,15 @@ export const useNotificationFiltering = (notifications: Notification[] = []) => 
     });
   };
 
-  const filteredNotifications = getFilteredNotifications();
-  const totalUnreadCount = filteredNotifications.filter(n => !n.read).length;
+  // Calculate total unread count from all notifications (except checklist)
+  const totalUnreadCount = notifications
+    .filter(n => n.type !== 'checklist' && !n.read)
+    .length;
 
-  console.log('Filtered notifications:', filteredNotifications);
-  console.log('Total unread count:', totalUnreadCount);
+  const filteredNotifications = getFilteredNotifications();
+  
+  console.log('All unread notifications count:', totalUnreadCount);
+  console.log('Filtered notifications for current route:', filteredNotifications);
 
   return {
     filteredNotifications,
