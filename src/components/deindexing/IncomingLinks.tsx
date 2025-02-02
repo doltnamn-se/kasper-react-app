@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { StatusStepper } from "./StatusStepper";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
-import { URLStatusHistory } from "@/types/url-management";
 import { Link2 } from "lucide-react";
 
 export const IncomingLinks = () => {
@@ -42,15 +41,15 @@ export const IncomingLinks = () => {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[250px]">{t('deindexing.url')}</TableHead>
-          <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
+        <TableRow className="hover:bg-transparent">
+          <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
+          <TableHead className="h-14">{language === 'sv' ? 'Status' : 'Status'}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {incomingUrls.map((url) => (
-          <TableRow key={url.id}>
-            <TableCell className="font-medium w-[250px] max-w-[250px]">
+          <TableRow key={url.id} className="hover:bg-transparent">
+            <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
               <a 
                 href={url.url} 
                 target="_blank" 
@@ -62,7 +61,7 @@ export const IncomingLinks = () => {
                 <span className="truncate">{url.url}</span>
               </a>
             </TableCell>
-            <TableCell>
+            <TableCell className="py-6">
               <StatusStepper 
                 currentStatus={url.status} 
                 statusHistory={url.status_history}
