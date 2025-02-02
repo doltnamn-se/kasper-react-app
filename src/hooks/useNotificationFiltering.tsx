@@ -6,9 +6,16 @@ export const useNotificationFiltering = (notifications: Notification[] = []) => 
 
   const getFilteredNotifications = () => {
     console.log('Processing notifications, current route:', location.pathname);
+    console.log('All notifications before filtering:', notifications.map(n => ({
+      id: n.id,
+      type: n.type,
+      title: n.title,
+      message: n.message,
+      read: n.read
+    })));
     
     // Only filter out checklist notifications, show all other types
-    return notifications.filter(n => {
+    const filtered = notifications.filter(n => {
       if (n.type === 'checklist') {
         console.log('Filtering out checklist notification:', n);
         return false;
@@ -22,17 +29,26 @@ export const useNotificationFiltering = (notifications: Notification[] = []) => 
 
       return true;
     });
+
+    console.log('Notifications after filtering:', filtered.map(n => ({
+      id: n.id,
+      type: n.type,
+      title: n.title,
+      message: n.message,
+      read: n.read
+    })));
+
+    return filtered;
   };
 
   // Calculate total unread count from all notifications (except checklist)
   const totalUnreadCount = notifications
     .filter(n => n.type !== 'checklist' && !n.read)
     .length;
-
-  const filteredNotifications = getFilteredNotifications();
   
   console.log('All unread notifications count:', totalUnreadCount);
-  console.log('Filtered notifications:', filteredNotifications);
+
+  const filteredNotifications = getFilteredNotifications();
 
   return {
     filteredNotifications,
