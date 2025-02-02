@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
+import { CornerDownLeft } from "lucide-react";
 
 interface NewLinkFormProps {
   onClose: () => void;
@@ -65,7 +66,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
         className="fixed inset-0" 
         onClick={onClose}
       />
-      <div className="absolute z-40 w-[300px] right-[195px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-4 mt-2">
+      <div className="absolute z-40 w-[400px] right-[195px] bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-2 mt-2">
         <form onSubmit={handleSubmit} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
           <Input
             type="url"
@@ -78,9 +79,10 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
           <Button 
             type="submit" 
             disabled={isSubmitting}
-            className="bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+            className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-black"
           >
-            {language === 'sv' ? 'Lägg till' : 'Add'}
+            Enter
+            <CornerDownLeft className="h-4 w-4" />
           </Button>
         </form>
       </div>
