@@ -12,12 +12,17 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
     console.log('Getting timestamp for step:', step);
     console.log('Status history:', statusHistory);
     
+    // Map the step to the corresponding status in history
+    const statusMap: { [key: string]: string } = {
+      'received': 'received',
+      'in_progress': 'case_started',
+      'request_submitted': 'request_submitted',
+      'completed': 'removal_approved'
+    };
+
     const historyEntry = statusHistory?.find(entry => {
-      const mappedStatus = entry.status === 'case_started' ? 'in_progress' : 
-                          entry.status === 'removal_approved' ? 'completed' : 
-                          entry.status === 'request_submitted' ? 'request_submitted' :
-                          entry.status;
-      return mappedStatus === step;
+      const targetStatus = statusMap[step];
+      return entry.status === targetStatus;
     });
     
     console.log('History entry found for step', step, ':', historyEntry);

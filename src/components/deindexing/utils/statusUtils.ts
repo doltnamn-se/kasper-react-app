@@ -11,6 +11,9 @@ export const getStepIndex = (status: string): number => {
     case 'removal_approved':
       mappedStatus = 'completed';
       break;
+    case 'pending':
+      mappedStatus = 'received';
+      break;
     default:
       mappedStatus = status;
   }
