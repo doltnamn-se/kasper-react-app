@@ -1,5 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { URLStatusHistory } from "@/types/url-management";
+
+interface IncomingURL {
+  id: string;
+  url: string;
+  status: string;
+  created_at: string;
+  status_history: URLStatusHistory[];
+}
 
 export const useIncomingUrls = () => {
   const { data: incomingUrls, isLoading } = useQuery({
@@ -26,8 +35,14 @@ export const useIncomingUrls = () => {
         return [];
       }
 
-      console.log('Fetched incoming URLs with status history:', data);
-      return data;
+      // Type assertion to ensure status_history is properly typed
+      const typedData = data?.map(url => ({
+        ...url,
+        status_history: (url.status_history || []) as URLStatusHistory[]
+      })) as IncomingURL[];
+
+      console.log('Fetched incoming URLs with status history:', typedData);
+      return typedData;
     }
   });
 

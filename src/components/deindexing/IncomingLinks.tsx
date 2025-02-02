@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { StatusStepper } from "./StatusStepper";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
+import { URLStatusHistory } from "@/types/url-management";
 
 export const IncomingLinks = () => {
   const { t, language } = useLanguage();
