@@ -42,14 +42,14 @@ export const IncomingLinks = () => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[220px]">URL</TableHead>
+          <TableHead className="w-[200px]">URL</TableHead>
           <TableHead>{language === 'sv' ? 'Status' : 'Status'}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {incomingUrls.map((url) => (
           <TableRow key={url.id}>
-            <TableCell className="font-medium w-[220px]">
+            <TableCell className="font-medium w-[200px]">
               <a 
                 href={url.url} 
                 target="_blank" 
