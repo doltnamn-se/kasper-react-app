@@ -14,8 +14,12 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
       {STEPS.map((step, index) => {
         const isActive = index <= currentStepIndex;
         const isCurrent = index === currentStepIndex;
-        const shouldShow = type === "label" || (type === "timestamp" && index <= currentStepIndex);
+        const shouldShow = type === "label" ? 
+          index <= currentStepIndex : // For labels, show only up to current step
+          (type === "timestamp" && index <= currentStepIndex); // For timestamps, show only up to current step
         
+        if (!shouldShow) return null; // Don't render future steps
+
         return (
           <div 
             key={`${type}-${step}`}
@@ -30,8 +34,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   ? "font-black text-[#000000] dark:text-white"
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
-              "text-center",
-              !shouldShow && "invisible"
+              "text-center"
             )}
           >
             {type === "label" ? getStatusText(step) : getTimestamp?.(step)}
