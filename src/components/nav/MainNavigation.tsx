@@ -32,22 +32,6 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     enabled: !!userProfile?.id
   });
 
-  const { data: unreadChecklistNotifications = 0 } = useQuery({
-    queryKey: ['unread-checklist-notifications'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('id', { count: 'exact' })
-        .eq('user_id', userProfile?.id)
-        .eq('type', 'checklist')
-        .eq('read', false);
-
-      if (error) return 0;
-      return data?.length || 0;
-    },
-    enabled: !!userProfile?.id
-  });
-
   const { data: unreadMonitoringNotifications = 0 } = useQuery({
     queryKey: ['unread-monitoring-notifications'],
     queryFn: async () => {
@@ -80,10 +64,9 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     enabled: !!userProfile?.id
   });
 
-  // Calculate total unread notifications
+  // Calculate total unread notifications (excluding checklist notifications)
   const totalUnreadNotifications = 
     unreadGuideNotifications + 
-    unreadChecklistNotifications + 
     unreadMonitoringNotifications + 
     unreadDeindexingNotifications + 
     unreadCount;
@@ -105,14 +88,13 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
 
   const unreadCounts = {
     total: totalUnreadNotifications,
-    checklist: unreadChecklistNotifications,
     monitoring: unreadMonitoringNotifications,
     deindexing: unreadDeindexingNotifications,
     addressAlerts: unreadCount,
     guides: unreadGuideNotifications,
   };
 
-  console.log('Unread deindexing notifications:', unreadDeindexingNotifications); // Debug log
+  console.log('Unread notification counts:', unreadCounts);
 
   return (
     <>
