@@ -40,20 +40,21 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         className="h-2.5 rounded-full overflow-hidden mb-4"
       />
       <div className="flex justify-between mt-2">
-        {STEPS.map((step, index) => (
-          <div 
-            key={step}
-            className={cn(
-              "text-xs text-center",
-              index <= currentStepIndex 
-                ? "text-black dark:text-white" 
-                : "text-gray-400 dark:text-gray-600"
-            )}
-            style={{ width: '25%' }}
-          >
-            {getStatusText(step)}
-          </div>
-        ))}
+        {STEPS.map((step, index) => {
+          const isActive = index <= currentStepIndex;
+          return (
+            <div 
+              key={step}
+              className={cn(
+                "text-xs text-center",
+                isActive ? "text-black dark:text-white" : "text-gray-400 dark:text-gray-600",
+                "w-[25%]"
+              )}
+            >
+              {getStatusText(step)}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
