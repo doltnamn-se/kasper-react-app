@@ -11,6 +11,10 @@ interface URLTableRowProps {
     url: string;
     status: string;
     created_at: string;
+    status_history?: {
+      status: string;
+      timestamp: string;
+    }[];
     customer: {
       id: string;
       profiles: {
@@ -48,7 +52,10 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
       <TableCell className="w-full">
         <div className="flex items-center justify-between gap-8">
           <div className="flex-grow">
-            <StatusStepper currentStatus={url.status} />
+            <StatusStepper 
+              currentStatus={url.status} 
+              statusHistory={url.status_history}
+            />
           </div>
           <URLStatusSelect
             currentStatus={url.status}

@@ -12,16 +12,17 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
     console.log('Getting timestamp for step:', step);
     console.log('Status history:', statusHistory);
     
-    const historyEntry = statusHistory.find(entry => {
+    const historyEntry = statusHistory?.find(entry => {
       const mappedStatus = entry.status === 'case_started' ? 'in_progress' : 
                           entry.status === 'removal_approved' ? 'completed' : 
+                          entry.status === 'request_submitted' ? 'request_submitted' :
                           entry.status;
       return mappedStatus === step;
     });
     
     console.log('History entry found:', historyEntry);
     
-    if (historyEntry) {
+    if (historyEntry?.timestamp) {
       try {
         return formatDistanceToNow(new Date(historyEntry.timestamp), {
           addSuffix: true,
