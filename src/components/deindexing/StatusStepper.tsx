@@ -34,7 +34,8 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = ((currentStepIndex + 1) * 100) / STEPS.length;
+  // Adjust progress percentage to align with label centers
+  const progressPercentage = ((currentStepIndex + 1) * 100 - (100 / STEPS.length / 2)) / STEPS.length;
   
   console.log('Progress percentage:', progressPercentage);
 
