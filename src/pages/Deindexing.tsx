@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Link2, Link2Off, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
 
 const Deindexing = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
+  const [showNewLinkForm, setShowNewLinkForm] = useState(false);
 
   const { data: profile } = useQuery({
     queryKey: ['user-profile'],
@@ -84,6 +86,10 @@ const Deindexing = () => {
   const hasReachedLimit = usedUrls >= urlLimit;
   const isAdmin = profile?.role === 'super_admin';
 
+  const handleNewLinkClick = () => {
+    setShowNewLinkForm(!showNewLinkForm);
+  };
+
   if (isAdmin) {
     return (
       <MainLayout>
@@ -129,6 +135,7 @@ const Deindexing = () => {
                     variant="default" 
                     className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
                     disabled={hasReachedLimit}
+                    onClick={handleNewLinkClick}
                   >
                     {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
                     {language === 'sv' ? 'Ny länk' : 'New link'}
@@ -145,6 +152,12 @@ const Deindexing = () => {
               </div>
             </div>
           </div>
+
+          {showNewLinkForm && (
+            <div className="mt-2">
+              <NewLinkForm onClose={() => setShowNewLinkForm(false)} />
+            </div>
+          )}
 
           <TabsContent value="incoming" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
