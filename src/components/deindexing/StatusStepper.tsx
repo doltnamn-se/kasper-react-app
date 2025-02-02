@@ -14,21 +14,21 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const getStepIndex = (status: string) => {
     switch (status) {
       case 'received':
-        return 0;
+        return 1; // Start at 1 for 25%
       case 'in_progress':
-        return 1;
+        return 2; // 50%
       case 'request_submitted':
-        return 2;
+        return 3; // 75%
       case 'completed':
-        return 3;
+        return 4; // 100%
       default:
-        return 0;
+        return 1; // Default to first step (25%)
     }
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  // For 4 steps, we want progress to be 0%, 33.33%, 66.66%, or 100%
-  const progressPercentage = (currentStepIndex / 3) * 100;
+  // For 4 steps, we want progress to be 25%, 50%, 75%, or 100%
+  const progressPercentage = currentStepIndex * 25;
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -54,8 +54,8 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
       />
       <div className="flex justify-between mt-2">
         {STEPS.map((step, index) => {
-          const isActive = index <= currentStepIndex;
-          const isCurrentStep = index === currentStepIndex;
+          const isActive = index <= currentStepIndex - 1;
+          const isCurrentStep = index === currentStepIndex - 1;
           return (
             <div 
               key={step}
