@@ -73,8 +73,9 @@ export const NotificationButtons = () => {
     }
     
     // On address-alerts page, show only address_alert notifications
+    // and exclude checklist step 4 notifications
     if (location.pathname === '/address-alerts') {
-      return n.type === 'address_alert';
+      return n.type === 'address_alert' && !n.message?.includes('step 4');
     }
 
     // On other pages, show all notifications except removal ones
