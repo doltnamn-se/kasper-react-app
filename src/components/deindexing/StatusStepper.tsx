@@ -11,9 +11,10 @@ const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as c
 export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const { t } = useLanguage();
 
-  console.log('Current status received:', currentStatus);
+  console.log('Current status received:', currentStatus); // Debug log
 
   const getStepIndex = (status: string) => {
+    // Map the database status to our step status
     let mappedStatus = status;
     switch (status) {
       case 'case_started':
@@ -26,9 +27,9 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         mappedStatus = status;
     }
 
-    console.log('Mapped status:', mappedStatus);
+    console.log('Mapped status:', mappedStatus); // Debug log
     const index = STEPS.indexOf(mappedStatus as typeof STEPS[number]);
-    console.log('Step index:', index);
+    console.log('Step index:', index); // Debug log
     
     return index >= 0 ? index : 0;
   };
@@ -36,7 +37,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const currentStepIndex = getStepIndex(currentStatus);
   const progressPercentage = ((currentStepIndex + 1) * 100) / STEPS.length;
   
-  console.log('Progress percentage:', progressPercentage);
+  console.log('Progress percentage:', progressPercentage); // Debug log
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -57,72 +58,40 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
     <div className="w-full">
       <style>
         {`
-          .progress-container {
-            position: relative;
-            width: 100%;
-            height: 12px;
-            margin-bottom: 16px;
-          }
-
-          .solid-progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background-color: #08a621;
-            border-radius: 9999px;
-            transition: width 0.3s ease;
-            width: ${progressPercentage}%;
-          }
-
-          .striped-progress {
-            position: absolute;
-            top: 0;
-            left: ${progressPercentage}%;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(
-              -45deg,
-              #08a621 25%,
-              #97ee86 25%,
-              #97ee86 50%,
-              #08a621 50%,
-              #08a621 75%,
-              #97ee86 75%,
-              #97ee86 100%
-            );
-            background-size: 7px 7px;
-            border-radius: 9999px;
-            animation: moveStripes 1.8s linear infinite;
-          }
-
-          .progress-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #97ee86;
-            border-radius: 9999px;
-          }
-
           @keyframes moveStripes {
             0% { background-position: 0 0; }
             100% { background-position: -10px 0; }
           }
+          .deindexing-progress {
+            background-color: #e8e8e5;
+          }
+          .deindexing-progress-indicator {
+            background-image: linear-gradient(
+              -45deg,
+              #000000 25%,
+              #333333 25%,
+              #333333 50%,
+              #000000 50%,
+              #000000 75%,
+              #333333 75%,
+              #333333 100%
+            );
+            background-size: 10px 10px;
+            animation: moveStripes 2s linear infinite;
+          }
         `}
       </style>
       <div className="relative">
-        <div className="progress-container">
-          <div className="progress-background" />
-          <div className="solid-progress" />
-          <div className="striped-progress" />
-          <div 
-            className="absolute top-1/2 -translate-y-1/2" 
-            style={{ left: `${progressPercentage}%` }}
-          >
-            <div className="w-6 h-6 -ml-3 rounded-full bg-[#08a621] dark:bg-white border-4 border-white dark:border-[#1c1c1e] shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_15px_rgba(255,255,255,0.25)]"></div>
-          </div>
+        <Progress 
+          value={progressPercentage} 
+          className="h-3 rounded-full overflow-hidden mb-4 deindexing-progress"
+          indicatorClassName="deindexing-progress-indicator dark:bg-white"
+        />
+        <div 
+          className="absolute top-1/2 h-3 flex items-center -translate-y-1/2" 
+          style={{ left: `${progressPercentage}%`, transform: 'translate(-50%, -50%)' }}
+        >
+          <div className="w-6 h-6 rounded-full bg-[#000000] dark:bg-white border-4 border-white dark:border-[#1c1c1e] shadow-[0_0_15px_rgba(0,0,0,0.5)] dark:shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
         </div>
       </div>
       <div className="flex justify-between mt-2">
