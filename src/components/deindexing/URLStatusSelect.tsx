@@ -34,12 +34,10 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       console.log('URLStatusSelect - Calling onStatusChange');
       onStatusChange(newStatus);
       
-      // Get translated status text for notification
-      const translatedStatus = getStatusText(newStatus, t);
-      console.log('URLStatusSelect - Creating notification with translated status:', translatedStatus);
+      console.log('URLStatusSelect - Creating notification');
       
-      // Create the notification
-      await createStatusNotification(customerId, translatedStatus);
+      // Create the notification without status in the message
+      await createStatusNotification(customerId);
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();

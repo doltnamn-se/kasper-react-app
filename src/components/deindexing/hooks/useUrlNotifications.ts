@@ -5,10 +5,9 @@ import { toast } from "@/hooks/use-toast";
 export const useUrlNotifications = () => {
   const { t } = useLanguage();
 
-  const createStatusNotification = async (customerId: string, newStatus: string) => {
+  const createStatusNotification = async (customerId: string) => {
     console.log('useUrlNotifications - Creating status notification:', { 
-      customerId, 
-      newStatus 
+      customerId
     });
     
     try {
@@ -17,7 +16,7 @@ export const useUrlNotifications = () => {
         .insert({
           user_id: customerId,
           title: t('notifications.url.status.title'),
-          message: t('notifications.url.status.message', { status: newStatus }),
+          message: t('notifications.url.status.message'),
           type: 'removal',
           read: false
         });
