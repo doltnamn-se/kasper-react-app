@@ -1,6 +1,7 @@
 import { URLStatusStep } from "@/types/url-management";
 
 export const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as const;
+export type Step = typeof STEPS[number];
 
 export const getStepIndex = (status: string): number => {
   let mappedStatus = status;
@@ -16,7 +17,7 @@ export const getStepIndex = (status: string): number => {
   }
 
   console.log('Mapped status:', mappedStatus);
-  const index = STEPS.indexOf(mappedStatus as typeof STEPS[number]);
+  const index = STEPS.indexOf(mappedStatus as Step);
   console.log('Step index:', index);
   
   return index >= 0 ? index : 0; // Default to first step if status is unknown

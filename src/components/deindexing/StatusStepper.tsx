@@ -1,6 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLStatusHistory } from "@/types/url-management";
-import { getStepIndex, getStatusText, STEPS } from "./utils/statusUtils";
+import { getStepIndex, getStatusText, STEPS, Step } from "./utils/statusUtils";
 import { ProgressIndicator } from "./components/ProgressIndicator";
 import { StepLabels } from "./components/StepLabels";
 import { useTimestampHandler } from "./components/TimestampHandler";
@@ -27,7 +27,7 @@ export const StatusStepper = ({
   
   console.log('Progress percentage:', progressPercentage);
 
-  const stepsToShow = showOnlyFinalStep ? [STEPS[STEPS.length - 1]] : STEPS;
+  const stepsToShow = showOnlyFinalStep ? [STEPS[STEPS.length - 1]] as Step[] : STEPS as Step[];
 
   return (
     <div className="w-full flex flex-col gap-2">

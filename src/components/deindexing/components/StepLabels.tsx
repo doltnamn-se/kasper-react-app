@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
-import { STEPS } from "../utils/statusUtils";
+import { STEPS, Step } from "../utils/statusUtils";
 
 interface StepLabelsProps {
   currentStepIndex: number;
   getStatusText: (step: string) => string;
   type: "label" | "timestamp";
   getTimestamp?: (step: string) => string;
-  stepsToShow?: string[];
+  stepsToShow?: Step[];
 }
 
 export const StepLabels = ({ 
@@ -14,7 +14,7 @@ export const StepLabels = ({
   getStatusText, 
   type, 
   getTimestamp,
-  stepsToShow = STEPS 
+  stepsToShow = STEPS as Step[] 
 }: StepLabelsProps) => {
   return (
     <div className="flex justify-between">
