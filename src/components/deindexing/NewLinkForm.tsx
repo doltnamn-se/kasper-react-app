@@ -79,10 +79,10 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
           <Button 
             type="submit" 
             disabled={isSubmitting}
-            className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-black"
+            className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-black"
           >
             {language === 'sv' ? 'Spara' : 'Save'}
-            <CornerDownLeft className="h-4 w-4" />
+            <CornerDownLeft className="h-4 w-4 ml-2 text-black" />
           </Button>
         </form>
       </div>
