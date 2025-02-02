@@ -67,7 +67,7 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
     } else if (notification.type === 'address_alert') {
       navigate('/address-alerts');
     } else if (notification.type === 'removal') {
-      navigate('/my-links');
+      navigate('/deindexing');
     }
   };
 
