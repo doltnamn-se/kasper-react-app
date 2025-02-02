@@ -60,7 +60,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
   };
 
   return (
-    <div className="absolute z-10 w-[400px] right-0 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-4 mt-2">
+    <div className="absolute z-10 w-[400px] -right-2 bg-white dark:bg-[#1c1c1e] rounded-md shadow-lg border border-gray-200 dark:border-[#232325] p-4 mt-2">
       <form onSubmit={handleSubmit} className="flex gap-2">
         <Input
           type="url"
