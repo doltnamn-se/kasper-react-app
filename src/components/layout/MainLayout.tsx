@@ -21,7 +21,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     return (
       <nav>
         {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
-        <MainNavigation toggleMobileMenu={toggleMobileMenu} />
+        <MainNavigation />
       </nav>
     );
   };

@@ -18,7 +18,7 @@ export const MainNavigation = () => {
     <nav className="space-y-2">
       <div className="px-3 py-2">
         <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-          {t('nav.main')}
+          {t('navigation.main')}
         </h2>
         <div className="space-y-1">
           <Link
@@ -31,7 +31,7 @@ export const MainNavigation = () => {
                 : "hover:bg-[#f4f4f5] dark:hover:bg-[#27272A]"
             )}
           >
-            {t('nav.checklist')}
+            {t('navigation.checklist')}
           </Link>
           
           <Link
@@ -44,7 +44,7 @@ export const MainNavigation = () => {
                 : "hover:bg-[#f4f4f5] dark:hover:bg-[#27272A]"
             )}
           >
-            {t('nav.guides')}
+            {t('navigation.guides')}
           </Link>
 
           <div className="relative">
@@ -58,7 +58,7 @@ export const MainNavigation = () => {
                   : "hover:bg-[#f4f4f5] dark:hover:bg-[#27272A]"
               )}
             >
-              {t('nav.my.links')}
+              {t('navigation.my.links')}
               {unreadDeindexingCount > 0 && (
                 <span className="ml-2 h-2 w-2 rounded-full bg-[#2e77d0]" />
               )}
@@ -76,7 +76,7 @@ export const MainNavigation = () => {
                 : "hover:bg-[#f4f4f5] dark:hover:bg-[#27272A]"
             )}
           >
-            {t('nav.address.alerts')}
+            {t('navigation.address.alerts')}
           </Link>
         </div>
       </div>
