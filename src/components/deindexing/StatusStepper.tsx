@@ -69,12 +69,12 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             background-image: linear-gradient(
               -45deg,
               #000000 25%,
-              #333333 25%,
-              #333333 50%,
+              #1a1a1a 25%,
+              #1a1a1a 50%,
               #000000 50%,
               #000000 75%,
-              #333333 75%,
-              #333333 100%
+              #1a1a1a 75%,
+              #1a1a1a 100%
             );
             background-size: 10px 10px;
             animation: moveStripes 2s linear infinite;
