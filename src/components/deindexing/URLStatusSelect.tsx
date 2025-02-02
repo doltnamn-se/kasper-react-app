@@ -35,7 +35,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       onStatusChange(newStatus);
       
       // Get translated status text for notification
-      const translatedStatus = t(`deindexing.status.${newStatus.replace('.', '_')}`);
+      const translatedStatus = getStatusText(newStatus, t);
       console.log('URLStatusSelect - Creating notification with translated status:', translatedStatus);
       
       // Create the notification
