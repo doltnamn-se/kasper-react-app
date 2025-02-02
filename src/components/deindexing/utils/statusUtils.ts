@@ -23,16 +23,16 @@ export const getStepIndex = (status: string): number => {
 };
 
 export const getStatusText = (status: string, t: (key: string) => string): string => {
-  switch (status) {
-    case 'received':
-      return t('deindexing.status.received');
-    case 'case_started':
-      return t('deindexing.status.case.started');
-    case 'request_submitted':
-      return t('deindexing.status.request.submitted');
-    case 'removal_approved':
-      return t('deindexing.status.removal.approved');
-    default:
-      return t('deindexing.status.received'); // Default to 'received' for unknown statuses
-  }
+  // Map the internal status values to translation keys
+  const statusMap: Record<string, string> = {
+    'received': 'deindexing.status.received',
+    'case_started': 'deindexing.status.case.started',
+    'in_progress': 'deindexing.status.case.started',
+    'request_submitted': 'deindexing.status.request.submitted',
+    'removal_approved': 'deindexing.status.removal.approved',
+    'completed': 'deindexing.status.removal.approved'
+  };
+
+  const translationKey = statusMap[status] || 'deindexing.status.received';
+  return t(translationKey);
 };

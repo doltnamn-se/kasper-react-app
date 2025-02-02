@@ -27,9 +27,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
         // Create notification for status change using the hook
         await createStatusNotification(customerId, translatedStatus);
+        onStatusChange(newStatus);
       }
-      
-      onStatusChange(newStatus);
     } catch (error) {
       console.error('Error updating status:', error);
       showErrorToast();
@@ -37,7 +36,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
   };
 
   return (
-    <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
+    <Select value={currentStatus} onValueChange={handleStatusChange}>
       <SelectTrigger className="w-[180px] bg-background">
         <SelectValue />
       </SelectTrigger>
