@@ -69,14 +69,14 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             }
           }
           .progress-indicator {
-            background: linear-gradient(90deg, #000000 0%, #333333 50%, #000000 100%);
+            background: linear-gradient(90deg, #000000, #333333, #000000);
             background-size: 200% 100%;
-            animation: gradientFlow 1.5s linear infinite;
+            animation: gradientFlow 3s linear infinite;
           }
           .dark .progress-indicator {
-            background: linear-gradient(90deg, #FFFFFF 0%, #CCCCCC 50%, #FFFFFF 100%);
+            background: linear-gradient(90deg, #FFFFFF, #CCCCCC, #FFFFFF);
             background-size: 200% 100%;
-            animation: gradientFlow 1.5s linear infinite;
+            animation: gradientFlow 3s linear infinite;
           }
         `}
       </style>
