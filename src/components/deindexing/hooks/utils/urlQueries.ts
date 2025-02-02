@@ -54,27 +54,24 @@ export const updateUrlStatus = async (
     throw fetchError;
   }
 
+  // Initialize history array if it doesn't exist
+  const currentHistory = currentUrl.status_history || [];
+  console.log('Current status history:', currentHistory);
+
   // Prepare the new status history entry
   const newHistoryEntry = {
     status: newStatus,
     timestamp: new Date().toISOString()
   };
 
-  console.log('Current status history:', currentUrl.status_history);
   console.log('Adding new history entry:', newHistoryEntry);
-
-  // Combine existing history with new entry
-  const updatedHistory = [
-    ...(currentUrl.status_history || []),
-    newHistoryEntry
-  ];
 
   // Update the URL with new status and history
   const { error: updateError } = await supabase
     .from('removal_urls')
     .update({
       status: newStatus,
-      status_history: updatedHistory,
+      status_history: [...currentHistory, newHistoryEntry],
     })
     .eq('id', urlId);
 
@@ -83,6 +80,6 @@ export const updateUrlStatus = async (
     throw updateError;
   }
 
-  console.log('Successfully updated status history:', updatedHistory);
+  console.log('Successfully updated status history:', [...currentHistory, newHistoryEntry]);
   return { urlId, newStatus };
 };
