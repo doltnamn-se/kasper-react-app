@@ -36,7 +36,7 @@ export const DeindexedLinks = () => {
           status_history
         `)
         .eq('customer_id', session.user.id)
-        .eq('display_in_incoming', false)
+        .eq('status', 'removal_approved')
         .order('created_at', { ascending: false });
 
       if (error) {
