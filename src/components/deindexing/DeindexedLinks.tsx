@@ -97,46 +97,48 @@ export const DeindexedLinks = () => {
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="hover:bg-transparent">
-          <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
-          <TableHead className="h-14">
-            {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
-          </TableHead>
-          <TableHead className="w-[150px] h-14">
-            {language === 'sv' ? 'Ledtid' : 'Lead time'}
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {deindexedUrls.map((url) => (
-          <TableRow key={url.id} className="hover:bg-transparent">
-            <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
-              <a 
-                href={url.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
-                title={url.url}
-              >
-                <Link2 className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">{url.url}</span>
-              </a>
-            </TableCell>
-            <TableCell className="py-6">
-              <span className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">
-                {getRemovalDate(url.status_history as URLStatusHistory[])}
-              </span>
-            </TableCell>
-            <TableCell className="py-6">
-              <span className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark px-3 py-1.5 rounded-full text-xs font-semibold">
-                {calculateLeadTime(url.status_history as URLStatusHistory[])}
-              </span>
-            </TableCell>
+    <div className="overflow-x-auto">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
+            <TableHead className="h-14">
+              {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
+            </TableHead>
+            <TableHead className="w-[150px] h-14">
+              {language === 'sv' ? 'Ledtid' : 'Lead time'}
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {deindexedUrls.map((url) => (
+            <TableRow key={url.id} className="hover:bg-transparent">
+              <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
+                <a 
+                  href={url.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
+                  title={url.url}
+                >
+                  <Link2 className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{url.url}</span>
+                </a>
+              </TableCell>
+              <TableCell className="py-6">
+                <span className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">
+                  {getRemovalDate(url.status_history as URLStatusHistory[])}
+                </span>
+              </TableCell>
+              <TableCell className="py-6">
+                <span className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark px-3 py-1.5 rounded-full text-xs font-semibold">
+                  {calculateLeadTime(url.status_history as URLStatusHistory[])}
+                </span>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
