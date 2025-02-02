@@ -6,23 +6,31 @@ interface StepLabelsProps {
   getStatusText: (step: string) => string;
   type: "label" | "timestamp";
   getTimestamp?: (step: string) => string;
+  stepsToShow?: string[];
 }
 
-export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp }: StepLabelsProps) => {
+export const StepLabels = ({ 
+  currentStepIndex, 
+  getStatusText, 
+  type, 
+  getTimestamp,
+  stepsToShow = STEPS 
+}: StepLabelsProps) => {
   return (
     <div className="flex justify-between">
-      {STEPS.map((step, index) => {
-        const isActive = index <= currentStepIndex;
-        const isCurrent = index === currentStepIndex;
+      {stepsToShow.map((step, index) => {
+        const originalIndex = STEPS.indexOf(step);
+        const isActive = originalIndex <= currentStepIndex;
+        const isCurrent = originalIndex === currentStepIndex;
         const shouldShow = type === "label" ? 
-          index <= currentStepIndex : // For labels, show only up to current step
-          (type === "timestamp" && index <= currentStepIndex); // For timestamps, show only up to current step
+          originalIndex <= currentStepIndex : 
+          (type === "timestamp" && originalIndex <= currentStepIndex);
         
         return (
           <div 
             key={`${type}-${step}`}
             className={cn(
-              "w-[25%] text-xs",
+              "w-full text-xs",
               type === "label" ? (
                 isCurrent 
                   ? "font-bold text-[#000000] dark:text-white" 
@@ -33,7 +41,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   : "text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
               "text-center",
-              !shouldShow && "invisible" // Make it invisible but preserve the space
+              !shouldShow && "invisible"
             )}
           >
             {type === "label" ? (
@@ -41,16 +49,16 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                 <div className={cn(
                   "flex items-center justify-center w-5 h-5 rounded-full",
                   isCurrent
-                    ? "bg-[#000000] dark:bg-white" // Active step circle colors
-                    : "bg-[#e0e0e0] dark:bg-[#2a2a2b]" // Inactive step circle colors
+                    ? "bg-[#000000] dark:bg-white"
+                    : "bg-[#e0e0e0] dark:bg-[#2a2a2b]"
                 )}>
                   <span className={cn(
                     "text-xs font-medium",
                     isCurrent
-                      ? "text-white dark:text-[#000000]" // Active step number colors
-                      : "text-[#000000A6] dark:text-[#FFFFFFA6]" // Updated inactive step number colors
+                      ? "text-white dark:text-[#000000]"
+                      : "text-[#000000A6] dark:text-[#FFFFFFA6]"
                   )}>
-                    {index + 1}
+                    {originalIndex + 1}
                   </span>
                 </div>
                 <span className="relative">

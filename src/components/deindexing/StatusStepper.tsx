@@ -8,9 +8,14 @@ import { useTimestampHandler } from "./components/TimestampHandler";
 type StatusStepperProps = {
   currentStatus: string;
   statusHistory?: URLStatusHistory[];
+  showOnlyFinalStep?: boolean;
 };
 
-export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepperProps) => {
+export const StatusStepper = ({ 
+  currentStatus, 
+  statusHistory = [],
+  showOnlyFinalStep = false 
+}: StatusStepperProps) => {
   const { t, language } = useLanguage();
   const { getTimestampForStep } = useTimestampHandler({ statusHistory, language });
 
@@ -18,11 +23,11 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
   console.log('Status history:', statusHistory);
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = currentStepIndex === STEPS.length - 1 ? 
-    100 : 
-    (currentStepIndex * 100 + 50) / STEPS.length;
+  const progressPercentage = 100; // Always 100% for completed items
   
   console.log('Progress percentage:', progressPercentage);
+
+  const stepsToShow = showOnlyFinalStep ? [STEPS[STEPS.length - 1]] : STEPS;
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -30,6 +35,7 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
         currentStepIndex={currentStepIndex}
         getStatusText={(step) => getStatusText(step, t)}
         type="label"
+        stepsToShow={stepsToShow}
       />
 
       <ProgressIndicator progressPercentage={progressPercentage} />
@@ -40,6 +46,7 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
           getStatusText={(step) => getStatusText(step, t)}
           type="timestamp"
           getTimestamp={getTimestampForStep}
+          stepsToShow={stepsToShow}
         />
       </div>
     </div>
