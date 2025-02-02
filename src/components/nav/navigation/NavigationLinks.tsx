@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { House, BadgeCheck, UserRoundSearch, QrCode, MapPinHouse, MousePointerClick } from "lucide-react";
+import { House, BadgeCheck, UserRoundSearch, EyeOff, MapPinHouse, MousePointerClick } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavigationLinksProps {
@@ -52,7 +52,7 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
       {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), unreadCounts.total)}
       {renderNavLink("/checklist", <BadgeCheck className="w-[18px] h-[18px]" />, t('nav.checklist'))}
       {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadCounts.monitoring)}
-      {renderNavLink("/deindexing", <QrCode className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
+      {renderNavLink("/deindexing", <EyeOff className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadCounts.guides)}
     </>
