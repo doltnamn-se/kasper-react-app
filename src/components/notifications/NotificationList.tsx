@@ -19,9 +19,10 @@ interface NotificationListProps {
 export const NotificationList = ({ notifications, onMarkAsRead }: NotificationListProps) => {
   const { t, language } = useLanguage();
 
-  // Filter out checklist notifications
+  // Filter notifications to only show removal-related ones in the deindexing section
+  // and non-removal ones in other sections
   const filteredNotifications = notifications.filter(
-    notification => !notification.id.startsWith('checklist-') && notification.type !== 'checklist'
+    notification => notification.type === 'removal'
   );
 
   console.log('Filtered notifications:', filteredNotifications);
