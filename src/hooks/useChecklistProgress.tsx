@@ -96,34 +96,23 @@ export const useChecklistProgress = () => {
       console.log('Step 3 not completed: No sites selected');
     }
     
-    // Step 4: Final step (address or personal info)
-    if (checklistProgress.has_address_alert) {
-      if (checklistProgress.street_address && 
-          checklistProgress.postal_code && 
-          checklistProgress.city) {
-        console.log('Step 4 completed: Address provided', {
-          street: checklistProgress.street_address,
-          postal: checklistProgress.postal_code,
-          city: checklistProgress.city
-        });
-        completedSteps++;
-      } else {
-        console.log('Step 4 not completed: Address not provided', {
-          street: checklistProgress.street_address,
-          postal: checklistProgress.postal_code,
-          city: checklistProgress.city
-        });
-      }
+    // Step 4: Final step (address)
+    // Changed logic to consider address as completed if street_address, postal_code, and city are present
+    if (checklistProgress.street_address && 
+        checklistProgress.postal_code && 
+        checklistProgress.city) {
+      console.log('Step 4 completed: Address provided', {
+        street: checklistProgress.street_address,
+        postal: checklistProgress.postal_code,
+        city: checklistProgress.city
+      });
+      completedSteps++;
     } else {
-      if (checklistProgress.address && checklistProgress.personal_number) {
-        console.log('Step 4 completed: Personal info provided');
-        completedSteps++;
-      } else {
-        console.log('Step 4 not completed: Personal info not provided', {
-          address: checklistProgress.address,
-          personalNumber: checklistProgress.personal_number
-        });
-      }
+      console.log('Step 4 not completed: Address not provided', {
+        street: checklistProgress.street_address,
+        postal: checklistProgress.postal_code,
+        city: checklistProgress.city
+      });
     }
 
     const progress = Math.round((completedSteps / totalSteps) * 100);
