@@ -58,10 +58,6 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
     <div className="w-full">
       <style>
         {`
-          @keyframes moveStripes {
-            0% { background-position: 0 0; }
-            100% { background-position: -10px 0; }
-          }
           .deindexing-progress {
             background-color: #97ee88;
           }
@@ -74,17 +70,16 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: ${(currentStepIndex + 1) * 25}%;
             height: 100%;
-            background-color: #00540c;
+            background-color: #08a621;
             z-index: 1;
-            clip-path: polygon(0 0, calc(${(currentStepIndex + 0.5) * 25}%) 0, calc(${(currentStepIndex + 0.5) * 25}%) 100%, 0 100%);
           }
           .deindexing-progress-indicator::after {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: ${(currentStepIndex + 1) * 25}%;
             right: 0;
             bottom: 0;
             background: linear-gradient(
@@ -100,6 +95,10 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
             background-size: 7px 7px;
             animation: moveStripes 1.8s linear infinite;
           }
+          @keyframes moveStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: -10px 0; }
+          }
         `}
       </style>
       <div className="relative">
@@ -112,7 +111,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
           className="absolute top-1/2 h-3 flex items-center -translate-y-1/2" 
           style={{ left: `${progressPercentage}%`, transform: 'translate(-50%, -50%)' }}
         >
-          <div className="w-6 h-6 rounded-full bg-[#00540c] dark:bg-white border-4 border-white dark:border-[#1c1c1e] shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_15px_rgba(255,255,255,0.25)]"></div>
+          <div className="w-6 h-6 rounded-full bg-[#08a621] dark:bg-white border-4 border-white dark:border-[#1c1c1e] shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_15px_rgba(255,255,255,0.25)]"></div>
         </div>
       </div>
       <div className="flex justify-between mt-2">
