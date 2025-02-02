@@ -27,7 +27,8 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  const progressPercentage = ((currentStepIndex) / (STEPS.length - 1)) * 100;
+  // For 4 steps, we want progress to be 0%, 33.33%, 66.66%, or 100%
+  const progressPercentage = (currentStepIndex / 3) * 100;
 
   const getStatusText = (status: string) => {
     switch (status) {
