@@ -85,8 +85,8 @@ const features: FeaturesTranslations = {
   'error.update.status': 'Failed to update URL status',
   'error.unexpected': 'An unexpected error occurred',
   'success.update.status': 'URL status updated successfully',
-  'notifications.url.status.title': 'URL Status Updated',
-  'notifications.url.status.message': 'A URL removal request has been updated to status: {status}'
+  'notifications.url.status.title': 'Link status updated',
+  'notifications.url.status.message': 'The status of a link removal request has been updated'
 };
 
 export default features;
