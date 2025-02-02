@@ -12,7 +12,18 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
   const { t } = useLanguage();
 
   const getStepIndex = (status: string) => {
-    return STEPS.indexOf(status as typeof STEPS[number]);
+    switch (status) {
+      case 'received':
+        return 0;
+      case 'in_progress':
+        return 1;
+      case 'request_submitted':
+        return 2;
+      case 'completed':
+        return 3;
+      default:
+        return 0;
+    }
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
