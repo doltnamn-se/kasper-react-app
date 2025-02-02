@@ -1,79 +1,23 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNotifications } from "@/hooks/useNotifications";
-import { useQuery } from "@tanstack/react-query";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { DeindexingProgress } from "./DeindexingProgress";
 import { ProfileSection } from "./profile/ProfileSection";
 import { NavigationLinks } from "./navigation/NavigationLinks";
+import { useAdminCheck } from "./hooks/useAdminCheck";
+import { useUnreadNotifications } from "./hooks/useUnreadNotifications";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
 }
 
 export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const { notifications = [], unreadCount } = useNotifications();
   const { userProfile } = useUserProfile();
-
-  const { data: unreadGuideNotifications = 0 } = useQuery({
-    queryKey: ['unread-guide-notifications'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('id', { count: 'exact' })
-        .eq('user_id', userProfile?.id)
-        .eq('type', 'guide_completion')
-        .eq('read', false);
-
-      if (error) return 0;
-      return data?.length || 0;
-    },
-    enabled: !!userProfile?.id
-  });
-
-  const { data: unreadMonitoringNotifications = 0 } = useQuery({
-    queryKey: ['unread-monitoring-notifications'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('id', { count: 'exact' })
-        .eq('user_id', userProfile?.id)
-        .eq('type', 'monitoring')
-        .eq('read', false);
-
-      if (error) return 0;
-      return data?.length || 0;
-    },
-    enabled: !!userProfile?.id
-  });
-
-  const { data: unreadDeindexingNotifications = 0 } = useQuery({
-    queryKey: ['unread-deindexing-notifications'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('id', { count: 'exact' })
-        .eq('user_id', userProfile?.id)
-        .eq('type', 'removal')
-        .eq('read', false);
-
-      if (error) return 0;
-      return data?.length || 0;
-    },
-    enabled: !!userProfile?.id
-  });
-
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user?.email === 'info@doltnamn.se') {
-        setIsAdmin(true);
-      }
-    };
-
-    checkAdminStatus();
-  }, []);
+  const isAdmin = useAdminCheck();
+  const {
+    unreadGuideNotifications,
+    unreadMonitoringNotifications,
+    unreadDeindexingNotifications,
+    unreadAddressAlerts
+  } = useUnreadNotifications(userProfile?.id);
 
   if (isAdmin) {
     return null;
@@ -83,7 +27,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
     total: 0, // Home page has no notifications
     monitoring: unreadMonitoringNotifications,
     deindexing: unreadDeindexingNotifications,
-    addressAlerts: unreadCount,
+    addressAlerts: unreadAddressAlerts,
     guides: unreadGuideNotifications,
   };
 
