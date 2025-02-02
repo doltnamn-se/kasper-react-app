@@ -61,7 +61,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
               key={step}
               className={cn(
                 "text-xs text-center",
-                isActive ? "text-white" : "text-[#616166]",
+                isActive ? "text-[#000000] dark:text-white" : "text-[#616166]",
                 isCurrentStep ? "font-medium" : "",
                 "w-[25%]"
               )}
