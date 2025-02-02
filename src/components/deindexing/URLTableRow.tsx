@@ -55,7 +55,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
       </TableCell>
       <TableCell className="w-[180px] truncate">{url.customer.profiles.email}</TableCell>
       <TableCell className="w-[120px] whitespace-nowrap">{formatDate(url.created_at)}</TableCell>
-      <TableCell className="w-full -ml-[30px]">
+      <TableCell className="w-full -ml-[50px]">
         <div className="flex items-center justify-between gap-4 -ml-[20px]">
           <div className="flex-grow">
             <StatusStepper 
