@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { SignUpPrompt } from "./SignUpPrompt";
+import { useSearchParams } from "react-router-dom";
 
 interface AuthFormProps {
   errorMessage?: string;
@@ -14,13 +15,24 @@ interface AuthFormProps {
   isResetPasswordMode?: boolean;
 }
 
-export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: AuthFormProps) => {
+export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode: propIsResetPasswordMode }: AuthFormProps) => {
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
+  const [isResetPasswordMode, setIsResetPasswordMode] = useState(propIsResetPasswordMode);
+
+  useEffect(() => {
+    // Check if we're in recovery mode from the URL
+    const type = searchParams.get('type');
+    if (type === 'recovery') {
+      console.log("Recovery mode detected from URL");
+      setIsResetPasswordMode(true);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,8 +94,7 @@ export const AuthForm = ({ errorMessage, isDarkMode, isResetPasswordMode }: Auth
   };
 
   // Check for reset success message
-  const urlParams = new URLSearchParams(window.location.search);
-  const showResetSuccess = urlParams.get('reset_success') === 'true';
+  const showResetSuccess = searchParams.get('reset_success') === 'true';
 
   if (showResetForm) {
     return <PasswordResetForm onCancel={() => setShowResetForm(false)} initialError={errorMessage} />;
