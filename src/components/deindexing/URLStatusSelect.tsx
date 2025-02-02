@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { URLStatusStep } from "@/types/url-management";
+import { getStatusText } from "./utils/statusUtils";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -18,13 +19,16 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
     try {
       console.log('Updating URL status:', { urlId, newStatus });
       
+      // Get translated status text for notification
+      const translatedStatus = getStatusText(newStatus, t);
+      
       // Create notification for status change
       const { error: notificationError } = await supabase
         .from('notifications')
         .insert({
           user_id: customerId,
           title: t('notifications.url.status.title'),
-          message: t('notifications.url.status.message', { status: newStatus }),
+          message: t('notifications.url.status.message', { status: translatedStatus }),
           type: 'removal',
           read: false
         });
