@@ -1,7 +1,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
 
 type StatusStepperProps = {
   currentStatus: string;
@@ -14,7 +15,7 @@ type StatusStepperProps = {
 const STEPS = ['received', 'in_progress', 'request_submitted', 'completed'] as const;
 
 export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepperProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   console.log('Current status received:', currentStatus);
   console.log('Status history:', statusHistory);
@@ -40,10 +41,9 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
   };
 
   const currentStepIndex = getStepIndex(currentStatus);
-  // Adjust progress calculation for the last step
   const progressPercentage = currentStepIndex === STEPS.length - 1 ? 
-    100 : // If it's the last step, fill the bar completely
-    (currentStepIndex * 100 + 50) / STEPS.length; // Otherwise, use the original calculation
+    100 : 
+    (currentStepIndex * 100 + 50) / STEPS.length;
   
   console.log('Progress percentage:', progressPercentage);
 
@@ -70,7 +70,10 @@ export const StatusStepper = ({ currentStatus, statusHistory = [] }: StatusStepp
       return mappedStatus === step;
     });
     
-    return historyEntry ? format(new Date(historyEntry.timestamp), 'yyyy-MM-dd HH:mm') : '';
+    return historyEntry ? formatDistanceToNow(new Date(historyEntry.timestamp), {
+      addSuffix: true,
+      locale: language === 'sv' ? sv : enUS
+    }) : '';
   };
 
   return (
