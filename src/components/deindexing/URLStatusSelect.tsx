@@ -19,15 +19,17 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
     try {
       console.log('Updating URL status:', { urlId, newStatus, currentStatus });
       
-      // Only create notification if status actually changed
+      // Only proceed if status actually changed
       if (newStatus !== currentStatus) {
         // Get translated status text for notification
         const translatedStatus = getStatusText(newStatus, t);
         console.log('Creating notification with translated status:', translatedStatus);
 
-        // Create notification for status change using the hook
-        await createStatusNotification(customerId, translatedStatus);
+        // First update the status
         onStatusChange(newStatus);
+        
+        // Then create the notification
+        await createStatusNotification(customerId, translatedStatus);
       }
     } catch (error) {
       console.error('Error updating status:', error);

@@ -8,24 +8,29 @@ export const useUrlNotifications = () => {
   const createStatusNotification = async (customerId: string, newStatus: string) => {
     console.log('Creating status notification:', { customerId, newStatus });
     
-    const { error: notificationError } = await supabase
-      .from('notifications')
-      .insert({
-        user_id: customerId,
-        title: t('notifications.url.status.title'),
-        message: t('notifications.url.status.message', { status: newStatus }),
-        type: 'removal',
-        read: false
-      });
+    try {
+      const { error: notificationError } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: customerId,
+          title: t('notifications.url.status.title'),
+          message: t('notifications.url.status.message', { status: newStatus }),
+          type: 'removal',
+          read: false
+        });
 
-    if (notificationError) {
-      console.error('Error creating notification:', notificationError);
+      if (notificationError) {
+        console.error('Error creating notification:', notificationError);
+        throw notificationError;
+      }
+    } catch (error) {
+      console.error('Error in createStatusNotification:', error);
       toast({
         title: t('error'),
         description: t('error.update.status'),
         variant: "destructive",
       });
-      throw notificationError;
+      throw error;
     }
   };
 
