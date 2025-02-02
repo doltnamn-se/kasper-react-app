@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { STEPS } from "../utils/statusUtils";
-import { Circle } from "lucide-react";
 
 interface StepLabelsProps {
   currentStepIndex: number;
@@ -39,7 +38,11 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
           >
             {type === "label" ? (
               <div className="flex items-center justify-center gap-2">
-                <Circle className="h-4 w-4 fill-current" />
+                <div className="flex items-center justify-center w-4 h-4 rounded-full bg-[#e0e0e0] dark:bg-[#2a2a2b]">
+                  <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+                    {index + 1}
+                  </span>
+                </div>
                 <span className="relative -left-1">
                   {getStatusText(step)}
                 </span>
