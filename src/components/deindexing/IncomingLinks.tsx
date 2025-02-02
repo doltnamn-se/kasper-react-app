@@ -50,15 +50,16 @@ export const IncomingLinks = () => {
       <TableBody>
         {incomingUrls.map((url) => (
           <TableRow key={url.id}>
-            <TableCell className="font-medium w-[250px]">
+            <TableCell className="font-medium w-[250px] max-w-[250px]">
               <a 
                 href={url.url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
+                title={url.url}
               >
-                <Link2 className="h-3 w-3" />
-                {url.url}
+                <Link2 className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{url.url}</span>
               </a>
             </TableCell>
             <TableCell>
