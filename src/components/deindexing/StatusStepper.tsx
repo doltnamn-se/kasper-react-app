@@ -60,14 +60,14 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
         {`
           @keyframes moveStripes {
             0% { background-position: 0 0; }
-            100% { background-position: 30px 0; }
+            100% { background-position: -15px 0; }
           }
           .deindexing-progress {
             background-color: #97ee88;
           }
           .deindexing-progress-indicator {
             background-image: linear-gradient(
-              45deg,
+              -45deg,
               #08a621 25%,
               #97ee86 25%,
               #97ee86 50%,
@@ -76,7 +76,7 @@ export const StatusStepper = ({ currentStatus }: StatusStepperProps) => {
               #97ee86 75%,
               #97ee86 100%
             );
-            background-size: 30px 30px;
+            background-size: 15px 15px;
             animation: moveStripes 1s linear infinite;
           }
         `}
