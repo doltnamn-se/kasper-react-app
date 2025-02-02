@@ -26,7 +26,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   ? "font-black text-[#000000] dark:text-white" 
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ) : (
-                isActive
+                index === currentStepIndex
                   ? "font-black text-[#000000] dark:text-white"
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
