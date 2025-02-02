@@ -20,7 +20,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
           <div 
             key={`${type}-${step}`}
             className={cn(
-              "w-[25%] text-xs text-center",
+              "w-[25%] text-xs",
               type === "label" ? (
                 isCurrent 
                   ? "font-black text-[#000000] dark:text-white" 
@@ -30,6 +30,7 @@ export const StepLabels = ({ currentStepIndex, getStatusText, type, getTimestamp
                   ? "font-black text-[#000000] dark:text-white"
                   : "font-medium text-[#000000A6] dark:text-[#FFFFFFA6]"
               ),
+              "text-center",
               !shouldShow && "invisible"
             )}
           >
