@@ -15,7 +15,8 @@ export const fetchAdminUrls = async () => {
         profiles (
           email
         )
-      )
+      ),
+      status_history
     `)
     .order('created_at', { ascending: false })
     .order('id', { ascending: true }); // Secondary sort by ID for stability
@@ -36,10 +37,36 @@ export const updateUrlStatus = async (
 ) => {
   console.log('Updating URL status:', { urlId, newStatus });
   
+  // First, get the current status history
+  const { data: currentUrl, error: fetchError } = await supabase
+    .from('removal_urls')
+    .select('status_history')
+    .eq('id', urlId)
+    .single();
+
+  if (fetchError) {
+    console.error('Error fetching current URL:', fetchError);
+    throw fetchError;
+  }
+
+  // Prepare the new status history entry
+  const newHistoryEntry = {
+    status: newStatus,
+    timestamp: new Date().toISOString()
+  };
+
+  // Combine existing history with new entry
+  const updatedHistory = [
+    ...(currentUrl.status_history || []),
+    newHistoryEntry
+  ];
+
+  // Update the URL with new status and history
   const { error: updateError } = await supabase
     .from('removal_urls')
     .update({
       status: newStatus,
+      status_history: updatedHistory,
     })
     .eq('id', urlId);
 
