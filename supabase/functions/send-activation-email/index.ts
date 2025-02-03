@@ -52,15 +52,18 @@ serve(async (req) => {
             <title>Aktivera ditt konto</title>
             <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
             <style>
+              html, body {
+                margin: 0;
+                padding: 0;
+                min-height: 100%;
+                background-color: #f4f4f4;
+              }
               body {
                 font-family: 'Roboto', sans-serif;
                 line-height: 1.6;
                 color: #333333;
-                margin: 0;
-                padding: 0;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
-                background-color: #f4f4f4;
               }
               .container {
                 max-width: 600px;
