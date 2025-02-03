@@ -22,5 +22,7 @@ export const auth: AuthTranslations = {
   'reset.password': 'Återställ lösenord',
   'reset.password.success': 'Återställningslänk har skickats',
   'password.updated': 'Lösenordet har uppdaterats',
-  'reset.link.sent': 'Återställningslänk har skickats till din e-post'
+  'reset.link.sent': 'Återställningslänk har skickats till din e-post',
+  'send.reset.link': 'Skicka återställningslänk',  // Added this key
+  'error.reset.email': 'Det gick inte att skicka återställningslänken'  // Added this key
 };

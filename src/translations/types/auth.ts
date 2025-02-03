@@ -21,4 +21,6 @@ export interface AuthTranslations {
   'reset.password.success': string;
   'password.updated': string;
   'reset.link.sent': string;
+  'send.reset.link': string;  // Added this key
+  'error.reset.email': string;  // Added this key
 }
