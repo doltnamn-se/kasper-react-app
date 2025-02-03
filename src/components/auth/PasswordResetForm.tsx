@@ -1,92 +1,94 @@
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 interface PasswordResetFormProps {
   onCancel: () => void;
-  initialError?: string;
+  initialError?: string | null;
 }
 
 export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormProps) => {
   const { t } = useLanguage();
-  const [email, setEmail] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(initialError);
-  const [isSent, setIsSent] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleResetPassword = async () => {
+    if (!resetEmail) {
+      toast.error(t('error.missing.email'));
+      return;
+    }
+
     setIsLoading(true);
-    setError(undefined);
+    console.log("Starting password reset process for email:", resetEmail);
 
     try {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
         redirectTo: `${window.location.origin}/auth?type=recovery`
       });
 
-      if (resetError) {
-        console.error("Error sending reset email:", resetError);
-        setError(t('error.reset.email'));
-        toast.error(t('error.reset.email'));
+      if (error) {
+        console.error("Error in password reset:", error);
+        toast.error(t('error.generic'));
         return;
       }
 
-      setIsSent(true);
-      toast.success(t('reset.link.sent'));
+      console.log("Password reset email sent successfully");
+      toast.success(t('reset.password.success'));
+      onCancel();
     } catch (err) {
-      console.error("Unexpected error:", err);
-      setError(t('error.generic'));
+      console.error("Error in password reset:", err);
       toast.error(t('error.generic'));
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isSent) {
-    return (
-      <Alert className="mb-4">
-        <AlertDescription>
-          {t('reset.link.sent')}
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      <div>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0"
-          placeholder={t('email.placeholder')}
-          required
-        />
+    <div className="flex justify-center w-full">
+      <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in rounded-[7px] font-system-ui">
+        <h2 className="text-xl font-bold mb-6 text-center dark:text-white font-system-ui">
+          {t('forgot.password')}
+        </h2>
+        {initialError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{initialError}</AlertDescription>
+          </Alert>
+        )}
+        <div className="space-y-6">
+          <div>
+            <Input
+              id="email"
+              type="email"
+              placeholder={t('email.placeholder')}
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0 placeholder:font-medium font-system-ui"
+              disabled={isLoading}
+            />
+          </div>
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={handleResetPassword}
+              className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+              disabled={isLoading}
+            >
+              {isLoading ? t('sending.recovery.link') : t('send.recovery.link')}
+            </Button>
+            <Button
+              onClick={onCancel}
+              variant="outline"
+              className="w-full h-12 rounded-[4px] font-system-ui"
+              disabled={isLoading}
+            >
+              {t('cancel')}
+            </Button>
+          </div>
+        </div>
       </div>
-      <div className="flex justify-between space-x-4">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="flex-1 h-12 bg-transparent border border-black dark:border-white text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 rounded-[4px] font-system-ui"
-        >
-          {t('cancel')}
-        </button>
-        <button
-          type="submit"
-          className="flex-1 h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
-          disabled={isLoading}
-        >
-          {isLoading ? t('loading') : t('send.reset.link')}
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
