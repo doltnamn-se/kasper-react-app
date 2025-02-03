@@ -27,7 +27,7 @@ export const ChecklistContainer = () => {
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
-        <div className="step-content-wrapper bg-white dark:bg-[#1C1C1D] rounded-lg p-6">
+        <div className="step-content-wrapper relative overflow-hidden bg-white/50 dark:bg-[#1C1C1D]/50 backdrop-blur-xl backdrop-saturate-150 rounded-lg border border-[#e0e0e0] dark:border-[#303032] shadow-[0_2px_4px_0_rgba(0,0,0,0.02),0_1px_6px_-1px_rgba(0,0,0,0.02),0_1px_4px_0_rgba(0,0,0,0.02)] dark:shadow-[0_2px_4px_0_rgba(0,0,0,0.4),0_1px_6px_-1px_rgba(0,0,0,0.4),0_1px_4px_0_rgba(0,0,0,0.4)] p-6">
           {[...Array(totalStepsCount)].map((_, index) => {
             const stepNumber = index + 1;
             console.log('Rendering step:', stepNumber, 'Current step:', currentStep);
