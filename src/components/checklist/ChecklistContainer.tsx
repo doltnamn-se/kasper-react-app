@@ -22,7 +22,7 @@ export const ChecklistContainer = () => {
   });
 
   return (
-    <div className="space-y-0">
+    <div className="space-y-0 animate-fadeInUp">
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
         <div className="step-content-wrapper">

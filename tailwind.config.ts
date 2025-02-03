@@ -34,12 +34,23 @@ export default {
         'progress-line': {
           '0%': { width: '0%' },
           '100%': { width: '100%' }
+        },
+        'fadeInUp': {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 300ms cubic-bezier(0.87, 0, 0.13, 1)',
         'accordion-up': 'accordion-up 300ms cubic-bezier(0.87, 0, 0.13, 1)',
-        'progress-line': 'progress-line 5s linear forwards'
+        'progress-line': 'progress-line 5s linear forwards',
+        'fadeInUp': 'fadeInUp 0.6s ease-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',
