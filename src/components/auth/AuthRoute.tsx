@@ -17,9 +17,24 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     
     const checkAuth = async () => {
       try {
-        // Special handling for callback route and recovery mode
-        if (location.pathname === '/auth/callback' || location.search.includes('type=recovery')) {
-          console.log("AuthRoute: On callback route or recovery mode, allowing access");
+        // Get the type parameter from URL
+        const params = new URLSearchParams(location.search);
+        const type = params.get('type');
+        const accessToken = params.get('access_token');
+
+        console.log("AuthRoute: URL parameters -", { type, accessToken });
+
+        // If this is a recovery flow, don't check session
+        if (type === 'recovery') {
+          console.log("AuthRoute: Recovery flow detected, allowing access");
+          setSession(false);
+          setIsLoading(false);
+          return;
+        }
+
+        // Special handling for callback route
+        if (location.pathname === '/auth/callback') {
+          console.log("AuthRoute: On callback route, allowing access");
           setSession(false);
           setIsLoading(false);
           return;
@@ -40,8 +55,14 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         }
         
         if (currentSession) {
-          console.log("AuthRoute: Active session found, redirecting to home");
-          setSession(true);
+          // Don't redirect to home if we're in recovery flow
+          if (type === 'recovery') {
+            console.log("AuthRoute: Recovery flow with session, allowing access");
+            setSession(false);
+          } else {
+            console.log("AuthRoute: Active session found, redirecting to home");
+            setSession(true);
+          }
         } else {
           console.log("AuthRoute: No session found, allowing auth page access");
           setSession(false);
@@ -59,15 +80,25 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("AuthRoute: Auth state changed:", event);
       
+      // Get URL parameters
+      const params = new URLSearchParams(location.search);
+      const type = params.get('type');
+      
       if (event === 'SIGNED_IN') {
-        console.log("AuthRoute: User signed in");
-        setSession(true);
+        // Don't redirect if we're in recovery flow
+        if (type === 'recovery') {
+          console.log("AuthRoute: Signed in during recovery flow, staying on page");
+          setSession(false);
+        } else {
+          console.log("AuthRoute: User signed in");
+          setSession(true);
+        }
         setIsLoading(false);
       } else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         console.log("AuthRoute: User signed out or token refreshed");
         // Recheck session after token refresh
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        if (error || !currentSession) {
+        if (error || !currentSession || type === 'recovery') {
           setSession(false);
         } else {
           setSession(true);
