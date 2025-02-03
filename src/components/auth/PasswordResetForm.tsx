@@ -59,17 +59,14 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
           </Alert>
         )}
         <div className="space-y-6">
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-bold text-gray-700 dark:text-gray-300 font-system-ui">
-              {t('email')}
-            </label>
+          <div>
             <Input
               id="email"
               type="email"
               placeholder={t('email.placeholder')}
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
-              className="w-full h-12 bg-background dark:bg-[#3f3f46] dark:text-white dark:border-[#303032] dark:placeholder:text-gray-400 rounded-[4px] font-system-ui"
+              className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-system-ui"
               disabled={isLoading}
             />
           </div>
