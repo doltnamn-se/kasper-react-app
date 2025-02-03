@@ -95,23 +95,25 @@ const ChecklistContent = () => {
               />
             </div>
 
-            <Card className="relative p-6 rounded-lg border dark:border-[#30303233] bg-white/70 dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)]">
-              <div className="space-y-8">
-                <div className="checklist-component">
-                  <ChecklistContainer />
-                </div>
-              </div>
-              {progress === 100 && (
-                <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
-                  <div className="flex items-center gap-2">
-                    <BadgeCheck className="w-6 h-6" />
-                    <p className="text-lg font-black">
-                      {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
-                    </p>
+            <div className="flex justify-center">
+              <Card className="relative p-6 rounded-lg border dark:border-[#30303233] bg-white/70 dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)] w-fit">
+                <div className="space-y-8">
+                  <div className="checklist-component">
+                    <ChecklistContainer />
                   </div>
                 </div>
-              )}
-            </Card>
+                {progress === 100 && (
+                  <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
+                    <div className="flex items-center gap-2">
+                      <BadgeCheck className="w-6 h-6" />
+                      <p className="text-lg font-black">
+                        {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </Card>
+            </div>
           </div>
         </TooltipProvider>
       </div>
