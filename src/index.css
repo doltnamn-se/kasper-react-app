@@ -258,55 +258,29 @@
   z-index: -2;
 }
 
-@keyframes hero-gradient-animation {
-  0% {
-    --x-0: 85%;
-    --y-0: 80%;
-    --x-1: 60%;
-    --y-1: 24%;
-    --x-2: 13%;
-    --y-2: 82%;
-    --x-3: 24%;
-    --y-3: 7%;
-    --s-start-0: 9%;
-    --s-end-0: 55%;
-    --s-start-1: 5%;
-    --s-end-1: 72%;
-    --s-start-2: 5%;
-    --s-end-2: 52%;
-    --s-start-3: 13%;
-    --s-end-3: 68%;
-  }
-
-  100% {
-    --x-0: 31%;
-    --y-0: 94%;
-    --x-1: 2%;
-    --y-1: 25%;
-    --x-2: 98%;
-    --y-2: 20%;
-    --x-3: 95%;
-    --y-3: 92%;
-    --s-start-0: 9%;
-    --s-end-0: 55%;
-    --s-start-1: 5%;
-    --s-end-1: 72%;
-    --s-start-2: 5%;
-    --s-end-2: 52%;
-    --s-start-3: 13%;
-    --s-end-3: 68%;
-  }
-}
-
 .auth-page::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.25;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.15;
   mix-blend-mode: overlay;
-  z-index: -1;
   pointer-events: none;
+  z-index: -1;
+  animation: subtle-grain 0.5s steps(1) infinite;
+}
+
+@keyframes subtle-grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1px, 1px); }
+  20% { transform: translate(1px, -1px); }
+  30% { transform: translate(-1px, -1px); }
+  40% { transform: translate(1px, 1px); }
+  50% { transform: translate(-1px, 0px); }
+  60% { transform: translate(1px, 0px); }
+  70% { transform: translate(0px, 1px); }
+  80% { transform: translate(0px, -1px); }
+  90% { transform: translate(1px, -1px); }
 }
 
 .dark .auth-page::before {
@@ -327,7 +301,7 @@
 }
 
 .dark .auth-page::after {
-  opacity: 0.15;
+  opacity: 0.08;
   mix-blend-mode: color-dodge;
 }
 
