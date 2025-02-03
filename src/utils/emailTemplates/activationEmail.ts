@@ -1,4 +1,8 @@
-export const getActivationEmailTemplate = (displayName: string, password: string) => `
+export const getActivationEmailTemplate = (displayName: string, password: string) => {
+  // Get first name by splitting on space and taking first part
+  const firstName = displayName.split(' ')[0];
+
+  return `
 <!DOCTYPE html>
 <html style="margin: 0; padding: 0; min-height: 100%; background-color: #f4f4f4 !important;">
 <head>
@@ -23,12 +27,12 @@ export const getActivationEmailTemplate = (displayName: string, password: string
     .container {
       max-width: 600px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 40px 20px 20px;
       background-color: #f4f4f4 !important;
     }
     .logo {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       width: 100%;
       background-color: #f4f4f4 !important;
     }
@@ -109,9 +113,9 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
-      <h1>Aktivera ditt konto</h1>
+      <h1 style="margin-bottom: 60px;">Aktivera ditt konto</h1>
       <p>
-        Välkommen till Doltnamn.se, <b>${displayName}</b>!
+        Välkommen ${firstName} 👋
         <br><br>
         Ditt konto har skapats och du kan nu logga in för att aktivera ditt konto. Du loggar in med din e-postadress samt det lösenord vi genererat åt dig nedan.
       </p>
@@ -119,21 +123,22 @@ export const getActivationEmailTemplate = (displayName: string, password: string
         <div class="password-label">Ditt lösenord</div>
         <div class="password-value">${password}</div>
       </div>
-      <div style="text-align: center;">
+      <div style="text-align: center; margin-bottom: 40px;">
         <a href="https://app.doltnamn.se/auth" class="button">Aktivera ditt konto</a>
       </div>
-      <p style="text-align: left; margin-top: 20px;">
+      <p style="text-align: left;">
         Om du har några frågor eller behöver hjälp med att komma igång, maila
         oss på <a href="mailto:support@doltnamn.se" class="email-link">support@doltnamn.se</a>. Vi är glada att ha dig ombord!
       </p>
     </div>
   </div>
-  <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 20px; margin-bottom: 10px;">
+  <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 15px; margin-bottom: 10px;">
     Skickat från teamet på <a href="https://doltnamn.se/" style="color: #666666; text-decoration: underline;">Doltnamn.se</a>
   </p>
-  <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0;">
+  <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0; padding-bottom: 20px;">
     &copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.
   </p>
 </body>
 </html>
 `;
+};
