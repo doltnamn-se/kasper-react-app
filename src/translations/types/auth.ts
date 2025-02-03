@@ -1,6 +1,7 @@
 export interface AuthTranslations {
   'welcome.back': string;
   'sign.in': string;
+  'sign.in.button': string;
   'signing.in': string;
   'no.account': string;
   'register': string;
