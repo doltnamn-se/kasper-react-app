@@ -20,4 +20,6 @@ export interface AuthTranslations {
   'reset.password': string;
   'reset.password.success': string;
   'password.updated': string;
+  'reset.link.sent.title': string;
+  'reset.link.sent.description': string;
 }

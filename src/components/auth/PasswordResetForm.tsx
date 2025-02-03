@@ -37,7 +37,10 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
       }
 
       console.log("Password reset email sent successfully");
-      toast.success(t('reset.password.success'));
+      toast({
+        title: t('reset.link.sent.title'),
+        description: t('reset.link.sent.description'),
+      });
       onCancel();
     } catch (err) {
       console.error("Error in password reset:", err);
