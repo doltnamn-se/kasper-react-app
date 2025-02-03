@@ -16,15 +16,12 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
       case 1:
         return checklistProgress.password_updated;
       case 2:
-        // For URL removal step, consider it complete if there are URLs or if it was explicitly skipped
         return Array.isArray(checklistProgress.removal_urls) && 
           (checklistProgress.removal_urls.length > 0 || 
            checklistProgress.removal_urls.includes('skipped'));
       case 3:
-        // For site selection step, check if there are selected sites
         return checklistProgress.selected_sites?.length > 0;
       case 4:
-        // For address/identification step
         return Boolean(
           checklistProgress.street_address && 
           checklistProgress.postal_code && 
@@ -49,21 +46,16 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
   });
 
   return (
-    <div className="space-y-4">
-      {steps.map((item) => (
+    <div className="grid grid-cols-4 gap-2">
+      {steps.map((item, index) => (
         <div 
           key={item.step} 
-          className={`flex items-center justify-between p-3 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
+          className={`flex flex-col items-center p-3 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 mb-2">
             <div className={`flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
               <span className="text-xs font-medium">{item.step}</span>
             </div>
-            <div className={item.completed ? 'opacity-40' : ''}>
-              <p className="text-xs xl:text-sm font-medium">{item.title}</p>
-            </div>
-          </div>
-          <div className="flex items-center">
             {item.completed ? (
               <div className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full bg-[#219653] flex items-center justify-center">
                 <Check className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
@@ -76,6 +68,9 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
                 <ChevronRight className="w-3 h-3 xl:w-4 xl:h-4" />
               </button>
             )}
+          </div>
+          <div className={`text-center ${item.completed ? 'opacity-40' : ''}`}>
+            <p className="text-xs xl:text-sm font-medium">{item.title}</p>
           </div>
         </div>
       ))}

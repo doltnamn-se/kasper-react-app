@@ -89,7 +89,6 @@ const ChecklistContent = () => {
 
           <div className="flex flex-col gap-6">
             <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
-              <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
               <ChecklistSteps 
                 checklistProgress={checklistProgress}
                 onStepClick={handleStepClick}
