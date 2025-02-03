@@ -1,9 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useChecklistProgress } from "./useChecklistProgress";
+import { supabase } from "@/integrations/supabase/client";
 
 export const useChecklistSteps = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { checklistProgress } = useChecklistProgress();
+  const { checklistProgress, refetchProgress } = useChecklistProgress();
+
+  // Sync with database state on mount and when checklistProgress changes
+  useEffect(() => {
+    if (checklistProgress?.checklist_step) {
+      console.log('Syncing current step with database:', checklistProgress.checklist_step);
+      setCurrentStep(checklistProgress.checklist_step);
+    }
+  }, [checklistProgress?.checklist_step]);
+
+  const handleStepChange = async (step: number) => {
+    console.log('Changing to step:', step);
+    
+    // Update local state
+    setCurrentStep(step);
+    
+    // Update database state
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      console.error('No user session found');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('customers')
+      .update({ checklist_step: step })
+      .eq('id', session.user.id);
+
+    if (error) {
+      console.error('Error updating checklist step:', error);
+      // Revert local state if database update fails
+      setCurrentStep(checklistProgress?.checklist_step || 1);
+      return;
+    }
+
+    // Refetch progress to ensure all components have latest state
+    await refetchProgress();
+  };
 
   const getTotalSteps = () => {
     const baseSteps = 3; // Steps 1-3
@@ -12,56 +50,9 @@ export const useChecklistSteps = () => {
     return baseSteps + selectedSitesCount + finalStep;
   };
 
-  const handleStepChange = (step: number) => {
-    console.log('Changing to step:', step);
-    setCurrentStep(step);
-  };
-
-  const handleStepProgression = () => {
-    console.log('Current step:', currentStep);
-    console.log('Selected sites:', checklistProgress?.selected_sites);
-    console.log('Completed guides:', checklistProgress?.completed_guides);
-
-    const totalSteps = getTotalSteps();
-    const selectedSites = checklistProgress?.selected_sites || [];
-    const completedGuides = checklistProgress?.completed_guides || [];
-
-    if (currentStep < totalSteps) {
-      if (currentStep === 3) {
-        // After step 3 (site selection), move to first guide if sites were selected
-        if (selectedSites.length > 0) {
-          console.log('Moving to first guide step (4)');
-          setCurrentStep(4);
-        } else {
-          // If no sites selected, move to final step
-          console.log('No sites selected, moving to final step');
-          setCurrentStep(totalSteps);
-        }
-      } else if (currentStep > 3 && currentStep < totalSteps) {
-        // Handle guide steps
-        const currentGuideIndex = currentStep - 4;
-        
-        if (currentGuideIndex < selectedSites.length) {
-          // Move to next step regardless of guide completion status
-          console.log('Moving to next step:', currentStep + 1);
-          setCurrentStep(currentStep + 1);
-        } else {
-          // All guides completed, move to final step
-          console.log('Moving to final step');
-          setCurrentStep(totalSteps);
-        }
-      } else {
-        // For steps 1-2, simply increment
-        console.log('Moving to next step:', currentStep + 1);
-        setCurrentStep(prev => prev + 1);
-      }
-    }
-  };
-
   return {
     currentStep,
     totalSteps: getTotalSteps(),
     handleStepChange,
-    handleStepProgression
   };
 };
