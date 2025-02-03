@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/checklist/password/PasswordInput";
+import { PasswordRequirements, checkAllRequirements } from "@/components/checklist/password/PasswordRequirements";
 
 interface ResetPasswordFormProps {
   isLoading: boolean;
@@ -18,6 +18,14 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate password requirements
+    const allRequirementsMet = checkAllRequirements(newPassword, "", false);
+    if (!allRequirementsMet) {
+      toast.error(t('error.password.requirements'));
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -46,35 +54,27 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="relative">
-        <Input
-          id="newPassword"
-          type={showPassword ? "text" : "password"}
+    <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="w-full">
+        <PasswordInput
           value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0 pr-10 placeholder:font-medium font-system-ui"
+          onChange={setNewPassword}
+          showPassword={showPassword}
+          onToggleVisibility={() => setShowPassword(!showPassword)}
           placeholder={t('new.password.placeholder')}
-          disabled={isLoading}
-          required
-          minLength={6}
         />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] focus:outline-none"
-        >
-          {showPassword ? (
-            <EyeOff className="h-5 w-5" />
-          ) : (
-            <Eye className="h-5 w-5" />
-          )}
-        </button>
       </div>
+
+      <PasswordRequirements
+        password={newPassword}
+        currentPassword=""
+        showCurrentPassword={false}
+      />
+
       <Button
         type="submit"
         className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
-        disabled={isLoading}
+        disabled={isLoading || !checkAllRequirements(newPassword, "", false)}
       >
         {isLoading ? t('loading') : t('update.password')}
       </Button>
