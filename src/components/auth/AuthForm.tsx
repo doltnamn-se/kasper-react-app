@@ -65,14 +65,15 @@ export const AuthForm = ({
             setIsLoading={setIsLoading}
           />
         ) : (
-          <LoginForm
-            onForgotPassword={() => setShowResetForm(true)}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
+          <>
+            <LoginForm
+              onForgotPassword={() => setShowResetForm(true)}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+            <SignUpPrompt />
+          </>
         )}
-        
-        <SignUpPrompt />
       </div>
     </div>
   );
