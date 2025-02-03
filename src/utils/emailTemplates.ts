@@ -5,7 +5,6 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Återställ ditt lösenord för Doltnamn. Klicka på länken för att välja ett nytt lösenord.">
   <title>Återställ ditt lösenord – Doltnamn.se</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -79,12 +78,6 @@ export const getPasswordResetTemplate = (resetLink: string) => {
   </style>
 </head>
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
-  <!-- Preview text -->
-  <div style="display: none; max-height: 0px; overflow: hidden;">
-    Återställ ditt lösenord för Doltnamn. Klicka på länken för att välja ett nytt lösenord.
-    <!-- Add padding to prevent email clients from pulling other text into the preview -->
-    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;
-  </div>
   <div class="container">
     <div class="logo">
       <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
@@ -122,7 +115,6 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Välkommen till Doltnamn! Här är dina inloggningsuppgifter för att komma igång.">
   <title>Välkommen till Doltnamn.se – Aktivera ditt konto</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -208,12 +200,6 @@ export const getActivationEmailTemplate = (displayName: string, password: string
   </style>
 </head>
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
-  <!-- Preview text -->
-  <div style="display: none; max-height: 0px; overflow: hidden;">
-    Välkommen till Doltnamn! Här är dina inloggningsuppgifter för att komma igång.
-    <!-- Add padding to prevent email clients from pulling other text into the preview -->
-    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;
-  </div>
   <div class="container">
     <div class="logo">
       <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
