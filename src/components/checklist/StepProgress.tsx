@@ -11,7 +11,7 @@ export const StepProgress = ({ progress }: StepProgressProps) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex flex-wrap items-center gap-8 mb-6">
+    <div className="flex flex-wrap items-center gap-8">
     </div>
   );
 };
