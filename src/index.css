@@ -242,16 +242,16 @@
   background-color: hsl(var(--background));
   background-image: 
     radial-gradient(circle at var(--x-0) var(--y-0), 
-      hsl(var(--primary) / 0.3) var(--s-start-0), 
+      #d6f37d30 var(--s-start-0), 
       transparent var(--s-end-0)),
     radial-gradient(circle at var(--x-1) var(--y-1), 
-      hsl(var(--secondary) / 0.4) var(--s-start-1), 
+      #d6f37d40 var(--s-start-1), 
       transparent var(--s-end-1)),
     radial-gradient(circle at var(--x-2) var(--y-2), 
-      hsl(var(--muted) / 0.6) var(--s-start-2), 
+      #d6f37d60 var(--s-start-2), 
       transparent var(--s-end-2)),
     radial-gradient(circle at var(--x-3) var(--y-3), 
-      hsl(var(--accent) / 0.8) var(--s-start-3), 
+      #d6f37d80 var(--s-start-3), 
       transparent var(--s-end-3));
   animation: hero-gradient-animation 15s ease-in-out infinite alternate;
   background-blend-mode: normal, normal, normal, normal;
@@ -262,16 +262,16 @@
   background-color: hsl(var(--background));
   background-image: 
     radial-gradient(circle at var(--x-0) var(--y-0), 
-      hsl(var(--primary) / 0.15) var(--s-start-0), 
+      #c8ed5230 var(--s-start-0), 
       transparent var(--s-end-0)),
     radial-gradient(circle at var(--x-1) var(--y-1), 
-      hsl(var(--secondary) / 0.2) var(--s-start-1), 
+      #c8ed5240 var(--s-start-1), 
       transparent var(--s-end-1)),
     radial-gradient(circle at var(--x-2) var(--y-2), 
-      hsl(var(--muted) / 0.3) var(--s-start-2), 
+      #c8ed5260 var(--s-start-2), 
       transparent var(--s-end-2)),
     radial-gradient(circle at var(--x-3) var(--y-3), 
-      hsl(var(--accent) / 0.4) var(--s-start-3), 
+      #c8ed5280 var(--s-start-3), 
       transparent var(--s-end-3));
 }
 
