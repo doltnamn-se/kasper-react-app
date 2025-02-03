@@ -10,7 +10,6 @@ interface AuthRouteProps {
 export const AuthRoute = ({ children }: AuthRouteProps) => {
   const [session, setSession] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isRecoveryFlow, setIsRecoveryFlow] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -24,11 +23,25 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
         console.log("AuthRoute: URL parameters -", { type, accessToken });
 
-        // If this is a recovery flow, mark it and allow access
+        // Handle recovery flow
         if (type === 'recovery') {
           console.log("AuthRoute: Recovery flow detected");
-          setIsRecoveryFlow(true);
-          setSession(false);
+          const { data: { session: recoverySession }, error: recoveryError } = await supabase.auth.getSession();
+          
+          if (recoveryError) {
+            console.error("AuthRoute: Recovery session error:", recoveryError);
+            setSession(false);
+            setIsLoading(false);
+            return;
+          }
+
+          if (recoverySession) {
+            console.log("AuthRoute: Valid recovery session found");
+            setSession(false); // Keep false to show reset form
+          } else {
+            console.log("AuthRoute: No valid recovery session");
+            setSession(false);
+          }
           setIsLoading(false);
           return;
         }
@@ -54,11 +67,11 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           return;
         }
         
-        if (currentSession && !isRecoveryFlow) {
+        if (currentSession) {
           console.log("AuthRoute: Active session found, redirecting to home");
           setSession(true);
         } else {
-          console.log("AuthRoute: No session found or in recovery flow, allowing auth page access");
+          console.log("AuthRoute: No session found, allowing auth page access");
           setSession(false);
         }
       } catch (error) {
@@ -74,14 +87,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("AuthRoute: Auth state changed:", event);
       
-      const params = new URLSearchParams(location.search);
-      const type = params.get('type');
-      
-      if (type === 'recovery') {
-        setIsRecoveryFlow(true);
-      }
-      
-      if (event === 'SIGNED_IN' && !isRecoveryFlow) {
+      if (event === 'SIGNED_IN') {
         console.log("AuthRoute: User signed in");
         setSession(true);
         setIsLoading(false);
@@ -95,13 +101,13 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [location.pathname, location.search, isRecoveryFlow]);
+  }, [location.pathname, location.search]);
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
-  if (session && !isRecoveryFlow) {
+  if (session) {
     return <Navigate to="/" replace />;
   }
 
