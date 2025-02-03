@@ -1,4 +1,4 @@
-import { Check, ChevronRight } from "lucide-react";
+import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChecklistStepsProps {
@@ -47,30 +47,24 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
 
   return (
     <div className="grid grid-cols-4 gap-2">
-      {steps.map((item, index) => (
+      {steps.map((item) => (
         <div 
           key={item.step} 
           className={`flex flex-col items-center p-3 rounded-lg ${!item.completed ? 'bg-[#f8f8f7] dark:bg-[#2A2A2B]' : ''}`}
         >
-          <div className="flex items-center gap-2 mb-2">
-            <div className={`flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full ${item.completed ? 'opacity-40' : ''} bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center`}>
-              <span className="text-xs font-medium">{item.step}</span>
-            </div>
+          <div className="flex items-center gap-3">
             {item.completed ? (
               <div className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full bg-[#219653] flex items-center justify-center">
                 <Check className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
               </div>
             ) : (
-              <button 
-                onClick={() => onStepClick(item.step)}
-                className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full hover:bg-gray-100 dark:hover:bg-[#3A3A3B] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <ChevronRight className="w-3 h-3 xl:w-4 xl:h-4" />
-              </button>
+              <div className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
+                <span className="text-xs font-medium">{item.step}</span>
+              </div>
             )}
-          </div>
-          <div className={`text-center ${item.completed ? 'opacity-40' : ''}`}>
-            <p className="text-xs xl:text-sm font-medium">{item.title}</p>
+            <div className={`${item.completed ? 'opacity-40' : ''}`}>
+              <p className="text-xs xl:text-sm font-medium">{item.title}</p>
+            </div>
           </div>
         </div>
       ))}
