@@ -14,29 +14,31 @@ export const useChecklistProgress = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      const { data: customerData, error: customerError } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
+      // Fetch both customer and progress data
+      const [{ data: customerData, error: customerError }, { data: progressData, error: progressError }] = await Promise.all([
+        supabase
+          .from('customers')
+          .select('checklist_step, has_address_alert')
+          .eq('id', session.user.id)
+          .single(),
+        supabase
+          .from('customer_checklist_progress')
+          .select('*')
+          .eq('customer_id', session.user.id)
+          .maybeSingle()
+      ]);
       
       if (customerError) {
         console.error('Error fetching customer data:', customerError);
         throw customerError;
       }
 
-      const { data, error } = await supabase
-        .from('customer_checklist_progress')
-        .select('*')
-        .eq('customer_id', session.user.id)
-        .maybeSingle();
-      
-      if (error) {
-        console.error('Error fetching checklist progress:', error);
-        throw error;
+      if (progressError) {
+        console.error('Error fetching checklist progress:', progressError);
+        throw progressError;
       }
 
-      if (!data) {
+      if (!progressData) {
         const { data: newProgress, error: insertError } = await supabase
           .from('customer_checklist_progress')
           .insert([{ customer_id: session.user.id }])
@@ -48,12 +50,22 @@ export const useChecklistProgress = () => {
           throw insertError;
         }
 
-        return { ...newProgress, has_address_alert: customerData.has_address_alert };
+        return { 
+          ...newProgress, 
+          checklist_step: customerData?.checklist_step || 1,
+          has_address_alert: customerData?.has_address_alert 
+        };
       }
       
-      console.log('Raw checklist progress data:', data);
+      console.log('Raw checklist progress data:', progressData);
       console.log('Customer data:', customerData);
-      return { ...data, has_address_alert: customerData.has_address_alert };
+
+      // Merge progress data with customer data
+      return { 
+        ...progressData, 
+        checklist_step: customerData?.checklist_step || 1,
+        has_address_alert: customerData?.has_address_alert 
+      };
     }
   });
 
