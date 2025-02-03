@@ -87,36 +87,32 @@ const ChecklistContent = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <Card className="relative p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
-                <div className="space-y-8">
-                  <div className="checklist-component">
-                    <ChecklistContainer />
+          <div className="flex flex-col gap-6">
+            <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
+              <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
+              <ChecklistSteps 
+                checklistProgress={checklistProgress}
+                onStepClick={handleStepClick}
+              />
+            </Card>
+
+            <Card className="relative p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
+              <div className="space-y-8">
+                <div className="checklist-component">
+                  <ChecklistContainer />
+                </div>
+              </div>
+              {progress === 100 && (
+                <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-[4px] flex items-center justify-center">
+                  <div className="flex items-center gap-2">
+                    <BadgeCheck className="w-6 h-6" />
+                    <p className="text-lg font-black">
+                      {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
+                    </p>
                   </div>
                 </div>
-                {progress === 100 && (
-                  <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-[4px] flex items-center justify-center">
-                    <div className="flex items-center gap-2">
-                      <BadgeCheck className="w-6 h-6" />
-                      <p className="text-lg font-black">
-                        {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </Card>
-            </div>
-
-            <div className="lg:col-span-1 space-y-6">
-              <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
-                <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
-                <ChecklistSteps 
-                  checklistProgress={checklistProgress}
-                  onStepClick={handleStepClick}
-                />
-              </Card>
-            </div>
+              )}
+            </Card>
           </div>
         </TooltipProvider>
       </div>
