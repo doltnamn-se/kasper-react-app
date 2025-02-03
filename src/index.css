@@ -126,9 +126,9 @@
   background: radial-gradient(
     circle at 0% 0%,
     #f4f4f4 0%,
-    rgba(214, 243, 125, 0.4) 25%,
+    #e8e8e8 25%,
     #f4f4f4 50%,
-    rgba(214, 243, 125, 0.5) 75%,
+    #e2e2e2 75%,
     #f4f4f4 100%
   );
   animation: meshGradient 8s ease infinite;
@@ -139,9 +139,9 @@
   background: radial-gradient(
     circle at 0% 0%,
     #161618 0%,
-    rgba(200, 237, 82, 0.4) 25%,
+    #1e1e20 25%,
     #161618 50%,
-    rgba(200, 237, 82, 0.5) 75%,
+    #232325 75%,
     #161618 100%
   );
 }
