@@ -12,27 +12,27 @@ export const AuthFooter = () => {
       <div className="flex justify-center gap-0.5 mb-2">
         <Button 
           variant="link" 
-          className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
+          className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
           onClick={() => window.open('https://doltnamn.se/integritetspolicy/', '_blank')}
         >
           {t('privacy')}
         </Button>
         <Button 
           variant="link" 
-          className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
+          className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
           onClick={() => window.open('https://doltnamn.se/licensvillkor/', '_blank')}
         >
           {t('license')}
         </Button>
         <Button 
           variant="link" 
-          className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-normal hover:no-underline"
+          className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
           onClick={() => window.open('https://doltnamn.se/anvandarvillkor/', '_blank')}
         >
           {t('terms')}
         </Button>
       </div>
-      <p className="text-[11px] text-gray-400">
+      <p className="text-[11px] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
         {currentYear} © Doltnamn.se &nbsp;&nbsp;·&nbsp;&nbsp; App version {version}
       </p>
     </div>
