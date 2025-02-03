@@ -71,7 +71,7 @@ export const AuthForm = ({
               isLoading={isLoading}
               setIsLoading={setIsLoading}
             />
-            <SignUpPrompt />
+            {!isResetPasswordMode && !showResetForm && <SignUpPrompt />}
           </>
         )}
       </div>
