@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -14,6 +15,7 @@ interface LoginFormProps {
 
 export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFormProps) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +44,37 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
       if (data?.session) {
         console.log("Sign in successful, session established");
         await supabase.auth.setSession(data.session);
-        window.location.href = '/';
+        
+        // Check if user is admin
+        if (email === 'info@doltnamn.se') {
+          console.log("Admin user detected, redirecting to admin dashboard");
+          window.location.href = '/admin';
+          return;
+        }
+
+        // Check checklist completion status
+        const { data: customerData, error: customerError } = await supabase
+          .from('customers')
+          .select('checklist_completed')
+          .eq('id', data.session.user.id)
+          .single();
+
+        if (customerError) {
+          console.error("Error fetching customer data:", customerError);
+          toast.error(t('error.generic'));
+          return;
+        }
+
+        console.log("Customer checklist status:", customerData?.checklist_completed);
+        
+        // Redirect based on checklist completion
+        if (!customerData?.checklist_completed) {
+          console.log("Checklist not completed, redirecting to checklist");
+          window.location.href = '/checklist';
+        } else {
+          console.log("Checklist completed, redirecting to home");
+          window.location.href = '/';
+        }
       }
     } catch (err) {
       console.error("Unexpected error:", err);
