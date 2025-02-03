@@ -15,6 +15,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const { userEmail, isInitializing } = useUserProfile();
   const [isLoading, setIsLoading] = useState(true);
+  const [checklistCompleted, setChecklistCompleted] = useState<boolean | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -30,6 +31,24 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
             setIsLoading(false);
           }
           return;
+        }
+
+        if (session?.user) {
+          // Fetch customer data to check checklist completion
+          const { data: customerData, error: customerError } = await supabase
+            .from('customers')
+            .select('checklist_completed')
+            .eq('id', session.user.id)
+            .single();
+
+          if (customerError) {
+            console.error("Error fetching customer data:", customerError);
+          } else {
+            console.log("Customer data:", customerData);
+            if (mounted) {
+              setChecklistCompleted(customerData?.checklist_completed || false);
+            }
+          }
         }
 
         if (mounted) {
@@ -77,6 +96,12 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
 
   if (customerOnly && isAdmin) {
     return <Navigate to="/admin" replace />;
+  }
+
+  // If user is on the home page and checklist is not completed, redirect to checklist
+  if (window.location.pathname === '/' && !checklistCompleted && !isAdmin) {
+    console.log("Redirecting to checklist - not completed yet");
+    return <Navigate to="/checklist" replace />;
   }
 
   return <>{children}</>;
