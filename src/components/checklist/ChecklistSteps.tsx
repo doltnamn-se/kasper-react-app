@@ -47,8 +47,17 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
 
   return (
     <div className="relative grid grid-cols-4 gap-2">
-      {/* Connecting lines */}
-      <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-[#e0e0e0] dark:bg-[#3A3A3B] -translate-y-1/2 z-0" />
+      {/* Step connecting lines */}
+      {[1, 2, 3].map((index) => (
+        <div 
+          key={`line-${index}`} 
+          className="absolute top-1/2 h-[1px] bg-[#e0e0e0] dark:bg-[#3A3A3B] -translate-y-1/2 z-0"
+          style={{
+            left: `${(index * 25) + 12.5}%`,
+            width: '12.5%'
+          }}
+        />
+      ))}
       
       {steps.map((item) => (
         <div 

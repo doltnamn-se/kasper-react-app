@@ -3,7 +3,6 @@ import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useChecklistItems } from "@/hooks/useChecklistItems";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect } from "react";
 import { ChecklistProgress } from "@/components/checklist/ChecklistProgress";
 import { ChecklistSteps } from "@/components/checklist/ChecklistSteps";
@@ -15,7 +14,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 const ChecklistContent = () => {
   const { t, language } = useLanguage();
-  const isMobile = useIsMobile();
   const { checklistProgress, calculateProgress } = useChecklistProgress();
   const { checklistItems } = useChecklistItems();
 
@@ -88,7 +86,7 @@ const ChecklistContent = () => {
           </div>
 
           <div className="flex flex-col gap-6">
-            <div className="p-6">
+            <div className="hidden md:block p-6">
               <ChecklistSteps 
                 checklistProgress={checklistProgress}
                 onStepClick={handleStepClick}
