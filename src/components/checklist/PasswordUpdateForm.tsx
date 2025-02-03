@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { PasswordInput } from "./password/PasswordInput";
 import { PasswordRequirements, checkAllRequirements } from "./password/PasswordRequirements";
 import { useChecklistSteps } from "@/hooks/useChecklistSteps";
+import { toast } from "sonner";
 
 interface PasswordUpdateFormProps {
   onComplete: () => void;
@@ -116,12 +117,20 @@ export const PasswordUpdateForm = ({
 
       console.log("Checklist progress and step updated successfully");
       resetForm();
-      onComplete();
       
-      // Navigate to the next step after successful password update
+      // Call onComplete first
+      await onComplete();
+      
+      // Then explicitly move to step 2
+      console.log("Moving to step 2...");
       handleStepChange(2);
+      
+      if (showSuccessToast) {
+        toast.success(t('password.updated.successfully'));
+      }
     } catch (error) {
       console.error('Error in password update flow:', error);
+      toast.error(t('password.update.error'));
     } finally {
       setIsLoading(false);
     }
