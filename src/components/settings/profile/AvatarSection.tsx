@@ -44,7 +44,10 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
       console.log("Uploading avatar...");
 
       const fileExt = file.name.split('.').pop();
-      const filePath = `${userProfile.id}-${Math.random()}.${fileExt}`;
+      // Structure the file path to include the user ID as a folder
+      const filePath = `${userProfile.id}/${crypto.randomUUID()}.${fileExt}`;
+
+      console.log("Uploading to path:", filePath);
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
@@ -62,7 +65,6 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ 
-          id: userProfile.id,
           avatar_url: publicUrl 
         })
         .eq('id', userProfile.id);
@@ -84,13 +86,26 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
 
   const handleAvatarDelete = async () => {
     try {
-      if (!userProfile?.id) return;
+      if (!userProfile?.id || !userProfile.avatar_url) return;
       console.log("Deleting avatar...");
+
+      // Extract the file path from the avatar URL
+      const urlParts = userProfile.avatar_url.split('/');
+      const filePath = `${userProfile.id}/${urlParts[urlParts.length - 1]}`;
+
+      // Delete the file from storage
+      const { error: storageError } = await supabase.storage
+        .from('avatars')
+        .remove([filePath]);
+
+      if (storageError) {
+        console.error("Error deleting avatar from storage:", storageError);
+        throw storageError;
+      }
 
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ 
-          id: userProfile.id,
           avatar_url: null 
         })
         .eq('id', userProfile.id);
