@@ -54,4 +54,6 @@ export interface UITranslations {
   'delete': string;
   'save': string;
   'upload': string;
+  'password.updated.successfully': string;
+  'password.update.error': string;
 }

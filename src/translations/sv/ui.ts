@@ -55,5 +55,7 @@ export const ui: UITranslations = {
   'profile': 'Profil',
   'delete': 'Ta bort',
   'save': 'Spara',
-  'upload': 'Ladda upp'
+  'upload': 'Ladda upp',
+  'password.updated.successfully': 'Lösenord uppdaterat',
+  'password.update.error': 'Det gick inte att uppdatera lösenordet'
 };

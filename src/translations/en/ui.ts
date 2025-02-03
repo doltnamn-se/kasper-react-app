@@ -55,5 +55,7 @@ export const ui: UITranslations = {
   'profile': 'Profile',
   'delete': 'Delete',
   'save': 'Save',
-  'upload': 'Upload'
+  'upload': 'Upload',
+  'password.updated.successfully': 'Password updated successfully',
+  'password.update.error': 'Failed to update password'
 };
