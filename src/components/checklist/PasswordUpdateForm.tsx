@@ -115,7 +115,7 @@ export const PasswordUpdateForm = ({
       resetForm();
       
       if (showSuccessToast) {
-        toast.success(t('ui:password.updated.successfully'));
+        toast.success(t('settings.password.updated'));
       }
 
       // Move to step 2 before calling onComplete
@@ -127,7 +127,7 @@ export const PasswordUpdateForm = ({
       
     } catch (error) {
       console.error('Error in password update flow:', error);
-      toast.error(t('ui:password.update.error'));
+      toast.error(t('password.update.error'));
     } finally {
       setIsLoading(false);
     }
