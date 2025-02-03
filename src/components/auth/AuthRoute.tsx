@@ -24,9 +24,10 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
         console.log("AuthRoute: URL parameters -", { type, accessToken });
 
-        // If this is a recovery flow, don't check session
+        // If this is a recovery flow, sign out any existing session first
         if (type === 'recovery') {
-          console.log("AuthRoute: Recovery flow detected, allowing access");
+          console.log("AuthRoute: Recovery flow detected, signing out existing session");
+          await supabase.auth.signOut();
           setSession(false);
           setIsLoading(false);
           return;
@@ -44,7 +45,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         
         if (error) {
           console.error("AuthRoute: Session error:", error);
-          // If we get a refresh token error, clear the session
           if (error.message.includes('refresh_token_not_found')) {
             console.log("AuthRoute: Invalid refresh token, signing out");
             await supabase.auth.signOut();
@@ -55,14 +55,8 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         }
         
         if (currentSession) {
-          // Don't redirect to home if we're in recovery flow
-          if (type === 'recovery') {
-            console.log("AuthRoute: Recovery flow with session, allowing access");
-            setSession(false);
-          } else {
-            console.log("AuthRoute: Active session found, redirecting to home");
-            setSession(true);
-          }
+          console.log("AuthRoute: Active session found, redirecting to home");
+          setSession(true);
         } else {
           console.log("AuthRoute: No session found, allowing auth page access");
           setSession(false);
@@ -85,9 +79,10 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
       const type = params.get('type');
       
       if (event === 'SIGNED_IN') {
-        // Don't redirect if we're in recovery flow
+        // If we're in recovery flow, sign out immediately
         if (type === 'recovery') {
-          console.log("AuthRoute: Signed in during recovery flow, staying on page");
+          console.log("AuthRoute: Signed in during recovery flow, signing out");
+          await supabase.auth.signOut();
           setSession(false);
         } else {
           console.log("AuthRoute: User signed in");
@@ -96,13 +91,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         setIsLoading(false);
       } else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         console.log("AuthRoute: User signed out or token refreshed");
-        // Recheck session after token refresh
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        if (error || !currentSession || type === 'recovery') {
-          setSession(false);
-        } else {
-          setSession(true);
-        }
+        setSession(false);
         setIsLoading(false);
       }
     });
