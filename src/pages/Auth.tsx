@@ -103,18 +103,19 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md space-y-8">
-          <AuthHeader />
-          <AuthForm 
-            errorMessage={errorMessage} 
-            isDarkMode={isDarkMode} 
-            isResetPasswordMode={isResetPasswordMode} 
-          />
-          <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
-        </div>
+      <div className="w-full max-w-md space-y-8 pt-16">
+        <AuthHeader />
+        <AuthForm 
+          errorMessage={errorMessage} 
+          isDarkMode={isDarkMode} 
+          isResetPasswordMode={isResetPasswordMode} 
+        />
+        <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
       </div>
-      <AuthFooter />
+      <div className="flex-1" />
+      <div className="pb-5">
+        <AuthFooter />
+      </div>
     </div>
   );
 };
