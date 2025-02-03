@@ -88,9 +88,12 @@ export const PasswordUpdateForm = ({
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
+      // Update both password_updated flag and checklist_step
       const { error: updateError } = await supabase
         .from('customer_checklist_progress')
-        .update({ password_updated: true })
+        .update({ 
+          password_updated: true,
+        })
         .eq('customer_id', session.user.id);
 
       if (updateError) {
@@ -98,7 +101,20 @@ export const PasswordUpdateForm = ({
         throw updateError;
       }
 
-      console.log("Checklist progress updated successfully");
+      // Update the customer's checklist_step
+      const { error: customerUpdateError } = await supabase
+        .from('customers')
+        .update({ 
+          checklist_step: 2
+        })
+        .eq('id', session.user.id);
+
+      if (customerUpdateError) {
+        console.error("Error updating customer checklist step:", customerUpdateError);
+        throw customerUpdateError;
+      }
+
+      console.log("Checklist progress and step updated successfully");
       resetForm();
       onComplete();
       
