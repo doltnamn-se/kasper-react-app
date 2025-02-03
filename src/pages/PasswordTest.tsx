@@ -42,22 +42,26 @@ const PasswordTest = () => {
                 dangerouslySetInnerHTML={{ 
                   __html: `
                     <!DOCTYPE html>
-                    <html>
+                    <html style="margin: 0; padding: 0; min-height: 100%; background-color: #f4f4f4;">
                     <head>
                       <meta charset="utf-8">
                       <meta name="viewport" content="width=device-width, initial-scale=1.0">
                       <title>Aktivera ditt konto</title>
                       <style>
-                        html, body {
+                        html {
                           margin: 0;
                           padding: 0;
-                          min-height: 100%;
+                          height: 100%;
                           background-color: #f4f4f4;
                         }
                         body {
                           font-family: 'Roboto', sans-serif;
                           line-height: 1.6;
                           color: #333333;
+                          margin: 0;
+                          padding: 0;
+                          min-height: 100%;
+                          background-color: #f4f4f4;
                           -webkit-font-smoothing: antialiased;
                           -moz-osx-font-smoothing: grayscale;
                         }
