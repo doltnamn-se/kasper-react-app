@@ -100,7 +100,7 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         type="button"
         variant="ghost"
         onClick={onForgotPassword}
-        className="w-full text-xs text-gray-600 hover:text-[#000000] hover:bg-transparent dark:text-gray-400 dark:hover:text-white font-normal"
+        className="w-full text-xs text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent font-medium"
       >
         {t('forgot.password')}
       </Button>
