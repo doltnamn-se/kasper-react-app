@@ -102,8 +102,8 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode]);
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-between p-4">
-      <div className="w-full max-w-md space-y-8 mt-8">
+    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8">
         <AuthHeader />
         <AuthForm 
           errorMessage={errorMessage} 

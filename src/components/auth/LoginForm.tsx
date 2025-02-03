@@ -89,21 +89,23 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           )}
         </button>
       </div>
-      <Button
-        type="submit"
-        className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
-        disabled={isLoading}
-      >
-        {isLoading ? t('loading') : t('sign.in')}
-      </Button>
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={onForgotPassword}
-        className="w-full text-xs text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent font-medium"
-      >
-        {t('forgot.password')}
-      </Button>
+      <div className="space-y-2">
+        <Button
+          type="submit"
+          className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+          disabled={isLoading}
+        >
+          {isLoading ? t('loading') : t('sign.in')}
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onForgotPassword}
+          className="w-full text-xs text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent font-medium"
+        >
+          {t('forgot.password')}
+        </Button>
+      </div>
     </form>
   );
 };

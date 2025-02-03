@@ -8,7 +8,7 @@ export const SignUpPrompt = () => {
       {language === 'sv' ? "Har du inget konto? " : "Don't have an account? "}
       <a 
         href="https://doltnamn.se/#planer" 
-        className="font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] no-underline font-system-ui"
+        className="font-[900] text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] no-underline font-system-ui"
       >
         {language === 'sv' ? "Kom igång" : "Get started"}
       </a>
