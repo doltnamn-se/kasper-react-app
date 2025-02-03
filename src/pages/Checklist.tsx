@@ -8,6 +8,9 @@ import { useEffect } from "react";
 import { ChecklistProgress } from "@/components/checklist/ChecklistProgress";
 import { ChecklistSteps } from "@/components/checklist/ChecklistSteps";
 import { BadgeCheck } from "lucide-react";
+import { AuthLogo } from "@/components/auth/AuthLogo";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
+import { ThemeToggle } from "@/components/nav/ThemeToggle";
 
 const ChecklistContent = () => {
   const { t, language } = useLanguage();
@@ -57,6 +60,14 @@ const ChecklistContent = () => {
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12">
       <div className="max-w-[1400px] mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <AuthLogo />
+          <div className="flex items-center gap-2">
+            <LanguageSwitch />
+            <ThemeToggle />
+          </div>
+        </div>
+
         <div className="flex flex-col items-center mb-6">
           <div className="flex flex-wrap items-center justify-center gap-8">
             <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
