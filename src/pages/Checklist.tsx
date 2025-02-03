@@ -96,14 +96,14 @@ const ChecklistContent = () => {
             </div>
 
             <div className="flex justify-center">
-              <Card className="relative p-8 px-16 rounded-lg border border-[#fff3] dark:border-[#30303233] bg-[#ffffff4d] dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)] w-fit">
+              <Card className="relative p-8 px-16 rounded-[7px] border border-[#fff3] dark:border-[#30303233] bg-[#ffffff4d] dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)] w-fit">
                 <div className="space-y-8">
                   <div className="checklist-component">
                     <ChecklistContainer />
                   </div>
                 </div>
                 {progress === 100 && (
-                  <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg flex items-center justify-center">
+                  <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-[7px] flex items-center justify-center">
                     <div className="flex items-center gap-2">
                       <BadgeCheck className="w-6 h-6" />
                       <p className="text-lg font-black">
