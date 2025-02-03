@@ -1,4 +1,3 @@
-import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
@@ -53,11 +52,10 @@ const ChecklistContent = () => {
   };
 
   const progress = calculateProgress();
-  // Fixed total steps count to 4 main steps
   const totalSteps = 4;
 
   return (
-    <MainLayout>
+    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12">
       <div className="flex flex-wrap items-center gap-8 mb-6">
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.checklist')}
@@ -66,8 +64,8 @@ const ChecklistContent = () => {
         {!isMobile && progress !== 100 && (
           <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('step.progress', { 
-              current: Math.ceil(progress / 25), // Calculate current step based on progress percentage
-              total: totalSteps // Use fixed total steps
+              current: Math.ceil(progress / 25),
+              total: totalSteps
             })}
           </span>
         )}
@@ -104,7 +102,7 @@ const ChecklistContent = () => {
           </Card>
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 
