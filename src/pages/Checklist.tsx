@@ -88,12 +88,12 @@ const ChecklistContent = () => {
           </div>
 
           <div className="flex flex-col gap-6">
-            <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
+            <div className="p-6">
               <ChecklistSteps 
                 checklistProgress={checklistProgress}
                 onStepClick={handleStepClick}
               />
-            </Card>
+            </div>
 
             <Card className="relative p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
               <div className="space-y-8">
