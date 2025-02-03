@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ChecklistAddressFormData {
@@ -18,7 +17,6 @@ interface ChecklistAddressFormProps {
 
 export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) => {
   const { t, language } = useLanguage();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const { register, handleSubmit, formState: { errors } } = useForm<ChecklistAddressFormData>();
 
@@ -67,26 +65,12 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         queryClient.invalidateQueries({ queryKey: ['customer-data'] })
       ]);
 
-      toast({
-        title: language === 'sv' ? 'Checklista slutförd' : 'Checklist completed',
-        description: language === 'sv' ? 
-          'Din adress har sparats och checklistan är klar' : 
-          'Your address has been saved and the checklist is complete'
-      });
-
       if (onSuccess) {
         console.log('Calling onSuccess callback after completing checklist');
         await onSuccess();
       }
     } catch (error) {
       console.error('Error completing checklist:', error);
-      toast({
-        title: language === 'sv' ? 'Ett fel uppstod' : 'An error occurred',
-        description: language === 'sv' ? 
-          'Det gick inte att slutföra checklistan' : 
-          'Could not complete the checklist',
-        variant: "destructive"
-      });
     }
   };
 

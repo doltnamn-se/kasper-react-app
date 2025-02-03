@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Check } from "lucide-react";
 import { PasswordInput } from "./password/PasswordInput";
@@ -31,7 +30,6 @@ export const PasswordUpdateForm = ({
   const [showCurrentPasswordField, setShowCurrentPasswordField] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const { t, language } = useLanguage();
 
   const resetForm = () => {
@@ -49,11 +47,7 @@ export const PasswordUpdateForm = ({
       const allRequirementsMet = checkAllRequirements(newPassword, currentPassword, showCurrentPassword);
       
       if (!allRequirementsMet) {
-        toast({
-          variant: "destructive",
-          title: t('error'),
-          description: t('error.password.requirements'),
-        });
+        console.error('Password requirements not met');
         setIsLoading(false);
         return;
       }
@@ -67,11 +61,6 @@ export const PasswordUpdateForm = ({
 
         if (signInError) {
           console.error("Current password verification failed:", signInError);
-          toast({
-            variant: "destructive",
-            title: t('error'),
-            description: t('error.current.password'),
-          });
           setIsLoading(false);
           return;
         }
@@ -86,13 +75,7 @@ export const PasswordUpdateForm = ({
       if (error) {
         console.error("Password update error:", error);
         if (error.message.includes('same_password')) {
-          toast({
-            variant: "destructive",
-            title: t('error'),
-            description: language === 'en' ? 
-              "New password must be different from current password" : 
-              "Nytt lösenord måste vara annorlunda än nuvarande lösenord",
-          });
+          console.error("New password must be different from current password");
           setIsLoading(false);
           return;
         }
@@ -114,22 +97,10 @@ export const PasswordUpdateForm = ({
       }
 
       console.log("Checklist progress updated successfully");
-      if (showSuccessToast) {
-        toast({
-          title: t('success'),
-          description: t('password.updated'),
-        });
-      }
-      
       resetForm();
       onComplete();
     } catch (error) {
       console.error('Error in password update flow:', error);
-      toast({
-        variant: "destructive",
-        title: t('error'),
-        description: t('error.password.update'),
-      });
     } finally {
       setIsLoading(false);
     }
