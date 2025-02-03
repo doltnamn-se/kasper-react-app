@@ -24,7 +24,7 @@ export const ChecklistContainer = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="pt-0">
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
         <div className="step-content-wrapper">
