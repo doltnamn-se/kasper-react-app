@@ -144,7 +144,7 @@ input:-webkit-autofill {
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 0% 0%, #f4f4f4 0%, #eaeaea 25%, #f0f0f0 50%, #e8e8e8 75%, #f4f4f4 100%);
-  animation: meshGradient 15s ease infinite;
+  animation: meshGradient 5s ease infinite;
   z-index: -1;
 }
 
