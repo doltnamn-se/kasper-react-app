@@ -27,7 +27,7 @@ export const ChecklistContainer = () => {
     <div className="space-y-6">
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
-        <div className="step-content-wrapper p-6">
+        <div className="step-content-wrapper">
           {[...Array(totalStepsCount)].map((_, index) => {
             const stepNumber = index + 1;
             console.log('Rendering step:', stepNumber, 'Current step:', currentStep);
