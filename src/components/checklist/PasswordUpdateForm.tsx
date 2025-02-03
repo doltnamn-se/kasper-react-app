@@ -32,7 +32,7 @@ export const PasswordUpdateForm = ({
   const [showCurrentPasswordField, setShowCurrentPasswordField] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { handleStepChange } = useChecklistSteps();
 
   const resetForm = () => {
@@ -47,6 +47,7 @@ export const PasswordUpdateForm = ({
     setIsLoading(true);
 
     try {
+      console.log('Starting password update process...');
       const allRequirementsMet = checkAllRequirements(newPassword, currentPassword, showCurrentPassword);
       
       if (!allRequirementsMet) {
@@ -89,45 +90,41 @@ export const PasswordUpdateForm = ({
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
-      // Update both password_updated flag and checklist_step
-      const { error: updateError } = await supabase
-        .from('customer_checklist_progress')
-        .update({ 
-          password_updated: true,
-        })
-        .eq('customer_id', session.user.id);
+      // Update both password_updated flag and checklist_step in a transaction-like manner
+      const updates = [
+        supabase
+          .from('customer_checklist_progress')
+          .update({ password_updated: true })
+          .eq('customer_id', session.user.id),
+        
+        supabase
+          .from('customers')
+          .update({ checklist_step: 2 })
+          .eq('id', session.user.id)
+      ];
 
-      if (updateError) {
-        console.error("Error updating checklist progress:", updateError);
-        throw updateError;
+      const results = await Promise.all(updates);
+      const errors = results.filter(result => result.error);
+
+      if (errors.length > 0) {
+        console.error("Errors updating progress:", errors);
+        throw new Error("Failed to update progress");
       }
 
-      // Update the customer's checklist_step
-      const { error: customerUpdateError } = await supabase
-        .from('customers')
-        .update({ 
-          checklist_step: 2
-        })
-        .eq('id', session.user.id);
-
-      if (customerUpdateError) {
-        console.error("Error updating customer checklist step:", customerUpdateError);
-        throw customerUpdateError;
-      }
-
-      console.log("Checklist progress and step updated successfully");
+      console.log("Database updates completed successfully");
       resetForm();
-      
-      // Call onComplete first
-      await onComplete();
-      
-      // Then explicitly move to step 2
-      console.log("Moving to step 2...");
-      handleStepChange(2);
       
       if (showSuccessToast) {
         toast.success(t('password.updated.successfully'));
       }
+
+      // Call onComplete first
+      await onComplete();
+      
+      // Explicitly move to step 2
+      console.log("Moving to step 2...");
+      handleStepChange(2);
+      
     } catch (error) {
       console.error('Error in password update flow:', error);
       toast.error(t('password.update.error'));
