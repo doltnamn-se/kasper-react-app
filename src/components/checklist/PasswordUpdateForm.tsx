@@ -115,19 +115,19 @@ export const PasswordUpdateForm = ({
       resetForm();
       
       if (showSuccessToast) {
-        toast.success(t('password.updated.successfully'));
+        toast.success(t('ui:password.updated.successfully'));
       }
 
-      // Call onComplete first
-      await onComplete();
-      
-      // Explicitly move to step 2
+      // Move to step 2 before calling onComplete
       console.log("Moving to step 2...");
       handleStepChange(2);
+
+      // Call onComplete last
+      await onComplete();
       
     } catch (error) {
       console.error('Error in password update flow:', error);
-      toast.error(t('password.update.error'));
+      toast.error(t('ui:password.update.error'));
     } finally {
       setIsLoading(false);
     }
