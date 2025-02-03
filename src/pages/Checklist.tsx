@@ -96,7 +96,7 @@ const ChecklistContent = () => {
             </div>
 
             <div className="flex justify-center">
-              <Card className="relative py-6 px-6 rounded-lg border dark:border-[#30303233] bg-white/70 dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)] w-fit">
+              <Card className="relative pb-6 px-6 rounded-lg border dark:border-[#30303233] bg-white/70 dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)] w-fit">
                 <div className="space-y-8">
                   <div className="checklist-component">
                     <ChecklistContainer />
