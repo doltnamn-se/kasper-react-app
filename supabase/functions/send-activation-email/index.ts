@@ -54,7 +54,7 @@ const getActivationEmailTemplate = (displayName: string, password: string) => {
     h1 {
       color: #333333;
       font-size: 24px;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
       text-align: center;
       font-weight: 700;
     }
@@ -89,19 +89,11 @@ const getActivationEmailTemplate = (displayName: string, password: string) => {
       padding: 12px 24px;
       text-decoration: none;
       border-radius: 4px;
-      margin: 20px 0 40px;
+      margin: 20px 0;
       font-weight: 500;
     }
     .button:hover {
       background-color: #333333;
-    }
-    .footer {
-      text-align: center;
-      color: #666666;
-      font-size: 12px;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #eeeeee;
     }
     .email-link {
       color: #333333;
