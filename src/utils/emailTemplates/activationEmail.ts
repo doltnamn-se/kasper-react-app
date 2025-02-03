@@ -7,20 +7,16 @@ export const getActivationEmailTemplate = (displayName: string, password: string
   <title>Aktivera ditt konto</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    html {
+    html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      background-color: #f4f4f4;
+      min-height: 100%;
+      background-color: #f4f4f4 !important;
     }
     body {
       font-family: 'Roboto', sans-serif;
       line-height: 1.6;
       color: #333333;
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      background-color: #f4f4f4;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -32,10 +28,13 @@ export const getActivationEmailTemplate = (displayName: string, password: string
     .logo {
       text-align: center;
       margin-bottom: 30px;
+      width: 100%;
     }
     .logo img {
       max-width: 150px;
       height: auto;
+      margin: 0 auto;
+      display: block;
     }
     .email-wrapper {
       background-color: #ffffff;
@@ -98,10 +97,10 @@ export const getActivationEmailTemplate = (displayName: string, password: string
     }
   </style>
 </head>
-<body>
+<body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-app-logo-black.svg" alt="Doltnamn Logo">
+      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-app-logo-black.svg" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <h1>Aktivera ditt konto</h1>

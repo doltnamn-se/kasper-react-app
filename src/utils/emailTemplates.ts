@@ -1,37 +1,38 @@
 export const getPasswordResetTemplate = (resetLink: string) => `
 <!DOCTYPE html>
-<html>
+<html style="margin: 0; padding: 0; min-height: 100%; background-color: #f4f4f4;">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reset Your Password</title>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background-color: #f4f4f4 !important;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background-color: #f6f6f4;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .container {
       max-width: 600px;
       margin: 0 auto;
-      padding: 20px;
-    }
-    .email-wrapper {
-      background-color: #ffffff;
-      border-radius: 8px;
-      padding: 40px;
-      margin: 20px 0;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 40px 20px;
     }
     .logo {
       text-align: center;
       margin-bottom: 30px;
+      width: 100%;
     }
     .logo img {
       max-width: 150px;
       height: auto;
+      margin: 0 auto;
+      display: block;
     }
     h1 {
       color: #161618;
@@ -65,18 +66,15 @@ export const getPasswordResetTemplate = (resetLink: string) => `
       .container {
         padding: 10px;
       }
-      .email-wrapper {
-        padding: 20px;
-      }
     }
   </style>
 </head>
-<body>
+<body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
+    <div class="logo">
+      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-app-logo-black.svg" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+    </div>
     <div class="email-wrapper">
-      <div class="logo">
-        <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-      </div>
       <h1>Reset Your Password</h1>
       <p>Hello,</p>
       <p>We received a request to reset your password for your Doltnamn account. Click the button below to reset it:</p>
