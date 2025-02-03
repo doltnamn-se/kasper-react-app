@@ -1,10 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "next-themes";
-import { Toaster } from "@/components/ui/toaster";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { SidebarProvider } from "@/contexts/SidebarContext";
 import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
+import { SidebarProvider } from "@/contexts/SidebarContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
 
 import Auth from "@/pages/Auth";
@@ -12,22 +10,18 @@ import ResetPassword from "@/pages/ResetPassword";
 import Index from "@/pages/Index";
 import Checklist from "@/pages/Checklist";
 import Monitoring from "@/pages/Monitoring";
-import Deindexing from "@/pages/Deindexing";
-import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
 import Settings from "@/pages/Settings";
-import PasswordTest from "@/pages/PasswordTest";
+import Deindexing from "@/pages/Deindexing";
+import AddressAlerts from "@/pages/AddressAlerts";
 
-// Admin routes
+// Admin pages
 import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminCustomers from "@/pages/admin/AdminCustomers";
-import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
-
-const queryClient = new QueryClient();
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 function App() {
   useEffect(() => {
@@ -36,9 +30,9 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <LanguageProvider>
+    <LanguageProvider>
+      <div className="min-h-screen">
+        <div className="flex min-h-screen">
           <SidebarProvider>
             <Router>
               <Routes>
@@ -48,27 +42,26 @@ function App() {
                 
                 {/* Admin routes */}
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
-                  <Route index element={<AdminDashboard />} />
+                  <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="customers" element={<AdminCustomers />} />
-                  <Route path="deindexing" element={<AdminDeindexingView />} />
                 </Route>
 
-                {/* Customer routes */}
-                <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
-                <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
-                <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
-                <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
-                <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
-                <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
-                <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
-                <Route path="/password-test" element={<PasswordTest />} />
+                {/* Protected routes */}
+                <Route element={<ProtectedRoute><Index /></ProtectedRoute>}>
+                  <Route path="/checklist" element={<Checklist />} />
+                  <Route path="/monitoring" element={<Monitoring />} />
+                  <Route path="/guides" element={<Guides />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/deindexing" element={<Deindexing />} />
+                  <Route path="/address-alerts" element={<AddressAlerts />} />
+                </Route>
               </Routes>
-              <Toaster />
             </Router>
           </SidebarProvider>
-        </LanguageProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+        </div>
+        <Toaster />
+      </div>
+    </LanguageProvider>
   );
 }
 

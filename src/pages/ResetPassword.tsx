@@ -7,7 +7,6 @@ import { AuthFooter } from "@/components/auth/AuthFooter";
 import { PasswordUpdateForm } from "@/components/checklist/PasswordUpdateForm";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -89,6 +88,8 @@ const ResetPassword = () => {
                 onComplete={handleComplete}
                 showSuccessToast={true}
                 showSuccessAnimation={true}
+                buttonText={t('update.password')}
+                className="w-full"
               />
             )}
           </div>
