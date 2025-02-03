@@ -2,7 +2,7 @@ import { AuthTranslations } from '../types/auth';
 
 export const auth: AuthTranslations = {
   'welcome.back': 'Välkommen tillbaka',
-  'sign.in': 'Logga in på ditt konto',
+  'sign.in': 'Logga in',
   'signing.in': 'Loggar in...',
   'no.account': 'Har du inget konto?',
   'register': 'Kom igång',
