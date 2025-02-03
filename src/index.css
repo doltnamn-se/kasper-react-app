@@ -136,7 +136,8 @@ input:-webkit-autofill {
   overflow: hidden;
 }
 
-.auth-page::before {
+.auth-page::before,
+.checklist-page::before {
   content: '';
   position: absolute;
   top: 0;
@@ -148,8 +149,14 @@ input:-webkit-autofill {
   z-index: -1;
 }
 
-.dark .auth-page::before {
+.dark .auth-page::before,
+.dark .checklist-page::before {
   background: radial-gradient(circle at 0% 0%, #161618 0%, #1a1a1c 25%, #1d1d1f 50%, #1a1a1c 75%, #161618 100%);
+}
+
+.checklist-page {
+  position: relative;
+  overflow: hidden;
 }
 
 @keyframes meshGradient {

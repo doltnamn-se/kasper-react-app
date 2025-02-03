@@ -59,7 +59,7 @@ const ChecklistContent = () => {
   const totalSteps = 4;
 
   return (
-    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12">
+    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12 checklist-page">
       <div className="max-w-[1400px] mx-auto">
         <TooltipProvider>
           <div className="flex justify-between items-center mb-6">
