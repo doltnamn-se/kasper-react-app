@@ -14,6 +14,15 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     hasAddressAlert: false
   });
 
+  const generatePassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let password = '';
+    for (let i = 0; i < 8; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+  };
+
   const resetForm = () => {
     setFormData({
       email: "",
@@ -35,8 +44,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
         throw new Error("No authenticated user found");
       }
 
-      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
-      console.log("Generated password for new user");
+      const generatedPassword = generatePassword();
+      console.log("Generated password for new user:", generatedPassword);
 
       console.log("Creating customer...");
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
