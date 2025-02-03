@@ -102,15 +102,17 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode]);
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <AuthHeader />
-        <AuthForm 
-          errorMessage={errorMessage} 
-          isDarkMode={isDarkMode} 
-          isResetPasswordMode={isResetPasswordMode} 
-        />
-        <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
+    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center">
+      <div className="flex-1 w-full flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-md space-y-8">
+          <AuthHeader />
+          <AuthForm 
+            errorMessage={errorMessage} 
+            isDarkMode={isDarkMode} 
+            isResetPasswordMode={isResetPasswordMode} 
+          />
+          <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
+        </div>
       </div>
       <AuthFooter />
     </div>
