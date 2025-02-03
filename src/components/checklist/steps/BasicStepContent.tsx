@@ -33,7 +33,7 @@ export const BasicStepContent = ({
   };
 
   return (
-    <div className="space-y-4 animate-fade-in">
+    <div className="space-y-4 animate-fade-in w-full">
       <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
         {t('step.number', { number: currentStep })}
       </Badge>
@@ -45,13 +45,14 @@ export const BasicStepContent = ({
           {getStepDescription(currentStep)}
         </p>
       </div>
-      <div className="pt-4">
+      <div className="pt-4 w-full">
         {(() => {
           switch (currentStep) {
             case 1:
               return <PasswordUpdateForm 
                 onComplete={onStepComplete}
-                buttonClassName="w-full xl:w-1/4 lg:w-1/2"
+                className="w-full"
+                buttonClassName="w-full"
               />;
             case 2:
               return <UrlSubmission onComplete={onStepComplete} />;

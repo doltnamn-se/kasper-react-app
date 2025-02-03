@@ -18,7 +18,7 @@ interface PasswordUpdateFormProps {
 
 export const PasswordUpdateForm = ({ 
   onComplete, 
-  className = "lg:w-[75%] xl:w-1/2",
+  className = "w-full",
   buttonClassName = "w-full",
   buttonText,
   showCurrentPassword = false,
@@ -107,10 +107,10 @@ export const PasswordUpdateForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8 w-full">
       <div className={`w-full ${className}`}>
         {showCurrentPassword && (
-          <div className="mb-8">
+          <div className="mb-8 w-full">
             <PasswordInput
               value={currentPassword}
               onChange={setCurrentPassword}
