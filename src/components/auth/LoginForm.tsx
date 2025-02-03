@@ -46,9 +46,6 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         console.log("Sign in successful, session established");
         await supabase.auth.setSession(data.session);
         
-        // Artificial delay to ensure all data is properly loaded
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
         // Check if user is admin
         if (email === 'info@doltnamn.se') {
           console.log("Admin user detected, redirecting to admin dashboard");
@@ -117,6 +114,7 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           type="button"
           onClick={() => setShowPassword(!showPassword)}
           className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] focus:outline-none"
+          disabled={isLoading}
         >
           {showPassword ? (
             <EyeOff className="h-5 w-5" />
