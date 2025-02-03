@@ -95,7 +95,7 @@ const ChecklistContent = () => {
               />
             </div>
 
-            <Card className="relative p-6 rounded-lg border border-white/[0.2] dark:border-white/[0.1] bg-white/70 dark:bg-[#1C1C1D] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)]">
+            <Card className="relative p-6 rounded-lg border dark:border-[#30303233] bg-white/70 dark:bg-[#2323254d] backdrop-blur-xl shadow-[0_4px_20px_0px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_0px_rgba(0,0,0,0.3)]">
               <div className="space-y-8">
                 <div className="checklist-component">
                   <ChecklistContainer />
