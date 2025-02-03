@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Check } from "lucide-react";
 import { PasswordInput } from "./password/PasswordInput";
 import { PasswordRequirements, checkAllRequirements } from "./password/PasswordRequirements";
+import { useChecklistSteps } from "@/hooks/useChecklistSteps";
 
 interface PasswordUpdateFormProps {
   onComplete: () => void;
@@ -31,6 +32,7 @@ export const PasswordUpdateForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { t, language } = useLanguage();
+  const { handleStepChange } = useChecklistSteps();
 
   const resetForm = () => {
     setCurrentPassword("");
@@ -99,6 +101,9 @@ export const PasswordUpdateForm = ({
       console.log("Checklist progress updated successfully");
       resetForm();
       onComplete();
+      
+      // Navigate to the next step after successful password update
+      handleStepChange(2);
     } catch (error) {
       console.error('Error in password update flow:', error);
     } finally {
