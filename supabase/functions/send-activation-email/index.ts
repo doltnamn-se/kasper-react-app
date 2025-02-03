@@ -11,7 +11,6 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 serve(async (req) => {
   console.log("Received request to send-activation-email function");
 
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     console.log("Handling OPTIONS request");
     return new Response(null, { 
@@ -43,24 +42,22 @@ serve(async (req) => {
       body: JSON.stringify({
         from: 'Doltnamn <no-reply@doltnamn.se>',
         to: [email],
-        subject: 'Välkommen till Doltnamn - Dina inloggningsuppgifter',
+        subject: 'Aktivera ditt konto hos Doltnamn',
         html: `
           <!DOCTYPE html>
-          <html style="background-color: #f4f4f4 !important; margin: 0; padding: 0;">
+          <html>
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Välkommen till Doltnamn</title>
+            <title>Aktivera ditt konto</title>
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
             <style>
-              html, body {
-                background-color: #f4f4f4 !important;
-                margin: 0;
-                padding: 0;
-              }
               body {
-                font-family: Helvetica, Arial, sans-serif;
+                font-family: 'Roboto', sans-serif;
                 line-height: 1.6;
                 color: #333333;
+                margin: 0;
+                padding: 0;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
               }
@@ -68,16 +65,7 @@ serve(async (req) => {
                 max-width: 600px;
                 margin: 0 auto;
                 padding: 20px;
-                background-color: #f4f4f4 !important;
-              }
-              .logo-container {
-                text-align: center;
-                margin-bottom: 20px;
-                padding: 20px;
-              }
-              .logo-container img {
-                max-width: 120px;
-                height: auto;
+                background-color: #f4f4f4;
               }
               .email-wrapper {
                 background-color: #ffffff;
@@ -87,21 +75,36 @@ serve(async (req) => {
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
               }
               h1 {
-                color: #161618;
+                color: #333333;
                 font-size: 24px;
                 margin-bottom: 20px;
                 text-align: center;
+                font-weight: 700;
               }
               p {
-                color: #4a4a4a;
+                color: #333333;
                 margin-bottom: 20px;
+                font-size: 16px;
               }
               .credentials {
                 background-color: #f9f9f9;
-                padding: 20px;
+                padding: 30px;
                 border-radius: 4px;
                 margin: 20px 0;
                 border-left: 4px solid #000000;
+                text-align: center;
+              }
+              .password-label {
+                font-size: 14px;
+                color: #333333;
+                margin-bottom: 10px;
+                font-weight: 500;
+              }
+              .password-value {
+                font-size: 24px;
+                color: #333333;
+                font-weight: 700;
+                letter-spacing: 1px;
               }
               .button {
                 display: inline-block;
@@ -111,7 +114,7 @@ serve(async (req) => {
                 text-decoration: none;
                 border-radius: 4px;
                 margin: 20px 0;
-                font-weight: bold;
+                font-weight: 500;
               }
               .button:hover {
                 background-color: #333333;
@@ -124,38 +127,23 @@ serve(async (req) => {
                 padding-top: 20px;
                 border-top: 1px solid #eeeeee;
               }
-              .security-notice {
-                font-size: 14px;
-                color: #666666;
-                padding: 15px;
-                border-radius: 4px;
-                background-color: #fff9e6;
-                border: 1px solid #ffe5b4;
-                margin: 20px 0;
-              }
-              .security-notice:before {
-                content: "⚠️";
-                margin-right: 8px;
-              }
             </style>
           </head>
-          <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0;">
+          <body>
             <div class="container">
-              <div class="logo-container">
-                <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
-              </div>
               <div class="email-wrapper">
-                <h1>Välkommen till Doltnamn, ${displayName}!</h1>
-                <p>Ditt konto har skapats. Här är dina inloggningsuppgifter:</p>
+                <h1>Aktivera ditt konto</h1>
+                <p>
+                  Välkommen till Doltnamn.se, <b>${displayName}</b>!
+                  <br><br>
+                  Ditt konto har skapats och du kan nu logga in för att aktivera ditt konto. Du loggar in med din e-postadress samt det lösenord vi genererat åt dig nedan. Du blir ombedd att välja ditt eget lösenord när du loggar in första gången.
+                </p>
                 <div class="credentials">
-                  <p><strong>E-post:</strong> ${email}</p>
-                  <p><strong>Lösenord:</strong> ${password}</p>
+                  <div class="password-label">Ditt lösenord</div>
+                  <div class="password-value">${password}</div>
                 </div>
                 <div style="text-align: center;">
                   <a href="https://app.doltnamn.se/auth" class="button">Logga in på ditt konto</a>
-                </div>
-                <div class="security-notice">
-                  Av säkerhetsskäl rekommenderar vi att du ändrar ditt lösenord efter din första inloggning.
                 </div>
                 <div class="footer">
                   <p>&copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.</p>
