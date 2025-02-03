@@ -1,7 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { Resend } from "npm:resend@2.0.0";
-import { getActivationEmailTemplate } from "../_shared/activationEmailTemplate.ts";
-import { generatePassword } from "../_shared/passwordGenerator.ts";
+import { getActivationEmailTemplate } from "../_shared/emailTemplates.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

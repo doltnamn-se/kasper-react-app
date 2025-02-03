@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { getPasswordResetTemplate } from "../_shared/emailTemplates.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -49,13 +50,7 @@ serve(async (req) => {
         from: "Doltnamn <no-reply@doltnamn.se>",
         to: [email],
         subject: "Reset Your Doltnamn Password",
-        html: `
-          <p>Hello,</p>
-          <p>A password reset has been requested for your account. Click the link below to reset your password:</p>
-          <p><a href="${data.properties.action_link}">${data.properties.action_link}</a></p>
-          <p>If you didn't make this request, you can safely ignore this email.</p>
-          <p>Best regards,<br>The Doltnamn Team</p>
-        `,
+        html: getPasswordResetTemplate(data.properties.action_link),
       }),
     });
 
