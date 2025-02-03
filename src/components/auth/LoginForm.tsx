@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
@@ -38,12 +38,16 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         } else {
           toast.error(t('error.signin'));
         }
+        setIsLoading(false);
         return;
       }
 
       if (data?.session) {
         console.log("Sign in successful, session established");
         await supabase.auth.setSession(data.session);
+        
+        // Artificial delay to ensure all data is properly loaded
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         // Check if user is admin
         if (email === 'info@doltnamn.se') {
@@ -62,6 +66,7 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         if (customerError) {
           console.error("Error fetching customer data:", customerError);
           toast.error(t('error.generic'));
+          setIsLoading(false);
           return;
         }
 
@@ -79,7 +84,6 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
     } catch (err) {
       console.error("Unexpected error:", err);
       toast.error(t('error.generic'));
-    } finally {
       setIsLoading(false);
     }
   };
@@ -127,13 +131,21 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
           disabled={isLoading}
         >
-          {isLoading ? t('loading') : t('sign.in.button')}
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <Loader2 className="h-5 w-5 animate-spin mr-2" />
+              {t('loading')}
+            </div>
+          ) : (
+            t('sign.in.button')
+          )}
         </Button>
         <Button
           type="button"
           variant="ghost"
           onClick={onForgotPassword}
           className="w-full text-xs text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent font-medium"
+          disabled={isLoading}
         >
           {t('forgot.password')}
         </Button>
