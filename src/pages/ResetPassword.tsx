@@ -68,12 +68,12 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center justify-between p-4">
+    <div className="min-h-screen auth-page flex flex-col items-center justify-between p-4">
       <div className="w-full max-w-md space-y-8 mt-8">
         <AuthHeader />
         
         <div className="flex justify-center w-full">
-          <div className="bg-white dark:bg-[#232325] p-8 border border-gray-200 dark:border-[#303032] w-full max-w-sm fade-in rounded-[7px] font-system-ui">
+          <div className="bg-white/30 dark:bg-[#232325]/30 backdrop-blur-xl backdrop-saturate-150 p-8 border border-white/20 dark:border-[#303032]/20 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
             <h2 className="text-xl font-bold mb-6 text-center dark:text-white font-system-ui font-[700]">
               {t('reset.password')}
             </h2>
