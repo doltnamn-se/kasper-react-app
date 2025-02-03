@@ -102,7 +102,7 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode]);
 
   return (
-    <div className="min-h-screen bg-[#f6f6f4] dark:bg-[#161618] flex flex-col items-center">
+    <div className="min-h-screen auth-page flex flex-col items-center">
       <div className="w-full max-w-md pt-16">
         <AuthHeader />
       </div>

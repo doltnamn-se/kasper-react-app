@@ -52,7 +52,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%;  /* This is equivalent to #f6f6f4 */
+    --background: 0 0% 96%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -110,6 +110,40 @@
   }
 }
 
+/* Auth page specific background */
+.auth-page {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 0% 0%, #f4f4f4 0%, #eaeaea 25%, #f0f0f0 50%, #e8e8e8 75%, #f4f4f4 100%);
+  animation: meshGradient 15s ease infinite;
+  z-index: -1;
+}
+
+.dark .auth-page::before {
+  background: radial-gradient(circle at 0% 0%, #161618 0%, #1a1a1c 25%, #1d1d1f 50%, #1a1a1c 75%, #161618 100%);
+}
+
+@keyframes meshGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
@@ -123,4 +157,15 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+input[type="search"]:focus {
+  outline: none;
 }
