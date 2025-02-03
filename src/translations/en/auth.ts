@@ -21,5 +21,6 @@ export const auth: AuthTranslations = {
   'updating.password': 'Updating password...',
   'reset.password': 'Reset password',
   'reset.password.success': 'Reset link has been sent',
-  'password.updated': 'Password has been updated'
+  'password.updated': 'Password has been updated',
+  'reset.link.sent': 'Password reset link has been sent to your email'
 };
