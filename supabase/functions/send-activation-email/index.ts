@@ -60,12 +60,20 @@ serve(async (req) => {
                 padding: 0;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
+                background-color: #f4f4f4;
               }
               .container {
                 max-width: 600px;
                 margin: 0 auto;
-                padding: 20px;
-                background-color: #f4f4f4;
+                padding: 40px 20px;
+              }
+              .logo {
+                text-align: center;
+                margin-bottom: 30px;
+              }
+              .logo img {
+                max-width: 150px;
+                height: auto;
               }
               .email-wrapper {
                 background-color: #ffffff;
@@ -77,7 +85,7 @@ serve(async (req) => {
               h1 {
                 color: #333333;
                 font-size: 24px;
-                margin-bottom: 20px;
+                margin-bottom: 32px;
                 text-align: center;
                 font-weight: 700;
               }
@@ -87,11 +95,10 @@ serve(async (req) => {
                 font-size: 16px;
               }
               .credentials {
-                background-color: #f9f9f9;
+                background-color: #eeeeee;
                 padding: 30px;
                 border-radius: 4px;
                 margin: 20px 0;
-                border-left: 4px solid #000000;
                 text-align: center;
               }
               .password-label {
@@ -131,6 +138,9 @@ serve(async (req) => {
           </head>
           <body>
             <div class="container">
+              <div class="logo">
+                <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-app-logo-black.svg" alt="Doltnamn Logo">
+              </div>
               <div class="email-wrapper">
                 <h1>Aktivera ditt konto</h1>
                 <p>
