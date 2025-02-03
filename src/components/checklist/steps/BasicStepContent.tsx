@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PasswordUpdateForm } from "../PasswordUpdateForm";
 import { UrlSubmission } from "../UrlSubmission";
@@ -34,9 +33,6 @@ export const BasicStepContent = ({
 
   return (
     <div className="space-y-4 animate-fade-in w-full">
-      <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
-        {t('step.number', { number: currentStep })}
-      </Badge>
       <div className="flex flex-col gap-2">
         <h3 className="text-lg font-semibold">
           {getStepTitle(currentStep)}
