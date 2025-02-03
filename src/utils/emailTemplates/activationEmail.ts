@@ -49,13 +49,6 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       margin: 0;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-      color: #333333;
-      font-size: 24px;
-      margin-bottom: 40px;
-      text-align: center;
-      font-weight: 700;
-    }
     p {
       color: #333333;
       margin-bottom: 20px;
@@ -105,7 +98,6 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
-      <h1>Aktivera ditt konto</h1>
       <p>
         Välkommen ${firstName} 👋
         <br><br>
