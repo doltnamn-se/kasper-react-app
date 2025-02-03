@@ -1,6 +1,6 @@
 export const getActivationEmailTemplate = (displayName: string, password: string) => `
 <!DOCTYPE html>
-<html style="margin: 0; padding: 0; min-height: 100%; background-color: #f4f4f4;">
+<html style="margin: 0; padding: 0; min-height: 100%; background-color: #f4f4f4 !important;">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,11 +24,13 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       max-width: 600px;
       margin: 0 auto;
       padding: 40px 20px;
+      background-color: #f4f4f4 !important;
     }
     .logo {
       text-align: center;
       margin-bottom: 30px;
       width: 100%;
+      background-color: #f4f4f4 !important;
     }
     .logo img {
       max-width: 150px;
@@ -100,7 +102,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-app-logo-black.svg" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <h1>Aktivera ditt konto</h1>

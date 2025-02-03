@@ -41,9 +41,9 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Doltnamn <no-reply@doltnamn.se>',
+        from: 'Doltnamn.se <no-reply@doltnamn.se>',
         to: [email],
-        subject: 'Aktivera ditt konto hos Doltnamn',
+        subject: 'Aktivera ditt konto',
         html: getActivationEmailTemplate(displayName, password),
       }),
     });
