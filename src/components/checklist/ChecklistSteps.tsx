@@ -46,13 +46,13 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
   });
 
   return (
-    <div className="relative grid grid-cols-4 gap-1">
+    <div className="relative grid grid-cols-4 gap-2">
       {steps.map((item) => (
         <div 
           key={item.step} 
-          className="flex flex-col items-center p-2 relative z-10"
+          className="flex flex-col items-center p-3 relative z-10"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {item.completed ? (
               <div className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full bg-[#219653] flex items-center justify-center">
                 <Check className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
