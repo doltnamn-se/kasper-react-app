@@ -123,13 +123,29 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 0% 0%, #f4f4f4 0%, #eaeaea 25%, #f0f0f0 50%, #e8e8e8 75%, #f4f4f4 100%);
-  animation: meshGradient 15s ease infinite;
+  background: radial-gradient(
+    circle at 0% 0%,
+    #ffffff 0%,
+    #f4f4f4 20%,
+    #eaeaea 40%,
+    #f0f0f0 60%,
+    #e8e8e8 80%,
+    #f4f4f4 100%
+  );
+  animation: meshGradient 8s ease-in-out infinite alternate;
   z-index: -1;
 }
 
 .dark .auth-page::before {
-  background: radial-gradient(circle at 0% 0%, #161618 0%, #1a1a1c 25%, #1d1d1f 50%, #1a1a1c 75%, #161618 100%);
+  background: radial-gradient(
+    circle at 0% 0%,
+    #1d1d1f 0%,
+    #161618 20%,
+    #141415 40%,
+    #1a1a1c 60%,
+    #161618 80%,
+    #1d1d1f 100%
+  );
 }
 
 @keyframes meshGradient {
