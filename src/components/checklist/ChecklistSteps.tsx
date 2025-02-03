@@ -58,12 +58,30 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
                 <Check className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
               </div>
             ) : (
-              <div className="flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
-                <span className="text-xs font-medium">{item.step}</span>
+              <div className={`flex-shrink-0 w-6 h-6 xl:w-8 xl:h-8 rounded-full flex items-center justify-center ${
+                item.step === checklistProgress?.checklist_step 
+                  ? 'bg-[#000000] dark:bg-white' 
+                  : 'bg-[#e0e0e0] dark:bg-[#3A3A3B]'
+              }`}>
+                <span className={`text-xs font-medium ${
+                  item.step === checklistProgress?.checklist_step 
+                    ? 'text-white dark:text-[#000000]' 
+                    : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+                }`}>
+                  {item.step}
+                </span>
               </div>
             )}
-            <div className={`${item.completed ? 'opacity-40' : ''}`}>
-              <p className="text-xs xl:text-sm font-medium">{item.title}</p>
+            <div>
+              <p className={`text-xs xl:text-sm font-medium ${
+                item.completed 
+                  ? 'text-[#000000A6] dark:text-[#FFFFFFA6]' 
+                  : item.step === checklistProgress?.checklist_step
+                    ? 'text-[#000000] dark:text-white'
+                    : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+              }`}>
+                {item.title}
+              </p>
             </div>
           </div>
         </div>
