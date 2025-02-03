@@ -56,50 +56,54 @@ const ChecklistContent = () => {
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12">
-      <div className="flex flex-wrap items-center gap-8 mb-6">
-        <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
-          {t('nav.checklist')}
-        </h1>
-        <ChecklistProgress progress={progress} />
-        {!isMobile && progress !== 100 && (
-          <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('step.progress', { 
-              current: Math.ceil(progress / 25),
-              total: totalSteps
-            })}
-          </span>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card className="relative p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
-            <div className="space-y-8">
-              <div className="checklist-component">
-                <ChecklistContainer />
-              </div>
-            </div>
-            {progress === 100 && (
-              <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-[4px] flex items-center justify-center">
-                <div className="flex items-center gap-2">
-                  <BadgeCheck className="w-6 h-6" />
-                  <p className="text-lg font-black">
-                    {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
-                  </p>
-                </div>
-              </div>
+      <div className="max-w-[1400px] mx-auto">
+        <div className="flex flex-col items-center mb-6">
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
+              {t('nav.checklist')}
+            </h1>
+            <ChecklistProgress progress={progress} />
+            {!isMobile && progress !== 100 && (
+              <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+                {t('step.progress', { 
+                  current: Math.ceil(progress / 25),
+                  total: totalSteps
+                })}
+              </span>
             )}
-          </Card>
+          </div>
         </div>
 
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
-            <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
-            <ChecklistSteps 
-              checklistProgress={checklistProgress}
-              onStepClick={handleStepClick}
-            />
-          </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card className="relative p-6 rounded-[4px] mb-6 dark:bg-[#1c1c1e] dark:border-[#232325]">
+              <div className="space-y-8">
+                <div className="checklist-component">
+                  <ChecklistContainer />
+                </div>
+              </div>
+              {progress === 100 && (
+                <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-[4px] flex items-center justify-center">
+                  <div className="flex items-center gap-2">
+                    <BadgeCheck className="w-6 h-6" />
+                    <p className="text-lg font-black">
+                      {language === 'sv' ? 'Du är färdig med checklistan' : 'You have completed the checklist'}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </Card>
+          </div>
+
+          <div className="lg:col-span-1 space-y-6">
+            <Card className="p-6 rounded-[4px] dark:bg-[#1c1c1e] dark:border-[#232325]">
+              <h2 className="text-lg font-semibold mb-4">{t('getting.started')}</h2>
+              <ChecklistSteps 
+                checklistProgress={checklistProgress}
+                onStepClick={handleStepClick}
+              />
+            </Card>
+          </div>
         </div>
       </div>
     </div>
