@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
-interface AuthLogoProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface AuthLogoProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+  centered?: boolean;
+}
 
-export const AuthLogo: React.FC<AuthLogoProps> = ({ className, ...props }) => {
+export const AuthLogo: React.FC<AuthLogoProps> = ({ className, centered = false, ...props }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -31,7 +34,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({ className, ...props }) => {
   }, []);
 
   return (
-    <div className="relative h-6 w-28" {...props}>
+    <div className={`relative h-6 w-28 ${centered ? 'mx-auto' : ''}`} {...props}>
       <img 
         src="/lovable-uploads/doltnamn.se-app-logo-black.svg"
         alt="Logo" 

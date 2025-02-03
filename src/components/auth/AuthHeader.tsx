@@ -6,7 +6,7 @@ export const AuthHeader = () => {
 
   return (
     <div className="text-center space-y-6">
-      <AuthLogo />
+      <AuthLogo centered />
       <div className="space-y-2">
         <h1 className="text-2xl font-bold text-black dark:text-white">
           {t('welcome.back')}
