@@ -1,8 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Separator } from "@/components/ui/separator";
 import { StepProgress } from "./StepProgress";
 import { StepContent } from "./StepContent";
-import { StepNavigation } from "./StepNavigation";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useChecklistItems } from "@/hooks/useChecklistItems";
 import { useChecklistSteps } from "@/hooks/useChecklistSteps";
@@ -47,14 +45,6 @@ export const ChecklistContainer = () => {
             );
           })}
         </div>
-        <div className="py-8">
-          <Separator className="bg-[#e0e0e0] dark:bg-[#3a3a3b]" />
-        </div>
-        <StepNavigation
-          currentStep={currentStep}
-          totalSteps={totalStepsCount}
-          onStepChange={handleStepChange}
-        />
       </div>
     </div>
   );
