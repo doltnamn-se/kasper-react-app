@@ -45,8 +45,9 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         
         if (error) {
           console.error("AuthRoute: Session error:", error);
+          // Clear any invalid session data
           if (error.message.includes('refresh_token_not_found')) {
-            console.log("AuthRoute: Invalid refresh token, signing out");
+            console.log("AuthRoute: Invalid refresh token, clearing session");
             await supabase.auth.signOut();
           }
           setSession(false);
@@ -55,7 +56,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         }
         
         if (currentSession) {
-          console.log("AuthRoute: Active session found, redirecting to home");
+          console.log("AuthRoute: Active session found");
           setSession(true);
         } else {
           console.log("AuthRoute: No session found, allowing auth page access");
@@ -63,6 +64,8 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
         }
       } catch (error) {
         console.error("AuthRoute: Error checking auth:", error);
+        // Clear any invalid session state
+        await supabase.auth.signOut();
         setSession(false);
       } finally {
         setIsLoading(false);
@@ -89,9 +92,13 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           setSession(true);
         }
         setIsLoading(false);
-      } else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-        console.log("AuthRoute: User signed out or token refreshed");
+      } else if (event === 'SIGNED_OUT') {
+        console.log("AuthRoute: User signed out");
         setSession(false);
+        setIsLoading(false);
+      } else if (event === 'TOKEN_REFRESHED') {
+        console.log("AuthRoute: Token refreshed");
+        setSession(!!session);
         setIsLoading(false);
       }
     });
