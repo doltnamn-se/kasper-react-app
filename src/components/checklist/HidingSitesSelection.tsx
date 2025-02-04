@@ -127,7 +127,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
       <Button
         type="submit"
         disabled={isLoading || (!noneSelected && selectedSites.length === 0)}
-        className="w-full py-3"
+        className="w-full"
       >
         {isLoading ? t('saving') : language === 'sv' ? 'Välj' : 'Choose'}
       </Button>
