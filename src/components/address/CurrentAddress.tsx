@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
@@ -33,9 +34,14 @@ export const CurrentAddress = ({ addressData, onDelete }: CurrentAddressProps) =
         <Trash2 className="h-4 w-4" />
       </Button>
       <div className="space-y-2 mb-4">
-        <p className="text-[#111827] dark:text-white text-base font-bold">
-          {addressData.street_address}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-[#111827] dark:text-white text-base font-bold">
+            {addressData.street_address}
+          </p>
+          <Badge variant="secondary" className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 border-0">
+            {language === 'sv' ? 'Aktiv' : 'Active'}
+          </Badge>
+        </div>
         <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
           {addressData.postal_code} {addressData.city}
         </p>
