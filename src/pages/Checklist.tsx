@@ -65,7 +65,6 @@ const ChecklistContent = () => {
           <div className="flex justify-between items-center mb-6">
             <AuthLogo />
             <div className="flex items-center gap-2">
-              <LanguageSwitch />
               <ThemeToggle />
             </div>
           </div>
@@ -114,6 +113,11 @@ const ChecklistContent = () => {
                 )}
               </Card>
             </div>
+          </div>
+
+          {/* Footer with Language Selector */}
+          <div className="fixed bottom-6 left-6">
+            <LanguageSwitch />
           </div>
         </TooltipProvider>
       </div>
