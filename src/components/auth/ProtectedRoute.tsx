@@ -40,15 +40,11 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
     return <Navigate to="/" replace />;
   }
 
-  // Only redirect to checklist if:
+  // Redirect to checklist if:
   // 1. User is on home page
   // 2. Checklist is not completed
   // 3. User is not an admin
-  // 4. Not currently on the checklist page (prevents redirect loop)
-  if (window.location.pathname === '/' && 
-      !isChecklistCompleted && 
-      !isAdmin && 
-      window.location.pathname !== '/checklist') {
+  if (window.location.pathname === '/' && !isChecklistCompleted && !isAdmin) {
     console.log("Redirecting to checklist - not completed yet");
     return <Navigate to="/checklist" replace />;
   }
