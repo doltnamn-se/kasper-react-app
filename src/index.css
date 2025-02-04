@@ -130,6 +130,20 @@ input:-webkit-autofill {
   -webkit-text-fill-color: black !important;
 }
 
+/* Input text colors */
+input {
+  color: #000000 !important;
+}
+
+.dark input {
+  color: #FFFFFF !important;
+}
+
+/* Keep existing placeholder styles */
+input::placeholder {
+  @apply text-[#000000A6] dark:text-[#FFFFFFA6];
+}
+
 /* Auth page specific background */
 .auth-page {
   position: relative;
