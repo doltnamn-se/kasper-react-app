@@ -64,14 +64,14 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
           onClick={() => handleUpgrade('https://buy.stripe.com/4gw2976Ww5yh92wcMW')}
           className="w-full"
         >
-          {language === 'sv' ? 'Byt till 6 månader (2 länkar)' : 'Change to 6 months (2 links)'}
+          {language === 'sv' ? 'Uppgradera prenumeration' : 'Upgrade subscription'}
         </Button>
         <Button
           variant="default"
           onClick={() => handleUpgrade('https://buy.stripe.com/bIYfZXft26Cl92w3cn')}
           className="w-full"
         >
-          {language === 'sv' ? 'Byt till 12 månader (4 länkar)' : 'Change to 12 months (4 links)'}
+          {language === 'sv' ? 'Uppgradera prenumeration' : 'Upgrade subscription'}
         </Button>
         <Button
           variant="outline"
