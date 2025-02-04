@@ -52,6 +52,19 @@ export const useStepCompletion = () => {
     });
   };
 
+  const isChecklistCompleted = (progress: any) => {
+    if (!progress) return false;
+    
+    // Check all required steps are completed
+    const isPasswordUpdated = progress.password_updated;
+    const hasSitesSelected = Array.isArray(progress.selected_sites) && progress.selected_sites.length > 0;
+    const hasUrlsSubmitted = Array.isArray(progress.removal_urls) && 
+      (progress.removal_urls.length > 0 || progress.removal_urls.includes('skipped'));
+    const hasAddressInfo = progress.street_address && progress.postal_code && progress.city;
+
+    return isPasswordUpdated && hasSitesSelected && hasUrlsSubmitted && hasAddressInfo;
+  };
+
   useEffect(() => {
     const checkCompletion = async () => {
       try {
@@ -60,7 +73,7 @@ export const useStepCompletion = () => {
 
         const { data: progress, error } = await supabase
           .from('customer_checklist_progress')
-          .select('completed_at')
+          .select('*')
           .eq('customer_id', session.user.id)
           .maybeSingle();
 
@@ -71,7 +84,7 @@ export const useStepCompletion = () => {
 
         console.log('Checking checklist completion:', progress);
 
-        if (progress?.completed_at && !hasLaunchedConfetti.current) {
+        if (isChecklistCompleted(progress) && !hasLaunchedConfetti.current) {
           console.log('Checklist completed! Triggering celebration');
           launchConfetti();
           
@@ -91,13 +104,12 @@ export const useStepCompletion = () => {
 
   const handleStepComplete = async () => {
     console.log('Step completed, checking overall completion');
-    // This function now just triggers a re-check of completion status
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user?.id) return;
 
     const { data: progress, error } = await supabase
       .from('customer_checklist_progress')
-      .select('completed_at')
+      .select('*')
       .eq('customer_id', session.user.id)
       .maybeSingle();
 
@@ -107,6 +119,10 @@ export const useStepCompletion = () => {
     }
 
     console.log('Current progress:', progress);
+    
+    if (isChecklistCompleted(progress) && !hasLaunchedConfetti.current) {
+      launchConfetti();
+    }
   };
 
   return { handleStepComplete };
