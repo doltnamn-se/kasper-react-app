@@ -1,3 +1,4 @@
+
 export interface FeaturesTranslations {
   'checklist': string;
   'getting.started': string;
@@ -88,3 +89,4 @@ export interface FeaturesTranslations {
   'deindexing.status.notification.title': string;
   'deindexing.status.notification.message': string;
 }
+

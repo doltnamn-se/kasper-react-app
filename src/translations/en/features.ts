@@ -37,7 +37,7 @@ const features: FeaturesTranslations = {
   'deindexing.no.incoming.links': 'Add links to see them here',
   'deindexing.used.title': 'Used URLs',
   'deindexing.used.counter': '{count} of {total} URLs used',
-  'deindexing.need.more': 'Need more URLs?',
+  'deindexing.need.more': 'Need more links?',
   'guide.completed': 'Guide completed successfully',
   'guide.completion.error': 'Error completing guide',
   'set.password.description': 'Set a secure password for your account',
@@ -93,3 +93,4 @@ const features: FeaturesTranslations = {
 };
 
 export default features;
+

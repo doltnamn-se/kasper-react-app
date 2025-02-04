@@ -37,7 +37,7 @@ const features: FeaturesTranslations = {
   'deindexing.no.incoming.links': 'Lägg till länkar för att se de här',
   'deindexing.used.title': 'Använda URL:er',
   'deindexing.used.counter': '{count} av {total} URL:er använda',
-  'deindexing.need.more': 'Behöver du fler URL:er?',
+  'deindexing.need.more': 'Behöver du fler länkar?',
   'guide.completed': 'Guide slutförd',
   'guide.completion.error': 'Fel vid slutförande av guide',
   'set.password.description': 'Ange ett säkert lösenord för ditt konto',
@@ -93,3 +93,4 @@ const features: FeaturesTranslations = {
 };
 
 export default features;
+
