@@ -3,7 +3,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { launchConfetti } from "@/utils/confetti";
 
 interface AddressFormData {
   streetAddress: string;
@@ -60,20 +59,17 @@ export const useAddressSubmit = (onSuccess?: () => Promise<void>) => {
           'Your address has been saved and will be monitored'
       });
 
-      // Launch confetti immediately after successful save
-      launchConfetti();
-
       // Call onSuccess callback if provided
       if (onSuccess) {
         console.log('Calling onSuccess callback after saving address');
         await onSuccess();
       }
 
-      // Navigate to home page after a short delay to allow confetti to be visible
+      // Navigate to home page after a short delay
       setTimeout(() => {
         console.log('Navigating to home page after address save');
         navigate('/');
-      }, 2000);
+      }, 1000);
 
     } catch (error) {
       console.error('Error saving address:', error);
