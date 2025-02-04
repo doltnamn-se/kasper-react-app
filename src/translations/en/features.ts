@@ -30,7 +30,7 @@ const features: FeaturesTranslations = {
   'saving': 'Saving...',
   'url.limit.message': 'You can submit up to {limit} URLs',
   'url.remaining.message': 'You have {count} URLs remaining',
-  'url.no.plan': 'De-indexing links are not included in our monthly subscription. Our 6-month subscription includes 2 links, and our 12-month subscription includes 4 links.',
+  'url.no.plan': 'Deindexing links are not included in our monthly subscription',
   'deindexing.incoming.links': 'Incoming Links',
   'deindexing.deindexed.links': 'Deindexed Links',
   'deindexing.no.incoming.links': 'No incoming links',
