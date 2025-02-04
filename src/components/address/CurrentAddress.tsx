@@ -38,7 +38,10 @@ export const CurrentAddress = ({ addressData, onDelete }: CurrentAddressProps) =
           <p className="text-[#111827] dark:text-white text-base font-bold">
             {addressData.street_address}
           </p>
-          <Badge variant="secondary" className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 border-0">
+          <Badge 
+            variant="secondary" 
+            className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239]"
+          >
             {language === 'sv' ? 'Aktiv' : 'Active'}
           </Badge>
         </div>
