@@ -11,7 +11,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     displayName: "",
     subscriptionPlan: "1_month",
     customerType: "private",
-    hasAddressAlert: false
+    hasAddressAlert: true  // Changed default from false to true
   });
 
   const generatePassword = () => {
@@ -29,7 +29,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       displayName: "",
       subscriptionPlan: "1_month",
       customerType: "private",
-      hasAddressAlert: false
+      hasAddressAlert: true  // Changed default from false to true
     });
   };
 
