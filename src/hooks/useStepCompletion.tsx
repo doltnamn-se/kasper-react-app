@@ -3,11 +3,13 @@ import { useChecklistProgress } from "./useChecklistProgress";
 import { useChecklistSteps } from "./useChecklistSteps";
 import { supabase } from "@/integrations/supabase/client";
 import confetti from 'canvas-confetti';
+import { useNavigate } from "react-router-dom";
 
 export const useStepCompletion = () => {
   const { toast } = useToast();
   const { checklistProgress, refetchProgress } = useChecklistProgress();
   const { currentStep, handleStepChange } = useChecklistSteps();
+  const navigate = useNavigate();
 
   const handleStepComplete = async () => {
     console.log('Step completed, current step:', currentStep);
@@ -66,17 +68,55 @@ export const useStepCompletion = () => {
           return;
         }
 
-        // Show completion celebration
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
+        // Show completion celebration with more particles and multiple bursts
+        const count = 200;
+        const defaults = {
+          origin: { y: 0.7 }
+        };
+
+        function fire(particleRatio: number, opts: any) {
+          confetti({
+            ...defaults,
+            ...opts,
+            particleCount: Math.floor(count * particleRatio),
+            spread: 60,
+            startVelocity: 30,
+          });
+        }
+
+        // Launch multiple bursts of confetti
+        fire(0.25, {
+          spread: 26,
+          startVelocity: 55,
+        });
+        fire(0.2, {
+          spread: 60,
+        });
+        fire(0.35, {
+          spread: 100,
+          decay: 0.91,
+          scalar: 0.8
+        });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 25,
+          decay: 0.92,
+          scalar: 1.2
+        });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 45,
         });
 
         toast({
           title: "Congratulations! 🎉",
           description: "You've completed all the checklist steps!",
         });
+
+        // Navigate to home page after a short delay to allow confetti to be visible
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
       }
     }
 
