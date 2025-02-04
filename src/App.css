@@ -33,6 +33,19 @@
   }
 }
 
+.step-content-wrapper {
+  position: relative;
+  min-height: 400px; /* Adjust this value based on your content */
+  width: 100%;
+}
+
+.step-content-wrapper > div {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
 .card {
   padding: 2em;
 }
