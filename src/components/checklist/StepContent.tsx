@@ -1,45 +1,76 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { BasicStepContent } from "./steps/BasicStepContent";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { StepGuide } from "./StepGuide";
+import { PasswordUpdateForm } from "./PasswordUpdateForm";
+import { HidingSitesSelection } from "./HidingSitesSelection";
+import { UrlSubmission } from "./UrlSubmission";
+import { PersonalInfoForm } from "./PersonalInfoForm";
 
 interface StepContentProps {
   currentStep: number;
-  onStepComplete: () => Promise<void>;
+  onStepComplete: (step: number) => void;
   checklistItems: any[];
 }
 
-export const StepContent = ({
-  currentStep,
-  onStepComplete,
-  checklistItems
-}: StepContentProps) => {
-  const { data: customerData } = useQuery({
-    queryKey: ['customer-data'],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('No user session');
+export const StepContent = ({ currentStep, onStepComplete, checklistItems }: StepContentProps) => {
+  const { t, language } = useLanguage();
 
-      const { data, error } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
+  const getStepTitle = (step: number) => {
+    switch (step) {
+      case 1:
+        return t('step.password.title');
+      case 2:
+        return language === 'sv' ? 'Avindexering' : 'Deindexing';
+      case 3:
+        return t('step.sites.title');
+      case 4:
+        return t('step.personal.title');
+      default:
+        return '';
     }
-  });
+  };
 
-  console.log('StepContent - Current step:', currentStep);
-
-  const currentItem = checklistItems?.[currentStep - 1];
-  if (!currentItem) return null;
+  const getStepDescription = (step: number) => {
+    switch (step) {
+      case 1:
+        return t('step.password.description');
+      case 2:
+        return t('step.deindexing.description');
+      case 3:
+        return t('step.sites.description');
+      case 4:
+        return t('step.personal.description');
+      default:
+        return '';
+    }
+  };
 
   return (
-    <BasicStepContent
-      currentStep={currentStep}
-      onStepComplete={onStepComplete}
-      customerData={customerData}
-    />
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-[#000000] dark:text-[#FFFFFF] mb-2">
+          {getStepTitle(currentStep)}
+        </h2>
+        <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {getStepDescription(currentStep)}
+        </p>
+      </div>
+
+      {currentStep === 1 && (
+        <PasswordUpdateForm onComplete={() => onStepComplete(currentStep)} />
+      )}
+      {currentStep === 2 && (
+        <UrlSubmission onComplete={() => onStepComplete(currentStep)} />
+      )}
+      {currentStep === 3 && (
+        <HidingSitesSelection onComplete={() => onStepComplete(currentStep)} />
+      )}
+      {currentStep === 4 && (
+        <PersonalInfoForm onComplete={() => onStepComplete(currentStep)} />
+      )}
+
+      {checklistItems.length > 0 && (
+        <StepGuide items={checklistItems} currentStep={currentStep} />
+      )}
+    </div>
   );
 };
