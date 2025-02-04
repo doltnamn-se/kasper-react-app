@@ -20,7 +20,7 @@ export const useChecklistStatus = (userId: string | undefined) => {
       try {
         console.log('Fetching checklist status for user:', userId);
         
-        // First check if customer has checklist_completed flag set
+        // First check customer table for completion status
         const { data: customerData, error: customerError } = await supabase
           .from('customers')
           .select('checklist_completed')
@@ -29,15 +29,10 @@ export const useChecklistStatus = (userId: string | undefined) => {
 
         if (customerError) {
           console.error("Error fetching customer data:", customerError);
-          toast({
-            title: "Error",
-            description: "Could not fetch checklist status. Please try again.",
-            variant: "destructive",
-          });
           return;
         }
 
-        // If checklist is already marked as completed, use that
+        // If checklist is marked as completed in customers table, use that
         if (customerData?.checklist_completed) {
           if (mounted) {
             console.log('Checklist marked as completed in customers table');
@@ -47,7 +42,7 @@ export const useChecklistStatus = (userId: string | undefined) => {
           return;
         }
 
-        // Otherwise check the actual completion status
+        // Check progress table for actual completion status
         const { data: checklistProgress, error: progressError } = await supabase
           .from('customer_checklist_progress')
           .select('*')
@@ -56,16 +51,13 @@ export const useChecklistStatus = (userId: string | undefined) => {
 
         if (progressError) {
           console.error("Error fetching checklist progress:", progressError);
-          toast({
-            title: "Error",
-            description: "Could not fetch checklist progress. Please try again.",
-            variant: "destructive",
-          });
           return;
         }
 
+        // Check if all required steps are completed
         const isCompleted = Boolean(
           checklistProgress?.password_updated && 
+          checklistProgress?.completed_at &&
           Array.isArray(checklistProgress?.selected_sites) && 
           checklistProgress?.selected_sites.length > 0 &&
           Array.isArray(checklistProgress?.removal_urls) && 
@@ -76,41 +68,30 @@ export const useChecklistStatus = (userId: string | undefined) => {
           checklistProgress?.city
         );
 
-        console.log('Checklist completion check:', {
-          isCompleted,
-          checklistProgress
-        });
-
-        // Update the checklist_completed flag if needed
-        if (isCompleted && !customerData?.checklist_completed) {
-          console.log('Updating checklist_completed flag to true');
-          const { error: updateError } = await supabase
-            .from('customers')
-            .update({ checklist_completed: true })
-            .eq('id', userId);
-
-          if (updateError) {
-            console.error("Error updating checklist completion:", updateError);
-            toast({
-              title: "Warning",
-              description: "Could not update checklist status.",
-              variant: "destructive",
-            });
-          }
-        }
+        console.log('Checklist completion check:', { isCompleted, checklistProgress });
 
         if (mounted) {
           setIsChecklistCompleted(isCompleted);
           setIsLoading(false);
         }
+
+        // Update customer record if completed
+        if (isCompleted && !customerData?.checklist_completed) {
+          const { error: updateError } = await supabase
+            .from('customers')
+            .update({ 
+              checklist_completed: true,
+              checklist_step: 4
+            })
+            .eq('id', userId);
+
+          if (updateError) {
+            console.error("Error updating checklist completion:", updateError);
+          }
+        }
       } catch (error) {
         console.error("Error checking checklist status:", error);
         if (mounted) {
-          toast({
-            title: "Error",
-            description: "An unexpected error occurred. Please try again.",
-            variant: "destructive",
-          });
           setIsLoading(false);
         }
       }

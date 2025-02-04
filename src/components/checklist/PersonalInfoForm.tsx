@@ -31,12 +31,9 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
     try {
       setIsSubmitting(true);
       console.log('Submitting personal info form data:', data);
+      
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
-
-      if (!data.streetAddress || !data.postalCode || !data.city) {
-        return;
-      }
 
       const updateData = {
         street_address: data.streetAddress,
@@ -54,7 +51,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       if (progressError) throw progressError;
 
-      // Update customer record to mark checklist as completed
+      // Update customer record
       const { error: customerError } = await supabase
         .from('customers')
         .update({
@@ -73,14 +70,15 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Call onComplete callback
       await onComplete();
 
-      // Invalidate queries
+      // Invalidate and wait for queries to settle
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
-        queryClient.invalidateQueries({ queryKey: ['customer-data'] })
+        queryClient.invalidateQueries({ queryKey: ['customer-data'] }),
+        queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
       ]);
 
-      // Wait for queries to settle
-      await queryClient.invalidateQueries();
+      // Wait for revalidation
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Add fade-out animation
       const checklistContainer = document.querySelector('.checklist-page');
@@ -88,11 +86,11 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         checklistContainer.classList.add('animate-fade-out');
       }
 
-      // Wait for animation and then navigate
+      // Navigate after delay
       setTimeout(() => {
         console.log('Navigating to home page after checklist completion');
-        navigate('/');
-      }, 2000);
+        navigate('/', { replace: true });
+      }, 1500);
 
     } catch (error) {
       console.error('Error saving personal info:', error);

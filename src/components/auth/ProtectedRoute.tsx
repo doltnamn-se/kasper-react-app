@@ -34,16 +34,16 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
     return <Navigate to="/admin" replace />;
   }
 
-  // Prevent access to checklist page if already completed
-  const isOnChecklistPage = window.location.pathname === '/checklist';
-  if (isOnChecklistPage && isChecklistCompleted) {
+  const pathname = window.location.pathname;
+
+  // If on checklist page and checklist is completed, redirect to home
+  if (pathname === '/checklist' && isChecklistCompleted) {
     console.log("Redirecting from checklist - already completed");
     return <Navigate to="/" replace />;
   }
 
-  // Redirect to checklist if on home page and checklist not completed
-  const isOnHomePage = window.location.pathname === '/';
-  if (isOnHomePage && !isChecklistCompleted && !isAdmin) {
+  // If on home page, not admin, and checklist not completed, redirect to checklist
+  if (pathname === '/' && !isAdmin && !isChecklistCompleted) {
     console.log("Redirecting to checklist - not completed yet");
     return <Navigate to="/checklist" replace />;
   }
