@@ -24,10 +24,10 @@ export const ProfileSection = () => {
       if (!userProfile?.id) return null;
       const { data, error } = await supabase
         .from('customers')
-        .select('*')
+        .select('subscription_plan')
         .eq('id', userProfile.id)
         .single();
-
+      
       if (error) {
         console.error('Error fetching customer:', error);
         return null;
@@ -58,8 +58,11 @@ export const ProfileSection = () => {
     <div className="mb-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={userProfile?.avatar_url} />
+          <Avatar className="h-12 w-12">
+            <AvatarImage 
+              src={userProfile?.avatar_url} 
+              className="aspect-square object-cover"
+            />
             <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
               {getUserInitials(userProfile)}
             </AvatarFallback>
