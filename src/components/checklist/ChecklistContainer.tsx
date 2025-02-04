@@ -41,7 +41,7 @@ export const ChecklistContainer = () => {
     <div className="space-y-0 animate-fadeInUp">
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
-        <div className="step-content-wrapper relative">
+        <div className="step-content-wrapper">
           {[...Array(totalStepsCount)].map((_, index) => {
             const stepNumber = index + 1;
             const isCurrentStep = currentStep === stepNumber;
@@ -57,14 +57,13 @@ export const ChecklistContainer = () => {
               <div 
                 key={stepNumber}
                 data-step={stepNumber}
-                className={`absolute w-full transition-all duration-300 ease-in-out
+                className={`transition-all duration-300 ease-in-out
                   ${!isCurrentStep && !isPreviousStep ? 'hidden' : ''}
                   ${isAnimating && isPreviousStep ? 'animate-slideOutLeft' : ''}
                   ${isAnimating && isCurrentStep ? 'animate-slideInRight' : ''}
                   ${!isAnimating && !isCurrentStep ? 'opacity-0' : 'opacity-100'}
                 `}
                 style={{ 
-                  transform: !isAnimating && isCurrentStep ? 'translateX(0)' : undefined,
                   display: (!isCurrentStep && !isPreviousStep) || (!isAnimating && !isCurrentStep) ? 'none' : 'block'
                 }}
               >
