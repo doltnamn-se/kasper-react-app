@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -104,7 +103,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-full">
       <AddressSection register={register} errors={errors} />
       <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {language === 'sv' ? 'Spara' : 'Save'}
+        {language === 'sv' ? 'Lägg till adress' : 'Add address'}
       </Button>
     </form>
   );
