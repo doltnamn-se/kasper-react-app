@@ -34,20 +34,38 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
         }
 
         if (session?.user) {
-          // Fetch customer data to check checklist completion
-          const { data: customerData, error: customerError } = await supabase
-            .from('customers')
-            .select('checklist_completed')
-            .eq('id', session.user.id)
-            .single();
+          // Fetch customer data and checklist progress
+          const [{ data: customerData }, { data: checklistProgress }] = await Promise.all([
+            supabase
+              .from('customers')
+              .select('checklist_completed')
+              .eq('id', session.user.id)
+              .single(),
+            supabase
+              .from('customer_checklist_progress')
+              .select('*')
+              .eq('customer_id', session.user.id)
+              .single()
+          ]);
 
-          if (customerError) {
-            console.error("Error fetching customer data:", customerError);
-          } else {
-            console.log("Customer data:", customerData);
-            if (mounted) {
-              setChecklistCompleted(customerData?.checklist_completed || false);
-            }
+          // Check if checklist is actually completed
+          const isChecklistCompleted = checklistProgress?.completed_at && 
+            checklistProgress?.password_updated && 
+            (checklistProgress?.removal_urls?.length > 0 || checklistProgress?.removal_urls?.includes('skipped')) &&
+            checklistProgress?.street_address &&
+            checklistProgress?.postal_code &&
+            checklistProgress?.city;
+
+          // If checklist is completed but flag is not set, update it
+          if (isChecklistCompleted && !customerData?.checklist_completed) {
+            await supabase
+              .from('customers')
+              .update({ checklist_completed: true })
+              .eq('id', session.user.id);
+          }
+
+          if (mounted) {
+            setChecklistCompleted(isChecklistCompleted);
           }
         }
 
@@ -98,7 +116,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
     return <Navigate to="/admin" replace />;
   }
 
-  // If user is on the home page and checklist is not completed, redirect to checklist
+  // Only redirect to checklist if it's not completed and user is on home page
   if (window.location.pathname === '/' && !checklistCompleted && !isAdmin) {
     console.log("Redirecting to checklist - not completed yet");
     return <Navigate to="/checklist" replace />;
