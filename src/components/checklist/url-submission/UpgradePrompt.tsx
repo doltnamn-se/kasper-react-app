@@ -22,14 +22,14 @@ export const UpgradePrompt = ({ onSkip, isLoading }: UpgradePromptProps) => {
           onClick={() => window.open('https://buy.stripe.com/4gw2976Ww5yh92wcMW', '_blank')}
           className="w-full"
         >
-          {language === 'sv' ? 'Uppgradera till 6 mån' : 'Upgrade to 6 mo'}
+          {language === 'sv' ? 'Byt till 6 månader (2 länkar)' : 'Change to 6 months (2 links)'}
         </Button>
         <Button
           variant="default"
           onClick={() => window.open('https://buy.stripe.com/bIYfZXft26Cl92w3cn', '_blank')}
           className="w-full"
         >
-          {language === 'sv' ? 'Uppgradera till 12 mån' : 'Upgrade to 12 mo'}
+          {language === 'sv' ? 'Byt till 12 månader (4 länkar)' : 'Change to 12 months (4 links)'}
         </Button>
         <Button
           variant="outline"
