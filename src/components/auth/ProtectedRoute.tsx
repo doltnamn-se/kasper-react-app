@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const { userEmail, isInitializing } = useUserProfile();
   const [isLoading, setIsLoading] = useState(true);
-  const [checklistCompleted, setChecklistCompleted] = useState<boolean | null>(null);
+  const [checklistCompleted, setChecklistCompleted] = useState<boolean>(false);
 
   useEffect(() => {
     let mounted = true;
@@ -49,12 +49,14 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
           ]);
 
           // Check if checklist is actually completed
-          const isChecklistCompleted = checklistProgress?.completed_at && 
+          const isChecklistCompleted = Boolean(
+            checklistProgress?.completed_at && 
             checklistProgress?.password_updated && 
             (checklistProgress?.removal_urls?.length > 0 || checklistProgress?.removal_urls?.includes('skipped')) &&
             checklistProgress?.street_address &&
             checklistProgress?.postal_code &&
-            checklistProgress?.city;
+            checklistProgress?.city
+          );
 
           // If checklist is completed but flag is not set, update it
           if (isChecklistCompleted && !customerData?.checklist_completed) {
