@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export const useChecklistStatus = (userId: string | undefined) => {
   const [isChecklistCompleted, setIsChecklistCompleted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     let mounted = true;
@@ -15,15 +17,22 @@ export const useChecklistStatus = (userId: string | undefined) => {
       }
 
       try {
+        console.log('Fetching checklist status for user:', userId);
+        
         // First check if customer has checklist_completed flag set
         const { data: customerData, error: customerError } = await supabase
           .from('customers')
-          .select('checklist_completed')
+          .select('checklist_completed, checklist_step')
           .eq('id', userId)
-          .single();
+          .maybeSingle();
 
         if (customerError) {
           console.error("Error fetching customer data:", customerError);
+          toast({
+            title: "Error",
+            description: "Could not fetch checklist status. Please try again.",
+            variant: "destructive",
+          });
           return;
         }
 
@@ -37,11 +46,21 @@ export const useChecklistStatus = (userId: string | undefined) => {
         }
 
         // Otherwise check the actual completion status
-        const { data: checklistProgress } = await supabase
+        const { data: checklistProgress, error: progressError } = await supabase
           .from('customer_checklist_progress')
           .select('*')
           .eq('customer_id', userId)
-          .single();
+          .maybeSingle();
+
+        if (progressError) {
+          console.error("Error fetching checklist progress:", progressError);
+          toast({
+            title: "Error",
+            description: "Could not fetch checklist progress. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
 
         const isCompleted = Boolean(
           checklistProgress?.completed_at && 
@@ -52,6 +71,11 @@ export const useChecklistStatus = (userId: string | undefined) => {
           checklistProgress?.city
         );
 
+        console.log('Checklist completion check:', {
+          isCompleted,
+          checklistProgress
+        });
+
         // Update the checklist_completed flag if needed
         if (isCompleted && !customerData?.checklist_completed) {
           const { error: updateError } = await supabase
@@ -61,6 +85,11 @@ export const useChecklistStatus = (userId: string | undefined) => {
 
           if (updateError) {
             console.error("Error updating checklist completion:", updateError);
+            toast({
+              title: "Warning",
+              description: "Could not update checklist status.",
+              variant: "destructive",
+            });
           }
         }
 
@@ -71,6 +100,11 @@ export const useChecklistStatus = (userId: string | undefined) => {
       } catch (error) {
         console.error("Error checking checklist status:", error);
         if (mounted) {
+          toast({
+            title: "Error",
+            description: "An unexpected error occurred. Please try again.",
+            variant: "destructive",
+          });
           setIsLoading(false);
         }
       }
@@ -81,7 +115,7 @@ export const useChecklistStatus = (userId: string | undefined) => {
     return () => {
       mounted = false;
     };
-  }, [userId]);
+  }, [userId, toast]);
 
   return { isChecklistCompleted, isLoading };
 };
