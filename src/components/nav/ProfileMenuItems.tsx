@@ -1,56 +1,43 @@
-import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut } from "lucide-react";
-import {
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 interface ProfileMenuItemsProps {
-  onSignOut: () => void;
+  onSignOut: () => Promise<void>;
   isSigningOut: boolean;
 }
 
 export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsProps) => {
-  const navigate = useNavigate();
   const { t } = useLanguage();
+
+  const handleBillingClick = () => {
+    window.location.href = "https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss";
+  };
 
   return (
     <>
-      <DropdownMenuGroup>
-        <DropdownMenuItem 
-          onClick={() => navigate("/settings", { state: { defaultTab: "profile" } })} 
-          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
-        >
-          <UserCircle className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.manage')}</span>
+      <Link to="/settings">
+        <DropdownMenuItem className="cursor-pointer">
+          {t('profile.manage')}
         </DropdownMenuItem>
-        <DropdownMenuItem 
-          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
-          onClick={() => window.open('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss', '_blank')}
-        >
-          <CreditCard className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={() => navigate("/settings")} 
-          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
-        >
-          <Settings className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.settings')}</span>
-        </DropdownMenuItem>
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
+      </Link>
+      <DropdownMenuItem onClick={handleBillingClick} className="cursor-pointer">
+        {t('profile.billing')}
+      </DropdownMenuItem>
       <DropdownMenuItem 
         onClick={onSignOut} 
         disabled={isSigningOut}
-        className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        className="cursor-pointer text-red-600 dark:text-red-400"
       >
-        <LogOut className="mr-3 h-4 w-4" />
-        <span className="text-black dark:text-gray-300 font-medium">
-          {isSigningOut ? t('profile.signing.out') : t('profile.sign.out')}
-        </span>
+        {isSigningOut ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            {t('profile.signing.out')}
+          </>
+        ) : (
+          t('profile.sign.out')
+        )}
       </DropdownMenuItem>
     </>
   );
