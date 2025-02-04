@@ -70,11 +70,11 @@ export const useStepCompletion = () => {
           console.log('Checklist completed! Triggering celebration');
           launchConfetti();
           
-          // Navigate to home page after a short delay to allow confetti to be visible
+          // Navigate to home page after a 3-second delay to allow confetti to be visible
           setTimeout(() => {
             console.log('Navigating to home page');
             navigate('/');
-          }, 2000);
+          }, 3000);
         }
       } catch (error) {
         console.error('Error in checkCompletion:', error);
