@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useChecklistSteps } from "@/hooks/useChecklistSteps";
 
 interface HidingSitesSelectionProps {
   onComplete: () => void;
@@ -25,6 +26,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
   const [isLoading, setIsLoading] = useState(false);
   const [noneSelected, setNoneSelected] = useState(false);
   const { t, language } = useLanguage();
+  const { handleStepChange } = useChecklistSteps();
 
   const handleSiteToggle = (siteId: HidingSite) => {
     if (noneSelected) {
@@ -81,6 +83,8 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
       if (customerError) throw customerError;
       
       onComplete();
+      // Move to next step
+      handleStepChange(4);
     } catch (error) {
       console.error('Error saving hiding preferences:', error);
     } finally {
