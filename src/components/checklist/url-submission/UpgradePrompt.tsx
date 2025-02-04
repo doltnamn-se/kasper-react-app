@@ -32,8 +32,7 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
       window.open(url, '_blank');
       
       console.log('UpgradePrompt - Upgrade process complete, calling onComplete');
-      // Complete the step and move to next
-      await onComplete();
+      onComplete();
     } catch (error) {
       console.error('Error in handleUpgrade:', error);
     }
@@ -42,11 +41,9 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
   const handleSkip = async () => {
     try {
       console.log('UpgradePrompt - Starting skip process');
-      // First call onSkip to update the database
       await onSkip();
       console.log('UpgradePrompt - Skip successful, calling onComplete');
-      // Then call onComplete to move to next step
-      await onComplete();
+      onComplete();
     } catch (error) {
       console.error('Error in handleSkip:', error);
     }
