@@ -12,7 +12,7 @@ export const useStepCompletion = () => {
   const navigate = useNavigate();
 
   const handleStepComplete = async () => {
-    console.log('Step completed, current step:', currentStep);
+    console.log('Step completion triggered, current step:', currentStep);
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) return;
 
@@ -34,6 +34,72 @@ export const useStepCompletion = () => {
             checklistProgress?.postal_code && 
             checklistProgress?.city) {
           updateData.completed_at = new Date().toISOString();
+          
+          console.log('Final step completion - launching celebration');
+          
+          // Launch multiple bursts of confetti
+          const count = 200;
+          const defaults = {
+            origin: { y: 0.7 }
+          };
+
+          function fire(particleRatio: number, opts: any) {
+            confetti({
+              ...defaults,
+              ...opts,
+              particleCount: Math.floor(count * particleRatio),
+              spread: 60,
+              startVelocity: 30,
+            });
+          }
+
+          // Multiple bursts of confetti
+          fire(0.25, {
+            spread: 26,
+            startVelocity: 55,
+          });
+          fire(0.2, {
+            spread: 60,
+          });
+          fire(0.35, {
+            spread: 100,
+            decay: 0.91,
+            scalar: 0.8
+          });
+          fire(0.1, {
+            spread: 120,
+            startVelocity: 25,
+            decay: 0.92,
+            scalar: 1.2
+          });
+          fire(0.1, {
+            spread: 120,
+            startVelocity: 45,
+          });
+
+          // Update customer record to mark checklist as completed
+          const { error: customerError } = await supabase
+            .from('customers')
+            .update({ 
+              checklist_completed: true,
+              checklist_step: currentStep 
+            })
+            .eq('id', session.user.id);
+
+          if (customerError) {
+            console.error('Error updating customer:', customerError);
+            return;
+          }
+
+          toast({
+            title: "Congratulations! 🎉",
+            description: "You've completed all the checklist steps!",
+          });
+
+          // Navigate to home page after a short delay
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
         }
         break;
       default:
@@ -49,83 +115,6 @@ export const useStepCompletion = () => {
       if (progressError) {
         console.error('Error updating checklist progress:', progressError);
         return;
-      }
-
-      // If this is the final step and all requirements are met, mark checklist as completed
-      if (currentStep === 4 && checklistProgress?.street_address && 
-          checklistProgress?.postal_code && 
-          checklistProgress?.city) {
-        console.log('Final step completion check:', {
-          currentStep,
-          street_address: checklistProgress.street_address,
-          postal_code: checklistProgress.postal_code,
-          city: checklistProgress.city
-        });
-
-        const { error: customerError } = await supabase
-          .from('customers')
-          .update({ 
-            checklist_completed: true,
-            checklist_step: currentStep 
-          })
-          .eq('id', session.user.id);
-
-        if (customerError) {
-          console.error('Error updating customer:', customerError);
-          return;
-        }
-
-        console.log('Launching confetti celebration...');
-        
-        // Show completion celebration with more particles and multiple bursts
-        const count = 200;
-        const defaults = {
-          origin: { y: 0.7 }
-        };
-
-        function fire(particleRatio: number, opts: any) {
-          confetti({
-            ...defaults,
-            ...opts,
-            particleCount: Math.floor(count * particleRatio),
-            spread: 60,
-            startVelocity: 30,
-          });
-        }
-
-        // Launch multiple bursts of confetti
-        fire(0.25, {
-          spread: 26,
-          startVelocity: 55,
-        });
-        fire(0.2, {
-          spread: 60,
-        });
-        fire(0.35, {
-          spread: 100,
-          decay: 0.91,
-          scalar: 0.8
-        });
-        fire(0.1, {
-          spread: 120,
-          startVelocity: 25,
-          decay: 0.92,
-          scalar: 1.2
-        });
-        fire(0.1, {
-          spread: 120,
-          startVelocity: 45,
-        });
-
-        toast({
-          title: "Congratulations! 🎉",
-          description: "You've completed all the checklist steps!",
-        });
-
-        // Navigate to home page after a short delay to allow confetti to be visible
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
       }
     }
 
