@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { UrlInput } from "./url-submission/UrlInput";
 import { UpgradePrompt } from "./url-submission/UpgradePrompt";
 import { useUrlSubmission } from "./url-submission/useUrlSubmission";
+import { useChecklistSteps } from "@/hooks/useChecklistSteps";
 
 interface UrlSubmissionProps {
   onComplete: () => void;
@@ -14,6 +15,7 @@ interface UrlSubmissionProps {
 export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { handleStepChange } = useChecklistSteps();
   const {
     urls,
     setUrls,
@@ -72,6 +74,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       console.log('Successfully skipped URL submission, calling onComplete');
       onComplete();
+      // Move to next step
+      handleStepChange(3);
     } catch (error: any) {
       console.error('Error skipping URL submission:', error);
       toast({
@@ -132,6 +136,8 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       console.log('Successfully saved URLs, calling onComplete');
       onComplete();
+      // Move to next step
+      handleStepChange(3);
     } catch (error: any) {
       console.error('Error saving URLs:', error);
       toast({
