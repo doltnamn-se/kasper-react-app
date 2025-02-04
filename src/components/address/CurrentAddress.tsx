@@ -24,7 +24,7 @@ export const CurrentAddress = ({ addressData, onDelete }: CurrentAddressProps) =
   };
 
   return (
-    <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] relative">
+    <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30] relative animate-address-pulse">
       <Button
         variant="ghost"
         size="icon"

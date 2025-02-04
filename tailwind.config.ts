@@ -48,6 +48,16 @@ export default {
         'fadeIn': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
+        },
+        'address-pulse': {
+          '0%': { backgroundColor: 'rgb(249 250 251)' },
+          '50%': { backgroundColor: 'rgb(63 207 142 / 0.1)' },
+          '100%': { backgroundColor: 'rgb(249 250 251)' }
+        },
+        'address-pulse-dark': {
+          '0%': { backgroundColor: 'rgb(35 35 37)' },
+          '50%': { backgroundColor: 'rgb(62 207 142 / 0.1)' },
+          '100%': { backgroundColor: 'rgb(35 35 37)' }
         }
       },
       animation: {
@@ -55,7 +65,8 @@ export default {
         'accordion-up': 'accordion-up 300ms cubic-bezier(0.87, 0, 0.13, 1)',
         'progress-line': 'progress-line 5s linear forwards',
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
-        'fadeIn': 'fadeIn 0.5s ease-out forwards'
+        'fadeIn': 'fadeIn 0.5s ease-out forwards',
+        'address-pulse': 'address-pulse 2s infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
