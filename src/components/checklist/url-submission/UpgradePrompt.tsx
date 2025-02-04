@@ -11,7 +11,7 @@ export const UpgradePrompt = ({ onSkip, isLoading }: UpgradePromptProps) => {
   
   return (
     <div className="space-y-4">
-      <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+      <div className="text-center p-4 bg-[#e54d2e1a] dark:bg-[#e54d2e1a] rounded-lg">
         <p className="text-sm text-[#ca3214] dark:text-[#f16a50]">
           {t('url.no.plan')}
         </p>
