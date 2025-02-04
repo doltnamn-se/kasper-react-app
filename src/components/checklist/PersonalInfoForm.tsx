@@ -65,10 +65,6 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       if (customerError) throw customerError;
 
-      // Invalidate queries to refresh data
-      await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
-      await queryClient.invalidateQueries({ queryKey: ['customer-data'] });
-
       console.log('Successfully updated customer and checklist progress');
       
       // Launch confetti
@@ -77,19 +73,26 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Call onComplete callback
       await onComplete();
 
-      // Add fade-out animation class after a short delay
+      // Invalidate queries and wait for them to settle
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
+        queryClient.invalidateQueries({ queryKey: ['customer-data'] })
+      ]);
+
+      // Wait for revalidation
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Add fade-out animation
+      const checklistContainer = document.querySelector('.checklist-page');
+      if (checklistContainer) {
+        checklistContainer.classList.add('animate-fade-out');
+      }
+
+      // Navigate after animation completes
       setTimeout(() => {
-        const checklistContainer = document.querySelector('.checklist-page');
-        if (checklistContainer) {
-          checklistContainer.classList.add('animate-fade-out');
-        }
-        
-        // Navigate to home page after animation
-        setTimeout(() => {
-          console.log('Navigating to home page after checklist completion');
-          navigate('/', { replace: true });
-        }, 300); // Navigate after fade animation
-      }, 1700); // Start fade shortly before confetti ends
+        console.log('Navigating to home page after checklist completion');
+        navigate('/', { replace: true });
+      }, 300);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
