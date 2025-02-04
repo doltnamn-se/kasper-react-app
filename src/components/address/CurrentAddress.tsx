@@ -33,7 +33,7 @@ export const CurrentAddress = ({ addressData, onDelete }: CurrentAddressProps) =
         <Trash2 className="h-4 w-4" />
       </Button>
       <div className="space-y-2 mb-4">
-        <p className="text-[#111827] dark:text-white text-base font-medium">
+        <p className="text-[#111827] dark:text-white text-base font-bold">
           {addressData.street_address}
         </p>
         <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
