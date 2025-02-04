@@ -29,7 +29,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <>
       {/* Sidebar - Desktop */}
-      <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0">
+      <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0 z-[1000]">
         <div className="px-8 py-6">
           <AuthLogo className="relative h-8" />
         </div>
@@ -44,7 +44,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </div>
 
       {/* Sidebar - Mobile */}
-      <div className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-200 md:hidden ${
+      <div className={`fixed inset-0 bg-black bg-opacity-50 z-[1000] transition-opacity duration-200 md:hidden ${
         isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`} onClick={toggleMobileMenu}>
         <div 
@@ -70,7 +70,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       {/* Main Content */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
-        <main className="px-4 md:px-12 pt-12">
+        <main className="px-4 md:px-12 pt-12 relative z-0">
           <div>
             {children}
           </div>
