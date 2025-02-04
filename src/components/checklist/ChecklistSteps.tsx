@@ -46,7 +46,7 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
   });
 
   return (
-    <div className="relative grid grid-cols-4 gap-2">
+    <div className="relative grid grid-cols-4 gap-2 max-w-3xl mx-auto">
       {steps.map((item) => (
         <div 
           key={item.step} 
