@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { launchConfetti } from "@/utils/confetti";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useState } from "react";
 
 interface PersonalInfoFormData {
   streetAddress: string;
@@ -22,10 +24,12 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>();
 
   const onSubmit = async (data: PersonalInfoFormData) => {
     try {
+      setIsSubmitting(true);
       console.log('Submitting personal info form data:', data);
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
@@ -66,21 +70,30 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ['customer-data'] });
 
       console.log('Successfully updated customer and checklist progress');
-
-      // Launch confetti and navigate after a delay
+      
+      // Launch confetti
       launchConfetti();
       
       // Call onComplete callback
       await onComplete();
 
-      // Navigate to home page after a delay
+      // Add fade-out animation class after a short delay
       setTimeout(() => {
-        console.log('Navigating to home page after checklist completion');
-        navigate('/', { replace: true });
-      }, 2000);
+        const checklistContainer = document.querySelector('.checklist-page');
+        if (checklistContainer) {
+          checklistContainer.classList.add('animate-fade-out');
+        }
+        
+        // Navigate to home page after animation
+        setTimeout(() => {
+          console.log('Navigating to home page after checklist completion');
+          navigate('/', { replace: true });
+        }, 300); // Navigate after fade animation
+      }, 1700); // Start fade shortly before confetti ends
 
     } catch (error) {
       console.error('Error saving personal info:', error);
+      setIsSubmitting(false);
       toast.error(
         language === 'sv' 
           ? 'Ett fel uppstod när informationen skulle sparas' 
@@ -92,7 +105,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-full">
       <AddressSection register={register} errors={errors} />
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
         {language === 'sv' ? 'Spara' : 'Save'}
       </Button>
     </form>
