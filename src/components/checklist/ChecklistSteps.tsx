@@ -22,8 +22,8 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
            checklistProgress.removal_urls.includes('skipped') ||
            checklistProgress.checklist_step > 2);
       case 3:
-        // Consider step 3 complete if either selected_sites exists or checklist_step is beyond 3
-        return Boolean(checklistProgress.selected_sites) || checklistProgress.checklist_step > 3;
+        // Consider step 3 complete if selected_sites has entries or checklist_step is beyond 3
+        return (checklistProgress.selected_sites?.length > 0) || checklistProgress.checklist_step > 3;
       case 4:
         return Boolean(
           checklistProgress.street_address && 
@@ -45,7 +45,8 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
   console.log('ChecklistSteps - Progress state:', {
     checklistProgress,
     steps: steps.map(s => ({ step: s.step, completed: s.completed })),
-    removal_urls: checklistProgress?.removal_urls
+    removal_urls: checklistProgress?.removal_urls,
+    selected_sites: checklistProgress?.selected_sites
   });
 
   return (
