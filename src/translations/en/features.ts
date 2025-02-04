@@ -16,7 +16,7 @@ const features: FeaturesTranslations = {
   'step.1.title': 'New password',
   'step.2.title': 'Deindexing',
   'step.2.description': 'Add links that you wish to hide from Google, e.g. (Social media, Lexbase, Krimfup, etc.)',
-  'step.3.title': 'Person search sites',
+  'step.3.title': 'Search sites',
   'step.3.description': 'Choose which sites you need help hiding your information from',
   'step.4.title': 'Identification',
   'step.4.description': 'Enter your personal information',
