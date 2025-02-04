@@ -1,6 +1,15 @@
-import { FeaturesTranslations } from '../types/features';
+import { auth } from './auth';
+import { navigation } from './navigation';
+import { errors } from './errors';
+import features from './features';
+import { ui } from './ui';
+import { Translations } from '../types';
 
-const features: FeaturesTranslations = {
+export const en: Translations = {
+  ...auth,
+  ...navigation,
+  ...errors,
+  ...features,
   'checklist': 'Checklist',
   'getting.started': 'Getting Started',
   'step.number': 'Step {number}',
@@ -15,7 +24,7 @@ const features: FeaturesTranslations = {
   'step.info.description': 'Enter your personal information',
   'step.1.title': 'New password',
   'step.2.title': 'Deindexing',
-  'step.2.description': 'Submit URLs where your information appears',
+  'step.2.description': 'Add links that you wish to hide from Google, e.g. (Social media, Lexbase, Krimfup, etc.)',
   'step.3.title': 'Person search sites',
   'step.3.description': 'Choose which sites to hide your information from',
   'step.4.title': 'Identification',
@@ -30,7 +39,7 @@ const features: FeaturesTranslations = {
   'saving': 'Saving...',
   'url.limit.message': 'You can submit up to {limit} URLs',
   'url.remaining.message': 'You have {count} URLs remaining',
-  'url.no.plan': 'You need a subscription to submit URLs',
+  'url.no.plan': 'De-indexing links are not included in our monthly subscription. Our 6-month subscription includes 2 links, and our 12-month subscription includes 4 links.',
   'deindexing.incoming.links': 'Incoming Links',
   'deindexing.deindexed.links': 'Deindexed Links',
   'deindexing.no.incoming.links': 'No incoming links',
@@ -90,5 +99,3 @@ const features: FeaturesTranslations = {
   'deindexing.status.notification.title': 'Deindexing Status Update',
   'deindexing.status.notification.message': 'The status of your deindexing request has been updated'
 };
-
-export default features;
