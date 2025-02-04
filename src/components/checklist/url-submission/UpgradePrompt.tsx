@@ -28,8 +28,8 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
 
       if (progressError) throw progressError;
 
-      // Open upgrade URL in new tab
-      window.open(url, '_blank');
+      // Open upgrade URL in same window
+      window.location.href = url;
       
       console.log('UpgradePrompt - Upgrade process complete, calling onComplete');
       onComplete();
@@ -61,7 +61,7 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
       <div className="flex flex-col gap-2">
         <Button
           variant="default"
-          onClick={() => handleUpgrade('https://buy.stripe.com/4gw2976Ww5yh92wcMW')}
+          onClick={() => handleUpgrade('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss')}
           className="w-full"
         >
           {language === 'sv' ? 'Uppgradera Prenumeration' : 'Upgrade Subscription'}
