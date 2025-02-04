@@ -7,7 +7,7 @@ import { PersonalInfoForm } from "./PersonalInfoForm";
 
 interface StepContentProps {
   currentStep: number;
-  onStepComplete: (step: number) => void;
+  onStepComplete: (step: number) => Promise<void>;
   checklistItems: any[];
 }
 
@@ -17,13 +17,13 @@ export const StepContent = ({ currentStep, onStepComplete, checklistItems }: Ste
   const getStepTitle = (step: number) => {
     switch (step) {
       case 1:
-        return t('step.password.title');
+        return t('step.1.title');
       case 2:
         return language === 'sv' ? 'Avindexering' : 'Deindexing';
       case 3:
-        return t('step.sites.title');
+        return t('step.3.title');
       case 4:
-        return t('step.personal.title');
+        return t('step.4.title');
       default:
         return '';
     }
@@ -38,7 +38,7 @@ export const StepContent = ({ currentStep, onStepComplete, checklistItems }: Ste
       case 3:
         return t('step.sites.description');
       case 4:
-        return t('step.personal.description');
+        return t('step.4.description');
       default:
         return '';
     }
@@ -56,20 +56,26 @@ export const StepContent = ({ currentStep, onStepComplete, checklistItems }: Ste
       </div>
 
       {currentStep === 1 && (
-        <PasswordUpdateForm onComplete={() => onStepComplete(currentStep)} />
+        <PasswordUpdateForm onComplete={async () => await onStepComplete(currentStep)} />
       )}
       {currentStep === 2 && (
-        <UrlSubmission onComplete={() => onStepComplete(currentStep)} />
+        <UrlSubmission onComplete={async () => await onStepComplete(currentStep)} />
       )}
       {currentStep === 3 && (
-        <HidingSitesSelection onComplete={() => onStepComplete(currentStep)} />
+        <HidingSitesSelection onComplete={async () => await onStepComplete(currentStep)} />
       )}
       {currentStep === 4 && (
-        <PersonalInfoForm onComplete={() => onStepComplete(currentStep)} />
+        <PersonalInfoForm onComplete={async () => await onStepComplete(currentStep)} />
       )}
 
       {checklistItems.length > 0 && (
-        <StepGuide items={checklistItems} currentStep={currentStep} />
+        <StepGuide 
+          currentStep={currentStep}
+          siteId={checklistItems[currentStep - 1]?.id || ''}
+          guide={checklistItems[currentStep - 1]}
+          isGuideCompleted={false}
+          onGuideComplete={async () => Promise.resolve()}
+        />
       )}
     </div>
   );
