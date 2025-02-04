@@ -27,7 +27,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
         isSubmitting={isSubmitting}
       />
       <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {language === 'sv' ? 'Slutför' : 'Finish'}
+        {language === 'sv' ? 'Spara' : 'Save'}
       </Button>
     </form>
   );
