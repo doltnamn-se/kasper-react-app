@@ -15,7 +15,7 @@ const features: FeaturesTranslations = {
   'step.info.description': 'Ange din personliga information',
   'step.1.title': 'Nytt lösenord',
   'step.2.title': 'Avindexering',
-  'step.2.description': 'Skicka in URL:er där din information visas',
+  'step.2.description': 'Lägg till länkar som du önskar dölja på Google, t.e.x. (Sociala medier, Lexbase, Krimfup etc.)',
   'step.3.title': 'Upplysningssidor',
   'step.3.description': 'Välj vilka webbplatser du vill dölja din information från',
   'step.4.title': 'Identifiering',
