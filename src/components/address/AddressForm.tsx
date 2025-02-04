@@ -21,7 +21,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<AddressFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<AddressFormData>();
 
   const launchConfetti = () => {
     console.log('Launching confetti celebration');
@@ -94,7 +94,6 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
 
       if (customerError) throw customerError;
 
-      // Show success toast
       toast({
         title: language === 'sv' ? 'Adress sparad' : 'Address saved',
         description: language === 'sv' ? 
@@ -105,13 +104,12 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
       // Launch confetti immediately after successful save
       launchConfetti();
 
-      // Call onSuccess callback if provided
       if (onSuccess) {
         console.log('Calling onSuccess callback after saving address');
         await onSuccess();
       }
 
-      // Navigate to home page after a delay to allow confetti to be visible
+      // Navigate to home page after a 3-second delay to allow confetti to be visible
       setTimeout(() => {
         console.log('Navigating to home page after address save');
         navigate('/');
@@ -136,7 +134,6 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           {...register("streetAddress", { required: true })}
           placeholder={language === 'sv' ? 'Gatuadress' : 'Street address'}
           className={errors.streetAddress ? "border-red-500" : ""}
-          disabled={isSubmitting}
         />
         {errors.streetAddress && (
           <p className="text-red-500 text-sm mt-1">
@@ -149,7 +146,6 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           {...register("postalCode", { required: true })}
           placeholder={language === 'sv' ? 'Postnummer' : 'Postal code'}
           className={errors.postalCode ? "border-red-500" : ""}
-          disabled={isSubmitting}
         />
         {errors.postalCode && (
           <p className="text-red-500 text-sm mt-1">
@@ -162,7 +158,6 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           {...register("city", { required: true })}
           placeholder={language === 'sv' ? 'Stad' : 'City'}
           className={errors.city ? "border-red-500" : ""}
-          disabled={isSubmitting}
         />
         {errors.city && (
           <p className="text-red-500 text-sm mt-1">
@@ -170,7 +165,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           </p>
         )}
       </div>
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full">
         {language === 'sv' ? 'Slutför' : 'Finish'}
       </Button>
     </form>
