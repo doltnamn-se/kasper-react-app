@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Table,
@@ -95,8 +96,8 @@ export const DeindexedLinks = () => {
     return (
       <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
         {language === 'sv' 
-          ? "När vi tar bort nya länkar som dykt upp om dig, kommer du att se de här"
-          : "When we remove new links that have appeared about you, you will see them here"}
+          ? "Dolda länkar kommer att synas här. Lägg till en länk för att komma igång"
+          : "Hidden links will appear here. Add a link to get started"}
       </p>
     );
   }
