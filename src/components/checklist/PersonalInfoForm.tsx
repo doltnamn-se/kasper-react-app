@@ -64,7 +64,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       console.log('Successfully updated customer and checklist progress');
       
-      // Launch confetti and handle navigation
+      // Launch confetti
       launchConfetti();
 
       // Add fade-out animation to checklist page
@@ -73,25 +73,21 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-500');
       }
       
-      // Wait for confetti and fade-out, then navigate
-      setTimeout(async () => {
-        try {
-          // Call onComplete callback
-          await onComplete();
-          
-          // Invalidate queries
-          await Promise.all([
-            queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
-            queryClient.invalidateQueries({ queryKey: ['customer-data'] }),
-            queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
-          ]);
+      // Invalidate queries first
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
+        queryClient.invalidateQueries({ queryKey: ['customer-data'] }),
+        queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
+      ]);
 
-          // Navigate to home page
-          navigate('/', { replace: true });
-        } catch (error) {
-          console.error('Error in navigation sequence:', error);
-        }
-      }, 2000);
+      // Wait for the animations and query invalidation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Call onComplete callback
+      await onComplete();
+
+      // Force a hard navigation to ensure fresh state
+      window.location.href = '/';
 
     } catch (error) {
       console.error('Error saving personal info:', error);
