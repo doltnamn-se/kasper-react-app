@@ -21,6 +21,7 @@ export const BasicStepContent = ({
     if (step === 1) return t('step.1.title');
     if (step === 2) return t('step.2.title');
     if (step === 3) return t('step.3.title');
+    if (step === 4) return t('step.4.title');
     return t('step.identification.title');
   };
 
@@ -28,6 +29,7 @@ export const BasicStepContent = ({
     if (step === 1) return t('set.password.description');
     if (step === 2) return t('step.2.description');
     if (step === 3) return t('step.3.description');
+    if (step === 4) return t('step.4.description');
     return t('step.identification.description');
   };
 
