@@ -68,7 +68,7 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
         </Button>
         <Button
           variant="default"
-          onClick={() => handleUpgrade('https://buy.stripe.com/bIYfZXft26Cl92w3cn')}
+          onClick={() => handleUpgrade('https://buy.stripe.com/7sI00ZdkU1i11A4eV2')}
           className="w-full"
         >
           {language === 'sv' ? 'Lägg till Avindexeringslänkar' : 'Add Deindexing links'}
