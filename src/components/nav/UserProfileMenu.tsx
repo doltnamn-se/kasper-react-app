@@ -64,14 +64,15 @@ export const UserProfileMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group h-auto p-1"
+          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group p-2"
         >
-          <Avatar className="h-8 w-8">
+          <Avatar className="h-8 w-8 shrink-0">
             <AvatarImage 
               src={userProfile?.avatar_url} 
               alt={displayName}
+              className="aspect-square object-cover"
             />
-            <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
+            <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
               {initials}
             </AvatarFallback>
           </Avatar>
