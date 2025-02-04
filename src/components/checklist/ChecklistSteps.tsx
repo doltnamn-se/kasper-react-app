@@ -22,7 +22,8 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
            checklistProgress.removal_urls.includes('skipped') ||
            checklistProgress.checklist_step > 2);
       case 3:
-        return checklistProgress.selected_sites?.length > 0;
+        // Consider step 3 complete if either selected_sites exists or checklist_step is beyond 3
+        return Boolean(checklistProgress.selected_sites) || checklistProgress.checklist_step > 3;
       case 4:
         return Boolean(
           checklistProgress.street_address && 
