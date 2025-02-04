@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
@@ -8,7 +9,7 @@ export const useStepCompletion = () => {
   const isChecklistCompleted = (progress: any) => {
     if (!progress) return false;
     
-    // Check all required steps are completed
+    // Check all required steps are completed using the same logic as useChecklistStatus
     const isPasswordUpdated = progress.password_updated;
     const hasSitesSelected = Array.isArray(progress.selected_sites) && progress.selected_sites.length > 0;
     const hasUrlsSubmitted = Array.isArray(progress.removal_urls) && 
