@@ -28,12 +28,8 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
 
       if (progressError) throw progressError;
 
-      // Open upgrade URL in new window for first button, same window for second
-      if (url === 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss') {
-        window.open(url, '_blank');
-      } else {
-        window.location.href = url;
-      }
+      // Open both upgrade URLs in new window
+      window.open(url, '_blank');
       
       console.log('UpgradePrompt - Upgrade process complete, calling onComplete');
       onComplete();
