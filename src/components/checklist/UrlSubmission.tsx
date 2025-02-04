@@ -140,7 +140,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   if (urlLimit === 0) {
-    return <UpgradePrompt onSkip={handleSkip} isLoading={isLoading} />;
+    return <UpgradePrompt onSkip={handleSkip} isLoading={isLoading} onComplete={onComplete} />;
   }
 
   return (
