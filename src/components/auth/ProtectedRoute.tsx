@@ -1,3 +1,4 @@
+
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -31,6 +32,12 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
 
   if (customerOnly && isAdmin) {
     return <Navigate to="/admin" replace />;
+  }
+
+  // Prevent access to checklist page if already completed
+  if (window.location.pathname === '/checklist' && isChecklistCompleted) {
+    console.log("Redirecting from checklist - already completed");
+    return <Navigate to="/" replace />;
   }
 
   // Only redirect to checklist if:
