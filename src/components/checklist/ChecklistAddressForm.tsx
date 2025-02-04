@@ -80,7 +80,7 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         <Input
           {...register("streetAddress", { required: true })}
           placeholder={language === 'sv' ? 'Gatuadress' : 'Street address'}
-          className={errors.streetAddress ? "border-red-500" : ""}
+          className={`text-sm md:text-base ${errors.streetAddress ? "border-red-500" : ""}`}
         />
         {errors.streetAddress && (
           <p className="text-red-500 text-sm mt-1">
@@ -92,7 +92,7 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         <Input
           {...register("postalCode", { required: true })}
           placeholder={language === 'sv' ? 'Postnummer' : 'Postal code'}
-          className={errors.postalCode ? "border-red-500" : ""}
+          className={`text-sm md:text-base ${errors.postalCode ? "border-red-500" : ""}`}
         />
         {errors.postalCode && (
           <p className="text-red-500 text-sm mt-1">
@@ -104,7 +104,7 @@ export const ChecklistAddressForm = ({ onSuccess }: ChecklistAddressFormProps) =
         <Input
           {...register("city", { required: true })}
           placeholder={language === 'sv' ? 'Stad' : 'City'}
-          className={errors.city ? "border-red-500" : ""}
+          className={`text-sm md:text-base ${errors.city ? "border-red-500" : ""}`}
         />
         {errors.city && (
           <p className="text-red-500 text-sm mt-1">
