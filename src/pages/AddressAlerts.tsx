@@ -11,8 +11,7 @@ import { Button } from "@/components/ui/button";
 
 // Utility function to get Stripe URL
 const getStripeUrl = () => {
-  // This is a placeholder URL - replace with your actual Stripe URL
-  return "https://billing.stripe.com/p/login/test_XXXXX";
+  return "https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss";
 };
 
 const AddressAlerts = () => {
