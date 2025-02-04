@@ -1,12 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+type URLStatusStep = "received" | "case_started" | "request_submitted" | "removal_approved";
+
 export const useUrlSubmission = () => {
   const [urls, setUrls] = useState<string[]>(['']);
+  const [isLoading, setIsLoading] = useState(false);
+  const [existingUrls, setExistingUrls] = useState<any[]>([]);
   const { toast } = useToast();
   const { language } = useLanguage();
+
+  useEffect(() => {
+    fetchExistingUrls();
+  }, []);
+
+  const fetchExistingUrls = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    const { data } = await supabase
+      .from('removal_urls')
+      .select('*')
+      .eq('customer_id', session.user.id);
+
+    setExistingUrls(data || []);
+  };
+
+  const getUrlLimit = () => {
+    // Basic limit is 3 URLs
+    return 3;
+  };
 
   const handleUrlChange = (index: number, value: string) => {
     const newUrls = [...urls];
@@ -44,18 +69,18 @@ export const useUrlSubmission = () => {
       timestamp: now
     };
 
+    const urlRows = filteredUrls.map(url => ({
+      customer_id: user.id,
+      url: url,
+      status: 'pending',
+      current_status: 'received' as URLStatusStep,
+      status_history: [initialStatus],
+      display_in_incoming: true
+    }));
+
     const { error } = await supabase
       .from('removal_urls')
-      .insert(
-        filteredUrls.map(url => ({
-          customer_id: user.id,
-          url: url,
-          status: 'pending',
-          current_status: 'received',
-          status_history: [initialStatus],
-          display_in_incoming: true
-        }))
-      );
+      .insert(urlRows);
 
     if (error) {
       console.error('Error saving URLs:', error);
@@ -73,13 +98,19 @@ export const useUrlSubmission = () => {
     });
 
     setUrls(['']);
+    await fetchExistingUrls();
   };
 
   return {
     urls,
+    setUrls,
     handleUrlChange,
     addUrlField,
     removeUrlField,
     saveUrls,
+    isLoading,
+    setIsLoading,
+    existingUrls,
+    getUrlLimit
   };
 };
