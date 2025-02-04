@@ -29,7 +29,7 @@ export const AddNewAddress = ({ isOpen, onOpenChange, onSuccess }: AddNewAddress
           </Button>
         </SheetTrigger>
         <SheetContent>
-          <SheetHeader>
+          <SheetHeader className="mb-6">
             <SheetTitle>
               {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
             </SheetTitle>
