@@ -73,14 +73,14 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Call onComplete callback
       await onComplete();
 
-      // Invalidate queries and wait for them to settle
+      // Invalidate queries
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
         queryClient.invalidateQueries({ queryKey: ['customer-data'] })
       ]);
 
-      // Wait for revalidation
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Wait for queries to settle
+      await queryClient.invalidateQueries();
 
       // Add fade-out animation
       const checklistContainer = document.querySelector('.checklist-page');
@@ -88,11 +88,11 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         checklistContainer.classList.add('animate-fade-out');
       }
 
-      // Navigate after animation completes
+      // Wait for animation and then navigate
       setTimeout(() => {
         console.log('Navigating to home page after checklist completion');
-        navigate('/', { replace: true });
-      }, 300);
+        navigate('/');
+      }, 2000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
