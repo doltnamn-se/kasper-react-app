@@ -19,7 +19,7 @@ const features: FeaturesTranslations = {
   'step.3.title': 'Search sites',
   'step.3.description': 'Choose which sites you need help hiding your information from',
   'step.4.title': 'Address Alerts',
-  'step.4.description': 'Enter your address so we can verify we\'re looking at the right person when we look up your details online',
+  'step.4.description': 'Enter your address for verification, monitoring and address alerts',
   'step.identification.title': 'Identification',
   'step.identification.description': 'Enter your address so we can verify we\'re looking at the right person when we look up your details online',
   'step.deindexing.title': 'Deindexing',
