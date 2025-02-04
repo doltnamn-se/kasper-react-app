@@ -6,6 +6,7 @@ import { AddressSection } from "./form-sections/AddressSection";
 import { useNavigate } from "react-router-dom";
 import { launchConfetti } from "@/utils/confetti";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface PersonalInfoFormData {
   streetAddress: string;
@@ -72,13 +73,22 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Call onComplete callback
       await onComplete();
 
-      // Navigate to home page after a short delay
+      // Show success message
+      toast.success(language === 'sv' ? 'Checklistan är klar!' : 'Checklist completed!');
+
+      // Navigate to home page after a delay to allow confetti to be visible
       setTimeout(() => {
-        navigate('/');
+        console.log('Navigating to home page after checklist completion');
+        navigate('/', { replace: true });
       }, 2000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
+      toast.error(
+        language === 'sv' 
+          ? 'Ett fel uppstod när informationen skulle sparas' 
+          : 'An error occurred while saving the information'
+      );
     }
   };
 
