@@ -53,11 +53,13 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
   };
 
   const handleSkip = async () => {
+    console.log('UrlSubmission - Starting skip process');
     setIsLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) throw new Error('No user session');
 
+      console.log('UrlSubmission - Updating checklist progress with skip status');
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ 
@@ -68,7 +70,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (progressError) throw progressError;
       
-      console.log('Successfully skipped URL submission');
+      console.log('Successfully skipped URL submission, calling onComplete');
       onComplete();
     } catch (error: any) {
       console.error('Error skipping URL submission:', error);
@@ -84,6 +86,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('UrlSubmission - Starting submit process');
     setIsLoading(true);
 
     try {
@@ -94,6 +97,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       
       // If no URLs are provided, treat it as a skip
       if (validUrls.length === 0) {
+        console.log('UrlSubmission - No URLs provided, treating as skip');
         return handleSkip();
       }
 
@@ -101,6 +105,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         throw new Error(t('url.limit.message', { limit: urlLimit }));
       }
 
+      console.log('UrlSubmission - Updating checklist progress with URLs:', validUrls);
       // Update checklist progress with URLs
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
@@ -125,7 +130,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (urlsError) throw urlsError;
       
-      console.log('Successfully saved URLs:', validUrls);
+      console.log('Successfully saved URLs, calling onComplete');
       onComplete();
     } catch (error: any) {
       console.error('Error saving URLs:', error);
