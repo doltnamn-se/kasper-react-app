@@ -26,9 +26,11 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
         errors={errors}
         isSubmitting={isSubmitting}
       />
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {language === 'sv' ? 'Spara' : 'Save'}
-      </Button>
+      <div className="flex flex-col space-y-2">
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {language === 'sv' ? 'Spara' : 'Save'}
+        </Button>
+      </div>
     </form>
   );
 };

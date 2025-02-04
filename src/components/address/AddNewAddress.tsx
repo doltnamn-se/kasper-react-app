@@ -1,8 +1,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { HousePlus } from "lucide-react";
 import { AddressForm } from "./AddressForm";
+import { useState } from "react";
 
 interface AddNewAddressProps {
   isOpen: boolean;
@@ -12,31 +12,39 @@ interface AddNewAddressProps {
 
 export const AddNewAddress = ({ isOpen, onOpenChange, onSuccess }: AddNewAddressProps) => {
   const { language } = useLanguage();
+  const [showForm, setShowForm] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowForm(true);
+    onOpenChange(true);
+  };
 
   return (
-    <>
-      <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mb-4">
+    <div className="space-y-4">
+      <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
         {language === 'sv' 
           ? 'Du har inte angett din adress ännu'
           : 'You have not provided your address yet'
         }
       </p>
-      <Sheet open={isOpen} onOpenChange={onOpenChange}>
-        <SheetTrigger asChild>
-          <Button className="w-full">
-            <HousePlus className="mr-2 h-4 w-4" />
-            {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader className="mb-6">
-            <SheetTitle>
-              {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
-            </SheetTitle>
-          </SheetHeader>
-          <AddressForm onSuccess={onSuccess} />
-        </SheetContent>
-      </Sheet>
-    </>
+      
+      {!showForm ? (
+        <Button 
+          className="w-full transition-all duration-300 ease-in-out"
+          onClick={handleButtonClick}
+        >
+          <HousePlus className="mr-2 h-4 w-4" />
+          {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
+        </Button>
+      ) : (
+        <div className="animate-fade-in">
+          <AddressForm onSuccess={async () => {
+            setShowForm(false);
+            onOpenChange(false);
+            await onSuccess();
+          }} />
+        </div>
+      )}
+    </div>
   );
 };
