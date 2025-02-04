@@ -17,6 +17,14 @@ interface AddressFormFieldsProps {
 export const AddressFormFields = ({ register, errors, isSubmitting }: AddressFormFieldsProps) => {
   const { language } = useLanguage();
 
+  const formatPostalCode = (value: string) => {
+    // Remove all non-digits and spaces
+    const cleaned = value.replace(/[^\d\s]/g, '');
+    // Remove extra spaces, only allow one space after the third digit
+    const formatted = cleaned.replace(/\s/g, '').replace(/^(\d{3})(\d{2})$/, '$1 $2');
+    return formatted;
+  };
+
   return (
     <>
       <div>
@@ -34,14 +42,24 @@ export const AddressFormFields = ({ register, errors, isSubmitting }: AddressFor
       </div>
       <div>
         <Input
-          {...register("postalCode", { required: true })}
+          {...register("postalCode", {
+            required: true,
+            pattern: {
+              value: /^\d{3}\s?\d{2}$/,
+              message: language === 'sv' ? 'Postnummer måste vara 5 siffror' : 'Postal code must be 5 digits'
+            },
+            onChange: (e) => {
+              e.target.value = formatPostalCode(e.target.value);
+            }
+          })}
           placeholder={language === 'sv' ? 'Postnummer' : 'Postal code'}
           className={errors.postalCode ? "border-red-500" : ""}
           disabled={isSubmitting}
+          maxLength={6} // 5 digits + 1 possible space
         />
         {errors.postalCode && (
           <p className="text-red-500 text-sm mt-1">
-            {language === 'sv' ? 'Postnummer krävs' : 'Postal code is required'}
+            {errors.postalCode.message || (language === 'sv' ? 'Postnummer krävs' : 'Postal code is required')}
           </p>
         )}
       </div>
