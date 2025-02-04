@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import confetti from 'canvas-confetti';
 
 interface AddressFormData {
   streetAddress: string;
@@ -18,7 +20,49 @@ interface AddressFormProps {
 export const AddressForm = ({ onSuccess }: AddressFormProps) => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<AddressFormData>();
+
+  const launchConfetti = () => {
+    console.log('Launching confetti celebration');
+    const count = 200;
+    const defaults = {
+      origin: { y: 0.7 }
+    };
+
+    function fire(particleRatio: number, opts: any) {
+      confetti({
+        ...defaults,
+        ...opts,
+        particleCount: Math.floor(count * particleRatio),
+        spread: 60,
+        startVelocity: 30,
+      });
+    }
+
+    fire(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+    fire(0.2, {
+      spread: 60,
+    });
+    fire(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  };
 
   const onSubmit = async (data: AddressFormData) => {
     try {
@@ -57,10 +101,20 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
           'Your address has been saved and will be monitored'
       });
 
+      // Launch confetti immediately after successful save
+      launchConfetti();
+
       if (onSuccess) {
         console.log('Calling onSuccess callback after saving address');
         await onSuccess();
       }
+
+      // Navigate to home page after a 3-second delay to allow confetti to be visible
+      setTimeout(() => {
+        console.log('Navigating to home page after address save');
+        navigate('/');
+      }, 3000);
+
     } catch (error) {
       console.error('Error saving address:', error);
       toast({
