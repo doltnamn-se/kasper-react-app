@@ -12,7 +12,7 @@ export const AddressSection = ({ register, errors }: AddressSectionProps) => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">
+      <h3 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
         {language === 'sv' ? 'Adress' : 'Address'}
       </h3>
       <div>
