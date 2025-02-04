@@ -35,7 +35,6 @@ const features: FeaturesTranslations = {
   'deindexing.incoming.links': 'Incoming Links',
   'deindexing.deindexed.links': 'Deindexed Links',
   'deindexing.no.incoming.links': 'Add links to see them here',
-  'deindexing.removed.links.placeholder': 'Hidden links will appear here. Add a link to get started',
   'deindexing.used.title': 'Used URLs',
   'deindexing.used.counter': '{count} of {total} URLs used',
   'deindexing.need.more': 'Need more URLs?',
@@ -94,4 +93,3 @@ const features: FeaturesTranslations = {
 };
 
 export default features;
-

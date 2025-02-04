@@ -1,4 +1,3 @@
-
 export interface FeaturesTranslations {
   'checklist': string;
   'getting.started': string;
@@ -33,7 +32,6 @@ export interface FeaturesTranslations {
   'deindexing.incoming.links': string;
   'deindexing.deindexed.links': string;
   'deindexing.no.incoming.links': string;
-  'deindexing.removed.links.placeholder': string;
   'deindexing.used.title': string;
   'deindexing.used.counter': string;
   'deindexing.need.more': string;
@@ -90,4 +88,3 @@ export interface FeaturesTranslations {
   'deindexing.status.notification.title': string;
   'deindexing.status.notification.message': string;
 }
-
