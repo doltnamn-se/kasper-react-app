@@ -101,8 +101,10 @@ export const useChecklistProgress = () => {
       });
     }
     
-    // Step 3: Sites selected
-    if (checklistProgress.selected_sites?.length > 0) {
+    // Step 3: Sites selected - now also considers when no sites are selected (none option)
+    if ((checklistProgress.selected_sites?.length > 0) || 
+        (Array.isArray(checklistProgress.completed_guides) && 
+         checklistProgress.completed_guides.length === HIDING_SITES.length)) {
       console.log('Step 3 completed: Sites selected:', checklistProgress.selected_sites);
       completedSteps++;
     } else {
@@ -144,3 +146,14 @@ export const useChecklistProgress = () => {
     calculateProgress
   };
 };
+
+// Constants
+const HIDING_SITES = [
+  'eniro',
+  'hitta',
+  'mrkoll',
+  'merinfo',
+  'ratsit',
+  'birthday',
+  'upplysning'
+];
