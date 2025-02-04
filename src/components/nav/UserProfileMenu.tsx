@@ -36,19 +36,15 @@ export const UserProfileMenu = () => {
       setIsSigningOut(true);
       console.log("Starting sign out process...");
 
-      // Clear any existing auth state first
       localStorage.removeItem('supabase.auth.token');
       
       try {
-        // Attempt to sign out regardless of session state
         await supabase.auth.signOut();
         console.log("Sign out successful");
       } catch (signOutError) {
         console.log("Sign out error caught:", signOutError);
-        // Continue with redirect even if sign out fails
       }
 
-      // Always redirect to auth page
       console.log("Redirecting to auth page");
       window.location.href = '/auth';
       
@@ -68,7 +64,7 @@ export const UserProfileMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group"
+          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group h-auto p-1"
         >
           <Avatar className="h-8 w-8">
             <AvatarImage 
