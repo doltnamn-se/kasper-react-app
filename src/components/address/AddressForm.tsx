@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import confetti from 'canvas-confetti';
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AddressFormData {
   streetAddress: string;
@@ -21,6 +22,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<AddressFormData>();
 
   const launchConfetti = () => {
@@ -88,11 +90,16 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
       const { error: customerError } = await supabase
         .from('customers')
         .update({
-          checklist_completed: true
+          checklist_completed: true,
+          checklist_step: 4
         })
         .eq('id', session.user.id);
 
       if (customerError) throw customerError;
+
+      // Invalidate queries to trigger UI updates
+      await queryClient.invalidateQueries({ queryKey: ['checklist-progress'] });
+      await queryClient.invalidateQueries({ queryKey: ['customer-data'] });
 
       // Show success toast
       toast({
@@ -111,11 +118,11 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
         await onSuccess();
       }
 
-      // Navigate to home page after a delay to allow confetti to be visible
+      // Navigate to home page after a short delay to allow confetti to be visible
       setTimeout(() => {
         console.log('Navigating to home page after address save');
         navigate('/');
-      }, 3000);
+      }, 2000);
 
     } catch (error) {
       console.error('Error saving address:', error);
