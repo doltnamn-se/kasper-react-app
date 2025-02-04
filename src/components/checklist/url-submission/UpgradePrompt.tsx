@@ -62,14 +62,14 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
         <Button
           variant="default"
           onClick={() => handleUpgrade('https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss')}
-          className="w-full"
+          className="w-full h-12"
         >
           {language === 'sv' ? 'Uppgradera Prenumeration' : 'Upgrade Subscription'}
         </Button>
         <Button
           variant="default"
           onClick={() => handleUpgrade('https://buy.stripe.com/7sI00ZdkU1i11A4eV2')}
-          className="w-full"
+          className="w-full h-12"
         >
           {language === 'sv' ? 'Lägg till Avindexeringslänkar' : 'Add Deindexing links'}
         </Button>
@@ -77,7 +77,7 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
           variant="outline"
           onClick={handleSkip}
           disabled={isLoading}
-          className="w-full"
+          className="w-full h-12"
         >
           {isLoading ? 
             (language === 'sv' ? 'Hoppar över...' : 'Skipping...') : 
