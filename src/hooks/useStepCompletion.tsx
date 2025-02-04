@@ -55,6 +55,13 @@ export const useStepCompletion = () => {
       if (currentStep === 4 && checklistProgress?.street_address && 
           checklistProgress?.postal_code && 
           checklistProgress?.city) {
+        console.log('Final step completion check:', {
+          currentStep,
+          street_address: checklistProgress.street_address,
+          postal_code: checklistProgress.postal_code,
+          city: checklistProgress.city
+        });
+
         const { error: customerError } = await supabase
           .from('customers')
           .update({ 
@@ -68,6 +75,8 @@ export const useStepCompletion = () => {
           return;
         }
 
+        console.log('Launching confetti celebration...');
+        
         // Show completion celebration with more particles and multiple bursts
         const count = 200;
         const defaults = {
