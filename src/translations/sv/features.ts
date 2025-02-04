@@ -1,4 +1,3 @@
-
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -19,7 +18,7 @@ const features: FeaturesTranslations = {
   'step.2.description': 'Lägg till länkar som du önskar dölja på Google, t.e.x. (Sociala medier, Lexbase, Krimfup etc.)',
   'step.3.title': 'Upplysningssidor',
   'step.3.description': 'Välj vilka upplysningssidor du behöver hjälp att dölja dina uppgifter från',
-  'step.4.title': 'Identifiering',
+  'step.4.title': 'Adresslarm',
   'step.4.description': 'Skriv in din adress så att vi kan verifiera att vi tittar på rätt person när vi söker upp dina uppgifter på nätet',
   'step.identification.title': 'Identifiering',
   'step.identification.description': 'Skriv in din adress så att vi kan verifiera att vi tittar på rätt person när vi söker upp dina uppgifter på nätet',
@@ -93,4 +92,3 @@ const features: FeaturesTranslations = {
 };
 
 export default features;
-

@@ -1,4 +1,3 @@
-
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -19,7 +18,7 @@ const features: FeaturesTranslations = {
   'step.2.description': 'Add links that you wish to hide from Google, e.g. (Social media, Lexbase, Krimfup, etc.)',
   'step.3.title': 'Search sites',
   'step.3.description': 'Choose which sites you need help hiding your information from',
-  'step.4.title': 'Identification',
+  'step.4.title': 'Address Alerts',
   'step.4.description': 'Enter your address so we can verify we\'re looking at the right person when we look up your details online',
   'step.identification.title': 'Identification',
   'step.identification.description': 'Enter your address so we can verify we\'re looking at the right person when we look up your details online',
@@ -93,4 +92,3 @@ const features: FeaturesTranslations = {
 };
 
 export default features;
-
