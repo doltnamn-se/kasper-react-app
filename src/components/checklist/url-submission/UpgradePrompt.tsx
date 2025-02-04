@@ -11,11 +11,14 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
   const { language } = useLanguage();
   
   const handleUpgrade = async (url: string) => {
+    // Open upgrade URL in new tab
     window.open(url, '_blank');
+    // Complete the step
     await onComplete();
   };
 
   const handleSkip = async () => {
+    // Skip and mark as complete
     await onSkip();
     await onComplete();
   };
