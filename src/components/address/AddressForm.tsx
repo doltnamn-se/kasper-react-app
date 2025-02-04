@@ -94,6 +94,7 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
 
       if (customerError) throw customerError;
 
+      // Show success toast
       toast({
         title: language === 'sv' ? 'Adress sparad' : 'Address saved',
         description: language === 'sv' ? 
@@ -104,12 +105,13 @@ export const AddressForm = ({ onSuccess }: AddressFormProps) => {
       // Launch confetti immediately after successful save
       launchConfetti();
 
+      // Call onSuccess callback if provided
       if (onSuccess) {
         console.log('Calling onSuccess callback after saving address');
         await onSuccess();
       }
 
-      // Navigate to home page after a 3-second delay to allow confetti to be visible
+      // Navigate to home page after a delay to allow confetti to be visible
       setTimeout(() => {
         console.log('Navigating to home page after address save');
         navigate('/');
