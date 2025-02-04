@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { AddressSection } from "./form-sections/AddressSection";
 import { useNavigate } from "react-router-dom";
 import { launchConfetti } from "@/utils/confetti";
-import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface PersonalInfoFormData {
@@ -21,7 +20,6 @@ interface PersonalInfoFormProps {
 export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
   const { language } = useLanguage();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const { register, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>();
 
@@ -68,14 +66,6 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       console.log('Successfully updated customer and checklist progress');
 
-      // Show success toast
-      toast({
-        title: language === 'sv' ? 'Adress sparad' : 'Address saved',
-        description: language === 'sv' ? 
-          'Din adress har sparats och kommer att övervakas' : 
-          'Your address has been saved and will be monitored'
-      });
-
       // Launch confetti for completion
       launchConfetti();
 
@@ -89,13 +79,6 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
     } catch (error) {
       console.error('Error saving personal info:', error);
-      toast({
-        title: language === 'sv' ? 'Ett fel uppstod' : 'An error occurred',
-        description: language === 'sv' ? 
-          'Det gick inte att spara adressen' : 
-          'Could not save the address',
-        variant: "destructive"
-      });
     }
   };
 
