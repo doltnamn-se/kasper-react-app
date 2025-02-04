@@ -56,7 +56,6 @@ const ChecklistContent = () => {
   };
 
   const progress = calculateProgress();
-  const totalSteps = 4;
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12 checklist-page">
@@ -65,7 +64,6 @@ const ChecklistContent = () => {
           <div className="flex justify-between items-center mb-6">
             <AuthLogo />
             <div className="flex items-center gap-2">
-              <LanguageSwitch />
               <ThemeToggle />
             </div>
           </div>
@@ -76,14 +74,6 @@ const ChecklistContent = () => {
                 {t('nav.checklist')}
               </h1>
               <ChecklistProgress progress={progress} />
-              {!isMobile && progress !== 100 && (
-                <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-                  {t('step.progress', { 
-                    current: Math.ceil(progress / 25),
-                    total: totalSteps
-                  })}
-                </span>
-              )}
             </div>
           </div>
 
@@ -114,6 +104,11 @@ const ChecklistContent = () => {
                 )}
               </Card>
             </div>
+          </div>
+
+          {/* Footer with Language Selector */}
+          <div className="fixed bottom-6 left-6">
+            <LanguageSwitch />
           </div>
         </TooltipProvider>
       </div>
