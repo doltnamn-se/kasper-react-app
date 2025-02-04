@@ -35,7 +35,6 @@ const features: FeaturesTranslations = {
   'deindexing.incoming.links': 'Inkommande länkar',
   'deindexing.deindexed.links': 'Avindexerade länkar',
   'deindexing.no.incoming.links': 'Lägg till länkar för att se de här',
-  'deindexing.removed.links.placeholder': 'Dolda länkar kommer att synas här. Lägg till en länk för att komma igång',
   'deindexing.used.title': 'Använda URL:er',
   'deindexing.used.counter': '{count} av {total} URL:er använda',
   'deindexing.need.more': 'Behöver du fler URL:er?',
@@ -94,4 +93,3 @@ const features: FeaturesTranslations = {
 };
 
 export default features;
-
