@@ -73,9 +73,6 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Call onComplete callback
       await onComplete();
 
-      // Show success message
-      toast.success(language === 'sv' ? 'Checklistan är klar!' : 'Checklist completed!');
-
       // Navigate to home page after a delay to allow confetti to be visible
       setTimeout(() => {
         console.log('Navigating to home page after checklist completion');
