@@ -131,7 +131,7 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
       <Button
         type="submit"
         disabled={isLoading || (!noneSelected && selectedSites.length === 0)}
-        className="w-full"
+        className="w-full h-12"
       >
         {isLoading ? t('saving') : language === 'sv' ? 'Välj' : 'Choose'}
       </Button>
