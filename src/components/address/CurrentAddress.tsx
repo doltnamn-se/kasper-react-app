@@ -36,12 +36,12 @@ export const CurrentAddress = ({ addressData, onDelete }: CurrentAddressProps) =
         <p className="text-[#111827] dark:text-white text-base font-bold">
           {addressData.street_address}
         </p>
-        <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+        <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
           {addressData.postal_code} {addressData.city}
         </p>
       </div>
       <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
-        <p className="text-[#4b5563] dark:text-[#a1a1aa] text-sm">
+        <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
           {language === 'sv' 
             ? `Adresslarm aktivt sedan ${formatDate(addressData.created_at)}`
             : `Address alert active since ${formatDate(addressData.created_at)}`
