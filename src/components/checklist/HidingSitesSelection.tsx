@@ -94,20 +94,20 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-3">
         {HIDING_SITES.map((site) => (
           <button
             key={site.id}
             type="button"
             onClick={() => handleSiteToggle(site.id)}
             disabled={noneSelected}
-            className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
+            className={`flex items-center justify-between p-3 sm:p-4 text-left border rounded-lg transition-colors ${
               selectedSites.includes(site.id)
                 ? 'border-black dark:border-white bg-[#f8f8f7] dark:bg-[#2A2A2B]'
                 : 'border-gray-200 dark:border-[#232325] hover:border-gray-300 dark:hover:border-[#2A2A2B]'
             } ${noneSelected ? 'opacity-50' : ''}`}
           >
-            <span className="font-medium">{site.name}</span>
+            <span className="font-medium text-sm sm:text-base">{site.name}</span>
             {selectedSites.includes(site.id) && (
               <Check className="h-4 w-4 text-green-500" />
             )}
@@ -116,13 +116,13 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
         <button
           type="button"
           onClick={handleNoneSelection}
-          className={`flex items-center justify-between p-4 text-left border rounded-lg transition-colors ${
+          className={`flex items-center justify-between p-3 sm:p-4 text-left border rounded-lg transition-colors ${
             noneSelected
               ? 'border-black dark:border-white bg-[#f8f8f7] dark:bg-[#2A2A2B]'
               : 'border-gray-200 dark:border-[#232325] hover:border-gray-300 dark:hover:border-[#2A2A2B]'
           }`}
         >
-          <span className="font-medium">{language === 'sv' ? 'Ingen' : 'None'}</span>
+          <span className="font-medium text-sm sm:text-base">{language === 'sv' ? 'Ingen' : 'None'}</span>
           {noneSelected && (
             <X className="h-4 w-4 text-gray-500" />
           )}
