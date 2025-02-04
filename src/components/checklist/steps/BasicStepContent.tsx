@@ -34,7 +34,7 @@ export const BasicStepContent = ({
   return (
     <div className="space-y-4 animate-fade-in w-full">
       <div className="flex flex-col gap-2">
-        <h3 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
+        <h3 className="text-lg font-semibold">
           {getStepTitle(currentStep)}
         </h3>
         <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">

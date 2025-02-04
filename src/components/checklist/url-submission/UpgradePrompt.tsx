@@ -19,14 +19,14 @@ export const UpgradePrompt = ({ onSkip, isLoading }: UpgradePromptProps) => {
       <div className="flex flex-col gap-2">
         <Button
           variant="default"
-          onClick={() => window.open('https://buy.stripe.com/4gw2976Ww5yh92wcMW', '_blank')}
+          onClick={() => window.open('https://buy.stripe.com/dR67tr1Cc8KtguY147', '_blank')}
           className="w-full"
         >
           {language === 'sv' ? 'Uppgradera till 6 mån' : 'Upgrade to 6 mo'}
         </Button>
         <Button
           variant="default"
-          onClick={() => window.open('https://buy.stripe.com/bIYfZXft26Cl92w3cn', '_blank')}
+          onClick={() => window.open('https://buy.stripe.com/3cs5lj2Gg3q9diMeUY', '_blank')}
           className="w-full"
         >
           {language === 'sv' ? 'Uppgradera till 12 mån' : 'Upgrade to 12 mo'}

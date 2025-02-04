@@ -81,6 +81,11 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
         .eq('id', session.user.id);
 
       if (customerError) throw customerError;
+
+      toast({
+        title: "Sites selected",
+        description: "Your hiding preferences have been saved.",
+      });
       
       onComplete();
     } catch (error) {

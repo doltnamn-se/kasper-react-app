@@ -1,6 +1,6 @@
 import { FeaturesTranslations } from '../types/features';
 
-export const features: FeaturesTranslations = {
+const features: FeaturesTranslations = {
   'checklist': 'Checklista',
   'getting.started': 'Kom igång',
   'step.number': 'Steg {number}',
@@ -10,12 +10,12 @@ export const features: FeaturesTranslations = {
   'step.sites.title': 'Välj webbplatser',
   'step.sites.description': 'Välj vilka webbplatser du vill dölja din information från',
   'step.urls.title': 'Skicka in URL:er',
-  'step.urls.description': 'Lägg till länkar som du önskar dölja på Google, t.e.x. (Sociala medier, Lexbase, Krimfup etc.)',
+  'step.urls.description': 'Skicka in URL:er där din information visas',
   'step.info.title': 'Personlig information',
   'step.info.description': 'Ange din personliga information',
   'step.1.title': 'Nytt lösenord',
   'step.2.title': 'Avindexering',
-  'step.2.description': 'Lägg till länkar som du önskar dölja på Google, t.e.x. (Sociala medier, Lexbase, Krimfup etc.)',
+  'step.2.description': 'Skicka in URL:er där din information visas',
   'step.3.title': 'Upplysningssidor',
   'step.3.description': 'Välj vilka webbplatser du vill dölja din information från',
   'step.4.title': 'Identifiering',
@@ -30,7 +30,7 @@ export const features: FeaturesTranslations = {
   'saving': 'Sparar...',
   'url.limit.message': 'Du kan skicka in upp till {limit} URL:er',
   'url.remaining.message': 'Du har {count} URL:er kvar',
-  'url.no.plan': 'Det ingår inte avindexeringslänkar i vår månadsprenumeration. I vår 6-månaders prenumeration ingår det 2 länkar, och i vår 12-månaders prenumeration ingår det 4 länkar.',
+  'url.no.plan': 'Du behöver en prenumeration för att skicka in URL:er',
   'deindexing.incoming.links': 'Inkommande länkar',
   'deindexing.deindexed.links': 'Avindexerade länkar',
   'deindexing.no.incoming.links': 'Inga inkommande länkar',
@@ -90,3 +90,5 @@ export const features: FeaturesTranslations = {
   'deindexing.status.notification.title': 'Avindexeringsstatus uppdaterad',
   'deindexing.status.notification.message': 'Statusen för din avindexeringsbegäran har uppdaterats'
 };
+
+export default features;
