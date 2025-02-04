@@ -87,7 +87,7 @@ export const ProfileSection = () => {
             </TooltipTrigger>
             <TooltipContent 
               side="right" 
-              className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm z-[100]"
+              className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm z-[1000]"
             >
               <p>{getSubscriptionTooltipKey(customerData?.subscription_plan)}</p>
             </TooltipContent>
