@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { StepProgress } from "./StepProgress";
 import { StepContent } from "./StepContent";
@@ -22,7 +23,7 @@ export const ChecklistContainer = () => {
   });
 
   return (
-    <div className="space-y-0 animate-fadeInUp">
+    <div className="space-y-0 animate-fadeInUp transition-opacity duration-500">
       <StepProgress progress={calculateProgress()} />
       <div className="space-y-8">
         <div className="step-content-wrapper">

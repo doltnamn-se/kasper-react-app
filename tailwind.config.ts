@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -44,13 +45,18 @@ export default {
             opacity: '1',
             transform: 'translateY(0)'
           }
+        },
+        'fadeIn': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 300ms cubic-bezier(0.87, 0, 0.13, 1)',
         'accordion-up': 'accordion-up 300ms cubic-bezier(0.87, 0, 0.13, 1)',
         'progress-line': 'progress-line 5s linear forwards',
-        'fadeInUp': 'fadeInUp 0.6s ease-out forwards'
+        'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
+        'fadeIn': 'fadeIn 0.5s ease-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',

@@ -64,33 +64,34 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       console.log('Successfully updated customer and checklist progress');
       
-      // Launch confetti
+      // Launch confetti and handle navigation
       launchConfetti();
-      
-      // Call onComplete callback
-      await onComplete();
 
-      // Invalidate and wait for queries to settle
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
-        queryClient.invalidateQueries({ queryKey: ['customer-data'] }),
-        queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
-      ]);
-
-      // Wait for revalidation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Add fade-out animation
-      const checklistContainer = document.querySelector('.checklist-page');
-      if (checklistContainer) {
-        checklistContainer.classList.add('animate-fade-out');
+      // Add fade-out animation to checklist page
+      const checklistPage = document.querySelector('.checklist-page');
+      if (checklistPage) {
+        checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-500');
       }
+      
+      // Wait for confetti and fade-out, then navigate
+      setTimeout(async () => {
+        try {
+          // Call onComplete callback
+          await onComplete();
+          
+          // Invalidate queries
+          await Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
+            queryClient.invalidateQueries({ queryKey: ['customer-data'] }),
+            queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
+          ]);
 
-      // Navigate after delay
-      setTimeout(() => {
-        console.log('Navigating to home page after checklist completion');
-        navigate('/', { replace: true });
-      }, 1500);
+          // Navigate to home page
+          navigate('/', { replace: true });
+        } catch (error) {
+          console.error('Error in navigation sequence:', error);
+        }
+      }, 2000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
