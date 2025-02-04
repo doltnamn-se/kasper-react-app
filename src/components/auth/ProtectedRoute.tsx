@@ -34,40 +34,53 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
         }
 
         if (session?.user) {
-          // Fetch customer data and checklist progress
-          const [{ data: customerData }, { data: checklistProgress }] = await Promise.all([
-            supabase
-              .from('customers')
-              .select('checklist_completed')
-              .eq('id', session.user.id)
-              .single(),
-            supabase
+          // First check if customer has checklist_completed flag set
+          const { data: customerData, error: customerError } = await supabase
+            .from('customers')
+            .select('checklist_completed')
+            .eq('id', session.user.id)
+            .single();
+
+          if (customerError) {
+            console.error("Error fetching customer data:", customerError);
+            return;
+          }
+
+          // If checklist is already marked as completed, use that
+          if (customerData?.checklist_completed) {
+            setChecklistCompleted(true);
+          } else {
+            // Otherwise check the actual completion status
+            const { data: checklistProgress } = await supabase
               .from('customer_checklist_progress')
               .select('*')
               .eq('customer_id', session.user.id)
-              .single()
-          ]);
+              .single();
 
-          // Check if checklist is actually completed
-          const isChecklistCompleted = Boolean(
-            checklistProgress?.completed_at && 
-            checklistProgress?.password_updated && 
-            (checklistProgress?.removal_urls?.length > 0 || checklistProgress?.removal_urls?.includes('skipped')) &&
-            checklistProgress?.street_address &&
-            checklistProgress?.postal_code &&
-            checklistProgress?.city
-          );
+            const isChecklistCompleted = Boolean(
+              checklistProgress?.completed_at && 
+              checklistProgress?.password_updated && 
+              (checklistProgress?.removal_urls?.length > 0 || checklistProgress?.removal_urls?.includes('skipped')) &&
+              checklistProgress?.street_address &&
+              checklistProgress?.postal_code &&
+              checklistProgress?.city
+            );
 
-          // If checklist is completed but flag is not set, update it
-          if (isChecklistCompleted && !customerData?.checklist_completed) {
-            await supabase
-              .from('customers')
-              .update({ checklist_completed: true })
-              .eq('id', session.user.id);
-          }
+            // Update the checklist_completed flag if needed
+            if (isChecklistCompleted && !customerData?.checklist_completed) {
+              const { error: updateError } = await supabase
+                .from('customers')
+                .update({ checklist_completed: true })
+                .eq('id', session.user.id);
 
-          if (mounted) {
-            setChecklistCompleted(isChecklistCompleted);
+              if (updateError) {
+                console.error("Error updating checklist completion:", updateError);
+              }
+            }
+
+            if (mounted) {
+              setChecklistCompleted(isChecklistCompleted);
+            }
           }
         }
 
