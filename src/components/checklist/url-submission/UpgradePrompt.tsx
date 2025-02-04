@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface UpgradePromptProps {
   onSkip: () => void;
@@ -11,16 +12,44 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
   const { language } = useLanguage();
   
   const handleUpgrade = async (url: string) => {
-    // Open upgrade URL in new tab
-    window.open(url, '_blank');
-    // Complete the step
-    await onComplete();
+    try {
+      console.log('UpgradePrompt - Starting upgrade process');
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('No user session');
+
+      // Mark step as complete in checklist progress
+      const { error: progressError } = await supabase
+        .from('customer_checklist_progress')
+        .update({ 
+          removal_urls: ['skipped'],
+          completed_at: new Date().toISOString()
+        })
+        .eq('customer_id', session.user.id);
+
+      if (progressError) throw progressError;
+
+      // Open upgrade URL in new tab
+      window.open(url, '_blank');
+      
+      console.log('UpgradePrompt - Upgrade process complete, calling onComplete');
+      // Complete the step and move to next
+      await onComplete();
+    } catch (error) {
+      console.error('Error in handleUpgrade:', error);
+    }
   };
 
   const handleSkip = async () => {
-    // Skip and mark as complete
-    await onSkip();
-    await onComplete();
+    try {
+      console.log('UpgradePrompt - Starting skip process');
+      // First call onSkip to update the database
+      await onSkip();
+      console.log('UpgradePrompt - Skip successful, calling onComplete');
+      // Then call onComplete to move to next step
+      await onComplete();
+    } catch (error) {
+      console.error('Error in handleSkip:', error);
+    }
   };
 
   return (
