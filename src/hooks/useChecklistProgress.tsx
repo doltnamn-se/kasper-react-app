@@ -91,7 +91,8 @@ export const useChecklistProgress = () => {
     // Step 2: URLs submitted or skipped
     if (checklistProgress.removal_urls && 
         (checklistProgress.removal_urls.length > 0 || 
-         checklistProgress.removal_urls.includes('skipped'))) {
+         checklistProgress.removal_urls.includes('skipped') ||
+         checklistProgress.checklist_step > 2)) {
       console.log('Step 2 completed: URLs submitted or skipped');
       completedSteps++;
     } else {
@@ -109,7 +110,6 @@ export const useChecklistProgress = () => {
     }
     
     // Step 4: Final step (address)
-    // Changed logic to consider address as completed if street_address, postal_code, and city are present
     if (checklistProgress.street_address && 
         checklistProgress.postal_code && 
         checklistProgress.city) {
