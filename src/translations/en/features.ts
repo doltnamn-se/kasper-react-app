@@ -1,3 +1,4 @@
+
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -33,7 +34,7 @@ const features: FeaturesTranslations = {
   'url.no.plan': 'Deindexing links are not included in our monthly subscription',
   'deindexing.incoming.links': 'Incoming Links',
   'deindexing.deindexed.links': 'Deindexed Links',
-  'deindexing.no.incoming.links': 'No incoming links',
+  'deindexing.no.incoming.links': 'Add links to see them here',
   'deindexing.used.title': 'Used URLs',
   'deindexing.used.counter': '{count} of {total} URLs used',
   'deindexing.need.more': 'Need more URLs?',
