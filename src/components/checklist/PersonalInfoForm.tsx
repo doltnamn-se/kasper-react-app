@@ -67,13 +67,13 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       console.log('Successfully updated customer and checklist progress');
 
-      // Launch confetti for completion
+      // Launch confetti and navigate after a delay
       launchConfetti();
-
+      
       // Call onComplete callback
       await onComplete();
 
-      // Navigate to home page after a delay to allow confetti to be visible
+      // Navigate to home page after a delay
       setTimeout(() => {
         console.log('Navigating to home page after checklist completion');
         navigate('/', { replace: true });

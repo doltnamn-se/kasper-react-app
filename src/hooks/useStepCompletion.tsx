@@ -1,56 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import confetti from 'canvas-confetti';
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export const useStepCompletion = () => {
   const navigate = useNavigate();
-  const hasLaunchedConfetti = useRef(false);
-
-  const launchConfetti = () => {
-    if (hasLaunchedConfetti.current) return;
-    
-    console.log('Launching confetti celebration');
-    hasLaunchedConfetti.current = true;
-    
-    const count = 200;
-    const defaults = {
-      origin: { y: 0.7 }
-    };
-
-    function fire(particleRatio: number, opts: any) {
-      confetti({
-        ...defaults,
-        ...opts,
-        particleCount: Math.floor(count * particleRatio),
-        spread: 60,
-        startVelocity: 30,
-      });
-    }
-
-    fire(0.25, {
-      spread: 26,
-      startVelocity: 55,
-    });
-    fire(0.2, {
-      spread: 60,
-    });
-    fire(0.35, {
-      spread: 100,
-      decay: 0.91,
-      scalar: 0.8
-    });
-    fire(0.1, {
-      spread: 120,
-      startVelocity: 25,
-      decay: 0.92,
-      scalar: 1.2
-    });
-    fire(0.1, {
-      spread: 120,
-      startVelocity: 45,
-    });
-  };
 
   const isChecklistCompleted = (progress: any) => {
     if (!progress) return false;
@@ -84,15 +37,8 @@ export const useStepCompletion = () => {
 
         console.log('Checking checklist completion:', progress);
 
-        if (isChecklistCompleted(progress) && !hasLaunchedConfetti.current) {
-          console.log('Checklist completed! Triggering celebration');
-          launchConfetti();
-          
-          // Navigate to home page after a 3-second delay to allow confetti to be visible
-          setTimeout(() => {
-            console.log('Navigating to home page');
-            navigate('/');
-          }, 3000);
+        if (isChecklistCompleted(progress)) {
+          console.log('Checklist is completed');
         }
       } catch (error) {
         console.error('Error in checkCompletion:', error);
@@ -119,10 +65,6 @@ export const useStepCompletion = () => {
     }
 
     console.log('Current progress:', progress);
-    
-    if (isChecklistCompleted(progress) && !hasLaunchedConfetti.current) {
-      launchConfetti();
-    }
   };
 
   return { handleStepComplete };
