@@ -176,7 +176,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
           type="button"
           variant="outline"
           onClick={addUrlField}
-          className="w-full h-10"
+          className="w-full"
         >
           <Plus className="h-4 w-4 mr-2" />
           {t('url.add.another')}
@@ -186,7 +186,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-10"
+        className="w-full py-6"
       >
         {isLoading ? t('saving') : hasValidUrls ? t('save.urls') : t('step.2.skip')}
       </Button>
