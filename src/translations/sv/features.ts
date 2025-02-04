@@ -30,7 +30,7 @@ const features: FeaturesTranslations = {
   'saving': 'Sparar...',
   'url.limit.message': 'Du kan skicka in upp till {limit} URL:er',
   'url.remaining.message': 'Du har {count} URL:er kvar',
-  'url.no.plan': 'Du behöver en prenumeration för att skicka in URL:er',
+  'url.no.plan': 'Det ingår inte avindexeringslänkar i vår månadsprenumeration. I vår 6-månaders prenumeration ingår det 2 länkar, och i vår 12-månaders prenumeration ingår det 4 länkar.',
   'deindexing.incoming.links': 'Inkommande länkar',
   'deindexing.deindexed.links': 'Avindexerade länkar',
   'deindexing.no.incoming.links': 'Inga inkommande länkar',
