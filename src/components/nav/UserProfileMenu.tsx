@@ -73,7 +73,6 @@ export const UserProfileMenu = () => {
           <Avatar className="h-8 w-8">
             <AvatarImage 
               src={userProfile?.avatar_url} 
-              className="rounded-full"
               alt={displayName}
             />
             <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
