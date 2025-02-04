@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import confetti from 'canvas-confetti';
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const useStepCompletion = () => {
   const navigate = useNavigate();
+  const hasLaunchedConfetti = useRef(false);
 
   const launchConfetti = () => {
+    if (hasLaunchedConfetti.current) return;
+    
     console.log('Launching confetti celebration');
+    hasLaunchedConfetti.current = true;
+    
     const count = 200;
     const defaults = {
       origin: { y: 0.7 }
@@ -66,7 +71,7 @@ export const useStepCompletion = () => {
 
         console.log('Checking checklist completion:', progress);
 
-        if (progress?.completed_at) {
+        if (progress?.completed_at && !hasLaunchedConfetti.current) {
           console.log('Checklist completed! Triggering celebration');
           launchConfetti();
           
