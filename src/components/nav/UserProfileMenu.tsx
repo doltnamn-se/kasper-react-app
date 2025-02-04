@@ -70,9 +70,9 @@ export const UserProfileMenu = () => {
           variant="ghost" 
           className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group"
         >
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={userProfile?.avatar_url} />
-            <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
+          <Avatar className="h-8 w-8 rounded-full">
+            <AvatarImage src={userProfile?.avatar_url} className="rounded-full" />
+            <AvatarFallback className="bg-black/5 dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm rounded-full">
               {initials}
             </AvatarFallback>
           </Avatar>
