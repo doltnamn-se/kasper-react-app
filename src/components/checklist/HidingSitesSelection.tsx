@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { Check, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -25,7 +24,6 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
   const [selectedSites, setSelectedSites] = useState<HidingSite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [noneSelected, setNoneSelected] = useState(false);
-  const { toast } = useToast();
   const { t, language } = useLanguage();
 
   const handleSiteToggle = (siteId: HidingSite) => {
@@ -81,20 +79,10 @@ export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) 
         .eq('id', session.user.id);
 
       if (customerError) throw customerError;
-
-      toast({
-        title: "Sites selected",
-        description: "Your hiding preferences have been saved.",
-      });
       
       onComplete();
     } catch (error) {
       console.error('Error saving hiding preferences:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to save hiding preferences. Please try again.",
-      });
     } finally {
       setIsLoading(false);
     }

@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import { AddressSection } from "./form-sections/AddressSection";
 
 interface PersonalInfoFormData {
@@ -17,7 +16,6 @@ interface PersonalInfoFormProps {
 
 export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
   const { language } = useLanguage();
-  const { toast } = useToast();
   const { register, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>();
 
   const onSubmit = async (data: PersonalInfoFormData) => {
@@ -27,13 +25,6 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       if (!session?.user) return;
 
       if (!data.streetAddress || !data.postalCode || !data.city) {
-        toast({
-          title: language === 'sv' ? 'Validering misslyckades' : 'Validation failed',
-          description: language === 'sv' 
-            ? 'Du måste fylla i din adress' 
-            : 'You must fill in your address',
-          variant: "destructive"
-        });
         return;
       }
 
@@ -66,23 +57,9 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       console.log('Successfully updated customer and checklist progress');
 
-      toast({
-        title: language === 'sv' ? 'Information sparad' : 'Information saved',
-        description: language === 'sv' ? 
-          'Din information har sparats' : 
-          'Your information has been saved'
-      });
-
       await onComplete();
     } catch (error) {
       console.error('Error saving personal info:', error);
-      toast({
-        title: language === 'sv' ? 'Ett fel uppstod' : 'An error occurred',
-        description: language === 'sv' ? 
-          'Det gick inte att spara informationen' : 
-          'Could not save the information',
-        variant: "destructive"
-      });
     }
   };
 
