@@ -40,6 +40,11 @@ const Guides = () => {
     document.title = language === 'sv' ? 
       "Guider | Doltnamn.se" : 
       "Guides | Doltnamn.se";
+
+    const root = document.getElementById('root');
+    if (root) {
+      root.classList.add('animate-fadeIn');
+    }
   }, [language]);
 
   const handleAccordionChange = (accordionId: string) => {
@@ -64,15 +69,17 @@ const Guides = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {t('nav.guides')}
-      </h1>
-      <GuideGrid
-        guides={getGuides()}
-        openAccordions={openAccordions}
-        onAccordionChange={handleAccordionChange}
-        completedGuides={completedGuides}
-      />
+      <div className="animate-fadeIn">
+        <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+          {t('nav.guides')}
+        </h1>
+        <GuideGrid
+          guides={getGuides()}
+          openAccordions={openAccordions}
+          onAccordionChange={handleAccordionChange}
+          completedGuides={completedGuides}
+        />
+      </div>
     </MainLayout>
   );
 };

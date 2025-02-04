@@ -1,71 +1,102 @@
+import { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NotificationPreferences } from "@/components/settings/NotificationPreferences";
-import { PasswordChange } from "@/components/settings/PasswordChange";
-import { ProfileSettings } from "@/components/settings/ProfileSettings";
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { AccountSettings } from "@/components/settings/AccountSettings";
+import { SubscriptionSettings } from "@/components/settings/SubscriptionSettings";
+import { SecuritySettings } from "@/components/settings/SecuritySettings";
 
 const Settings = () => {
   const { t, language } = useLanguage();
-  const location = useLocation();
-  const [activeTab, setActiveTab] = useState("profile");
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("account");
+
+  const { data: userProfile, isLoading } = useQuery({
+    queryKey: ['user-profile'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return null;
+
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+  });
 
   useEffect(() => {
     document.title = language === 'sv' ? 
       "Inställningar | Doltnamn.se" : 
       "Settings | Doltnamn.se";
+
+    const root = document.getElementById('root');
+    if (root) {
+      root.classList.add('animate-fadeIn');
+    }
   }, [language]);
 
-  useEffect(() => {
-    // Check if there's a default tab in the location state
-    const state = location.state as { defaultTab?: string };
-    if (state?.defaultTab) {
-      setActiveTab(state.defaultTab);
-    }
-  }, [location]);
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white" />
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (!userProfile) {
+    return (
+      <MainLayout>
+        <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)] space-y-4">
+          <p className="text-lg font-medium text-gray-600 dark:text-gray-400">
+            {t('settings.error.profile')}
+          </p>
+          <Button onClick={() => navigate('/')}>
+            {t('settings.error.back')}
+          </Button>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
-      <div className="max-w-md mx-auto space-y-8">
+      <div className="animate-fadeIn">
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-          {t('profile.settings')}
+          {t('nav.settings')}
         </h1>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="profile" className="flex-1">{t('profile.manage')}</TabsTrigger>
-            <TabsTrigger value="notifications" className="flex-1">{t('notifications')}</TabsTrigger>
-            <TabsTrigger value="password" className="flex-1">{t('password')}</TabsTrigger>
+        <Tabs defaultValue="account" className="w-full" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 lg:w-[400px]">
+            <TabsTrigger value="account">{t('settings.tabs.account')}</TabsTrigger>
+            <TabsTrigger value="subscription">{t('settings.tabs.subscription')}</TabsTrigger>
+            <TabsTrigger value="security">{t('settings.tabs.security')}</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="profile" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                {t('profile.manage')}
-              </h2>
-              <ProfileSettings />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="notifications" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                {t('settings.notification.preferences')}
-              </h2>
-              <NotificationPreferences />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="password" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                {t('settings.change.password')}
-              </h2>
-              <PasswordChange />
-            </div>
-          </TabsContent>
+          
+          <div className="mt-6">
+            <TabsContent value="account">
+              <AccountSettings userProfile={userProfile} />
+            </TabsContent>
+            
+            <TabsContent value="subscription">
+              <SubscriptionSettings userProfile={userProfile} />
+            </TabsContent>
+            
+            <TabsContent value="security">
+              <SecuritySettings userProfile={userProfile} />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </MainLayout>
