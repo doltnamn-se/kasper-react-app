@@ -64,7 +64,7 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
           onClick={() => handleUpgrade('https://buy.stripe.com/4gw2976Ww5yh92wcMW')}
           className="w-full"
         >
-          {language === 'sv' ? 'Uppgradera prenumeration' : 'Upgrade subscription'}
+          {language === 'sv' ? 'Uppgradera Prenumeration' : 'Upgrade Subscription'}
         </Button>
         <Button
           variant="default"
