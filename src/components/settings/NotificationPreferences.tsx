@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -36,11 +37,7 @@ export const NotificationPreferences = () => {
           .insert({
             user_id: user.id,
             email_notifications: true,
-            in_app_notifications: true,
-            email_monitoring: true,
-            email_deindexing: true,
-            email_address_alerts: true,
-            email_news: true
+            in_app_notifications: true
           })
           .select()
           .single();
@@ -63,10 +60,6 @@ export const NotificationPreferences = () => {
     mutationFn: async (preferences: {
       emailNotifications?: boolean;
       inAppNotifications?: boolean;
-      emailMonitoring?: boolean;
-      emailDeindexing?: boolean;
-      emailAddressAlerts?: boolean;
-      emailNews?: boolean;
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('No user found');
@@ -77,10 +70,6 @@ export const NotificationPreferences = () => {
         .update({
           email_notifications: preferences.emailNotifications,
           in_app_notifications: preferences.inAppNotifications ?? notificationPrefs?.in_app_notifications,
-          email_monitoring: preferences.emailMonitoring,
-          email_deindexing: preferences.emailDeindexing,
-          email_address_alerts: preferences.emailAddressAlerts,
-          email_news: preferences.emailNews,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', user.id)
@@ -117,38 +106,8 @@ export const NotificationPreferences = () => {
 
     console.log('Handling main email toggle:', checked);
     updatePreferences.mutate({
-      emailNotifications: checked,
-      emailMonitoring: checked,
-      emailDeindexing: checked,
-      emailAddressAlerts: checked,
-      emailNews: checked,
+      emailNotifications: checked
     });
-  };
-
-  const handleSubPreferenceChange = (type: string, checked: boolean) => {
-    if (!notificationPrefs) return;
-
-    console.log('Handling sub preference change:', { type, checked });
-    const updates: any = {
-      emailNotifications: notificationPrefs.email_notifications,
-    };
-
-    switch (type) {
-      case 'monitoring':
-        updates.emailMonitoring = checked;
-        break;
-      case 'deindexing':
-        updates.emailDeindexing = checked;
-        break;
-      case 'addressAlerts':
-        updates.emailAddressAlerts = checked;
-        break;
-      case 'news':
-        updates.emailNews = checked;
-        break;
-    }
-
-    updatePreferences.mutate(updates);
   };
 
   return (
@@ -156,12 +115,7 @@ export const NotificationPreferences = () => {
       <InAppPreferences />
       <EmailPreferences
         emailNotifications={notificationPrefs?.email_notifications ?? false}
-        emailMonitoring={notificationPrefs?.email_monitoring ?? false}
-        emailDeindexing={notificationPrefs?.email_deindexing ?? false}
-        emailAddressAlerts={notificationPrefs?.email_address_alerts ?? false}
-        emailNews={notificationPrefs?.email_news ?? false}
         onMainToggle={handleMainEmailToggle}
-        onSubPreferenceChange={handleSubPreferenceChange}
       />
     </div>
   );
