@@ -37,7 +37,7 @@ export const EmailPreferences = ({
         <Switch
           checked={emailNotifications}
           onCheckedChange={onMainToggle}
-          className="data-[state=checked]:bg-[#000000] dark:data-[state=checked]:bg-[#c3caf5]"
+          className="data-[state=checked]:bg-[#000000] dark:data-[state=checked]:bg-[#FFFFFF] [&>span]:dark:data-[state=checked]:bg-[#1c1c1e]"
         />
       </div>
 
