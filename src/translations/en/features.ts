@@ -28,7 +28,7 @@ const features: FeaturesTranslations = {
   'url.add.another': 'Add another URL',
   'save.urls': 'Save URLs',
   'saving': 'Saving...',
-  'url.limit.message': 'You can submit up to {limit} URLs',
+  'url.limit.message': 'You can submit up to {limit} links',
   'url.remaining.message': 'You have {count} URLs remaining',
   'url.no.plan': 'Deindexing links are not included in our monthly subscription',
   'deindexing.incoming.links': 'Incoming Links',

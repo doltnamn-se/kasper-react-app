@@ -28,7 +28,7 @@ const features: FeaturesTranslations = {
   'url.add.another': 'Lägg till en till URL',
   'save.urls': 'Spara URL:er',
   'saving': 'Sparar...',
-  'url.limit.message': 'Du kan skicka in upp till {limit} URL:er',
+  'url.limit.message': 'Du kan skicka in upp till {limit} länkar',
   'url.remaining.message': 'Du har {count} URL:er kvar',
   'url.no.plan': 'Det ingår inte avindexeringslänkar i vår månadsprenumeration',
   'deindexing.incoming.links': 'Inkommande länkar',
