@@ -41,7 +41,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
         customerId,
         t('deindexing.status.notification.title'),
         t('deindexing.status.notification.message', { 
-          status: t(`deindexing.status.${newStatus.replace('_', '.')}`) 
+          status: getStatusText(newStatus, t)
         })
       );
     } catch (error) {
