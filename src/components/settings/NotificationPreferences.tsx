@@ -72,7 +72,7 @@ export const NotificationPreferences = () => {
         .from('notification_preferences')
         .update({
           email_notifications: emailNotifications,
-          in_app_notifications: inAppNotifications,
+          in_app_notifications: true, // Always keep in-app notifications on
           updated_at: new Date().toISOString()
         })
         .eq('user_id', user.id)
@@ -108,7 +108,7 @@ export const NotificationPreferences = () => {
 
     updatePreferences.mutate({
       emailNotifications: type === 'email' ? value : notificationPrefs.email_notifications,
-      inAppNotifications: type === 'inApp' ? value : notificationPrefs.in_app_notifications,
+      inAppNotifications: true, // Always keep in-app notifications on
     });
   };
 
@@ -124,8 +124,9 @@ export const NotificationPreferences = () => {
           </p>
         </div>
         <Switch
-          checked={notificationPrefs?.in_app_notifications ?? false}
-          onCheckedChange={(checked) => handleNotificationPreferenceChange('inApp', checked)}
+          checked={true}
+          disabled={true}
+          className="cursor-not-allowed"
         />
       </div>
 
