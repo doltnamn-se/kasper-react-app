@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { Progress } from "@/components/ui/progress";
+import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 
 const Index = () => {
   const { t, language } = useLanguage();
@@ -18,7 +19,6 @@ const Index = () => {
       "Översikt | Doltnamn.se" : 
       "Overview | Doltnamn.se";
       
-    // Add fade-in animation when component mounts
     const root = document.getElementById('root');
     if (root) {
       root.classList.add('animate-fadeIn');
@@ -27,10 +27,13 @@ const Index = () => {
 
   return (
     <MainLayout>
-      <div className="animate-fadeIn">
+      <div className="animate-fadeIn space-y-6">
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {t('nav.home')}
         </h1>
+
+        <PrivacyScoreCard />
+        
         <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
           <p className="text-[#000000] dark:text-gray-400 mb-6">
             {t('overview.welcome')}
