@@ -7,6 +7,7 @@ import { UrlInput } from "./url-submission/UrlInput";
 import { UpgradePrompt } from "./url-submission/UpgradePrompt";
 import { useUrlSubmission } from "./url-submission/useUrlSubmission";
 import { useChecklistSteps } from "@/hooks/useChecklistSteps";
+import { URLStatusStep } from "@/types/url-management";
 
 interface UrlSubmissionProps {
   onComplete: () => void;
@@ -133,7 +134,7 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
         customer_id: session.user.id,
         url,
         status: 'received',
-        current_status: 'received',
+        current_status: 'received' as URLStatusStep,
         status_history: [initialStatus],
         display_in_incoming: true
       }));
