@@ -60,34 +60,41 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
       console.log('Notification created successfully:', notificationData);
 
-      // Send email notification
-      const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
-        body: {
-          email: await getUserEmail(customerId),
-          title: t('deindexing.status.notification.title'),
-          message: t('deindexing.status.notification.message', { 
-            status: getStatusText(newStatus, t)
-          }),
-          type: 'removal'
-        }
-      });
+      // Get user email from profiles table
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('id', customerId)
+        .single();
 
-      if (emailError) {
-        console.error('Error sending email notification:', emailError);
-        // Don't throw here - we still created the in-app notification successfully
+      if (profileError) {
+        console.error('Error getting user email:', profileError);
+        throw profileError;
+      }
+
+      if (profileData?.email) {
+        // Send email notification
+        const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+          body: {
+            email: profileData.email,
+            title: t('deindexing.status.notification.title'),
+            message: t('deindexing.status.notification.message', { 
+              status: getStatusText(newStatus, t)
+            }),
+            type: 'removal'
+          }
+        });
+
+        if (emailError) {
+          console.error('Error sending email notification:', emailError);
+          // Don't throw here - we still created the in-app notification successfully
+        }
       }
       
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();
     }
-  };
-
-  // Helper function to get user's email
-  const getUserEmail = async (userId: string) => {
-    const { data: { user }, error } = await supabase.auth.admin.getUserById(userId);
-    if (error) throw error;
-    return user?.email;
   };
 
   return (
