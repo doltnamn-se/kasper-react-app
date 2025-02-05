@@ -14,7 +14,7 @@ interface NotificationEmailRequest {
   type: string;
 }
 
-serve(async (req) => {
+const handler = async (req: Request): Promise<Response> => {
   console.log("Received request to send-notification-email function");
 
   if (req.method === 'OPTIONS') {
@@ -51,11 +51,10 @@ serve(async (req) => {
       throw new Error(errorMsg);
     }
 
-    console.log("Initializing Resend with API key");
     const resend = new Resend(RESEND_API_KEY);
 
     console.log("Sending email...");
-    const emailResponse = await resend.emails.send({
+    const { data: emailResponse, error: emailError } = await resend.emails.send({
       from: 'Doltnamn.se <no-reply@doltnamn.se>',
       to: [email],
       subject: title,
@@ -115,6 +114,11 @@ serve(async (req) => {
       `,
     });
 
+    if (emailError) {
+      console.error("Error sending email:", emailError);
+      throw emailError;
+    }
+
     console.log("Email sent successfully:", emailResponse);
 
     return new Response(
@@ -143,4 +147,6 @@ serve(async (req) => {
       }
     );
   }
-});
+};
+
+serve(handler);
