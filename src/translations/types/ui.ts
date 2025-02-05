@@ -42,6 +42,10 @@ export interface UITranslations {
   'settings.change.password': string;
   'settings.password.updated': string;
   'settings.notification.preferences': string;
+  'settings.email.monitoring': string;
+  'settings.email.deindexing': string;
+  'settings.email.address.alerts': string;
+  'settings.email.news': string;
   'success.avatarUpdated': string;
   'success.avatarDeleted': string;
   'error.avatarDelete': string;
