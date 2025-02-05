@@ -5,12 +5,12 @@ import { toast } from "@/hooks/use-toast";
 export const useUrlNotifications = () => {
   const { t, language } = useLanguage();
 
-  const createStatusNotification = async (customerId: string) => {
+  const createStatusNotification = async (customerId: string, title: string, message: string) => {
     console.log('useUrlNotifications - Creating status notification:', { 
       customerId,
       currentLanguage: language,
-      translatedTitle: t('deindexing.status.notification.title'),
-      translatedMessage: t('deindexing.status.notification.message')
+      translatedTitle: title,
+      translatedMessage: message
     });
     
     try {
@@ -36,8 +36,8 @@ export const useUrlNotifications = () => {
           .from('notifications')
           .insert({
             user_id: customerId,
-            title: t('deindexing.status.notification.title'),
-            message: t('deindexing.status.notification.message'),
+            title: title,
+            message: message,
             type: 'removal',
             read: false
           });
@@ -62,13 +62,6 @@ export const useUrlNotifications = () => {
     }
   };
 
-  const showSuccessToast = () => {
-    toast({
-      title: t('success'),
-      description: t('success.update.status'),
-    });
-  };
-
   const showErrorToast = () => {
     toast({
       title: t('error'),
@@ -79,7 +72,6 @@ export const useUrlNotifications = () => {
 
   return {
     createStatusNotification,
-    showSuccessToast,
     showErrorToast
   };
 };

@@ -36,8 +36,12 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       
       console.log('URLStatusSelect - Creating notification');
       
-      // Create the notification without status in the message
-      await createStatusNotification(customerId);
+      // Create the notification with status in the message
+      await createStatusNotification(
+        customerId,
+        t('deindexing.status.notification.title'),
+        t('deindexing.status.notification.message', { status: t(`deindexing.status.${newStatus}`) })
+      );
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();
