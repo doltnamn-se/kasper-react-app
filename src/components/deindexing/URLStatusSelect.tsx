@@ -1,3 +1,4 @@
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLStatusStep } from "@/types/url-management";
@@ -37,7 +38,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       
       console.log('URLStatusSelect - Creating notification');
       
-      // Create the notification directly in the database
+      // Create the notification in the database
       const { data: notificationData, error: notificationError } = await supabase
         .from('notifications')
         .insert({
@@ -58,11 +59,35 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       }
 
       console.log('Notification created successfully:', notificationData);
+
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+        body: {
+          email: await getUserEmail(customerId),
+          title: t('deindexing.status.notification.title'),
+          message: t('deindexing.status.notification.message', { 
+            status: getStatusText(newStatus, t)
+          }),
+          type: 'removal'
+        }
+      });
+
+      if (emailError) {
+        console.error('Error sending email notification:', emailError);
+        // Don't throw here - we still created the in-app notification successfully
+      }
       
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();
     }
+  };
+
+  // Helper function to get user's email
+  const getUserEmail = async (userId: string) => {
+    const { data: { user }, error } = await supabase.auth.admin.getUserById(userId);
+    if (error) throw error;
+    return user?.email;
   };
 
   return (
