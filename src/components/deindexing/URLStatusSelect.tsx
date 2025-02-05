@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { URLStatusStep } from "@/types/url-management";
 import { getStatusText } from "./utils/statusUtils";
 import { useUrlNotifications } from "./hooks/useUrlNotifications";
+import { supabase } from "@/integrations/supabase/client";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -36,14 +37,28 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       
       console.log('URLStatusSelect - Creating notification');
       
-      // Create the notification with status in the message
-      await createStatusNotification(
-        customerId,
-        t('deindexing.status.notification.title'),
-        t('deindexing.status.notification.message', { 
-          status: getStatusText(newStatus, t)
+      // Create the notification directly in the database
+      const { data: notificationData, error: notificationError } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: customerId,
+          title: t('deindexing.status.notification.title'),
+          message: t('deindexing.status.notification.message', { 
+            status: getStatusText(newStatus, t)
+          }),
+          type: 'removal',
+          read: false
         })
-      );
+        .select()
+        .single();
+
+      if (notificationError) {
+        console.error('Error creating notification:', notificationError);
+        throw notificationError;
+      }
+
+      console.log('Notification created successfully:', notificationData);
+      
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();
