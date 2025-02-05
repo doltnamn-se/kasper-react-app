@@ -26,9 +26,10 @@ serve(async (req) => {
 
   try {
     const { email, title, message, type } = await req.json() as NotificationEmailRequest;
-    console.log("Processing email request for:", email, "type:", type);
+    console.log("Processing email request for:", { email, title, type });
 
     if (!email || !title || !message) {
+      console.error("Missing required fields:", { email, title, message });
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { 
@@ -40,10 +41,14 @@ serve(async (req) => {
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is not configured");
       throw new Error("RESEND_API_KEY is not configured");
     }
 
+    console.log("Initializing Resend with API key");
     const resend = new Resend(RESEND_API_KEY);
+
+    console.log("Sending email...");
     const emailResponse = await resend.emails.send({
       from: 'Doltnamn.se <no-reply@doltnamn.se>',
       to: [email],
