@@ -231,6 +231,10 @@ export type Database = {
       notification_preferences: {
         Row: {
           created_at: string
+          email_address_alerts: boolean | null
+          email_deindexing: boolean | null
+          email_monitoring: boolean | null
+          email_news: boolean | null
           email_notifications: boolean | null
           in_app_notifications: boolean | null
           updated_at: string
@@ -238,6 +242,10 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          email_address_alerts?: boolean | null
+          email_deindexing?: boolean | null
+          email_monitoring?: boolean | null
+          email_news?: boolean | null
           email_notifications?: boolean | null
           in_app_notifications?: boolean | null
           updated_at?: string
@@ -245,6 +253,10 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          email_address_alerts?: boolean | null
+          email_deindexing?: boolean | null
+          email_monitoring?: boolean | null
+          email_news?: boolean | null
           email_notifications?: boolean | null
           in_app_notifications?: boolean | null
           updated_at?: string

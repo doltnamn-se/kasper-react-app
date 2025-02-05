@@ -37,7 +37,11 @@ export const NotificationPreferences = () => {
           .insert({
             user_id: user.id,
             email_notifications: true,
-            in_app_notifications: true
+            in_app_notifications: true,
+            email_monitoring: true,
+            email_deindexing: true,
+            email_address_alerts: true,
+            email_news: true
           })
           .select()
           .single();
@@ -57,22 +61,27 @@ export const NotificationPreferences = () => {
   });
 
   const updatePreferences = useMutation({
-    mutationFn: async ({ 
-      emailNotifications, 
-      inAppNotifications 
-    }: { 
-      emailNotifications: boolean; 
-      inAppNotifications: boolean; 
+    mutationFn: async (preferences: {
+      emailNotifications?: boolean;
+      inAppNotifications?: boolean;
+      emailMonitoring?: boolean;
+      emailDeindexing?: boolean;
+      emailAddressAlerts?: boolean;
+      emailNews?: boolean;
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('No user found');
 
-      console.log('Updating notification preferences:', { emailNotifications, inAppNotifications });
+      console.log('Updating notification preferences:', preferences);
       const { data, error } = await supabase
         .from('notification_preferences')
         .update({
-          email_notifications: emailNotifications,
+          email_notifications: preferences.emailNotifications,
           in_app_notifications: true, // Always keep in-app notifications on
+          email_monitoring: preferences.emailMonitoring,
+          email_deindexing: preferences.emailDeindexing,
+          email_address_alerts: preferences.emailAddressAlerts,
+          email_news: preferences.emailNews,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', user.id)
@@ -103,13 +112,41 @@ export const NotificationPreferences = () => {
     },
   });
 
-  const handleNotificationPreferenceChange = (type: 'email' | 'inApp', value: boolean) => {
+  const handleMainEmailToggle = (checked: boolean) => {
     if (!notificationPrefs) return;
 
     updatePreferences.mutate({
-      emailNotifications: type === 'email' ? value : notificationPrefs.email_notifications,
-      inAppNotifications: true, // Always keep in-app notifications on
+      emailNotifications: checked,
+      emailMonitoring: checked,
+      emailDeindexing: checked,
+      emailAddressAlerts: checked,
+      emailNews: checked,
     });
+  };
+
+  const handleSubPreferenceChange = (type: string, checked: boolean) => {
+    if (!notificationPrefs) return;
+
+    const updates: any = {
+      emailNotifications: notificationPrefs.email_notifications,
+    };
+
+    switch (type) {
+      case 'monitoring':
+        updates.emailMonitoring = checked;
+        break;
+      case 'deindexing':
+        updates.emailDeindexing = checked;
+        break;
+      case 'addressAlerts':
+        updates.emailAddressAlerts = checked;
+        break;
+      case 'news':
+        updates.emailNews = checked;
+        break;
+    }
+
+    updatePreferences.mutate(updates);
   };
 
   return (
@@ -130,19 +167,65 @@ export const NotificationPreferences = () => {
         />
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
-            {t('settings.email.notifications')}
-          </label>
-          <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('settings.email.notifications.description')}
-          </p>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+              {t('settings.email.notifications')}
+            </label>
+            <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {t('settings.email.notifications.description')}
+            </p>
+          </div>
+          <Switch
+            checked={notificationPrefs?.email_notifications ?? false}
+            onCheckedChange={handleMainEmailToggle}
+          />
         </div>
-        <Switch
-          checked={notificationPrefs?.email_notifications ?? false}
-          onCheckedChange={(checked) => handleNotificationPreferenceChange('email', checked)}
-        />
+
+        {notificationPrefs?.email_notifications && (
+          <div className="ml-4 space-y-4 border-l-2 border-gray-200 pl-4">
+            <div className="flex items-center justify-between">
+              <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+                {t('settings.email.monitoring')}
+              </label>
+              <Switch
+                checked={notificationPrefs?.email_monitoring ?? false}
+                onCheckedChange={(checked) => handleSubPreferenceChange('monitoring', checked)}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+                {t('settings.email.deindexing')}
+              </label>
+              <Switch
+                checked={notificationPrefs?.email_deindexing ?? false}
+                onCheckedChange={(checked) => handleSubPreferenceChange('deindexing', checked)}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+                {t('settings.email.address.alerts')}
+              </label>
+              <Switch
+                checked={notificationPrefs?.email_address_alerts ?? false}
+                onCheckedChange={(checked) => handleSubPreferenceChange('addressAlerts', checked)}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+                {t('settings.email.news')}
+              </label>
+              <Switch
+                checked={notificationPrefs?.email_news ?? false}
+                onCheckedChange={(checked) => handleSubPreferenceChange('news', checked)}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
