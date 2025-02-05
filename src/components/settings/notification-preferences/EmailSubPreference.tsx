@@ -23,6 +23,7 @@ export const EmailSubPreference = ({
       <Switch
         checked={checked}
         onCheckedChange={onCheckedChange}
+        className="data-[state=checked]:bg-[#000000A6] dark:data-[state=checked]:bg-[#c3caf5]"
       />
     </div>
   );
