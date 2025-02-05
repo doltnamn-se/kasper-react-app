@@ -117,21 +117,6 @@ export const NotificationPreferences = () => {
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
-            {t('settings.email.notifications')}
-          </label>
-          <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('settings.email.notifications.description')}
-          </p>
-        </div>
-        <Switch
-          checked={notificationPrefs?.email_notifications ?? false}
-          onCheckedChange={(checked) => handleNotificationPreferenceChange('email', checked)}
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
             {t('settings.inapp.notifications')}
           </label>
           <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -141,6 +126,21 @@ export const NotificationPreferences = () => {
         <Switch
           checked={notificationPrefs?.in_app_notifications ?? false}
           onCheckedChange={(checked) => handleNotificationPreferenceChange('inApp', checked)}
+        />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+            {t('settings.email.notifications')}
+          </label>
+          <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('settings.email.notifications.description')}
+          </p>
+        </div>
+        <Switch
+          checked={notificationPrefs?.email_notifications ?? false}
+          onCheckedChange={(checked) => handleNotificationPreferenceChange('email', checked)}
         />
       </div>
     </div>
