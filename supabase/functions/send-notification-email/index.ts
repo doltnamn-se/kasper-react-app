@@ -27,7 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const requestData = await req.json();
-    console.log("Raw request data:", requestData);
+    console.log("Raw request data:", JSON.stringify(requestData));
 
     const { email, title, message, type } = requestData as NotificationEmailRequest;
     console.log("Processing email request for:", { email, title, type, message });
@@ -51,10 +51,11 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error(errorMsg);
     }
 
+    console.log("Initializing Resend with API key");
     const resend = new Resend(RESEND_API_KEY);
 
-    console.log("Sending email...");
-    const { data: emailResponse, error: emailError } = await resend.emails.send({
+    console.log("Attempting to send email...");
+    const { data, error } = await resend.emails.send({
       from: 'Doltnamn.se <no-reply@doltnamn.se>',
       to: [email],
       subject: title,
@@ -114,15 +115,15 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    if (emailError) {
-      console.error("Error sending email:", emailError);
-      throw emailError;
+    if (error) {
+      console.error("Resend API error:", error);
+      throw error;
     }
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("Email sent successfully:", JSON.stringify(data));
 
     return new Response(
-      JSON.stringify({ success: true, data: emailResponse }), 
+      JSON.stringify({ success: true, data }), 
       {
         status: 200,
         headers: {
@@ -132,13 +133,16 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   } catch (error: any) {
-    console.error("Error in send-notification-email function:", error);
-    const errorMessage = error?.response?.data?.message || error.message || "Unknown error";
-    console.error("Detailed error:", errorMessage);
+    console.error("Detailed error in send-notification-email function:", {
+      message: error.message,
+      stack: error.stack,
+      details: error.response?.data || error
+    });
     
     return new Response(
       JSON.stringify({ 
-        error: errorMessage,
+        error: error.message || "Unknown error",
+        details: error.response?.data || {},
         success: false 
       }),
       {
