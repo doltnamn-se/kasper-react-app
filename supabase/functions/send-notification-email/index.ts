@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { Resend } from "npm:resend@2.0.0";
 
@@ -25,13 +26,17 @@ serve(async (req) => {
   }
 
   try {
-    const { email, title, message, type } = await req.json() as NotificationEmailRequest;
+    const requestData = await req.json();
+    console.log("Raw request data:", requestData);
+
+    const { email, title, message, type } = requestData as NotificationEmailRequest;
     console.log("Processing email request for:", { email, title, type, message });
 
     if (!email || !title || !message) {
-      console.error("Missing required fields:", { email, title, message });
+      const errorMsg = "Missing required fields";
+      console.error(errorMsg + ":", { email, title, message });
       return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
+        JSON.stringify({ error: errorMsg }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 400 
@@ -41,8 +46,9 @@ serve(async (req) => {
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY) {
-      console.error("RESEND_API_KEY is not configured");
-      throw new Error("RESEND_API_KEY is not configured");
+      const errorMsg = "RESEND_API_KEY is not configured";
+      console.error(errorMsg);
+      throw new Error(errorMsg);
     }
 
     console.log("Initializing Resend with API key");
@@ -111,17 +117,26 @@ serve(async (req) => {
 
     console.log("Email sent successfully:", emailResponse);
 
-    return new Response(JSON.stringify(emailResponse), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
-    });
+    return new Response(
+      JSON.stringify({ success: true, data: emailResponse }), 
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders,
+        },
+      }
+    );
   } catch (error: any) {
     console.error("Error in send-notification-email function:", error);
+    const errorMessage = error?.response?.data?.message || error.message || "Unknown error";
+    console.error("Detailed error:", errorMessage);
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: errorMessage,
+        success: false 
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
