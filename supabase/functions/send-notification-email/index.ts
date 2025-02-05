@@ -26,7 +26,7 @@ serve(async (req) => {
 
   try {
     const { email, title, message, type } = await req.json() as NotificationEmailRequest;
-    console.log("Processing email request for:", { email, title, type });
+    console.log("Processing email request for:", { email, title, type, message });
 
     if (!email || !title || !message) {
       console.error("Missing required fields:", { email, title, message });
