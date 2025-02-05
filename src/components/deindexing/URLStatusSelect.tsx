@@ -40,7 +40,9 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       await createStatusNotification(
         customerId,
         t('deindexing.status.notification.title'),
-        t('deindexing.status.notification.message', { status: t(`deindexing.status.${newStatus}`) })
+        t('deindexing.status.notification.message', { 
+          status: t(`deindexing.status.${newStatus.replace('_', '.')}`) 
+        })
       );
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
