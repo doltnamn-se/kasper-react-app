@@ -29,7 +29,7 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
     if (isToggling) return;
     
     setIsToggling(true);
-    console.log('Toggle clicked, current completion status:', checked);
+    console.log('Toggle clicked for guide:', guideTitle, 'Current completion status:', checked);
     
     const guideId = getGuideId(guideTitle);
     if (!guideId) {
@@ -59,10 +59,17 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
       }
 
       // Update completed_guides array
-      const completedGuides = currentProgress?.completed_guides || [];
-      const updatedGuides = checked
-        ? [...new Set([...completedGuides, guideId])]
-        : completedGuides.filter(id => id !== guideId);
+      let completedGuides = currentProgress?.completed_guides || [];
+      
+      if (checked) {
+        // Add the guide if it's not already in the array
+        if (!completedGuides.includes(guideId)) {
+          completedGuides = [...completedGuides, guideId];
+        }
+      } else {
+        // Remove the guide from the array
+        completedGuides = completedGuides.filter(id => id !== guideId);
+      }
 
       // Mark related notification as read if completing the guide
       if (checked) {
@@ -83,7 +90,7 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
       const { error: progressError } = await supabase
         .from('customer_checklist_progress')
         .update({ 
-          completed_guides: updatedGuides,
+          completed_guides: completedGuides,
           updated_at: new Date().toISOString()
         })
         .eq('customer_id', userId);
@@ -93,7 +100,7 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
       const { error: customerError } = await supabase
         .from('customers')
         .update({ 
-          completed_guides: updatedGuides,
+          completed_guides: completedGuides,
           updated_at: new Date().toISOString()
         })
         .eq('id', userId);
@@ -101,7 +108,7 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
       if (customerError) throw customerError;
 
       setLocalCompleted(checked);
-      console.log('Successfully updated guide completion status');
+      console.log('Successfully updated guide completion status for:', guideTitle);
       
       // Invalidate relevant queries to trigger refetch
       await queryClient.invalidateQueries({ queryKey: ['completed-guides'] });
@@ -119,7 +126,7 @@ export const GuideToggle = ({ guideTitle, isCompleted }: GuideToggleProps) => {
 
     } catch (error) {
       console.error('Error updating guide completion:', error);
-      setLocalCompleted(!checked);
+      setLocalCompleted(!checked); // Revert local state on error
       toast({
         variant: "destructive",
         title: language === 'sv' ? "Ett fel uppstod" : "Error",
