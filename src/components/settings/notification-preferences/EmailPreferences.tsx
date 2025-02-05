@@ -31,6 +31,7 @@ export const EmailPreferences = ({
         <Switch
           checked={emailNotifications}
           onCheckedChange={onMainToggle}
+          aria-label="Toggle email notifications"
         />
       </div>
     </div>

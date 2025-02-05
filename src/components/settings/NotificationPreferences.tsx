@@ -101,11 +101,9 @@ export const NotificationPreferences = () => {
     },
   });
 
-  const handleMainEmailToggle = (checked: boolean) => {
-    if (!notificationPrefs) return;
-
+  const handleMainEmailToggle = async (checked: boolean) => {
     console.log('Handling main email toggle:', checked);
-    updatePreferences.mutate({
+    await updatePreferences.mutateAsync({
       emailNotifications: checked
     });
   };
