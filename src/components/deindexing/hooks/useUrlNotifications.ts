@@ -15,46 +15,24 @@ export const useUrlNotifications = () => {
     });
     
     try {
-      // First check if there's a recent notification of the same type and message
-      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
-      const { data: recentNotifications, error: checkError } = await supabase
+      const { data, error: notificationError } = await supabase
         .from('notifications')
-        .select('*')
-        .eq('user_id', customerId)
-        .eq('type', 'removal')
-        .eq('message', message) // Also check the message to allow different status updates
-        .gte('created_at', tenMinutesAgo);
+        .insert({
+          user_id: customerId,
+          title: title,
+          message: message,
+          type: 'removal',
+          read: false
+        })
+        .select()
+        .single();
 
-      if (checkError) {
-        console.error('useUrlNotifications - Error checking recent notifications:', checkError);
-        throw checkError;
+      if (notificationError) {
+        console.error('useUrlNotifications - Error creating notification:', notificationError);
+        throw notificationError;
       }
-
-      console.log('useUrlNotifications - Recent notifications found:', recentNotifications?.length || 0);
-
-      // Only create a new notification if there isn't a recent one with the same message
-      if (!recentNotifications || recentNotifications.length === 0) {
-        const { data, error: notificationError } = await supabase
-          .from('notifications')
-          .insert({
-            user_id: customerId,
-            title: title,
-            message: message,
-            type: 'removal',
-            read: false
-          })
-          .select()
-          .single();
-
-        if (notificationError) {
-          console.error('useUrlNotifications - Error creating notification:', notificationError);
-          throw notificationError;
-        }
-        
-        console.log('useUrlNotifications - Notification created successfully:', data);
-      } else {
-        console.log('useUrlNotifications - Skipping notification creation due to recent similar notification');
-      }
+      
+      console.log('useUrlNotifications - Notification created successfully:', data);
     } catch (error) {
       console.error('useUrlNotifications - Error in createStatusNotification:', error);
       toast({
