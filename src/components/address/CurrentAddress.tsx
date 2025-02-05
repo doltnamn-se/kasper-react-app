@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trash2 } from "lucide-react";
+import { Trash } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
@@ -28,10 +28,10 @@ export const CurrentAddress = ({ addressData, onDelete }: CurrentAddressProps) =
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
+        className="absolute top-2 right-2 hover:bg-transparent"
         onClick={onDelete}
       >
-        <Trash2 className="h-4 w-4" />
+        <Trash className="h-4 w-4 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]" />
       </Button>
       <div className="space-y-2 mb-4">
         <div className="flex items-center gap-2">
