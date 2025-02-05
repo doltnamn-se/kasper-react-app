@@ -26,7 +26,7 @@ const features: FeaturesTranslations = {
   'step.deindexing.description': 'Remove your information from search results',
   'url.input.placeholder': 'Enter URL',
   'url.add.another': 'Add another URL',
-  'save.urls': 'Save URLs',
+  'save.urls': 'Save',
   'saving': 'Saving...',
   'url.limit.message': 'You can submit up to {limit} links',
   'url.remaining.message': 'You have {count} URLs remaining',

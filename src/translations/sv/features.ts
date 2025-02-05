@@ -26,7 +26,7 @@ const features: FeaturesTranslations = {
   'step.deindexing.description': 'Ta bort din information från sökresultat',
   'url.input.placeholder': 'Ange URL',
   'url.add.another': 'Lägg till en till URL',
-  'save.urls': 'Spara URL:er',
+  'save.urls': 'Spara',
   'saving': 'Sparar...',
   'url.limit.message': 'Du kan skicka in upp till {limit} länkar',
   'url.remaining.message': 'Du har {count} URL:er kvar',
@@ -47,26 +47,20 @@ const features: FeaturesTranslations = {
   'guide.eniro.step1': 'Skriv in ditt namn i sökrutan',
   'guide.eniro.step2': 'Identifiera dig med Mobilt BankID',
   'guide.eniro.step3': 'Dölj dina uppgifter',
-  
   'guide.mrkoll.title': 'Mrkoll.se',
   'guide.mrkoll.step1': 'Identifiera dig med Mobilt BankID',
   'guide.mrkoll.step2': 'Dölj din adress och ditt telefonnummer',
-  
   'guide.hitta.title': 'Hitta.se',
   'guide.hitta.step1': 'Skriv in ditt namn i sökrutan',
   'guide.hitta.step2': 'Identifiera dig med Mobilt BankID',
-  
   'guide.merinfo.title': 'Merinfo.se',
   'guide.merinfo.step1': 'Identifiera dig med Mobilt BankID',
-  
   'guide.ratsit.title': 'Ratsit.se',
   'guide.ratsit.step1': 'Identifiera dig med Mobilt BankID.',
   'guide.ratsit.step2': 'Klicka på att dölja dina uppgifter.',
-  
   'guide.birthday.title': 'Birthday.se',
   'guide.birthday.step1': 'Fyll i formuläret.',
   'guide.birthday.step2': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN. "',
-  
   'guide.upplysning.title': 'Upplysning.se',
   'guide.upplysning.step1': 'Fyll i formuläret.',
   'guide.upplysning.step2': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN. "',
