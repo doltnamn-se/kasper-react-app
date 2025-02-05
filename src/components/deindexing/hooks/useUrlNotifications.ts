@@ -10,7 +10,8 @@ export const useUrlNotifications = () => {
       customerId,
       currentLanguage: language,
       translatedTitle: title,
-      translatedMessage: message
+      translatedMessage: message,
+      type: 'removal' // Explicitly log the type
     });
     
     try {
@@ -32,7 +33,7 @@ export const useUrlNotifications = () => {
 
       // Only create a new notification if there isn't a recent one
       if (!recentNotifications || recentNotifications.length === 0) {
-        const { error: notificationError } = await supabase
+        const { data, error: notificationError } = await supabase
           .from('notifications')
           .insert({
             user_id: customerId,
@@ -40,14 +41,16 @@ export const useUrlNotifications = () => {
             message: message,
             type: 'removal',
             read: false
-          });
+          })
+          .select()
+          .single();
 
         if (notificationError) {
           console.error('useUrlNotifications - Error creating notification:', notificationError);
           throw notificationError;
         }
         
-        console.log('useUrlNotifications - Notification created successfully');
+        console.log('useUrlNotifications - Notification created successfully:', data);
       } else {
         console.log('useUrlNotifications - Skipping notification creation due to recent similar notification');
       }
