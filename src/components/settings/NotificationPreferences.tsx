@@ -54,7 +54,7 @@ export const NotificationPreferences = () => {
         return newPrefs;
       }
 
-      console.log('Notification preferences:', data);
+      console.log('Fetched notification preferences:', data);
       return data;
     },
   });
@@ -76,7 +76,7 @@ export const NotificationPreferences = () => {
         .from('notification_preferences')
         .update({
           email_notifications: preferences.emailNotifications,
-          in_app_notifications: true,
+          in_app_notifications: preferences.inAppNotifications ?? notificationPrefs?.in_app_notifications,
           email_monitoring: preferences.emailMonitoring,
           email_deindexing: preferences.emailDeindexing,
           email_address_alerts: preferences.emailAddressAlerts,
@@ -92,6 +92,7 @@ export const NotificationPreferences = () => {
         throw error;
       }
 
+      console.log('Successfully updated preferences:', data);
       return data;
     },
     onSuccess: () => {
@@ -114,6 +115,7 @@ export const NotificationPreferences = () => {
   const handleMainEmailToggle = (checked: boolean) => {
     if (!notificationPrefs) return;
 
+    console.log('Handling main email toggle:', checked);
     updatePreferences.mutate({
       emailNotifications: checked,
       emailMonitoring: checked,
@@ -126,6 +128,7 @@ export const NotificationPreferences = () => {
   const handleSubPreferenceChange = (type: string, checked: boolean) => {
     if (!notificationPrefs) return;
 
+    console.log('Handling sub preference change:', { type, checked });
     const updates: any = {
       emailNotifications: notificationPrefs.email_notifications,
     };

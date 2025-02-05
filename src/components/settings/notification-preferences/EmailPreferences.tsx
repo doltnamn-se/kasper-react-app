@@ -23,6 +23,14 @@ export const EmailPreferences = ({
 }: EmailPreferencesProps) => {
   const { t } = useLanguage();
 
+  console.log('Email Preferences State:', {
+    emailNotifications,
+    emailMonitoring,
+    emailDeindexing,
+    emailAddressAlerts,
+    emailNews
+  });
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
