@@ -121,10 +121,20 @@ export const UrlSubmission = ({ onComplete }: UrlSubmissionProps) => {
 
       if (progressError) throw progressError;
 
-      // Insert URLs into removal_urls table
+      // Initialize status history for each URL
+      const timestamp = new Date().toISOString();
+      const initialStatus = {
+        status: 'received',
+        timestamp: timestamp
+      };
+
+      // Insert URLs into removal_urls table with status history
       const urlRows = validUrls.map(url => ({
         customer_id: session.user.id,
         url,
+        status: 'received',
+        current_status: 'received',
+        status_history: [initialStatus],
         display_in_incoming: true
       }));
 
