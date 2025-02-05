@@ -1,6 +1,8 @@
 import { GuideCard } from "./GuideCard";
 import { useGuideData } from "@/hooks/useGuideData";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface GuideGridProps {
   guides: Array<{
@@ -20,13 +22,36 @@ export const GuideGrid = ({
 }: GuideGridProps) => {
   const { getGuideId } = useGuideData();
   const { language } = useLanguage();
+
+  // Add a query to keep track of completed guides in real-time
+  const { data: currentCompletedGuides = completedGuides } = useQuery({
+    queryKey: ['completed-guides'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return [];
+
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('completed_guides')
+        .eq('customer_id', session.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching completed guides:', error);
+        return completedGuides;
+      }
+
+      return data?.completed_guides || [];
+    },
+    initialData: completedGuides,
+  });
   
   const pendingGuides = guides.filter(guide => 
-    !completedGuides.includes(getGuideId(guide.title))
+    !currentCompletedGuides.includes(getGuideId(guide.title))
   );
   
   const completedGuidesList = guides.filter(guide => 
-    completedGuides.includes(getGuideId(guide.title))
+    currentCompletedGuides.includes(getGuideId(guide.title))
   );
 
   const renderGuideSection = (sectionGuides: typeof guides) => {
@@ -38,24 +63,24 @@ export const GuideGrid = ({
         <div className="flex flex-col gap-4">
           {leftColumnGuides.map((guide, index) => (
             <GuideCard
-              key={index}
+              key={`${guide.title}-${currentCompletedGuides.includes(getGuideId(guide.title))}`}
               guide={guide}
               accordionId={`left-${index}`}
               isOpen={openAccordions.has(`left-${index}`)}
               onAccordionChange={onAccordionChange}
-              isCompleted={completedGuides.includes(getGuideId(guide.title))}
+              isCompleted={currentCompletedGuides.includes(getGuideId(guide.title))}
             />
           ))}
         </div>
         <div className="flex flex-col gap-4">
           {rightColumnGuides.map((guide, index) => (
             <GuideCard
-              key={index}
+              key={`${guide.title}-${currentCompletedGuides.includes(getGuideId(guide.title))}`}
               guide={guide}
               accordionId={`right-${index}`}
               isOpen={openAccordions.has(`right-${index}`)}
               onAccordionChange={onAccordionChange}
-              isCompleted={completedGuides.includes(getGuideId(guide.title))}
+              isCompleted={currentCompletedGuides.includes(getGuideId(guide.title))}
             />
           ))}
         </div>
