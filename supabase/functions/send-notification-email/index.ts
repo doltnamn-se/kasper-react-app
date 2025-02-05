@@ -104,27 +104,22 @@ serve(async (req) => {
       `,
     });
 
-    if (!emailResponse.data?.id) {
-      console.error("Error sending email:", emailResponse);
-      throw new Error("Failed to send notification email");
-    }
+    console.log("Email sent successfully:", emailResponse);
 
-    console.log("Notification email sent successfully");
+    return new Response(JSON.stringify(emailResponse), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
+    });
+  } catch (error: any) {
+    console.error("Error in send-notification-email function:", error);
     return new Response(
-      JSON.stringify({ success: true }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
-    );
-
-  } catch (err) {
-    console.error("Error in send-notification-email function:", err);
-    return new Response(
-      JSON.stringify({ error: err.message || "An unexpected error occurred" }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400 
+      JSON.stringify({ error: error.message }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
   }
