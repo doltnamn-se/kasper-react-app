@@ -3,8 +3,6 @@ import { URL, URLStatus } from "@/types/url-management";
 import { fetchAdminUrls, updateUrlStatus } from "./utils/urlQueries";
 import { useUrlSubscription } from "./useUrlSubscription";
 import { useUrlNotifications } from "./useUrlNotifications";
-import { useToast } from "@/hooks/use-toast";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export const useURLManagement = () => {
   const { 
@@ -17,11 +15,9 @@ export const useURLManagement = () => {
 
   const { 
     createStatusNotification, 
+    showSuccessToast, 
     showErrorToast 
   } = useUrlNotifications();
-
-  const { toast } = useToast();
-  const { t } = useLanguage();
 
   // Set up real-time subscription
   useUrlSubscription(refetch);
@@ -53,10 +49,7 @@ export const useURLManagement = () => {
       if (result) {
         console.log('useURLManagement - Status updated successfully, refreshing data');
         await refetch();
-        toast({
-          title: t('success'),
-          description: t('success.update.status'),
-        });
+        showSuccessToast();
       }
     } catch (error) {
       console.error('useURLManagement - Error in handleStatusChange:', error);

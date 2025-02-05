@@ -17,27 +17,27 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
     try {
-      // Skip if status hasn't changed
-      if (newStatus === currentStatus) {
-        console.log('URLStatusSelect - Status unchanged, skipping update');
-        return;
-      }
-
       console.log('URLStatusSelect - handleStatusChange called with:', { 
         urlId, 
         newStatus, 
         currentStatus,
         customerId 
       });
+      
+      // Skip if status hasn't changed
+      if (newStatus === currentStatus) {
+        console.log('URLStatusSelect - Status unchanged, skipping update');
+        return;
+      }
 
       // First update the status
       console.log('URLStatusSelect - Calling onStatusChange');
-      await onStatusChange(newStatus);
+      onStatusChange(newStatus);
       
-      // Only create notification if status was successfully updated
       console.log('URLStatusSelect - Creating notification');
-      await createStatusNotification(customerId);
       
+      // Create the notification without status in the message
+      await createStatusNotification(customerId);
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();

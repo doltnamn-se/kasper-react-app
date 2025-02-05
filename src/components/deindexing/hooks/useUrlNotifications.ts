@@ -1,10 +1,9 @@
-import { supabase } from '@/integrations/supabase/client';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useToast } from '@/hooks/use-toast';
+import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "@/hooks/use-toast";
 
 export const useUrlNotifications = () => {
   const { t, language } = useLanguage();
-  const { toast } = useToast();
 
   const createStatusNotification = async (customerId: string) => {
     console.log('useUrlNotifications - Creating status notification:', { 
@@ -47,27 +46,40 @@ export const useUrlNotifications = () => {
           console.error('useUrlNotifications - Error creating notification:', notificationError);
           throw notificationError;
         }
-
+        
         console.log('useUrlNotifications - Notification created successfully');
       } else {
         console.log('useUrlNotifications - Skipping notification creation due to recent similar notification');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('useUrlNotifications - Error in createStatusNotification:', error);
+      toast({
+        title: t('error'),
+        description: t('error.update.status'),
+        variant: "destructive",
+      });
       throw error;
     }
+  };
+
+  const showSuccessToast = () => {
+    toast({
+      title: t('success'),
+      description: t('success.update.status'),
+    });
   };
 
   const showErrorToast = () => {
     toast({
       title: t('error'),
-      description: t('error.update.status'),
+      description: t('error.unexpected'),
       variant: "destructive",
     });
   };
 
   return {
     createStatusNotification,
+    showSuccessToast,
     showErrorToast
   };
 };
