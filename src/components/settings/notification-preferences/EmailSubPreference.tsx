@@ -1,8 +1,9 @@
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Translations } from "@/translations/types";
 
 interface EmailSubPreferenceProps {
-  translationKey: string;
+  translationKey: keyof Translations;
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
 }
