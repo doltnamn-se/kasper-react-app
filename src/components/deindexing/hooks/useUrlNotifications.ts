@@ -16,12 +16,19 @@ export const useUrlNotifications = () => {
     try {
       // First check if there's a recent notification of the same type
       const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
-      const { data: recentNotifications } = await supabase
+      const { data: recentNotifications, error: checkError } = await supabase
         .from('notifications')
         .select('*')
         .eq('user_id', customerId)
         .eq('type', 'removal')
         .gte('created_at', tenMinutesAgo);
+
+      if (checkError) {
+        console.error('useUrlNotifications - Error checking recent notifications:', checkError);
+        throw checkError;
+      }
+
+      console.log('useUrlNotifications - Recent notifications found:', recentNotifications?.length || 0);
 
       // Only create a new notification if there isn't a recent one
       if (!recentNotifications || recentNotifications.length === 0) {
