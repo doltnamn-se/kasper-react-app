@@ -2,7 +2,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
-import { Shield, MapPinHouse, EyeOff } from "lucide-react";
+import { MousePointerClick, MapPinHouse, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -65,7 +65,7 @@ export const PrivacyScoreCard = () => {
 
       <div className="space-y-2">
         <ScoreItem
-          icon={Shield}
+          icon={MousePointerClick}
           title={language === 'sv' ? 'Guider' : 'Guides'}
           score={score.individual.guides}
           onClick={() => navigate('/guides')}
@@ -87,7 +87,7 @@ export const PrivacyScoreCard = () => {
       {score.total < 100 && (
         <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-900/30">
           <div className="flex items-start space-x-2">
-            <Shield className="w-5 h-5 text-yellow-500 dark:text-yellow-400 mt-0.5" />
+            <MousePointerClick className="w-5 h-5 text-yellow-500 dark:text-yellow-400 mt-0.5" />
             <div>
               <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
                 {language === 'sv' ? 'Förbättringsförslag' : 'Suggestions for Improvement'}
@@ -104,3 +104,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
