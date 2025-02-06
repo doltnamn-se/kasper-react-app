@@ -64,9 +64,14 @@ export const PrivacyScoreCard = () => {
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold">
-          {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
-        </h2>
+        <div>
+          <h2 className="text-lg font-semibold">
+            {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
+          </h2>
+          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+            {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
+          </p>
+        </div>
         <div className="relative flex items-center">
           <PieChart width={80} height={80}>
             <Pie
