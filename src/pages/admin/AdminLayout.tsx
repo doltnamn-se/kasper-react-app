@@ -49,7 +49,9 @@ const AdminLayout = () => {
         )}>
           <TopNav />
           <main className="px-4 md:px-12 pt-12">
-            <Outlet />
+            <div className="max-w-[1400px] mx-auto">
+              <Outlet />
+            </div>
           </main>
         </div>
       </div>
