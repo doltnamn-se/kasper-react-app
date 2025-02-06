@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -62,7 +63,7 @@ export const PrivacyScoreCard = () => {
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-6">
           <span className={cn("text-2xl font-bold", getColorClass(score.total))}>
             {score.total}%
           </span>
