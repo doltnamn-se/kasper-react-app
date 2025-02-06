@@ -37,7 +37,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
           href={url.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block"
+          className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white break-all block"
           title={url.url}
         >
           {url.url}
@@ -67,3 +67,4 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
     </TableRow>
   );
 };
+
