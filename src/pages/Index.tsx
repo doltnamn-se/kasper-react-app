@@ -3,9 +3,11 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 const Index = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
+  const { userProfile } = useUserProfile();
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -18,11 +20,16 @@ const Index = () => {
     }
   }, [language]);
 
+  const displayName = userProfile?.display_name?.split(' ')[0] || '';
+
   return (
     <MainLayout>
       <div className="animate-fadeIn space-y-6">
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-          {language === 'sv' ? 'Översikt' : 'Dashboard'}
+          {language === 'sv' ? 
+            `Välkommen, ${displayName} 👋` : 
+            `Welcome, ${displayName} 👋`
+          }
         </h1>
 
         <PrivacyScoreCard />
@@ -32,3 +39,4 @@ const Index = () => {
 };
 
 export default Index;
+
