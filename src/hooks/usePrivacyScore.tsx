@@ -1,13 +1,13 @@
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
-import { useGuideCompletion } from "@/hooks/useGuideCompletion";
+import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
 export const usePrivacyScore = () => {
   const { getGuides } = useGuideData();
   const { incomingUrls } = useIncomingUrls();
-  const { completedGuides } = useGuideCompletion();
+  const { checklistProgress } = useChecklistProgress();
   const allGuides = getGuides();
 
   const { data: subscriptionPlan } = useQuery({
@@ -31,7 +31,7 @@ export const usePrivacyScore = () => {
       allGuides,
       incomingUrls,
       subscriptionPlan,
-      completedGuides
+      completedGuides: checklistProgress?.completed_guides
     });
 
     // Initialize weights based on subscription plan
@@ -46,11 +46,11 @@ export const usePrivacyScore = () => {
     // Calculate individual scores with detailed logging
     const scores = {
       guides: allGuides.length > 0 ? 
-        (completedGuides?.length || 0) / allGuides.length : 1,
+        ((checklistProgress?.completed_guides?.length || 0) / allGuides.length) : 1,
       // Consider a guide related to address protection if it contains "address" in its title
       address: allGuides.some(guide => 
         guide.title.toLowerCase().includes('address') && 
-        completedGuides?.includes(guide.title)
+        checklistProgress?.completed_guides?.includes(guide.title)
       ) ? 1 : 0,
       urls: calculateUrlScore()
     };
