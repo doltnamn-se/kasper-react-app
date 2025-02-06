@@ -22,14 +22,14 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
     return (
       <Link 
         to={path} 
-        className={`flex items-center justify-between gap-3 mb-3 py-2.5 px-3 rounded-md ${
+        className={`flex items-center justify-between gap-3 mb-3 py-2.5 rounded-md ${
           isActive 
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
         onClick={toggleMobileMenu}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 px-3">
           <span className="text-black dark:text-white">{icon}</span>
           <span className="text-sm text-[#000000] dark:text-white font-medium">{label}</span>
         </div>

@@ -29,7 +29,7 @@ const AdminLayout = () => {
             )
           )
         )}>
-          <div className="p-6 flex justify-between items-center">
+          <div className="px-6 py-6 flex justify-between items-center">
             <h1 className={cn(
               "text-xl font-bold text-black dark:text-white transition-opacity duration-200",
               isCollapsed && !isMobile ? "opacity-0" : "opacity-100"
@@ -37,7 +37,9 @@ const AdminLayout = () => {
               Admin Dashboard
             </h1>
           </div>
-          <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
+          <div className="px-6">
+            <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
+          </div>
           <SidebarFooter />
         </div>
 
