@@ -5,6 +5,7 @@ import { TopNav } from "@/components/TopNav";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SidebarFooter } from "@/components/nav/SidebarFooter";
 
 const AdminLayout = () => {
   const { isCollapsed, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
@@ -37,6 +38,7 @@ const AdminLayout = () => {
             </h1>
           </div>
           <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
+          <SidebarFooter />
         </div>
 
         {/* Main Content */}
