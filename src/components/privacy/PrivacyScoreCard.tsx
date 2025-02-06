@@ -64,10 +64,18 @@ export const PrivacyScoreCard = () => {
           </p>
         </div>
         <div className="space-y-10">
-          <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
-            {score.total}
-          </span>
-          <div className="flex-1">
+          <div className="relative">
+            <div 
+              className="absolute text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]"
+              style={{ 
+                left: `${Math.min(Math.max(score.total, 0), 100)}%`,
+                transform: 'translateX(-50%)',
+                top: '-20px'
+              }}
+            >
+              {score.total}
+            </div>
+            <div className="h-16"></div>
             <Progress value={score.total} className="h-3">
               <div className={cn("h-full transition-all", getProgressClass(score.total))} style={{ width: `${score.total}%` }} />
             </Progress>
@@ -120,3 +128,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
