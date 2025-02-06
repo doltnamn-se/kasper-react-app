@@ -15,11 +15,14 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
   const [customers, setCustomers] = useState<CustomerWithProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
+  const [lastSeen, setLastSeen] = useState<Record<string, string>>({});
 
   const fetchCustomers = async () => {
     try {
@@ -56,6 +59,39 @@ const AdminCustomers = () => {
 
   useEffect(() => {
     fetchCustomers();
+
+    // Subscribe to presence channel
+    const channel = supabase.channel('online-users');
+
+    channel
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        const online = new Set(
+          Object.values(state)
+            .flat()
+            .map((presence: any) => presence.user_id)
+        );
+        setOnlineUsers(online);
+
+        // Update last seen times
+        const newLastSeen: Record<string, string> = {};
+        Object.values(state).flat().forEach((presence: any) => {
+          newLastSeen[presence.user_id] = presence.last_seen;
+        });
+        setLastSeen(newLastSeen);
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await channel.track({
+            user_id: supabase.auth.getUser(),
+            last_seen: new Date().toISOString(),
+          });
+        }
+      });
+
+    return () => {
+      channel.unsubscribe();
+    };
   }, []);
 
   return (
@@ -81,6 +117,7 @@ const AdminCustomers = () => {
               <TableRow>
                 <TableHead>Customer</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Online Status</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Plan</TableHead>
                 <TableHead>Created</TableHead>
@@ -101,13 +138,19 @@ const AdminCustomers = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      customer.onboarding_completed 
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
-                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100'
-                    }`}>
+                    <Badge variant={customer.onboarding_completed ? "default" : "secondary"}>
                       {customer.onboarding_completed ? 'Completed' : 'In Progress'}
-                    </div>
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={onlineUsers.has(customer.profile?.id || '') ? "default" : "secondary"}>
+                      {onlineUsers.has(customer.profile?.id || '') ? 'Online' : 'Offline'}
+                    </Badge>
+                    {!onlineUsers.has(customer.profile?.id || '') && lastSeen[customer.profile?.id || ''] && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Last seen: {format(new Date(lastSeen[customer.profile?.id || '']), 'MMM d, HH:mm')}
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell className="capitalize">
                     {customer.customer_type}
@@ -136,3 +179,4 @@ const AdminCustomers = () => {
 };
 
 export default AdminCustomers;
+

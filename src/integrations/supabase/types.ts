@@ -356,6 +356,55 @@ export type Database = {
           },
         ]
       }
+      user_presence: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_seen: string | null
+          status: Database["public"]["Enums"]["presence_status"]
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_seen?: string | null
+          status?: Database["public"]["Enums"]["presence_status"]
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_seen?: string | null
+          status?: Database["public"]["Enums"]["presence_status"]
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_presence_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_cache"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_presence_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_presence_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_roles_cache"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_url_limits: {
         Row: {
           additional_urls: number
@@ -413,6 +462,7 @@ export type Database = {
         | "merinfo"
         | "mrkoll"
         | "upplysning"
+      presence_status: "online" | "offline"
       subscription_plan: "1_month" | "6_months" | "12_months"
       url_status_step:
         | "received"
