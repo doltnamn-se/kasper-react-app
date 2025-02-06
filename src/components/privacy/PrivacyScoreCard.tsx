@@ -40,4 +40,99 @@ export const PrivacyScoreCard = () => {
       className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
       onClick={onClick}
     >
-      <Icon className={cn("w-5 h-5",
+      <Icon className={cn("w-5 h-5", getColorClass(score))} />
+      <div className="flex-1">
+        <div className="text-sm font-medium">{title}</div>
+        <Progress value={score} className="h-2 mt-1">
+          <div className={cn("h-full transition-all", getProgressClass(score))} style={{ width: `${score}%` }} />
+        </Progress>
+      </div>
+      <span className={cn("text-sm font-semibold", getColorClass(score))}>
+        {score}%
+      </span>
+    </div>
+  );
+
+  // Data for the donut chart
+  const data = [
+    { value: score.total },
+    { value: 100 - score.total }
+  ];
+
+  const COLORS = ['#22c55e', '#e5e7eb']; // Green for filled, gray for empty
+
+  return (
+    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-lg font-semibold">
+          {language === 'sv' ? 'Sekretesspoäng' : 'Privacy Score'}
+        </h2>
+        <div className="relative flex items-center">
+          <PieChart width={80} height={80}>
+            <Pie
+              data={data}
+              innerRadius={25}
+              outerRadius={35}
+              paddingAngle={0}
+              dataKey="value"
+              startAngle={180}
+              endAngle={-180}
+            >
+              {data.map((entry, index) => (
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={COLORS[index]} 
+                  className="transition-all duration-500"
+                />
+              ))}
+            </Pie>
+          </PieChart>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className={cn("text-2xl font-bold", getColorClass(score.total))}>
+              {score.total}%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <ScoreItem
+          icon={MousePointerClick}
+          title={language === 'sv' ? 'Guider' : 'Guides'}
+          score={score.individual.guides}
+          onClick={() => navigate('/guides')}
+        />
+        <ScoreItem
+          icon={MapPinHouse}
+          title={language === 'sv' ? 'Adresskydd' : 'Address Protection'}
+          score={score.individual.address}
+          onClick={() => navigate('/address-alerts')}
+        />
+        <ScoreItem
+          icon={EyeOff}
+          title={language === 'sv' ? 'Avindexering' : 'Deindexing'}
+          score={score.individual.urls}
+          onClick={() => navigate('/deindexing')}
+        />
+      </div>
+
+      {score.total < 100 && (
+        <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-900/30">
+          <div className="flex items-start space-x-2">
+            <Lightbulb className="w-5 h-5 text-yellow-500 dark:text-yellow-400 mt-0.5" />
+            <div>
+              <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                {language === 'sv' ? 'Förbättringsförslag' : 'Suggestions for Improvement'}
+              </h3>
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                {language === 'sv' 
+                  ? 'Klicka på någon av kategorierna ovan för att förbättra din sekretesspoäng.'
+                  : 'Click on any of the categories above to improve your privacy score.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
