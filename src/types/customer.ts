@@ -1,6 +1,15 @@
+
 import { Database } from "@/integrations/supabase/types";
 
-export type Profile = Database['public']['Tables']['profiles']['Row'];
+export type Profile = {
+  id: string;
+  display_name: string | null;
+  email: string | null;
+  avatar_url: string | null;
+  role: "super_admin" | "customer";
+  created_at: string;
+  updated_at: string;
+};
 
 export type Customer = Database['public']['Tables']['customers']['Row'];
 

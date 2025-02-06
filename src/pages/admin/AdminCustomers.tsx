@@ -28,9 +28,13 @@ const AdminCustomers = () => {
         .select(`
           *,
           profile: profiles (
+            id,
             display_name,
             email,
-            avatar_url
+            avatar_url,
+            role,
+            created_at,
+            updated_at
           )
         `)
         .order('created_at', { ascending: false });
