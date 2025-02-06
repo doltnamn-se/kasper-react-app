@@ -5,7 +5,6 @@ import { Progress } from "@/components/ui/progress";
 import { MousePointerClick, MapPinHouse, EyeOff, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { PieChart, Pie, Cell } from 'recharts';
 
 export const PrivacyScoreCard = () => {
   const { calculateScore } = usePrivacyScore();
@@ -53,17 +52,9 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 
-  // Data for the donut chart
-  const data = [
-    { value: score.total },
-    { value: 100 - score.total }
-  ];
-
-  const COLORS = ['#22c55e', '#e5e7eb']; // Green for filled, gray for empty
-
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-      <div className="flex items-center justify-between mb-6">
+      <div className="space-y-4 mb-6">
         <div>
           <h2 className="text-lg font-semibold">
             {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
@@ -72,31 +63,15 @@ export const PrivacyScoreCard = () => {
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
-        <div className="relative flex items-center">
-          <PieChart width={80} height={80}>
-            <Pie
-              data={data}
-              innerRadius={25}
-              outerRadius={35}
-              paddingAngle={0}
-              dataKey="value"
-              startAngle={180}
-              endAngle={-180}
-            >
-              {data.map((entry, index) => (
-                <Cell 
-                  key={`cell-${index}`} 
-                  fill={COLORS[index]} 
-                  className="transition-all duration-500"
-                />
-              ))}
-            </Pie>
-          </PieChart>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className={cn("text-2xl font-bold", getColorClass(score.total))}>
-              {score.total}%
-            </span>
+        <div className="flex items-center">
+          <div className="flex-1">
+            <Progress value={score.total} className="h-3">
+              <div className={cn("h-full transition-all", getProgressClass(score.total))} style={{ width: `${score.total}%` }} />
+            </Progress>
           </div>
+          <span className={cn("ml-4 text-2xl font-bold", getColorClass(score.total))}>
+            {score.total}%
+          </span>
         </div>
       </div>
 
@@ -141,4 +116,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
