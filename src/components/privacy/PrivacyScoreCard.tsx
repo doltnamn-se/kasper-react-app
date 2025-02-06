@@ -64,7 +64,7 @@ export const PrivacyScoreCard = () => {
           </p>
         </div>
         <div className="space-y-10">
-          <span className={cn("text-6xl font-bold", getColorClass(score.total))}>
+          <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
             {score.total}%
           </span>
           <div className="flex-1">
@@ -120,3 +120,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
