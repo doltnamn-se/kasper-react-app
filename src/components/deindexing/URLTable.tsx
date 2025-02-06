@@ -26,10 +26,10 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[300px]">{t('deindexing.url')}</TableHead>
-          <TableHead className="w-[200px]">{t('deindexing.customer')}</TableHead>
-          <TableHead className="w-[150px]">{t('deindexing.submitted')}</TableHead>
-          <TableHead className="min-w-[300px]">{t('deindexing.status')}</TableHead>
+          <TableHead className="w-[240px]">{t('deindexing.url')}</TableHead>
+          <TableHead className="w-[180px]">{t('deindexing.customer')}</TableHead>
+          <TableHead className="w-[140px]">{t('deindexing.submitted')}</TableHead>
+          <TableHead className="w-[240px]">{t('deindexing.status')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -44,3 +44,4 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
     </Table>
   );
 };
+
