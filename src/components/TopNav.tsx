@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -76,3 +77,4 @@ export const TopNav = () => {
     </div>
   );
 };
+
