@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLTableRow } from "./URLTableRow";
@@ -25,10 +26,10 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[120px]">{t('deindexing.url')}</TableHead>
-          <TableHead className="w-[180px]">{t('deindexing.customer')}</TableHead>
-          <TableHead className="w-[120px]">{t('deindexing.submitted')}</TableHead>
-          <TableHead>{t('deindexing.status')}</TableHead>
+          <TableHead className="w-[300px]">{t('deindexing.url')}</TableHead>
+          <TableHead className="w-[200px]">{t('deindexing.customer')}</TableHead>
+          <TableHead className="w-[150px]">{t('deindexing.submitted')}</TableHead>
+          <TableHead className="min-w-[300px]">{t('deindexing.status')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

@@ -1,3 +1,4 @@
+
 import { TableCell, TableRow } from "@/components/ui/table";
 import { URLStatusSelect } from "./URLStatusSelect";
 import { formatDistanceToNow } from "date-fns";
@@ -43,19 +44,26 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
 
   return (
     <TableRow>
-      <TableCell className="w-[120px] truncate">
+      <TableCell className="w-[300px]">
         <a 
           href={url.url} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white"
+          className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block"
+          title={url.url}
         >
           {url.url}
         </a>
       </TableCell>
-      <TableCell className="w-[180px] truncate">{url.customer.profiles.email}</TableCell>
-      <TableCell className="w-[120px] whitespace-nowrap">{formatDate(url.created_at)}</TableCell>
-      <TableCell>
+      <TableCell className="w-[200px]">
+        <span className="truncate block" title={url.customer.profiles.email}>
+          {url.customer.profiles.email}
+        </span>
+      </TableCell>
+      <TableCell className="w-[150px] whitespace-nowrap">
+        {formatDate(url.created_at)}
+      </TableCell>
+      <TableCell className="min-w-[300px]">
         <div className="flex items-center justify-between gap-2">
           <div className="flex-grow">
             <StatusStepper 
