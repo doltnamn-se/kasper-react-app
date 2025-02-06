@@ -1,11 +1,13 @@
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
+import { useGuideCompletion } from "@/hooks/useGuideCompletion";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
 export const usePrivacyScore = () => {
   const { getGuides } = useGuideData();
   const { incomingUrls } = useIncomingUrls();
+  const { completedGuides } = useGuideCompletion();
   const allGuides = getGuides();
 
   const { data: subscriptionPlan } = useQuery({
@@ -28,7 +30,8 @@ export const usePrivacyScore = () => {
     console.log('Calculating privacy score with:', {
       allGuides,
       incomingUrls,
-      subscriptionPlan
+      subscriptionPlan,
+      completedGuides
     });
 
     // Initialize weights based on subscription plan
@@ -43,8 +46,12 @@ export const usePrivacyScore = () => {
     // Calculate individual scores with detailed logging
     const scores = {
       guides: allGuides.length > 0 ? 
-        (allGuides.filter(guide => guide.completed).length) / allGuides.length : 1,
-      address: allGuides.some(guide => guide.type === 'address_protection' && guide.completed) ? 1 : 0,
+        (completedGuides?.length || 0) / allGuides.length : 1,
+      // Consider a guide related to address protection if it contains "address" in its title
+      address: allGuides.some(guide => 
+        guide.title.toLowerCase().includes('address') && 
+        completedGuides?.includes(guide.title)
+      ) ? 1 : 0,
       urls: calculateUrlScore()
     };
 
