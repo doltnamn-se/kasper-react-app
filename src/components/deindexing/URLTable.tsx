@@ -23,14 +23,14 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
   const { t } = useLanguage();
 
   return (
-    <div className="overflow-x-auto">
+    <div className="w-full relative">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[30%]">{t('deindexing.url')}</TableHead>
+            <TableHead className="w-[35%]">{t('deindexing.url')}</TableHead>
             <TableHead className="w-[25%]">{t('deindexing.customer')}</TableHead>
             <TableHead className="w-[15%]">{t('deindexing.submitted')}</TableHead>
-            <TableHead className="w-[30%]">{t('deindexing.status')}</TableHead>
+            <TableHead className="w-[25%]">{t('deindexing.status')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
