@@ -68,6 +68,10 @@ export const PrivacyScoreCard = () => {
             <Progress value={score.total} className="h-3">
               <div className={cn("h-full transition-all", getProgressClass(score.total))} style={{ width: `${score.total}%` }} />
             </Progress>
+            <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
+              <span>0</span>
+              <span>100</span>
+            </div>
           </div>
           <span className={cn("ml-4 text-2xl font-bold", getColorClass(score.total))}>
             {score.total}%
@@ -116,3 +120,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
