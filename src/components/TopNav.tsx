@@ -68,6 +68,7 @@ export const TopNav = () => {
         
         <div className="flex items-center gap-2 ml-auto">
           <TooltipProvider delayDuration={300}>
+            <ThemeToggle />
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -83,7 +84,6 @@ export const TopNav = () => {
                 <p>{t('messages')}</p>
               </TooltipContent>
             </Tooltip>
-            <ThemeToggle />
             <NotificationButtons />
           </TooltipProvider>
           <UserProfileMenu />
