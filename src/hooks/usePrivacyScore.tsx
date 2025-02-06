@@ -1,11 +1,9 @@
-import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
 export const usePrivacyScore = () => {
-  const { checklistProgress, calculateProgress: calculateChecklistProgress } = useChecklistProgress();
   const { getGuides } = useGuideData();
   const { incomingUrls } = useIncomingUrls();
   const allGuides = getGuides();
@@ -28,7 +26,6 @@ export const usePrivacyScore = () => {
 
   const calculateScore = () => {
     console.log('Calculating privacy score with:', {
-      checklistProgress,
       allGuides,
       incomingUrls,
       subscriptionPlan
@@ -36,20 +33,18 @@ export const usePrivacyScore = () => {
 
     // Initialize weights based on subscription plan
     let weights = {
-      checklist: subscriptionPlan === '1_month' ? 0.3333 : 0.25,
-      guides: subscriptionPlan === '1_month' ? 0.3333 : 0.25,
-      address: subscriptionPlan === '1_month' ? 0.3333 : 0.25,
-      urls: subscriptionPlan === '1_month' ? 0 : 0.25
+      guides: subscriptionPlan === '1_month' ? 0.5 : 0.333,
+      address: subscriptionPlan === '1_month' ? 0.5 : 0.333,
+      urls: subscriptionPlan === '1_month' ? 0 : 0.333
     };
 
     console.log('Using weights:', weights);
 
     // Calculate individual scores with detailed logging
     const scores = {
-      checklist: calculateChecklistProgress() / 100,
       guides: allGuides.length > 0 ? 
-        (checklistProgress?.completed_guides?.length || 0) / allGuides.length : 1,
-      address: checklistProgress?.has_address_alert ? 1 : 0,
+        (allGuides.filter(guide => guide.completed).length) / allGuides.length : 1,
+      address: allGuides.some(guide => guide.type === 'address_protection' && guide.completed) ? 1 : 0,
       urls: calculateUrlScore()
     };
 
@@ -67,7 +62,6 @@ export const usePrivacyScore = () => {
     return {
       total: Math.round(totalScore * 100),
       individual: {
-        checklist: Math.round(scores.checklist * 100),
         guides: Math.round(scores.guides * 100),
         address: Math.round(scores.address * 100),
         urls: Math.round(scores.urls * 100)
