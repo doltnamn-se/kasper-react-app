@@ -1,9 +1,6 @@
 
 import { TableCell, TableRow } from "@/components/ui/table";
 import { URLStatusSelect } from "./URLStatusSelect";
-import { formatDistanceToNow } from "date-fns";
-import { sv, enUS } from "date-fns/locale";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { StatusStepper } from "./StatusStepper";
 
 interface URLTableRowProps {
@@ -27,20 +24,11 @@ interface URLTableRowProps {
 }
 
 export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
-  const { language } = useLanguage();
-  
   console.log('URL data in URLTableRow:', {
     id: url.id,
     status: url.status,
     statusHistory: url.status_history
   });
-  
-  const formatDate = (date: string) => {
-    return formatDistanceToNow(new Date(date), {
-      addSuffix: true,
-      locale: language === 'sv' ? sv : enUS
-    });
-  };
 
   return (
     <TableRow>
@@ -60,10 +48,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
           {url.customer.profiles.email}
         </span>
       </TableCell>
-      <TableCell className="w-[15%] whitespace-nowrap">
-        {formatDate(url.created_at)}
-      </TableCell>
-      <TableCell className="w-[35%]">
+      <TableCell className="w-[50%]">
         <div className="flex items-center justify-between gap-2">
           <div className="flex-grow">
             <StatusStepper 
