@@ -1,5 +1,7 @@
+
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocation } from "react-router-dom";
 import { 
   Users, 
   LayoutDashboard,
@@ -12,35 +14,45 @@ interface AdminNavigationProps {
 
 export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
   const { t } = useLanguage();
+  const location = useLocation();
+
+  const renderNavLink = (path: string, icon: React.ReactNode, label: string) => {
+    const isActive = location.pathname === path;
+    
+    return (
+      <Link 
+        to={path} 
+        className={`flex items-center justify-between gap-3 mb-3 py-2.5 px-3 rounded-md ${
+          isActive 
+            ? "bg-gray-100 dark:bg-[#2d2d2d]" 
+            : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
+        }`}
+        onClick={toggleMobileMenu}
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-black dark:text-white">{icon}</span>
+          <span className="text-sm text-[#000000] dark:text-white font-medium">{label}</span>
+        </div>
+      </Link>
+    );
+  };
 
   return (
     <nav className="space-y-2">
-      <Link
-        to="/admin"
-        className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
-        onClick={toggleMobileMenu}
-      >
-        <LayoutDashboard className="w-4 h-4" />
-        <span>{t('nav.admin.dashboard')}</span>
-      </Link>
+      {renderNavLink("/admin", 
+        <LayoutDashboard className="w-[18px] h-[18px]" />, 
+        t('nav.admin.dashboard')
+      )}
       
-      <Link
-        to="/admin/customers"
-        className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
-        onClick={toggleMobileMenu}
-      >
-        <Users className="w-4 h-4" />
-        <span>{t('nav.admin.customers')}</span>
-      </Link>
+      {renderNavLink("/admin/customers", 
+        <Users className="w-[18px] h-[18px]" />, 
+        t('nav.admin.customers')
+      )}
 
-      <Link
-        to="/admin/deindexing"
-        className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors"
-        onClick={toggleMobileMenu}
-      >
-        <LinkIcon className="w-4 h-4" />
-        <span>{t('nav.my.links')}</span>
-      </Link>
+      {renderNavLink("/admin/deindexing", 
+        <LinkIcon className="w-[18px] h-[18px]" />, 
+        t('nav.my.links')
+      )}
     </nav>
   );
 };
