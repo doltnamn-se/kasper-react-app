@@ -63,7 +63,7 @@ export const PrivacyScoreCard = () => {
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
-        <div className="space-y-6">
+        <div className="space-y-10">
           <span className={cn("text-6xl font-bold", getColorClass(score.total))}>
             {score.total}%
           </span>
