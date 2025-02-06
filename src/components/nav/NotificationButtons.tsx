@@ -33,20 +33,25 @@ export const NotificationButtons = () => {
       </Tooltip>
 
       <Popover>
-        <TooltipTrigger asChild>
-          <PopoverTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="relative text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent dark:hover:bg-transparent"
-            >
-              <Bell className="w-4 h-4" />
-              {unreadCount > 0 && (
-                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-[#FF3B30] dark:bg-[#FF453A]" />
-              )}
-            </Button>
-          </PopoverTrigger>
-        </TooltipTrigger>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <PopoverTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="relative text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent dark:hover:bg-transparent"
+              >
+                <Bell className="w-4 h-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-[#FF3B30] dark:bg-[#FF453A]" />
+                )}
+              </Button>
+            </PopoverTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('notifications')}</p>
+          </TooltipContent>
+        </Tooltip>
         <PopoverContent align="end" className="w-[380px] p-0">
           <NotificationList 
             notifications={notifications}
