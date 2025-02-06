@@ -1,7 +1,8 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
-import { Shield, Home, Link } from "lucide-react";
+import { Shield, Home, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -76,7 +77,7 @@ export const PrivacyScoreCard = () => {
           onClick={() => navigate('/address-alerts')}
         />
         <ScoreItem
-          icon={Link}
+          icon={EyeOff}
           title={language === 'sv' ? 'Avindexering' : 'Deindexing'}
           score={score.individual.urls}
           onClick={() => navigate('/deindexing')}
