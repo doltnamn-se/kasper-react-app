@@ -2,7 +2,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
-import { Shield, Home, EyeOff } from "lucide-react";
+import { Shield, MapPinHouse, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -71,7 +71,7 @@ export const PrivacyScoreCard = () => {
           onClick={() => navigate('/guides')}
         />
         <ScoreItem
-          icon={Home}
+          icon={MapPinHouse}
           title={language === 'sv' ? 'Adresskydd' : 'Address Protection'}
           score={score.individual.address}
           onClick={() => navigate('/address-alerts')}
