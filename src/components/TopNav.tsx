@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -7,7 +6,7 @@ import { ThemeToggle } from "./nav/ThemeToggle";
 import { NotificationButtons } from "./nav/NotificationButtons";
 import { UserProfileMenu } from "./nav/UserProfileMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu } from "lucide-react";
+import { Menu, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -34,6 +33,10 @@ export const TopNav = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  const handleSupportClick = () => {
+    window.open('https://doltnamn.se/support/', '_blank');
+  };
 
   return (
     <div className={cn(
@@ -68,6 +71,21 @@ export const TopNav = () => {
         
         <div className="flex items-center gap-2 ml-auto">
           <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={handleSupportClick}
+                  className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent dark:hover:bg-transparent"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t('messages')}</p>
+              </TooltipContent>
+            </Tooltip>
             <ThemeToggle />
             <NotificationButtons />
           </TooltipProvider>
@@ -77,4 +95,3 @@ export const TopNav = () => {
     </div>
   );
 };
-
