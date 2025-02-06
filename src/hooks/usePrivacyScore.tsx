@@ -1,4 +1,3 @@
-
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
@@ -28,6 +27,13 @@ export const usePrivacyScore = () => {
   });
 
   const calculateScore = () => {
+    console.log('Calculating privacy score with:', {
+      checklistProgress,
+      allGuides,
+      incomingUrls,
+      subscriptionPlan
+    });
+
     // Initialize weights based on subscription plan
     let weights = {
       checklist: subscriptionPlan === '1_month' ? 0.3333 : 0.25,
@@ -36,7 +42,9 @@ export const usePrivacyScore = () => {
       urls: subscriptionPlan === '1_month' ? 0 : 0.25
     };
 
-    // Calculate individual scores
+    console.log('Using weights:', weights);
+
+    // Calculate individual scores with detailed logging
     const scores = {
       checklist: calculateChecklistProgress() / 100,
       guides: allGuides.length > 0 ? 
@@ -45,10 +53,16 @@ export const usePrivacyScore = () => {
       urls: calculateUrlScore()
     };
 
-    // Calculate weighted total
+    console.log('Individual scores before weighting:', scores);
+
+    // Calculate weighted total with detailed logging
     const totalScore = Object.keys(weights).reduce((total, key) => {
-      return total + (scores[key as keyof typeof scores] * weights[key as keyof typeof weights]);
+      const weightedScore = scores[key as keyof typeof scores] * weights[key as keyof typeof weights];
+      console.log(`${key} weighted score:`, weightedScore);
+      return total + weightedScore;
     }, 0);
+
+    console.log('Final total score:', totalScore);
 
     return {
       total: Math.round(totalScore * 100),
@@ -64,6 +78,11 @@ export const usePrivacyScore = () => {
   const calculateUrlScore = () => {
     if (subscriptionPlan === '1_month') return 1; // Not applicable for 1-month plan
     if (!incomingUrls?.length) return 1; // No URLs submitted is considered complete
+
+    console.log('Calculating URL score with:', {
+      incomingUrls,
+      completedCount: incomingUrls.filter(url => url.status === 'removal_approved').length
+    });
 
     // Calculate based on URL statuses
     const completedUrls = incomingUrls.filter(url => 
