@@ -48,7 +48,7 @@ const AdminLayout = () => {
           isMobile ? "ml-0" : (isCollapsed ? "ml-16" : "ml-72")
         )}>
           <TopNav />
-          <main className="px-4 md:px-12 pt-12">
+          <main className="px-12 pt-12">
             <div className="max-w-[1400px] mx-auto">
               <Outlet />
             </div>
@@ -60,4 +60,3 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
-
