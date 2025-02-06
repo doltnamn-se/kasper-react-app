@@ -65,7 +65,7 @@ export const PrivacyScoreCard = () => {
         </div>
         <div className="space-y-10">
           <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
-            {score.total}%
+            {score.total}
           </span>
           <div className="flex-1">
             <Progress value={score.total} className="h-3">
@@ -120,4 +120,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
