@@ -68,7 +68,7 @@ export const PrivacyScoreCard = () => {
           <h2 className="text-lg font-semibold">
             {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
           </h2>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
