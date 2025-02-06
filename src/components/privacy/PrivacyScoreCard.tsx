@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -59,7 +58,7 @@ export const PrivacyScoreCard = () => {
           <h2 className="text-lg font-semibold">
             {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
           </h2>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-6">
+          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
@@ -120,4 +119,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
