@@ -1,4 +1,5 @@
-import { MessageSquare, Settings } from "lucide-react";
+
+import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -67,21 +68,6 @@ export const NotificationButtons = () => {
 
   return (
     <>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent dark:hover:bg-transparent hover:bg-transparent"
-          >
-            <MessageSquare className="w-4 h-4" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{t('messages')}</p>
-        </TooltipContent>
-      </Tooltip>
-      
       <DropdownMenu>
         <Tooltip>
           <TooltipTrigger asChild>
