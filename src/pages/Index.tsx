@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";
@@ -9,7 +10,7 @@ const Index = () => {
   useEffect(() => {
     document.title = language === 'sv' ? 
       "Översikt | Doltnamn.se" : 
-      "Overview | Doltnamn.se";
+      "Dashboard | Doltnamn.se";
       
     const root = document.getElementById('root');
     if (root) {

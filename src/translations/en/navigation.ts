@@ -1,7 +1,8 @@
+
 import { NavigationTranslations } from '../types/navigation';
 
 export const navigation: NavigationTranslations = {
-  'nav.home': 'Home',
+  'nav.home': 'Dashboard',
   'nav.checklist': 'Checklist',
   'nav.monitoring': 'Monitoring',
   'nav.my.links': 'Deindexing',
