@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -42,37 +43,43 @@ export const TopNav = () => {
       ) : (
         cn(
           "bg-[#f4f4f4] dark:bg-[#161618]",
-          isCollapsed ? "left-16 px-12" : "left-72 px-12"
+          isCollapsed ? "left-16" : "left-72"
         )
       )
     )}>
-      <div className="flex items-center justify-between h-full">
-        {isMobile && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleMobileMenu}
-            className="mr-2"
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
-        )}
+      <div className={cn(
+        "h-full max-w-[1400px] mx-auto",
+        isMobile ? "px-4" : "px-12"
+      )}>
+        <div className="flex items-center justify-between h-full">
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleMobileMenu}
+              className="mr-2"
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          )}
 
-        <div className={cn(
-          "flex-1 max-w-md",
-          isMobile ? "hidden" : "block"
-        )}>
-          <SearchBar />
-        </div>
-        
-        <div className="flex items-center gap-2 ml-auto">
-          <TooltipProvider delayDuration={300}>
-            <ThemeToggle />
-            <NotificationButtons />
-          </TooltipProvider>
-          <UserProfileMenu />
+          <div className={cn(
+            "flex-1 max-w-md",
+            isMobile ? "hidden" : "block"
+          )}>
+            <SearchBar />
+          </div>
+          
+          <div className="flex items-center gap-2 ml-auto">
+            <TooltipProvider delayDuration={300}>
+              <ThemeToggle />
+              <NotificationButtons />
+            </TooltipProvider>
+            <UserProfileMenu />
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
