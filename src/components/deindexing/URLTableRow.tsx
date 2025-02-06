@@ -44,7 +44,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
 
   return (
     <TableRow>
-      <TableCell className="w-[35%]">
+      <TableCell className="w-[25%]">
         <a 
           href={url.url} 
           target="_blank" 
@@ -63,7 +63,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
       <TableCell className="w-[15%] whitespace-nowrap">
         {formatDate(url.created_at)}
       </TableCell>
-      <TableCell className="w-[25%]">
+      <TableCell className="w-[35%]">
         <div className="flex items-center justify-between gap-2">
           <div className="flex-grow">
             <StatusStepper 
