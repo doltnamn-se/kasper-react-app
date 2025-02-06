@@ -6,6 +6,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
+import { AuthLogo } from "@/components/auth/AuthLogo";
 
 const AdminLayout = () => {
   const { isCollapsed, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
@@ -29,14 +30,12 @@ const AdminLayout = () => {
             )
           )
         )}>
-          <div className="px-6 py-6 flex justify-between items-center">
-            <h1 className={cn(
-              "text-xl font-bold text-black dark:text-white transition-opacity duration-200",
-              isCollapsed && !isMobile ? "opacity-0" : "opacity-100"
-            )}>
-              Admin Dashboard
-            </h1>
+          <div className="px-8 py-6">
+            <AuthLogo className="relative h-8" />
           </div>
+
+          <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
+
           <div className="px-6">
             <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
           </div>
