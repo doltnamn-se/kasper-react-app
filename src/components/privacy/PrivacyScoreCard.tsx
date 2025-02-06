@@ -63,7 +63,10 @@ export const PrivacyScoreCard = () => {
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
-        <div className="flex items-center">
+        <div className="space-y-2">
+          <span className={cn("text-2xl font-bold", getColorClass(score.total))}>
+            {score.total}%
+          </span>
           <div className="flex-1">
             <Progress value={score.total} className="h-3">
               <div className={cn("h-full transition-all", getProgressClass(score.total))} style={{ width: `${score.total}%` }} />
@@ -73,9 +76,6 @@ export const PrivacyScoreCard = () => {
               <span>100</span>
             </div>
           </div>
-          <span className={cn("ml-4 text-2xl font-bold", getColorClass(score.total))}>
-            {score.total}%
-          </span>
         </div>
       </div>
 
