@@ -65,7 +65,7 @@ export const PrivacyScoreCard = () => {
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold">
-          {language === 'sv' ? 'Sekretesspoäng' : 'Privacy Score'}
+          {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
         </h2>
         <div className="relative flex items-center">
           <PieChart width={80} height={80}>
@@ -136,3 +136,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
