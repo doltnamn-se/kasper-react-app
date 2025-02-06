@@ -32,11 +32,23 @@ const Index = () => {
           }
         </h1>
 
-        <PrivacyScoreCard />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <PrivacyScoreCard />
+          <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+            <h2 className="text-lg font-semibold mb-4">
+              {language === 'sv' ? 'Aktivitet' : 'Activity'}
+            </h2>
+            <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
+              {language === 'sv' ? 
+                'Ingen aktivitet att visa än' : 
+                'No activity to show yet'
+              }
+            </p>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
 };
 
 export default Index;
-
