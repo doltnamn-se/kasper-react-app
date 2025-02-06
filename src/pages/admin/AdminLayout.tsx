@@ -22,7 +22,7 @@ const AdminLayout = () => {
     <TooltipProvider>
       <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618]">
         {/* Top Navigation Bar */}
-        <div className="sticky top-0 right-0 left-0 h-16 z-[40] bg-white dark:bg-[#1c1c1e] border-b border-[#e5e7eb] dark:border-[#232325] px-4 md:px-6">
+        <div className="sticky top-0 right-0 left-0 h-16 z-[40] bg-white md:bg-transparent dark:bg-[#1c1c1e] md:dark:bg-transparent border-b border-[#e5e7eb] dark:border-[#232325] px-4 md:px-6">
           <div className="flex items-center justify-between h-full">
             <div className="flex items-center gap-2">
               <Button
