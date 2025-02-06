@@ -8,7 +8,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 
 export const NotificationButtons = () => {
   const { t } = useLanguage();
-  const { unreadCount } = useNotifications();
+  const { notifications, unreadCount, markAsRead } = useNotifications();
 
   const handleSupportClick = () => {
     window.open('https://doltnamn.se/support/', '_blank');
@@ -48,7 +48,10 @@ export const NotificationButtons = () => {
           </PopoverTrigger>
         </TooltipTrigger>
         <PopoverContent align="end" className="w-[380px] p-0">
-          <NotificationList />
+          <NotificationList 
+            notifications={notifications}
+            onMarkAsRead={markAsRead}
+          />
         </PopoverContent>
       </Popover>
     </>
