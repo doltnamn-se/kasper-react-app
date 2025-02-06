@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -52,7 +53,7 @@ export const PrivacyScoreCard = () => {
   );
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white/30 dark:bg-[#232325]/30 backdrop-blur-xl backdrop-saturate-150 p-8 border border-white/20 dark:border-[#303032]/20 rounded-[7px] shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold">
           {language === 'sv' ? 'Sekretesspoäng' : 'Privacy Score'}
