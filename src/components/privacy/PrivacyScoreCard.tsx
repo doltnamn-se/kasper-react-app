@@ -77,7 +77,7 @@ export const PrivacyScoreCard = () => {
           <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
             {score.total}
           </span>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-10">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             {getProtectionLevel(score.total)}
           </p>
           <div className="flex-1">
@@ -129,4 +129,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
