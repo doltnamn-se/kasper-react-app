@@ -51,7 +51,7 @@ export const usePrivacyScore = () => {
     const scores = {
       guides: allGuides.length > 0 ? 
         ((checklistProgress?.completed_guides?.length || 0) / allGuides.length) : 1,
-      // Address score is 100% if there's an active address, 0% otherwise
+      // Address score is 100% if there's an active address (has address data but no deleted_at timestamp), 0% otherwise
       address: addressData?.street_address && !addressData?.deleted_at ? 1 : 0,
       urls: calculateUrlScore()
     };
