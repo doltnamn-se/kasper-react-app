@@ -83,7 +83,7 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <div className="relative mb-2">
               <div 
-                className="absolute bottom-2" 
+                className="absolute bottom-2 before:content-[''] dark:before:bg-white before:bg-black before:absolute before:inset-0 before:opacity-20"
                 style={{ 
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)',
@@ -93,12 +93,12 @@ export const PrivacyScoreCard = () => {
                   borderRadius: '5px',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
-                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} 20%,
-                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'} 30%,
-                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} 40%,
-                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'} 60%,
-                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)'} 80%,
-                    ${document.documentElement.classList.contains('dark') ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)'} 100%
+                    var(--vertical-line-color-20) 20%,
+                    var(--vertical-line-color-40) 30%,
+                    var(--vertical-line-color-50) 40%,
+                    var(--vertical-line-color-70) 60%,
+                    var(--vertical-line-color-90) 80%,
+                    var(--vertical-line-color) 100%
                   )`,
                   WebkitMaskImage: `linear-gradient(to bottom, 
                     transparent 0%,
@@ -106,7 +106,13 @@ export const PrivacyScoreCard = () => {
                     black 80%,
                     black 100%
                   )`,
-                }} 
+                  '--vertical-line-color': 'rgb(0, 0, 0)',
+                  '--vertical-line-color-20': 'rgba(0, 0, 0, 0.2)',
+                  '--vertical-line-color-40': 'rgba(0, 0, 0, 0.4)',
+                  '--vertical-line-color-50': 'rgba(0, 0, 0, 0.5)',
+                  '--vertical-line-color-70': 'rgba(0, 0, 0, 0.7)',
+                  '--vertical-line-color-90': 'rgba(0, 0, 0, 0.9)'
+                } as React.CSSProperties} 
               />
             </div>
             <Progress value={score.total} className="h-3 [&>div]:rounded-r-full">
@@ -157,4 +163,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
