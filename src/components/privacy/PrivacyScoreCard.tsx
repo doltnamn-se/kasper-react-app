@@ -96,17 +96,17 @@ export const PrivacyScoreCard = () => {
                 className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
             </div>
-            <Progress value={score.total} className="h-3">
+            <div className="relative w-full h-3 rounded-lg bg-gray-200 dark:bg-gray-700 overflow-hidden">
               <div 
-                className="h-full transition-all"
+                className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
                   width: `${score.total}%`,
                   backgroundImage: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)',
-                  borderTopRightRadius: '0.5rem',
-                  borderBottomRightRadius: '0.5rem'
+                  borderTopRightRadius: score.total === 100 ? '0.5rem' : '0',
+                  borderBottomRightRadius: score.total === 100 ? '0.5rem' : '0',
                 }} 
               />
-            </Progress>
+            </div>
             <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
               <span>0</span>
               <span>100</span>
@@ -146,4 +146,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
