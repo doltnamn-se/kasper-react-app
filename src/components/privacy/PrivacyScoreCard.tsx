@@ -89,10 +89,14 @@ export const PrivacyScoreCard = () => {
                   transform: 'translateX(-50%)',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
+                    rgba(0, 0, 0, 0.7) 30%,
+                    rgba(0, 0, 0, 0.85) 50%,
                     rgba(0, 0, 0, 1) 100%
                   )`,
                   WebkitMaskImage: `linear-gradient(to bottom, 
                     transparent 0%,
+                    black 30%,
+                    black 70%,
                     black 100%
                   )`,
                 }} 
@@ -146,3 +150,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
