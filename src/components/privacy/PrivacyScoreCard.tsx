@@ -101,7 +101,13 @@ export const PrivacyScoreCard = () => {
                 className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
                   width: `${score.total}%`,
-                  backgroundImage: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)',
+                  background: `linear-gradient(90deg, 
+                    rgb(234, 56, 76) 0%,
+                    rgb(249, 115, 22) 15%,
+                    rgb(254, 247, 205) 30%,
+                    rgb(14, 165, 233) 55%,
+                    rgb(16, 185, 129) 100%
+                  )`,
                   borderTopRightRadius: score.total === 100 ? '0.5rem' : '0',
                   borderBottomRightRadius: score.total === 100 ? '0.5rem' : '0',
                 }} 
@@ -146,3 +152,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
