@@ -2,7 +2,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
-import { MousePointerClick, MapPinHouse, EyeOff, Shield, Lightbulb } from "lucide-react";
+import { MousePointerClick, MapPinHouse, EyeOff, UserSearch, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -87,7 +87,7 @@ export const PrivacyScoreCard = () => {
 
       <div className="space-y-2">
         <ScoreItem
-          icon={Shield}
+          icon={UserSearch}
           title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
           score={score.individual.monitoring}
           onClick={() => navigate('/monitoring')}
