@@ -92,7 +92,7 @@ export const PrivacyScoreCard = () => {
             </div>
             <Progress value={score.total} className="h-3 [&>div]:rounded-r-full">
               <div 
-                className="h-full transition-all"
+                className="h-full transition-all rounded-r-full"
                 style={{ 
                   width: `${score.total}%`,
                   background: 'linear-gradient(90deg, #ea384c 0%, #F97316 25%, #FEF7CD 50%, #0EA5E9 75%, #10B981 100%)'
