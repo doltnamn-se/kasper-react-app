@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -57,19 +58,21 @@ export const PrivacyScoreCard = () => {
 
     return (
       <div 
-        className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+        className="space-y-2 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
         onClick={onClick}
       >
-        <Icon className={cn("w-5 h-5", getColorClass(score))} />
-        <div className="flex-1">
-          <div className="text-sm font-medium">{title}</div>
-          <div className="flex mt-1">
-            {generateLines(totalLines, filledLines)}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Icon className={cn("w-5 h-5", getColorClass(score))} />
+            <div className="text-sm font-medium">{title}</div>
           </div>
+          <span className={cn("text-sm font-semibold", getColorClass(score))}>
+            {score}%
+          </span>
         </div>
-        <span className={cn("text-sm font-semibold", getColorClass(score))}>
-          {score}%
-        </span>
+        <div className="flex w-full">
+          {generateLines(totalLines, filledLines)}
+        </div>
       </div>
     );
   };
@@ -164,3 +167,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
