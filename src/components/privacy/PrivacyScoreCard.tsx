@@ -70,11 +70,8 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <Progress value={score.total} className="h-3">
               <div 
-                className="h-full transition-all" 
-                style={{ 
-                  width: `${score.total}%`,
-                  background: `linear-gradient(to right, #ea384c, #F97316, #FEF7CD, #0EA5E9, #10B981)`
-                }} 
+                className="h-full transition-all bg-[#0EA5E9]" 
+                style={{ width: `${score.total}%` }}
               />
             </Progress>
             <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -126,4 +123,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
