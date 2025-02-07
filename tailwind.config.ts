@@ -65,8 +65,9 @@ export default {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)',
-          foreground: 'hsl(var(--primary-foreground))'
+          DEFAULT: 'rgb(234, 56, 76)',
+          foreground: 'hsl(var(--primary-foreground))',
+          gradient: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -139,7 +140,7 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       height: {
-        10: '3rem', // Updated from 2.5rem to 3rem
+        10: '3rem',
       }
     }
   },
