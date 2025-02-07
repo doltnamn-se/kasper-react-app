@@ -93,10 +93,10 @@ export const PrivacyScoreCard = () => {
                     transparent 0%,
                     rgba(0, 0, 0, 0.2) 20%,
                     rgba(0, 0, 0, 0.4) 30%,
-                    rgba(0, 0, 0, 0.6) 40%,
-                    rgba(0, 0, 0, 0.8) 60%,
+                    rgba(0, 0, 0, 0.5) 40%,
+                    rgba(0, 0, 0, 0.7) 60%,
                     rgba(0, 0, 0, 0.9) 80%,
-                    rgba(0, 0, 0, 1) 100%
+                    rgb(0, 0, 0) 100%
                   )`,
                   WebkitMaskImage: `linear-gradient(to bottom, 
                     transparent 0%,
