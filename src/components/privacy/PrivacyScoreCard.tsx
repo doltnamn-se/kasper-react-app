@@ -92,23 +92,8 @@ export const PrivacyScoreCard = () => {
                   borderRadius: '5px',
                   position: 'absolute',
                   bottom: '2px',
-                  background: `linear-gradient(to bottom, 
-                    transparent 0%,
-                    ${getComputedStyle(document.documentElement).getPropertyValue('--tw-prose-body')} 20%,
-                    rgba(0, 0, 0, 0.4) 30%,
-                    rgba(0, 0, 0, 0.5) 40%,
-                    rgba(0, 0, 0, 0.7) 60%,
-                    rgba(0, 0, 0, 0.9) 80%,
-                    rgb(0, 0, 0) 100%
-                  )`,
-                  WebkitMaskImage: `linear-gradient(to bottom, 
-                    transparent 0%,
-                    black 20%,
-                    black 80%,
-                    black 100%
-                  )`,
-                }} 
-                className="dark:bg-[linear-gradient(to_bottom,#ffffff00_0%,rgb(255_255_255_/_20%)_20%,rgb(255_255_255_/_40%)_30%,rgb(255_255_255_/_50%)_40%,rgb(255_255_255_/_70%)_60%,rgb(255_255_255_/_90%)_80%,rgb(255_255_255)_100%)]"
+                }}
+                className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
             </div>
             <Progress value={score.total} className="h-3 [&>div]:rounded-r-full">
@@ -159,4 +144,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
