@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -52,7 +53,7 @@ export const PrivacyScoreCard = () => {
     score: number;
     onClick: () => void;
   }) => {
-    const totalLines = 32; // Increased number of lines
+    const totalLines = 32;
     const filledLines = Math.floor((score / 100) * totalLines);
 
     return (
@@ -69,7 +70,7 @@ export const PrivacyScoreCard = () => {
             {score}%
           </span>
         </div>
-        <div className="flex w-full">
+        <div className="flex w-full justify-around">
           {generateLines(totalLines, filledLines)}
         </div>
       </div>
