@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -82,7 +83,7 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <div className="relative mb-2">
               <div 
-                className="absolute bottom-2 w-px h-8 bg-[#000000A6] dark:bg-[#FFFFFFA6] transition-all" 
+                className="absolute bottom-2 w-px h-8 bg-[#000000A6] dark:bg-[#FFFFFFA6] transition-all rounded-full" 
                 style={{ 
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)'
