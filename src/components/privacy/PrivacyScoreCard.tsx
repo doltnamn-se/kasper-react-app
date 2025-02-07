@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -53,9 +52,9 @@ export const PrivacyScoreCard = () => {
               width: `${score}%`,
               background: `linear-gradient(90deg, 
                 rgb(234, 56, 76) 0%,
-                rgb(249, 115, 22) 35%,
-                rgba(251, 209, 4, 255) 65%,
-                rgba(17, 84, 242, 255) 85%,
+                rgb(249, 115, 22) 25%,
+                rgba(251, 209, 4, 255) 75%,
+                rgba(17, 84, 242, 255) 90%,
                 rgba(25, 208, 91, 255) 100%
               )`,
               backgroundSize: '100% 100%',
@@ -113,9 +112,9 @@ export const PrivacyScoreCard = () => {
                   width: `${score.total}%`,
                   background: `linear-gradient(90deg, 
                     rgb(234, 56, 76) 0%,
-                    rgb(249, 115, 22) 35%,
-                    rgba(251, 209, 4, 255) 55%,
-                    rgba(17, 84, 242, 255) 75%,
+                    rgb(249, 115, 22) 25%,
+                    rgba(251, 209, 4, 255) 75%,
+                    rgba(17, 84, 242, 255) 90%,
                     rgba(25, 208, 91, 255) 100%
                   )`,
                   backgroundSize: `${100 / (score.total / 100)}% 100%`,
