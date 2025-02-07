@@ -59,23 +59,15 @@ export const PrivacyScoreCard = () => {
           <h2 className="text-lg font-semibold">
             {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
           </h2>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-16">
+          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
         <div className="space-y-10">
-          <div className="relative">
-            <div 
-              className="absolute text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]"
-              style={{ 
-                left: `${Math.min(Math.max(score.total, 0), 100)}%`,
-                transform: 'translateX(-50%)',
-                top: '-20px'
-              }}
-            >
-              {score.total}
-            </div>
-            <div className="h-16"></div>
+          <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
+            {score.total}
+          </span>
+          <div className="flex-1">
             <Progress value={score.total} className="h-3">
               <div className={cn("h-full transition-all", getProgressClass(score.total))} style={{ width: `${score.total}%` }} />
             </Progress>
@@ -128,4 +120,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
