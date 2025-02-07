@@ -98,10 +98,12 @@ export const PrivacyScoreCard = () => {
             </div>
             <Progress value={score.total} className="h-3">
               <div 
-                className="h-full transition-all rounded-r-full"
+                className="h-full transition-all"
                 style={{ 
                   width: `${score.total}%`,
-                  background: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)'
+                  backgroundImage: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)',
+                  borderTopRightRadius: '0.5rem',
+                  borderBottomRightRadius: '0.5rem'
                 }} 
               />
             </Progress>
