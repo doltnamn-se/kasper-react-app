@@ -2,7 +2,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
-import { MousePointerClick, MapPinHouse, EyeOff, Lightbulb } from "lucide-react";
+import { MousePointerClick, MapPinHouse, EyeOff, Shield, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -104,6 +104,12 @@ export const PrivacyScoreCard = () => {
           score={score.individual.urls}
           onClick={() => navigate('/deindexing')}
         />
+        <ScoreItem
+          icon={Shield}
+          title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
+          score={score.individual.monitoring}
+          onClick={() => navigate('/monitoring')}
+        />
       </div>
 
       {score.total < 100 && (
@@ -126,4 +132,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
