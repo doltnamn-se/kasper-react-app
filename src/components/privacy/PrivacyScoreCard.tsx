@@ -97,10 +97,7 @@ export const PrivacyScoreCard = () => {
               />
             </div>
             <Progress value={score.total} className="h-3">
-              <div 
-                className="h-full w-full flex-1 rounded-r-full bg-gradient-to-r from-[#ea384c] via-[#F97316] via-[#FEF7CD] via-[#0EA5E9] to-[#10B981]"
-                style={{ width: `${score.total}%` }}
-              />
+              <div className="h-full transition-all bg-primary rounded-r-full" style={{ width: `${score.total}%` }} />
             </Progress>
             <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
               <span>0</span>
