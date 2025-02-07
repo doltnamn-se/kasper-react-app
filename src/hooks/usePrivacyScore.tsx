@@ -47,27 +47,19 @@ export const usePrivacyScore = () => {
 
     console.log('Using weights:', weights);
 
-    // Check if there's an active address
-    const hasActiveAddress = Boolean(
-      addressData?.street_address && 
-      !addressData?.deleted_at && 
-      (!addressData?.address_history?.length || 
-        addressData.address_history[addressData.address_history.length - 1]?.deleted_at)
-    );
+    // Simply check if there's a street address present
+    const hasAddress = Boolean(addressData?.street_address);
 
-    console.log('Active address check:', {
-      hasAddress: Boolean(addressData?.street_address),
-      notDeleted: !addressData?.deleted_at,
-      historyLength: addressData?.address_history?.length,
-      lastHistoryEntry: addressData?.address_history?.[addressData?.address_history?.length - 1],
-      hasActiveAddress
+    console.log('Address check:', {
+      hasAddress,
+      addressData
     });
 
     // Calculate individual scores with detailed logging
     const scores = {
       guides: allGuides.length > 0 ? 
         ((checklistProgress?.completed_guides?.length || 0) / allGuides.length) : 1,
-      address: hasActiveAddress ? 1 : 0,
+      address: hasAddress ? 1 : 0,
       urls: calculateUrlScore()
     };
 
