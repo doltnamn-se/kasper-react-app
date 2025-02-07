@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -108,7 +107,7 @@ export const PrivacyScoreCard = () => {
             </div>
             <div className="relative w-full h-3 rounded-lg bg-gray-200 dark:bg-gray-700 overflow-hidden">
               <div 
-                className="absolute top-0 left-0 h-full transition-all animate-progress-line"
+                className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
                   width: `${score.total}%`,
                   background: `linear-gradient(90deg, 
@@ -121,7 +120,6 @@ export const PrivacyScoreCard = () => {
                   backgroundSize: `${100 / (score.total / 100)}% 100%`,
                   borderTopRightRadius: score.total === 100 ? '0.5rem' : '0',
                   borderBottomRightRadius: score.total === 100 ? '0.5rem' : '0',
-                  animation: 'progress-line 1s ease-out forwards',
                 }} 
               />
             </div>
