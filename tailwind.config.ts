@@ -65,7 +65,7 @@ export default {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'linear-gradient(90deg, #ea384c 0%, #F97316 25%, #FEF7CD 50%, #0EA5E9 75%, #10B981 100%)',
+          DEFAULT: 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)',
           foreground: 'hsl(var(--primary-foreground))'
         },
         secondary: {
