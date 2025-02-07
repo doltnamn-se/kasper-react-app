@@ -5,6 +5,7 @@ import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { useAddressData } from "@/components/address/hooks/useAddressData";
+import { URLStatusStep } from "@/types/url-management";
 
 export const usePrivacyScore = () => {
   const { getGuides } = useGuideData();
@@ -84,22 +85,42 @@ export const usePrivacyScore = () => {
     };
   };
 
+  const getStatusWeight = (status: URLStatusStep): number => {
+    const weights: Record<URLStatusStep, number> = {
+      'received': 0.25,
+      'case_started': 0.50,
+      'request_submitted': 0.75,
+      'removal_approved': 1.0
+    };
+    return weights[status] || 0;
+  };
+
   const calculateUrlScore = () => {
     if (subscriptionPlan === '1_month') return 1; // Not applicable for 1-month plan
     if (!incomingUrls?.length) return 1; // No URLs submitted is considered complete
 
     console.log('Calculating URL score with:', {
       incomingUrls,
-      completedCount: incomingUrls.filter(url => url.status === 'removal_approved').length
+      urlsCount: incomingUrls.length
     });
 
-    // Calculate based on URL statuses
-    const completedUrls = incomingUrls.filter(url => 
-      url.status === 'removal_approved'
-    ).length;
+    // Calculate weighted progress for each URL
+    const totalProgress = incomingUrls.reduce((sum, url) => {
+      const weight = getStatusWeight(url.status as URLStatusStep);
+      console.log(`URL ${url.id} status: ${url.status}, weight: ${weight}`);
+      return sum + weight;
+    }, 0);
 
-    return completedUrls / incomingUrls.length;
+    const score = totalProgress / incomingUrls.length;
+    console.log('URL score calculation:', {
+      totalProgress,
+      urlCount: incomingUrls.length,
+      finalScore: score
+    });
+
+    return score;
   };
 
   return { calculateScore };
 };
+
