@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -105,13 +106,20 @@ export const PrivacyScoreCard = () => {
                 className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
             </div>
-            <div className="relative w-full h-3 rounded-lg bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            <div className="relative w-full h-3 rounded-lg overflow-hidden" style={{
+              background: `linear-gradient(90deg, 
+                rgba(209, 209, 209, 0.1) 0%,
+                rgba(209, 209, 209, 1) 30%,
+                rgba(209, 209, 209, 1) 100%
+              )`,
+            }}>
               <div 
                 className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
                   width: `${score.total}%`,
                   background: `linear-gradient(90deg, 
-                    rgb(234, 56, 76) 0%,
+                    rgba(234, 56, 76, 0.1) 0%,
+                    rgba(234, 56, 76, 1) 10%,
                     rgb(249, 115, 22) 20%,
                     rgba(251, 209, 4, 255) 70%,
                     rgba(17, 84, 242, 255) 88%,
@@ -162,3 +170,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
