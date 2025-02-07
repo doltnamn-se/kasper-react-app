@@ -113,15 +113,19 @@ export const PrivacyScoreCard = () => {
                 rgba(209, 209, 209, 1) 40%,
                 rgba(209, 209, 209, 1) 100%
               )`,
+              '@media (prefers-color-scheme: dark)': {
+                background: `linear-gradient(90deg, 
+                  #2f2e31 0%,
+                  #2f2e31 100%
+                )`
+              }
             }}>
               <div 
                 className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
                   width: `${score.total}%`,
                   background: `linear-gradient(90deg, 
-                    rgba(234, 56, 76, 0) 0%,
-                    rgba(234, 56, 76, 0.3) 15%,
-                    rgba(234, 56, 76, 1) 25%,
+                    rgba(234, 56, 76, 1) 0%,
                     rgb(249, 115, 22) 35%,
                     rgba(251, 209, 4, 255) 70%,
                     rgba(17, 84, 242, 255) 88%,
