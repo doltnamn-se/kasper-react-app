@@ -87,7 +87,7 @@ export const PrivacyScoreCard = () => {
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)',
                   clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
-                  width: '4px',
+                  width: '3.5px',
                   height: '2.5rem',
                   borderRadius: '5px',
                   position: 'absolute',
