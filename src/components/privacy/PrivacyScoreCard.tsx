@@ -83,7 +83,7 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <div className="relative mb-2">
               <div 
-                className="absolute bottom-2 before:content-[''] dark:before:bg-white before:bg-black before:absolute before:inset-0 before:opacity-20"
+                className="absolute bottom-2" 
                 style={{ 
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)',
@@ -93,20 +93,20 @@ export const PrivacyScoreCard = () => {
                   borderRadius: '5px',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
-                    var(--vertical-line-color-20) 20%,
-                    var(--vertical-line-color-40) 30%,
-                    var(--vertical-line-color-50) 40%,
-                    var(--vertical-line-color-70) 60%,
-                    var(--vertical-line-color-90) 80%,
-                    var(--vertical-line-base-color) 100%
+                    rgba(0, 0, 0, 0.2) 20%,
+                    rgba(0, 0, 0, 0.4) 30%,
+                    rgba(0, 0, 0, 0.5) 40%,
+                    rgba(0, 0, 0, 0.7) 60%,
+                    rgba(0, 0, 0, 0.9) 80%,
+                    rgb(0, 0, 0) 100%
                   )`,
                   WebkitMaskImage: `linear-gradient(to bottom, 
                     transparent 0%,
                     black 20%,
                     black 80%,
                     black 100%
-                  )`
-                } as React.CSSProperties} 
+                  )`,
+                }} 
               />
             </div>
             <Progress value={score.total} className="h-3 [&>div]:rounded-r-full">
@@ -157,3 +157,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
