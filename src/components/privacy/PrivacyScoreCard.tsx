@@ -19,12 +19,6 @@ export const PrivacyScoreCard = () => {
     return "text-red-500 dark:text-red-400";
   };
 
-  const getProgressClass = (value: number) => {
-    if (value >= 80) return "bg-green-500 dark:bg-green-400";
-    if (value >= 50) return "bg-yellow-500 dark:bg-yellow-400";
-    return "bg-red-500 dark:bg-red-400";
-  };
-
   const getProtectionLevel = (score: number) => {
     if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
     if (score >= 90) return language === 'sv' ? "Säkert skydd" : "Safe protection";
@@ -53,7 +47,23 @@ export const PrivacyScoreCard = () => {
       <div className="flex-1">
         <div className="text-sm font-medium">{title}</div>
         <Progress value={score} className="h-2 mt-1">
-          <div className={cn("h-full transition-all", getProgressClass(score))} style={{ width: `${score}%` }} />
+          <div 
+            className={cn("h-full transition-all")} 
+            style={{ 
+              width: `${score}%`,
+              background: `linear-gradient(90deg, 
+                rgb(234, 56, 76) 0%,
+                rgb(249, 115, 22) 15%,
+                rgb(254, 247, 205) 30%,
+                rgb(14, 165, 233) 55%,
+                rgb(16, 185, 129) 100%
+              )`,
+              backgroundSize: '100% 100%',
+              backgroundPosition: 'left',
+              borderTopRightRadius: score === 100 ? '0.5rem' : '0',
+              borderBottomRightRadius: score === 100 ? '0.5rem' : '0',
+            }} 
+          />
         </Progress>
       </div>
       <span className={cn("text-sm font-semibold", getColorClass(score))}>
@@ -108,6 +118,7 @@ export const PrivacyScoreCard = () => {
                     rgb(14, 165, 233) 55%,
                     rgb(16, 185, 129) 100%
                   )`,
+                  backgroundSize: `${100 / (score.total / 100)}% 100%`,
                   borderTopRightRadius: score.total === 100 ? '0.5rem' : '0',
                   borderBottomRightRadius: score.total === 100 ? '0.5rem' : '0',
                 }} 
