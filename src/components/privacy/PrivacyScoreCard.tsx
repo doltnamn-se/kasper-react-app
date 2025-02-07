@@ -83,10 +83,12 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <div className="relative mb-2">
               <div 
-                className="absolute bottom-2 w-[2px] h-8 rounded-[2px]" 
+                className="absolute bottom-2 h-8 rounded-[2px]" 
                 style={{ 
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)',
+                  clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
+                  width: '3px',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
                     rgba(0, 0, 0, 0.2) 20%,
