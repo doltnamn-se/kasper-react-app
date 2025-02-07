@@ -87,16 +87,10 @@ export const PrivacyScoreCard = () => {
 
       <div className="space-y-2">
         <ScoreItem
-          icon={MousePointerClick}
-          title={language === 'sv' ? 'Guider' : 'Guides'}
-          score={score.individual.guides}
-          onClick={() => navigate('/guides')}
-        />
-        <ScoreItem
-          icon={MapPinHouse}
-          title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
-          score={score.individual.address}
-          onClick={() => navigate('/address-alerts')}
+          icon={Shield}
+          title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
+          score={score.individual.monitoring}
+          onClick={() => navigate('/monitoring')}
         />
         <ScoreItem
           icon={EyeOff}
@@ -105,10 +99,16 @@ export const PrivacyScoreCard = () => {
           onClick={() => navigate('/deindexing')}
         />
         <ScoreItem
-          icon={Shield}
-          title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
-          score={score.individual.monitoring}
-          onClick={() => navigate('/monitoring')}
+          icon={MapPinHouse}
+          title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
+          score={score.individual.address}
+          onClick={() => navigate('/address-alerts')}
+        />
+        <ScoreItem
+          icon={MousePointerClick}
+          title={language === 'sv' ? 'Guider' : 'Guides'}
+          score={score.individual.guides}
+          onClick={() => navigate('/guides')}
         />
       </div>
 
