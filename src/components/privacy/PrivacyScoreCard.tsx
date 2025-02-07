@@ -63,10 +63,10 @@ export const PrivacyScoreCard = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Icon className={cn("w-5 h-5", getColorClass(score))} />
+            <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
             <div className="text-sm font-medium">{title}</div>
           </div>
-          <span className={cn("text-sm font-semibold", getColorClass(score))}>
+          <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
             {score}%
           </span>
         </div>
