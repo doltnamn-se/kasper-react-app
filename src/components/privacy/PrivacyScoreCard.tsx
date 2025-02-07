@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { MousePointerClick, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
 
 export const PrivacyScoreCard = () => {
   const { calculateScore } = usePrivacyScore();
@@ -84,6 +85,8 @@ export const PrivacyScoreCard = () => {
           </div>
         </div>
       </div>
+
+      <Separator className="my-6" />
 
       <div className="space-y-2">
         <ScoreItem
