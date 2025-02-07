@@ -44,7 +44,7 @@ export const usePrivacyScore = () => {
       guides: subscriptionPlan === '1_month' ? 0.4 : 0.25,
       address: subscriptionPlan === '1_month' ? 0.4 : 0.25,
       urls: subscriptionPlan === '1_month' ? 0 : 0.25,
-      monitoring: 0.2 // New weight for monitoring score
+      monitoring: subscriptionPlan === '1_month' ? 0.2 : 0.25 // Updated to 0.25 for non-1_month plans
     };
 
     console.log('Using weights:', weights);
