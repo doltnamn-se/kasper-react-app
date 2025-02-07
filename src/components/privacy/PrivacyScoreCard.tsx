@@ -106,20 +106,8 @@ export const PrivacyScoreCard = () => {
                 className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
             </div>
-            <div className="relative w-full h-3 rounded-lg overflow-hidden" style={{
-              background: `linear-gradient(90deg, 
-                rgba(209, 209, 209, 0) 0%,
-                rgba(209, 209, 209, 0.3) 15%,
-                rgba(209, 209, 209, 1) 40%,
-                rgba(209, 209, 209, 1) 100%
-              )`,
-              '@media (prefers-color-scheme: dark)': {
-                background: `linear-gradient(90deg, 
-                  #2f2e31 0%,
-                  #2f2e31 100%
-                )`
-              }
-            }}>
+            <div className="relative w-full h-3 rounded-lg overflow-hidden">
+              <div className="absolute inset-0 bg-[rgba(209,209,209,1)] dark:bg-[#2f2e31]" />
               <div 
                 className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
