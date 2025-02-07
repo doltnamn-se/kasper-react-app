@@ -112,7 +112,7 @@ export const PrivacyScoreCard = () => {
             <div className="relative w-full h-3 rounded-lg overflow-hidden">
               <div className="absolute inset-0 bg-[#e8e8e5] dark:bg-[#2f2e31]" />
               <div 
-                className="absolute top-0 left-0 h-full transition-all"
+                className="absolute top-0 left-0 h-full transition-all rounded-r-lg"
                 style={{ 
                   width: `${score.total}%`,
                   background: `linear-gradient(90deg, 
@@ -122,9 +122,7 @@ export const PrivacyScoreCard = () => {
                     rgba(17, 84, 242, 255) 88%,
                     rgba(25, 208, 91, 255) 100%
                   )`,
-                  backgroundSize: `${100 / (score.total / 100)}% 100%`,
-                  borderTopRightRadius: score.total === 100 ? '0.5rem' : '0',
-                  borderBottomRightRadius: score.total === 100 ? '0.5rem' : '0',
+                  backgroundSize: `${100 / (score.total / 100)}% 100%`
                 }} 
               />
             </div>
