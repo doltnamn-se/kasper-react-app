@@ -73,7 +73,7 @@ export const PrivacyScoreCard = () => {
                 className="h-full transition-all" 
                 style={{ 
                   width: `${score.total}%`,
-                  background: `linear-gradient(to right, #ea384c, #F97316, #FEF7CD, #0EA5E9, #10B981)`
+                  background: 'linear-gradient(90deg, #ea384c 0%, #F97316 25%, #FEF7CD 50%, #0EA5E9 75%, #10B981 100%)'
                 }} 
               />
             </Progress>
