@@ -93,12 +93,12 @@ export const PrivacyScoreCard = () => {
                   borderRadius: '5px',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
-                    rgba(0, 0, 0, 0.2) 20%,
-                    rgba(0, 0, 0, 0.4) 30%,
-                    rgba(0, 0, 0, 0.5) 40%,
-                    rgba(0, 0, 0, 0.7) 60%,
-                    rgba(0, 0, 0, 0.9) 80%,
-                    rgb(0, 0, 0) 100%
+                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} 20%,
+                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'} 30%,
+                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} 40%,
+                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'} 60%,
+                    ${document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)'} 80%,
+                    ${document.documentElement.classList.contains('dark') ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)'} 100%
                   )`,
                   WebkitMaskImage: `linear-gradient(to bottom, 
                     transparent 0%,
