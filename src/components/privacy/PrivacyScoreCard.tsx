@@ -94,7 +94,7 @@ export const PrivacyScoreCard = () => {
         />
         <ScoreItem
           icon={MapPinHouse}
-          title={language === 'sv' ? 'Adresskydd' : 'Address Protection'}
+          title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
           score={score.individual.address}
           onClick={() => navigate('/address-alerts')}
         />
