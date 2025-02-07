@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -33,7 +32,7 @@ export const PrivacyScoreCard = () => {
       <div
         key={index}
         className={cn(
-          "w-[2px] h-4 rounded-full mx-[1px]",
+          "w-[3px] h-6 rounded-full mx-[1px]",
           index < filledCount
             ? "bg-[#000000] dark:bg-[#FFFFFF]"
             : "bg-[#e8e8e5] dark:bg-[#2f2e31]"
@@ -53,7 +52,7 @@ export const PrivacyScoreCard = () => {
     score: number;
     onClick: () => void;
   }) => {
-    const totalLines = 24;
+    const totalLines = 32; // Increased number of lines
     const filledLines = Math.floor((score / 100) * totalLines);
 
     return (
@@ -167,4 +166,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
