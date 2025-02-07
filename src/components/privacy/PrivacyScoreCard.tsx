@@ -81,6 +81,15 @@ export const PrivacyScoreCard = () => {
             {getProtectionLevel(score.total)}
           </p>
           <div className="flex-1">
+            <div className="relative mb-2">
+              <div 
+                className="absolute bottom-0 w-px h-6 bg-[#000000A6] dark:bg-[#FFFFFFA6] transition-all" 
+                style={{ 
+                  left: `${score.total}%`,
+                  transform: 'translateX(-50%)'
+                }} 
+              />
+            </div>
             <Progress value={score.total} className="h-3">
               <div 
                 className="h-full transition-all" 
