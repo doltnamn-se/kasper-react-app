@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -35,7 +34,7 @@ export const PrivacyScoreCard = () => {
         className={cn(
           "w-[2px] h-4 rounded-full mx-[1px]",
           index < filledCount
-            ? "bg-gradient-to-t from-[rgb(234,56,76)] via-[rgb(249,115,22)] to-[rgba(25,208,91,255)]"
+            ? "bg-[#000000] dark:bg-[#FFFFFF]"
             : "bg-[#e8e8e5] dark:bg-[#2f2e31]"
         )}
       />
@@ -165,4 +164,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
