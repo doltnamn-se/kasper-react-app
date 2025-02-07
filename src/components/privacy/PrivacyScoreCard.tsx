@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -45,22 +44,17 @@ export const PrivacyScoreCard = () => {
   const ScoreItem = ({ 
     icon: Icon, 
     title, 
-    score, 
-    onClick 
+    score
   }: { 
     icon: any; 
     title: string; 
     score: number;
-    onClick: () => void;
   }) => {
     const totalLines = 32;
     const filledLines = Math.floor((score / 100) * totalLines);
 
     return (
-      <div 
-        className="space-y-2 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-        onClick={onClick}
-      >
+      <div className="space-y-2 p-3 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
@@ -143,25 +137,21 @@ export const PrivacyScoreCard = () => {
           icon={UserSearch}
           title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
           score={score.individual.monitoring}
-          onClick={() => navigate('/monitoring')}
         />
         <ScoreItem
           icon={EyeOff}
           title={language === 'sv' ? 'Avindexering' : 'Deindexing'}
           score={score.individual.urls}
-          onClick={() => navigate('/deindexing')}
         />
         <ScoreItem
           icon={MapPinHouse}
           title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
           score={score.individual.address}
-          onClick={() => navigate('/address-alerts')}
         />
         <ScoreItem
           icon={MousePointerClick}
           title={language === 'sv' ? 'Guider' : 'Guides'}
           score={score.individual.guides}
-          onClick={() => navigate('/guides')}
         />
       </div>
     </div>
