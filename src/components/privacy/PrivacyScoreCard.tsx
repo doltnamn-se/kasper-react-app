@@ -91,7 +91,8 @@ export const PrivacyScoreCard = () => {
                   height: '2.5rem',
                   borderRadius: '5px',
                   position: 'absolute',
-                  bottom: '5px',
+                  marginBottom: '40px',
+                  marginTop: '5px',
                 }}
                 className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
