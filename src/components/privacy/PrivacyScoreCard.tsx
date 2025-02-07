@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -118,26 +117,12 @@ export const PrivacyScoreCard = () => {
                     rgba(17, 84, 242, 255) 88%,
                     rgba(25, 208, 91, 255) 100%
                   )`,
-                  backgroundSize: '500% 100%',
-                  backgroundPosition: 'left',
+                  backgroundSize: `${100 / (score.total / 100)}% 100%`,
                   borderTopRightRadius: score.total === 100 ? '0.5rem' : '0',
                   borderBottomRightRadius: score.total === 100 ? '0.5rem' : '0',
-                  animation: 'gradient 8s linear infinite',
                 }} 
               />
             </div>
-            <style>
-              {`
-                @keyframes gradient {
-                  0% {
-                    background-position: 0% 0%;
-                  }
-                  100% {
-                    background-position: 100% 0%;
-                  }
-                }
-              `}
-            </style>
             <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
               <span>0</span>
               <span>100</span>
@@ -177,4 +162,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
