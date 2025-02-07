@@ -46,10 +46,9 @@ export const PrivacyScoreCard = () => {
       <Icon className={cn("w-5 h-5", getColorClass(score))} />
       <div className="flex-1">
         <div className="text-sm font-medium">{title}</div>
-        <div className="relative w-full h-2 mt-1 rounded-lg overflow-hidden">
-          <div className="absolute inset-0 bg-[#e8e8e5] dark:bg-[#2f2e31]" />
+        <Progress value={score} className="h-2 mt-1">
           <div 
-            className="absolute top-0 left-0 h-full transition-all"
+            className={cn("h-full transition-all")} 
             style={{ 
               width: `${score}%`,
               background: `linear-gradient(90deg, 
@@ -65,7 +64,7 @@ export const PrivacyScoreCard = () => {
               borderBottomRightRadius: score === 100 ? '0.5rem' : '0',
             }} 
           />
-        </div>
+        </Progress>
       </div>
       <span className={cn("text-sm font-semibold", getColorClass(score))}>
         {score}%
