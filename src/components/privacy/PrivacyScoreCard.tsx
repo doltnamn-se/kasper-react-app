@@ -107,7 +107,7 @@ export const PrivacyScoreCard = () => {
               />
             </div>
             <div className="relative w-full h-3 rounded-lg overflow-hidden">
-              <div className="absolute inset-0 bg-[rgba(209,209,209,1)] dark:bg-[#2f2e31]" />
+              <div className="absolute inset-0 bg-[#e8e8e5] dark:bg-[#2f2e31]" />
               <div 
                 className="absolute top-0 left-0 h-full transition-all"
                 style={{ 
