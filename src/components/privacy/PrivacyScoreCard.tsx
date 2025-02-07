@@ -28,6 +28,20 @@ export const PrivacyScoreCard = () => {
     return language === 'sv' ? "Inget skydd" : "No protection";
   };
 
+  const generateLines = (totalCount: number, filledCount: number) => {
+    return Array.from({ length: totalCount }, (_, index) => (
+      <div
+        key={index}
+        className={cn(
+          "w-[2px] h-4 rounded-full mx-[1px]",
+          index < filledCount
+            ? "bg-gradient-to-t from-[rgb(234,56,76)] via-[rgb(249,115,22)] to-[rgba(25,208,91,255)]"
+            : "bg-[#e8e8e5] dark:bg-[#2f2e31]"
+        )}
+      />
+    ));
+  };
+
   const ScoreItem = ({ 
     icon: Icon, 
     title, 
@@ -38,39 +52,28 @@ export const PrivacyScoreCard = () => {
     title: string; 
     score: number;
     onClick: () => void;
-  }) => (
-    <div 
-      className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-      onClick={onClick}
-    >
-      <Icon className={cn("w-5 h-5", getColorClass(score))} />
-      <div className="flex-1">
-        <div className="text-sm font-medium">{title}</div>
-        <Progress value={score} className="h-2 mt-1">
-          <div 
-            className={cn("h-full transition-all")} 
-            style={{ 
-              width: `${score}%`,
-              background: `linear-gradient(90deg, 
-                rgb(234, 56, 76) 0%,
-                rgb(249, 115, 22) 20%,
-                rgba(251, 209, 4, 255) 70%,
-                rgba(17, 84, 242, 255) 88%,
-                rgba(25, 208, 91, 255) 100%
-              )`,
-              backgroundSize: '100% 100%',
-              backgroundPosition: 'left',
-              borderTopRightRadius: score === 100 ? '0.5rem' : '0',
-              borderBottomRightRadius: score === 100 ? '0.5rem' : '0',
-            }} 
-          />
-        </Progress>
+  }) => {
+    const totalLines = 24;
+    const filledLines = Math.floor((score / 100) * totalLines);
+
+    return (
+      <div 
+        className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+        onClick={onClick}
+      >
+        <Icon className={cn("w-5 h-5", getColorClass(score))} />
+        <div className="flex-1">
+          <div className="text-sm font-medium">{title}</div>
+          <div className="flex mt-1">
+            {generateLines(totalLines, filledLines)}
+          </div>
+        </div>
+        <span className={cn("text-sm font-semibold", getColorClass(score))}>
+          {score}%
+        </span>
       </div>
-      <span className={cn("text-sm font-semibold", getColorClass(score))}>
-        {score}%
-      </span>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
