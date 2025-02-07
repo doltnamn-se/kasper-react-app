@@ -25,6 +25,15 @@ export const PrivacyScoreCard = () => {
     return "bg-red-500 dark:bg-red-400";
   };
 
+  const getProtectionLevel = (score: number) => {
+    if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
+    if (score >= 90) return language === 'sv' ? "Säkert skydd" : "Safe protection";
+    if (score >= 75) return language === 'sv' ? "Bra skydd" : "Good protection";
+    if (score >= 50) return language === 'sv' ? "Hyfsat skydd" : "Decent protection";
+    if (score >= 25) return language === 'sv' ? "Dåligt skydd" : "Poor protection";
+    return language === 'sv' ? "Inget skydd" : "No protection";
+  };
+
   const ScoreItem = ({ 
     icon: Icon, 
     title, 
@@ -64,10 +73,13 @@ export const PrivacyScoreCard = () => {
             {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
           </p>
         </div>
-        <div className="space-y-10">
+        <div className="space-y-4">
           <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
             {score.total}
           </span>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {getProtectionLevel(score.total)}
+          </p>
           <div className="flex-1">
             <Progress value={score.total} className="h-3">
               <div 
