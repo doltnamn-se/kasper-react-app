@@ -90,6 +90,7 @@ export const PrivacyScoreCard = () => {
                   clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
                   width: '4px',
                   height: '2.5rem',
+                  borderRadius: '5px',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
                     rgba(0, 0, 0, 0.2) 20%,
