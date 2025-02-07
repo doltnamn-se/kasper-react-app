@@ -83,7 +83,7 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <div className="relative mb-2">
               <div 
-                className="absolute bottom-2 w-px h-8 bg-[#000000] dark:bg-[#FFFFFF] transition-all rounded-full" 
+                className="absolute bottom-2 w-[2px] h-8 bg-[#000000] dark:bg-[#FFFFFF] transition-all rounded-full" 
                 style={{ 
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)'
