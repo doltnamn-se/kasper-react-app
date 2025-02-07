@@ -98,20 +98,14 @@ export const PrivacyScoreCard = () => {
                     var(--vertical-line-color-50) 40%,
                     var(--vertical-line-color-70) 60%,
                     var(--vertical-line-color-90) 80%,
-                    var(--vertical-line-color) 100%
+                    var(--vertical-line-base-color) 100%
                   )`,
                   WebkitMaskImage: `linear-gradient(to bottom, 
                     transparent 0%,
                     black 20%,
                     black 80%,
                     black 100%
-                  )`,
-                  '--vertical-line-color': 'rgb(0, 0, 0)',
-                  '--vertical-line-color-20': 'rgba(0, 0, 0, 0.2)',
-                  '--vertical-line-color-40': 'rgba(0, 0, 0, 0.4)',
-                  '--vertical-line-color-50': 'rgba(0, 0, 0, 0.5)',
-                  '--vertical-line-color-70': 'rgba(0, 0, 0, 0.7)',
-                  '--vertical-line-color-90': 'rgba(0, 0, 0, 0.9)'
+                  )`
                 } as React.CSSProperties} 
               />
             </div>
