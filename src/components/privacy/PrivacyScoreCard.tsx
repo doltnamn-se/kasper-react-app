@@ -1,7 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
-import { MousePointerClick, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
+import { MousePointerClick, MapPinHouse, EyeOff, UserSearch, Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
@@ -27,20 +27,6 @@ export const PrivacyScoreCard = () => {
     return language === 'sv' ? "Inget skydd" : "No protection";
   };
 
-  const generateLines = (totalCount: number, filledCount: number) => {
-    return Array.from({ length: totalCount }, (_, index) => (
-      <div
-        key={index}
-        className={cn(
-          "w-[3px] h-6 rounded-full mx-[1px]",
-          index < filledCount
-            ? "bg-[#000000] dark:bg-[#FFFFFF]"
-            : "bg-[#e8e8e5] dark:bg-[#2f2e31]"
-        )}
-      />
-    ));
-  };
-
   const ScoreItem = ({ 
     icon: Icon, 
     title, 
@@ -50,9 +36,6 @@ export const PrivacyScoreCard = () => {
     title: string; 
     score: number;
   }) => {
-    const totalLines = 32;
-    const filledLines = Math.floor((score / 100) * totalLines);
-
     return (
       <div className="space-y-2 p-3 rounded-lg">
         <div className="flex items-center justify-between">
@@ -64,8 +47,21 @@ export const PrivacyScoreCard = () => {
             {score}%
           </span>
         </div>
-        <div className="flex w-full justify-around">
-          {generateLines(totalLines, filledLines)}
+        <div className="flex items-center justify-around">
+          <Loader 
+            className={cn(
+              "animate-spin",
+              score === 100 ? "text-green-500 dark:text-green-400" :
+              score >= 75 ? "text-blue-500 dark:text-blue-400" :
+              score >= 50 ? "text-yellow-500 dark:text-yellow-400" :
+              "text-red-500 dark:text-red-400"
+            )}
+            style={{
+              width: '1.5rem',
+              height: '1.5rem',
+              opacity: score / 100
+            }}
+          />
         </div>
       </div>
     );
