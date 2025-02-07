@@ -83,7 +83,6 @@ export const PrivacyScoreCard = () => {
           <div className="flex-1">
             <div className="relative mb-2">
               <div 
-                className="absolute bottom-2" 
                 style={{ 
                   left: `${score.total}%`,
                   transform: 'translateX(-50%)',
@@ -91,6 +90,8 @@ export const PrivacyScoreCard = () => {
                   width: '4px',
                   height: '2.5rem',
                   borderRadius: '5px',
+                  position: 'absolute',
+                  bottom: '2px',
                   background: `linear-gradient(to bottom, 
                     transparent 0%,
                     ${getComputedStyle(document.documentElement).getPropertyValue('--tw-prose-body')} 20%,
@@ -107,7 +108,7 @@ export const PrivacyScoreCard = () => {
                     black 100%
                   )`,
                 }} 
-                className="dark:before:bg-[linear-gradient(#ffffff00_0%,rgb(255_255_255_/_20%)_20%,rgb(255_255_255_/_40%)_30%,rgb(255_255_255_/_50%)_40%,rgb(255_255_255_/_70%)_60%,rgb(255_255_255_/_90%)_80%,rgb(255_255_255)_100%)]"
+                className="dark:bg-[linear-gradient(to_bottom,#ffffff00_0%,rgb(255_255_255_/_20%)_20%,rgb(255_255_255_/_40%)_30%,rgb(255_255_255_/_50%)_40%,rgb(255_255_255_/_70%)_60%,rgb(255_255_255_/_90%)_80%,rgb(255_255_255)_100%)]"
               />
             </div>
             <Progress value={score.total} className="h-3 [&>div]:rounded-r-full">
@@ -158,3 +159,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
