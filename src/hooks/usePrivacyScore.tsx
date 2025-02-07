@@ -1,13 +1,16 @@
+
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { useAddressData } from "@/components/address/hooks/useAddressData";
 
 export const usePrivacyScore = () => {
   const { getGuides } = useGuideData();
   const { incomingUrls } = useIncomingUrls();
   const { checklistProgress } = useChecklistProgress();
+  const { addressData } = useAddressData();
   const allGuides = getGuides();
 
   const { data: subscriptionPlan } = useQuery({
@@ -31,7 +34,8 @@ export const usePrivacyScore = () => {
       allGuides,
       incomingUrls,
       subscriptionPlan,
-      completedGuides: checklistProgress?.completed_guides
+      completedGuides: checklistProgress?.completed_guides,
+      addressData
     });
 
     // Initialize weights based on subscription plan
@@ -47,11 +51,8 @@ export const usePrivacyScore = () => {
     const scores = {
       guides: allGuides.length > 0 ? 
         ((checklistProgress?.completed_guides?.length || 0) / allGuides.length) : 1,
-      // Consider a guide related to address protection if it contains "address" in its title
-      address: allGuides.some(guide => 
-        guide.title.toLowerCase().includes('address') && 
-        checklistProgress?.completed_guides?.includes(guide.title)
-      ) ? 1 : 0,
+      // Address score is 100% if there's an active address, 0% otherwise
+      address: addressData?.street_address && !addressData?.deleted_at ? 1 : 0,
       urls: calculateUrlScore()
     };
 
