@@ -53,9 +53,14 @@ export const PrivacyScoreCard = () => {
               width: `${score}%`,
               background: `linear-gradient(90deg, 
                 rgb(234, 56, 76) 0%,
-                rgb(249, 115, 22) 15%,
-                rgb(254, 247, 205) 30%,
-                rgb(14, 165, 233) 55%,
+                rgb(234, 56, 76) 20%,
+                rgb(249, 115, 22) 20%,
+                rgb(249, 115, 22) 40%,
+                rgb(254, 247, 205) 40%,
+                rgb(254, 247, 205) 60%,
+                rgb(14, 165, 233) 60%,
+                rgb(14, 165, 233) 80%,
+                rgb(16, 185, 129) 80%,
                 rgb(16, 185, 129) 100%
               )`,
               backgroundSize: '100% 100%',
@@ -113,9 +118,14 @@ export const PrivacyScoreCard = () => {
                   width: `${score.total}%`,
                   background: `linear-gradient(90deg, 
                     rgb(234, 56, 76) 0%,
-                    rgb(249, 115, 22) 15%,
-                    rgb(254, 247, 205) 30%,
-                    rgb(14, 165, 233) 55%,
+                    rgb(234, 56, 76) 20%,
+                    rgb(249, 115, 22) 20%,
+                    rgb(249, 115, 22) 40%,
+                    rgb(254, 247, 205) 40%,
+                    rgb(254, 247, 205) 60%,
+                    rgb(14, 165, 233) 60%,
+                    rgb(14, 165, 233) 80%,
+                    rgb(16, 185, 129) 80%,
                     rgb(16, 185, 129) 100%
                   )`,
                   backgroundSize: `${100 / (score.total / 100)}% 100%`,
@@ -163,4 +173,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
