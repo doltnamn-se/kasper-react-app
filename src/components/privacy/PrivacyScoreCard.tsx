@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -21,13 +22,34 @@ export const PrivacyScoreCard = () => {
   const { addressData } = useAddressData();
   const allGuides = getGuides();
   const [animatedScore, setAnimatedScore] = useState(0);
+  const [animatedDisplayScore, setAnimatedDisplayScore] = useState(0);
 
   useEffect(() => {
     setAnimatedScore(0);
+    setAnimatedDisplayScore(0);
     const timeout = setTimeout(() => {
       setAnimatedScore(score.total);
     }, 100);
-    return () => clearTimeout(timeout);
+
+    // Animate the display score
+    const duration = 1000; // 1 second
+    const steps = 60; // 60 steps for smooth animation
+    const increment = score.total / steps;
+    let currentStep = 0;
+
+    const interval = setInterval(() => {
+      currentStep++;
+      setAnimatedDisplayScore(Math.min(Math.round(increment * currentStep), score.total));
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+      }
+    }, duration / steps);
+
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [score.total]);
 
   const getColorClass = (value: number) => {
