@@ -5,6 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 export const HourlyCountdown = () => {
   const { language } = useLanguage();
   const [timeLeft, setTimeLeft] = useState<string>('');
+  const [isScanning, setIsScanning] = useState(false);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -21,6 +22,14 @@ export const HourlyCountdown = () => {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+      // If we've reached the interval point, trigger scanning state
+      if (minutes === 0 && seconds === 0) {
+        setIsScanning(true);
+        setTimeout(() => {
+          setIsScanning(false);
+        }, 60000); // Reset after 1 minute
+      }
+
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
@@ -35,6 +44,14 @@ export const HourlyCountdown = () => {
     return () => clearInterval(timer);
   }, []);
 
+  if (isScanning) {
+    return (
+      <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+        {language === 'sv' ? 'Skannar...' : 'Scanning...'}
+      </span>
+    );
+  }
+
   return (
     <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
       {language === 'sv' ? 
@@ -44,4 +61,3 @@ export const HourlyCountdown = () => {
     </span>
   );
 };
-
