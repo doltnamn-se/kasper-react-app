@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -80,7 +79,7 @@ export const PrivacyScoreCard = () => {
                 className={cn(
                   "border",
                   (isAddress && score === 0) 
-                    ? "text-[#B42318] dark:text-[#F97066] bg-[#FEE4E2] dark:bg-[#3A1714] border-[#FEE4E2] dark:border-[#3A1714]"
+                    ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
                     : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
                 )}
               >
@@ -216,4 +215,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
