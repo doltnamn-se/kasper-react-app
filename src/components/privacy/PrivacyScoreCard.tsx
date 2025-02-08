@@ -33,12 +33,14 @@ export const PrivacyScoreCard = () => {
     icon: Icon, 
     title, 
     score,
-    showBadge
+    showBadge,
+    isAddress
   }: { 
     icon: any; 
     title: string; 
     score: number;
     showBadge?: boolean;
+    isAddress?: boolean;
   }) => {
     const segments = 10;
     const radius = 6;
@@ -75,9 +77,17 @@ export const PrivacyScoreCard = () => {
             {showBadge ? (
               <Badge 
                 variant="secondary" 
-                className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239]"
+                className={cn(
+                  "border",
+                  (isAddress && score === 0) 
+                    ? "text-[#B42318] dark:text-[#F97066] bg-[#FEE4E2] dark:bg-[#3A1714] border-[#FEE4E2] dark:border-[#3A1714]"
+                    : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
+                )}
               >
-                {language === 'sv' ? 'Aktiv' : 'Active'}
+                {isAddress && score === 0 
+                  ? language === 'sv' ? 'Inaktiv' : 'Inactive'
+                  : language === 'sv' ? 'Aktiv' : 'Active'
+                }
               </Badge>
             ) : (
               <>
@@ -195,6 +205,7 @@ export const PrivacyScoreCard = () => {
           title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
           score={score.individual.address}
           showBadge={true}
+          isAddress={true}
         />
         <ScoreItem
           icon={MousePointerClick}
