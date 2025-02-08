@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -48,20 +49,32 @@ export const PrivacyScoreCard = () => {
           </span>
         </div>
         <div className="flex items-center justify-around">
-          <Loader 
-            className={cn(
-              "[&>*]:animate-none",
-              score === 100 ? "text-green-500 dark:text-green-400" :
-              score >= 75 ? "text-blue-500 dark:text-blue-400" :
-              score >= 50 ? "text-yellow-500 dark:text-yellow-400" :
-              "text-red-500 dark:text-red-400"
-            )}
+          <div 
+            className="relative w-6 h-6"
             style={{
-              width: '1.5rem',
-              height: '1.5rem',
               opacity: score / 100
             }}
-          />
+          >
+            <Loader 
+              className={cn("[&>*]:animate-none")}
+              style={{
+                width: '1.5rem',
+                height: '1.5rem',
+                stroke: 'url(#scoreGradient)',
+              }}
+            />
+            <svg width="0" height="0">
+              <defs>
+                <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style={{ stopColor: 'rgb(234, 56, 76)' }} />
+                  <stop offset="35%" style={{ stopColor: 'rgb(249, 115, 22)' }} />
+                  <stop offset="70%" style={{ stopColor: 'rgb(251, 209, 4)' }} />
+                  <stop offset="88%" style={{ stopColor: 'rgb(17, 84, 242)' }} />
+                  <stop offset="100%" style={{ stopColor: 'rgb(25, 208, 91)' }} />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
         </div>
       </div>
     );
