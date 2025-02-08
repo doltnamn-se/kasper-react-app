@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { Spinner } from "@/components/ui/spinner";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -38,12 +39,15 @@ const Index = () => {
             <h2 className="text-lg font-semibold mb-4">
               {language === 'sv' ? 'Aktivitet' : 'Activity'}
             </h2>
-            <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
-              {language === 'sv' ? 
-                'Ingen aktivitet att visa än' : 
-                'No activity to show yet'
-              }
-            </p>
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <Spinner size={44} />
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
+                {language === 'sv' ? 
+                  'Ingen aktivitet att visa än' : 
+                  'No activity to show yet'
+                }
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -52,3 +56,4 @@ const Index = () => {
 };
 
 export default Index;
+
