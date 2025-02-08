@@ -8,6 +8,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { HourlyCountdown } from "@/components/monitoring/HourlyCountdown";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
+import { Activity } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -83,12 +85,19 @@ const Index = () => {
                   `Last checked ${getFormattedDate()}`
                 }
               </p>
-              <p className="text-[#000000] dark:text-white text-lg font-medium">
-                {language === 'sv' ? 
-                  `Bevakar nya sökträffar för ${displayName}` : 
-                  `Monitoring new search hits for ${displayName}`
-                }
+              <p className="text-[#000000] dark:text-white text-lg">
+                <span className="font-normal">
+                  {language === 'sv' ? 
+                    'Bevakar nya sökträffar för ' : 
+                    'Monitoring new search hits for '
+                  }
+                </span>
+                <span className="font-bold">{displayName}</span>
               </p>
+              <Badge variant="outline" className="flex items-center gap-2 mt-2">
+                <Activity className="w-4 h-4" />
+                {language === 'sv' ? 'Inga nya träffar' : 'No new mentions'}
+              </Badge>
             </div>
           </div>
         </div>
@@ -98,3 +107,4 @@ const Index = () => {
 };
 
 export default Index;
+
