@@ -121,7 +121,12 @@ const Index = () => {
                   variant="outline" 
                   className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[140px]' : 'w-[200px]'}`}
                 >
-                  <Activity className={`w-[0.9rem] h-[0.9rem] transition-colors duration-300 ${isScanning ? 'text-[#ea384c] animate-scanning-icon' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} />
+                  <div className="relative w-[0.9rem] h-[0.9rem]">
+                    <Activity className="w-full h-full absolute text-[#000000A6] dark:text-[#FFFFFFA6]" />
+                    {isScanning && (
+                      <Activity className="w-full h-full absolute text-[#ea384c] animate-scanning-icon" />
+                    )}
+                  </div>
                   <span className="inline-flex items-center whitespace-nowrap">
                     {isScanning ? 
                       (language === 'sv' ? 
@@ -142,4 +147,3 @@ const Index = () => {
 };
 
 export default Index;
-
