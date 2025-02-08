@@ -22,16 +22,19 @@ export const PrivacyScoreCard = () => {
   const { addressData } = useAddressData();
   const allGuides = getGuides();
   const [animatedScore, setAnimatedScore] = useState(0);
-  const [animatedDisplayScore, setAnimatedDisplayScore] = useState(0);
+  const [displayScore, setDisplayScore] = useState(0);
 
   useEffect(() => {
+    // Reset animations
     setAnimatedScore(0);
-    setAnimatedDisplayScore(0);
-    const timeout = setTimeout(() => {
+    setDisplayScore(0);
+
+    // Animate the progress bar after a small delay
+    const progressTimeout = setTimeout(() => {
       setAnimatedScore(score.total);
     }, 100);
 
-    // Animate the display score
+    // Animate the score number
     const duration = 1000; // 1 second
     const steps = 60; // 60 steps for smooth animation
     const increment = score.total / steps;
@@ -39,7 +42,8 @@ export const PrivacyScoreCard = () => {
 
     const interval = setInterval(() => {
       currentStep++;
-      setAnimatedDisplayScore(Math.min(Math.round(increment * currentStep), score.total));
+      const newScore = Math.min(Math.round(increment * currentStep), score.total);
+      setDisplayScore(newScore);
       
       if (currentStep >= steps) {
         clearInterval(interval);
@@ -47,7 +51,7 @@ export const PrivacyScoreCard = () => {
     }, duration / steps);
 
     return () => {
-      clearTimeout(timeout);
+      clearTimeout(progressTimeout);
       clearInterval(interval);
     };
   }, [score.total]);
@@ -190,7 +194,7 @@ export const PrivacyScoreCard = () => {
         </div>
         <div className="space-y-0">
           <span className={cn("text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]")}>
-            {score.total}
+            {displayScore}
           </span>
           <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium" style={{ marginBottom: '50px', marginTop: '5px' }}>
             {getProtectionLevel(score.total)}
