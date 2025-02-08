@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -29,12 +28,7 @@ export const PrivacyScoreCard = () => {
     setAnimatedScore(0);
     setDisplayScore(0);
 
-    // Animate the progress bar after a small delay
-    const progressTimeout = setTimeout(() => {
-      setAnimatedScore(score.total);
-    }, 100);
-
-    // Animate the score number
+    // Start both animations immediately
     const duration = 1000; // 1 second
     const steps = 60; // 60 steps for smooth animation
     const increment = score.total / steps;
@@ -44,6 +38,7 @@ export const PrivacyScoreCard = () => {
       currentStep++;
       const newScore = Math.min(Math.round(increment * currentStep), score.total);
       setDisplayScore(newScore);
+      setAnimatedScore(newScore);
       
       if (currentStep >= steps) {
         clearInterval(interval);
@@ -51,7 +46,6 @@ export const PrivacyScoreCard = () => {
     }, duration / steps);
 
     return () => {
-      clearTimeout(progressTimeout);
       clearInterval(interval);
     };
   }, [score.total]);
