@@ -36,8 +36,8 @@ export const HourlyCountdown = () => {
   return (
     <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
       {language === 'sv' ? 
-        `Nästa skan om ${timeLeft}` : 
-        `Next scan in ${timeLeft}`
+        `${timeLeft} till nästa skan` : 
+        `${timeLeft} until next scan`
       }
     </span>
   );
