@@ -49,18 +49,14 @@ export const PrivacyScoreCard = () => {
       const outerX = centerPoint + (radius + lineLength) * Math.cos(rad);
       const outerY = centerPoint + (radius + lineLength) * Math.sin(rad);
 
-      const getColor = (index: number, total: number) => {
-        const percentage = (index / total) * 100;
-        if (percentage <= 25) return '#EA384C'; // Red
-        if (percentage <= 50) return '#FBD104'; // Yellow
-        if (percentage <= 75) return '#1154F2'; // Blue
-        return '#19D05B'; // Green
+      const getColor = (progress: number) => {
+        return progress <= 25 ? '#e64028' : '#28a27d';
       };
 
       return {
         path: `M ${innerX} ${innerY} L ${outerX} ${outerY}`,
         visible: index <= Math.floor((progress / 100) * segments),
-        color: getColor(index, segments)
+        color: getColor(progress)
       };
     };
 
@@ -82,7 +78,7 @@ export const PrivacyScoreCard = () => {
                 key={`bg-${i}`}
                 d={getSegmentPath(i, 0).path}
                 stroke="#e8e8e5"
-                strokeWidth="2"
+                strokeWidth="3"
                 strokeLinecap="round"
                 className="dark:stroke-[#2f2e31]"
               />
@@ -95,7 +91,7 @@ export const PrivacyScoreCard = () => {
                   key={`progress-${i}`}
                   d={segment.path}
                   stroke={segment.color}
-                  strokeWidth="2"
+                  strokeWidth="3"
                   strokeLinecap="round"
                 />
               );
