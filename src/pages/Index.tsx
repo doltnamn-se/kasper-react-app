@@ -99,7 +99,7 @@ const Index = () => {
                 className="flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2"
               >
                 <Activity className="w-[0.9rem] h-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6]" />
-                {language === 'sv' ? 'Inga nya träffar' : 'No new mentions'}
+                {language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google'}
               </Badge>
             </div>
           </div>
