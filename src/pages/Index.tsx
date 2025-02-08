@@ -114,57 +114,61 @@ const Index = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <PrivacyScoreCard />
-          <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold flex items-center">
-                {language === 'sv' ? 'Bevakning' : 'Monitoring'}
-              </h2>
-              <div className="flex items-center gap-3">
-                <HourlyCountdown />
+          <div className="relative bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold flex items-center">
+                  {language === 'sv' ? 'Bevakning' : 'Monitoring'}
+                </h2>
+                <div className="flex items-center gap-3">
+                  <HourlyCountdown />
+                  <div className="flex items-center">
+                    <Spinner color={isScanning ? "#ea384c" : "#20f922"} size={24} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-start justify-center space-y-2">
+                <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-xs mt-12">
+                  {language === 'sv' ? 
+                    `Senast kontrollerat ${getFormattedDate()}` : 
+                    `Last checked ${getFormattedDate()}`
+                  }
+                </p>
+                <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '55px' }}>
+                  <span className="font-normal">
+                    {language === 'sv' ? 
+                      'Bevakar nya sökträffar för ' : 
+                      'Monitoring new search hits for '
+                    }
+                  </span>
+                  <span className="font-bold">{displayName}</span>
+                </p>
                 <div className="flex items-center">
-                  <Spinner color={isScanning ? "#ea384c" : "#20f922"} size={24} />
+                  <Badge 
+                    variant="outline" 
+                    className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
+                  >
+                    <div className="relative w-[0.9rem] h-[0.9rem]">
+                      <Activity className="w-full h-full absolute inset-0 text-transparent" />
+                      <Activity 
+                        className={`w-full h-full absolute inset-0 ${isScanning ? 'text-[#ea384c] animate-icon-fill' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} 
+                      />
+                    </div>
+                    <span className="inline-flex items-center whitespace-nowrap">
+                      {isScanning ? 
+                        (language === 'sv' ? 
+                          <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
+                          <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
+                        ) :
+                        (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
+                      }
+                    </span>
+                  </Badge>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-start justify-center space-y-2">
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-xs mt-12">
-                {language === 'sv' ? 
-                  `Senast kontrollerat ${getFormattedDate()}` : 
-                  `Last checked ${getFormattedDate()}`
-                }
-              </p>
-              <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '55px' }}>
-                <span className="font-normal">
-                  {language === 'sv' ? 
-                    'Bevakar nya sökträffar för ' : 
-                    'Monitoring new search hits for '
-                  }
-                </span>
-                <span className="font-bold">{displayName}</span>
-              </p>
-              <div className="flex items-center">
-                <Badge 
-                  variant="outline" 
-                  className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
-                >
-                  <div className="relative w-[0.9rem] h-[0.9rem]">
-                    <Activity className="w-full h-full absolute inset-0 text-transparent" />
-                    <Activity 
-                      className={`w-full h-full absolute inset-0 ${isScanning ? 'text-[#ea384c] animate-icon-fill' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} 
-                    />
-                  </div>
-                  <span className="inline-flex items-center whitespace-nowrap">
-                    {isScanning ? 
-                      (language === 'sv' ? 
-                        <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
-                        <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
-                      ) :
-                      (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
-                    }
-                  </span>
-                </Badge>
-              </div>
-            </div>
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#e5e7eb]/50 dark:via-[#232325]/50 to-transparent pointer-events-none" />
           </div>
         </div>
       </div>
