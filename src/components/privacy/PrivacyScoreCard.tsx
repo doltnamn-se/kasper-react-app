@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -5,6 +6,7 @@ import { MousePointerClick, MapPinHouse, EyeOff, UserSearch, Loader } from "luci
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 export const PrivacyScoreCard = () => {
   const { calculateScore } = usePrivacyScore();
@@ -30,11 +32,13 @@ export const PrivacyScoreCard = () => {
   const ScoreItem = ({ 
     icon: Icon, 
     title, 
-    score
+    score,
+    showBadge
   }: { 
     icon: any; 
     title: string; 
     score: number;
+    showBadge?: boolean;
   }) => {
     const segments = 10;
     const radius = 6;
@@ -68,34 +72,45 @@ export const PrivacyScoreCard = () => {
             <div className="text-sm font-medium">{title}</div>
           </div>
           <div className="flex items-center space-x-3">
-            <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
-              {Array.from({ length: segments }).map((_, i) => (
-                <path
-                  key={`bg-${i}`}
-                  d={getSegmentPath(i, 0).path}
-                  stroke="#e8e8e5"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  className="dark:stroke-[#2f2e31]"
-                />
-              ))}
-              {Array.from({ length: segments }).map((_, i) => {
-                const segment = getSegmentPath(i, score);
-                if (!segment.visible) return null;
-                return (
-                  <path
-                    key={`progress-${i}`}
-                    d={segment.path}
-                    stroke={segment.color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                );
-              })}
-            </svg>
-            <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
-              {score}%
-            </span>
+            {showBadge ? (
+              <Badge 
+                variant="secondary" 
+                className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239]"
+              >
+                {language === 'sv' ? 'Aktiv' : 'Active'}
+              </Badge>
+            ) : (
+              <>
+                <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
+                  {Array.from({ length: segments }).map((_, i) => (
+                    <path
+                      key={`bg-${i}`}
+                      d={getSegmentPath(i, 0).path}
+                      stroke="#e8e8e5"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      className="dark:stroke-[#2f2e31]"
+                    />
+                  ))}
+                  {Array.from({ length: segments }).map((_, i) => {
+                    const segment = getSegmentPath(i, score);
+                    if (!segment.visible) return null;
+                    return (
+                      <path
+                        key={`progress-${i}`}
+                        d={segment.path}
+                        stroke={segment.color}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    );
+                  })}
+                </svg>
+                <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
+                  {score}%
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -168,6 +183,7 @@ export const PrivacyScoreCard = () => {
           icon={UserSearch}
           title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
           score={score.individual.monitoring}
+          showBadge={true}
         />
         <ScoreItem
           icon={EyeOff}
@@ -178,6 +194,7 @@ export const PrivacyScoreCard = () => {
           icon={MapPinHouse}
           title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
           score={score.individual.address}
+          showBadge={true}
         />
         <ScoreItem
           icon={MousePointerClick}
@@ -188,3 +205,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
