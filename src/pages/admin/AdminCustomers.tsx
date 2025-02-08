@@ -48,7 +48,15 @@ const AdminCustomers = () => {
         return;
       }
 
-      setCustomers(data || []);
+      // Filter out entries with no profile data or duplicate profiles
+      const uniqueCustomers = data?.reduce((acc: CustomerWithProfile[], current) => {
+        if (current.profile && !acc.some(item => item.profile?.id === current.profile?.id)) {
+          acc.push(current);
+        }
+        return acc;
+      }, []) || [];
+
+      setCustomers(uniqueCustomers);
     } catch (error) {
       console.error('Error:', error);
       toast.error("Failed to load customers");
