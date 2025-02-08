@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -48,33 +49,40 @@ export const PrivacyScoreCard = () => {
           </span>
         </div>
         <div className="flex items-center justify-around">
-          <div 
-            className="relative w-6 h-6"
-            style={{
-              opacity: score / 100
-            }}
-          >
-            <Loader 
-              className={cn("[&>*]:animate-none stroke-[3]")}
+          <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill="none"
+              strokeWidth="2.5"
+              stroke="#e8e8e5"
+              className="dark:stroke-[#2f2e31]"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill="none"
+              strokeWidth="2.5"
+              strokeDasharray={`${(score / 100) * 62.832} 62.832`}
+              strokeLinecap="round"
+              transform="rotate(-90 12 12)"
+              stroke="url(#progressGradient)"
               style={{
-                width: '1.5rem',
-                height: '1.5rem',
-                stroke: 'url(#loaderGradient)',
-                transform: 'rotate(90deg)',
+                opacity: score > 0 ? 1 : 0,
               }}
             />
-            <svg width="0" height="0">
-              <defs>
-                <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: 'rgb(234, 56, 76)' }} />
-                  <stop offset="35%" style={{ stopColor: 'rgb(249, 115, 22)' }} />
-                  <stop offset="70%" style={{ stopColor: 'rgb(251, 209, 4)' }} />
-                  <stop offset="88%" style={{ stopColor: 'rgb(17, 84, 242)' }} />
-                  <stop offset="100%" style={{ stopColor: 'rgb(25, 208, 91)' }} />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+            <defs>
+              <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{ stopColor: 'rgb(234, 56, 76)' }} />
+                <stop offset="35%" style={{ stopColor: 'rgb(249, 115, 22)' }} />
+                <stop offset="70%" style={{ stopColor: 'rgb(251, 209, 4)' }} />
+                <stop offset="88%" style={{ stopColor: 'rgb(17, 84, 242)' }} />
+                <stop offset="100%" style={{ stopColor: 'rgb(25, 208, 91)' }} />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
       </div>
     );
@@ -166,3 +174,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
