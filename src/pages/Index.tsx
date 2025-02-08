@@ -36,11 +36,13 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <PrivacyScoreCard />
           <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-            <h2 className="text-lg font-semibold mb-4">
-              {language === 'sv' ? 'Aktivitet' : 'Activity'}
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">
+                {language === 'sv' ? 'Bevakning' : 'Monitoring'}
+              </h2>
+              <Spinner size={24} />
+            </div>
             <div className="flex flex-col items-center justify-center space-y-4">
-              <Spinner size={44} />
               <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
                 {language === 'sv' ? 
                   'Ingen aktivitet att visa än' : 
