@@ -84,7 +84,7 @@ const Index = () => {
               </div>
             </div>
             <div className="flex flex-col items-start justify-center space-y-2">
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-12">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-xs mt-12">
                 {language === 'sv' ? 
                   `Senast kontrollerat ${getFormattedDate()}` : 
                   `Last checked ${getFormattedDate()}`
