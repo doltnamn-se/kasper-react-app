@@ -6,6 +6,7 @@ export const HourlyCountdown = () => {
   const { language } = useLanguage();
   const [timeLeft, setTimeLeft] = useState<string>('');
   const [isScanning, setIsScanning] = useState(false);
+  const [dots, setDots] = useState('.');
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -44,10 +45,26 @@ export const HourlyCountdown = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Animate dots when scanning
+  useEffect(() => {
+    if (isScanning) {
+      const dotsTimer = setInterval(() => {
+        setDots(prev => {
+          if (prev === '...') return '.';
+          if (prev === '..') return '...';
+          if (prev === '.') return '..';
+          return '.';
+        });
+      }, 500); // Change dots every 500ms
+
+      return () => clearInterval(dotsTimer);
+    }
+  }, [isScanning]);
+
   if (isScanning) {
     return (
       <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-        {language === 'sv' ? 'Skannar...' : 'Scanning...'}
+        {language === 'sv' ? `Skannar${dots}` : `Scanning${dots}`}
       </span>
     );
   }
