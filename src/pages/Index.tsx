@@ -94,8 +94,11 @@ const Index = () => {
                 </span>
                 <span className="font-bold">{displayName}</span>
               </p>
-              <Badge variant="outline" className="flex items-center gap-2 mt-2">
-                <Activity className="w-4 h-4" />
+              <Badge 
+                variant="outline" 
+                className="flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424]"
+              >
+                <Activity className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
                 {language === 'sv' ? 'Inga nya träffar' : 'No new mentions'}
               </Badge>
             </div>
