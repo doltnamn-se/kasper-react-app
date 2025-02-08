@@ -31,10 +31,25 @@ const Index = () => {
     // Set initial last checked time to the most recent 5-minute interval
     const now = new Date();
     const minutes = now.getMinutes();
-    now.setMinutes(minutes - (minutes % 5));
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-    setLastChecked(now);
+    const lastInterval = minutes - (minutes % 5);
+    const timeSinceLastInterval = minutes - lastInterval;
+    
+    // Set the last checked time
+    const lastCheckedTime = new Date(now);
+    lastCheckedTime.setMinutes(lastInterval);
+    lastCheckedTime.setSeconds(0);
+    lastCheckedTime.setMilliseconds(0);
+    setLastChecked(lastCheckedTime);
+
+    // Check if we're within the scanning window (first minute after interval)
+    if (timeSinceLastInterval === 0 || (timeSinceLastInterval === 0 && now.getSeconds() < 60)) {
+      setIsScanning(true);
+      // Set timeout to end scanning after the remaining time in the first minute
+      const remainingTime = 60000 - (now.getSeconds() * 1000);
+      setTimeout(() => {
+        setIsScanning(false);
+      }, remainingTime);
+    }
 
     // Update last checked time every 5 minutes
     const interval = setInterval(() => {
