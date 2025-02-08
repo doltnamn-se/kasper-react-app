@@ -165,9 +165,7 @@ const Index = () => {
                   </span>
                 </Badge>
               </div>
-              <div className="flex flex-col w-full space-y-6 mt-[88px]">
-                <Separator />
-              </div>
+              <Separator className="my-6" />
             </div>
           </div>
         </div>
