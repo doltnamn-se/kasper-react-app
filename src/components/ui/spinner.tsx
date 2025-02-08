@@ -13,6 +13,15 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
     {...props}
   >
     <title>Loading...</title>
+    <defs>
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
     <g fill="none" fillRule="evenodd" strokeWidth="2">
       <circle cx="22" cy="22" r="1">
         <animate
@@ -58,6 +67,13 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
           repeatCount="indefinite"
         />
       </circle>
+      <circle 
+        cx="22" 
+        cy="22" 
+        r="3" 
+        fill="#20f922"
+        filter="url(#glow)"
+      />
     </g>
   </svg>
 );
@@ -69,3 +85,4 @@ export type SpinnerProps = LucideProps & {
 export const Spinner = ({ ...props }: SpinnerProps) => {
   return <Ring {...props} />;
 };
+
