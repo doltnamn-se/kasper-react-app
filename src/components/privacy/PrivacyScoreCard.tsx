@@ -37,12 +37,24 @@ export const PrivacyScoreCard = () => {
     title: string; 
     score: number;
   }) => {
-    const segments = 10; // Number of dash segments
-    const radius = 10;
+    const segments = 10;
+    const radius = 8;
     const centerPoint = 12;
-    const circumference = 2 * Math.PI * radius;
-    const dashArray = circumference / segments;
-    const dashOffset = dashArray / 2;
+    const lineLength = 4;
+
+    const getSegmentPath = (index: number, progress: number) => {
+      const angle = (index * 360) / segments;
+      const rad = (angle * Math.PI) / 180;
+      const innerX = centerPoint + radius * Math.cos(rad);
+      const innerY = centerPoint + radius * Math.sin(rad);
+      const outerX = centerPoint + (radius + lineLength) * Math.cos(rad);
+      const outerY = centerPoint + (radius + lineLength) * Math.sin(rad);
+
+      return {
+        path: `M ${innerX} ${innerY} L ${outerX} ${outerY}`,
+        visible: index <= Math.floor((progress / 100) * segments)
+      };
+    };
 
     return (
       <div className="space-y-2 p-3 rounded-lg">
@@ -57,34 +69,32 @@ export const PrivacyScoreCard = () => {
         </div>
         <div className="flex items-center justify-around">
           <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
-            <circle
-              cx={centerPoint}
-              cy={centerPoint}
-              r={radius}
-              fill="none"
-              strokeWidth="2"
-              stroke="#e8e8e5"
-              strokeDasharray={`${dashArray} ${dashArray}`}
-              strokeDashoffset={dashOffset}
-              className="dark:stroke-[#2f2e31]"
-            />
-            <circle
-              cx={centerPoint}
-              cy={centerPoint}
-              r={radius}
-              fill="none"
-              strokeWidth="2"
-              strokeDasharray={`${dashArray} ${dashArray}`}
-              strokeDashoffset={dashOffset}
-              stroke="url(#progressGradient)"
-              strokeLinecap="round"
-              transform={`rotate(-90 ${centerPoint} ${centerPoint})`}
-              style={{
-                opacity: score > 0 ? 1 : 0,
-                strokeDasharray: `${dashArray} ${dashArray}`,
-                strokeDashoffset: circumference - (score / 100) * circumference + dashOffset,
-              }}
-            />
+            {Array.from({ length: segments }).map((_, i) => {
+              const segment = getSegmentPath(i, 0);
+              return (
+                <path
+                  key={`bg-${i}`}
+                  d={segment.path}
+                  stroke="#e8e8e5"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  className="dark:stroke-[#2f2e31]"
+                />
+              );
+            })}
+            {Array.from({ length: segments }).map((_, i) => {
+              const segment = getSegmentPath(i, score);
+              if (!segment.visible) return null;
+              return (
+                <path
+                  key={`progress-${i}`}
+                  d={segment.path}
+                  stroke="url(#progressGradient)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              );
+            })}
             <defs>
               <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" style={{ stopColor: 'rgb(234, 56, 76)' }} />
