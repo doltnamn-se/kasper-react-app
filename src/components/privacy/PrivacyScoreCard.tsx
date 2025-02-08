@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -167,4 +166,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
