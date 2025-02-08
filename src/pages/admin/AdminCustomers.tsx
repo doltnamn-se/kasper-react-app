@@ -146,8 +146,8 @@ const AdminCustomers = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={customer.onboarding_completed ? "default" : "secondary"}>
-                      {customer.onboarding_completed ? 'Completed' : 'In Progress'}
+                    <Badge variant={customer.checklist_completed ? "default" : "secondary"}>
+                      {customer.checklist_completed ? 'Completed' : 'In Progress'}
                     </Badge>
                   </TableCell>
                   <TableCell>
