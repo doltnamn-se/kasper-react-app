@@ -85,15 +85,17 @@ export const PrivacyScoreCard = () => {
 
     return (
       <div className="space-y-2 p-3 rounded-lg">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center">
+          <div className="flex items-center space-x-2 flex-1">
             <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
             <div className="text-sm font-medium">{title}</div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex-1 text-center">
             <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {progress}
             </span>
+          </div>
+          <div className="flex items-center gap-3 flex-1 justify-end">
             {showBadge ? (
               <Badge 
                 variant="secondary" 
