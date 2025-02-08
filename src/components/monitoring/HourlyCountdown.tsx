@@ -23,23 +23,26 @@ export const HourlyCountdown = () => {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      // If we've reached the interval point, trigger scanning state
-      if (minutes === 0 && seconds === 0) {
-        setIsScanning(true);
-        setTimeout(() => {
-          setIsScanning(false);
-        }, 60000); // Reset after 1 minute
-      }
-
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    // Initial calculation
+    // Check if we're in a scanning period (first minute of any 5-minute interval)
+    const checkScanningPeriod = () => {
+      const now = new Date();
+      const currentMinutes = now.getMinutes();
+      const currentSeconds = now.getSeconds();
+      return currentMinutes % 5 === 0 && currentSeconds < 60;
+    };
+
+    // Initial state check
+    const initialIsScanning = checkScanningPeriod();
+    setIsScanning(initialIsScanning);
     setTimeLeft(calculateTimeLeft());
 
     // Update every second
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
+      setIsScanning(checkScanningPeriod());
     }, 1000);
 
     return () => clearInterval(timer);
@@ -55,7 +58,7 @@ export const HourlyCountdown = () => {
           if (prev === '.') return '..';
           return '.';
         });
-      }, 500); // Change dots every 500ms
+      }, 500);
 
       return () => clearInterval(dotsTimer);
     }
@@ -81,4 +84,3 @@ export const HourlyCountdown = () => {
     </span>
   );
 };
-
