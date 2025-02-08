@@ -6,6 +6,8 @@ import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Spinner } from "@/components/ui/spinner";
 import { HourlyCountdown } from "@/components/monitoring/HourlyCountdown";
+import { format } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -23,6 +25,14 @@ const Index = () => {
   }, [language]);
 
   const displayName = userProfile?.display_name?.split(' ')[0] || '';
+
+  const getFormattedDate = () => {
+    const now = new Date();
+    if (language === 'sv') {
+      return `CET ${format(now, 'HH:mm eeee d MMMM yyyy', { locale: sv })}`;
+    }
+    return `CET ${format(now, 'h:mma, EEEE, MMMM d, yyyy', { locale: enUS })}`;
+  };
 
   return (
     <MainLayout>
@@ -48,11 +58,11 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="flex flex-col items-start justify-center space-y-4">
               <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
                 {language === 'sv' ? 
-                  'Ingen aktivitet att visa än' : 
-                  'No activity to show yet'
+                  `Senast kontrollerat ${getFormattedDate()}` : 
+                  `Last checked ${getFormattedDate()}`
                 }
               </p>
             </div>
@@ -64,3 +74,4 @@ const Index = () => {
 };
 
 export default Index;
+
