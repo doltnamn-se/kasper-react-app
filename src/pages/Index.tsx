@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
@@ -144,7 +145,7 @@ const Index = () => {
               <div className="flex items-center">
                 <Badge 
                   variant="outline" 
-                  className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[140px]' : 'w-[200px]'}`}
+                  className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
                 >
                   <div className="relative w-[0.9rem] h-[0.9rem]">
                     <Activity className="w-full h-full absolute inset-0 text-transparent" />
