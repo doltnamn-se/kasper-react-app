@@ -83,6 +83,9 @@ export const PrivacyScoreCard = () => {
       };
     };
 
+    // Split the progress string into current and total
+    const [current, total] = progress.split('/');
+
     return (
       <div className="space-y-2 p-3 rounded-lg">
         <div className="flex items-center">
@@ -91,8 +94,9 @@ export const PrivacyScoreCard = () => {
             <div className="text-sm font-medium">{title}</div>
           </div>
           <div className="flex-1 text-center">
-            <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {progress}
+            <span className="text-sm font-medium">
+              <span className="text-[#000000] dark:text-[#FFFFFF]">{current}</span>
+              <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">/{total}</span>
             </span>
           </div>
           <div className="flex items-center gap-3 flex-1 justify-end">
