@@ -42,8 +42,8 @@ const Index = () => {
                 {language === 'sv' ? 'Bevakning' : 'Monitoring'}
               </h2>
               <div className="flex items-center gap-3">
-                <Spinner size={24} />
                 <HourlyCountdown />
+                <Spinner size={24} />
               </div>
             </div>
             <div className="flex flex-col items-center justify-center space-y-4">
@@ -62,3 +62,4 @@ const Index = () => {
 };
 
 export default Index;
+
