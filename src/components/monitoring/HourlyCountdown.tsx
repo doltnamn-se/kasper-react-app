@@ -61,24 +61,25 @@ export const HourlyCountdown = () => {
     }
   }, [isScanning]);
 
-  if (isScanning) {
-    return (
-      <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] inline-flex">
+  return (
+    <div className="relative h-6">
+      <span 
+        className={`absolute text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] inline-flex transition-opacity duration-300 ${isScanning ? 'opacity-0' : 'opacity-100'}`}
+      >
+        {language === 'sv' ? 
+          `${timeLeft} till nästa skan` : 
+          `${timeLeft} until next scan`
+        }
+      </span>
+      <span 
+        className={`absolute text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] inline-flex transition-opacity duration-300 ${isScanning ? 'opacity-100' : 'opacity-0'}`}
+      >
         <span className="min-w-fit">
           {language === 'sv' ? 'Skannar' : 'Scanning'}
         </span>
         <span className="w-[18px]">{dots}</span>
       </span>
-    );
-  }
-
-  return (
-    <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-      {language === 'sv' ? 
-        `${timeLeft} till nästa skan` : 
-        `${timeLeft} until next scan`
-      }
-    </span>
+    </div>
   );
 };
 
