@@ -90,7 +90,7 @@ const Index = () => {
                   `Last checked ${getFormattedDate()}`
                 }
               </p>
-              <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '20px' }}>
+              <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '60px' }}>
                 <span className="font-normal">
                   {language === 'sv' ? 
                     'Bevakar nya sökträffar för ' : 
@@ -115,4 +115,3 @@ const Index = () => {
 };
 
 export default Index;
-
