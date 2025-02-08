@@ -167,7 +167,7 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-transparent via-background/90 to-background pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#e5e7eb]/50 dark:via-[#232325]/50 to-transparent pointer-events-none" />
           </div>
         </div>
@@ -177,3 +177,4 @@ const Index = () => {
 };
 
 export default Index;
+
