@@ -73,13 +73,16 @@ const AdminCustomers = () => {
       
       if (user) {
         try {
-          // First, update or insert the user's presence record with the unique constraint
+          // First, update or insert the user's presence record with proper conflict handling
           const { error: presenceError } = await supabase
             .from('user_presence')
             .upsert({ 
               user_id: user.id,
               last_seen: new Date().toISOString(),
               status: 'online'
+            }, {
+              onConflict: 'user_id',
+              ignoreDuplicates: false
             });
 
           if (presenceError) {
@@ -126,6 +129,9 @@ const AdminCustomers = () => {
                 user_id: user.id,
                 last_seen: new Date().toISOString(),
                 status: 'online'
+              }, {
+                onConflict: 'user_id',
+                ignoreDuplicates: false
               });
 
             if (updateError) {
