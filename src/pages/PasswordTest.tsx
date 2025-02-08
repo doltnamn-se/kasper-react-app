@@ -1,7 +1,9 @@
+
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getPasswordResetTemplate } from "@/utils/emailTemplates";
 import { getActivationEmailTemplate } from "@/utils/emailTemplates/activationEmail";
+import { Spinner } from "@/components/ui/spinner";
 
 const PasswordTest = () => {
   // Sample data for email templates
@@ -16,6 +18,11 @@ const PasswordTest = () => {
         <p className="text-muted-foreground mb-8">
           Preview of all email templates sent to customers
         </p>
+
+        <div className="flex items-center gap-4 mb-4">
+          <Spinner size={32} />
+          <span className="text-sm text-muted-foreground">Loading preview...</span>
+        </div>
 
         <Tabs defaultValue="reset" className="w-full">
           <TabsList>
