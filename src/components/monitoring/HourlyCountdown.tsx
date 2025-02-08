@@ -63,8 +63,11 @@ export const HourlyCountdown = () => {
 
   if (isScanning) {
     return (
-      <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-        {language === 'sv' ? `Skannar${dots}` : `Scanning${dots}`}
+      <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] inline-flex">
+        <span className="min-w-fit">
+          {language === 'sv' ? 'Skannar' : 'Scanning'}
+        </span>
+        <span className="w-[18px]">{dots}</span>
       </span>
     );
   }
@@ -78,3 +81,4 @@ export const HourlyCountdown = () => {
     </span>
   );
 };
+
