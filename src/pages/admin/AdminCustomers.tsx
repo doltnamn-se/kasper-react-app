@@ -69,33 +69,54 @@ const AdminCustomers = () => {
     fetchCustomers();
 
     // Subscribe to presence channel
-    const channel = supabase.channel('online-users');
+    const channel = supabase.channel('online-users', {
+      config: {
+        presence: {
+          key: 'user_presence',
+        },
+      },
+    });
 
-    channel
-      .on('presence', { event: 'sync' }, () => {
-        const state = channel.presenceState();
-        const online = new Set(
-          Object.values(state)
-            .flat()
-            .map((presence: any) => presence.user_id)
-        );
-        setOnlineUsers(online);
+    const setupPresence = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        try {
+          await channel
+            .on('presence', { event: 'sync' }, () => {
+              const state = channel.presenceState();
+              console.log('Presence state:', state);
+              
+              const online = new Set(
+                Object.values(state)
+                  .flat()
+                  .map((presence: any) => presence.user_id)
+              );
+              setOnlineUsers(online);
 
-        // Update last seen times
-        const newLastSeen: Record<string, string> = {};
-        Object.values(state).flat().forEach((presence: any) => {
-          newLastSeen[presence.user_id] = presence.last_seen;
-        });
-        setLastSeen(newLastSeen);
-      })
-      .subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          await channel.track({
-            user_id: supabase.auth.getUser(),
-            last_seen: new Date().toISOString(),
-          });
+              // Update last seen times
+              const newLastSeen: Record<string, string> = {};
+              Object.values(state).flat().forEach((presence: any) => {
+                newLastSeen[presence.user_id] = presence.last_seen;
+              });
+              setLastSeen(newLastSeen);
+            })
+            .subscribe(async (status) => {
+              if (status === 'SUBSCRIBED') {
+                const trackStatus = await channel.track({
+                  user_id: user.id,
+                  last_seen: new Date().toISOString(),
+                });
+                console.log('Track status:', trackStatus);
+              }
+            });
+        } catch (error) {
+          console.error('Error setting up presence:', error);
         }
-      });
+      }
+    };
+
+    setupPresence();
 
     return () => {
       channel.unsubscribe();
