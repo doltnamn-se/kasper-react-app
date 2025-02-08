@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Spinner } from "@/components/ui/spinner";
+import { HourlyCountdown } from "@/components/monitoring/HourlyCountdown";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -40,7 +41,10 @@ const Index = () => {
               <h2 className="text-lg font-semibold">
                 {language === 'sv' ? 'Bevakning' : 'Monitoring'}
               </h2>
-              <Spinner size={24} />
+              <div className="flex items-center gap-3">
+                <Spinner size={24} />
+                <HourlyCountdown />
+              </div>
             </div>
             <div className="flex flex-col items-center justify-center space-y-4">
               <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
@@ -58,4 +62,3 @@ const Index = () => {
 };
 
 export default Index;
-
