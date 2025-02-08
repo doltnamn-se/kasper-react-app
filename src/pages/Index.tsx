@@ -43,7 +43,7 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [language]);
 
-  const displayName = userProfile?.display_name?.split(' ')[0] || '';
+  const displayName = userProfile?.display_name || '';
 
   const getFormattedDate = () => {
     if (language === 'sv') {
@@ -76,8 +76,8 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-start justify-center space-y-4">
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-5">
+            <div className="flex flex-col items-start justify-center space-y-2">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-12">
                 {language === 'sv' ? 
                   `Senast kontrollerat ${getFormattedDate()}` : 
                   `Last checked ${getFormattedDate()}`
