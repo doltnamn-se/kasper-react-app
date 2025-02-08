@@ -56,16 +56,17 @@ export const PrivacyScoreCard = () => {
             }}
           >
             <Loader 
-              className={cn("[&>*]:animate-none")}
+              className={cn("[&>*]:animate-none stroke-[3]")}
               style={{
                 width: '1.5rem',
                 height: '1.5rem',
-                stroke: 'url(#scoreGradient)',
+                stroke: 'url(#loaderGradient)',
+                transform: 'rotate(90deg)',
               }}
             />
             <svg width="0" height="0">
               <defs>
-                <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" style={{ stopColor: 'rgb(234, 56, 76)' }} />
                   <stop offset="35%" style={{ stopColor: 'rgb(249, 115, 22)' }} />
                   <stop offset="70%" style={{ stopColor: 'rgb(251, 209, 4)' }} />
@@ -166,3 +167,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
