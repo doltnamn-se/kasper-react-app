@@ -84,13 +84,13 @@ const Index = () => {
               </div>
             </div>
             <div className="flex flex-col items-start justify-center space-y-2">
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-xs">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-12">
                 {language === 'sv' ? 
                   `Senast kontrollerat ${getFormattedDate()}` : 
                   `Last checked ${getFormattedDate()}`
                 }
               </p>
-              <p className="text-[#000000] dark:text-white text-lg mb-4">
+              <p className="text-[#000000] dark:text-white text-lg">
                 <span className="font-normal">
                   {language === 'sv' ? 
                     'Bevakar nya sökträffar för ' : 
