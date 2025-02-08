@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -38,9 +37,9 @@ export const PrivacyScoreCard = () => {
     score: number;
   }) => {
     const segments = 10;
-    const radius = 6; // Reduced from 8
-    const centerPoint = 10; // Reduced from 12
-    const lineLength = 3; // Reduced from 4
+    const radius = 6;
+    const centerPoint = 10;
+    const lineLength = 3;
 
     const getSegmentPath = (index: number, progress: number) => {
       const angle = (index * 360) / segments;
@@ -51,7 +50,7 @@ export const PrivacyScoreCard = () => {
       const outerY = centerPoint + (radius + lineLength) * Math.sin(rad);
 
       const getColor = (progress: number) => {
-        return progress <= 25 ? '#e64028' : '#28a27d';
+        return progress <= 25 ? '#e64028' : '#16B674';
       };
 
       return {
@@ -69,13 +68,13 @@ export const PrivacyScoreCard = () => {
             <div className="text-sm font-medium">{title}</div>
           </div>
           <div className="flex items-center space-x-3">
-            <svg width="20" height="20" viewBox="0 0 20 20" className="relative"> {/* Reduced from 24x24 */}
+            <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
               {Array.from({ length: segments }).map((_, i) => (
                 <path
                   key={`bg-${i}`}
                   d={getSegmentPath(i, 0).path}
                   stroke="#e8e8e5"
-                  strokeWidth="3"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   className="dark:stroke-[#2f2e31]"
                 />
@@ -88,7 +87,7 @@ export const PrivacyScoreCard = () => {
                     key={`progress-${i}`}
                     d={segment.path}
                     stroke={segment.color}
-                    strokeWidth="3"
+                    strokeWidth="2"
                     strokeLinecap="round"
                   />
                 );
@@ -189,4 +188,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
