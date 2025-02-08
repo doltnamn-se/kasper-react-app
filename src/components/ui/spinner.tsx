@@ -9,7 +9,7 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
     width={size}
     height={size}
     viewBox="0 0 44 44"
-    stroke="currentColor"
+    stroke="#20f922"
     {...props}
   >
     <title>Loading...</title>
