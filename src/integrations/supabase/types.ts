@@ -385,21 +385,21 @@ export type Database = {
           {
             foreignKeyName: "user_presence_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "admin_cache"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "user_presence_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "user_presence_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "user_roles_cache"
             referencedColumns: ["id"]
           },
