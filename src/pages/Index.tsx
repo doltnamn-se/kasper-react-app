@@ -90,7 +90,7 @@ const Index = () => {
                   `Last checked ${getFormattedDate()}`
                 }
               </p>
-              <p className="text-[#000000] dark:text-white text-lg">
+              <p className="text-[#000000] dark:text-white text-lg mb-4">
                 <span className="font-normal">
                   {language === 'sv' ? 
                     'Bevakar nya sökträffar för ' : 
