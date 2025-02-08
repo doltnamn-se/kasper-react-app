@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
@@ -133,7 +132,7 @@ const Index = () => {
                   `Last checked ${getFormattedDate()}`
                 }
               </p>
-              <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '60px' }}>
+              <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '55px' }}>
                 <span className="font-normal">
                   {language === 'sv' ? 
                     'Bevakar nya sökträffar för ' : 
@@ -173,4 +172,3 @@ const Index = () => {
 };
 
 export default Index;
-
