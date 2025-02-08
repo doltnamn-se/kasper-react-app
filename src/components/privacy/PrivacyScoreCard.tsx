@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -20,6 +19,15 @@ export const PrivacyScoreCard = () => {
   const { getGuides } = useGuideData();
   const { addressData } = useAddressData();
   const allGuides = getGuides();
+  const [animatedScore, setAnimatedScore] = useState(0);
+
+  useEffect(() => {
+    setAnimatedScore(0);
+    const timeout = setTimeout(() => {
+      setAnimatedScore(score.total);
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [score.total]);
 
   const getColorClass = (value: number) => {
     if (value >= 80) return "text-green-500 dark:text-green-400";
@@ -36,11 +44,9 @@ export const PrivacyScoreCard = () => {
     return language === 'sv' ? "Inget skydd" : "No protection";
   };
 
-  // Calculate completed URLs
   const completedUrls = incomingUrls?.filter(url => url.status === 'removal_approved')?.length || 0;
   const totalUrls = incomingUrls?.length || 0;
 
-  // Calculate completed guides
   const completedGuides = score.individual.guides;
   const completedGuidesCount = Math.round((completedGuides / 100) * allGuides.length);
 
@@ -83,7 +89,6 @@ export const PrivacyScoreCard = () => {
       };
     };
 
-    // Split the progress string into current and total
     const [current, total] = progress.split('/');
 
     return (
@@ -175,7 +180,7 @@ export const PrivacyScoreCard = () => {
             <div className="relative mb-2">
               <div 
                 style={{ 
-                  left: `${score.total}%`,
+                  left: `${animatedScore}%`,
                   transform: 'translateX(-50%)',
                   clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
                   width: '3.5px',
@@ -183,6 +188,7 @@ export const PrivacyScoreCard = () => {
                   borderRadius: '5px',
                   position: 'absolute',
                   bottom: '5px',
+                  transition: 'left 1000ms ease-out',
                 }}
                 className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
@@ -192,7 +198,7 @@ export const PrivacyScoreCard = () => {
               <div 
                 className="absolute top-0 left-0 h-full transition-all rounded-r-lg"
                 style={{ 
-                  width: `${score.total}%`,
+                  width: `${animatedScore}%`,
                   background: `linear-gradient(90deg, 
                     rgba(234, 56, 76, 1) 0%,
                     rgb(249, 115, 22) 35%,
@@ -200,7 +206,8 @@ export const PrivacyScoreCard = () => {
                     rgba(17, 84, 242, 255) 88%,
                     rgba(25, 208, 91, 255) 100%
                   )`,
-                  backgroundSize: `${100 / (score.total / 100)}% 100%`
+                  backgroundSize: `${100 / (score.total / 100)}% 100%`,
+                  transition: 'width 1000ms ease-out'
                 }} 
               />
             </div>
@@ -246,4 +253,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
