@@ -124,7 +124,7 @@ const Index = () => {
                   <div className="relative w-[0.9rem] h-[0.9rem]">
                     <Activity className="w-full h-full absolute inset-0 text-transparent" />
                     <Activity 
-                      className={`w-full h-full absolute inset-0 text-[#ea384c] ${isScanning ? 'animate-icon-fill' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} 
+                      className={`w-full h-full absolute inset-0 ${isScanning ? 'text-[#ea384c] animate-icon-fill' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} 
                     />
                   </div>
                   <span className="inline-flex items-center whitespace-nowrap">
@@ -147,3 +147,4 @@ const Index = () => {
 };
 
 export default Index;
+
