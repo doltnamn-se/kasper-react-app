@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -80,14 +79,10 @@ export const PrivacyScoreCard = () => {
       const outerX = centerPoint + (radius + lineLength) * Math.cos(rad);
       const outerY = centerPoint + (radius + lineLength) * Math.sin(rad);
 
-      const getColor = (progress: number) => {
-        return progress <= 25 ? '#e64028' : '#16B674';
-      };
-
       return {
         path: `M ${innerX} ${innerY} L ${outerX} ${outerY}`,
         visible: index <= Math.floor((progress / 100) * segments),
-        color: getColor(progress)
+        color: progress <= 25 ? '#e64028' : '#16B674'
       };
     };
 
