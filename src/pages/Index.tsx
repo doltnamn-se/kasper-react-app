@@ -28,14 +28,18 @@ const Index = () => {
       root.classList.add('animate-fadeIn');
     }
 
-    // Set initial last checked time to the most recent 5-minute interval
+    // Set initial states
     const now = new Date();
     const minutes = now.getMinutes();
     const currentInterval = minutes - (minutes % 5);
     
-    // If we're within the first minute after an interval, show the previous interval
-    if (minutes % 5 === 0) {
-      // Still show previous interval
+    // Check if we're in the scanning period (between XX:00 and XX:01 of any 5-minute interval)
+    const isInScanningPeriod = minutes % 5 === 0;
+    setIsScanning(isInScanningPeriod);
+    
+    // Set the last checked time
+    if (isInScanningPeriod) {
+      // Show the previous interval
       const previousInterval = new Date(now);
       previousInterval.setMinutes(currentInterval - 5);
       previousInterval.setSeconds(0);
@@ -50,23 +54,23 @@ const Index = () => {
       setLastChecked(lastInterval);
     }
 
-    // Update last checked time every minute
+    // Update states every second
     const interval = setInterval(() => {
       const newTime = new Date();
       const newMinutes = newTime.getMinutes();
+      const newSeconds = newTime.getSeconds();
       
-      // If we're one minute past a 5-minute interval (XX:01, XX:06, XX:11, etc.)
-      if (newMinutes % 5 === 1 && newTime.getSeconds() === 0) {
+      // Check if we're in a scanning period
+      const shouldBeScanningNow = newMinutes % 5 === 0;
+      setIsScanning(shouldBeScanningNow);
+      
+      // Update last checked time at XX:01
+      if (newMinutes % 5 === 1 && newSeconds === 0) {
         const lastInterval = new Date(newTime);
-        // Set to previous 5-minute interval
         lastInterval.setMinutes(newMinutes - 1);
         lastInterval.setSeconds(0);
         lastInterval.setMilliseconds(0);
         setLastChecked(lastInterval);
-        setIsScanning(true);
-        setTimeout(() => {
-          setIsScanning(false);
-        }, 60000); // Reset after 1 minute
       }
     }, 1000);
 
