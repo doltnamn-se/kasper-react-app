@@ -116,21 +116,23 @@ const Index = () => {
                 </span>
                 <span className="font-bold">{displayName}</span>
               </p>
-              <Badge 
-                variant="outline" 
-                className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-300 ease-in-out min-w-[200px]`}
-              >
-                <Activity className={`w-[0.9rem] h-[0.9rem] transition-colors duration-300 ${isScanning ? 'text-[#ea384c] animate-scanning-icon' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} />
-                <span className="inline-flex items-center">
-                  {isScanning ? 
-                    (language === 'sv' ? 
-                      <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
-                      <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
-                    ) :
-                    (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
-                  }
-                </span>
-              </Badge>
+              <div className="flex items-center">
+                <Badge 
+                  variant="outline" 
+                  className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[140px]' : 'w-[200px]'}`}
+                >
+                  <Activity className={`w-[0.9rem] h-[0.9rem] transition-colors duration-300 ${isScanning ? 'text-[#ea384c] animate-scanning-icon' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} />
+                  <span className="inline-flex items-center whitespace-nowrap">
+                    {isScanning ? 
+                      (language === 'sv' ? 
+                        <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
+                        <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
+                      ) :
+                      (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
+                    }
+                  </span>
+                </Badge>
+              </div>
             </div>
           </div>
         </div>
