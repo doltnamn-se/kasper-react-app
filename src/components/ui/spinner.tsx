@@ -27,7 +27,7 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
         <animate
           attributeName="r"
           begin="0s"
-          dur="1.8s"
+          dur="3s"
           values="1; 20"
           calcMode="spline"
           keyTimes="0; 1"
@@ -37,7 +37,7 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
         <animate
           attributeName="stroke-opacity"
           begin="0s"
-          dur="1.8s"
+          dur="3s"
           values="1; 0"
           calcMode="spline"
           keyTimes="0; 1"
@@ -48,8 +48,8 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
       <circle cx="22" cy="22" r="1">
         <animate
           attributeName="r"
-          begin="-0.9s"
-          dur="1.8s"
+          begin="-1.5s"
+          dur="3s"
           values="1; 20"
           calcMode="spline"
           keyTimes="0; 1"
@@ -58,8 +58,8 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
         />
         <animate
           attributeName="stroke-opacity"
-          begin="-0.9s"
-          dur="1.8s"
+          begin="-1.5s"
+          dur="3s"
           values="1; 0"
           calcMode="spline"
           keyTimes="0; 1"
