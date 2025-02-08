@@ -31,25 +31,10 @@ const Index = () => {
     // Set initial last checked time to the most recent 5-minute interval
     const now = new Date();
     const minutes = now.getMinutes();
-    const lastInterval = minutes - (minutes % 5);
-    const timeSinceLastInterval = minutes - lastInterval;
-    
-    // Set the last checked time
-    const lastCheckedTime = new Date(now);
-    lastCheckedTime.setMinutes(lastInterval);
-    lastCheckedTime.setSeconds(0);
-    lastCheckedTime.setMilliseconds(0);
-    setLastChecked(lastCheckedTime);
-
-    // Check if we're within the scanning window (first minute after interval)
-    if (timeSinceLastInterval === 0 || (timeSinceLastInterval === 0 && now.getSeconds() < 60)) {
-      setIsScanning(true);
-      // Set timeout to end scanning after the remaining time in the first minute
-      const remainingTime = 60000 - (now.getSeconds() * 1000);
-      setTimeout(() => {
-        setIsScanning(false);
-      }, remainingTime);
-    }
+    now.setMinutes(minutes - (minutes % 5));
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    setLastChecked(now);
 
     // Update last checked time every 5 minutes
     const interval = setInterval(() => {
@@ -136,12 +121,7 @@ const Index = () => {
                   variant="outline" 
                   className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[140px]' : 'w-[200px]'}`}
                 >
-                  <div className="relative w-[0.9rem] h-[0.9rem]">
-                    <Activity className="w-full h-full absolute text-[#000000A6] dark:text-[#FFFFFFA6]" />
-                    {isScanning && (
-                      <Activity className="w-full h-full absolute text-[#ea384c] animate-scanning-icon" />
-                    )}
-                  </div>
+                  <Activity className={`w-[0.9rem] h-[0.9rem] transition-colors duration-300 ${isScanning ? 'text-[#ea384c] animate-scanning-icon' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} />
                   <span className="inline-flex items-center whitespace-nowrap">
                     {isScanning ? 
                       (language === 'sv' ? 
@@ -162,3 +142,4 @@ const Index = () => {
 };
 
 export default Index;
+

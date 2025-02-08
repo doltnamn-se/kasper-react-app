@@ -51,13 +51,16 @@ export default {
         },
         'scanning': {
           '0%': { 
-            clipPath: 'inset(0 100% 0 0)',
+            opacity: '0.3',
+            transform: 'translateX(-100%)'
           },
           '50%': {
-            clipPath: 'inset(0 0 0 0)',
+            opacity: '1',
+            transform: 'translateX(0)'
           },
           '100%': {
-            clipPath: 'inset(0 0 0 100%)',
+            opacity: '0.3',
+            transform: 'translateX(100%)'
           }
         }
       },
