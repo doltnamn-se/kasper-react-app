@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -206,7 +205,7 @@ export const PrivacyScoreCard = () => {
                   borderRadius: '5px',
                   position: 'absolute',
                   bottom: '5px',
-                  transition: 'none'
+                  transition: 'left 1000ms ease-out',
                 }}
                 className="dark:bg-gradient-to-b dark:from-transparent dark:via-white/20 dark:to-white bg-gradient-to-b from-transparent via-black/20 to-black"
               />
@@ -214,7 +213,7 @@ export const PrivacyScoreCard = () => {
             <div className="relative w-full h-3 rounded-lg overflow-hidden">
               <div className="absolute inset-0 bg-[#e8e8e5] dark:bg-[#2f2e31]" />
               <div 
-                className="absolute top-0 left-0 h-full rounded-r-lg"
+                className="absolute top-0 left-0 h-full transition-all rounded-r-lg"
                 style={{ 
                   width: `${animatedScore}%`,
                   background: `linear-gradient(90deg, 
@@ -225,7 +224,7 @@ export const PrivacyScoreCard = () => {
                     rgba(25, 208, 91, 255) 100%
                   )`,
                   backgroundSize: `${100 / (score.total / 100)}% 100%`,
-                  transition: 'none'
+                  transition: 'width 1000ms ease-out'
                 }} 
               />
             </div>
