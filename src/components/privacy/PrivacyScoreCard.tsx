@@ -37,6 +37,13 @@ export const PrivacyScoreCard = () => {
     title: string; 
     score: number;
   }) => {
+    const segments = 10; // Number of dash segments
+    const radius = 10;
+    const centerPoint = 12;
+    const circumference = 2 * Math.PI * radius;
+    const dashArray = circumference / segments;
+    const dashOffset = dashArray / 2;
+
     return (
       <div className="space-y-2 p-3 rounded-lg">
         <div className="flex items-center justify-between">
@@ -51,26 +58,31 @@ export const PrivacyScoreCard = () => {
         <div className="flex items-center justify-around">
           <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
             <circle
-              cx="12"
-              cy="12"
-              r="10"
+              cx={centerPoint}
+              cy={centerPoint}
+              r={radius}
               fill="none"
-              strokeWidth="2.5"
+              strokeWidth="2"
               stroke="#e8e8e5"
+              strokeDasharray={`${dashArray} ${dashArray}`}
+              strokeDashoffset={dashOffset}
               className="dark:stroke-[#2f2e31]"
             />
             <circle
-              cx="12"
-              cy="12"
-              r="10"
+              cx={centerPoint}
+              cy={centerPoint}
+              r={radius}
               fill="none"
-              strokeWidth="2.5"
-              strokeDasharray={`${(score / 100) * 62.832} 62.832`}
-              strokeLinecap="round"
-              transform="rotate(-90 12 12)"
+              strokeWidth="2"
+              strokeDasharray={`${dashArray} ${dashArray}`}
+              strokeDashoffset={dashOffset}
               stroke="url(#progressGradient)"
+              strokeLinecap="round"
+              transform={`rotate(-90 ${centerPoint} ${centerPoint})`}
               style={{
                 opacity: score > 0 ? 1 : 0,
+                strokeDasharray: `${dashArray} ${dashArray}`,
+                strokeDashoffset: circumference - (score / 100) * circumference + dashOffset,
               }}
             />
             <defs>
