@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -142,7 +143,7 @@ const Index = () => {
                 </span>
                 <span className="font-bold">{displayName}</span>
               </p>
-              <div className="flex items-center">
+              <div className="flex items-center w-full">
                 <Badge 
                   variant="outline" 
                   className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
@@ -164,6 +165,7 @@ const Index = () => {
                   </span>
                 </Badge>
               </div>
+              <Separator className="my-6" />
             </div>
           </div>
         </div>
