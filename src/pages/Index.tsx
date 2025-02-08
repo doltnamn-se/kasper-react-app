@@ -16,6 +16,7 @@ const Index = () => {
   const { userProfile } = useUserProfile();
   const [lastChecked, setLastChecked] = useState(new Date());
   const [isScanning, setIsScanning] = useState(false);
+  const [dots, setDots] = useState('');
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -49,6 +50,21 @@ const Index = () => {
 
     return () => clearInterval(interval);
   }, [language]);
+
+  // Dot animation effect
+  useEffect(() => {
+    if (isScanning) {
+      let count = 0;
+      const dotInterval = setInterval(() => {
+        count = (count + 1) % 4;
+        setDots('.'.repeat(count));
+      }, 500);
+
+      return () => clearInterval(dotInterval);
+    } else {
+      setDots('');
+    }
+  }, [isScanning]);
 
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
@@ -102,11 +118,11 @@ const Index = () => {
               </p>
               <Badge 
                 variant="outline" 
-                className="flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2"
+                className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-300 ease-in-out min-w-[200px]`}
               >
                 <Activity className="w-[0.9rem] h-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6]" />
                 {isScanning ? 
-                  (language === 'sv' ? 'Skannar...' : 'Scanning...') :
+                  (language === 'sv' ? `Skannar${dots}` : `Scanning${dots}`) :
                   (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
                 }
               </Badge>
