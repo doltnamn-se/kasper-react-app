@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -67,36 +68,36 @@ export const PrivacyScoreCard = () => {
             <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
             <div className="text-sm font-medium">{title}</div>
           </div>
-          <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
-            {score}%
-          </span>
-        </div>
-        <div className="flex items-center justify-around">
-          <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
-            {Array.from({ length: segments }).map((_, i) => (
-              <path
-                key={`bg-${i}`}
-                d={getSegmentPath(i, 0).path}
-                stroke="#e8e8e5"
-                strokeWidth="3"
-                strokeLinecap="round"
-                className="dark:stroke-[#2f2e31]"
-              />
-            ))}
-            {Array.from({ length: segments }).map((_, i) => {
-              const segment = getSegmentPath(i, score);
-              if (!segment.visible) return null;
-              return (
+          <div className="flex items-center space-x-3">
+            <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
+              {Array.from({ length: segments }).map((_, i) => (
                 <path
-                  key={`progress-${i}`}
-                  d={segment.path}
-                  stroke={segment.color}
+                  key={`bg-${i}`}
+                  d={getSegmentPath(i, 0).path}
+                  stroke="#e8e8e5"
                   strokeWidth="3"
                   strokeLinecap="round"
+                  className="dark:stroke-[#2f2e31]"
                 />
-              );
-            })}
-          </svg>
+              ))}
+              {Array.from({ length: segments }).map((_, i) => {
+                const segment = getSegmentPath(i, score);
+                if (!segment.visible) return null;
+                return (
+                  <path
+                    key={`progress-${i}`}
+                    d={segment.path}
+                    stroke={segment.color}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                );
+              })}
+            </svg>
+            <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
+              {score}%
+            </span>
+          </div>
         </div>
       </div>
     );
@@ -188,3 +189,4 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
+
