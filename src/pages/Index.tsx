@@ -38,12 +38,14 @@ const Index = () => {
           <PrivacyScoreCard />
           <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-lg font-semibold flex items-center">
                 {language === 'sv' ? 'Bevakning' : 'Monitoring'}
               </h2>
               <div className="flex items-center gap-3">
                 <HourlyCountdown />
-                <Spinner size={24} />
+                <div className="flex items-center">
+                  <Spinner size={24} />
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center space-y-4">
@@ -62,4 +64,3 @@ const Index = () => {
 };
 
 export default Index;
-
