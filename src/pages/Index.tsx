@@ -1,7 +1,7 @@
 
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Spinner } from "@/components/ui/spinner";
@@ -12,6 +12,7 @@ import { sv, enUS } from "date-fns/locale";
 const Index = () => {
   const { language } = useLanguage();
   const { userProfile } = useUserProfile();
+  const [lastChecked, setLastChecked] = useState(new Date());
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -22,16 +23,33 @@ const Index = () => {
     if (root) {
       root.classList.add('animate-fadeIn');
     }
+
+    // Set initial last checked time to the most recent 5-minute interval
+    const now = new Date();
+    const minutes = now.getMinutes();
+    now.setMinutes(minutes - (minutes % 5));
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    setLastChecked(now);
+
+    // Update last checked time every 5 minutes
+    const interval = setInterval(() => {
+      const newTime = new Date();
+      if (newTime.getMinutes() % 5 === 0 && newTime.getSeconds() === 0) {
+        setLastChecked(newTime);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [language]);
 
   const displayName = userProfile?.display_name?.split(' ')[0] || '';
 
   const getFormattedDate = () => {
-    const now = new Date();
     if (language === 'sv') {
-      return `CET ${format(now, 'HH:mm eeee d MMMM yyyy', { locale: sv })}`;
+      return `CET ${format(lastChecked, 'HH:mm eeee d MMMM yyyy', { locale: sv })}`;
     }
-    return `CET ${format(now, 'h:mma, EEEE, MMMM d, yyyy', { locale: enUS })}`;
+    return `CET ${format(lastChecked, 'h:mma, EEEE, MMMM d, yyyy', { locale: enUS })}`;
   };
 
   return (

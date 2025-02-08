@@ -9,13 +9,15 @@ export const HourlyCountdown = () => {
   useEffect(() => {
     const calculateTimeLeft = () => {
       const now = new Date();
-      const nextHour = new Date(now);
-      nextHour.setHours(nextHour.getHours() + 1);
-      nextHour.setMinutes(0);
-      nextHour.setSeconds(0);
-      nextHour.setMilliseconds(0);
+      const nextInterval = new Date(now);
+      const currentMinutes = nextInterval.getMinutes();
+      const minutesUntilNext = 5 - (currentMinutes % 5);
+      
+      nextInterval.setMinutes(currentMinutes + minutesUntilNext);
+      nextInterval.setSeconds(0);
+      nextInterval.setMilliseconds(0);
 
-      const diff = nextHour.getTime() - now.getTime();
+      const diff = nextInterval.getTime() - now.getTime();
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
