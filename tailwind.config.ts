@@ -49,18 +49,18 @@ export default {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
         },
-        'scanning': {
+        'icon-fill': {
           '0%': { 
-            opacity: '0.3',
-            transform: 'translateX(-100%)'
+            'clip-path': 'inset(0 100% 0 0)',
+            opacity: '0'
           },
           '50%': {
-            opacity: '1',
-            transform: 'translateX(0)'
+            'clip-path': 'inset(0 0 0 0)',
+            opacity: '1'
           },
           '100%': {
-            opacity: '0.3',
-            transform: 'translateX(100%)'
+            'clip-path': 'inset(0 0 0 100%)',
+            opacity: '0'
           }
         }
       },
@@ -70,7 +70,7 @@ export default {
         'progress-line': 'progress-line 5s linear forwards',
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
-        'scanning-icon': 'scanning 1.5s ease-in-out infinite'
+        'icon-fill': 'icon-fill 2s linear infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
