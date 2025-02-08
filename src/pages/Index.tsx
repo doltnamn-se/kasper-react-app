@@ -120,7 +120,7 @@ const Index = () => {
                 variant="outline" 
                 className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-300 ease-in-out min-w-[200px]`}
               >
-                <Activity className={`w-[0.9rem] h-[0.9rem] transition-colors duration-300 ${isScanning ? 'text-[#ea384c]' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} />
+                <Activity className={`w-[0.9rem] h-[0.9rem] transition-colors duration-300 ${isScanning ? 'text-[#ea384c] animate-scanning-icon' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} />
                 <span className="inline-flex items-center">
                   {isScanning ? 
                     (language === 'sv' ? 
