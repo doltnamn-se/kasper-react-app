@@ -49,9 +49,18 @@ export const PrivacyScoreCard = () => {
       const outerX = centerPoint + (radius + lineLength) * Math.cos(rad);
       const outerY = centerPoint + (radius + lineLength) * Math.sin(rad);
 
+      const getColor = (index: number, total: number) => {
+        const percentage = (index / total) * 100;
+        if (percentage <= 25) return '#EA384C'; // Red
+        if (percentage <= 50) return '#FBD104'; // Yellow
+        if (percentage <= 75) return '#1154F2'; // Blue
+        return '#19D05B'; // Green
+      };
+
       return {
         path: `M ${innerX} ${innerY} L ${outerX} ${outerY}`,
-        visible: index <= Math.floor((progress / 100) * segments)
+        visible: index <= Math.floor((progress / 100) * segments),
+        color: getColor(index, segments)
       };
     };
 
@@ -68,19 +77,16 @@ export const PrivacyScoreCard = () => {
         </div>
         <div className="flex items-center justify-around">
           <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
-            {Array.from({ length: segments }).map((_, i) => {
-              const segment = getSegmentPath(i, 0);
-              return (
-                <path
-                  key={`bg-${i}`}
-                  d={segment.path}
-                  stroke="#e8e8e5"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  className="dark:stroke-[#2f2e31]"
-                />
-              );
-            })}
+            {Array.from({ length: segments }).map((_, i) => (
+              <path
+                key={`bg-${i}`}
+                d={getSegmentPath(i, 0).path}
+                stroke="#e8e8e5"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="dark:stroke-[#2f2e31]"
+              />
+            ))}
             {Array.from({ length: segments }).map((_, i) => {
               const segment = getSegmentPath(i, score);
               if (!segment.visible) return null;
@@ -88,21 +94,12 @@ export const PrivacyScoreCard = () => {
                 <path
                   key={`progress-${i}`}
                   d={segment.path}
-                  stroke="url(#progressGradient)"
+                  stroke={segment.color}
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
               );
             })}
-            <defs>
-              <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style={{ stopColor: 'rgb(234, 56, 76)' }} />
-                <stop offset="35%" style={{ stopColor: 'rgb(249, 115, 22)' }} />
-                <stop offset="70%" style={{ stopColor: 'rgb(251, 209, 4)' }} />
-                <stop offset="88%" style={{ stopColor: 'rgb(17, 84, 242)' }} />
-                <stop offset="100%" style={{ stopColor: 'rgb(25, 208, 91)' }} />
-              </linearGradient>
-            </defs>
           </svg>
         </div>
       </div>
