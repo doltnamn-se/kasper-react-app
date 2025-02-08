@@ -15,6 +15,7 @@ const Index = () => {
   const { language } = useLanguage();
   const { userProfile } = useUserProfile();
   const [lastChecked, setLastChecked] = useState(new Date());
+  const [isScanning, setIsScanning] = useState(false);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -39,6 +40,10 @@ const Index = () => {
       const newTime = new Date();
       if (newTime.getMinutes() % 5 === 0 && newTime.getSeconds() === 0) {
         setLastChecked(newTime);
+        setIsScanning(true);
+        setTimeout(() => {
+          setIsScanning(false);
+        }, 60000); // Reset after 1 minute
       }
     }, 1000);
 
@@ -74,7 +79,7 @@ const Index = () => {
               <div className="flex items-center gap-3">
                 <HourlyCountdown />
                 <div className="flex items-center">
-                  <Spinner size={24} />
+                  <Spinner color={isScanning ? "#ea384c" : "#20f922"} size={24} />
                 </div>
               </div>
             </div>

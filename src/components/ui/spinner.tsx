@@ -3,13 +3,13 @@ import { type LucideProps } from 'lucide-react';
 
 type SpinnerVariantProps = Omit<SpinnerProps, 'variant'>;
 
-const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
+const Ring = ({ size = 24, color = "#20f922", ...props }: SpinnerVariantProps & { color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
     height={size}
     viewBox="0 0 44 44"
-    stroke="#20f922"
+    stroke={color}
     {...props}
   >
     <title>Loading...</title>
@@ -72,7 +72,7 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
       cx="22" 
       cy="22" 
       r="3" 
-      fill="#20f922"
+      fill={color}
       filter="url(#glow)"
       stroke="none"
     />
@@ -86,4 +86,3 @@ export type SpinnerProps = LucideProps & {
 export const Spinner = ({ ...props }: SpinnerProps) => {
   return <Ring {...props} />;
 };
-
