@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -51,12 +50,12 @@ export const PrivacyScoreCard = () => {
         <div className="flex items-center justify-around">
           <Loader 
             className={cn(
+              "[&>*]:animate-none",
               score === 100 ? "text-green-500 dark:text-green-400" :
               score >= 75 ? "text-blue-500 dark:text-blue-400" :
               score >= 50 ? "text-yellow-500 dark:text-yellow-400" :
               "text-red-500 dark:text-red-400"
             )}
-            animate={false}
             style={{
               width: '1.5rem',
               height: '1.5rem',
@@ -154,4 +153,3 @@ export const PrivacyScoreCard = () => {
     </div>
   );
 };
-
