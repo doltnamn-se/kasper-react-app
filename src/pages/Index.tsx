@@ -31,16 +31,38 @@ const Index = () => {
     // Set initial last checked time to the most recent 5-minute interval
     const now = new Date();
     const minutes = now.getMinutes();
-    now.setMinutes(minutes - (minutes % 5));
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-    setLastChecked(now);
+    const currentInterval = minutes - (minutes % 5);
+    
+    // If we're within the first minute after an interval, show the previous interval
+    if (minutes % 5 === 0) {
+      // Still show previous interval
+      const previousInterval = new Date(now);
+      previousInterval.setMinutes(currentInterval - 5);
+      previousInterval.setSeconds(0);
+      previousInterval.setMilliseconds(0);
+      setLastChecked(previousInterval);
+    } else {
+      // Show the most recent completed interval
+      const lastInterval = new Date(now);
+      lastInterval.setMinutes(currentInterval);
+      lastInterval.setSeconds(0);
+      lastInterval.setMilliseconds(0);
+      setLastChecked(lastInterval);
+    }
 
-    // Update last checked time every 5 minutes
+    // Update last checked time every minute
     const interval = setInterval(() => {
       const newTime = new Date();
-      if (newTime.getMinutes() % 5 === 0 && newTime.getSeconds() === 0) {
-        setLastChecked(newTime);
+      const newMinutes = newTime.getMinutes();
+      
+      // If we're one minute past a 5-minute interval (XX:01, XX:06, XX:11, etc.)
+      if (newMinutes % 5 === 1 && newTime.getSeconds() === 0) {
+        const lastInterval = new Date(newTime);
+        // Set to previous 5-minute interval
+        lastInterval.setMinutes(newMinutes - 1);
+        lastInterval.setSeconds(0);
+        lastInterval.setMilliseconds(0);
+        setLastChecked(lastInterval);
         setIsScanning(true);
         setTimeout(() => {
           setIsScanning(false);
