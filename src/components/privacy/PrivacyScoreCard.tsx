@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -6,12 +7,19 @@ import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { useIncomingUrls } from "@/hooks/useIncomingUrls";
+import { useGuideData } from "@/hooks/useGuideData";
+import { useAddressData } from "@/components/address/hooks/useAddressData";
 
 export const PrivacyScoreCard = () => {
   const { calculateScore } = usePrivacyScore();
   const { language } = useLanguage();
   const navigate = useNavigate();
   const score = calculateScore();
+  const { incomingUrls } = useIncomingUrls();
+  const { getGuides } = useGuideData();
+  const { addressData } = useAddressData();
+  const allGuides = getGuides();
 
   const getColorClass = (value: number) => {
     if (value >= 80) return "text-green-500 dark:text-green-400";
@@ -28,16 +36,26 @@ export const PrivacyScoreCard = () => {
     return language === 'sv' ? "Inget skydd" : "No protection";
   };
 
+  // Calculate completed URLs
+  const completedUrls = incomingUrls?.filter(url => url.status === 'removal_approved')?.length || 0;
+  const totalUrls = incomingUrls?.length || 0;
+
+  // Calculate completed guides
+  const completedGuides = score.individual.guides;
+  const completedGuidesCount = Math.round((completedGuides / 100) * allGuides.length);
+
   const ScoreItem = ({ 
     icon: Icon, 
     title, 
     score,
+    progress,
     showBadge,
     isAddress
   }: { 
     icon: any; 
     title: string; 
     score: number;
+    progress: string;
     showBadge?: boolean;
     isAddress?: boolean;
   }) => {
@@ -72,7 +90,10 @@ export const PrivacyScoreCard = () => {
             <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
             <div className="text-sm font-medium">{title}</div>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {progress}
+            </span>
             {showBadge ? (
               <Badge 
                 variant="secondary" 
@@ -192,17 +213,20 @@ export const PrivacyScoreCard = () => {
           icon={UserSearch}
           title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
           score={score.individual.monitoring}
+          progress="1/1"
           showBadge={true}
         />
         <ScoreItem
           icon={EyeOff}
           title={language === 'sv' ? 'Avindexering' : 'Deindexing'}
           score={score.individual.urls}
+          progress={`${completedUrls}/${totalUrls || 1}`}
         />
         <ScoreItem
           icon={MapPinHouse}
           title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
           score={score.individual.address}
+          progress={addressData?.street_address ? "1/1" : "0/1"}
           showBadge={true}
           isAddress={true}
         />
@@ -210,8 +234,10 @@ export const PrivacyScoreCard = () => {
           icon={MousePointerClick}
           title={language === 'sv' ? 'Guider' : 'Guides'}
           score={score.individual.guides}
+          progress={`${completedGuidesCount}/${allGuides.length}`}
         />
       </div>
     </div>
   );
 };
+
