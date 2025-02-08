@@ -68,37 +68,45 @@ const AdminCustomers = () => {
   useEffect(() => {
     fetchCustomers();
 
-    // Subscribe to presence channel
-    const channel = supabase.channel('online-users', {
-      config: {
-        presence: {
-          key: 'user_presence',
-        },
-      },
-    });
-
     const setupPresence = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user) {
         try {
+          // First, update or insert the user's presence record
+          const { error: presenceError } = await supabase
+            .from('user_presence')
+            .upsert({ 
+              user_id: user.id,
+              last_seen: new Date().toISOString()
+            }, {
+              onConflict: 'user_id'
+            });
+
+          if (presenceError) {
+            console.error('Error updating presence:', presenceError);
+          }
+
+          // Subscribe to presence changes
+          const channel = supabase.channel('online-users');
+          
           await channel
             .on('presence', { event: 'sync' }, () => {
               const state = channel.presenceState();
               console.log('Presence state:', state);
               
-              const online = new Set(
-                Object.values(state)
-                  .flat()
-                  .map((presence: any) => presence.user_id)
-              );
-              setOnlineUsers(online);
-
-              // Update last seen times
+              // Get current online users from the presence state
+              const newOnlineUsers = new Set<string>();
               const newLastSeen: Record<string, string> = {};
+
               Object.values(state).flat().forEach((presence: any) => {
-                newLastSeen[presence.user_id] = presence.last_seen;
+                if (presence.user_id) {
+                  newOnlineUsers.add(presence.user_id);
+                  newLastSeen[presence.user_id] = presence.last_seen;
+                }
               });
+
+              setOnlineUsers(newOnlineUsers);
               setLastSeen(newLastSeen);
             })
             .subscribe(async (status) => {
@@ -110,16 +118,36 @@ const AdminCustomers = () => {
                 console.log('Track status:', trackStatus);
               }
             });
+
+          // Set up an interval to update the last_seen timestamp
+          const interval = setInterval(async () => {
+            const { error: updateError } = await supabase
+              .from('user_presence')
+              .upsert({ 
+                user_id: user.id,
+                last_seen: new Date().toISOString()
+              }, {
+                onConflict: 'user_id'
+              });
+
+            if (updateError) {
+              console.error('Error updating last_seen:', updateError);
+            }
+          }, 30000); // Update every 30 seconds
+
+          return () => {
+            clearInterval(interval);
+            channel.unsubscribe();
+          };
         } catch (error) {
           console.error('Error setting up presence:', error);
         }
       }
     };
 
-    setupPresence();
-
+    const cleanup = setupPresence();
     return () => {
-      channel.unsubscribe();
+      cleanup.then(cleanupFn => cleanupFn && cleanupFn());
     };
   }, []);
 
@@ -208,4 +236,3 @@ const AdminCustomers = () => {
 };
 
 export default AdminCustomers;
-
