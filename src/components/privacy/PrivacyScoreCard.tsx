@@ -38,9 +38,9 @@ export const PrivacyScoreCard = () => {
     score: number;
   }) => {
     const segments = 10;
-    const radius = 8;
-    const centerPoint = 12;
-    const lineLength = 4;
+    const radius = 6; // Reduced from 8
+    const centerPoint = 10; // Reduced from 12
+    const lineLength = 3; // Reduced from 4
 
     const getSegmentPath = (index: number, progress: number) => {
       const angle = (index * 360) / segments;
@@ -69,7 +69,7 @@ export const PrivacyScoreCard = () => {
             <div className="text-sm font-medium">{title}</div>
           </div>
           <div className="flex items-center space-x-3">
-            <svg width="24" height="24" viewBox="0 0 24 24" className="relative">
+            <svg width="20" height="20" viewBox="0 0 20 20" className="relative"> {/* Reduced from 24x24 */}
               {Array.from({ length: segments }).map((_, i) => (
                 <path
                   key={`bg-${i}`}
