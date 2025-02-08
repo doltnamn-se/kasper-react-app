@@ -77,16 +77,10 @@ const Index = () => {
               </div>
             </div>
             <div className="flex flex-col items-start justify-center space-y-4">
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-5">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
                 {language === 'sv' ? 
                   `Senast kontrollerat ${getFormattedDate()}` : 
                   `Last checked ${getFormattedDate()}`
-                }
-              </p>
-              <p className="text-[#000000] dark:text-white text-lg font-medium">
-                {language === 'sv' ? 
-                  `Bevakar nya sökträffar för ${displayName}` : 
-                  `Monitoring new search hits for ${displayName}`
                 }
               </p>
             </div>
@@ -98,3 +92,4 @@ const Index = () => {
 };
 
 export default Index;
+
