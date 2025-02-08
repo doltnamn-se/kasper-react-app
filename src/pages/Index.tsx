@@ -51,6 +51,7 @@ const Index = () => {
   }, [language]);
 
   const displayName = userProfile?.display_name || '';
+  const firstNameOnly = displayName.split(' ')[0];
 
   const getFormattedDate = () => {
     if (language === 'sv') {
@@ -64,8 +65,8 @@ const Index = () => {
       <div className="animate-fadeIn space-y-6">
         <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {language === 'sv' ? 
-            `Välkommen, ${displayName} 👋` : 
-            `Welcome, ${displayName} 👋`
+            `Välkommen, ${firstNameOnly} 👋` : 
+            `Welcome, ${firstNameOnly} 👋`
           }
         </h1>
 
@@ -115,3 +116,4 @@ const Index = () => {
 };
 
 export default Index;
+
