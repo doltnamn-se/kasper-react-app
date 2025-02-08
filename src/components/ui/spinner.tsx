@@ -67,14 +67,15 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
           repeatCount="indefinite"
         />
       </circle>
-      <circle 
-        cx="22" 
-        cy="22" 
-        r="3" 
-        fill="#20f922"
-        filter="url(#glow)"
-      />
     </g>
+    <circle 
+      cx="22" 
+      cy="22" 
+      r="3" 
+      fill="#20f922"
+      filter="url(#glow)"
+      stroke="none"
+    />
   </svg>
 );
 
