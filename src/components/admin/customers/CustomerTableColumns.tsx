@@ -1,4 +1,3 @@
-
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -6,7 +5,6 @@ import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Circle } from "lucide-react";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -144,4 +142,3 @@ export const getColumns = (
     },
   ];
 };
-

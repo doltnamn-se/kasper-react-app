@@ -32,7 +32,9 @@ export const CustomerTableToolbar = ({
       case 'checklist_completed':
         return t('checklist');
       case 'online_status':
-        return t('last.online');
+        return t('status');
+      case 'last_seen':
+        return language === 'sv' ? "Senast sedd" : "Last seen";
       case 'subscription_plan':
         return t('plan');
       default:
