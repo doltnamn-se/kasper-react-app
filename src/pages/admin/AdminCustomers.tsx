@@ -1,6 +1,5 @@
 
 import { useLanguage } from "@/contexts/LanguageContext";
-import { AdminHeader } from "@/components/admin/AdminHeader";
 import { CustomerTable } from "@/components/admin/customers/CustomerTable";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
@@ -15,8 +14,6 @@ const AdminCustomers = () => {
       <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.admin.customers')}
       </h1>
-
-      <AdminHeader onCustomerCreated={fetchCustomers} />
 
       <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
         {isLoading ? (
