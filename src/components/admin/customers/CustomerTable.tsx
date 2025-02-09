@@ -77,7 +77,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                         <div
                           {...{
                             className: header.column.getCanSort()
-                              ? "flex items-center gap-2 cursor-pointer select-none"
+                              ? "flex items-center justify-between gap-2 cursor-pointer select-none"
                               : "",
                             onClick: header.column.getToggleSortingHandler(),
                           }}
@@ -87,7 +87,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                             header.getContext()
                           )}
                           {header.column.getCanSort() && (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col ml-auto">
                               <ChevronUp className={`h-3 w-3 ${header.column.getIsSorted() === 'asc' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'}`} />
                               <ChevronDown className={`h-3 w-3 mt-[-4px] ${header.column.getIsSorted() === 'desc' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'}`} />
                             </div>
