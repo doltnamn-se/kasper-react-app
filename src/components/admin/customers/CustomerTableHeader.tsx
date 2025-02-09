@@ -5,6 +5,7 @@ import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 import { CustomerTableToolbar } from "./CustomerTableToolbar";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerTableHeaderProps {
   table: Table<CustomerWithProfile>;
@@ -19,6 +20,8 @@ export const CustomerTableHeader = ({
   setGlobalFilter,
   onRefresh,
 }: CustomerTableHeaderProps) => {
+  const { t } = useLanguage();
+
   return (
     <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
       <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-10">
@@ -51,14 +54,14 @@ export const CustomerTableHeader = ({
                           className="text-xs"
                         >
                           <ArrowDownWideNarrow className="mr-2 h-3.5 w-3.5" />
-                          Sort descending
+                          {t('sort.descending')}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => header.column.toggleSorting(false)}
                           className="text-xs"
                         >
                           <ArrowUpNarrowWide className="mr-2 h-3.5 w-3.5" />
-                          Sort ascending
+                          {t('sort.ascending')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
