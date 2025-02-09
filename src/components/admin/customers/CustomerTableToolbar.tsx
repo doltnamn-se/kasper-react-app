@@ -24,9 +24,9 @@ export const CustomerTableToolbar = ({
   const getColumnLabel = (columnId: string) => {
     switch (columnId) {
       case 'profile_display_name':
-        return language === 'sv' ? "Namn / Name" : "Name / Namn";
+        return language === 'sv' ? "Namn" : "Name";
       case 'profile_email':
-        return language === 'sv' ? "E-post / Email" : "Email / E-post";
+        return language === 'sv' ? "E-post" : "Email";
       case 'checklist_completed':
         return t('checklist');
       case 'online_status':
