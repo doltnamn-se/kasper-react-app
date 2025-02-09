@@ -31,7 +31,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
   });
 
   return (
-    <TableRow className="hover:bg-gray-50 dark:hover:bg-gray-900">
+    <TableRow className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]">
       <TableCell className="w-[25%] !px-4">
         <a 
           href={url.url} 
@@ -44,7 +44,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
         </a>
       </TableCell>
       <TableCell className="w-[25%] !px-4">
-        <span className="truncate block" title={url.customer.profiles.email}>
+        <span className="text-black dark:text-white truncate block" title={url.customer.profiles.email}>
           {url.customer.profiles.email}
         </span>
       </TableCell>
@@ -67,3 +67,4 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
     </TableRow>
   );
 };
+
