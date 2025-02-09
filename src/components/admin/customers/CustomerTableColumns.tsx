@@ -66,7 +66,7 @@ export const getColumns = (
   },
   {
     id: "online_status",
-    header: "Online Status",
+    header: "Last Online",
     cell: ({ row }) => (
       <div className="space-y-0.5">
         <span className="text-black dark:text-white">
