@@ -12,12 +12,14 @@ interface CustomerTableToolbarProps {
   table: Table<CustomerWithProfile>;
   globalFilter: string;
   setGlobalFilter: (value: string) => void;
+  onRefresh: () => void;
 }
 
 export const CustomerTableToolbar = ({
   table,
   globalFilter,
   setGlobalFilter,
+  onRefresh,
 }: CustomerTableToolbarProps) => {
   const { t, language } = useLanguage();
 
@@ -94,7 +96,7 @@ export const CustomerTableToolbar = ({
       <div className="flex-1" />
       <Button
         variant="outline"
-        onClick={() => table.resetRowSelection()}
+        onClick={onRefresh}
         className="
           text-xs font-medium border flex items-center gap-2 text-[#000000] border-[#d4d4d4] hover:text-[#000000] hover:bg-background/80 hover:border-[#8f8f8f]
           dark:text-[#FFFFFF] dark:border-[#363636] dark:hover:text-[#FFFFFF] dark:hover:border-[#454545] dark:hover:bg-transparent
@@ -102,7 +104,7 @@ export const CustomerTableToolbar = ({
         "
       >
         <RefreshCw className="[&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#000000A6] dark:text-[#FFFFFFA6]" />
-        Refresh
+        {language === 'sv' ? 'Uppdatera' : 'Refresh'}
       </Button>
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
         <Button 
@@ -119,4 +121,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-

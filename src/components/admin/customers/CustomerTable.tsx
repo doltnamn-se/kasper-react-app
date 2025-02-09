@@ -22,9 +22,10 @@ interface CustomerTableProps {
   customers: CustomerWithProfile[];
   onlineUsers: Set<string>;
   lastSeen: Record<string, string>;
+  onRefresh: () => void;
 }
 
-export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTableProps) => {
+export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: CustomerTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -73,6 +74,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
               table={table}
               globalFilter={globalFilter}
               setGlobalFilter={setGlobalFilter}
+              onRefresh={onRefresh}
             />
             <CustomerTableBody 
               table={table}

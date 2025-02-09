@@ -29,6 +29,7 @@ const AdminCustomers = () => {
             customers={customers}
             onlineUsers={onlineUsers}
             lastSeen={lastSeen}
+            onRefresh={fetchCustomers}
           />
         )}
       </div>
@@ -37,4 +38,3 @@ const AdminCustomers = () => {
 };
 
 export default AdminCustomers;
-
