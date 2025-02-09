@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus, ChevronDown } from "lucide-react";
+import { Search, UserRoundPlus, ChevronDown, RefreshCw } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -92,6 +92,18 @@ export const CustomerTableToolbar = ({
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="flex-1" />
+      <Button
+        variant="outline"
+        onClick={() => table.resetRowSelection()}
+        className="
+          text-xs font-medium border flex items-center gap-2 text-[#000000] border-[#d4d4d4] hover:text-[#000000] hover:bg-background/80 hover:border-[#8f8f8f]
+          dark:text-[#FFFFFF] dark:border-[#363636] dark:hover:text-[#FFFFFF] dark:hover:border-[#454545] dark:hover:bg-transparent
+          h-8 rounded-[0.375rem] px-[0.625rem]
+        "
+      >
+        <RefreshCw className="h-4 w-4" />
+        Refresh
+      </Button>
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
         <Button 
           className="
