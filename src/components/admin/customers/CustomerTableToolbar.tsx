@@ -23,9 +23,9 @@ export const CustomerTableToolbar = ({
 
   const getColumnLabel = (columnId: string) => {
     switch (columnId) {
-      case 'profile.display_name':
+      case 'Profile_display_name':
         return t('name');
-      case 'profile.email':
+      case 'Profile_email':
         return t('email');
       case 'checklist_completed':
         return t('checklist');
