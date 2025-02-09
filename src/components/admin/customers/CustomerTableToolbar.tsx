@@ -41,7 +41,7 @@ export const CustomerTableToolbar = ({
   return (
     <div className="flex items-center gap-4 py-2 px-2">
       <div className="relative">
-        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 !important text-[#777777] dark:text-[#898989]" />
+        <Search className="absolute left-2 top-1/2 -translate-y-1/2 [&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#777777] dark:text-[#898989]" />
         <Input
           placeholder={t('search.customers.placeholder')}
           value={globalFilter}
@@ -101,7 +101,7 @@ export const CustomerTableToolbar = ({
           h-8 rounded-[0.375rem] px-[0.625rem]
         "
       >
-        <RefreshCw className="h-3.5 w-3.5 !important text-[#000000A6] dark:text-[#FFFFFFA6]" />
+        <RefreshCw className="[&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#000000A6] dark:text-[#FFFFFFA6]" />
         Refresh
       </Button>
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
@@ -112,10 +112,11 @@ export const CustomerTableToolbar = ({
             border flex items-center gap-2 text-xs rounded-md h-8 px-[0.625rem]
           "
         >
-          <UserRoundPlus className="h-3.5 w-3.5 !important text-[#097c4f] dark:text-[#85e0ba]" />
+          <UserRoundPlus className="[&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#097c4f] dark:text-[#85e0ba]" />
           {t('add.customer')}
         </Button>
       </CreateCustomerDialog>
     </div>
   );
 };
+
