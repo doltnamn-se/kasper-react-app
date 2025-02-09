@@ -110,7 +110,7 @@ export const getColumns = (
                       <feMergeNode in="SourceGraphic"/>
                     </feMerge>
                   </filter>
-                </svg>
+                </defs>
                 <circle 
                   cx="4" 
                   cy="4" 
