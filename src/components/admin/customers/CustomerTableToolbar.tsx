@@ -27,11 +27,11 @@ export const CustomerTableToolbar = ({
         return t('name');
       case 'Profile_email':
         return t('email');
-      case 'Checklist':
+      case 'checklist_completed':
         return t('checklist');
-      case 'Last Online':
+      case 'online_status':
         return t('last.online');
-      case 'Plan':
+      case 'subscription_plan':
         return t('plan');
       default:
         return columnId;
@@ -107,3 +107,4 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
+
