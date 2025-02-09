@@ -1,3 +1,4 @@
+
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,7 +22,9 @@ export const getColumns = (
         />
         <Avatar className="h-8 w-8">
           <AvatarImage 
-            src={row.original.profile?.avatar_url ?? undefined}
+            src={row.original.profile?.email === 'info@doltnamn.se' 
+              ? '/favicon.ico' 
+              : row.original.profile?.avatar_url ?? undefined}
             alt={row.original.profile?.display_name || "User"}
           />
           <AvatarFallback className="text-xs">
