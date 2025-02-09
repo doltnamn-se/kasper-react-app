@@ -21,7 +21,7 @@ export const CustomerTableHeader = ({
 }: CustomerTableHeaderProps) => {
   return (
     <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
-      <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
+      <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-10">
         <TableHead colSpan={table.getAllColumns().length}>
           <CustomerTableToolbar 
             table={table}
