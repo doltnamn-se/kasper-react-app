@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users } from "lucide-react";
+import { UsersRound } from "lucide-react";
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
             <CardTitle className="text-sm font-medium">
               Total Customers
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <UsersRound className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalCustomers}</div>
@@ -55,3 +55,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
