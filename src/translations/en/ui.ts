@@ -66,7 +66,6 @@ export const ui: UITranslations = {
   'total.customers': 'Active Customers',
   'view.all.columns': 'All columns',
   'toggle.columns': 'Toggle columns',
-  'select.columns': 'Select columns to show',
   'add.customer': 'Add Customer',
   'no.customers': 'No customers found.',
   'name': 'Name',

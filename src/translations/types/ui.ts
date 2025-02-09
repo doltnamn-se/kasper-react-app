@@ -64,7 +64,6 @@ export interface UITranslations {
   'total.customers': string;
   'view.all.columns': string;
   'toggle.columns': string;
-  'select.columns': string;
   'add.customer': string;
   'no.customers': string;
   'name': string;
