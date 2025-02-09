@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus } from "lucide-react";
+import { Search, UserRoundPlus, ChevronDown } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -37,8 +37,12 @@ export const CustomerTableToolbar = ({
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">
+          <Button 
+            variant="outline" 
+            className="text-xs font-medium border-dashed flex items-center gap-2"
+          >
             {t('view.all.columns')}
+            <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -76,3 +80,4 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
+
