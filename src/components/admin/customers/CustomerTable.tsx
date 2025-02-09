@@ -66,8 +66,10 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     onGlobalFilterChange: setGlobalFilter,
   });
 
-  const handleRowClick = (customer: CustomerWithProfile) => {
-    setSelectedCustomer(customer);
+  const handleRowClick = (customer: CustomerWithProfile, isCheckboxCell: boolean) => {
+    if (!isCheckboxCell) {
+      setSelectedCustomer(customer);
+    }
   };
 
   return (
@@ -129,10 +131,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] cursor-pointer hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
-                    onClick={() => handleRowClick(row.original)}
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                    {row.getVisibleCells().map((cell, cellIndex) => (
+                      <TableCell 
+                        key={cell.id}
+                        onClick={() => handleRowClick(row.original, cellIndex === 0)}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -220,3 +224,4 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
+
