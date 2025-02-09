@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { 
   Users, 
-  LayoutDashboard,
+  ChartNoAxesGantt,
   Link as LinkIcon
 } from "lucide-react";
 
@@ -40,7 +40,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
   return (
     <nav className="space-y-2">
       {renderNavLink("/admin", 
-        <LayoutDashboard className="w-[18px] h-[18px]" />, 
+        <ChartNoAxesGantt className="w-[18px] h-[18px]" />, 
         t('nav.admin.dashboard')
       )}
       
@@ -56,3 +56,4 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
     </nav>
   );
 };
+
