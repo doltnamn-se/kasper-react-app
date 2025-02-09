@@ -14,4 +14,3 @@ export const navigation: NavigationTranslations = {
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
 };
-

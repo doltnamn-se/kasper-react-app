@@ -1,3 +1,4 @@
+
 export interface NavigationTranslations {
   'nav.home': string;
   'nav.checklist': string;
@@ -7,6 +8,7 @@ export interface NavigationTranslations {
   'nav.guides': string;
   'nav.admin.dashboard': string;
   'nav.admin.customers': string;
+  'nav.admin.links': string;
   'dark.mode': string;
   'light.mode': string;
 }
