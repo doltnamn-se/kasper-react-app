@@ -71,12 +71,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
         setGlobalFilter={setGlobalFilter}
       />
       
-      <div className="border border-[#dfdfdf]">
+      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="bg-[#f3f3f3]">
+            <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf]">
+                <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder ? null : (
@@ -118,7 +118,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-[#f8f8f8] border-b border-[#ededed]">
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424]">
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
