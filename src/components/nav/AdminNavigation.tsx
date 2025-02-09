@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { 
   UsersRound, 
   ChartNoAxesGantt,
-  Link as LinkIcon
+  EyeOff
 } from "lucide-react";
 
 interface AdminNavigationProps {
@@ -50,7 +50,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
       )}
 
       {renderNavLink("/admin/deindexing", 
-        <LinkIcon className="w-[18px] h-[18px]" />, 
+        <EyeOff className="w-[18px] h-[18px]" />, 
         t('nav.my.links')
       )}
     </nav>
