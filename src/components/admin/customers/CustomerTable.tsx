@@ -74,10 +74,10 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       header: "Customer",
       cell: ({ row }) => (
         <div className="space-y-0.5">
-          <div className="font-medium">
+          <div className="font-medium text-xs">
             {row.original.profile?.display_name || 'No name'}
           </div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {row.original.profile?.email}
           </div>
         </div>
@@ -87,7 +87,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       accessorKey: "checklist_completed",
       header: "Status",
       cell: ({ row }) => (
-        <Badge variant={row.original.checklist_completed ? "default" : "secondary"}>
+        <Badge variant={row.original.checklist_completed ? "default" : "secondary"} className="text-xs">
           {row.original.checklist_completed ? 'Completed' : 'In Progress'}
         </Badge>
       ),
@@ -97,7 +97,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       header: "Online Status",
       cell: ({ row }) => (
         <div className="space-y-0.5">
-          <Badge variant={onlineUsers.has(row.original.profile?.id || '') ? "default" : "secondary"}>
+          <Badge variant={onlineUsers.has(row.original.profile?.id || '') ? "default" : "secondary"} className="text-xs">
             {onlineUsers.has(row.original.profile?.id || '') ? 'Online' : 'Offline'}
           </Badge>
           {!onlineUsers.has(row.original.profile?.id || '') && lastSeen[row.original.profile?.id || ''] && (
@@ -112,14 +112,14 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       accessorKey: "customer_type",
       header: "Type",
       cell: ({ row }) => (
-        <span className="capitalize">{row.original.customer_type}</span>
+        <span className="capitalize text-xs">{row.original.customer_type}</span>
       ),
     },
     {
       accessorKey: "subscription_plan",
       header: "Plan",
       cell: ({ row }) => (
-        <span>
+        <span className="text-xs">
           {row.original.subscription_plan 
             ? row.original.subscription_plan.replace('_', ' ') 
             : 'No plan'}
@@ -130,7 +130,9 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       accessorKey: "created_at",
       header: "Created",
       cell: ({ row }) => (
-        format(new Date(row.original.created_at), 'MMM d, yyyy')
+        <span className="text-xs">
+          {format(new Date(row.original.created_at), 'MMM d, yyyy')}
+        </span>
       ),
     },
     {
