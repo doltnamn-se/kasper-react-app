@@ -35,7 +35,7 @@ const AdminLayout = () => {
             <AuthLogo className="relative h-8" />
             <Badge 
               variant="secondary" 
-              className="bg-[#9b87f5] hover:bg-[#9b87f5] text-white font-medium py-1"
+              className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1"
             >
               Admin
             </Badge>
