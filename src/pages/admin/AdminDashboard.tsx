@@ -43,12 +43,6 @@ const AdminDashboard = () => {
             <div className="text-2xl font-bold">{totalCustomers}</div>
           </CardContent>
         </div>
-
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-          <p className="text-gray-600 dark:text-gray-300">
-            Welcome to the admin dashboard.
-          </p>
-        </div>
       </div>
     </div>
   );
