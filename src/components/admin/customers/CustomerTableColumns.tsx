@@ -128,6 +128,7 @@ export const getColumns = (
     {
       id: "last_seen",
       header: t('last.seen').replace(':', ''),
+      enableSorting: true,  // Explicitly enable sorting
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
         if (isOnline || !row.original.profile?.id) return null;
@@ -154,3 +155,4 @@ export const getColumns = (
     },
   ];
 };
+
