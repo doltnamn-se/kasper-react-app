@@ -6,6 +6,8 @@ import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -129,12 +131,32 @@ export const getColumns = (
       id: "last_seen",
       header: ({ column }) => {
         return (
-          <button
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="flex items-center gap-2"
-          >
+          <div className="flex items-center justify-between gap-2">
             {t('last.seen').replace(':', '')}
-          </button>
+            {column.getCanSort() && (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="ml-auto focus:outline-none group rounded p-0.5 hover:bg-[#ededed] dark:hover:bg-[#292929] transition-colors">
+                  <ChevronDown className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6] group-hover:text-black dark:group-hover:text-white transition-colors" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => column.toggleSorting(true)}
+                    className="text-xs"
+                  >
+                    <ArrowDownWideNarrow className="mr-2 h-3.5 w-3.5" />
+                    {t('sort.descending')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => column.toggleSorting(false)}
+                    className="text-xs"
+                  >
+                    <ArrowUpNarrowWide className="mr-2 h-3.5 w-3.5" />
+                    {t('sort.ascending')}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
         );
       },
       cell: ({ row }) => {
@@ -160,6 +182,7 @@ export const getColumns = (
         
         return new Date(bLastSeen).getTime() - new Date(aLastSeen).getTime();
       },
+      enableSorting: true,
     },
   ];
 };
