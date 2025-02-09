@@ -1,4 +1,3 @@
-
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,7 +29,7 @@ export const getColumns = (
   },
   {
     accessorKey: "profile.display_name",
-    header: "Customer namn",
+    header: "Customer name",
     cell: ({ row }) => (
       <div className="text-black dark:text-white">
         {row.original.profile?.display_name || 'No name'}
@@ -99,4 +98,3 @@ export const getColumns = (
     cell: ({ row }) => <CustomerDetails customer={row.original} />,
   },
 ];
-
