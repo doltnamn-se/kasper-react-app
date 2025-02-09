@@ -64,7 +64,7 @@ export const CustomerTableToolbar = ({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:opacity-100 [&>span>svg>path]:hidden [&>span]:rounded-sm [&>span]:border [&>span]:border-primary [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[2px]"
+                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[#FFFFFF] dark:[&>span>svg]:stroke-[#000000] [&>span>svg]:stroke-[3px]"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
