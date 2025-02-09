@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Circle } from "lucide-react";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -95,20 +96,29 @@ export const getColumns = (
     {
       id: "online_status",
       header: t('last.online'),
-      cell: ({ row }) => (
-        <div className="space-y-0.5">
-          <span className="text-black dark:text-white">
-            {row.original.profile?.id && onlineUsers.has(row.original.profile.id) ? t('online') : t('offline')}
-          </span>
-          {row.original.profile?.id && 
-           !onlineUsers.has(row.original.profile.id) && 
-           lastSeen[row.original.profile.id] && (
-            <div className="text-muted-foreground">
-              {t('last.seen')}{format(new Date(lastSeen[row.original.profile.id]), 'MMM d, HH:mm')}
+      cell: ({ row }) => {
+        const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
+        return (
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2">
+              <Circle 
+                className={`h-2 w-2 fill-current ${isOnline ? 'text-[#20f922]' : 'text-[#ea384c]'}`}
+              />
+              <span className="text-black dark:text-white">
+                {isOnline ? t('online') : t('offline')}
+              </span>
             </div>
-          )}
-        </div>
-      ),
+            {row.original.profile?.id && 
+             !onlineUsers.has(row.original.profile.id) && 
+             lastSeen[row.original.profile.id] && (
+              <div className="text-muted-foreground">
+                {t('last.seen')}{format(new Date(lastSeen[row.original.profile.id]), 'MMM d, HH:mm')}
+              </div>
+            )}
+          </div>
+        );
+      },
     },
   ];
 };
+
