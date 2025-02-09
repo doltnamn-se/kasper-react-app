@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -32,7 +31,7 @@ export const ui: UITranslations = {
   'profile.settings': 'Settings',
   'profile.signing.out': 'Signing out...',
   'profile.sign.out': 'Sign out',
-  'search.placeholder': 'Search',
+  'search.placeholder': 'Search...',
   'search.customers.placeholder': 'Search name, email or UID',
   'search.no.results': 'No results found',
   'search.category.pages': 'Pages',
@@ -84,4 +83,3 @@ export const ui: UITranslations = {
   'sort.descending': 'Sort descending',
   'sort.ascending': 'Sort ascending'
 };
-
