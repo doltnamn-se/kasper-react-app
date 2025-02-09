@@ -67,6 +67,7 @@ export const CustomerTableToolbar = ({
                   className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF]"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  checkedIcon={CheckSquare}
                 >
                   {column.id === 'profile.display_name' ? t('name') :
                    column.id === 'profile.email' ? t('email') :
