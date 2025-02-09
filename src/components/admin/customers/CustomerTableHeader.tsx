@@ -34,9 +34,9 @@ export const CustomerTableHeader = ({
       {table.getHeaderGroups().map((headerGroup) => (
         <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
           {headerGroup.headers.map((header) => (
-            <TableHead key={header.id}>
+            <TableHead key={header.id} className="h-[2.5rem] py-0">
               {header.isPlaceholder ? null : (
-                <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-between gap-2 h-full">
                   {typeof header.column.columnDef.header === 'function' 
                     ? header.column.columnDef.header(header.getContext())
                     : header.column.columnDef.header}
