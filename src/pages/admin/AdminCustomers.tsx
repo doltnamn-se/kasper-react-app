@@ -18,7 +18,7 @@ const AdminCustomers = () => {
 
       <AdminHeader onCustomerCreated={fetchCustomers} />
 
-      <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+      <div className="p-6 transition-colors duration-200">
         {isLoading ? (
           <div className="flex justify-center items-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
