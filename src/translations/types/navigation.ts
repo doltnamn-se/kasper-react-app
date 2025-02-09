@@ -11,4 +11,6 @@ export interface NavigationTranslations {
   'nav.admin.links': string;
   'dark.mode': string;
   'light.mode': string;
+  'status': string;
 }
+
