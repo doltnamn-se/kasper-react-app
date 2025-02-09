@@ -1,8 +1,9 @@
+
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus, ChevronDown } from "lucide-react";
+import { Search, UserRoundPlus, ChevronDown, CheckSquare } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -48,8 +49,11 @@ export const CustomerTableToolbar = ({
             <ChevronDown className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t('toggle.columns')}</DropdownMenuLabel>
+        <DropdownMenuContent 
+          align="end"
+          className="text-xs bg-white dark:bg-[#212121] border-[#d4d4d4] dark:border-[#363636]"
+        >
+          <DropdownMenuLabel className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('toggle.columns')}</DropdownMenuLabel>
           {table
             .getAllColumns()
             .filter((column) => column.getCanHide())
@@ -57,7 +61,7 @@ export const CustomerTableToolbar = ({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize"
+                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF]"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
@@ -88,3 +92,4 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
+
