@@ -126,7 +126,7 @@ export const getColumns = (
     },
     {
       id: "last_seen",
-      header: t('last.seen'),
+      header: t('last.seen').replace(':', ''),  // Explicitly remove any colon that might be in the translation
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
         if (isOnline || !row.original.profile?.id) return null;
