@@ -86,10 +86,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                          {{
-                            asc: <ChevronUp className="h-4 w-4" />,
-                            desc: <ChevronDown className="h-4 w-4" />,
-                          }[header.column.getIsSorted() as string] ?? null}
+                          {header.column.getCanSort() && (
+                            <div className="flex flex-col">
+                              <ChevronUp className={`h-3 w-3 ${header.column.getIsSorted() === 'asc' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'}`} />
+                              <ChevronDown className={`h-3 w-3 mt-[-4px] ${header.column.getIsSorted() === 'desc' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'}`} />
+                            </div>
+                          )}
                         </div>
                       )}
                     </TableHead>
@@ -128,3 +130,4 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
+
