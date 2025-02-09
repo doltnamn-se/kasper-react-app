@@ -32,7 +32,7 @@ export const ui: UITranslations = {
   'profile.settings': 'Inställningar',
   'profile.signing.out': 'Loggar ut...',
   'profile.sign.out': 'Logga ut',
-  'search.placeholder': 'Sök...',
+  'search.placeholder': 'Sök',
   'search.no.results': 'Inga resultat hittades',
   'search.category.pages': 'Sidor',
   'search.category.settings': 'Inställningar',

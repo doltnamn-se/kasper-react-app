@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Columns3, Search, UserRoundPlus } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerTableToolbarProps {
   table: Table<CustomerWithProfile>;
@@ -18,6 +19,8 @@ export const CustomerTableToolbar = ({
   globalFilter,
   setGlobalFilter,
 }: CustomerTableToolbarProps) => {
+  const { t } = useLanguage();
+
   return (
     <div className="flex items-center gap-4 py-2 px-2">
       <DropdownMenu>
@@ -49,7 +52,7 @@ export const CustomerTableToolbar = ({
       <div className="relative">
         <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#777777]" />
         <Input
-          placeholder="Filter customers..."
+          placeholder={t('search.placeholder')}
           value={globalFilter}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#777777] text-[#000000] h-8 pl-8 pr-[0.625rem] focus:placeholder-[#777777]"
