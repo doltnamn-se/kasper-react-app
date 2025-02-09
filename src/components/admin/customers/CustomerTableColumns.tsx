@@ -38,6 +38,15 @@ export const getColumns = (
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    header: "Customer ID",
+    cell: ({ row }) => (
+      <div className="text-black dark:text-white">
+        {row.original.id}
+      </div>
+    ),
+  },
+  {
     accessorKey: "profile.display_name",
     header: "Customer name",
     cell: ({ row }) => (
