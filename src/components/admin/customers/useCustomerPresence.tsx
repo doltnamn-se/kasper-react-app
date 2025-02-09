@@ -74,30 +74,17 @@ export const useCustomerPresence = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // First try to insert
-          const { error: insertError } = await supabase
+          const { error: presenceError } = await supabase
             .from('user_presence')
-            .insert({
+            .upsert({
               user_id: user.id,
               last_seen: new Date().toISOString(),
               status: 'online'
             });
 
-          // If insert fails due to unique constraint, try update
-          if (insertError) {
-            console.log('Insert failed, trying update:', insertError);
-            const { error: updateError } = await supabase
-              .from('user_presence')
-              .update({
-                last_seen: new Date().toISOString(),
-                status: 'online'
-              })
-              .eq('user_id', user.id);
-
-            if (updateError) {
-              console.error('Error updating presence:', updateError);
-              toast.error('Failed to update presence status');
-            }
+          if (presenceError) {
+            console.error('Error updating presence:', presenceError);
+            toast.error('Failed to update presence status');
           }
         }
       } catch (error) {
@@ -118,12 +105,11 @@ export const useCustomerPresence = () => {
       if (user) {
         await supabase
           .from('user_presence')
-          .update({ 
+          .upsert({ 
             user_id: user.id,
             last_seen: new Date().toISOString(),
             status: 'offline'
-          })
-          .eq('user_id', user.id);
+          });
       }
     };
 
