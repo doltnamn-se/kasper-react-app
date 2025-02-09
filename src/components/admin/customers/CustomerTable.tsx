@@ -1,16 +1,8 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
-import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
-import { CustomerDetails } from "@/components/admin/CustomerDetails";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ChevronUp, Columns3 } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -20,27 +12,17 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  FilterFn,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { getColumns } from "./CustomerTableColumns";
+import { CustomerTableToolbar } from "./CustomerTableToolbar";
+import { textFilterFn } from "./customerTableUtils";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
   onlineUsers: Set<string>;
   lastSeen: Record<string, string>;
 }
-
-// Create a custom filter function for text search
-const textFilterFn: FilterFn<CustomerWithProfile> = (row, columnId, value: string) => {
-  const searchText = value.toLowerCase();
-  const customer = row.original;
-  // Search in both display name and email
-  const displayName = customer.profile?.display_name?.toLowerCase() || '';
-  const email = customer.profile?.email?.toLowerCase() || '';
-  
-  return displayName.includes(searchText) || email.includes(searchText);
-};
 
 export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -49,98 +31,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
 
-  const columns: ColumnDef<CustomerWithProfile>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "profile.display_name",
-      header: "Customer",
-      cell: ({ row }) => (
-        <div className="space-y-0.5">
-          <div className="font-medium text-xs">
-            {row.original.profile?.display_name || 'No name'}
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {row.original.profile?.email}
-          </div>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "checklist_completed",
-      header: "Status",
-      cell: ({ row }) => (
-        <Badge variant={row.original.checklist_completed ? "default" : "secondary"} className="text-xs">
-          {row.original.checklist_completed ? 'Completed' : 'In Progress'}
-        </Badge>
-      ),
-    },
-    {
-      id: "online_status",
-      header: "Online Status",
-      cell: ({ row }) => (
-        <div className="space-y-0.5">
-          <Badge variant={onlineUsers.has(row.original.profile?.id || '') ? "default" : "secondary"} className="text-xs">
-            {onlineUsers.has(row.original.profile?.id || '') ? 'Online' : 'Offline'}
-          </Badge>
-          {!onlineUsers.has(row.original.profile?.id || '') && lastSeen[row.original.profile?.id || ''] && (
-            <div className="text-xs text-muted-foreground">
-              Last seen: {format(new Date(lastSeen[row.original.profile?.id || '']), 'MMM d, HH:mm')}
-            </div>
-          )}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "customer_type",
-      header: "Type",
-      cell: ({ row }) => (
-        <span className="capitalize text-xs">{row.original.customer_type}</span>
-      ),
-    },
-    {
-      accessorKey: "subscription_plan",
-      header: "Plan",
-      cell: ({ row }) => (
-        <span className="text-xs">
-          {row.original.subscription_plan 
-            ? row.original.subscription_plan.replace('_', ' ') 
-            : 'No plan'}
-        </span>
-      ),
-    },
-    {
-      accessorKey: "created_at",
-      header: "Created",
-      cell: ({ row }) => (
-        <span className="text-xs">
-          {format(new Date(row.original.created_at), 'MMM d, yyyy')}
-        </span>
-      ),
-    },
-    {
-      id: "actions",
-      header: "",
-      cell: ({ row }) => <CustomerDetails customer={row.original} />,
-    },
-  ];
+  const columns = getColumns();
 
   const table = useReactTable({
     data: customers,
@@ -168,42 +59,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <div className="flex-1">
-          <Input
-            placeholder="Filter customers..."
-            value={globalFilter}
-            onChange={(event) => setGlobalFilter(event.target.value)}
-            className="max-w-sm"
-          />
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              <Columns3 className="mr-2 h-4 w-4" />
-              View
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <CustomerTableToolbar 
+        table={table}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+      
       <div className="rounded-md border">
         <div className="overflow-x-auto">
           <Table>
