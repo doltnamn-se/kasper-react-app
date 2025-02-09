@@ -1,12 +1,15 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const useCustomerPresence = () => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   const [lastSeen, setLastSeen] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    console.log('Setting up presence subscription');
+    
     const channel = supabase
       .channel('presence-updates')
       .on(
@@ -18,59 +21,48 @@ export const useCustomerPresence = () => {
         },
         async (payload) => {
           console.log('User presence changed:', payload);
-          
-          // Fetch current online users
-          const { data: presenceData, error: presenceError } = await supabase
-            .from('user_presence')
-            .select('*')
-            .gt('last_seen', new Date(Date.now() - 5 * 60 * 1000).toISOString()); // Users seen in last 5 minutes
-
-          if (presenceError) {
-            console.error('Error fetching presence data:', presenceError);
-            return;
-          }
-
-          const newOnlineUsers = new Set<string>();
-          const newLastSeen: Record<string, string> = {};
-
-          presenceData.forEach(presence => {
-            newOnlineUsers.add(presence.user_id);
-            newLastSeen[presence.user_id] = presence.last_seen;
-          });
-
-          setOnlineUsers(newOnlineUsers);
-          setLastSeen(newLastSeen);
+          await fetchPresenceData();
         }
       )
       .subscribe();
 
-    // Initial fetch of online users
-    const fetchInitialPresence = async () => {
+    const fetchPresenceData = async () => {
       const { data: presenceData, error: presenceError } = await supabase
         .from('user_presence')
         .select('*')
         .gt('last_seen', new Date(Date.now() - 5 * 60 * 1000).toISOString());
 
       if (presenceError) {
-        console.error('Error fetching initial presence:', presenceError);
+        console.error('Error fetching presence data:', presenceError);
+        toast.error('Failed to fetch user presence data');
         return;
       }
 
-      const initialOnlineUsers = new Set<string>();
-      const initialLastSeen: Record<string, string> = {};
+      console.log('Fetched presence data:', presenceData);
+
+      const newOnlineUsers = new Set<string>();
+      const newLastSeen: Record<string, string> = {};
 
       presenceData.forEach(presence => {
-        initialOnlineUsers.add(presence.user_id);
-        initialLastSeen[presence.user_id] = presence.last_seen;
+        if (presence.status === 'online' || 
+            new Date(presence.last_seen).getTime() > Date.now() - 5 * 60 * 1000) {
+          newOnlineUsers.add(presence.user_id);
+        }
+        newLastSeen[presence.user_id] = presence.last_seen;
       });
 
-      setOnlineUsers(initialOnlineUsers);
-      setLastSeen(initialLastSeen);
+      setOnlineUsers(newOnlineUsers);
+      setLastSeen(newLastSeen);
     };
 
-    fetchInitialPresence();
+    // Initial fetch
+    fetchPresenceData();
+
+    // Set up periodic refresh
+    const intervalId = setInterval(fetchPresenceData, 30000);
 
     return () => {
+      clearInterval(intervalId);
       supabase.removeChannel(channel);
     };
   }, []);
@@ -88,20 +80,45 @@ export const useCustomerPresence = () => {
             last_seen: new Date().toISOString(),
             status: 'online'
           }, {
-            onConflict: 'user_id',
-            ignoreDuplicates: false
+            onConflict: 'user_id'
           });
 
         if (presenceError) {
           console.error('Error updating presence:', presenceError);
+          toast.error('Failed to update presence status');
         }
       }
     };
 
+    // Update presence immediately
     updatePresence();
-    const interval = setInterval(updatePresence, 30000); // Update every 30 seconds
+    
+    // Update presence periodically
+    const intervalId = setInterval(updatePresence, 30000);
 
-    return () => clearInterval(interval);
+    // Set up beforeunload handler to mark user as offline
+    const handleBeforeUnload = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from('user_presence')
+          .upsert({ 
+            user_id: user.id,
+            last_seen: new Date().toISOString(),
+            status: 'offline'
+          }, {
+            onConflict: 'user_id'
+          });
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      handleBeforeUnload();
+    };
   }, []);
 
   return { onlineUsers, lastSeen };
