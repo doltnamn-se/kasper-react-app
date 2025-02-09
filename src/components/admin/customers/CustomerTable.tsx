@@ -23,6 +23,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { format } from "date-fns";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -36,6 +38,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
 
   const columns = getColumns(onlineUsers, lastSeen);
 
@@ -62,6 +65,10 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     },
     onGlobalFilterChange: setGlobalFilter,
   });
+
+  const handleRowClick = (customer: CustomerWithProfile) => {
+    setSelectedCustomer(customer);
+  };
 
   return (
     <div className="space-y-4">
@@ -118,7 +125,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424]">
+                  <TableRow 
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] cursor-pointer hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
+                    onClick={() => handleRowClick(row.original)}
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
@@ -143,7 +155,68 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
           </Table>
         </div>
       </div>
+
+      <Sheet open={!!selectedCustomer} onOpenChange={() => setSelectedCustomer(null)}>
+        <SheetContent side="right" className="sm:max-w-xl w-full">
+          {selectedCustomer && (
+            <div className="space-y-6 py-6">
+              <h2 className="text-2xl font-semibold">Customer Details</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-medium">Personal Information</h3>
+                  <div className="mt-2 space-y-2">
+                    <p className="text-sm">
+                      <span className="text-muted-foreground">Display Name:</span>{" "}
+                      {selectedCustomer.profile?.display_name || 'No name provided'}
+                    </p>
+                    <p className="text-sm">
+                      <span className="text-muted-foreground">Email:</span>{" "}
+                      {selectedCustomer.profile?.email || 'No email provided'}
+                    </p>
+                    <p className="text-sm">
+                      <span className="text-muted-foreground">Created:</span>{" "}
+                      {selectedCustomer.created_at ? format(new Date(selectedCustomer.created_at), 'PPP') : 'N/A'}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium">Onboarding Status</h3>
+                  <div className="mt-2 space-y-2">
+                    <p className="text-sm">
+                      <span className="text-muted-foreground">Status:</span>{" "}
+                      {selectedCustomer.onboarding_completed ? 'Completed' : 'In Progress'}
+                    </p>
+                    {!selectedCustomer.onboarding_completed && (
+                      <p className="text-sm">
+                        <span className="text-muted-foreground">Current Step:</span>{" "}
+                        {selectedCustomer.onboarding_step || 1}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium">Subscription</h3>
+                  <div className="mt-2 space-y-2">
+                    <p className="text-sm">
+                      <span className="text-muted-foreground">Plan:</span>{" "}
+                      {selectedCustomer.subscription_plan 
+                        ? selectedCustomer.subscription_plan.replace('_', ' ') 
+                        : 'No active plan'}
+                    </p>
+                    <p className="text-sm">
+                      <span className="text-muted-foreground">Customer Type:</span>{" "}
+                      <span className="capitalize">{selectedCustomer.customer_type}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
-

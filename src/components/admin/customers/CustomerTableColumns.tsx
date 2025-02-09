@@ -1,8 +1,8 @@
+
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
-import { CustomerDetails } from "@/components/admin/CustomerDetails";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -91,10 +91,5 @@ export const getColumns = (
         {format(new Date(row.original.created_at), 'MMM d, yyyy')}
       </span>
     ),
-  },
-  {
-    id: "actions",
-    header: "",
-    cell: ({ row }) => <CustomerDetails customer={row.original} />,
   },
 ];
