@@ -3,8 +3,9 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Columns3 } from "lucide-react";
+import { Columns3, UserRoundPlus } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
+import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 
 interface CustomerTableToolbarProps {
   table: Table<CustomerWithProfile>;
@@ -52,6 +53,7 @@ export const CustomerTableToolbar = ({
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="flex-1" />
+      <CreateCustomerDialog onCustomerCreated={() => {}} />
     </div>
   );
 };
