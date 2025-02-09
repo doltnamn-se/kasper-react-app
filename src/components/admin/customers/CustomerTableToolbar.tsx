@@ -42,6 +42,7 @@ export const CustomerTableToolbar = ({
             className="
               text-xs font-medium border-dashed flex items-center gap-2 text-[#000000] border-[#d4d4d4] hover:text-[#000000] hover:bg-background/80
               dark:text-[#FFFFFF] dark:border-[#363636] dark:hover:text-[#FFFFFF] dark:hover:bg-background/80
+              border border-[1px] h-8
             "
           >
             {t('view.all.columns')}
