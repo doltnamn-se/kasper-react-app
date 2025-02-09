@@ -34,10 +34,10 @@ export const getColumns = (
     header: "Customer",
     cell: ({ row }) => (
       <div className="space-y-0.5">
-        <div className="font-medium text-xs">
+        <div className="text-black dark:text-white">
           {row.original.profile?.display_name || 'No name'}
         </div>
-        <div className="text-xs text-muted-foreground">
+        <div className="text-muted-foreground">
           {row.original.profile?.email}
         </div>
       </div>
@@ -47,7 +47,7 @@ export const getColumns = (
     accessorKey: "checklist_completed",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant={row.original.checklist_completed ? "default" : "secondary"} className="text-xs">
+      <Badge variant={row.original.checklist_completed ? "default" : "secondary"}>
         {row.original.checklist_completed ? 'Completed' : 'In Progress'}
       </Badge>
     ),
@@ -57,13 +57,13 @@ export const getColumns = (
     header: "Online Status",
     cell: ({ row }) => (
       <div className="space-y-0.5">
-        <Badge variant={row.original.profile?.id && onlineUsers.has(row.original.profile.id) ? "default" : "secondary"} className="text-xs">
+        <Badge variant={row.original.profile?.id && onlineUsers.has(row.original.profile.id) ? "default" : "secondary"}>
           {row.original.profile?.id && onlineUsers.has(row.original.profile.id) ? 'Online' : 'Offline'}
         </Badge>
         {row.original.profile?.id && 
          !onlineUsers.has(row.original.profile.id) && 
          lastSeen[row.original.profile.id] && (
-          <div className="text-xs text-muted-foreground">
+          <div className="text-muted-foreground">
             Last seen: {format(new Date(lastSeen[row.original.profile.id]), 'MMM d, HH:mm')}
           </div>
         )}
@@ -74,14 +74,16 @@ export const getColumns = (
     accessorKey: "customer_type",
     header: "Type",
     cell: ({ row }) => (
-      <span className="capitalize text-xs">{row.original.customer_type}</span>
+      <span className="capitalize text-black dark:text-white">
+        {row.original.customer_type}
+      </span>
     ),
   },
   {
     accessorKey: "subscription_plan",
     header: "Plan",
     cell: ({ row }) => (
-      <span className="text-xs">
+      <span className="text-black dark:text-white">
         {row.original.subscription_plan 
           ? row.original.subscription_plan.replace('_', ' ') 
           : 'No plan'}
@@ -92,7 +94,7 @@ export const getColumns = (
     accessorKey: "created_at",
     header: "Created",
     cell: ({ row }) => (
-      <span className="text-xs">
+      <span className="text-black dark:text-white">
         {format(new Date(row.original.created_at), 'MMM d, yyyy')}
       </span>
     ),
