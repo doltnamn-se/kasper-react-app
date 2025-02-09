@@ -80,7 +80,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
         setGlobalFilter={setGlobalFilter}
       />
       
-      <div>
+      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
@@ -130,7 +130,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                   <TableRow 
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className="border-b border-[#ededed] dark:border-[#242424] cursor-pointer hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
+                    className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] cursor-pointer hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
                   >
                     {row.getVisibleCells().map((cell, cellIndex) => (
                       <TableCell 
