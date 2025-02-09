@@ -1,7 +1,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import {
   ColumnFiltersState,
   SortingState,
@@ -17,6 +17,12 @@ import { useState } from "react";
 import { getColumns } from "./CustomerTableColumns";
 import { CustomerTableToolbar } from "./CustomerTableToolbar";
 import { textFilterFn } from "./customerTableUtils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -74,23 +80,31 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder ? null : (
-                        <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "flex items-center justify-between gap-2 cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
-                        >
+                        <div className="flex items-center justify-between gap-2">
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
                           {header.column.getCanSort() && (
-                            <div className="flex flex-col ml-auto">
-                              <ChevronUp className={`h-3 w-3 ${header.column.getIsSorted() === 'asc' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'}`} />
-                              <ChevronDown className={`h-3 w-3 mt-[-4px] ${header.column.getIsSorted() === 'desc' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'}`} />
-                            </div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger className="ml-auto focus:outline-none">
+                                <ChevronDown className="h-3 w-3 text-black dark:text-white" />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => header.column.toggleSorting(false)}
+                                  className="text-xs"
+                                >
+                                  Sort ascending
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => header.column.toggleSorting(true)}
+                                  className="text-xs"
+                                >
+                                  Sort descending
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           )}
                         </div>
                       )}
