@@ -87,7 +87,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                           )}
                           {header.column.getCanSort() && (
                             <DropdownMenu>
-                              <DropdownMenuTrigger className="ml-auto focus:outline-none group">
+                              <DropdownMenuTrigger className="ml-auto focus:outline-none group rounded p-0.5 hover:bg-[#ededed] dark:hover:bg-[#292929] transition-colors">
                                 <ChevronDown className="h-3 w-3 text-[#000000A6] dark:text-[#FFFFFFA6] group-hover:text-black dark:group-hover:text-white transition-colors" />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
