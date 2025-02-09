@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus, ChevronDown, CheckSquare } from "lucide-react";
+import { Search, UserRoundPlus, ChevronDown } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -64,7 +64,7 @@ export const CustomerTableToolbar = ({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:opacity-100 [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[2px]"
+                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:opacity-100 [&>span>svg>path]:hidden [&>span]:rounded-sm [&>span]:border [&>span]:border-primary [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[2px]"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
@@ -95,3 +95,4 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
+
