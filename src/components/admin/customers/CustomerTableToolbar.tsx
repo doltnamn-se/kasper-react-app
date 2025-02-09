@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus, ChevronDown, Check } from "lucide-react";
+import { Search, UserRoundPlus, ChevronDown } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
