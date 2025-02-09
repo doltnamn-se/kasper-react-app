@@ -101,10 +101,10 @@ export const getColumns = (
         return (
           <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <svg width="8" height="8" viewBox="0 0 8 8">
+              <svg width="12" height="12" viewBox="0 0 12 12">
                 <defs>
                   <filter id="glow">
-                    <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
                     <feMerge>
                       <feMergeNode in="coloredBlur"/>
                       <feMergeNode in="SourceGraphic"/>
@@ -112,9 +112,9 @@ export const getColumns = (
                   </filter>
                 </defs>
                 <circle 
-                  cx="4" 
-                  cy="4" 
-                  r="4" 
+                  cx="6" 
+                  cy="6" 
+                  r="3" 
                   fill={isOnline ? '#20f922' : '#ea384c'} 
                   filter="url(#glow)"
                 />
