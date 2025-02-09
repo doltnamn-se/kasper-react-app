@@ -71,7 +71,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
         setGlobalFilter={setGlobalFilter}
       />
       
-      <div className="border">
+      <div className="border border-[#ededed]">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[#f3f3f3]">
@@ -146,4 +146,3 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
-
