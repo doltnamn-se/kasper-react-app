@@ -63,6 +63,6 @@ export const ui: UITranslations = {
   'upload': 'Ladda upp',
   'password.updated.successfully': 'Lösenord uppdaterat',
   'password.update.error': 'Det gick inte att uppdatera lösenordet',
-  'total.customers': 'Aktiva Kunder'
+  'total.customers': 'Aktiva Kunder',
+  'view.all.columns': 'Alla kolumner'
 };
-

@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Columns3, Search, UserRoundPlus } from "lucide-react";
+import { Search, UserRoundPlus } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -23,11 +23,19 @@ export const CustomerTableToolbar = ({
 
   return (
     <div className="flex items-center gap-4 py-2 px-2">
+      <div className="relative">
+        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#777777]" />
+        <Input
+          placeholder={t('search.placeholder')}
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#777777] text-[#000000] h-8 pl-8 pr-[0.625rem] focus:placeholder-[#777777]"
+        />
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline">
-            <Columns3 className="mr-2 h-4 w-4" />
-            View
+            {t('view.all.columns')}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -49,15 +57,6 @@ export const CustomerTableToolbar = ({
             })}
         </DropdownMenuContent>
       </DropdownMenu>
-      <div className="relative">
-        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#777777]" />
-        <Input
-          placeholder={t('search.placeholder')}
-          value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          className="max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#777777] text-[#000000] h-8 pl-8 pr-[0.625rem] focus:placeholder-[#777777]"
-        />
-      </div>
       <div className="flex-1" />
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
         <Button 
@@ -74,4 +73,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-

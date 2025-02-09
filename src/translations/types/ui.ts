@@ -62,4 +62,5 @@ export interface UITranslations {
   'password.updated.successfully': string;
   'password.update.error': string;
   'total.customers': string;
+  'view.all.columns': string;
 }

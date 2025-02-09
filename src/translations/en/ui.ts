@@ -63,6 +63,6 @@ export const ui: UITranslations = {
   'upload': 'Upload',
   'password.updated.successfully': 'Password updated successfully',
   'password.update.error': 'Failed to update password',
-  'total.customers': 'Active Customers'
+  'total.customers': 'Active Customers',
+  'view.all.columns': 'All columns'
 };
-
