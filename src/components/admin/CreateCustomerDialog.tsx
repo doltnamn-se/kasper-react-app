@@ -5,12 +5,14 @@ import { UserRoundPlus } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useState } from "react";
+import { ReactNode } from "react";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
+  children: ReactNode;
 }
 
-export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialogProps) => {
+export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCustomerDialogProps) => {
   const [open, setOpen] = useState(false);
   const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(async () => {
     onCustomerCreated();
@@ -20,10 +22,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <UserRoundPlus className="w-4 h-4 mr-2" />
-          Add Customer
-        </Button>
+        {children}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
