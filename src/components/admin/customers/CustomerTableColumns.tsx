@@ -43,6 +43,7 @@ export const getColumns = (
     },
     {
       accessorKey: "profile.display_name",
+      id: "profile_display_name",
       header: t('name'),
       cell: ({ row }) => (
         <div className="text-black dark:text-white">
@@ -52,6 +53,7 @@ export const getColumns = (
     },
     {
       accessorKey: "profile.email",
+      id: "profile_email",
       header: t('email'),
       cell: ({ row }) => (
         <div className="text-black dark:text-white">
