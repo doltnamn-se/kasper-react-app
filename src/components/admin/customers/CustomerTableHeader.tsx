@@ -10,12 +10,14 @@ interface CustomerTableHeaderProps {
   table: Table<CustomerWithProfile>;
   globalFilter: string;
   setGlobalFilter: (value: string) => void;
+  onRefresh: () => void;
 }
 
 export const CustomerTableHeader = ({
   table,
   globalFilter,
   setGlobalFilter,
+  onRefresh,
 }: CustomerTableHeaderProps) => {
   return (
     <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
@@ -25,6 +27,7 @@ export const CustomerTableHeader = ({
             table={table}
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
+            onRefresh={onRefresh}
           />
         </TableHead>
       </TableRow>
