@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -61,5 +60,4 @@ export interface UITranslations {
   'upload': string;
   'password.updated.successfully': string;
   'password.update.error': string;
-  'total.customers': string;
 }

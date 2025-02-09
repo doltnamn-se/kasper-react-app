@@ -1,4 +1,3 @@
-
 import { NavigationTranslations } from '../types/navigation';
 
 export const navigation: NavigationTranslations = {
@@ -8,7 +7,7 @@ export const navigation: NavigationTranslations = {
   'nav.my.links': 'Avindexering',
   'nav.address.alerts': 'Adresslarm',
   'nav.guides': 'Guider',
-  'nav.admin.dashboard': 'Översikt',
+  'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Kunder',
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',

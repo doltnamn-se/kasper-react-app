@@ -1,7 +1,6 @@
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { UserRoundPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useState } from "react";
@@ -21,7 +20,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated }: CreateCustomerDialog
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <UserRoundPlus className="w-4 h-4 mr-2" />
+          <UserPlus className="w-4 h-4 mr-2" />
           Add Customer
         </Button>
       </DialogTrigger>

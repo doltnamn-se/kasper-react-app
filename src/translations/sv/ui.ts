@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -62,7 +61,5 @@ export const ui: UITranslations = {
   'save': 'Spara',
   'upload': 'Ladda upp',
   'password.updated.successfully': 'Lösenord uppdaterat',
-  'password.update.error': 'Det gick inte att uppdatera lösenordet',
-  'total.customers': 'Aktiva Kunder'
+  'password.update.error': 'Det gick inte att uppdatera lösenordet'
 };
-

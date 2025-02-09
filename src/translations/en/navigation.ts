@@ -1,4 +1,3 @@
-
 import { NavigationTranslations } from '../types/navigation';
 
 export const navigation: NavigationTranslations = {
