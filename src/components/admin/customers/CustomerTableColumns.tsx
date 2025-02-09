@@ -1,7 +1,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
-import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { CustomerDetails } from "@/components/admin/CustomerDetails";
@@ -47,9 +46,9 @@ export const getColumns = (
     accessorKey: "checklist_completed",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant={row.original.checklist_completed ? "default" : "secondary"}>
+      <span className="text-black dark:text-white">
         {row.original.checklist_completed ? 'Completed' : 'In Progress'}
-      </Badge>
+      </span>
     ),
   },
   {
@@ -57,9 +56,9 @@ export const getColumns = (
     header: "Online Status",
     cell: ({ row }) => (
       <div className="space-y-0.5">
-        <Badge variant={row.original.profile?.id && onlineUsers.has(row.original.profile.id) ? "default" : "secondary"}>
+        <span className="text-black dark:text-white">
           {row.original.profile?.id && onlineUsers.has(row.original.profile.id) ? 'Online' : 'Offline'}
-        </Badge>
+        </span>
         {row.original.profile?.id && 
          !onlineUsers.has(row.original.profile.id) && 
          lastSeen[row.original.profile.id] && (
@@ -105,3 +104,4 @@ export const getColumns = (
     cell: ({ row }) => <CustomerDetails customer={row.original} />,
   },
 ];
+
