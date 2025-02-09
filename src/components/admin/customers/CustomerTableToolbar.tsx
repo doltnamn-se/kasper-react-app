@@ -61,7 +61,7 @@ export const CustomerTableToolbar = ({
             border flex items-center gap-2
           "
         >
-          <UserRoundPlus className="h-4 w-4 text-[#16b674bf] dark:text-[#3ecf8e]" />
+          <UserRoundPlus className="h-4 w-4 text-[#097c4f] dark:text-[#85e0ba]" />
           Add Customer
         </Button>
       </CreateCustomerDialog>
