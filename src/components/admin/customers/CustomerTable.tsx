@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ChevronUp, Columns3, ListFilter } from "lucide-react";
+import { ChevronDown, ChevronUp, Columns3 } from "lucide-react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -20,6 +20,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  FilterFn,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -30,11 +31,23 @@ interface CustomerTableProps {
   lastSeen: Record<string, string>;
 }
 
+// Create a custom filter function for text search
+const textFilterFn: FilterFn<CustomerWithProfile> = (row, columnId, value: string) => {
+  const searchText = value.toLowerCase();
+  const customer = row.original;
+  // Search in both display name and email
+  const displayName = customer.profile?.display_name?.toLowerCase() || '';
+  const email = customer.profile?.email?.toLowerCase() || '';
+  
+  return displayName.includes(searchText) || email.includes(searchText);
+};
+
 export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [globalFilter, setGlobalFilter] = useState('');
 
   const columns: ColumnDef<CustomerWithProfile>[] = [
     {
@@ -138,12 +151,17 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    filterFns: {
+      text: textFilterFn,
+    },
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   return (
@@ -152,10 +170,8 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
         <div className="flex-1">
           <Input
             placeholder="Filter customers..."
-            value={(table.getColumn("profile.display_name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("profile.display_name")?.setFilterValue(event.target.value)
-            }
+            value={globalFilter}
+            onChange={(event) => setGlobalFilter(event.target.value)}
             className="max-w-sm"
           />
         </div>
