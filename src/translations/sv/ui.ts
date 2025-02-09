@@ -66,6 +66,7 @@ export const ui: UITranslations = {
   'total.customers': 'Aktiva Kunder',
   'view.all.columns': 'Alla kolumner',
   'toggle.columns': 'Visa/dölj kolumner',
+  'select.columns': 'Välj kolumner att visa',
   'add.customer': 'Lägg till kund',
   'no.customers': 'Inga kunder hittades.',
   'name': 'Namn',

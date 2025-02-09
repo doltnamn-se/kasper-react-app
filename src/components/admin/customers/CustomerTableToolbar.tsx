@@ -53,7 +53,7 @@ export const CustomerTableToolbar = ({
           align="end"
           className="text-xs bg-white dark:bg-[#212121] border-[#d4d4d4] dark:border-[#363636]"
         >
-          <DropdownMenuLabel className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('toggle.columns')}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] bg-[#f3f3f3] dark:bg-[#212121] border-b border-[#e8e8e8] dark:border-[#333333]">{t('select.columns')}</DropdownMenuLabel>
           {table
             .getAllColumns()
             .filter((column) => column.getCanHide())
