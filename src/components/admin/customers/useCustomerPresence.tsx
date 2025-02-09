@@ -70,23 +70,39 @@ export const useCustomerPresence = () => {
   // Update current user's presence
   useEffect(() => {
     const updatePresence = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { error: presenceError } = await supabase
-          .from('user_presence')
-          .upsert({ 
-            user_id: user.id,
-            last_seen: new Date().toISOString(),
-            status: 'online'
-          }, {
-            onConflict: 'user_id'
-          });
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          // First try to insert
+          const { error: insertError } = await supabase
+            .from('user_presence')
+            .insert({
+              user_id: user.id,
+              last_seen: new Date().toISOString(),
+              status: 'online'
+            });
 
-        if (presenceError) {
-          console.error('Error updating presence:', presenceError);
-          toast.error('Failed to update presence status');
+          // If insert fails due to unique constraint, try update
+          if (insertError) {
+            console.log('Insert failed, trying update:', insertError);
+            const { error: updateError } = await supabase
+              .from('user_presence')
+              .update({
+                last_seen: new Date().toISOString(),
+                status: 'online'
+              })
+              .eq('user_id', user.id);
+
+            if (updateError) {
+              console.error('Error updating presence:', updateError);
+              toast.error('Failed to update presence status');
+            }
+          }
         }
+      } catch (error) {
+        console.error('Error in updatePresence:', error);
+        toast.error('Failed to update presence status');
       }
     };
 
@@ -102,13 +118,12 @@ export const useCustomerPresence = () => {
       if (user) {
         await supabase
           .from('user_presence')
-          .upsert({ 
+          .update({ 
             user_id: user.id,
             last_seen: new Date().toISOString(),
             status: 'offline'
-          }, {
-            onConflict: 'user_id'
-          });
+          })
+          .eq('user_id', user.id);
       }
     };
 
