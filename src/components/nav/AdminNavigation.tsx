@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { 
-  Users, 
+  UsersRound, 
   ChartNoAxesGantt,
   Link as LinkIcon
 } from "lucide-react";
@@ -45,7 +45,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
       )}
       
       {renderNavLink("/admin/customers", 
-        <Users className="w-[18px] h-[18px]" />, 
+        <UsersRound className="w-[18px] h-[18px]" />, 
         t('nav.admin.customers')
       )}
 
