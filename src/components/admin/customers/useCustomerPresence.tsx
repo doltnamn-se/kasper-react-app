@@ -70,29 +70,35 @@ export const useCustomerPresence = () => {
   // Update current user's presence
   useEffect(() => {
     const updatePresence = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (user) {
-          const { error: presenceError } = await supabase
-            .from('user_presence')
-            .upsert(
-              {
-                user_id: user.id,
-                last_seen: new Date().toISOString(),
-                status: 'online'
-              },
-              {
-                onConflict: 'user_id'
-              }
-            );
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError) {
+        console.error('Auth error:', authError);
+        return;
+      }
 
-          if (presenceError) {
-            console.error('Error updating presence:', presenceError);
-          }
+      if (!user) {
+        console.log('No authenticated user found');
+        return;
+      }
+
+      try {
+        const { error: presenceError } = await supabase
+          .from('user_presence')
+          .upsert({
+            id: crypto.randomUUID(),
+            user_id: user.id,
+            last_seen: new Date().toISOString(),
+            status: 'online'
+          });
+
+        if (presenceError) {
+          console.error('Error updating presence:', presenceError);
+          toast.error('Failed to update presence status');
         }
       } catch (error) {
         console.error('Error in updatePresence:', error);
+        toast.error('Failed to update presence status');
       }
     };
 
@@ -108,16 +114,12 @@ export const useCustomerPresence = () => {
       if (user) {
         await supabase
           .from('user_presence')
-          .upsert(
-            { 
-              user_id: user.id,
-              last_seen: new Date().toISOString(),
-              status: 'offline'
-            },
-            {
-              onConflict: 'user_id'
-            }
-          );
+          .upsert({
+            id: crypto.randomUUID(),
+            user_id: user.id,
+            last_seen: new Date().toISOString(),
+            status: 'offline'
+          });
       }
     };
 
