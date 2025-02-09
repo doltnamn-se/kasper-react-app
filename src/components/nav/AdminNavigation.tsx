@@ -51,7 +51,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
 
       {renderNavLink("/admin/deindexing", 
         <EyeOff className="w-[18px] h-[18px]" />, 
-        t('nav.my.links')
+        t('nav.admin.links')
       )}
     </nav>
   );

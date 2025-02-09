@@ -10,6 +10,8 @@ export const navigation: NavigationTranslations = {
   'nav.guides': 'Guider',
   'nav.admin.dashboard': 'Översikt',
   'nav.admin.customers': 'Kunder',
+  'nav.admin.links': 'Länkhantering',
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
 };
+
