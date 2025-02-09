@@ -101,7 +101,7 @@ export const CustomerTableToolbar = ({
           h-8 rounded-[0.375rem] px-[0.625rem]
         "
       >
-        <RefreshCw className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+        <RefreshCw className="h-3.5 w-3.5 text-[#000000A6] dark:text-[#FFFFFFA6]" />
         Refresh
       </Button>
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
@@ -112,7 +112,7 @@ export const CustomerTableToolbar = ({
             border flex items-center gap-2 text-xs rounded-md h-8 px-[0.625rem]
           "
         >
-          <UserRoundPlus className="h-4 w-4 text-[#097c4f] dark:text-[#85e0ba]" />
+          <UserRoundPlus className="h-3.5 w-3.5 text-[#097c4f] dark:text-[#85e0ba]" />
           {t('add.customer')}
         </Button>
       </CreateCustomerDialog>
