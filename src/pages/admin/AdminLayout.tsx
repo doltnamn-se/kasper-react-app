@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
 import { AuthLogo } from "@/components/auth/AuthLogo";
+import { Badge } from "@/components/ui/badge";
 
 const AdminLayout = () => {
   const { isCollapsed, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
@@ -30,8 +31,14 @@ const AdminLayout = () => {
             )
           )
         )}>
-          <div className="px-8 py-6">
+          <div className="px-8 py-6 flex items-center gap-3">
             <AuthLogo className="relative h-8" />
+            <Badge 
+              variant="secondary" 
+              className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1"
+            >
+              Admin
+            </Badge>
           </div>
 
           <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />

@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { 
-  Users, 
-  LayoutDashboard,
-  Link as LinkIcon
+  UsersRound, 
+  ChartNoAxesGantt,
+  EyeOff
 } from "lucide-react";
 
 interface AdminNavigationProps {
@@ -40,19 +40,20 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
   return (
     <nav className="space-y-2">
       {renderNavLink("/admin", 
-        <LayoutDashboard className="w-[18px] h-[18px]" />, 
+        <ChartNoAxesGantt className="w-[18px] h-[18px]" />, 
         t('nav.admin.dashboard')
       )}
       
       {renderNavLink("/admin/customers", 
-        <Users className="w-[18px] h-[18px]" />, 
+        <UsersRound className="w-[18px] h-[18px]" />, 
         t('nav.admin.customers')
       )}
 
       {renderNavLink("/admin/deindexing", 
-        <LinkIcon className="w-[18px] h-[18px]" />, 
+        <EyeOff className="w-[18px] h-[18px]" />, 
         t('nav.my.links')
       )}
     </nav>
   );
 };
+
