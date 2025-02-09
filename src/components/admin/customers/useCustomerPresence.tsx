@@ -17,20 +17,36 @@ export const useCustomerPresence = () => {
         {
           event: '*',
           schema: 'public',
-          table: 'user_presence'
+          table: 'user_presence',
+          filter: 'status=eq.online'
         },
         async (payload) => {
           console.log('User presence changed:', payload);
           await fetchPresenceData();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Presence channel status:', status);
+      });
 
     const fetchPresenceData = async () => {
+      // Fetch online users
+      const { data: onlineData, error: onlineError } = await supabase
+        .from('user_presence')
+        .select('user_id')
+        .eq('status', 'online')
+        .gt('last_seen', new Date(Date.now() - 5 * 60 * 1000).toISOString());
+
+      if (onlineError) {
+        console.error('Error fetching online users:', onlineError);
+        toast.error('Failed to fetch user presence data');
+        return;
+      }
+
+      // Fetch last seen times for all users
       const { data: presenceData, error: presenceError } = await supabase
         .from('user_presence')
-        .select('*')
-        .gt('last_seen', new Date(Date.now() - 5 * 60 * 1000).toISOString());
+        .select('user_id, last_seen, status');
 
       if (presenceError) {
         console.error('Error fetching presence data:', presenceError);
@@ -38,17 +54,26 @@ export const useCustomerPresence = () => {
         return;
       }
 
+      console.log('Fetched online users:', onlineData);
       console.log('Fetched presence data:', presenceData);
 
       const newOnlineUsers = new Set<string>();
       const newLastSeen: Record<string, string> = {};
 
+      // Add users who are explicitly online
+      onlineData.forEach(presence => {
+        newOnlineUsers.add(presence.user_id);
+      });
+
+      // Process all users' last seen times
       presenceData.forEach(presence => {
-        if (presence.status === 'online' || 
+        newLastSeen[presence.user_id] = presence.last_seen;
+        
+        // Add users who were active recently but might not be marked as online
+        if (presence.status === 'online' && 
             new Date(presence.last_seen).getTime() > Date.now() - 5 * 60 * 1000) {
           newOnlineUsers.add(presence.user_id);
         }
-        newLastSeen[presence.user_id] = presence.last_seen;
       });
 
       setOnlineUsers(newOnlineUsers);
