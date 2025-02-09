@@ -101,9 +101,24 @@ export const getColumns = (
         return (
           <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <Circle 
-                className={`h-2 w-2 fill-current ${isOnline ? 'text-[#20f922]' : 'text-[#ea384c]'}`}
-              />
+              <svg width="8" height="8" viewBox="0 0 8 8">
+                <defs>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </svg>
+                <circle 
+                  cx="4" 
+                  cy="4" 
+                  r="4" 
+                  fill={isOnline ? '#20f922' : '#ea384c'} 
+                  filter="url(#glow)"
+                />
+              </svg>
               <span className="text-black dark:text-white">
                 {isOnline ? t('online') : t('offline')}
               </span>
@@ -121,4 +136,3 @@ export const getColumns = (
     },
   ];
 };
-
