@@ -76,11 +76,17 @@ export const useCustomerPresence = () => {
         if (user) {
           const { error: presenceError } = await supabase
             .from('user_presence')
-            .upsert({
-              user_id: user.id,
-              last_seen: new Date().toISOString(),
-              status: 'online'
-            });
+            .upsert(
+              {
+                user_id: user.id,
+                last_seen: new Date().toISOString(),
+                status: 'online'
+              },
+              { 
+                onConflict: 'user_id',
+                ignoreDuplicates: false 
+              }
+            );
 
           if (presenceError) {
             console.error('Error updating presence:', presenceError);
@@ -105,11 +111,17 @@ export const useCustomerPresence = () => {
       if (user) {
         await supabase
           .from('user_presence')
-          .upsert({ 
-            user_id: user.id,
-            last_seen: new Date().toISOString(),
-            status: 'offline'
-          });
+          .upsert(
+            { 
+              user_id: user.id,
+              last_seen: new Date().toISOString(),
+              status: 'offline'
+            },
+            {
+              onConflict: 'user_id',
+              ignoreDuplicates: false
+            }
+          );
       }
     };
 
