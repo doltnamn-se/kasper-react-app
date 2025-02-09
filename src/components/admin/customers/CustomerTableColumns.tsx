@@ -1,3 +1,4 @@
+
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,18 +14,18 @@ export const getColumns = (
     id: "select",
     header: "",
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
-        <Avatar className="h-8 w-8">
+        <Avatar className="h-6 w-6">
           <AvatarImage 
             src={row.original.profile?.avatar_url ?? undefined}
             alt={row.original.profile?.display_name || "User"}
           />
-          <AvatarFallback className="text-xs">
+          <AvatarFallback className="text-[10px]">
             {getUserInitials({
               display_name: row.original.profile?.display_name,
               email: row.original.profile?.email
