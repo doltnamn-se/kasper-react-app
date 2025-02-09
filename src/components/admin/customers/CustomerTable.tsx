@@ -71,7 +71,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
         setGlobalFilter={setGlobalFilter}
       />
       
-      <div className="rounded-md border">
+      <div className="border">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[#f3f3f3]">
