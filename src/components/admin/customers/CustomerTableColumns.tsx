@@ -62,6 +62,17 @@ export const getColumns = (
       ),
     },
     {
+      accessorKey: "subscription_plan",
+      header: t('plan'),
+      cell: ({ row }) => (
+        <span className="text-black dark:text-white">
+          {row.original.subscription_plan 
+            ? row.original.subscription_plan.replace('_', ' ') 
+            : t('no.plan')}
+        </span>
+      ),
+    },
+    {
       accessorKey: "checklist_completed",
       header: t('checklist'),
       cell: ({ row }) => (
@@ -86,17 +97,6 @@ export const getColumns = (
             </div>
           )}
         </div>
-      ),
-    },
-    {
-      accessorKey: "subscription_plan",
-      header: t('plan'),
-      cell: ({ row }) => (
-        <span className="text-black dark:text-white">
-          {row.original.subscription_plan 
-            ? row.original.subscription_plan.replace('_', ' ') 
-            : t('no.plan')}
-        </span>
       ),
     },
   ];
