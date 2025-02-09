@@ -63,4 +63,21 @@ export interface UITranslations {
   'password.update.error': string;
   'total.customers': string;
   'view.all.columns': string;
+  'toggle.columns': string;
+  'add.customer': string;
+  'no.customers': string;
+  'name': string;
+  'email': string;
+  'checklist': string;
+  'last.online': string;
+  'plan': string;
+  'in.progress': string;
+  'online': string;
+  'offline': string;
+  'last.seen': string;
+  'no.name': string;
+  'no.email': string;
+  'no.plan': string;
+  'sort.descending': string;
+  'sort.ascending': string;
 }
