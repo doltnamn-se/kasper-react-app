@@ -50,7 +50,7 @@ export const CustomerTableToolbar = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+          <DropdownMenuLabel>{t('toggle.columns')}</DropdownMenuLabel>
           {table
             .getAllColumns()
             .filter((column) => column.getCanHide())
@@ -62,7 +62,7 @@ export const CustomerTableToolbar = ({
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
-                  {column.id}
+                  {t(column.id)}
                 </DropdownMenuCheckboxItem>
               );
             })}
@@ -78,10 +78,9 @@ export const CustomerTableToolbar = ({
           "
         >
           <UserRoundPlus className="h-4 w-4 text-[#097c4f] dark:text-[#85e0ba]" />
-          Add Customer
+          {t('add.customer')}
         </Button>
       </CreateCustomerDialog>
     </div>
   );
 };
-

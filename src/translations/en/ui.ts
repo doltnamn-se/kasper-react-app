@@ -64,5 +64,24 @@ export const ui: UITranslations = {
   'password.updated.successfully': 'Password updated successfully',
   'password.update.error': 'Failed to update password',
   'total.customers': 'Active Customers',
-  'view.all.columns': 'All columns'
+  'view.all.columns': 'All columns',
+  'toggle.columns': 'Toggle columns',
+  'add.customer': 'Add Customer',
+  'no.customers': 'No customers found.',
+  'name': 'Name',
+  'email': 'Email',
+  'checklist': 'Checklist',
+  'last.online': 'Last Online',
+  'plan': 'Plan',
+  'completed': 'Completed',
+  'in.progress': 'In Progress',
+  'online': 'Online',
+  'offline': 'Offline',
+  'last.seen': 'Last seen: ',
+  'no.name': 'No name',
+  'no.email': 'No email',
+  'no.plan': 'No plan',
+  'sort.descending': 'Sort descending',
+  'sort.ascending': 'Sort ascending'
 };
+

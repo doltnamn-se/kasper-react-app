@@ -64,5 +64,24 @@ export const ui: UITranslations = {
   'password.updated.successfully': 'Lösenord uppdaterat',
   'password.update.error': 'Det gick inte att uppdatera lösenordet',
   'total.customers': 'Aktiva Kunder',
-  'view.all.columns': 'Alla kolumner'
+  'view.all.columns': 'Alla kolumner',
+  'toggle.columns': 'Visa/dölj kolumner',
+  'add.customer': 'Lägg till kund',
+  'no.customers': 'Inga kunder hittades.',
+  'name': 'Namn',
+  'email': 'E-post',
+  'checklist': 'Checklista',
+  'last.online': 'Senast online',
+  'plan': 'Plan',
+  'completed': 'Slutförd',
+  'in.progress': 'Pågående',
+  'online': 'Online',
+  'offline': 'Offline',
+  'last.seen': 'Senast sedd: ',
+  'no.name': 'Inget namn',
+  'no.email': 'Ingen e-post',
+  'no.plan': 'Ingen plan',
+  'sort.descending': 'Sortera fallande',
+  'sort.ascending': 'Sortera stigande'
 };
+
