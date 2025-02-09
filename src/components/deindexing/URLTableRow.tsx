@@ -1,7 +1,8 @@
 
 import { TableCell, TableRow } from "@/components/ui/table";
 import { URLStatusSelect } from "./URLStatusSelect";
-import { StatusStepper } from "./StatusStepper";
+import { getStatusText } from "./utils/statusUtils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface URLTableRowProps {
   url: {
@@ -24,6 +25,8 @@ interface URLTableRowProps {
 }
 
 export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
+  const { t } = useLanguage();
+  
   console.log('URL data in URLTableRow:', {
     id: url.id,
     status: url.status,
@@ -49,10 +52,9 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
         </span>
       </TableCell>
       <TableCell className="w-[45%] !px-4">
-        <StatusStepper 
-          currentStatus={url.status} 
-          statusHistory={url.status_history}
-        />
+        <span className="text-black dark:text-white capitalize">
+          {getStatusText(url.status, t)}
+        </span>
       </TableCell>
       <TableCell className="w-[15%] !px-4">
         <URLStatusSelect
