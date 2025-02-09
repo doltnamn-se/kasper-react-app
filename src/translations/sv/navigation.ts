@@ -13,6 +13,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.links': 'Länkhantering',
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
-  'status': 'Status'
+  'status': 'Status',
+  'last.seen': 'Senast sedd'
 };
 

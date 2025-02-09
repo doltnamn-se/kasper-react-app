@@ -12,5 +12,6 @@ export interface NavigationTranslations {
   'dark.mode': string;
   'light.mode': string;
   'status': string;
+  'last.seen': string;
 }
 
