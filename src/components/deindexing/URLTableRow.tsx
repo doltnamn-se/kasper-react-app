@@ -32,7 +32,7 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
 
   return (
     <TableRow className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]">
-      <TableCell className="w-[25%] !px-4">
+      <TableCell className="w-[20%] !px-4">
         <a 
           href={url.url} 
           target="_blank" 
@@ -43,28 +43,25 @@ export const URLTableRow = ({ url, onStatusChange }: URLTableRowProps) => {
           {url.url}
         </a>
       </TableCell>
-      <TableCell className="w-[25%] !px-4">
+      <TableCell className="w-[20%] !px-4">
         <span className="text-black dark:text-white truncate block" title={url.customer.profiles.email}>
           {url.customer.profiles.email}
         </span>
       </TableCell>
-      <TableCell className="w-[50%] !px-4">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex-grow">
-            <StatusStepper 
-              currentStatus={url.status} 
-              statusHistory={url.status_history}
-            />
-          </div>
-          <URLStatusSelect
-            currentStatus={url.status}
-            urlId={url.id}
-            customerId={url.customer.id}
-            onStatusChange={(newStatus) => onStatusChange(url.id, newStatus)}
-          />
-        </div>
+      <TableCell className="w-[45%] !px-4">
+        <StatusStepper 
+          currentStatus={url.status} 
+          statusHistory={url.status_history}
+        />
+      </TableCell>
+      <TableCell className="w-[15%] !px-4">
+        <URLStatusSelect
+          currentStatus={url.status}
+          urlId={url.id}
+          customerId={url.customer.id}
+          onStatusChange={(newStatus) => onStatusChange(url.id, newStatus)}
+        />
       </TableCell>
     </TableRow>
   );
 };
-

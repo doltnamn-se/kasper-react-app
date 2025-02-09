@@ -29,9 +29,10 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
           <Table>
             <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
               <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
-                <TableHead className="w-[25%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
-                <TableHead className="w-[25%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
-                <TableHead className="w-[50%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
+                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
+                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
+                <TableHead className="w-[45%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
+                <TableHead className="w-[15%] !px-4 h-[2.5rem] py-0">Change Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -49,4 +50,3 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
     </div>
   );
 };
-
