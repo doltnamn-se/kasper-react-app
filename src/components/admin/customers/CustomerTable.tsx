@@ -31,7 +31,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
 
-  const columns = getColumns();
+  const columns = getColumns(onlineUsers, lastSeen);
 
   const table = useReactTable({
     data: customers,
@@ -128,4 +128,3 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
-

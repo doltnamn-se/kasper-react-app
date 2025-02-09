@@ -6,7 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { CustomerDetails } from "@/components/admin/CustomerDetails";
 
-export const getColumns = (): ColumnDef<CustomerWithProfile>[] => [
+export const getColumns = (
+  onlineUsers: Set<string>,
+  lastSeen: Record<string, string>
+): ColumnDef<CustomerWithProfile>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -100,4 +103,3 @@ export const getColumns = (): ColumnDef<CustomerWithProfile>[] => [
     cell: ({ row }) => <CustomerDetails customer={row.original} />,
   },
 ];
-
