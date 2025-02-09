@@ -3,6 +3,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getUserInitials } from "@/utils/profileUtils";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -18,11 +20,25 @@ export const getColumns = (
       />
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="flex items-center gap-2">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+        <Avatar className="h-8 w-8">
+          <AvatarImage 
+            src={row.original.profile?.avatar_url ?? undefined}
+            alt={row.original.profile?.display_name || "User"}
+          />
+          <AvatarFallback className="text-xs">
+            {getUserInitials({
+              display_name: row.original.profile?.display_name,
+              email: row.original.profile?.email
+            })}
+          </AvatarFallback>
+        </Avatar>
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -93,3 +109,4 @@ export const getColumns = (
     ),
   },
 ];
+
