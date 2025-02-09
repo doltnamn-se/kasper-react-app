@@ -1,4 +1,3 @@
-
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,13 +11,7 @@ export const getColumns = (
 ): ColumnDef<CustomerWithProfile>[] => [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    header: "",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Checkbox
@@ -109,4 +102,3 @@ export const getColumns = (
     ),
   },
 ];
-
