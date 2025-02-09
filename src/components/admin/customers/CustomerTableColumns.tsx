@@ -95,44 +95,53 @@ export const getColumns = (
     },
     {
       id: "online_status",
-      header: t('last.online'),
+      header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
         return (
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-2">
-              <svg width="12" height="12" viewBox="0 0 12 12">
-                <defs>
-                  <filter id="glow">
-                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                    <feMerge>
-                      <feMergeNode in="coloredBlur"/>
-                      <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                  </filter>
-                </defs>
-                <circle 
-                  cx="6" 
-                  cy="6" 
-                  r="3" 
-                  fill={isOnline ? '#20f922' : '#ea384c'} 
-                  filter="url(#glow)"
-                />
-              </svg>
-              <span className="text-black dark:text-white">
-                {isOnline ? t('online') : t('offline')}
-              </span>
-            </div>
-            {row.original.profile?.id && 
-             !onlineUsers.has(row.original.profile.id) && 
-             lastSeen[row.original.profile.id] && (
-              <div className="text-muted-foreground">
-                {t('last.seen')}{format(new Date(lastSeen[row.original.profile.id]), 'MMM d, HH:mm')}
-              </div>
-            )}
+          <div className="flex items-center gap-2">
+            <svg width="12" height="12" viewBox="0 0 12 12">
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <circle 
+                cx="6" 
+                cy="6" 
+                r="3" 
+                fill={isOnline ? '#20f922' : '#ea384c'} 
+                filter="url(#glow)"
+              />
+            </svg>
+            <span className="text-black dark:text-white">
+              {isOnline ? t('online') : t('offline')}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "last_seen",
+      header: t('last.seen'),
+      cell: ({ row }) => {
+        const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
+        if (isOnline || !row.original.profile?.id) return null;
+        
+        const lastSeenTime = lastSeen[row.original.profile.id];
+        if (!lastSeenTime) return null;
+
+        return (
+          <div className="text-black dark:text-white">
+            {format(new Date(lastSeenTime), 'MMM d, HH:mm')}
           </div>
         );
       },
     },
   ];
 };
+
