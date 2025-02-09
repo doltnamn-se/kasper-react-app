@@ -57,7 +57,7 @@ export const getColumns = (
   },
   {
     accessorKey: "checklist_completed",
-    header: "Status",
+    header: "Checklist",
     cell: ({ row }) => (
       <span className="text-black dark:text-white">
         {row.original.checklist_completed ? 'Completed' : 'In Progress'}
@@ -94,3 +94,4 @@ export const getColumns = (
     ),
   },
 ];
+
