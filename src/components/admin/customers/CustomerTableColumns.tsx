@@ -56,6 +56,15 @@ export const getColumns = (
     ),
   },
   {
+    accessorKey: "profile.email",
+    header: "Email",
+    cell: ({ row }) => (
+      <div className="text-black dark:text-white">
+        {row.original.profile?.email || 'No email'}
+      </div>
+    ),
+  },
+  {
     accessorKey: "checklist_completed",
     header: "Status",
     cell: ({ row }) => (
