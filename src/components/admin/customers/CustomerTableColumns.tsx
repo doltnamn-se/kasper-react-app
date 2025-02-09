@@ -38,15 +38,6 @@ export const getColumns = (
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: "Customer ID",
-    cell: ({ row }) => (
-      <div className="text-black dark:text-white">
-        {row.original.id}
-      </div>
-    ),
-  },
-  {
     accessorKey: "profile.display_name",
     header: "Customer name",
     cell: ({ row }) => (
@@ -89,15 +80,6 @@ export const getColumns = (
           </div>
         )}
       </div>
-    ),
-  },
-  {
-    accessorKey: "customer_type",
-    header: "Type",
-    cell: ({ row }) => (
-      <span className="capitalize text-black dark:text-white">
-        {row.original.customer_type}
-      </span>
     ),
   },
   {

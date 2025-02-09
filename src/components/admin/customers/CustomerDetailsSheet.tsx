@@ -22,12 +22,20 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               <h3 className="text-lg font-medium">Personal Information</h3>
               <div className="mt-2 space-y-2">
                 <p className="text-sm">
+                  <span className="text-muted-foreground">Customer ID:</span>{" "}
+                  {customer.id}
+                </p>
+                <p className="text-sm">
                   <span className="text-muted-foreground">Display Name:</span>{" "}
                   {customer.profile?.display_name || 'No name provided'}
                 </p>
                 <p className="text-sm">
                   <span className="text-muted-foreground">Email:</span>{" "}
                   {customer.profile?.email || 'No email provided'}
+                </p>
+                <p className="text-sm">
+                  <span className="text-muted-foreground">Customer Type:</span>{" "}
+                  <span className="capitalize">{customer.customer_type}</span>
                 </p>
                 <p className="text-sm">
                   <span className="text-muted-foreground">Created:</span>{" "}
@@ -60,10 +68,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                   {customer.subscription_plan 
                     ? customer.subscription_plan.replace('_', ' ') 
                     : 'No active plan'}
-                </p>
-                <p className="text-sm">
-                  <span className="text-muted-foreground">Customer Type:</span>{" "}
-                  <span className="capitalize">{customer.customer_type}</span>
                 </p>
               </div>
             </div>
