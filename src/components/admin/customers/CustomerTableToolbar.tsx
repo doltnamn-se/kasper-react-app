@@ -21,6 +21,23 @@ export const CustomerTableToolbar = ({
 }: CustomerTableToolbarProps) => {
   const { t } = useLanguage();
 
+  const getColumnLabel = (columnId: string) => {
+    switch (columnId) {
+      case 'profile.display_name':
+        return t('name');
+      case 'profile.email':
+        return t('email');
+      case 'checklist_completed':
+        return t('checklist');
+      case 'online_status':
+        return t('last.online');
+      case 'subscription_plan':
+        return t('plan');
+      default:
+        return columnId;
+    }
+  };
+
   return (
     <div className="flex items-center gap-4 py-2 px-2">
       <div className="relative">
@@ -68,12 +85,7 @@ export const CustomerTableToolbar = ({
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
-                  {column.id === 'profile.display_name' ? t('name') :
-                   column.id === 'profile.email' ? t('email') :
-                   column.id === 'checklist_completed' ? t('checklist') :
-                   column.id === 'online_status' ? t('last.online') :
-                   column.id === 'subscription_plan' ? t('plan') :
-                   column.id}
+                  {getColumnLabel(column.id)}
                 </DropdownMenuCheckboxItem>
               );
             })}
