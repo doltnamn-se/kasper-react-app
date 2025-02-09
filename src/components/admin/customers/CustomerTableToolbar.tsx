@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Columns3, UserRoundPlus } from "lucide-react";
+import { Columns3, Search, UserRoundPlus } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 
@@ -46,12 +46,15 @@ export const CustomerTableToolbar = ({
             })}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Input
-        placeholder="Filter customers..."
-        value={globalFilter}
-        onChange={(event) => setGlobalFilter(event.target.value)}
-        className="max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#b2b2b2] text-[#000000]"
-      />
+      <div className="relative">
+        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#000000A6]" />
+        <Input
+          placeholder="Filter customers..."
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#b2b2b2] text-[#000000] h-8 pl-8 pr-[0.625rem]"
+        />
+      </div>
       <div className="flex-1" />
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
         <Button 
@@ -68,3 +71,4 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
+
