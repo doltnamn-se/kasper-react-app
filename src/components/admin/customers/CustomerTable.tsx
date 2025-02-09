@@ -74,7 +74,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       <div className="rounded-md border">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-[#f3f3f3]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -118,7 +118,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-[#f8f8f8]">
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
