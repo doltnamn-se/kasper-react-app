@@ -62,7 +62,12 @@ export const CustomerTableToolbar = ({
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
-                  {t(column.id)}
+                  {column.id === 'profile.display_name' ? t('name') :
+                   column.id === 'profile.email' ? t('email') :
+                   column.id === 'checklist_completed' ? t('checklist') :
+                   column.id === 'online_status' ? t('last.online') :
+                   column.id === 'subscription_plan' ? t('plan') :
+                   column.id}
                 </DropdownMenuCheckboxItem>
               );
             })}

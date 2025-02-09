@@ -73,7 +73,6 @@ export const ui: UITranslations = {
   'checklist': 'Checklista',
   'last.online': 'Senast online',
   'plan': 'Plan',
-  'completed': 'Slutförd',
   'in.progress': 'Pågående',
   'online': 'Online',
   'offline': 'Offline',
@@ -84,4 +83,3 @@ export const ui: UITranslations = {
   'sort.descending': 'Sortera fallande',
   'sort.ascending': 'Sortera stigande'
 };
-
