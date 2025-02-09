@@ -101,7 +101,7 @@ export const CustomerTableToolbar = ({
           h-8 rounded-[0.375rem] px-[0.625rem]
         "
       >
-        <RefreshCw className="h-4 w-4" />
+        <RefreshCw className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
         Refresh
       </Button>
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
