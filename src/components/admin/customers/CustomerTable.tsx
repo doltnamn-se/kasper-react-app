@@ -76,7 +76,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
           <Table>
             <TableHeader className="bg-[#f3f3f3]">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="border-b border-t border-[#dfdfdf]">
+                <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf]">
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder ? null : (
@@ -146,3 +146,4 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
+
