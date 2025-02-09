@@ -73,6 +73,7 @@ export const getColumns = (
           {row.original.profile?.email || t('no.email')}
         </div>
       ),
+      enableSorting: false,  // Removed sorting for email column
     },
     {
       accessorKey: "subscription_plan",
@@ -126,7 +127,7 @@ export const getColumns = (
     },
     {
       id: "last_seen",
-      header: t('last.seen').replace(':', ''),  // Explicitly remove any colon that might be in the translation
+      header: t('last.seen').replace(':', ''),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
         if (isOnline || !row.original.profile?.id) return null;
@@ -140,7 +141,16 @@ export const getColumns = (
           </div>
         );
       },
+      sortingFn: (rowA, rowB) => {
+        const aLastSeen = rowA.original.profile?.id ? lastSeen[rowA.original.profile.id] : null;
+        const bLastSeen = rowB.original.profile?.id ? lastSeen[rowB.original.profile.id] : null;
+        
+        if (!aLastSeen && !bLastSeen) return 0;
+        if (!aLastSeen) return 1;
+        if (!bLastSeen) return -1;
+        
+        return new Date(bLastSeen).getTime() - new Date(aLastSeen).getTime();
+      },
     },
   ];
 };
-
