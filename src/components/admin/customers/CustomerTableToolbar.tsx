@@ -27,11 +27,11 @@ export const CustomerTableToolbar = ({
         return t('name');
       case 'Profile_email':
         return t('email');
-      case 'checklist_completed':
+      case 'Checklist':
         return t('checklist');
-      case 'online_status':
+      case 'Last Online':
         return t('last.online');
-      case 'subscription_plan':
+      case 'Plan':
         return t('plan');
       default:
         return columnId;
