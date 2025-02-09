@@ -31,6 +31,7 @@ export interface UITranslations {
   'profile.signing.out': string;
   'profile.sign.out': string;
   'search.placeholder': string;
+  'search.customers.placeholder': string;
   'search.no.results': string;
   'search.category.pages': string;
   'search.category.settings': string;
