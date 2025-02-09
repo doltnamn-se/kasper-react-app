@@ -81,7 +81,7 @@ export const CustomerTableToolbar = ({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] bg-transparent hover:bg-transparent dark:hover:bg-transparent [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:[&>span]:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span_svg]:h-3 [&>span_svg]:w-3 [&>span_svg]:stroke-[#FFFFFF] dark:[&>span_svg]:stroke-[#000000] [&>span_svg]:stroke-[3px]"
+                  className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] bg-transparent hover:bg-transparent !important dark:hover:bg-transparent [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:[&>span]:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span_svg]:h-3 [&>span_svg]:w-3 [&>span_svg]:stroke-[#FFFFFF] dark:[&>span_svg]:stroke-[#000000] [&>span_svg]:stroke-[3px]"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
