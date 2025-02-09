@@ -71,12 +71,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
         setGlobalFilter={setGlobalFilter}
       />
       
-      <div className="border border-[#ededed]">
+      <div className="border border-[#dfdfdf]">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[#f3f3f3]">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow key={headerGroup.id} className="border-b border-t border-[#dfdfdf]">
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder ? null : (
@@ -118,7 +118,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-[#f8f8f8]">
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-[#f8f8f8] border-b border-[#ededed]">
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
@@ -146,4 +146,3 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
-
