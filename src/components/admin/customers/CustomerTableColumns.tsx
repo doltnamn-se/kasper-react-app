@@ -73,7 +73,7 @@ export const getColumns = (
           {row.original.profile?.email || t('no.email')}
         </div>
       ),
-      enableSorting: false,  // Removed sorting for email column
+      enableSorting: false,
     },
     {
       accessorKey: "subscription_plan",
@@ -127,8 +127,16 @@ export const getColumns = (
     },
     {
       id: "last_seen",
-      header: t('last.seen').replace(':', ''),
-      enableSorting: true,  // Explicitly enable sorting
+      header: ({ column }) => {
+        return (
+          <button
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="flex items-center gap-2"
+          >
+            {t('last.seen').replace(':', '')}
+          </button>
+        );
+      },
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
         if (isOnline || !row.original.profile?.id) return null;
