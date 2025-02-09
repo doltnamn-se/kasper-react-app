@@ -381,29 +381,7 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_presence_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "admin_cache"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_presence_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_presence_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "user_roles_cache"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_url_limits: {
         Row: {

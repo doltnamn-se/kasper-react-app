@@ -92,8 +92,7 @@ export const useCustomerPresence = () => {
               status: 'online'
             },
             {
-              onConflict: 'user_id',
-              ignoreDuplicates: false
+              onConflict: 'user_id'
             }
           );
 
@@ -107,13 +106,11 @@ export const useCustomerPresence = () => {
       }
     };
 
-    // Update presence immediately
+    // Update presence immediately and start interval
     updatePresence();
-    
-    // Update presence periodically
     const intervalId = setInterval(updatePresence, 30000);
 
-    // Set up beforeunload handler to mark user as offline
+    // Set up beforeunload handler
     const handleBeforeUnload = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -126,8 +123,7 @@ export const useCustomerPresence = () => {
               status: 'offline'
             },
             {
-              onConflict: 'user_id',
-              ignoreDuplicates: false
+              onConflict: 'user_id'
             }
           );
       }
