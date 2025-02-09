@@ -93,13 +93,4 @@ export const getColumns = (
       </span>
     ),
   },
-  {
-    accessorKey: "created_at",
-    header: "Created",
-    cell: ({ row }) => (
-      <span className="text-black dark:text-white">
-        {format(new Date(row.original.created_at), 'MMM d, yyyy')}
-      </span>
-    ),
-  },
 ];
