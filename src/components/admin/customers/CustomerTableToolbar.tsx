@@ -53,7 +53,7 @@ export const CustomerTableToolbar = ({
         className="max-w-sm"
       />
       <div className="flex-1" />
-      <CreateCustomerDialog>
+      <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
         <Button 
           className="
             text-[#000000] bg-[#72e3ad] border-[#16b674bf] hover:bg-[#3fcf8ecc] hover:border-[#097c4f]
