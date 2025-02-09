@@ -50,7 +50,7 @@ export const CustomerTableToolbar = ({
         placeholder="Filter customers..."
         value={globalFilter}
         onChange={(event) => setGlobalFilter(event.target.value)}
-        className="max-w-sm"
+        className="max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#b2b2b2] text-[#000000]"
       />
       <div className="flex-1" />
       <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
