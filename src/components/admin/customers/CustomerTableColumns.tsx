@@ -30,15 +30,10 @@ export const getColumns = (
   },
   {
     accessorKey: "profile.display_name",
-    header: "Customer",
+    header: "Customer namn",
     cell: ({ row }) => (
-      <div className="space-y-0.5">
-        <div className="text-black dark:text-white">
-          {row.original.profile?.display_name || 'No name'}
-        </div>
-        <div className="text-muted-foreground">
-          {row.original.profile?.email}
-        </div>
+      <div className="text-black dark:text-white">
+        {row.original.profile?.display_name || 'No name'}
       </div>
     ),
   },
