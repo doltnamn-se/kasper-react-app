@@ -32,7 +32,7 @@ export const CustomerTableHeader = ({
         </TableHead>
       </TableRow>
       {table.getHeaderGroups().map((headerGroup) => (
-        <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
+        <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-10">
           {headerGroup.headers.map((header) => (
             <TableHead key={header.id}>
               {header.isPlaceholder ? null : (
