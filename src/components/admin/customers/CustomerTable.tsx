@@ -4,6 +4,8 @@ import { CustomerWithProfile } from "@/types/customer";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { CustomerDetails } from "@/components/admin/CustomerDetails";
+import { Checkbox } from "@/components/ui/checkbox";
+import { UserRound } from "lucide-react";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -16,6 +18,10 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead className="w-12">
+            <Checkbox />
+          </TableHead>
+          <TableHead className="w-12"></TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Online Status</TableHead>
@@ -27,9 +33,15 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
       </TableHeader>
       <TableBody>
         {customers.map((customer) => (
-          <TableRow key={customer.id}>
+          <TableRow key={customer.id} className="h-12">
+            <TableCell className="w-12">
+              <Checkbox />
+            </TableCell>
+            <TableCell className="w-12">
+              <UserRound className="w-4 h-4 text-gray-400" />
+            </TableCell>
             <TableCell>
-              <div>
+              <div className="space-y-0.5">
                 <div className="font-medium">
                   {customer.profile?.display_name || 'No name'}
                 </div>
@@ -44,14 +56,16 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
               </Badge>
             </TableCell>
             <TableCell>
-              <Badge variant={onlineUsers.has(customer.profile?.id || '') ? "default" : "secondary"}>
-                {onlineUsers.has(customer.profile?.id || '') ? 'Online' : 'Offline'}
-              </Badge>
-              {!onlineUsers.has(customer.profile?.id || '') && lastSeen[customer.profile?.id || ''] && (
-                <div className="text-xs text-muted-foreground mt-1">
-                  Last seen: {format(new Date(lastSeen[customer.profile?.id || '']), 'MMM d, HH:mm')}
-                </div>
-              )}
+              <div className="space-y-0.5">
+                <Badge variant={onlineUsers.has(customer.profile?.id || '') ? "default" : "secondary"}>
+                  {onlineUsers.has(customer.profile?.id || '') ? 'Online' : 'Offline'}
+                </Badge>
+                {!onlineUsers.has(customer.profile?.id || '') && lastSeen[customer.profile?.id || ''] && (
+                  <div className="text-xs text-muted-foreground">
+                    Last seen: {format(new Date(lastSeen[customer.profile?.id || '']), 'MMM d, HH:mm')}
+                  </div>
+                )}
+              </div>
             </TableCell>
             <TableCell className="capitalize">
               {customer.customer_type}
