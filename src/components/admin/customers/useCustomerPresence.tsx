@@ -82,20 +82,17 @@ export const useCustomerPresence = () => {
                 last_seen: new Date().toISOString(),
                 status: 'online'
               },
-              { 
-                onConflict: 'user_id',
-                ignoreDuplicates: false 
+              {
+                onConflict: 'user_id'
               }
             );
 
           if (presenceError) {
             console.error('Error updating presence:', presenceError);
-            toast.error('Failed to update presence status');
           }
         }
       } catch (error) {
         console.error('Error in updatePresence:', error);
-        toast.error('Failed to update presence status');
       }
     };
 
@@ -118,8 +115,7 @@ export const useCustomerPresence = () => {
               status: 'offline'
             },
             {
-              onConflict: 'user_id',
-              ignoreDuplicates: false
+              onConflict: 'user_id'
             }
           );
       }
