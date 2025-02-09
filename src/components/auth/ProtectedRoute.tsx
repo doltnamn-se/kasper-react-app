@@ -4,6 +4,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { useChecklistStatus } from "@/hooks/useChecklistStatus";
+import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -15,6 +16,8 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
   const { userEmail, isInitializing } = useUserProfile();
   const { isAuthenticated, isLoading: authLoading, userId } = useAuthStatus();
   const { isChecklistCompleted, isLoading: checklistLoading } = useChecklistStatus(userId);
+  // Add presence tracking for all authenticated users
+  useCustomerPresence();
 
   if (authLoading || isInitializing || checklistLoading) {
     return <LoadingSpinner />;

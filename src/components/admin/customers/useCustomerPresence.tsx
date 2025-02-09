@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 
 export const useCustomerPresence = () => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   const [lastSeen, setLastSeen] = useState<Record<string, string>>({});
+  const { userId } = useAuthStatus();
 
   useEffect(() => {
     console.log('Setting up presence subscription');
@@ -17,8 +19,7 @@ export const useCustomerPresence = () => {
         {
           event: '*',
           schema: 'public',
-          table: 'user_presence',
-          filter: 'status=eq.online'
+          table: 'user_presence'
         },
         async (payload) => {
           console.log('User presence changed:', payload);
@@ -92,27 +93,20 @@ export const useCustomerPresence = () => {
     };
   }, []);
 
-  // Update current user's presence
+  // Update current user's presence regardless of role
   useEffect(() => {
+    if (!userId) {
+      console.log('No authenticated user found');
+      return;
+    }
+
     const updatePresence = async () => {
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
-      if (authError) {
-        console.error('Auth error:', authError);
-        return;
-      }
-
-      if (!user) {
-        console.log('No authenticated user found');
-        return;
-      }
-
       try {
         const { error: presenceError } = await supabase
           .from('user_presence')
           .upsert(
             {
-              user_id: user.id,
+              user_id: userId,
               last_seen: new Date().toISOString(),
               status: 'online'
             },
@@ -137,21 +131,18 @@ export const useCustomerPresence = () => {
 
     // Set up beforeunload handler
     const handleBeforeUnload = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await supabase
-          .from('user_presence')
-          .upsert(
-            {
-              user_id: user.id,
-              last_seen: new Date().toISOString(),
-              status: 'offline'
-            },
-            {
-              onConflict: 'user_id'
-            }
-          );
-      }
+      await supabase
+        .from('user_presence')
+        .upsert(
+          {
+            user_id: userId,
+            last_seen: new Date().toISOString(),
+            status: 'offline'
+          },
+          {
+            onConflict: 'user_id'
+          }
+        );
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -161,7 +152,7 @@ export const useCustomerPresence = () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       handleBeforeUnload();
     };
-  }, []);
+  }, [userId]);
 
   return { onlineUsers, lastSeen };
 };
