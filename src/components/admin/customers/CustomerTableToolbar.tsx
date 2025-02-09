@@ -19,17 +19,15 @@ export const CustomerTableToolbar = ({
 }: CustomerTableToolbarProps) => {
   return (
     <div className="flex items-center gap-4">
-      <div className="flex-1">
-        <Input
-          placeholder="Filter customers..."
-          value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+      <Input
+        placeholder="Filter customers..."
+        value={globalFilter}
+        onChange={(event) => setGlobalFilter(event.target.value)}
+        className="max-w-sm"
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
+          <Button variant="outline">
             <Columns3 className="mr-2 h-4 w-4" />
             View
           </Button>
@@ -53,6 +51,7 @@ export const CustomerTableToolbar = ({
             })}
         </DropdownMenuContent>
       </DropdownMenu>
+      <div className="flex-1" />
     </div>
   );
 };
