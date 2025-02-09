@@ -1,3 +1,4 @@
+
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -5,13 +6,13 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { MainNavigation } from "@/components/nav/MainNavigation";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+const LayoutContent = ({ children }: MainLayoutProps) => {
   const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const { userProfile } = useUserProfile();
   const { t } = useLanguage();
@@ -77,5 +78,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         </main>
       </div>
     </>
+  );
+};
+
+export const MainLayout = ({ children }: MainLayoutProps) => {
+  return (
+    <LanguageProvider>
+      <LayoutContent>{children}</LayoutContent>
+    </LanguageProvider>
   );
 };
