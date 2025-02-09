@@ -64,10 +64,9 @@ export const CustomerTableToolbar = ({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF]"
+                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:opacity-100 [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[2px]"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  checkedIcon={CheckSquare}
                 >
                   {column.id === 'profile.display_name' ? t('name') :
                    column.id === 'profile.email' ? t('email') :
@@ -96,4 +95,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-
