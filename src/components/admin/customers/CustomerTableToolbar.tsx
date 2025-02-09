@@ -53,7 +53,7 @@ export const CustomerTableToolbar = ({
           align="end"
           className="text-xs bg-white dark:bg-[#212121] border-[#d4d4d4] dark:border-[#363636]"
         >
-          <DropdownMenuLabel className="text-xs font-medium bg-[#f3f3f3] dark:bg-[#212121] border-b border-[#e8e8e8] dark:border-[#333333] text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <DropdownMenuLabel className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('toggle.columns')}
           </DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-[#e8e8e8] dark:bg-[#333333]" />
