@@ -33,6 +33,7 @@ export const ui: UITranslations = {
   'profile.signing.out': 'Loggar ut...',
   'profile.sign.out': 'Logga ut',
   'search.placeholder': 'Sök',
+  'search.customers.placeholder': 'Sök namn, e-post eller UID',
   'search.no.results': 'Inga resultat hittades',
   'search.category.pages': 'Sidor',
   'search.category.settings': 'Inställningar',
@@ -83,3 +84,4 @@ export const ui: UITranslations = {
   'sort.descending': 'Sortera fallande',
   'sort.ascending': 'Sortera stigande'
 };
+

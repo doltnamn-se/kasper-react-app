@@ -33,6 +33,7 @@ export const ui: UITranslations = {
   'profile.signing.out': 'Signing out...',
   'profile.sign.out': 'Sign out',
   'search.placeholder': 'Search',
+  'search.customers.placeholder': 'Search name, email or UID',
   'search.no.results': 'No results found',
   'search.category.pages': 'Pages',
   'search.category.settings': 'Settings',
@@ -83,3 +84,4 @@ export const ui: UITranslations = {
   'sort.descending': 'Sort descending',
   'sort.ascending': 'Sort ascending'
 };
+
