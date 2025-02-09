@@ -34,7 +34,9 @@ export const CustomerTableHeader = ({
             <TableHead key={header.id}>
               {header.isPlaceholder ? null : (
                 <div className="flex items-center justify-between gap-2">
-                  {header.column.columnDef.header}
+                  {typeof header.column.columnDef.header === 'function' 
+                    ? header.column.columnDef.header(header.getContext())
+                    : header.column.columnDef.header}
                   {header.column.getCanSort() && (
                     <DropdownMenu>
                       <DropdownMenuTrigger className="ml-auto focus:outline-none group rounded p-0.5 hover:bg-[#ededed] dark:hover:bg-[#292929] transition-colors">
@@ -67,3 +69,4 @@ export const CustomerTableHeader = ({
     </TableHeader>
   );
 };
+
