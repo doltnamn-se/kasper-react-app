@@ -1,7 +1,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 import {
   ColumnFiltersState,
   SortingState,
@@ -95,12 +95,14 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
                                   onClick={() => header.column.toggleSorting(false)}
                                   className="text-xs"
                                 >
+                                  <ArrowUpNarrowWide className="mr-2 h-3.5 w-3.5" />
                                   Sort ascending
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                   onClick={() => header.column.toggleSorting(true)}
                                   className="text-xs"
                                 >
+                                  <ArrowDownWideNarrow className="mr-2 h-3.5 w-3.5" />
                                   Sort descending
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
