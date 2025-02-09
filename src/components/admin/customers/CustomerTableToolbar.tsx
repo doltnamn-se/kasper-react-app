@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus, ChevronDown } from "lucide-react";
+import { Search, UserRoundPlus, ChevronDown, Check } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -64,7 +64,7 @@ export const CustomerTableToolbar = ({
               return (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[#FFFFFF] dark:[&>span>svg]:stroke-[#000000] [&>span>svg]:stroke-[3px]"
+                  className="capitalize text-xs font-medium text-[#000000] dark:text-[#FFFFFF] [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span>svg]:h-4 [&>span>svg]:w-4 [&>span>svg]:stroke-[#FFFFFF] dark:[&>span>svg]:stroke-[#000000] [&>span>svg]:stroke-[3px] [&>span>svg]:data-[state=checked]:block [&>span>svg]:hidden"
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
@@ -95,4 +95,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-
