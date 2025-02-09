@@ -39,7 +39,7 @@ export const getColumns = (
   },
   {
     accessorKey: "profile.display_name",
-    header: "Customer name",
+    header: "Name",
     cell: ({ row }) => (
       <div className="text-black dark:text-white">
         {row.original.profile?.display_name || 'No name'}
