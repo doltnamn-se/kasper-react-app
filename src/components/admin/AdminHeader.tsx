@@ -15,10 +15,10 @@ export const AdminHeader = ({ onCustomerCreated }: AdminHeaderProps) => {
           className="
             text-[#000000] bg-[#72e3ad] border-[#16b674bf] hover:bg-[#3fcf8ecc] hover:border-[#097c4f]
             dark:text-white dark:bg-[#3ecf8e80] dark:border-[#3ecf8e] dark:hover:bg-[#3ecf8e80] dark:hover:border-[#3ecf8e]
-            border flex items-center gap-2
+            border flex items-center gap-2 py-[0.25rem] px-[0.625rem]
           "
         >
-          <UserRoundPlus className="h-4 w-4 text-[#16b674bf] dark:text-[#3ecf8e]" />
+          <UserRoundPlus className="h-4 w-4 text-[#097c4f] dark:text-[#85e0ba]" />
           Add Customer
         </Button>
       </CreateCustomerDialog>
