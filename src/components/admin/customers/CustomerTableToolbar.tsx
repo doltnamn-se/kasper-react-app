@@ -19,7 +19,7 @@ export const CustomerTableToolbar = ({
   setGlobalFilter,
 }: CustomerTableToolbarProps) => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 py-2 px-2">
       <Input
         placeholder="Filter customers..."
         value={globalFilter}
@@ -57,4 +57,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-

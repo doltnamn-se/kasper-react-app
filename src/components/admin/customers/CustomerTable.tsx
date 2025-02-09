@@ -74,16 +74,19 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
 
   return (
     <div className="space-y-4">
-      <CustomerTableToolbar 
-        table={table}
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-      />
-      
       <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
+              <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
+                <TableHead colSpan={columns.length}>
+                  <CustomerTableToolbar 
+                    table={table}
+                    globalFilter={globalFilter}
+                    setGlobalFilter={setGlobalFilter}
+                  />
+                </TableHead>
+              </TableRow>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id} className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
                   {headerGroup.headers.map((header) => (
@@ -224,4 +227,3 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen }: CustomerTabl
     </div>
   );
 };
-
