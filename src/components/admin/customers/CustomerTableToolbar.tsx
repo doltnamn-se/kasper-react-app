@@ -1,4 +1,3 @@
-
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,7 @@ export const CustomerTableToolbar = ({
 
   return (
     <div className="flex items-center gap-4 py-2 px-2">
-      <div className="relative max-w-md">
+      <div className="relative w-[458px]">
         <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#777777] dark:text-[#898989]" />
         <Input
           placeholder={t('search.placeholder')}
@@ -88,4 +87,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-
