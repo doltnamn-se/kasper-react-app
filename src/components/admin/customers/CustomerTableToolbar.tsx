@@ -2,7 +2,7 @@
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Search, UserRoundPlus, ChevronDown, CheckSquare } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
@@ -53,7 +53,10 @@ export const CustomerTableToolbar = ({
           align="end"
           className="text-xs bg-white dark:bg-[#212121] border-[#d4d4d4] dark:border-[#363636]"
         >
-          <DropdownMenuLabel className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('toggle.columns')}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-xs font-medium bg-[#f3f3f3] dark:bg-[#212121] border-b border-[#e8e8e8] dark:border-[#333333] text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('toggle.columns')}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator className="bg-[#e8e8e8] dark:bg-[#333333]" />
           {table
             .getAllColumns()
             .filter((column) => column.getCanHide())

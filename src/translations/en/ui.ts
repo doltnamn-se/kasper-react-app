@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -65,7 +66,7 @@ export const ui: UITranslations = {
   'password.update.error': 'Failed to update password',
   'total.customers': 'Active Customers',
   'view.all.columns': 'All columns',
-  'toggle.columns': 'Toggle columns',
+  'toggle.columns': 'Select columns to show',
   'add.customer': 'Add Customer',
   'no.customers': 'No customers found.',
   'name': 'Name',
@@ -83,3 +84,4 @@ export const ui: UITranslations = {
   'sort.descending': 'Sort descending',
   'sort.ascending': 'Sort ascending'
 };
+

@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -65,7 +66,7 @@ export const ui: UITranslations = {
   'password.update.error': 'Det gick inte att uppdatera lösenordet',
   'total.customers': 'Aktiva Kunder',
   'view.all.columns': 'Alla kolumner',
-  'toggle.columns': 'Visa/dölj kolumner',
+  'toggle.columns': 'Välj kolumner att visa',
   'add.customer': 'Lägg till kund',
   'no.customers': 'Inga kunder hittades.',
   'name': 'Namn',
@@ -83,3 +84,4 @@ export const ui: UITranslations = {
   'sort.descending': 'Sortera fallande',
   'sort.ascending': 'Sortera stigande'
 };
+
