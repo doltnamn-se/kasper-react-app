@@ -1,4 +1,3 @@
-
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ export const CustomerTableToolbar = ({
           value={globalFilter}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="
-            max-w-sm text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#777777] text-[#000000] h-8 pl-8 pr-[0.625rem] focus:placeholder-[#777777]
+            w-[275px] text-xs border-[#c7c7c7] rounded-[0.375rem] placeholder-[#777777] text-[#000000] h-8 pl-8 pr-[0.625rem] focus:placeholder-[#777777]
             dark:bg-[#212121] dark:border-[#393939] dark:placeholder-[#898989] dark:text-[#FFFFFF]
           "
         />
@@ -89,4 +88,3 @@ export const CustomerTableToolbar = ({
     </div>
   );
 };
-
