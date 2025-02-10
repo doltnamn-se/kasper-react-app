@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -130,7 +131,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       const generatedPassword = generatePassword();
       console.log("Attempting to update password for user:", customer.id);
       
-      // First update the user's password using the RPC function with correct parameter names
       const { error: passwordError } = await supabase.rpc('update_user_password', {
         user_id: customer.id,
         new_password: generatedPassword
@@ -143,7 +143,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
       console.log("Password updated successfully, sending activation email");
 
-      // Then send activation email
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
           email: customer.profile.email,
@@ -182,11 +181,18 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       
       if (error) throw error;
       
-      toast.success("User deleted successfully");
+      toast({
+        title: "Success",
+        description: "User deleted successfully"
+      });
       onOpenChange(false);
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast.error("Failed to delete user");
+      toast({
+        title: "Error",
+        description: "Failed to delete user",
+        variant: "destructive"
+      });
     } finally {
       setIsDeleting(false);
       setShowDeleteDialog(false);
@@ -330,3 +336,4 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </>
   );
 };
+
