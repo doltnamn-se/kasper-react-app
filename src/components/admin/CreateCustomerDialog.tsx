@@ -19,8 +19,6 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
     setOpen(false);
   });
 
-  const isFormValid = formData.email && formData.displayName;
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -46,23 +44,13 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
             onCustomerTypeChange={(customerType) => setFormData(prev => ({ ...prev, customerType }))}
             onHasAddressAlertChange={(hasAddressAlert) => setFormData(prev => ({ ...prev, hasAddressAlert }))}
           />
-          <div className="flex flex-col gap-2">
-            <Button 
-              className="w-full" 
-              onClick={() => handleCreateCustomer(true)}
-              disabled={isCreating || !isFormValid}
-            >
-              {isCreating ? "Creating..." : "Create & Send Welcome Email"}
-            </Button>
-            <Button 
-              className="w-full" 
-              variant="outline"
-              onClick={() => handleCreateCustomer(false)}
-              disabled={isCreating || !isFormValid}
-            >
-              {isCreating ? "Creating..." : "Create Without Email"}
-            </Button>
-          </div>
+          <Button 
+            className="w-full" 
+            onClick={handleCreateCustomer}
+            disabled={isCreating || !formData.email || !formData.displayName}
+          >
+            {isCreating ? "Creating..." : "Create Customer"}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

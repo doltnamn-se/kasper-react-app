@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -12,7 +11,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     displayName: "",
     subscriptionPlan: "1_month",
     customerType: "private",
-    hasAddressAlert: true
+    hasAddressAlert: true  // Changed default from false to true
   });
 
   const generatePassword = () => {
@@ -30,11 +29,11 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       displayName: "",
       subscriptionPlan: "1_month",
       customerType: "private",
-      hasAddressAlert: true
+      hasAddressAlert: true  // Changed default from false to true
     });
   };
 
-  const handleCreateCustomer = async (sendEmail: boolean = true) => {
+  const handleCreateCustomer = async () => {
     try {
       setIsCreating(true);
       console.log('Starting customer creation process with data:', formData);
@@ -64,33 +63,26 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
 
       console.log("Customer created successfully:", createData);
 
-      if (sendEmail) {
-        console.log("Sending welcome email...");
-        const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
-          body: {
-            email: formData.email,
-            displayName: formData.displayName,
-            password: generatedPassword
-          }
-        });
-
-        if (emailError) {
-          console.error("Error sending welcome email:", emailError);
-          toast({
-            title: "Partial Success",
-            description: "Customer created but welcome email could not be sent. Please try resending the email later.",
-            variant: "default",
-          });
-        } else {
-          toast({
-            title: "Success",
-            description: "Customer created successfully and welcome email sent with login credentials.",
-          });
+      console.log("Sending welcome email...");
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email: formData.email,
+          displayName: formData.displayName,
+          password: generatedPassword
         }
+      });
+
+      if (emailError) {
+        console.error("Error sending welcome email:", emailError);
+        toast({
+          title: "Partial Success",
+          description: "Customer created but welcome email could not be sent. Please try resending the email later.",
+          variant: "default",
+        });
       } else {
         toast({
           title: "Success",
-          description: "Customer created successfully without sending welcome email.",
+          description: "Customer created successfully and welcome email sent with login credentials.",
         });
       }
 

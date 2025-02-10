@@ -430,13 +430,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
-      update_user_password: {
-        Args: {
-          user_id: string
-          new_password: string
-        }
-        Returns: undefined
-      }
     }
     Enums: {
       hiding_site:
