@@ -12,7 +12,7 @@ export const AdminDeindexingView = () => {
       <h1 className="text-2xl font-[700] tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {language === 'sv' ? 'Länkhantering' : 'Link Management'}
       </h1>
-      <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+      <div className="transition-colors duration-200">
         <div className="max-w-full">
           <URLTable urls={urls} onStatusChange={handleStatusChange} />
         </div>
@@ -20,4 +20,3 @@ export const AdminDeindexingView = () => {
     </div>
   );
 };
-
