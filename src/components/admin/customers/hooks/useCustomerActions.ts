@@ -17,7 +17,7 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       const numericValue = parseInt(additionalUrls);
       
       if (isNaN(numericValue)) {
-        toast.error("Please enter a valid number", {
+        toast("Please enter a valid number", {
           description: "The URL limit must be a number"
         });
         return;
@@ -30,14 +30,14 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
 
       if (error) throw error;
 
-      toast.success("Success", {
+      toast("Success", {
         description: "URL limits updated successfully"
       });
       
       return true;
     } catch (error) {
       console.error("Error updating URL limits:", error);
-      toast.error("Error", {
+      toast("Error", {
         description: "Failed to update URL limits"
       });
       return false;
@@ -79,12 +79,12 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
         throw emailError;
       }
 
-      toast.success("Success", {
+      toast("Success", {
         description: "Activation email sent successfully"
       });
     } catch (error) {
       console.error("Error in handleResendActivationEmail:", error);
-      toast.error("Error", {
+      toast("Error", {
         description: "Failed to send activation email"
       });
     } finally {
@@ -97,17 +97,20 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
     
     try {
       setIsDeleting(true);
-      const { error } = await supabase.auth.admin.deleteUser(customerId);
+      
+      const { error } = await supabase.functions.invoke('delete-user', {
+        body: { user_id: customerId }
+      });
       
       if (error) throw error;
       
-      toast.success("Success", {
+      toast("Success", {
         description: "User deleted successfully"
       });
       onClose();
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast.error("Error", {
+      toast("Error", {
         description: "Failed to delete user"
       });
     } finally {
