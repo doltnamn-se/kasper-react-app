@@ -214,6 +214,13 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const completedSteps = checklistProgress?.completed_at ? 4 : 0;
   const totalSteps = 4;
 
+  console.log("Checklist progress:", {
+    checklistProgress,
+    progressPercentage,
+    completedSteps,
+    totalSteps
+  });
+
   if (isLoading) {
     return (
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
@@ -336,4 +343,3 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </>
   );
 };
-
