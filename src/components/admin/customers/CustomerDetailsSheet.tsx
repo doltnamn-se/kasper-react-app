@@ -10,6 +10,7 @@ import { useCustomerPresence } from "./useCustomerPresence";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -18,6 +19,7 @@ interface CustomerDetailsSheetProps {
 
 export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetailsSheetProps) => {
   const { onlineUsers, lastSeen } = useCustomerPresence();
+  const { t } = useLanguage();
   
   // Fetch customer's URLs
   const { data: customerUrls } = useQuery({
@@ -37,6 +39,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   const isOnline = customer.id ? onlineUsers.has(customer.id) : false;
   const userLastSeen = customer.id ? lastSeen[customer.id] : null;
+
+  const capitalizedCustomerType = customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1);
 
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
@@ -61,10 +65,10 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               
               <div className="mt-4 space-y-1">
                 <h2 className="text-2xl font-semibold text-[#000000] dark:text-white">
-                  {customer.profile?.display_name || 'Unnamed Customer'}
+                  {customer.profile?.display_name || t('no.name')}
                 </h2>
                 <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
-                  {customer.profile?.email || 'No email provided'}
+                  {customer.profile?.email || t('no.email')}
                 </p>
               </div>
             </div>
@@ -75,7 +79,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                 variant="secondary"
                 className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1.5"
               >
-                {customer.customer_type}
+                {capitalizedCustomerType}
               </Badge>
               <SubscriptionBadge plan={customer.subscription_plan} />
             </div>
@@ -87,28 +91,28 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               {/* Account Details */}
               <div>
                 <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-                  Account Details
+                  {t('account.details')}
                 </h3>
                 <div className="space-y-2">
-                  <p className="text-sm flex justify-between">
-                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Customer ID</span>
+                  <p className="text-xs font-medium flex justify-between">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
                   </p>
-                  <p className="text-sm flex justify-between">
-                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Created</span>
+                  <p className="text-xs font-medium flex justify-between">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {customer.created_at ? format(new Date(customer.created_at), 'PPP') : 'N/A'}
+                      {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
                     </span>
                   </p>
-                  <p className="text-sm flex justify-between">
-                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Status</span>
+                  <p className="text-xs font-medium flex justify-between">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {isOnline ? 'Online' : 'Offline'}
+                      {isOnline ? t('online') : t('offline')}
                     </span>
                   </p>
                   {!isOnline && userLastSeen && (
-                    <p className="text-sm flex justify-between">
-                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">Last seen</span>
+                    <p className="text-xs font-medium flex justify-between">
+                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</span>
                       <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
                         {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
                       </span>
@@ -120,11 +124,11 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               {/* URLs Section */}
               <div>
                 <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-                  URL Submissions
+                  {t('url.submissions')}
                 </h3>
                 <div className="space-y-2">
-                  <p className="text-sm flex justify-between">
-                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Total URLs</span>
+                  <p className="text-xs font-medium flex justify-between">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('total.urls')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
                       {customerUrls?.length || 0}
                     </span>
@@ -135,18 +139,18 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               {/* Onboarding Status */}
               <div>
                 <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-                  Onboarding Status
+                  {t('onboarding.status')}
                 </h3>
                 <div className="space-y-2">
-                  <p className="text-sm flex justify-between">
-                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Status</span>
+                  <p className="text-xs font-medium flex justify-between">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {customer.onboarding_completed ? 'Completed' : 'In Progress'}
+                      {customer.onboarding_completed ? t('completed') : t('in.progress')}
                     </span>
                   </p>
                   {!customer.onboarding_completed && (
-                    <p className="text-sm flex justify-between">
-                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">Current Step</span>
+                    <p className="text-xs font-medium flex justify-between">
+                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('current.step')}</span>
                       <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.onboarding_step || 1}</span>
                     </p>
                   )}

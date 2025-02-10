@@ -82,5 +82,14 @@ export const ui: UITranslations = {
   'no.plan': 'No plan',
   'search.global': 'Search...',
   'sort.descending': 'Sort descending',
-  'sort.ascending': 'Sort ascending'
+  'sort.ascending': 'Sort ascending',
+  'account.details': 'Account Details',
+  'customer.id': 'Customer ID',
+  'created': 'Created',
+  'status': 'Status',
+  'url.submissions': 'URL Submissions',
+  'total.urls': 'Total URLs',
+  'onboarding.status': 'Onboarding Status',
+  'current.step': 'Current Step',
+  'not.available': 'N/A'
 };

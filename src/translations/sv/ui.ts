@@ -82,5 +82,14 @@ export const ui: UITranslations = {
   'no.plan': 'Ingen plan',
   'search.global': 'Sök...',
   'sort.descending': 'Sortera fallande',
-  'sort.ascending': 'Sortera stigande'
+  'sort.ascending': 'Sortera stigande',
+  'account.details': 'Kontouppgifter',
+  'customer.id': 'Kund-ID',
+  'created': 'Skapad',
+  'status': 'Status',
+  'url.submissions': 'URL-inlämningar',
+  'total.urls': 'Totalt antal URLs',
+  'onboarding.status': 'Onboardingstatus',
+  'current.step': 'Aktuellt steg',
+  'not.available': 'Ej tillgänglig'
 };
