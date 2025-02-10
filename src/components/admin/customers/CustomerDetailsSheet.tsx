@@ -4,7 +4,7 @@ import { CustomerWithProfile } from "@/types/customer";
 import { format, formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
-import { BadgeCheck, Copy } from "lucide-react";
+import { BadgeCheck, Copy, ListChecks } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
 import { useCustomerPresence } from "./useCustomerPresence";
@@ -24,20 +24,22 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const { t } = useLanguage();
   const { toast } = useToast();
   
-  // Fetch customer's URLs and URL limits
+  // Fetch customer's URLs, URL limits, and checklist progress
   const { data: customerData } = useQuery({
     queryKey: ['customer-data', customer?.id],
     queryFn: async () => {
-      if (!customer?.id) return { urls: [], limits: null };
+      if (!customer?.id) return { urls: [], limits: null, checklistProgress: null };
       
-      const [urlsResponse, limitsResponse] = await Promise.all([
+      const [urlsResponse, limitsResponse, checklistResponse] = await Promise.all([
         supabase.from('removal_urls').select('*').eq('customer_id', customer.id),
-        supabase.from('user_url_limits').select('*').eq('customer_id', customer.id).single()
+        supabase.from('user_url_limits').select('*').eq('customer_id', customer.id).single(),
+        supabase.from('customer_checklist_progress').select('*').eq('customer_id', customer.id).single()
       ]);
 
       return {
         urls: urlsResponse.data || [],
-        limits: limitsResponse.data
+        limits: limitsResponse.data,
+        checklistProgress: checklistResponse.data
       };
     },
     enabled: !!customer?.id
@@ -62,6 +64,18 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const usedUrls = customerData?.urls?.length || 0;
   const totalUrlLimit = customerData?.limits?.additional_urls || 0;
 
+  // Calculate checklist progress
+  const checklistProgress = customerData?.checklistProgress;
+  const completedSteps = [
+    checklistProgress?.password_updated,
+    checklistProgress?.removal_urls?.length > 0 || checklistProgress?.removal_urls?.includes('skipped'),
+    checklistProgress?.selected_sites?.length > 0,
+    checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city
+  ].filter(Boolean).length;
+  
+  const totalSteps = 4;
+  const progressPercentage = Math.round((completedSteps / totalSteps) * 100);
+
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-xl w-full px-0">
@@ -75,7 +89,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                     {getUserInitials(customer.profile)}
                   </AvatarFallback>
                 </Avatar>
-                {customer.onboarding_completed && (
+                {progressPercentage === 100 && (
                   <div className="absolute bottom-0 right-0 bg-white dark:bg-[#1e1e1e] rounded-full p-1">
                     <BadgeCheck className="w-5 h-5 text-blue-500" />
                   </div>
@@ -188,20 +202,23 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               </div>
 
               <div>
-                <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-                  {t('onboarding.status')}
+                <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3 flex items-center gap-2">
+                  <ListChecks className="w-4 h-4" />
+                  {t('checklist')}
                 </h3>
                 <div className="space-y-2">
                   <p className="text-xs font-medium flex justify-between">
                     <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {customer.onboarding_completed ? t('completed') : t('in.progress')}
+                      {progressPercentage === 100 ? t('completed') : t('in.progress')}
                     </span>
                   </p>
-                  {!customer.onboarding_completed && (
+                  {progressPercentage !== 100 && (
                     <p className="text-xs font-medium flex justify-between">
-                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('current.step')}</span>
-                      <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.onboarding_step || 1}</span>
+                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('progress')}</span>
+                      <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+                        {completedSteps} / {totalSteps} {t('steps')}
+                      </span>
                     </p>
                   )}
                 </div>
