@@ -2,7 +2,7 @@
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { CustomerWithProfile } from "@/types/customer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useCustomerPresence } from "./useCustomerPresence";
 import { useCustomerData } from "./hooks/useCustomerData";
 import { CustomerAvatar } from "./components/CustomerAvatar";
@@ -11,6 +11,9 @@ import { CustomerBadges } from "./components/CustomerBadges";
 import { AccountInfo } from "./components/AccountInfo";
 import { UrlSubmissions } from "./components/UrlSubmissions";
 import { ChecklistProgress } from "./components/ChecklistProgress";
+import { AdminUrlSubmission } from "./components/AdminUrlSubmission";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -22,6 +25,17 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const { t } = useLanguage();
   const { toast } = useToast();
   const { data: customerData } = useCustomerData(customer);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkSuperAdmin = async () => {
+      const { data, error } = await supabase.rpc('is_super_admin');
+      if (!error && data) {
+        setIsSuperAdmin(data);
+      }
+    };
+    checkSuperAdmin();
+  }, []);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -73,6 +87,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                 onCopy={handleCopy}
               />
               <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+              {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
               <ChecklistProgress 
                 progressPercentage={progressPercentage}
                 completedSteps={completedSteps}
