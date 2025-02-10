@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -112,7 +111,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   };
 
   const handleResendActivationEmail = async () => {
-    if (!customer?.id || !customer.email || !customer.display_name) return;
+    if (!customer?.id || !customer.profile?.email || !customer.profile?.display_name) return;
     
     try {
       setIsSendingEmail(true);
@@ -122,8 +121,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       // Send activation email
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
-          email: customer.email,
-          displayName: customer.display_name,
+          email: customer.profile.email,
+          displayName: customer.profile.display_name,
           password: generatedPassword
         }
       });
@@ -258,4 +257,3 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </Sheet>
   );
 };
-
