@@ -28,7 +28,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const { t } = useLanguage();
   const { toast } = useToast();
-  const { data: customerData } = useCustomerData(customer);
+  const { data: customerData, isLoading } = useCustomerData(customer);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("");
@@ -116,19 +116,31 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   // Calculate URL usage
   const usedUrls = customerData?.urls?.length || 0;
-  const totalUrlLimit = customerData?.limits?.additional_urls || 0;
+  const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
   // Calculate checklist progress
   const checklistProgress = customerData?.checklistProgress;
-  const completedSteps = [
-    checklistProgress?.password_updated,
-    checklistProgress?.removal_urls?.length > 0 || checklistProgress?.removal_urls?.includes('skipped'),
-    checklistProgress?.selected_sites?.length > 0,
-    checklistProgress?.street_address && checklistProgress?.postal_code && checklistProgress?.city
-  ].filter(Boolean).length;
+  const completedSteps = checklistProgress ? [
+    checklistProgress.password_updated,
+    checklistProgress.removal_urls?.length > 0 || checklistProgress.removal_urls?.includes('skipped'),
+    checklistProgress.selected_sites?.length > 0,
+    !!(checklistProgress.street_address && checklistProgress.postal_code && checklistProgress.city)
+  ].filter(Boolean).length : 0;
   
   const totalSteps = 4;
   const progressPercentage = Math.round((completedSteps / totalSteps) * 100);
+
+  if (isLoading) {
+    return (
+      <Sheet open={!!customer} onOpenChange={onOpenChange}>
+        <SheetContent side="right" className="sm:max-w-xl w-full p-0">
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
 
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
@@ -193,4 +205,3 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </Sheet>
   );
 };
-

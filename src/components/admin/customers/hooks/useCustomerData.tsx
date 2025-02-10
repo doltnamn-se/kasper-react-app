@@ -15,6 +15,10 @@ export const useCustomerData = (customer: CustomerWithProfile | null) => {
         supabase.from('customer_checklist_progress').select('*').eq('customer_id', customer.id).maybeSingle()
       ]);
 
+      if (urlsResponse.error) console.error('Error fetching URLs:', urlsResponse.error);
+      if (limitsResponse.error) console.error('Error fetching limits:', limitsResponse.error);
+      if (checklistResponse.error) console.error('Error fetching checklist:', checklistResponse.error);
+
       return {
         urls: urlsResponse.data || [],
         limits: limitsResponse.data,
