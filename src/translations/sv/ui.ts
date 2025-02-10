@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -81,7 +80,7 @@ export const ui: UITranslations = {
   'no.name': 'Inget namn',
   'no.email': 'Ingen e-post',
   'no.plan': 'Ingen plan',
+  'search.global': 'Sök...',
   'sort.descending': 'Sortera fallande',
   'sort.ascending': 'Sortera stigande'
 };
-

@@ -80,4 +80,5 @@ export interface UITranslations {
   'no.plan': string;
   'sort.descending': string;
   'sort.ascending': string;
+  'search.global': string;
 }
