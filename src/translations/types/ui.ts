@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -78,7 +79,17 @@ export interface UITranslations {
   'no.name': string;
   'no.email': string;
   'no.plan': string;
+  'search.global': string;
   'sort.descending': string;
   'sort.ascending': string;
-  'search.global': string;
-}
+  'account.details': string;
+  'customer.id': string;
+  'created': string;
+  'status': string;
+  'url.submissions': string;
+  'total.urls': string;
+  'onboarding.status': string;
+  'current.step': string;
+  'not.available': string;
+};
+
