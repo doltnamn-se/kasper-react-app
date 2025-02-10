@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -118,7 +119,15 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       setIsSendingEmail(true);
       const generatedPassword = generatePassword();
       
-      // Send activation email
+      // First update the user's password
+      const { error: passwordError } = await supabase.rpc('update_user_password', {
+        user_id: customer.id,
+        new_password: generatedPassword
+      });
+
+      if (passwordError) throw passwordError;
+
+      // Then send activation email
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
         body: {
           email: customer.profile.email,
