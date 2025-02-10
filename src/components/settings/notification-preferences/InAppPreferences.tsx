@@ -1,3 +1,4 @@
+
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -17,7 +18,7 @@ export const InAppPreferences = () => {
       <Switch
         checked={true}
         disabled={true}
-        className="cursor-not-allowed"
+        className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200 cursor-not-allowed"
       />
     </div>
   );

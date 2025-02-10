@@ -1,3 +1,4 @@
+
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Translations } from "@/translations/types";
@@ -23,6 +24,7 @@ export const EmailSubPreference = ({
       <Switch
         checked={checked}
         onCheckedChange={onCheckedChange}
+        className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200"
       />
     </div>
   );
