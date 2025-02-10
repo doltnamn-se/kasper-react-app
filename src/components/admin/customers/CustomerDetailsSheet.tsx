@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
 import { BadgeCheck } from "lucide-react";
+import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -16,7 +17,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-xl w-full px-0">
+      <SheetContent side="right" className="sm:max-w-md w-full px-0">
         <div className="space-y-8">
           {/* Header Section */}
           <div className="px-6 space-y-6">
@@ -36,10 +37,10 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               </div>
               
               <div className="mt-4 space-y-1">
-                <h2 className="text-2xl font-semibold">
+                <h2 className="text-2xl font-semibold text-[#000000] dark:text-white">
                   {customer.profile?.display_name || 'Unnamed Customer'}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
                   {customer.profile?.email || 'No email provided'}
                 </p>
               </div>
@@ -47,12 +48,10 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
             {/* Customer Type Tags */}
             <div className="flex gap-2 justify-center flex-wrap">
-              <span className="px-3 py-1 text-sm rounded-full bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#666] dark:text-[#FFFFFFA6]">
+              <span className="px-3 py-1 text-sm rounded-full bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark">
                 {customer.customer_type}
               </span>
-              <span className="px-3 py-1 text-sm rounded-full bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#666] dark:text-[#FFFFFFA6]">
-                {customer.subscription_plan || 'No Plan'}
-              </span>
+              <SubscriptionBadge plan={customer.subscription_plan} />
             </div>
           </div>
 
@@ -60,17 +59,17 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
           <div className="border-t border-[#eaeaea] dark:border-[#2a2a2a]">
             <div className="px-6 py-4 space-y-6">
               <div>
-                <h3 className="text-base font-medium text-[#1e293b] dark:text-[#FFFFFFA6] mb-3">
+                <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
                   Account Details
                 </h3>
                 <div className="space-y-2">
                   <p className="text-sm flex justify-between">
-                    <span className="text-[#1e293b] dark:text-[#FFFFFFA6]">Customer ID</span>
-                    <span className="text-muted-foreground">{customer.id}</span>
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Customer ID</span>
+                    <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
                   </p>
                   <p className="text-sm flex justify-between">
-                    <span className="text-[#1e293b] dark:text-[#FFFFFFA6]">Created</span>
-                    <span className="text-muted-foreground">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Created</span>
+                    <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
                       {customer.created_at ? format(new Date(customer.created_at), 'PPP') : 'N/A'}
                     </span>
                   </p>
@@ -78,20 +77,20 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               </div>
 
               <div>
-                <h3 className="text-base font-medium text-[#1e293b] dark:text-[#FFFFFFA6] mb-3">
+                <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
                   Onboarding Status
                 </h3>
                 <div className="space-y-2">
                   <p className="text-sm flex justify-between">
-                    <span className="text-[#1e293b] dark:text-[#FFFFFFA6]">Status</span>
-                    <span className="text-muted-foreground">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">Status</span>
+                    <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
                       {customer.onboarding_completed ? 'Completed' : 'In Progress'}
                     </span>
                   </p>
                   {!customer.onboarding_completed && (
                     <p className="text-sm flex justify-between">
-                      <span className="text-[#1e293b] dark:text-[#FFFFFFA6]">Current Step</span>
-                      <span className="text-muted-foreground">{customer.onboarding_step || 1}</span>
+                      <span className="text-[#000000] dark:text-[#FFFFFFA6]">Current Step</span>
+                      <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.onboarding_step || 1}</span>
                     </p>
                   )}
                 </div>
