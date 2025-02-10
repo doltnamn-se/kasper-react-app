@@ -4,6 +4,16 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { URLTableRow } from "./URLTableRow";
 import { URLTableToolbar } from "./URLTableToolbar";
 import { useState } from "react";
+import {
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 interface URLTableProps {
   urls: Array<{
@@ -23,16 +33,46 @@ interface URLTableProps {
 
 export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
   const { t } = useLanguage();
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
 
-  const filteredUrls = urls.filter((url) => {
-    if (!globalFilter) return true;
-    const searchTerm = globalFilter.toLowerCase();
-    return (
-      url.url.toLowerCase().includes(searchTerm) ||
-      url.customer.profiles.email.toLowerCase().includes(searchTerm) ||
-      url.status.toLowerCase().includes(searchTerm)
-    );
+  const columns = [
+    {
+      id: "url",
+      accessorKey: "url",
+      header: t('deindexing.url'),
+    },
+    {
+      id: "customer",
+      accessorKey: "customer.profiles.email",
+      header: t('deindexing.customer'),
+    },
+    {
+      id: "status",
+      accessorKey: "status",
+      header: t('deindexing.status'),
+    },
+  ];
+
+  const table = useReactTable({
+    data: urls,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   const handleRefresh = () => {
@@ -43,6 +83,7 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
   return (
     <div className="space-y-4">
       <URLTableToolbar
+        table={table}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
         onRefresh={handleRefresh}
@@ -59,10 +100,10 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUrls.map((url) => (
+              {table.getFilteredRowModel().rows.map((row) => (
                 <URLTableRow
-                  key={url.id}
-                  url={url}
+                  key={row.original.id}
+                  url={row.original}
                   onStatusChange={onStatusChange}
                 />
               ))}
