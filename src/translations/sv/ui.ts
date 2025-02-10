@@ -94,5 +94,12 @@ export const ui: UITranslations = {
   'not.available': 'Ej tillgänglig',
   'urls.available': 'Tillgängliga URLs',
   'progress': 'Framsteg',
-  'steps': 'steg'
+  'steps': 'steg',
+  'pagination.of': 'av',
+  'pagination.pages': 'sidor',
+  'pagination.next': 'Nästa',
+  'pagination.previous': 'Föregående',
+  'pagination.page': 'Sida',
+  'pagination.items.per.page': 'Objekt per sida',
+  'pagination.total.items': 'Totalt antal objekt'
 };

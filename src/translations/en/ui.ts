@@ -94,5 +94,12 @@ export const ui: UITranslations = {
   'not.available': 'N/A',
   'urls.available': 'URLs Available',
   'progress': 'Progress',
-  'steps': 'steps'
+  'steps': 'steps',
+  'pagination.of': 'of',
+  'pagination.pages': 'pages',
+  'pagination.next': 'Next',
+  'pagination.previous': 'Previous',
+  'pagination.page': 'Page',
+  'pagination.items.per.page': 'Items per page',
+  'pagination.total.items': 'Total items'
 };

@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -94,5 +93,11 @@ export interface UITranslations {
   'urls.available': string;
   'progress': string;
   'steps': string;
+  'pagination.of': string;
+  'pagination.pages': string;
+  'pagination.next': string;
+  'pagination.previous': string;
+  'pagination.page': string;
+  'pagination.items.per.page': string;
+  'pagination.total.items': string;
 };
-
