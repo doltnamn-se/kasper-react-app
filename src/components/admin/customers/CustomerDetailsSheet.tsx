@@ -118,24 +118,29 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const usedUrls = customerData?.urls?.length || 0;
   const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
-  // Calculate checklist progress
+  // Calculate checklist progress with detailed logging
   const checklistProgress = customerData?.checklistProgress;
+  console.log('Checklist Progress Data:', checklistProgress);
+
   const completedSteps = checklistProgress ? [
     checklistProgress.password_updated,
     checklistProgress.removal_urls?.length > 0 || checklistProgress.removal_urls?.includes('skipped'),
     checklistProgress.selected_sites?.length > 0,
     !!(checklistProgress.street_address && checklistProgress.postal_code && checklistProgress.city)
   ].filter(Boolean).length : 0;
+
+  console.log('Completed Steps:', completedSteps);
   
   const totalSteps = 4;
   const progressPercentage = Math.round((completedSteps / totalSteps) * 100);
+  console.log('Progress Percentage:', progressPercentage);
 
   if (isLoading) {
     return (
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
         <SheetContent side="right" className="sm:max-w-xl w-full p-0">
           <div className="flex items-center justify-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
           </div>
         </SheetContent>
       </Sheet>
