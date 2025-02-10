@@ -82,16 +82,20 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
 
   return (
     <div className="space-y-4">
-      <URLTableToolbar
-        table={table}
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-        onRefresh={handleRefresh}
-      />
       <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
         <div className="overflow-x-auto" style={{ overflowY: 'visible' }}>
           <Table>
-            <TableHeader className="bg-[#f3f3f3] dark:bg-[#212121]">
+            <TableHeader>
+              <TableRow className="border-b-0">
+                <TableHead colSpan={4} className="h-auto bg-[#f3f3f3] dark:bg-[#212121] !p-0">
+                  <URLTableToolbar
+                    table={table}
+                    globalFilter={globalFilter}
+                    setGlobalFilter={setGlobalFilter}
+                    onRefresh={handleRefresh}
+                  />
+                </TableHead>
+              </TableRow>
               <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
                 <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
                 <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
