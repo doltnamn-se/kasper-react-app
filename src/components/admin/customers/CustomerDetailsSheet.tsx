@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -208,17 +207,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const usedUrls = customerData?.urls?.length || 0;
   const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
-  // Calculate checklist progress based on completed_at field
-  const checklistProgress = customerData?.checklistProgress;
-  const progressPercentage = checklistProgress?.completed_at ? 100 : 0;
-  const completedSteps = checklistProgress?.completed_at ? 4 : 0;
-  const totalSteps = 4;
+  // Simplified checklist progress
+  const isChecklistCompleted = Boolean(customerData?.checklistProgress?.completed_at);
 
   console.log("Checklist progress:", {
-    checklistProgress,
-    progressPercentage,
-    completedSteps,
-    totalSteps
+    checklistProgress: customerData?.checklistProgress,
+    isCompleted: isChecklistCompleted
   });
 
   if (isLoading) {
@@ -242,7 +236,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               <div className="space-y-8">
                 <div className="space-y-6">
                   <div className="flex flex-col items-center text-center">
-                    <CustomerAvatar customer={customer} progressPercentage={progressPercentage} />
+                    <CustomerAvatar customer={customer} progressPercentage={isChecklistCompleted ? 100 : 0} />
                     <CustomerDetails customer={customer} />
                   </div>
                   <CustomerBadges customer={customer} />
@@ -309,9 +303,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                     
                     {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
                     <ChecklistProgress 
-                      progressPercentage={progressPercentage}
-                      completedSteps={completedSteps}
-                      totalSteps={totalSteps}
+                      progressPercentage={isChecklistCompleted ? 100 : 0}
+                      completedSteps={isChecklistCompleted ? 1 : 0}
+                      totalSteps={1}
                     />
                   </div>
                 </div>
