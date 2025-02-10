@@ -72,8 +72,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    toast({
-      title: t('toast.copied.title'),
+    toast.success(t('toast.copied.title'), {
       description: `${label} ${t('toast.copied.description')}`
     });
   };

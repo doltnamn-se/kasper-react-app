@@ -17,9 +17,8 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       const numericValue = parseInt(additionalUrls);
       
       if (isNaN(numericValue)) {
-        toast("Please enter a valid number", {
-          description: "The URL limit must be a number",
-          status: "error"
+        toast.error("Please enter a valid number", {
+          description: "The URL limit must be a number"
         });
         return;
       }
@@ -31,16 +30,15 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
 
       if (error) throw error;
 
-      toast("Success", {
+      toast.success("Success", {
         description: "URL limits updated successfully"
       });
       
       return true;
     } catch (error) {
       console.error("Error updating URL limits:", error);
-      toast("Error", {
-        description: "Failed to update URL limits",
-        status: "error"
+      toast.error("Error", {
+        description: "Failed to update URL limits"
       });
       return false;
     } finally {
@@ -81,14 +79,13 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
         throw emailError;
       }
 
-      toast("Success", {
+      toast.success("Success", {
         description: "Activation email sent successfully"
       });
     } catch (error) {
       console.error("Error in handleResendActivationEmail:", error);
-      toast("Error", {
-        description: "Failed to send activation email",
-        status: "error"
+      toast.error("Error", {
+        description: "Failed to send activation email"
       });
     } finally {
       setIsSendingEmail(false);
@@ -104,15 +101,14 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       
       if (error) throw error;
       
-      toast("Success", {
+      toast.success("Success", {
         description: "User deleted successfully"
       });
       onClose();
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast("Error", {
-        description: "Failed to delete user",
-        status: "error"
+      toast.error("Error", {
+        description: "Failed to delete user"
       });
     } finally {
       setIsDeleting(false);
