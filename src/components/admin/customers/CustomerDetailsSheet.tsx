@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -92,13 +93,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const usedUrls = customerData?.urls?.length || 0;
   const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
-  const isChecklistCompleted = Boolean(customerData?.checklistProgress?.completed_at);
-
-  console.log("Checklist progress:", {
-    checklistProgress: customerData?.checklistProgress,
-    isCompleted: isChecklistCompleted
-  });
-
   if (isLoading) {
     return (
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
@@ -119,7 +113,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             <div className="space-y-8">
               <div className="space-y-6">
                 <div className="flex flex-col items-center text-center">
-                  <CustomerAvatar customer={customer} progressPercentage={isChecklistCompleted ? 100 : 0} />
+                  <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
                   <CustomerDetails customer={customer} />
                 </div>
                 <CustomerBadges customer={customer} />
@@ -156,8 +150,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                   <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
                   
                   <ChecklistProgress 
-                    progressPercentage={isChecklistCompleted ? 100 : 0}
-                    completedSteps={isChecklistCompleted ? 1 : 0}
+                    progressPercentage={customer.checklist_completed ? 100 : 0}
+                    completedSteps={customer.checklist_completed ? 1 : 0}
                     totalSteps={1}
                   />
                 </div>
