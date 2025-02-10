@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -18,8 +17,17 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { Mail } from "lucide-react";
+import { Mail, Trash2 } from "lucide-react";
 import { generatePassword } from "@/utils/passwordGenerator";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -35,6 +43,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const [isUpdating, setIsUpdating] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("");
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch current URL limits
   const { data: urlLimits, refetch: refetchUrlLimits } = useQuery({
@@ -163,6 +173,26 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     }
   };
 
+  const handleDeleteUser = async () => {
+    if (!customer?.id) return;
+    
+    try {
+      setIsDeleting(true);
+      const { error } = await supabase.auth.admin.deleteUser(customer.id);
+      
+      if (error) throw error;
+      
+      toast.success("User deleted successfully");
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user");
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteDialog(false);
+    }
+  };
+
   if (!customer) return null;
 
   const isOnline = customer.id ? onlineUsers.has(customer.id) : false;
@@ -174,18 +204,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   // Calculate checklist progress based on completed_at field
   const checklistProgress = customerData?.checklistProgress;
-  console.log('Checklist Progress Data:', checklistProgress);
-
-  // If completed_at exists, the checklist is completed (100%)
   const progressPercentage = checklistProgress?.completed_at ? 100 : 0;
   const completedSteps = checklistProgress?.completed_at ? 4 : 0;
   const totalSteps = 4;
-
-  console.log('Progress based on completed_at:', {
-    progressPercentage,
-    completedSteps,
-    completed_at: checklistProgress?.completed_at
-  });
 
   if (isLoading) {
     return (
@@ -200,78 +221,112 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   }
 
   return (
-    <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
-        <ScrollArea className="h-full">
-          <div className="px-6 py-6">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <div className="flex flex-col items-center text-center">
-                  <CustomerAvatar customer={customer} progressPercentage={progressPercentage} />
-                  <CustomerDetails customer={customer} />
+    <>
+      <Sheet open={!!customer} onOpenChange={onOpenChange}>
+        <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
+          <ScrollArea className="h-full">
+            <div className="px-6 py-6">
+              <div className="space-y-8">
+                <div className="space-y-6">
+                  <div className="flex flex-col items-center text-center">
+                    <CustomerAvatar customer={customer} progressPercentage={progressPercentage} />
+                    <CustomerDetails customer={customer} />
+                  </div>
+                  <CustomerBadges customer={customer} />
                 </div>
-                <CustomerBadges customer={customer} />
-              </div>
 
-              <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
-                <div className="py-4 space-y-6">
-                  <AccountInfo 
-                    customer={customer}
-                    isOnline={isOnline}
-                    userLastSeen={userLastSeen}
-                    onCopy={handleCopy}
-                  />
-                  
-                  {isSuperAdmin && (
-                    <Button
-                      onClick={handleResendActivationEmail}
-                      disabled={isSendingEmail}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      <Mail className="h-4 w-4 mr-2" />
-                      {isSendingEmail ? "Sending..." : "Resend Activation Email"}
-                    </Button>
-                  )}
-
-                  <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
-                  
-                  {isSuperAdmin && (
-                    <div>
-                      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-                        URL Limits
-                      </h3>
-                      <div className="flex gap-2 items-center">
-                        <Input
-                          type="number"
-                          value={additionalUrls}
-                          onChange={(e) => setAdditionalUrls(e.target.value)}
-                          className="w-24"
-                          min="0"
-                        />
-                        <Button 
-                          onClick={handleUpdateUrlLimits}
-                          disabled={isUpdating || additionalUrls === urlLimits?.additional_urls?.toString()}
-                          size="sm"
+                <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
+                  <div className="py-4 space-y-6">
+                    <AccountInfo 
+                      customer={customer}
+                      isOnline={isOnline}
+                      userLastSeen={userLastSeen}
+                      onCopy={handleCopy}
+                    />
+                    
+                    {isSuperAdmin && (
+                      <div className="space-y-2">
+                        <Button
+                          onClick={handleResendActivationEmail}
+                          disabled={isSendingEmail}
+                          variant="outline"
+                          className="w-full"
                         >
-                          {isUpdating ? "Updating..." : "Update"}
+                          <Mail className="h-4 w-4 mr-2" />
+                          {isSendingEmail ? "Sending..." : "Resend Activation Email"}
+                        </Button>
+                        
+                        <Button
+                          onClick={() => setShowDeleteDialog(true)}
+                          disabled={isDeleting}
+                          variant="destructive"
+                          className="w-full"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete User
                         </Button>
                       </div>
-                    </div>
-                  )}
-                  
-                  {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
-                  <ChecklistProgress 
-                    progressPercentage={progressPercentage}
-                    completedSteps={completedSteps}
-                    totalSteps={totalSteps}
-                  />
+                    )}
+
+                    <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+                    
+                    {isSuperAdmin && (
+                      <div>
+                        <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
+                          URL Limits
+                        </h3>
+                        <div className="flex gap-2 items-center">
+                          <Input
+                            type="number"
+                            value={additionalUrls}
+                            onChange={(e) => setAdditionalUrls(e.target.value)}
+                            className="w-24"
+                            min="0"
+                          />
+                          <Button 
+                            onClick={handleUpdateUrlLimits}
+                            disabled={isUpdating || additionalUrls === customerData?.limits?.additional_urls?.toString()}
+                            size="sm"
+                          >
+                            {isUpdating ? "Updating..." : "Update"}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
+                    <ChecklistProgress 
+                      progressPercentage={progressPercentage}
+                      completedSteps={completedSteps}
+                      totalSteps={totalSteps}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </ScrollArea>
-      </SheetContent>
-    </Sheet>
+          </ScrollArea>
+        </SheetContent>
+      </Sheet>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this user?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the user account
+              and all associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteUser} disabled={isDeleting}>
+              {isDeleting ? "Deleting..." : "Delete User"}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
