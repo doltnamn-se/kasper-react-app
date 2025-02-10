@@ -86,8 +86,8 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
         <div className="overflow-x-auto" style={{ overflowY: 'visible' }}>
           <Table>
             <TableHeader>
-              <TableRow className="border-b-0">
-                <TableHead colSpan={4} className="h-auto bg-[#f3f3f3] dark:bg-[#212121] !p-0">
+              <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
+                <TableHead colSpan={4} className="h-12 bg-[#f3f3f3] dark:bg-[#212121] !p-0">
                   <URLTableToolbar
                     table={table}
                     globalFilter={globalFilter}
