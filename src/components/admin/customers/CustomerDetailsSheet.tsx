@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -17,6 +18,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
+import { Mail } from "lucide-react";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -30,6 +32,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const { data: customerData, isLoading } = useCustomerData(customer);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("");
 
   // Fetch current URL limits
@@ -108,6 +111,41 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     }
   };
 
+  const handleResendActivationEmail = async () => {
+    if (!customer?.id || !customer.email || !customer.display_name) return;
+    
+    try {
+      setIsSendingEmail(true);
+      // Generate a new random password
+      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      
+      // Send activation email
+      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        body: {
+          email: customer.email,
+          displayName: customer.display_name,
+          password: generatedPassword
+        }
+      });
+
+      if (emailError) throw emailError;
+
+      toast({
+        title: "Success",
+        description: "Activation email sent successfully"
+      });
+    } catch (error) {
+      console.error("Error sending activation email:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send activation email",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
   if (!customer) return null;
 
   const isOnline = customer.id ? onlineUsers.has(customer.id) : false;
@@ -166,6 +204,19 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                     userLastSeen={userLastSeen}
                     onCopy={handleCopy}
                   />
+                  
+                  {isSuperAdmin && (
+                    <Button
+                      onClick={handleResendActivationEmail}
+                      disabled={isSendingEmail}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Mail className="h-4 w-4 mr-2" />
+                      {isSendingEmail ? "Sending..." : "Resend Activation Email"}
+                    </Button>
+                  )}
+
                   <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
                   
                   {isSuperAdmin && (
@@ -207,3 +258,4 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </Sheet>
   );
 };
+
