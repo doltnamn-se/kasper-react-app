@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -19,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Mail } from "lucide-react";
-import { generatePassword } from "../../../supabase/functions/_shared/passwordGenerator";
+import { generatePassword } from "@/utils/passwordGenerator";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
