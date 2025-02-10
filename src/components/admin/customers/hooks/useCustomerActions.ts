@@ -19,7 +19,7 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       if (isNaN(numericValue)) {
         toast("Please enter a valid number", {
           description: "The URL limit must be a number",
-          variant: "destructive"
+          status: "error"
         });
         return;
       }
@@ -40,7 +40,7 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       console.error("Error updating URL limits:", error);
       toast("Error", {
         description: "Failed to update URL limits",
-        variant: "destructive"
+        status: "error"
       });
       return false;
     } finally {
@@ -88,7 +88,7 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       console.error("Error in handleResendActivationEmail:", error);
       toast("Error", {
         description: "Failed to send activation email",
-        variant: "destructive"
+        status: "error"
       });
     } finally {
       setIsSendingEmail(false);
@@ -112,7 +112,7 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       console.error("Error deleting user:", error);
       toast("Error", {
         description: "Failed to delete user",
-        variant: "destructive"
+        status: "error"
       });
     } finally {
       setIsDeleting(false);

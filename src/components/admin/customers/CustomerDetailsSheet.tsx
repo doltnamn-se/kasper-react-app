@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -15,6 +14,7 @@ import { AdminActions } from "./components/AdminActions";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useCustomerActions } from "./hooks/useCustomerActions";
+import { toast } from "sonner";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
