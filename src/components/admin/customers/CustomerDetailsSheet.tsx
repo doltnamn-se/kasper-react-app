@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { CustomerWithProfile } from "@/types/customer";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -6,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCustomerPresence } from "./useCustomerPresence";
 import { useCustomerData } from "./hooks/useCustomerData";
 import { CustomerAvatar } from "./components/CustomerAvatar";
-import { CustomerDetails } from "./components/CustomerDetails";
+import { CustomerDetails } from "@/components/admin/CustomerDetails";
 import { CustomerBadges } from "./components/CustomerBadges";
 import { AccountInfo } from "./components/AccountInfo";
 import { UrlSubmissions } from "./components/UrlSubmissions";
