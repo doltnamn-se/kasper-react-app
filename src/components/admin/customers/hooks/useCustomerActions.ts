@@ -93,17 +93,25 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
   };
 
   const handleDeleteUser = async () => {
-    if (!customerId) return;
+    if (!customerId) {
+      console.error("No customer ID provided");
+      toast("Error", {
+        description: "Invalid user ID"
+      });
+      return;
+    }
     
     try {
       setIsDeleting(true);
       
-      // Delete the user using the edge function
       const { error } = await supabase.functions.invoke('delete-user', {
         body: { user_id: customerId }
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Delete user error:", error);
+        throw error;
+      }
       
       toast("Success", {
         description: "User deleted successfully"
@@ -114,10 +122,10 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
 
       // Refresh the page to update the table
       window.location.reload();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting user:", error);
       toast("Error", {
-        description: "Failed to delete user"
+        description: error.message || "Failed to delete user"
       });
       setIsDeleting(false);
     }

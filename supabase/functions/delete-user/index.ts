@@ -12,6 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Create admin client for user operations
     const supabase = createClient(supabaseUrl, serviceRoleKey)
 
     // Get user ID from request
@@ -23,6 +24,8 @@ Deno.serve(async (req) => {
 
     // Get the requesting user's session
     const authHeader = req.headers.get('Authorization')!
+
+    // Create client with auth context
     const adminClient = createClient(
       supabaseUrl,
       serviceRoleKey,
@@ -42,10 +45,19 @@ Deno.serve(async (req) => {
       throw new Error('Not authorized to delete users')
     }
 
+    // First verify the user exists
+    const { data: user, error: userError } = await supabase.auth.admin.getUserById(user_id)
+    
+    if (userError || !user) {
+      console.error('User not found error:', userError)
+      throw new Error('User not found')
+    }
+
     // Delete the user
     const { error: deleteError } = await supabase.auth.admin.deleteUser(user_id)
     
     if (deleteError) {
+      console.error('Delete user error:', deleteError)
       throw deleteError
     }
 
@@ -58,6 +70,7 @@ Deno.serve(async (req) => {
     )
 
   } catch (error) {
+    console.error('Delete user function error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       {
