@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -32,6 +31,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const {
     isUpdating,
     isSendingEmail,
+    isDeleting,
     handleUpdateUrlLimits,
     handleResendActivationEmail,
     handleDeleteUser
@@ -133,6 +133,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                     isSuperAdmin={isSuperAdmin}
                     isSendingEmail={isSendingEmail}
                     isUpdating={isUpdating}
+                    isDeleting={isDeleting}
                     additionalUrls={additionalUrls}
                     onSendActivationEmail={() => {
                       if (customer.profile?.email && customer.profile?.display_name) {

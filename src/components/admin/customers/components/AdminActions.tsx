@@ -11,6 +11,7 @@ interface AdminActionsProps {
   isSuperAdmin: boolean;
   isSendingEmail: boolean;
   isUpdating: boolean;
+  isDeleting: boolean;
   additionalUrls: string;
   onSendActivationEmail: () => void;
   onUpdateUrlLimits: (urls: string) => void;
@@ -23,6 +24,7 @@ export const AdminActions = ({
   isSuperAdmin,
   isSendingEmail,
   isUpdating,
+  isDeleting,
   additionalUrls,
   onSendActivationEmail,
   onUpdateUrlLimits,
@@ -84,7 +86,7 @@ export const AdminActions = ({
         isOpen={showDeleteDialog}
         onClose={() => setShowDeleteDialog(false)}
         onConfirm={onDeleteUser}
-        isDeleting={false}
+        isDeleting={isDeleting}
       />
     </>
   );

@@ -226,7 +226,15 @@ export type Database = {
           site_name?: string
           site_type?: Database["public"]["Enums"]["hiding_site"] | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "hiding_preferences_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notification_preferences: {
         Row: {

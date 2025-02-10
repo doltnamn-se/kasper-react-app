@@ -98,6 +98,7 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
     try {
       setIsDeleting(true);
       
+      // Delete the user using the edge function
       const { error } = await supabase.functions.invoke('delete-user', {
         body: { user_id: customerId }
       });
@@ -107,13 +108,17 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
       toast("Success", {
         description: "User deleted successfully"
       });
+
+      // Close the sheet
       onClose();
+
+      // Refresh the page to update the table
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting user:", error);
       toast("Error", {
         description: "Failed to delete user"
       });
-    } finally {
       setIsDeleting(false);
     }
   };
