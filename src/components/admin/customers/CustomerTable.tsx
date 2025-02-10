@@ -99,16 +99,16 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-2">
-        <div className="flex items-center space-x-6 text-sm">
+      <div className="flex items-center justify-between px-2 text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
-            <p className="text-sm text-muted-foreground">
+            <p>
               {t('pagination.page')} {table.getState().pagination.pageIndex + 1} {t('pagination.of')}{' '}
               {table.getPageCount()} {t('pagination.pages')}
             </p>
           </div>
           <div className="flex items-center space-x-2">
-            <p className="text-sm text-muted-foreground">
+            <p>
               {t('pagination.items.per.page')}:
             </p>
             <Select
@@ -117,12 +117,12 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
                 table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className="h-8 w-[70px] text-xs font-medium">
                 <SelectValue placeholder={pageSize} />
               </SelectTrigger>
               <SelectContent side="top">
                 {[5, 10, 20, 30, 40, 50].map((size) => (
-                  <SelectItem key={size} value={`${size}`}>
+                  <SelectItem key={size} value={`${size}`} className="text-xs font-medium">
                     {size}
                   </SelectItem>
                 ))}
@@ -134,7 +134,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] border-transparent hover:border-transparent hover:bg-transparent"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -143,7 +143,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] border-transparent hover:border-transparent hover:bg-transparent"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -160,3 +160,4 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
     </div>
   );
 };
+
