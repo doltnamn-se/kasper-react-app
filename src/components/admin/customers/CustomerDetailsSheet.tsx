@@ -1,5 +1,6 @@
 
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
@@ -131,60 +132,65 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-xl w-full px-0">
-        <div className="space-y-8">
-          <div className="px-6 space-y-6">
-            <div className="flex flex-col items-center text-center pt-6">
-              <CustomerAvatar customer={customer} progressPercentage={progressPercentage} />
-              <CustomerDetails customer={customer} />
-            </div>
-            <CustomerBadges customer={customer} />
-          </div>
-
-          <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
-            <div className="px-6 py-4 space-y-6">
-              <AccountInfo 
-                customer={customer}
-                isOnline={isOnline}
-                userLastSeen={userLastSeen}
-                onCopy={handleCopy}
-              />
-              <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
-              
-              {isSuperAdmin && (
-                <div>
-                  <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-                    URL Limits
-                  </h3>
-                  <div className="flex gap-2 items-center">
-                    <Input
-                      type="number"
-                      value={additionalUrls}
-                      onChange={(e) => setAdditionalUrls(e.target.value)}
-                      className="w-24"
-                      min="0"
-                    />
-                    <Button 
-                      onClick={handleUpdateUrlLimits}
-                      disabled={isUpdating || additionalUrls === urlLimits?.additional_urls?.toString()}
-                      size="sm"
-                    >
-                      {isUpdating ? "Updating..." : "Update"}
-                    </Button>
-                  </div>
+      <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
+        <ScrollArea className="h-full">
+          <div className="px-6 py-6">
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <div className="flex flex-col items-center text-center">
+                  <CustomerAvatar customer={customer} progressPercentage={progressPercentage} />
+                  <CustomerDetails customer={customer} />
                 </div>
-              )}
-              
-              {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
-              <ChecklistProgress 
-                progressPercentage={progressPercentage}
-                completedSteps={completedSteps}
-                totalSteps={totalSteps}
-              />
+                <CustomerBadges customer={customer} />
+              </div>
+
+              <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
+                <div className="py-4 space-y-6">
+                  <AccountInfo 
+                    customer={customer}
+                    isOnline={isOnline}
+                    userLastSeen={userLastSeen}
+                    onCopy={handleCopy}
+                  />
+                  <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+                  
+                  {isSuperAdmin && (
+                    <div>
+                      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
+                        URL Limits
+                      </h3>
+                      <div className="flex gap-2 items-center">
+                        <Input
+                          type="number"
+                          value={additionalUrls}
+                          onChange={(e) => setAdditionalUrls(e.target.value)}
+                          className="w-24"
+                          min="0"
+                        />
+                        <Button 
+                          onClick={handleUpdateUrlLimits}
+                          disabled={isUpdating || additionalUrls === urlLimits?.additional_urls?.toString()}
+                          size="sm"
+                        >
+                          {isUpdating ? "Updating..." : "Update"}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
+                  <ChecklistProgress 
+                    progressPercentage={progressPercentage}
+                    completedSteps={completedSteps}
+                    totalSteps={totalSteps}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollArea>
       </SheetContent>
     </Sheet>
   );
 };
+
