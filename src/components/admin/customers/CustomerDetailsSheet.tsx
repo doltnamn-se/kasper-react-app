@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -118,22 +117,20 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const usedUrls = customerData?.urls?.length || 0;
   const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
-  // Calculate checklist progress with detailed logging
+  // Calculate checklist progress based on completed_at field
   const checklistProgress = customerData?.checklistProgress;
   console.log('Checklist Progress Data:', checklistProgress);
 
-  const completedSteps = checklistProgress ? [
-    checklistProgress.password_updated,
-    checklistProgress.removal_urls?.length > 0 || checklistProgress.removal_urls?.includes('skipped'),
-    checklistProgress.selected_sites?.length > 0,
-    !!(checklistProgress.street_address && checklistProgress.postal_code && checklistProgress.city)
-  ].filter(Boolean).length : 0;
-
-  console.log('Completed Steps:', completedSteps);
-  
+  // If completed_at exists, the checklist is completed (100%)
+  const progressPercentage = checklistProgress?.completed_at ? 100 : 0;
+  const completedSteps = checklistProgress?.completed_at ? 4 : 0;
   const totalSteps = 4;
-  const progressPercentage = Math.round((completedSteps / totalSteps) * 100);
-  console.log('Progress Percentage:', progressPercentage);
+
+  console.log('Progress based on completed_at:', {
+    progressPercentage,
+    completedSteps,
+    completed_at: checklistProgress?.completed_at
+  });
 
   if (isLoading) {
     return (

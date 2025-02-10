@@ -20,7 +20,8 @@ export const useCustomerData = (customer: CustomerWithProfile | null) => {
             selected_sites,
             street_address,
             postal_code,
-            city
+            city,
+            completed_at
           `)
           .eq('customer_id', customer.id)
           .maybeSingle()
