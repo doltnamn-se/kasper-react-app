@@ -32,8 +32,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       
       const [urlsResponse, limitsResponse, checklistResponse] = await Promise.all([
         supabase.from('removal_urls').select('*').eq('customer_id', customer.id),
-        supabase.from('user_url_limits').select('*').eq('customer_id', customer.id).single(),
-        supabase.from('customer_checklist_progress').select('*').eq('customer_id', customer.id).single()
+        supabase.from('user_url_limits').select('*').eq('customer_id', customer.id).maybeSingle(),
+        supabase.from('customer_checklist_progress').select('*').eq('customer_id', customer.id).maybeSingle()
       ]);
 
       return {
@@ -230,3 +230,4 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </Sheet>
   );
 };
+
