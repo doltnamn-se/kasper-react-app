@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
@@ -48,17 +49,17 @@ export const supabase = createClient<Database>(
     if (session) {
       console.log('Active session found:', session.user.id);
       try {
-        // Test the profiles table access
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
+        // Test the user_presence table access
+        const { data: presenceData, error: presenceError } = await supabase
+          .from('user_presence')
           .select('*')
           .limit(1)
           .maybeSingle();
         
-        if (profileError) {
-          console.error('Error testing profiles access:', profileError);
+        if (presenceError) {
+          console.error('Error testing user_presence access:', presenceError);
         } else {
-          console.log('Successfully tested profiles access:', profileData);
+          console.log('Successfully tested user_presence access:', presenceData);
         }
       } catch (err) {
         console.error('Error testing database access:', err);
