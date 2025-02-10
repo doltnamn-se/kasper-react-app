@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -18,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Mail } from "lucide-react";
+import { generatePassword } from "../../../supabase/functions/_shared/passwordGenerator";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -115,8 +117,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     
     try {
       setIsSendingEmail(true);
-      // Generate a new random password
-      const generatedPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+      const generatedPassword = generatePassword();
       
       // Send activation email
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
