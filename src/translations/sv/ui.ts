@@ -93,4 +93,6 @@ export const ui: UITranslations = {
   'current.step': 'Aktuellt steg',
   'not.available': 'Ej tillgänglig',
   'urls.available': 'Tillgängliga URLs',
+  'progress': 'Framsteg',
+  'steps': 'steg'
 };

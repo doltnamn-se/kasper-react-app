@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -91,4 +92,7 @@ export interface UITranslations {
   'current.step': string;
   'not.available': string;
   'urls.available': string;
+  'progress': string;
+  'steps': string;
 };
+
