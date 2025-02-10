@@ -17,6 +17,10 @@ import { textFilterFn } from "./customerTableUtils";
 import { CustomerTableHeader } from "./CustomerTableHeader";
 import { CustomerTableBody } from "./CustomerTableBody";
 import { CustomerDetailsSheet } from "./CustomerDetailsSheet";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -26,12 +30,17 @@ interface CustomerTableProps {
 }
 
 export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: CustomerTableProps) => {
+  const { t } = useLanguage();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const columns = getColumns(onlineUsers, lastSeen);
 
@@ -55,8 +64,14 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
       columnVisibility,
       rowSelection,
       globalFilter,
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
     },
+    onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
+    pageCount: Math.ceil(customers.length / pageSize),
   });
 
   const handleRowClick = (customer: CustomerWithProfile, isCheckboxCell: boolean) => {
@@ -68,7 +83,7 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
   return (
     <div className="space-y-4">
       <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
-        <div className="overflow-x-auto" style={{ overflowY: 'visible' }}>
+        <div className="overflow-x-auto">
           <Table>
             <CustomerTableHeader 
               table={table}
@@ -81,6 +96,60 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
               onRowClick={handleRowClick}
             />
           </Table>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center space-x-6 text-sm">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm text-muted-foreground">
+              {t('pagination.page')} {table.getState().pagination.pageIndex + 1} {t('pagination.of')}{' '}
+              {table.getPageCount()} {t('pagination.pages')}
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <p className="text-sm text-muted-foreground">
+              {t('pagination.items.per.page')}:
+            </p>
+            <Select
+              value={`${pageSize}`}
+              onValueChange={(value) => {
+                table.setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={pageSize} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[5, 10, 20, 30, 40, 50].map((size) => (
+                  <SelectItem key={size} value={`${size}`}>
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <span className="sr-only">{t('pagination.previous')}</span>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <span className="sr-only">{t('pagination.next')}</span>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 
