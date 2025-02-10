@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -91,5 +90,5 @@ export interface UITranslations {
   'onboarding.status': string;
   'current.step': string;
   'not.available': string;
+  'urls.available': string;
 };
-

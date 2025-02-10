@@ -4,13 +4,15 @@ import { CustomerWithProfile } from "@/types/customer";
 import { format, formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Copy } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
 import { useCustomerPresence } from "./useCustomerPresence";
-import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -20,20 +22,34 @@ interface CustomerDetailsSheetProps {
 export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetailsSheetProps) => {
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const { t } = useLanguage();
+  const { toast } = useToast();
   
-  // Fetch customer's URLs
-  const { data: customerUrls } = useQuery({
-    queryKey: ['customer-urls', customer?.id],
+  // Fetch customer's URLs and URL limits
+  const { data: customerData } = useQuery({
+    queryKey: ['customer-data', customer?.id],
     queryFn: async () => {
-      if (!customer?.id) return [];
-      const { data } = await supabase
-        .from('removal_urls')
-        .select('*')
-        .eq('customer_id', customer.id);
-      return data || [];
+      if (!customer?.id) return { urls: [], limits: null };
+      
+      const [urlsResponse, limitsResponse] = await Promise.all([
+        supabase.from('removal_urls').select('*').eq('customer_id', customer.id),
+        supabase.from('user_url_limits').select('*').eq('customer_id', customer.id).single()
+      ]);
+
+      return {
+        urls: urlsResponse.data || [],
+        limits: limitsResponse.data
+      };
     },
     enabled: !!customer?.id
   });
+
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: t('toast.copied.title'),
+      description: `${label} ${t('toast.copied.description')}`
+    });
+  };
 
   if (!customer) return null;
 
@@ -42,9 +58,15 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   const capitalizedCustomerType = customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1);
 
+  // Calculate URL usage
+  const usedUrls = customerData?.urls?.length || 0;
+  const baseUrlLimit = 3; // Base limit for all users
+  const additionalUrls = customerData?.limits?.additional_urls || 0;
+  const totalUrlLimit = baseUrlLimit + additionalUrls;
+
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-sm w-full px-0">
+      <SheetContent side="right" className="sm:max-w-md w-full px-0">
         <div className="space-y-8">
           {/* Header Section */}
           <div className="px-6 space-y-6">
@@ -64,12 +86,32 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
               </div>
               
               <div className="mt-4 space-y-1">
-                <h2 className="text-2xl font-semibold text-[#000000] dark:text-white">
-                  {customer.profile?.display_name || t('no.name')}
-                </h2>
-                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
-                  {customer.profile?.email || t('no.email')}
-                </p>
+                <div className="flex items-center justify-center gap-2">
+                  <h2 className="text-2xl font-semibold text-[#000000] dark:text-white">
+                    {customer.profile?.display_name || t('no.name')}
+                  </h2>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
+                    {customer.profile?.email || t('no.email')}
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -94,10 +136,20 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                   {t('account.details')}
                 </h3>
                 <div className="space-y-2">
-                  <p className="text-xs font-medium flex justify-between">
+                  <div className="flex items-center justify-between text-xs font-medium">
                     <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</span>
-                    <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
-                  </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        onClick={() => handleCopy(customer.id, t('customer.id'))}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                   <p className="text-xs font-medium flex justify-between">
                     <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -130,7 +182,13 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
                   <p className="text-xs font-medium flex justify-between">
                     <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('total.urls')}</span>
                     <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {customerUrls?.length || 0}
+                      {usedUrls}
+                    </span>
+                  </p>
+                  <p className="text-xs font-medium flex justify-between">
+                    <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('urls.available')}</span>
+                    <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+                      {usedUrls} / {totalUrlLimit}
                     </span>
                   </p>
                 </div>

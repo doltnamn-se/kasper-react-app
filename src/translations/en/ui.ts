@@ -91,5 +91,6 @@ export const ui: UITranslations = {
   'total.urls': 'Total URLs',
   'onboarding.status': 'Onboarding Status',
   'current.step': 'Current Step',
-  'not.available': 'N/A'
+  'not.available': 'N/A',
+  'urls.available': 'URLs Available',
 };
