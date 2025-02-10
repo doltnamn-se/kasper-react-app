@@ -21,7 +21,7 @@ export const EmailPreferences = ({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <label className="text-sm text-[#000000] dark:text-[#FFFFFF]">
+          <label className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF]">
             {t('settings.email.notifications')}
           </label>
           <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -38,4 +38,3 @@ export const EmailPreferences = ({
     </div>
   );
 };
-
