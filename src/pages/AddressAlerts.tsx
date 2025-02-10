@@ -52,7 +52,7 @@ const AddressAlerts = () => {
   return (
     <MainLayout>
       <div className="relative max-w-md mx-auto space-y-8">
-        <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
         </h1>
 

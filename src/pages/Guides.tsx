@@ -64,7 +64,7 @@ const Guides = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {t('nav.guides')}
       </h1>
       <GuideGrid
