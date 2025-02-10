@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { CustomerWithProfile } from "@/types/customer";
 import { format, formatDistanceToNow } from "date-fns";
@@ -34,9 +35,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
         supabase.from('user_url_limits').select('*').eq('customer_id', customer.id).single()
       ]);
 
-      console.log('URL Response:', urlsResponse.data);
-      console.log('Limits Response:', limitsResponse.data);
-
       return {
         urls: urlsResponse.data || [],
         limits: limitsResponse.data
@@ -62,19 +60,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   // Calculate URL usage
   const usedUrls = customerData?.urls?.length || 0;
-  const baseUrlLimit = customer.subscription_plan === '1_month' ? 3 : 
-                      customer.subscription_plan === '6_months' ? 5 :
-                      customer.subscription_plan === '12_months' ? 7 : 3;
-  const additionalUrls = customerData?.limits?.additional_urls || 0;
-  const totalUrlLimit = baseUrlLimit + additionalUrls;
-
-  console.log('URL Calculation:', {
-    usedUrls,
-    baseUrlLimit,
-    additionalUrls,
-    totalUrlLimit,
-    subscriptionPlan: customer.subscription_plan
-  });
+  const totalUrlLimit = customerData?.limits?.additional_urls || 0;
 
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
