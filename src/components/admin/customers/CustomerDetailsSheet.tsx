@@ -118,8 +118,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     try {
       setIsSendingEmail(true);
       const generatedPassword = generatePassword();
+      console.log("Attempting to update password for user:", customer.id);
       
-      // First update the user's password using the RPC function
+      // First update the user's password using the RPC function with correct parameter names
       const { error: passwordError } = await supabase.rpc('update_user_password', {
         user_id: customer.id,
         new_password: generatedPassword
@@ -129,6 +130,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
         console.error("Error updating password:", passwordError);
         throw passwordError;
       }
+
+      console.log("Password updated successfully, sending activation email");
 
       // Then send activation email
       const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
@@ -149,7 +152,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
         description: "Activation email sent successfully"
       });
     } catch (error) {
-      console.error("Error sending activation email:", error);
+      console.error("Error in handleResendActivationEmail:", error);
       toast({
         title: "Error",
         description: "Failed to send activation email",
