@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -34,9 +35,13 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
       if (error) {
         console.error("Sign in error:", error);
         if (error.message === 'Invalid login credentials') {
-          toast.error(t('error.invalid.credentials'));
+          toast.error(t('error.invalid.credentials'), {
+            duration: 3000,
+          });
         } else {
-          toast.error(t('error.signin'));
+          toast.error(t('error.signin'), {
+            duration: 3000,
+          });
         }
         setIsLoading(false);
         return;
