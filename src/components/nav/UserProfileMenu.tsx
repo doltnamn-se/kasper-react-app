@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -66,28 +67,37 @@ export const UserProfileMenu = () => {
           variant="ghost" 
           className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group p-2"
         >
-          <Avatar className="h-8 w-8 shrink-0">
-            <AvatarImage 
-              src={userProfile?.avatar_url} 
-              alt={displayName}
-              className="aspect-square object-cover"
-            />
-            <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          {!isMobile && (
-            <>
-              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-                {displayName}
-              </span>
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col items-end">
+              {!isMobile && (
+                <>
+                  <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+                    {displayName}
+                  </span>
+                  <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                    {userEmail}
+                  </span>
+                </>
+              )}
+            </div>
+            <Avatar className="h-8 w-8 shrink-0">
+              <AvatarImage 
+                src={userProfile?.avatar_url} 
+                alt={displayName}
+                className="aspect-square object-cover"
+              />
+              <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            {!isMobile && (
               <ChevronDown 
                 className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
                   isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
                 }`}
               />
-            </>
-          )}
+            )}
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]">
