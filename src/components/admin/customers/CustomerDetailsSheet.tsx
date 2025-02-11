@@ -112,9 +112,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
           <div className="px-6 py-6">
             <div className="space-y-8">
               <div className="space-y-6">
-                <div className="flex items-center justify-end gap-4">
-                  <CustomerDetails customer={customer} />
+                <div className="flex flex-col items-start gap-4">
                   <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
+                  <CustomerDetails customer={customer} />
                 </div>
                 <CustomerBadges customer={customer} />
               </div>

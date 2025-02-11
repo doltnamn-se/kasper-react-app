@@ -22,34 +22,32 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <h2 className="text-2xl font-semibold text-[#000000] dark:text-white">
-            {customer.profile?.display_name || t('no.name')}
-          </h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="flex items-center gap-2">
-          <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {customer.profile?.email || t('no.email')}
-          </p>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
-        </div>
+    <div className="space-y-1">
+      <div className="flex items-center gap-2">
+        <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
+          {customer.profile?.display_name || t('no.name')}
+        </h2>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6"
+          onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
+        >
+          <Copy className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="flex items-center gap-2">
+        <p className="text-xs text-[#000000] dark:text-white">
+          {customer.profile?.email || t('no.email')}
+        </p>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6"
+          onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
+        >
+          <Copy className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
