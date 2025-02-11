@@ -14,7 +14,7 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
     <div className="flex gap-2 justify-center flex-wrap">
       <Badge 
         variant="secondary"
-        className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1.5"
+        className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-[#000000] dark:text-white hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1.5"
       >
         {capitalizedCustomerType}
       </Badge>
