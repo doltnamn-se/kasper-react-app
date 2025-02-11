@@ -12,7 +12,7 @@ interface CustomerAvatarProps {
 export const CustomerAvatar = ({ customer, progressPercentage }: CustomerAvatarProps) => {
   return (
     <div className="relative">
-      <Avatar className="h-24 w-24 border-4 border-white dark:border-[#1e1e1e]">
+      <Avatar className="h-24 w-24">
         <AvatarImage src={customer.profile?.avatar_url} />
         <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-2xl">
           {getUserInitials(customer.profile)}
