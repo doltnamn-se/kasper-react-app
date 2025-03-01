@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 interface AuthLogoProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -36,12 +37,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({ className, centered = false,
   return (
     <div className={`relative h-6 w-28 ${centered ? 'mx-auto' : ''}`} {...props}>
       <img 
-        src="/lovable-uploads/doltnamn.se-app-logo-black.svg"
+        src="/lovable-uploads/digitaltskydd.se-logo-dark.svg"
         alt="Logo" 
         className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
       />
       <img 
-        src="/lovable-uploads/doltnamn.se-app-logo-white.svg"
+        src="/lovable-uploads/digitaltskydd.se-logo-white.svg"
         alt="Logo" 
         className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
       />
