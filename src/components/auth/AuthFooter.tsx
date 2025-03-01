@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useVersionStore } from "@/config/version";
@@ -13,27 +14,27 @@ export const AuthFooter = () => {
         <Button 
           variant="link" 
           className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-          onClick={() => window.open('https://doltnamn.se/integritetspolicy/', '_blank')}
+          onClick={() => window.open('https://digitaltskydd.se/integritetspolicy/', '_blank')}
         >
           {t('privacy')}
         </Button>
         <Button 
           variant="link" 
           className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-          onClick={() => window.open('https://doltnamn.se/licensvillkor/', '_blank')}
+          onClick={() => window.open('https://digitaltskydd.se/licensvillkor/', '_blank')}
         >
           {t('license')}
         </Button>
         <Button 
           variant="link" 
           className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-          onClick={() => window.open('https://doltnamn.se/anvandarvillkor/', '_blank')}
+          onClick={() => window.open('https://digitaltskydd.se/anvandarvillkor/', '_blank')}
         >
           {t('terms')}
         </Button>
       </div>
       <p className="text-[11px] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-        {currentYear} © Doltnamn.se &nbsp;&nbsp;·&nbsp;&nbsp; App version {version}
+        {currentYear} © Digitaltskydd.se &nbsp;&nbsp;·&nbsp;&nbsp; App version {version}
       </p>
     </div>
   );
