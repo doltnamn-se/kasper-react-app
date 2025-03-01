@@ -1,3 +1,4 @@
+
 export const getPasswordResetTemplate = (resetLink: string) => {
   return `
 <!DOCTYPE html>
@@ -5,7 +6,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Återställ ditt lösenord – Doltnamn.se</title>
+  <title>Återställ ditt lösenord – Digitaltskydd.se</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -114,6 +115,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 };
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
+  // Get first name by splitting on space and taking first part
   const firstName = displayName.split(' ')[0];
 
   return `
@@ -122,7 +124,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Välkommen till Doltnamn.se – Aktivera ditt konto</title>
+  <title>Välkommen till Digitaltskydd.se – Aktivera ditt konto</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -162,13 +164,6 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       padding: 40px;
       margin: 0;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: #333333;
-      font-size: 24px;
-      margin-bottom: 40px;
-      text-align: center;
-      font-weight: 700;
     }
     p {
       color: #333333;
@@ -219,7 +214,6 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       <img src="https://app.digitaltskydd.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
-      <h1>Aktivera ditt konto</h1>
       <p>
         Välkommen ${firstName} 👋
         <br><br>
@@ -247,3 +241,4 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
+};
