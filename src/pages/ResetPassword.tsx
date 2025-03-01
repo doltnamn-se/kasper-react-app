@@ -17,8 +17,8 @@ const ResetPassword = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Återställ lösenord | Doltnamn.se" : 
-      "Reset Password | Doltnamn.se";
+      "Återställ lösenord | Digitaltskydd.se" : 
+      "Reset Password | Digitaltskydd.se";
 
     const isDark = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(isDark);
@@ -26,7 +26,6 @@ const ResetPassword = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Verify the recovery token
     const verifyToken = async () => {
       const accessToken = searchParams.get('access_token');
       if (!accessToken) {
@@ -62,7 +61,6 @@ const ResetPassword = () => {
   };
 
   const handleComplete = async () => {
-    // Sign out and redirect to login with success message
     await supabase.auth.signOut();
     window.location.href = '/auth?reset_success=true';
   };

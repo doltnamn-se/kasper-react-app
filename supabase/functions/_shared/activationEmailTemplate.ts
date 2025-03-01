@@ -1,5 +1,4 @@
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
-  // Get first name by splitting on space and taking first part
   const firstName = displayName.split(' ')[0];
 
   return `
@@ -97,7 +96,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <h1>Aktivera ditt konto</h1>
@@ -111,7 +110,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
         <div class="password-value">${password}</div>
       </div>
       <div style="text-align: center; margin-bottom: 40px;">
-        <a href="https://app.doltnamn.se/auth" class="button">Aktivera ditt konto</a>
+        <a href="https://app.digitaltskydd.se/auth" class="button">Aktivera ditt konto</a>
       </div>
       <p style="text-align: left;">
         Om du har några frågor eller behöver hjälp med att komma igång, maila

@@ -19,8 +19,8 @@ const Auth = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Logga in | Doltnamn.se" : 
-      "Log in | Doltnamn.se";
+      "Logga in | Digitaltskydd.se" : 
+      "Log in | Digitaltskydd.se";
 
     const lightLogo = new Image();
     const darkLogo = new Image();
@@ -33,7 +33,6 @@ const Auth = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Handle recovery flow
     const handleRecoveryFlow = async () => {
       const type = searchParams.get('type');
       const accessToken = searchParams.get('access_token');

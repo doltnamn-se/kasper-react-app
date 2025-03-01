@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { Resend } from "npm:resend@2.0.0";
 
@@ -55,13 +54,13 @@ const handler = async (req: Request): Promise<Response> => {
     const resend = new Resend(RESEND_API_KEY);
 
     // Determine the correct redirect URL based on notification type
-    let redirectUrl = 'https://app.doltnamn.se';
+    let redirectUrl = 'https://app.digitaltskydd.se';
     if (type === 'removal') {
-      redirectUrl = 'https://app.doltnamn.se/deindexing';
+      redirectUrl = 'https://app.digitaltskydd.se/deindexing';
     } else if (type === 'address_alert') {
-      redirectUrl = 'https://app.doltnamn.se/address-alerts';
+      redirectUrl = 'https://app.digitaltskydd.se/address-alerts';
     } else if (type === 'monitoring') {
-      redirectUrl = 'https://app.doltnamn.se/monitoring';
+      redirectUrl = 'https://app.digitaltskydd.se/monitoring';
     }
 
     console.log("Attempting to send email...");
@@ -213,4 +212,3 @@ const handler = async (req: Request): Promise<Response> => {
 };
 
 serve(handler);
-
