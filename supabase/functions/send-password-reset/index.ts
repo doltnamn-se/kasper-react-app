@@ -24,7 +24,6 @@ serve(async (req) => {
     const origin = req.headers.get('origin');
     console.log("Request origin:", origin);
 
-    // Generate password reset link with direct callback URL to the new reset page
     const { data, error: resetError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
@@ -47,9 +46,9 @@ serve(async (req) => {
         Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
       },
       body: JSON.stringify({
-        from: "Doltnamn <no-reply@doltnamn.se>",
+        from: "Digitaltskydd <no-reply@digitaltskydd.se>",
         to: [email],
-        subject: "Reset Your Doltnamn Password",
+        subject: "Reset Your Digitaltskydd Password",
         html: getPasswordResetTemplate(data.properties.action_link),
       }),
     });

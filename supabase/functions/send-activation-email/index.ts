@@ -38,16 +38,22 @@ serve(async (req) => {
       throw new Error("RESEND_API_KEY is not configured");
     }
 
-    const resend = new Resend(RESEND_API_KEY);
-    const emailResponse = await resend.emails.send({
-      from: 'Doltnamn.se <no-reply@doltnamn.se>',
-      to: [email],
-      subject: 'Aktivera ditt konto',
-      html: getActivationEmailTemplate(displayName, password),
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+      },
+      body: JSON.stringify({
+        from: "Digitaltskydd <no-reply@digitaltskydd.se>",
+        to: [email],
+        subject: "Välkommen till Digitaltskydd",
+        html: getActivationEmailTemplate(displayName, password),
+      }),
     });
 
-    if (!emailResponse.data?.id) {
-      console.error("Error sending email:", emailResponse);
+    if (!resendResponse.ok) {
+      console.error("Error sending email:", resendResponse);
       throw new Error("Failed to send welcome email");
     }
 

@@ -1,4 +1,3 @@
-
 export const getPasswordResetTemplate = (resetLink: string) => {
   return `
 <!DOCTYPE html>
@@ -88,7 +87,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <h1>Återställ ditt lösenord</h1>
@@ -104,7 +103,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
     </div>
   </div>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 15px; margin-bottom: 10px;">
-    Skickat från teamet på <a href="https://doltnamn.se/" style="color: #666666; text-decoration: underline;">Doltnamn.se</a>
+    Skickat från teamet på <a href="https://digitaltskydd.se/" style="color: #666666; text-decoration: underline;">Digitaltskydd.se</a>
   </p>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0; padding-bottom: 20px;">
     &copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.
@@ -115,7 +114,6 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 };
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
-  // Get first name by splitting on space and taking first part
   const firstName = displayName.split(' ')[0];
 
   return `
@@ -211,7 +209,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <p>
@@ -233,7 +231,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
     </div>
   </div>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 15px; margin-bottom: 10px;">
-    Skickat från teamet på <a href="https://doltnamn.se/" style="color: #666666; text-decoration: underline;">Doltnamn.se</a>
+    Skickat från teamet på <a href="https://digitaltskydd.se/" style="color: #666666; text-decoration: underline;">Digitaltskydd.se</a>
   </p>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0; padding-bottom: 20px;">
     &copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.
@@ -241,4 +239,3 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
-};
