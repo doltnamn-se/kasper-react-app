@@ -35,16 +35,16 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({ className, centered = false,
   }, []);
 
   return (
-    <div className={`relative h-8 w-36 ${centered ? 'mx-auto' : ''}`} {...props}>
+    <div className={`relative h-12 w-48 ${centered ? 'mx-auto' : ''}`} {...props}>
       <img 
         src="/lovable-uploads/digitaltskydd.se-logo-dark.svg"
         alt="Logo" 
-        className={`h-8 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+        className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
       />
       <img 
         src="/lovable-uploads/digitaltskydd.se-logo-white.svg"
         alt="Logo" 
-        className={`h-8 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+        className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
       />
     </div>
   );
