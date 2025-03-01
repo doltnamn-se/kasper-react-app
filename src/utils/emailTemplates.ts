@@ -5,7 +5,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Återställ ditt lösenord – Doltnamn.se</title>
+  <title>Återställ ditt lösenord – Digitaltskydd.se</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -80,7 +80,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <p>
@@ -90,15 +90,15 @@ export const getPasswordResetTemplate = (resetLink: string) => {
         <a href="${resetLink}" class="button">Återställ lösenord</a>
       </div>
       <p style="text-align: left;">
-        Om du har några frågor, maila oss på <a href="mailto:support@doltnamn.se" class="email-link">support@doltnamn.se</a>.
+        Om du har några frågor, maila oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>.
       </p>
     </div>
   </div>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 15px; margin-bottom: 10px;">
-    Skickat från teamet på <a href="https://doltnamn.se/" style="color: #666666; text-decoration: underline;">Doltnamn.se</a>
+    Skickat från teamet på <a href="https://digitaltskydd.se/" style="color: #666666; text-decoration: underline;">Digitaltskydd.se</a>
   </p>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0; padding-bottom: 20px;">
-    &copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.
+    &copy; ${new Date().getFullYear()} Digitaltskydd. Alla rättigheter förbehållna.
   </p>
 </body>
 </html>
@@ -115,7 +115,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Välkommen till Doltnamn.se – Aktivera ditt konto</title>
+  <title>Välkommen till Digitaltskydd.se – Aktivera ditt konto</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -202,7 +202,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.doltnamn.se/lovable-uploads/doltnamn.se-logo-email-black.png" alt="Doltnamn Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <p>
@@ -215,21 +215,20 @@ export const getActivationEmailTemplate = (displayName: string, password: string
         <div class="password-value">${password}</div>
       </div>
       <div style="text-align: center; margin-bottom: 40px;">
-        <a href="https://app.doltnamn.se/auth" class="button">Aktivera ditt konto</a>
+        <a href="https://app.digitaltskydd.se/auth" class="button">Aktivera ditt konto</a>
       </div>
       <p style="text-align: left;">
         Om du har några frågor eller behöver hjälp med att komma igång, maila
-        oss på <a href="mailto:support@doltnamn.se" class="email-link">support@doltnamn.se</a>. Vi är glada att ha dig ombord!
+        oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>. Vi är glada att ha dig ombord!
       </p>
     </div>
   </div>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 15px; margin-bottom: 10px;">
-    Skickat från teamet på <a href="https://doltnamn.se/" style="color: #666666; text-decoration: underline;">Doltnamn.se</a>
+    Skickat från teamet på <a href="https://digitaltskydd.se/" style="color: #666666; text-decoration: underline;">Digitaltskydd.se</a>
   </p>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0; padding-bottom: 20px;">
-    &copy; ${new Date().getFullYear()} Doltnamn. Alla rättigheter förbehållna.
+    &copy; ${new Date().getFullYear()} Digitaltskydd. Alla rättigheter förbehållna.
   </p>
 </body>
 </html>
 `;
-};
