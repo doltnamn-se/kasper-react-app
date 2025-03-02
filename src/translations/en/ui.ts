@@ -15,6 +15,7 @@ export const ui: UITranslations = {
   'subscription.1month': '1 Mo',
   'subscription.6months': '6 Mo',
   'subscription.12months': '12 Mo',
+  'subscription.24months': '24 Mo',
   'subscription.none': 'No Plan',
   'subscription.tooltip.1month': 'Monthly subscription',
   'subscription.tooltip.6months': 'Six-month subscription',
