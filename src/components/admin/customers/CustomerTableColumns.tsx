@@ -1,4 +1,3 @@
-
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -23,11 +22,13 @@ export const getColumns = (
         return t('subscription.6months');
       case '12_months':
         return t('subscription.12months');
+      case '24_months':
+        return t('subscription.24months');
       default:
         return t('subscription.none');
     }
   };
-  
+
   return [
     {
       id: "select",
@@ -186,4 +187,3 @@ export const getColumns = (
     },
   ];
 };
-
