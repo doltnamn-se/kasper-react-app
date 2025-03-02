@@ -80,7 +80,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-email-dark.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <p>
@@ -201,7 +201,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-email-dark.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
       <p>
@@ -231,4 +231,3 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
-};
