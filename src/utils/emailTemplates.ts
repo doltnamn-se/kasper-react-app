@@ -106,7 +106,6 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 };
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
-  // Get first name by splitting on space and taking first part
   const firstName = displayName.split(' ')[0];
 
   return `
