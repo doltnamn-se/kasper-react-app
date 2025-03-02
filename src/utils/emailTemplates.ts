@@ -231,4 +231,3 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
-};
