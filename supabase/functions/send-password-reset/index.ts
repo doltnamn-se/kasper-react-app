@@ -1,31 +1,24 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { corsHeaders } from "../_shared/cors.ts";
 import { getPasswordResetTemplate } from "../_shared/emailTemplates.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
-
-const handler = async (req: Request) => {
+serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, resetLink } = await req.json();
-    
-    const emailHtml = getPasswordResetTemplate(resetLink);
 
     const { data, error } = await resend.emails.send({
       from: "Digitaltskydd.se <onboarding@resend.dev>",
       to: email,
       subject: "Återställ ditt lösenord – Digitaltskydd.se",
-      html: emailHtml,
+      html: getPasswordResetTemplate(resetLink),
     });
 
     if (error) {
@@ -49,6 +42,4 @@ const handler = async (req: Request) => {
       }
     );
   }
-};
-
-serve(handler);
+});
