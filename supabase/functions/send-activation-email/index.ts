@@ -19,17 +19,7 @@ serve(async (req) => {
 
   try {
     const { email, displayName, password } = await req.json();
-    console.log("Processing email request for:", email);
-
-    if (!email || !displayName || !password) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
-    }
+    console.log("Processing activation email for:", email);
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY) {
@@ -42,44 +32,12 @@ serve(async (req) => {
       from: "Digitaltskydd <no-reply@digitaltskydd.se>",
       to: [email],
       subject: "Välkommen till Digitaltskydd",
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Welcome to Digitaltskydd</title>
-        </head>
-        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-            <h2>Välkommen ${displayName}!</h2>
-            <p>Ditt konto har skapats och du kan nu logga in på Digitaltskydd.</p>
-            <p>Dina inloggningsuppgifter är:</p>
-            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
-              <p><strong>E-post:</strong> ${email}</p>
-              <p><strong>Lösenord:</strong> ${password}</p>
-            </div>
-            <p style="margin-top: 20px;">
-              <a href="https://app.digitaltskydd.se/auth" 
-                 style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-                Logga in här
-              </a>
-            </p>
-            <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
-              Om du har några frågor, tveka inte att kontakta oss.
-            </p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="font-size: 0.8em; color: #999;">
-              Detta är ett automatiskt meddelande, vänligen svara inte på detta mail.
-            </p>
-          </div>
-        </body>
-        </html>
-      `
+      html: getActivationEmailTemplate(displayName, password)
     });
 
     if (error) {
       console.error("Error sending email:", error);
-      throw error;
+      throw new Error("Failed to send welcome email");
     }
 
     console.log("Welcome email sent successfully:", data);
@@ -102,3 +60,53 @@ serve(async (req) => {
     );
   }
 });
+
+function getActivationEmailTemplate(displayName: string, password: string) {
+  const firstName = displayName.split(' ')[0];
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Välkommen till Digitaltskydd</title>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .credentials { background-color: #f5f5f5; padding: 15px; border-radius: 5px; }
+        .button { 
+          display: inline-block;
+          background-color: #007bff;
+          color: white;
+          padding: 10px 20px;
+          text-decoration: none;
+          border-radius: 5px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>Välkommen ${firstName}!</h2>
+        <p>Ditt konto har skapats och du kan nu logga in på Digitaltskydd.</p>
+        <p>Dina inloggningsuppgifter är:</p>
+        <div class="credentials">
+          <p><strong>E-post:</strong> ${email}</p>
+          <p><strong>Lösenord:</strong> ${password}</p>
+        </div>
+        <p style="margin-top: 20px;">
+          <a href="https://app.digitaltskydd.se/auth" class="button">
+            Logga in här
+          </a>
+        </p>
+        <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
+          Om du har några frågor, tveka inte att kontakta oss.
+        </p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="font-size: 0.8em; color: #999;">
+          Detta är ett automatiskt meddelande, vänligen svara inte på detta mail.
+        </p>
+      </div>
+    </body>
+    </html>
+  `;
+}
