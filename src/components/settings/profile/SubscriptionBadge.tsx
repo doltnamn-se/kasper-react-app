@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -16,6 +17,8 @@ export const SubscriptionBadge = ({ plan }: SubscriptionBadgeProps) => {
         return t('subscription.6months');
       case '12_months':
         return t('subscription.12months');
+      case '24_months':
+        return t('subscription.24months');
       default:
         return t('subscription.none');
     }

@@ -82,6 +82,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
             variant: "default",
           });
         } else {
+          console.log("Welcome email sent successfully");
           toast({
             title: "Success",
             description: "Customer created successfully and welcome email sent with login credentials.",
