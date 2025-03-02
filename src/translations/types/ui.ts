@@ -13,10 +13,12 @@ export interface UITranslations {
   'subscription.1month': string;
   'subscription.6months': string;
   'subscription.12months': string;
+  'subscription.24months': string;
   'subscription.none': string;
   'subscription.tooltip.1month': string;
   'subscription.tooltip.6months': string;
   'subscription.tooltip.12months': string;
+  'subscription.tooltip.24months': string;
   'privacy': string;
   'license': string;
   'terms': string;
