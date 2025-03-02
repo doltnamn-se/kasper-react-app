@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -56,6 +57,7 @@ export const BasicInfoFields = ({
             <SelectItem value="1_month">1 Month</SelectItem>
             <SelectItem value="6_months">6 Months</SelectItem>
             <SelectItem value="12_months">12 Months</SelectItem>
+            <SelectItem value="24_months">24 Months</SelectItem>
           </SelectContent>
         </Select>
       </div>

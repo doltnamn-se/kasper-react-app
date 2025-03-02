@@ -463,7 +463,7 @@ export type Database = {
         | "mrkoll"
         | "upplysning"
       presence_status: "online" | "offline"
-      subscription_plan: "1_month" | "6_months" | "12_months"
+      subscription_plan: "1_month" | "6_months" | "12_months" | "24_months"
       url_status_step:
         | "received"
         | "case_started"
