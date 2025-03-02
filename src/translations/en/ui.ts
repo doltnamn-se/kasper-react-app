@@ -20,7 +20,6 @@ export const ui: UITranslations = {
   'subscription.tooltip.1month': 'Monthly subscription',
   'subscription.tooltip.6months': 'Six-month subscription',
   'subscription.tooltip.12months': 'Annual subscription',
-  'subscription.tooltip.24months': '24 Month subscription',
   'privacy': 'Privacy Policy',
   'license': 'License Terms',
   'terms': 'Terms of Use',
