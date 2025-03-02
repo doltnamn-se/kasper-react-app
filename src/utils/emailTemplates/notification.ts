@@ -20,13 +20,14 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
       <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-email-dark.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
     </div>
     <div class="email-wrapper">
-      <p>
+      <p style="font-size: 16px; color: #333333; margin-bottom: 20px;">
         ${message}
       </p>
-      <div style="text-align: center; margin-bottom: 40px;">
+      <div style="text-align: center; margin: 40px 0;">
       </div>
-      <p style="text-align: left;">
-        Om du har några frågor eller behöver hjälp, maila oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>.
+      <p style="text-align: left; font-size: 16px; color: #333333;">
+        Om du har några frågor eller behöver hjälp med att komma igång, maila
+        oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>. Vi är glada att ha dig ombord!
       </p>
     </div>
   </div>
