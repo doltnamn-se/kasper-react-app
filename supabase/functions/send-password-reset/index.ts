@@ -1,36 +1,31 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { getPasswordResetTemplate } from "../_shared/emailTemplates.ts";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: corsHeaders,
-      status: 204,
-    });
+const handler = async (req: Request) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, resetLink } = await req.json();
-    console.log("Processing password reset email for:", email);
-
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-    if (!RESEND_API_KEY) {
-      throw new Error("RESEND_API_KEY is not configured");
-    }
-
-    const resend = new Resend(RESEND_API_KEY);
+    
+    const emailHtml = getPasswordResetTemplate(resetLink);
 
     const { data, error } = await resend.emails.send({
-      from: "Digitaltskydd <no-reply@digitaltskydd.se>",
-      to: [email],
-      subject: "Återställ ditt lösenord - Digitaltskydd",
-      html: getPasswordResetTemplate(resetLink)
+      from: "Digitaltskydd.se <onboarding@resend.dev>",
+      to: email,
+      subject: "Återställ ditt lösenord – Digitaltskydd.se",
+      html: emailHtml,
     });
 
     if (error) {
@@ -39,22 +34,21 @@ serve(async (req) => {
     }
 
     console.log("Password reset email sent successfully:", data);
-    return new Response(
-      JSON.stringify({ success: true }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
-    );
 
-  } catch (err) {
-    console.error("Error in password-reset function:", err);
+    return new Response(JSON.stringify(data), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
+    });
+  } catch (error) {
+    console.error("Error in send-password-reset function:", error);
     return new Response(
-      JSON.stringify({ error: err.message || "An unexpected error occurred" }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500 
+      JSON.stringify({ error: error.message }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
       }
     );
   }
-});
+};
+
+serve(handler);
