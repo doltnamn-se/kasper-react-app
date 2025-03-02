@@ -1,3 +1,4 @@
+
 import { activationEmailStyles } from './styles';
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {

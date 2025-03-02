@@ -60,12 +60,6 @@ export const sharedEmailStyles = `
     color: #333333;
     text-decoration: underline;
   }
-`;
-
-export const passwordResetStyles = sharedEmailStyles;
-
-export const activationEmailStyles = `
-  ${sharedEmailStyles}
   .credentials {
     background-color: #eeeeee;
     padding: 30px;
@@ -87,3 +81,5 @@ export const activationEmailStyles = `
   }
 `;
 
+export const passwordResetStyles = sharedEmailStyles;
+export const activationEmailStyles = sharedEmailStyles;
