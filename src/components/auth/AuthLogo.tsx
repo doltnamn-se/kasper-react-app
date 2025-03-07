@@ -37,12 +37,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({ className, centered = false,
   return (
     <div className={`relative h-12 w-48 ${centered ? 'mx-auto' : ''}`} {...props}>
       <img 
-        src="/lovable-uploads/digitaltskydd.se-logo-dark.svg"
+        src="/lovable-uploads/digitaltskydd.se-app-logo-dark.svg"
         alt="Logo" 
         className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
       />
       <img 
-        src="/lovable-uploads/digitaltskydd.se-logo-white.svg"
+        src="/lovable-uploads/digitaltskydd.se-app-logo-white.svg"
         alt="Logo" 
         className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
       />
