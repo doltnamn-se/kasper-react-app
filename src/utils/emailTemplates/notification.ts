@@ -1,4 +1,3 @@
-
 import { activationEmailStyles } from './styles';
 
 export const getNotificationEmailTemplate = (title: string, message: string) => {
@@ -17,7 +16,7 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-email-dark.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-app-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
       <p style="font-size: 16px; color: #333333; margin-bottom: 20px;">
@@ -40,4 +39,3 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </body>
 </html>
 `;
-};
