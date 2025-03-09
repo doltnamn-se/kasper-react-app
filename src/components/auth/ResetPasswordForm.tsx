@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,7 +30,16 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
     setIsLoading(true);
 
     try {
-      console.log("Updating password in reset mode");
+      // Get the current session first
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !session) {
+        console.error("Session error:", sessionError);
+        toast.error(t('error.invalid.recovery.link'));
+        return;
+      }
+
+      // Update the password only if we have a valid session
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword
       });
@@ -43,6 +53,7 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
       console.log("Password updated successfully");
       toast.success(t('password.updated'));
       
+      // Sign out and redirect after successful password update
       await supabase.auth.signOut();
       window.location.href = '/auth?reset_success=true';
     } catch (err) {
