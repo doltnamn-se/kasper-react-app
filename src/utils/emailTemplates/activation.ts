@@ -1,4 +1,3 @@
-
 import { activationEmailStyles } from './styles';
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
@@ -22,7 +21,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-app-logo-dark-full-png.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
-      <h1 style="font-size: 24px; margin-bottom: 20px;">Aktivera ditt konto</h1>
+      <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">Aktivera ditt konto</h1>
       <p>
         Välkommen ${firstName} 👋
         <br><br>
@@ -50,5 +49,3 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
-};
-
