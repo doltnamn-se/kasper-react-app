@@ -10,7 +10,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Välkommen till Digitaltskydd.se – Aktivera ditt konto</title>
+  <title>Aktivera ditt konto</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     ${activationEmailStyles}
@@ -19,9 +19,10 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-email-dark.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-app-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
+      <h1 style="font-size: 24px; margin-bottom: 20px;">Aktivera ditt konto</h1>
       <p>
         Välkommen ${firstName} 👋
         <br><br>
