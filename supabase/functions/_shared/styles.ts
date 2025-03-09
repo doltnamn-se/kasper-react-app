@@ -83,3 +83,4 @@ export const sharedEmailStyles = `
 
 export const passwordResetStyles = sharedEmailStyles;
 export const activationEmailStyles = sharedEmailStyles;
+
