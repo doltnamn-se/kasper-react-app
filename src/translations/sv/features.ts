@@ -1,4 +1,3 @@
-
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -83,8 +82,8 @@ const features: FeaturesTranslations = {
   'notifications.url.status.message': 'Statusen för din URL har uppdaterats',
   'deindexing.status.notification.title': 'Avindexeringsstatus uppdaterad',
   'deindexing.status.notification.message': 'Statusen för din avindexeringsbegäran har uppdaterats',
-  'user.details': 'Användaruppgifter'
+  'user.details': 'Användaruppgifter',
+  'success.delete.url': 'URL borttagen',
 };
 
 export default features;
-

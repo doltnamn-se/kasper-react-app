@@ -1,4 +1,3 @@
-
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -83,8 +82,8 @@ const features: FeaturesTranslations = {
   'notifications.url.status.message': 'The status of your URL has been updated',
   'deindexing.status.notification.title': 'Deindexing Status Update',
   'deindexing.status.notification.message': 'The status of your deindexing request has been updated',
-  'user.details': 'User Details'
+  'user.details': 'User Details',
+  'success.delete.url': 'URL deleted successfully',
 };
 
 export default features;
-
