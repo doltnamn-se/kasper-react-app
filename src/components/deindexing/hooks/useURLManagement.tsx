@@ -19,7 +19,10 @@ export const useURLManagement = () => {
       const data = await fetchAdminUrls();
       console.log('useURLManagement - Received URLs:', data);
       return data;
-    }
+    },
+    refetchInterval: 1000, // Poll every second temporarily for debugging
+    staleTime: 0, // Consider data always stale
+    cacheTime: 0 // Don't cache at all
   });
 
   const { 
