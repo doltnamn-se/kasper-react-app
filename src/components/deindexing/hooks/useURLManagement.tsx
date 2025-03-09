@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { URL, URLStatus } from "@/types/url-management";
 import { fetchAdminUrls, updateUrlStatus } from "./utils/urlQueries";
@@ -14,7 +15,11 @@ export const useURLManagement = () => {
     refetch 
   } = useQuery({
     queryKey: ['admin-urls'],
-    queryFn: fetchAdminUrls
+    queryFn: async () => {
+      const data = await fetchAdminUrls();
+      console.log('useURLManagement - Received URLs:', data);
+      return data;
+    }
   });
 
   const { 

@@ -26,12 +26,20 @@ export const fetchAdminUrls = async () => {
     throw error;
   }
 
-  console.log('urlQueries - Fetched URLs with status history:', data?.map(url => ({
-    id: url.id,
-    status: url.status,
-    statusHistory: url.status_history
-  })));
+  // Add detailed logging of the fetched URLs
+  console.log('urlQueries - Raw response from Supabase:', data);
   
+  // Log each URL separately for easier inspection
+  data?.forEach(url => {
+    console.log('urlQueries - URL entry:', {
+      id: url.id,
+      url: url.url,
+      status: url.status,
+      created_at: url.created_at,
+      customer: url.customer
+    });
+  });
+
   return data as URL[];
 };
 
