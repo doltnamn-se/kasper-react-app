@@ -101,3 +101,20 @@ export const updateUrlStatus = async (
   console.log('urlQueries - Successfully updated status history:', [...currentHistory, newHistoryEntry]);
   return { urlId, newStatus };
 };
+
+export const deleteUrl = async (urlId: string) => {
+  console.log('urlQueries - Deleting URL:', urlId);
+  
+  const { error } = await supabase
+    .from('removal_urls')
+    .delete()
+    .eq('id', '8442370a-886e-414f-b1af-d567e8b18bfc');
+
+  if (error) {
+    console.error('urlQueries - Error deleting URL:', error);
+    throw error;
+  }
+
+  console.log('urlQueries - Successfully deleted URL');
+  return { success: true };
+};
