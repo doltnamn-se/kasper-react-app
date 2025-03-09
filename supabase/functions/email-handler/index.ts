@@ -86,7 +86,7 @@ serve(async (req) => {
         Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
       },
       body: JSON.stringify({
-        from: "Doltnamn <no-reply@doltnamn.se>",
+        from: "Digitaltskydd.se <app@digitaltskydd.se>",
         to: [email],
         subject: subject,
         html: emailContent,

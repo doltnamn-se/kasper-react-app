@@ -22,7 +22,7 @@ const handler = async (req: Request) => {
     const emailHtml = getPasswordResetTemplate(resetLink);
 
     const { data, error } = await resend.emails.send({
-      from: "Digitaltskydd.se <onboarding@resend.dev>",
+      from: "Digitaltskydd.se <app@digitaltskydd.se>",
       to: email,
       subject: "Återställ ditt lösenord – Digitaltskydd.se",
       html: emailHtml,

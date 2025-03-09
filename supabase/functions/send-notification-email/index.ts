@@ -18,7 +18,7 @@ const handler = async (req: Request) => {
   try {
     const { email, title, message } = await req.json();
     const { data, error } = await resend.emails.send({
-      from: "Digitaltskydd.se <onboarding@resend.dev>",
+      from: "Digitaltskydd.se <app@digitaltskydd.se>",
       to: email,
       subject: title,
       html: message,
