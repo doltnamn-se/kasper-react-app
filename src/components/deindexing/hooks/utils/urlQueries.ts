@@ -108,7 +108,7 @@ export const deleteUrl = async (urlId: string) => {
   const { error } = await supabase
     .from('removal_urls')
     .delete()
-    .eq('id', '8442370a-886e-414f-b1af-d567e8b18bfc');
+    .eq('id', urlId);
 
   if (error) {
     console.error('urlQueries - Error deleting URL:', error);
