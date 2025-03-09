@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { URL, URLStatus } from "@/types/url-management";
 import { fetchAdminUrls, updateUrlStatus } from "./utils/urlQueries";
@@ -22,7 +21,7 @@ export const useURLManagement = () => {
     },
     refetchInterval: 1000, // Poll every second temporarily for debugging
     staleTime: 0, // Consider data always stale
-    cacheTime: 0 // Don't cache at all
+    gcTime: 0 // Don't cache at all (formerly cacheTime)
   });
 
   const { 
