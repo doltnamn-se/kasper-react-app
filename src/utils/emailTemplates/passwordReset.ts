@@ -1,3 +1,4 @@
+
 import { passwordResetStyles } from './styles';
 
 export const getPasswordResetTemplate = (resetLink: string) => {
@@ -39,3 +40,5 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 </body>
 </html>
 `;
+};
+

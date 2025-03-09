@@ -1,3 +1,4 @@
+
 import { activationEmailStyles } from './styles';
 
 export const getNotificationEmailTemplate = (title: string, message: string) => {
@@ -39,3 +40,5 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </body>
 </html>
 `;
+};
+
