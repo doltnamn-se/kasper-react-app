@@ -4,7 +4,7 @@ import { URLTable } from "./URLTable";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const AdminDeindexingView = () => {
-  const { urls, handleStatusChange } = useURLManagement();
+  const { urls, handleStatusChange, handleDeleteUrl } = useURLManagement();
   const { language } = useLanguage();
 
   return (
@@ -14,7 +14,11 @@ export const AdminDeindexingView = () => {
       </h1>
       <div className="transition-colors duration-200">
         <div className="max-w-full">
-          <URLTable urls={urls} onStatusChange={handleStatusChange} />
+          <URLTable 
+            urls={urls} 
+            onStatusChange={handleStatusChange} 
+            onDelete={handleDeleteUrl}
+          />
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { URL, URLStatus } from "@/types/url-management";
-import { fetchAdminUrls, updateUrlStatus } from "./utils/urlQueries";
+import { fetchAdminUrls, updateUrlStatus, deleteUrl } from "./utils/urlQueries";
 import { useUrlSubscription } from "./useUrlSubscription";
 import { useUrlNotifications } from "./useUrlNotifications";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +9,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export const useURLManagement = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
   const { 
     data: urls = [], 
     refetch 
@@ -19,9 +21,9 @@ export const useURLManagement = () => {
       console.log('useURLManagement - Received URLs:', data);
       return data;
     },
-    refetchInterval: 1000, // Poll every second temporarily for debugging
-    staleTime: 0, // Consider data always stale
-    gcTime: 0 // Don't cache at all (formerly cacheTime)
+    refetchInterval: 1000,
+    staleTime: 0,
+    gcTime: 0
   });
 
   const { 
@@ -31,6 +33,23 @@ export const useURLManagement = () => {
 
   // Set up real-time subscription
   useUrlSubscription(refetch);
+
+  const handleDeleteUrl = async (urlId: string) => {
+    try {
+      console.log('useURLManagement - Deleting URL:', urlId);
+      await deleteUrl(urlId);
+      
+      // Invalidate and refetch to update UI
+      await queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+      toast({
+        title: t('success'),
+        description: t('success.delete.url'),
+      });
+    } catch (error) {
+      console.error('useURLManagement - Error deleting URL:', error);
+      showErrorToast();
+    }
+  };
 
   const handleStatusChange = async (urlId: string, newStatus: URLStatus) => {
     try {
@@ -70,5 +89,5 @@ export const useURLManagement = () => {
     }
   };
 
-  return { urls, handleStatusChange };
+  return { urls, handleStatusChange, handleDeleteUrl };
 };

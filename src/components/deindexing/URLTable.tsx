@@ -29,9 +29,10 @@ interface URLTableProps {
     };
   }>;
   onStatusChange: (urlId: string, newStatus: string) => void;
+  onDelete: (urlId: string) => void;
 }
 
-export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
+export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
   const { t } = useLanguage();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -87,7 +88,7 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
           <Table>
             <TableHeader>
               <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
-                <TableHead colSpan={4} className="h-12 bg-[#f3f3f3] dark:bg-[#212121] !p-0">
+                <TableHead colSpan={5} className="h-12 bg-[#f3f3f3] dark:bg-[#212121] !p-0">
                   <URLTableToolbar
                     table={table}
                     globalFilter={globalFilter}
@@ -99,8 +100,9 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
               <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
                 <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
                 <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
-                <TableHead className="w-[45%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
+                <TableHead className="w-[35%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
                 <TableHead className="w-[15%] !px-4 h-[2.5rem] py-0">Change Status</TableHead>
+                <TableHead className="w-[10%] !px-4 h-[2.5rem] py-0">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -109,6 +111,7 @@ export const URLTable = ({ urls, onStatusChange }: URLTableProps) => {
                   key={row.original.id}
                   url={row.original}
                   onStatusChange={onStatusChange}
+                  onDelete={onDelete}
                 />
               ))}
             </TableBody>
