@@ -23,7 +23,7 @@ const handler = async (req: Request) => {
     const { data, error } = await resend.emails.send({
       from: "Digitaltskydd.se <app@digitaltskydd.se>",
       to: email,
-      subject: "Välkommen till Digitaltskydd.se – Aktivera ditt konto",
+      subject: "Aktivera ditt konto",
       html: emailHtml,
     });
 
