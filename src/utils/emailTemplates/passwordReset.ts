@@ -20,6 +20,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
       <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-app-logo-dark-full-png.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
+      <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">Återställ ditt lösenord</h1>
       <p>
         Klicka på knappen nedan för att återställa ditt lösenord. Om du inte har begärt att återställa ditt lösenord kan du ignorera detta mail.
       </p>
@@ -41,4 +42,3 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 </html>
 `;
 };
-
