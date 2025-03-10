@@ -8,7 +8,7 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title} – Digitaltskydd.se</title>
+  <title>${title}</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     ${activationEmailStyles}
@@ -20,14 +20,16 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
       <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-app-logo-dark-full-png.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
+      <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">${title}</h1>
       <p style="font-size: 16px; color: #333333; margin-bottom: 20px;">
         ${message}
       </p>
       <div style="text-align: center; margin: 40px 0;">
+        <a href="https://app.digitaltskydd.se/auth" class="button">Gå till plattformen</a>
       </div>
       <p style="text-align: left; font-size: 16px; color: #333333;">
-        Om du har några frågor eller behöver hjälp med att komma igång, maila
-        oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>. Vi är glada att ha dig ombord!
+        Om du har några frågor eller behöver hjälp, maila
+        oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>.
       </p>
     </div>
   </div>
@@ -41,4 +43,3 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </html>
 `;
 };
-
