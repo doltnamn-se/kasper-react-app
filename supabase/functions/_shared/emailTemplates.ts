@@ -113,7 +113,7 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
     </div>
     <div class="email-wrapper">
       <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">${title}</h1>
-      <p style="font-size: 16px; color: #333333; margin-bottom: 20px;">
+      <p style="font-size: 16px; color: #333333; margin-bottom: 20px; text-align: left;">
         ${message}
       </p>
       <div style="text-align: center; margin: 40px 0;">
@@ -135,3 +135,4 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </html>
 `;
 };
+
