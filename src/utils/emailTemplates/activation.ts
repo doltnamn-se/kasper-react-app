@@ -1,4 +1,3 @@
-
 import { activationEmailStyles } from './styles';
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
@@ -50,5 +49,3 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
-};
-

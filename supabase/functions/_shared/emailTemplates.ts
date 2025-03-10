@@ -1,4 +1,3 @@
-
 import { activationEmailStyles, passwordResetStyles } from './styles.ts';
 
 export const getPasswordResetTemplate = (resetLink: string) => {
@@ -40,7 +39,6 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 </body>
 </html>
 `;
-};
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
   const firstName = displayName.split(' ')[0];
@@ -63,7 +61,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-app-logo-dark-full-png.png" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
-      <h1>Aktivera ditt konto</h1>
+      <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">Aktivera ditt konto</h1>
       <p>
         Välkommen ${firstName} 👋
         <br><br>
@@ -91,4 +89,3 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
-};
