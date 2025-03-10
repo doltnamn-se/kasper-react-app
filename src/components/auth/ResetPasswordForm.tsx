@@ -30,22 +30,18 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
     setIsLoading(true);
 
     try {
-      // Get the current session first
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
-      if (sessionError || !session) {
-        console.error("Session error:", sessionError);
-        toast.error(t('error.invalid.recovery.link'));
-        return;
-      }
-
-      // Update the password only if we have a valid session
-      const { error: updateError } = await supabase.auth.updateUser({
+      const { data: { user }, error: updateError } = await supabase.auth.updateUser({
         password: newPassword
       });
 
       if (updateError) {
         console.error("Error updating password:", updateError);
+        toast.error(t('error.password.update'));
+        return;
+      }
+
+      if (!user) {
+        console.error("No user found after password update");
         toast.error(t('error.password.update'));
         return;
       }

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,18 +25,17 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
 
         console.log("AuthRoute: URL parameters -", { type, accessToken });
 
-        // If this is a recovery flow, sign out any existing session first
-        if (type === 'recovery') {
-          console.log("AuthRoute: Recovery flow detected, signing out existing session");
-          await supabase.auth.signOut();
+        // Special handling for callback route
+        if (location.pathname === '/auth/callback') {
+          console.log("AuthRoute: On callback route, allowing access");
           setSession(false);
           setIsLoading(false);
           return;
         }
 
-        // Special handling for callback route
-        if (location.pathname === '/auth/callback') {
-          console.log("AuthRoute: On callback route, allowing access");
+        // For recovery flow, we don't sign out - we need the session for password reset
+        if (type === 'recovery') {
+          console.log("AuthRoute: Recovery flow detected, maintaining session");
           setSession(false);
           setIsLoading(false);
           return;
@@ -82,10 +82,9 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
       const type = params.get('type');
       
       if (event === 'SIGNED_IN') {
-        // If we're in recovery flow, sign out immediately
+        // If we're in recovery flow, don't redirect
         if (type === 'recovery') {
-          console.log("AuthRoute: Signed in during recovery flow, signing out");
-          await supabase.auth.signOut();
+          console.log("AuthRoute: Signed in during recovery flow, maintaining access");
           setSession(false);
         } else {
           console.log("AuthRoute: User signed in");
