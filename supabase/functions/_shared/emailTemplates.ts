@@ -1,3 +1,4 @@
+
 import { activationEmailStyles, passwordResetStyles } from './styles.ts';
 
 export const getPasswordResetTemplate = (resetLink: string) => {
@@ -39,6 +40,7 @@ export const getPasswordResetTemplate = (resetLink: string) => {
 </body>
 </html>
 `;
+};
 
 export const getActivationEmailTemplate = (displayName: string, password: string) => {
   const firstName = displayName.split(' ')[0];
@@ -89,3 +91,5 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 </body>
 </html>
 `;
+};
+
