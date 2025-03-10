@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/checklist/password/PasswordInput";
 import { PasswordRequirements, checkAllRequirements } from "@/components/checklist/password/PasswordRequirements";
+import { useSearchParams } from "react-router-dom";
 
 interface ResetPasswordFormProps {
   isLoading: boolean;
@@ -16,6 +17,7 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
   const { t } = useLanguage();
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [searchParams] = useSearchParams();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,18 +32,34 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
     setIsLoading(true);
 
     try {
-      const { data: { user }, error: updateError } = await supabase.auth.updateUser({
+      // Get the access token from URL
+      const accessToken = searchParams.get('access_token');
+      
+      if (!accessToken) {
+        console.error("No access token found in URL");
+        toast.error(t('error.invalid.recovery.link'));
+        return;
+      }
+
+      // First set the session with the access token
+      const { data: { session }, error: sessionError } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: '',
+      });
+
+      if (sessionError || !session) {
+        console.error("Error setting session:", sessionError);
+        toast.error(t('error.invalid.recovery.link'));
+        return;
+      }
+
+      // Now update the password with the valid session
+      const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword
       });
 
       if (updateError) {
         console.error("Error updating password:", updateError);
-        toast.error(t('error.password.update'));
-        return;
-      }
-
-      if (!user) {
-        console.error("No user found after password update");
         toast.error(t('error.password.update'));
         return;
       }
