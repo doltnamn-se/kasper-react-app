@@ -1,5 +1,5 @@
 
-import { activationEmailStyles, passwordResetStyles } from './styles.ts';
+import { passwordResetStyles, activationEmailStyles } from './styles.ts';
 
 export const getPasswordResetTemplate = (resetLink: string) => {
   return `
