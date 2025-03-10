@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { getNotificationEmailTemplate } from "../_shared/emailTemplates.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -17,11 +18,16 @@ const handler = async (req: Request) => {
 
   try {
     const { email, title, message } = await req.json();
+    console.log("Preparing to send notification email:", { email, title });
+    
+    // Generate email HTML using our template
+    const htmlContent = getNotificationEmailTemplate(title, message);
+
     const { data, error } = await resend.emails.send({
       from: "Digitaltskydd.se <app@digitaltskydd.se>",
       to: email,
       subject: title,
-      html: message,
+      html: htmlContent,
     });
 
     if (error) {
