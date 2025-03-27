@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const useGuideData = () => {
@@ -61,7 +62,7 @@ export const useGuideData = () => {
       {
         title: t('guide.birthday.title'),
         steps: [
-          { text: 'https://www.birthday.se/kontakta' },
+          { text: 'https://app.minauppgifter.se/birthday/bankidlogin' },
           { text: t('guide.birthday.step1') },
           { text: t('guide.birthday.step2') }
         ]
