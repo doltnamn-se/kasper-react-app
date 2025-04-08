@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,19 +26,19 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch total customer count, excluding admin account
+        // Fetch total customer count by joining with profiles to exclude admin accounts
         const { count } = await supabase
           .from('customers')
-          .select('*', { count: 'exact', head: true })
-          .neq('created_by', null); // Exclude admin account
+          .select('id', { count: 'exact', head: true })
+          .not('id', 'eq', 'info@doltnamn.se');
         
         setTotalCustomers(count || 0);
 
-        // Fetch subscription plan distribution, excluding admin account
+        // Fetch subscription plan distribution
         const { data: subscriptionData, error: subscriptionError } = await supabase
           .from('customers')
-          .select('subscription_plan')
-          .neq('created_by', null); // Exclude admin account
+          .select('subscription_plan, profiles:profiles!inner(role)')
+          .eq('profiles.role', 'customer');
 
         if (subscriptionError) {
           console.error('Error fetching subscription data:', subscriptionError);
@@ -47,27 +46,26 @@ const AdminDashboard = () => {
           // Count occurrences of each subscription plan
           const planCounts: Record<string, number> = {};
           
-          subscriptionData.forEach((customer: Customer) => {
-            const plan = customer.subscription_plan || 'null';
+          subscriptionData.forEach((item: any) => {
+            const plan = item.subscription_plan || 'null';
             planCounts[plan] = (planCounts[plan] || 0) + 1;
           });
 
           // Format data for the widget - exclude null (no plan) entry
           const formattedSubscriptions = Object.entries(planCounts)
-            .filter(([plan]) => plan !== 'null') // Exclude null plan (admin)
             .map(([plan, count]) => ({
-              plan,
+              plan: plan === 'null' ? null : plan,
               count
             }));
 
           setSubscriptionCounts(formattedSubscriptions);
         }
 
-        // Fetch customer type distribution, excluding admin account
+        // Fetch customer type distribution
         const { data: customerTypeData, error: customerTypeError } = await supabase
           .from('customers')
-          .select('customer_type')
-          .neq('created_by', null); // Exclude admin account
+          .select('customer_type, profiles:profiles!inner(role)')
+          .eq('profiles.role', 'customer');
 
         if (customerTypeError) {
           console.error('Error fetching customer type data:', customerTypeError);
@@ -78,8 +76,8 @@ const AdminDashboard = () => {
             business: 0
           };
           
-          customerTypeData.forEach((customer: { customer_type: string }) => {
-            const type = customer.customer_type === 'business' ? 'business' : 'private';
+          customerTypeData.forEach((item: any) => {
+            const type = item.customer_type === 'business' ? 'business' : 'private';
             typeCounts[type] = (typeCounts[type] || 0) + 1;
           });
 
