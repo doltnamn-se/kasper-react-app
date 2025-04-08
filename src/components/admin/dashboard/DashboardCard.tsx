@@ -17,10 +17,10 @@ interface DashboardCardProps {
 export const DashboardCard = ({ title, value, icon, subscriptionData }: DashboardCardProps) => {
   const formatPlanName = (plan: string) => {
     switch (plan) {
-      case '1month': return '1month:';
-      case '6months': return '6months:';
-      case '12months': return '12months:';
-      case '24months': return '24months:';
+      case '1_month': return '1 month:';
+      case '6_months': return '6 months:';
+      case '12_months': return '12 months:';
+      case '24_months': return '24 months:';
       default: return `${plan}:`;
     }
   };

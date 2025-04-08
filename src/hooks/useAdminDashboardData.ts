@@ -44,6 +44,8 @@ export const useAdminDashboardData = () => {
           return;
         }
 
+        console.log('Raw customer data:', data);
+
         // Process the data
         const totalCount = data.length;
         setTotalCustomers(totalCount);
@@ -54,36 +56,36 @@ export const useAdminDashboardData = () => {
             type: 'private',
             totalCount: 0,
             subscriptions: {
-              '1month': 0,
-              '6months': 0,
-              '12months': 0,
-              '24months': 0
+              '1_month': 0,
+              '6_months': 0,
+              '12_months': 0,
+              '24_months': 0
             }
           },
           'business': {
             type: 'business',
             totalCount: 0,
             subscriptions: {
-              '1month': 0,
-              '6months': 0,
-              '12months': 0,
-              '24months': 0
+              '1_month': 0,
+              '6_months': 0,
+              '12_months': 0,
+              '24_months': 0
             }
           }
         };
         
         // Totals across all customer types
         const totalSubscriptions = {
-          '1month': 0,
-          '6months': 0,
-          '12months': 0,
-          '24months': 0
+          '1_month': 0,
+          '6_months': 0,
+          '12_months': 0,
+          '24_months': 0
         };
 
         // Process each customer
         data.forEach((customer: any) => {
           const type = customer.customer_type || 'private';
-          const plan = customer.subscription_plan || '1month';
+          const plan = customer.subscription_plan || '1_month';
           
           // Increment type count
           breakdown[type].totalCount++;
