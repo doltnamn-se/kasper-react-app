@@ -27,17 +27,19 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch total customer count
+        // Fetch total customer count, excluding admin account
         const { count } = await supabase
           .from('customers')
-          .select('*', { count: 'exact', head: true });
+          .select('*', { count: 'exact', head: true })
+          .neq('created_by', null); // Exclude admin account
         
         setTotalCustomers(count || 0);
 
-        // Fetch subscription plan distribution
+        // Fetch subscription plan distribution, excluding admin account
         const { data: subscriptionData, error: subscriptionError } = await supabase
           .from('customers')
-          .select('subscription_plan');
+          .select('subscription_plan')
+          .neq('created_by', null); // Exclude admin account
 
         if (subscriptionError) {
           console.error('Error fetching subscription data:', subscriptionError);
@@ -50,19 +52,22 @@ const AdminDashboard = () => {
             planCounts[plan] = (planCounts[plan] || 0) + 1;
           });
 
-          // Format data for the widget
-          const formattedSubscriptions = Object.entries(planCounts).map(([plan, count]) => ({
-            plan: plan === 'null' ? null : plan,
-            count
-          }));
+          // Format data for the widget - exclude null (no plan) entry
+          const formattedSubscriptions = Object.entries(planCounts)
+            .filter(([plan]) => plan !== 'null') // Exclude null plan (admin)
+            .map(([plan, count]) => ({
+              plan,
+              count
+            }));
 
           setSubscriptionCounts(formattedSubscriptions);
         }
 
-        // Fetch customer type distribution
+        // Fetch customer type distribution, excluding admin account
         const { data: customerTypeData, error: customerTypeError } = await supabase
           .from('customers')
-          .select('customer_type');
+          .select('customer_type')
+          .neq('created_by', null); // Exclude admin account
 
         if (customerTypeError) {
           console.error('Error fetching customer type data:', customerTypeError);
@@ -207,7 +212,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* 24 Months Subscription Card */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 md:col-span-2">
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 md:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
             <CardTitle className="text-sm font-medium">
               {t('subscription.24months')}
@@ -216,19 +221,6 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent className="p-0">
             <div className="text-2xl font-bold">{findSubscriptionCount('24months')}</div>
-          </CardContent>
-        </div>
-
-        {/* No Subscription Card */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
-            <CardTitle className="text-sm font-medium">
-              {t('subscription.none')}
-            </CardTitle>
-            <CalendarDays className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="text-2xl font-bold">{findSubscriptionCount(null)}</div>
           </CardContent>
         </div>
       </div>
