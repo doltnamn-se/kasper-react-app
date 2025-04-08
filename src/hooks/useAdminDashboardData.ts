@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 type SubscriptionCount = {
-  plan: string | null;
+  plan: string;
   count: number;
 }
 
@@ -29,16 +29,14 @@ export const useAdminDashboardData = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch customer data with subscription and type info
+        // Fetch all customers with their customer_type and subscription_plan
         const { data, error } = await supabase
           .from('customers')
           .select(`
             id, 
-            subscription_plan,
             customer_type,
-            profiles!inner(role)
-          `)
-          .eq('profiles.role', 'customer');
+            subscription_plan
+          `);
 
         if (error) {
           console.error('Error fetching customer data:', error);
@@ -49,7 +47,7 @@ export const useAdminDashboardData = () => {
         const totalCount = data.length;
         setTotalCustomers(totalCount);
 
-        // Initialize breakdown structure
+        // Initialize breakdown structure with default values for all subscription plans
         const breakdown: { [key: string]: CustomerSubscriptionBreakdown } = {
           'private': {
             type: 'private',
@@ -90,10 +88,14 @@ export const useAdminDashboardData = () => {
           breakdown[type].totalCount++;
           
           // Increment subscription count for this type
-          breakdown[type].subscriptions[plan]++;
+          if (breakdown[type].subscriptions[plan] !== undefined) {
+            breakdown[type].subscriptions[plan]++;
+          }
           
           // Increment total subscription count
-          totalSubscriptions[plan]++;
+          if (totalSubscriptions[plan] !== undefined) {
+            totalSubscriptions[plan]++;
+          }
         });
 
         // Add the total breakdown
