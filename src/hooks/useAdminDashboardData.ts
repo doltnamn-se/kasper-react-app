@@ -12,81 +12,105 @@ type CustomerTypeCount = {
   count: number;
 }
 
+type CustomerSubscriptionBreakdown = {
+  type: string;
+  totalCount: number;
+  subscriptions: {
+    [key: string]: number;
+  };
+}
+
 export const useAdminDashboardData = () => {
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
-  const [subscriptionCounts, setSubscriptionCounts] = useState<SubscriptionCount[]>([]);
-  const [customerTypeCounts, setCustomerTypeCounts] = useState<CustomerTypeCount[]>([]);
+  const [customerBreakdown, setCustomerBreakdown] = useState<CustomerSubscriptionBreakdown[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch total customer count by joining with profiles to exclude admin accounts
-        const { count } = await supabase
+        // Fetch customer data with subscription and type info
+        const { data, error } = await supabase
           .from('customers')
-          .select('id', { count: 'exact', head: true })
-          .not('id', 'eq', 'info@doltnamn.se');
+          .select(`
+            id, 
+            subscription_plan,
+            customer_type,
+            profiles!inner(role)
+          `)
+          .eq('profiles.role', 'customer');
+
+        if (error) {
+          console.error('Error fetching customer data:', error);
+          return;
+        }
+
+        // Process the data
+        const totalCount = data.length;
+        setTotalCustomers(totalCount);
+
+        // Initialize breakdown structure
+        const breakdown: { [key: string]: CustomerSubscriptionBreakdown } = {
+          'private': {
+            type: 'private',
+            totalCount: 0,
+            subscriptions: {
+              '1month': 0,
+              '6months': 0,
+              '12months': 0,
+              '24months': 0
+            }
+          },
+          'business': {
+            type: 'business',
+            totalCount: 0,
+            subscriptions: {
+              '1month': 0,
+              '6months': 0,
+              '12months': 0,
+              '24months': 0
+            }
+          }
+        };
         
-        setTotalCustomers(count || 0);
+        // Totals across all customer types
+        const totalSubscriptions = {
+          '1month': 0,
+          '6months': 0,
+          '12months': 0,
+          '24months': 0
+        };
 
-        // Fetch subscription plan distribution
-        const { data: subscriptionData, error: subscriptionError } = await supabase
-          .from('customers')
-          .select('subscription_plan, profiles:profiles!inner(role)')
-          .eq('profiles.role', 'customer');
-
-        if (subscriptionError) {
-          console.error('Error fetching subscription data:', subscriptionError);
-        } else {
-          // Count occurrences of each subscription plan
-          const planCounts: Record<string, number> = {};
+        // Process each customer
+        data.forEach((customer: any) => {
+          const type = customer.customer_type || 'private';
+          const plan = customer.subscription_plan || '1month';
           
-          subscriptionData.forEach((item: any) => {
-            const plan = item.subscription_plan || 'null';
-            planCounts[plan] = (planCounts[plan] || 0) + 1;
-          });
-
-          // Format data for the widget
-          const formattedSubscriptions = Object.entries(planCounts)
-            .map(([plan, count]) => ({
-              plan: plan === 'null' ? null : plan,
-              count
-            }));
-
-          setSubscriptionCounts(formattedSubscriptions);
-        }
-
-        // Fetch customer type distribution
-        const { data: customerTypeData, error: customerTypeError } = await supabase
-          .from('customers')
-          .select('customer_type, profiles:profiles!inner(role)')
-          .eq('profiles.role', 'customer');
-
-        if (customerTypeError) {
-          console.error('Error fetching customer type data:', customerTypeError);
-        } else {
-          // Count occurrences of each customer type
-          const typeCounts: Record<string, number> = {
-            private: 0,
-            business: 0
-          };
+          // Increment type count
+          breakdown[type].totalCount++;
           
-          customerTypeData.forEach((item: any) => {
-            const type = item.customer_type === 'business' ? 'business' : 'private';
-            typeCounts[type] = (typeCounts[type] || 0) + 1;
-          });
+          // Increment subscription count for this type
+          breakdown[type].subscriptions[plan]++;
+          
+          // Increment total subscription count
+          totalSubscriptions[plan]++;
+        });
 
-          // Format data for the widget
-          const formattedTypes = Object.entries(typeCounts).map(([type, count]) => ({
-            type,
-            count
-          }));
+        // Add the total breakdown
+        const allBreakdown = {
+          type: 'all',
+          totalCount,
+          subscriptions: totalSubscriptions
+        };
 
-          setCustomerTypeCounts(formattedTypes);
-        }
+        // Convert to array
+        setCustomerBreakdown([
+          allBreakdown,
+          breakdown.private,
+          breakdown.business
+        ]);
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error('Error processing dashboard data:', error);
       } finally {
         setIsLoading(false);
       }
@@ -95,24 +119,21 @@ export const useAdminDashboardData = () => {
     fetchData();
   }, []);
 
-  // Find specific subscription count
-  const findSubscriptionCount = (planName: string | null): number => {
-    const plan = subscriptionCounts.find(sub => sub.plan === planName);
-    return plan?.count || 0;
-  };
-
-  // Find specific customer type count
-  const findCustomerTypeCount = (typeName: string): number => {
-    const type = customerTypeCounts.find(t => t.type === typeName);
-    return type?.count || 0;
+  // Helper function to get subscription counts for a specific type
+  const getSubscriptionDataForType = (type: 'all' | 'private' | 'business') => {
+    const typeData = customerBreakdown.find(item => item.type === type);
+    if (!typeData) return [];
+    
+    return Object.entries(typeData.subscriptions).map(([plan, count]) => ({
+      plan,
+      count
+    }));
   };
 
   return {
     totalCustomers,
-    subscriptionCounts,
-    customerTypeCounts,
+    customerBreakdown,
     isLoading,
-    findSubscriptionCount,
-    findCustomerTypeCount
+    getSubscriptionDataForType
   };
 };
