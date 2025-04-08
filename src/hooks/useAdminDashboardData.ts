@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { handleQueryResult } from "@/utils/supabaseHelpers";
 
 type SubscriptionCount = {
   plan: string;
