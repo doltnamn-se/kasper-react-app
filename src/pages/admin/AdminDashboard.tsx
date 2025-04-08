@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UsersRound, CalendarDays, Users } from "lucide-react";
-import { ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { UsersRound, CalendarDays, Users, Briefcase, User } from "lucide-react";
 import { Customer } from "@/types/customer";
 
 type SubscriptionCount = {
@@ -24,19 +22,6 @@ const AdminDashboard = () => {
   const [subscriptionCounts, setSubscriptionCounts] = useState<SubscriptionCount[]>([]);
   const [customerTypeCounts, setCustomerTypeCounts] = useState<CustomerTypeCount[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const subscriptionColors = {
-    "1month": "#4f46e5", // Indigo
-    "6months": "#8b5cf6", // Purple
-    "12months": "#ec4899", // Pink
-    "24months": "#f43f5e", // Rose
-    "null": "#94a3b8", // Slate (for no subscription)
-  };
-
-  const customerTypeColors = {
-    "private": "#0ea5e9", // Sky blue for private customers
-    "business": "#f59e0b", // Amber for business customers
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,7 +50,7 @@ const AdminDashboard = () => {
             planCounts[plan] = (planCounts[plan] || 0) + 1;
           });
 
-          // Format data for the chart
+          // Format data for the widget
           const formattedSubscriptions = Object.entries(planCounts).map(([plan, count]) => ({
             plan: plan === 'null' ? null : plan,
             count
@@ -93,7 +78,7 @@ const AdminDashboard = () => {
             typeCounts[type] = (typeCounts[type] || 0) + 1;
           });
 
-          // Format data for the chart
+          // Format data for the widget
           const formattedTypes = Object.entries(typeCounts).map(([type, count]) => ({
             type,
             count
@@ -124,30 +109,16 @@ const AdminDashboard = () => {
     }
   };
 
-  // Format customer type labels
-  const formatCustomerTypeLabel = (type: string) => {
-    return type === 'private' ? 'Privatkund' : 'Företagskund';
+  // Find specific subscription count
+  const findSubscriptionCount = (planName: string | null): number => {
+    const plan = subscriptionCounts.find(sub => sub.plan === planName);
+    return plan?.count || 0;
   };
 
-  // Custom tooltip formatter for subscription chart
-  const subscriptionTooltipFormatter = (value: number, name: string, props: any) => {
-    const plan = props.payload.plan;
-    return [value, formatSubscriptionLabel(plan)];
-  };
-
-  // Configuration for subscription chart
-  const subscriptionChartConfig = {
-    "1month": { label: t('subscription.1month'), color: subscriptionColors["1month"] },
-    "6months": { label: t('subscription.6months'), color: subscriptionColors["6months"] },
-    "12months": { label: t('subscription.12months'), color: subscriptionColors["12months"] },
-    "24months": { label: t('subscription.24months'), color: subscriptionColors["24months"] },
-    "null": { label: t('subscription.none'), color: subscriptionColors["null"] },
-  };
-
-  // Configuration for customer type chart
-  const customerTypeChartConfig = {
-    "private": { label: "Privatkund", color: customerTypeColors["private"] },
-    "business": { label: "Företagskund", color: customerTypeColors["business"] },
+  // Find specific customer type count
+  const findCustomerTypeCount = (typeName: string): number => {
+    const type = customerTypeCounts.find(t => t.type === typeName);
+    return type?.count || 0;
   };
 
   return (
@@ -170,138 +141,94 @@ const AdminDashboard = () => {
           </CardContent>
         </div>
 
-        {/* Subscription Plans Distribution Card */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 md:col-span-2">
+        {/* Private Customers Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
             <CardTitle className="text-sm font-medium">
-              Subscription Plans
+              Privatkunder
+            </CardTitle>
+            <User className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold">{findCustomerTypeCount('private')}</div>
+          </CardContent>
+        </div>
+
+        {/* Business Customers Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
+            <CardTitle className="text-sm font-medium">
+              Företagskunder
+            </CardTitle>
+            <Briefcase className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold">{findCustomerTypeCount('business')}</div>
+          </CardContent>
+        </div>
+
+        {/* 1 Month Subscription Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
+            <CardTitle className="text-sm font-medium">
+              {t('subscription.1month')}
             </CardTitle>
             <CalendarDays className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
           </CardHeader>
           <CardContent className="p-0">
-            <div className="h-[200px] w-full">
-              {!isLoading && subscriptionCounts.length > 0 ? (
-                <ChartContainer 
-                  config={subscriptionChartConfig} 
-                  className="h-full w-full"
-                >
-                  {/* Wrap the multiple elements in a fragment to make it a single React element */}
-                  <>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={subscriptionCounts}
-                          dataKey="count"
-                          nameKey="plan"
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={80}
-                          labelLine={false}
-                        >
-                          {subscriptionCounts.map((entry, index) => (
-                            <Cell 
-                              key={`cell-${index}`} 
-                              fill={subscriptionColors[entry.plan as keyof typeof subscriptionColors] || '#94a3b8'} 
-                            />
-                          ))}
-                        </Pie>
-                        <ChartTooltip 
-                          formatter={subscriptionTooltipFormatter}
-                          content={({ active, payload }) => {
-                            if (!active || !payload || payload.length === 0) return null;
-                            const data = payload[0].payload;
-                            return (
-                              <div className="rounded-lg border bg-background p-2 shadow-md">
-                                <div className="flex flex-col">
-                                  <span className="font-medium">{formatSubscriptionLabel(data.plan)}</span>
-                                  <span className="text-sm">{data.count} customers</span>
-                                </div>
-                              </div>
-                            );
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <ChartLegend>
-                      <ChartLegendContent 
-                        className="flex flex-wrap justify-center gap-4 pt-4"
-                      />
-                    </ChartLegend>
-                  </>
-                </ChartContainer>
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <p className="text-muted-foreground">Loading subscription data...</p>
-                </div>
-              )}
-            </div>
+            <div className="text-2xl font-bold">{findSubscriptionCount('1month')}</div>
           </CardContent>
         </div>
 
-        {/* Customer Type Distribution Card */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 md:col-span-3">
+        {/* 6 Months Subscription Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
             <CardTitle className="text-sm font-medium">
-              Customer Types
+              {t('subscription.6months')}
             </CardTitle>
-            <Users className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+            <CalendarDays className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
           </CardHeader>
           <CardContent className="p-0">
-            <div className="h-[200px] w-full">
-              {!isLoading && customerTypeCounts.length > 0 ? (
-                <ChartContainer 
-                  config={customerTypeChartConfig} 
-                  className="h-full w-full"
-                >
-                  {/* Wrap the multiple elements in a fragment to make it a single React element */}
-                  <>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={customerTypeCounts}
-                          dataKey="count"
-                          nameKey="type"
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={80}
-                          labelLine={false}
-                        >
-                          {customerTypeCounts.map((entry, index) => (
-                            <Cell 
-                              key={`cell-${index}`} 
-                              fill={customerTypeColors[entry.type as keyof typeof customerTypeColors]} 
-                            />
-                          ))}
-                        </Pie>
-                        <ChartTooltip 
-                          content={({ active, payload }) => {
-                            if (!active || !payload || payload.length === 0) return null;
-                            const data = payload[0].payload;
-                            return (
-                              <div className="rounded-lg border bg-background p-2 shadow-md">
-                                <div className="flex flex-col">
-                                  <span className="font-medium">{formatCustomerTypeLabel(data.type)}</span>
-                                  <span className="text-sm">{data.count} customers</span>
-                                </div>
-                              </div>
-                            );
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <ChartLegend>
-                      <ChartLegendContent 
-                        className="flex flex-wrap justify-center gap-4 pt-4"
-                      />
-                    </ChartLegend>
-                  </>
-                </ChartContainer>
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <p className="text-muted-foreground">Loading customer type data...</p>
-                </div>
-              )}
-            </div>
+            <div className="text-2xl font-bold">{findSubscriptionCount('6months')}</div>
+          </CardContent>
+        </div>
+
+        {/* 12 Months Subscription Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
+            <CardTitle className="text-sm font-medium">
+              {t('subscription.12months')}
+            </CardTitle>
+            <CalendarDays className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold">{findSubscriptionCount('12months')}</div>
+          </CardContent>
+        </div>
+
+        {/* 24 Months Subscription Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 md:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
+            <CardTitle className="text-sm font-medium">
+              {t('subscription.24months')}
+            </CardTitle>
+            <CalendarDays className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold">{findSubscriptionCount('24months')}</div>
+          </CardContent>
+        </div>
+
+        {/* No Subscription Card */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
+            <CardTitle className="text-sm font-medium">
+              {t('subscription.none')}
+            </CardTitle>
+            <CalendarDays className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold">{findSubscriptionCount(null)}</div>
           </CardContent>
         </div>
       </div>
