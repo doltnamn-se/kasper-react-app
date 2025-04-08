@@ -185,46 +185,49 @@ const AdminDashboard = () => {
                   config={subscriptionChartConfig} 
                   className="h-full w-full"
                 >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={subscriptionCounts}
-                        dataKey="count"
-                        nameKey="plan"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        labelLine={false}
-                      >
-                        {subscriptionCounts.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={subscriptionColors[entry.plan as keyof typeof subscriptionColors] || '#94a3b8'} 
-                          />
-                        ))}
-                      </Pie>
-                      <ChartTooltip 
-                        formatter={subscriptionTooltipFormatter}
-                        content={({ active, payload }) => {
-                          if (!active || !payload || payload.length === 0) return null;
-                          const data = payload[0].payload;
-                          return (
-                            <div className="rounded-lg border bg-background p-2 shadow-md">
-                              <div className="flex flex-col">
-                                <span className="font-medium">{formatSubscriptionLabel(data.plan)}</span>
-                                <span className="text-sm">{data.count} customers</span>
+                  {/* Wrap the multiple elements in a fragment to make it a single React element */}
+                  <>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={subscriptionCounts}
+                          dataKey="count"
+                          nameKey="plan"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          labelLine={false}
+                        >
+                          {subscriptionCounts.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={subscriptionColors[entry.plan as keyof typeof subscriptionColors] || '#94a3b8'} 
+                            />
+                          ))}
+                        </Pie>
+                        <ChartTooltip 
+                          formatter={subscriptionTooltipFormatter}
+                          content={({ active, payload }) => {
+                            if (!active || !payload || payload.length === 0) return null;
+                            const data = payload[0].payload;
+                            return (
+                              <div className="rounded-lg border bg-background p-2 shadow-md">
+                                <div className="flex flex-col">
+                                  <span className="font-medium">{formatSubscriptionLabel(data.plan)}</span>
+                                  <span className="text-sm">{data.count} customers</span>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        }}
+                            );
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <ChartLegend>
+                      <ChartLegendContent 
+                        className="flex flex-wrap justify-center gap-4 pt-4"
                       />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <ChartLegend>
-                    <ChartLegendContent 
-                      className="flex flex-wrap justify-center gap-4 pt-4"
-                    />
-                  </ChartLegend>
+                    </ChartLegend>
+                  </>
                 </ChartContainer>
               ) : (
                 <div className="flex h-full items-center justify-center">
@@ -250,45 +253,48 @@ const AdminDashboard = () => {
                   config={customerTypeChartConfig} 
                   className="h-full w-full"
                 >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={customerTypeCounts}
-                        dataKey="count"
-                        nameKey="type"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        labelLine={false}
-                      >
-                        {customerTypeCounts.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`} 
-                            fill={customerTypeColors[entry.type as keyof typeof customerTypeColors]} 
-                          />
-                        ))}
-                      </Pie>
-                      <ChartTooltip 
-                        content={({ active, payload }) => {
-                          if (!active || !payload || payload.length === 0) return null;
-                          const data = payload[0].payload;
-                          return (
-                            <div className="rounded-lg border bg-background p-2 shadow-md">
-                              <div className="flex flex-col">
-                                <span className="font-medium">{formatCustomerTypeLabel(data.type)}</span>
-                                <span className="text-sm">{data.count} customers</span>
+                  {/* Wrap the multiple elements in a fragment to make it a single React element */}
+                  <>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={customerTypeCounts}
+                          dataKey="count"
+                          nameKey="type"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          labelLine={false}
+                        >
+                          {customerTypeCounts.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={customerTypeColors[entry.type as keyof typeof customerTypeColors]} 
+                            />
+                          ))}
+                        </Pie>
+                        <ChartTooltip 
+                          content={({ active, payload }) => {
+                            if (!active || !payload || payload.length === 0) return null;
+                            const data = payload[0].payload;
+                            return (
+                              <div className="rounded-lg border bg-background p-2 shadow-md">
+                                <div className="flex flex-col">
+                                  <span className="font-medium">{formatCustomerTypeLabel(data.type)}</span>
+                                  <span className="text-sm">{data.count} customers</span>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        }}
+                            );
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <ChartLegend>
+                      <ChartLegendContent 
+                        className="flex flex-wrap justify-center gap-4 pt-4"
                       />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <ChartLegend>
-                    <ChartLegendContent 
-                      className="flex flex-wrap justify-center gap-4 pt-4"
-                    />
-                  </ChartLegend>
+                    </ChartLegend>
+                  </>
                 </ChartContainer>
               ) : (
                 <div className="flex h-full items-center justify-center">
