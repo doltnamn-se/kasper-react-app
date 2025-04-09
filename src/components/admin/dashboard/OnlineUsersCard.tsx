@@ -1,9 +1,9 @@
 
-import { UsersRound } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const OnlineUsersCard = () => {
   const { t } = useLanguage();
@@ -11,7 +11,30 @@ export const OnlineUsersCard = () => {
   const [onlineCount, setOnlineCount] = useState<number>(0);
   
   useEffect(() => {
-    setOnlineCount(onlineUsers.size);
+    // Get all profiles to find the admin user ID
+    const fetchAdminUserId = async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', 'info@doltnamn.se')
+        .single();
+      
+      const adminId = data?.id;
+      
+      // Count online users excluding the admin
+      let count = 0;
+      if (adminId) {
+        // If we found the admin ID, exclude it from the count
+        count = Array.from(onlineUsers).filter(id => id !== adminId).length;
+      } else {
+        // Fallback to counting all users if we couldn't find the admin
+        count = onlineUsers.size;
+      }
+      
+      setOnlineCount(count);
+    };
+    
+    fetchAdminUserId();
   }, [onlineUsers]);
   
   return (
