@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
@@ -7,7 +6,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { getUserInitials } from "@/utils/profileUtils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Check } from "lucide-react";
 
 type OnlineUserInfo = {
   id: string;
@@ -23,9 +21,7 @@ export const OnlineUsersCard = () => {
   const [onlineUsersList, setOnlineUsersList] = useState<OnlineUserInfo[]>([]);
   
   useEffect(() => {
-    // Get all profiles to find the admin user ID and fetch online users data
     const fetchOnlineUsersData = async () => {
-      // Find admin ID
       const { data: adminData } = await supabase
         .from('profiles')
         .select('id')
@@ -34,14 +30,11 @@ export const OnlineUsersCard = () => {
       
       const adminId = adminData?.id;
       
-      // Filter out admin from online users
       const onlineUserIds = Array.from(onlineUsers).filter(id => id !== adminId);
       
-      // Count online users excluding the admin
       setOnlineCount(onlineUserIds.length);
       
       if (onlineUserIds.length > 0) {
-        // Fetch profile information for online users
         const { data: profilesData } = await supabase
           .from('profiles')
           .select('id, display_name, email, avatar_url')
@@ -68,7 +61,6 @@ export const OnlineUsersCard = () => {
       <CardContent className="p-0">
         <div className="text-2xl font-bold mb-4">{onlineCount}</div>
         
-        {/* List of online users */}
         <div className="space-y-3 mt-4">
           {onlineUsersList.map(user => (
             <div key={user.id} className="flex items-center justify-between">
@@ -90,8 +82,7 @@ export const OnlineUsersCard = () => {
                 </span>
               </div>
               <div className="flex items-center">
-                <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-0 flex items-center gap-1 px-2 py-0.5">
-                  <Check size={12} className="text-green-600 dark:text-green-400" />
+                <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-0 px-2 py-0.5">
                   <span className="text-xs">{t('online')}</span>
                 </Badge>
               </div>
