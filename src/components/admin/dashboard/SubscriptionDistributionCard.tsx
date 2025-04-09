@@ -9,6 +9,7 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 import { PieChart, Pie, Cell } from "recharts";
+import { Tooltip } from "@/components/ui/tooltip";
 
 interface SubscriptionData {
   plan: string;
@@ -24,8 +25,9 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
   
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
   
+  // Fix: Cast the string to keyof Translations to satisfy TypeScript
   const data = subscriptionData.map(item => ({
-    name: t(`subscription.period.${item.plan}`),
+    name: t(`subscription.period.${item.plan}` as any),
     value: item.count
   }));
 
@@ -55,9 +57,8 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <ChartTooltip>
-                <ChartTooltipContent />
-              </ChartTooltip>
+              {/* Fix: Use the ChartTooltip as a self-closing tag with content prop */}
+              <ChartTooltip content={<ChartTooltipContent />} />
             </PieChart>
           </ChartContainer>
         </div>
@@ -65,7 +66,8 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
           {subscriptionData.map((item) => (
             <div key={item.plan} className="flex justify-between items-center">
               <span className="text-gray-500 dark:text-gray-400">
-                {t(`subscription.period.${item.plan}`)}
+                {/* Fix: Cast the string to keyof Translations to satisfy TypeScript */}
+                {t(`subscription.period.${item.plan}` as any)}
               </span>
               <span>{((item.count / total) * 100).toFixed(1)}%</span>
             </div>
