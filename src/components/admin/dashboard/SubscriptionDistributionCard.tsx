@@ -5,11 +5,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, Label, Sector } from "recharts";
-import { Tooltip } from "@/components/ui/tooltip";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell, ResponsiveContainer } from "recharts";
 
 interface SubscriptionData {
   plan: string;
@@ -23,7 +20,7 @@ interface SubscriptionDistributionCardProps {
 export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionDistributionCardProps) => {
   const { t } = useLanguage();
   
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ['#9b87f5', '#33C3F0', '#F97316', '#D946EF'];
   
   // Format the plan name for display
   const formatPlanName = (plan: string): string => {
@@ -36,50 +33,10 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
   
   const data = subscriptionData.map((item, index) => ({
     name: formatPlanName(item.plan),
-    plan: item.plan,
     value: item.count,
     percentage: ((item.count / total) * 100).toFixed(1),
     color: COLORS[index % COLORS.length]
   }));
-
-  // Custom rendering component for the labels
-  const renderCustomizedLabel = (props: any) => {
-    const { cx, cy, midAngle, innerRadius, outerRadius, plan, percentage, color } = props;
-    
-    // Calculate the position for the text
-    const radius = outerRadius * 1.1;
-    const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
-    const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
-    
-    // Get formatted plan name
-    const planName = formatPlanName(plan);
-    
-    return (
-      <g>
-        <text 
-          x={x} 
-          y={y-8} 
-          fill={color}
-          textAnchor={x > cx ? 'start' : 'end'} 
-          dominantBaseline="central"
-          fontSize="12"
-          fontWeight="bold"
-        >
-          {planName}
-        </text>
-        <text 
-          x={x} 
-          y={y+8} 
-          fill={color}
-          textAnchor={x > cx ? 'start' : 'end'} 
-          dominantBaseline="central"
-          fontSize="12"
-        >
-          {percentage}%
-        </text>
-      </g>
-    );
-  };
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
@@ -90,47 +47,62 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col h-[280px]">
-          <div className="text-2xl font-bold mb-12">
+          <div className="text-2xl font-bold mb-8">
             {total}
           </div>
           
-          {/* Chart container with proper spacing and position - now takes full height */}
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 w-full">
             <ChartContainer className="h-[200px] w-full" config={{}}>
-              <PieChart margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
-                <Pie
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
                   data={data}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={70}
-                  paddingAngle={2}
-                  labelLine={true}
+                  layout="vertical"
+                  margin={{ top: 10, right: 30, left: 120, bottom: 10 }}
                 >
-                  {data.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.color} 
-                    />
-                  ))}
-                </Pie>
-                {/* Render labels separately outside the Pie component */}
-                {data.map((entry, index) => 
-                  renderCustomizedLabel({
-                    cx: 250, // center x
-                    cy: 100, // center y
-                    midAngle: 45 + (index * 90), // distribute labels evenly
-                    innerRadius: 40,
-                    outerRadius: 70,
-                    plan: entry.plan,
-                    percentage: entry.percentage,
-                    color: entry.color
-                  })
-                )}
-                <ChartTooltip content={<ChartTooltipContent />} />
-              </PieChart>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                  <XAxis 
+                    type="number" 
+                    domain={[0, 'dataMax']} 
+                    tickFormatter={(value) => `${value}`}
+                  />
+                  <YAxis 
+                    type="category" 
+                    dataKey="name" 
+                    width={100}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <ChartTooltip 
+                    content={<ChartTooltipContent />} 
+                    formatter={(value, name) => [`${value} (${data.find(item => item.name === name)?.percentage}%)`, name]}
+                  />
+                  <Bar 
+                    dataKey="value" 
+                    barSize={30} 
+                    radius={[0, 4, 4, 0]}
+                    label={(props) => {
+                      const { x, y, width, height, value, index } = props;
+                      const percentage = data[index].percentage;
+                      return (
+                        <text 
+                          x={x + width + 5} 
+                          y={y + height / 2} 
+                          fill={data[index].color}
+                          textAnchor="start" 
+                          dominantBaseline="middle"
+                          fontSize="12"
+                        >
+                          {value} ({percentage}%)
+                        </text>
+                      );
+                    }}
+                  >
+                    {data.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </ChartContainer>
           </div>
         </div>
