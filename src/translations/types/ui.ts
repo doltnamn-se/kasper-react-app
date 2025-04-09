@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -64,12 +65,6 @@ export interface UITranslations {
   'password.updated.successfully': string;
   'password.update.error': string;
   'total.customers': string;
-  'private.customers': string;
-  'business.customers': string;
-  'subscription.period.1month': string;
-  'subscription.period.6months': string;
-  'subscription.period.12months': string;
-  'subscription.period.24months': string;
   'view.all.columns': string;
   'toggle.columns': string;
   'add.customer': string;
@@ -108,9 +103,17 @@ export interface UITranslations {
   'pagination.page': string;
   'pagination.items.per.page': string;
   'pagination.total.items': string;
+  'private.customers': string;
+  'business.customers': string;
+  'subscription.period.1month': string;
+  'subscription.period.6months': string;
+  'subscription.period.12months': string;
+  'subscription.period.24months': string;
   'online.users': string;
   'link.management': string;
   'total.links': string;
   'pending.links': string;
   'subscription.distribution': string;
+  'customers': string;  // Add the missing key
 };
+

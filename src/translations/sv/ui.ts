@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -115,4 +116,6 @@ export const ui: UITranslations = {
   'total.links': 'Totalt antal länkar',
   'pending.links': 'Pågående länkar',
   'subscription.distribution': 'Prenumerationsfördelning',
+  'customers': 'Kunder',  // Add the missing key
 };
+
