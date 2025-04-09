@@ -59,7 +59,7 @@ export const DashboardCard = ({
         )}
 
         {chart && (
-          <div className="mt-2 border-t border-[#e5e7eb] dark:border-[#232325] pt-4">
+          <div className="mt-2 flex flex-col h-full">
             {chart}
           </div>
         )}

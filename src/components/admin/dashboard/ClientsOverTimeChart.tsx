@@ -45,7 +45,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   const lastDate = data.length > 0 ? new Date(data[data.length - 1]?.date) : new Date();
 
   return (
-    <div className="w-full h-[100px] mt-2">
+    <div className="w-full h-[100px] mt-auto">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 0, right: 0, left: -20, bottom: 5 }}>
           <XAxis 
@@ -58,7 +58,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
           <YAxis 
             hide={true}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
           <Bar 
             dataKey="count" 
             fill="#10b981" 
