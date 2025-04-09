@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
@@ -82,7 +83,9 @@ export const OnlineUsersCard = () => {
                 </span>
               </div>
               <div className="flex items-center">
-                <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-0 px-2 py-0.5">
+                <Badge 
+                  className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-0 px-2 py-0.5 hover:bg-green-100 dark:hover:bg-green-900/30"
+                >
                   <span className="text-xs">{t('online')}</span>
                 </Badge>
               </div>
