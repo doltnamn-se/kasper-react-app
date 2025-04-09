@@ -25,13 +25,12 @@ export const LinkManagementCard = () => {
           return;
         }
 
-        // Fetch number of links not in completed or removal_approved status
+        // Fetch number of links not in "completed" status
         // These are the "pending" links - links that haven't reached the final status
         const { count: pendingCount, error: pendingError } = await supabase
           .from('removal_urls')
           .select('*', { count: 'exact', head: true })
-          .not('status', 'eq', 'completed')
-          .not('current_status', 'eq', 'removal_approved');
+          .not('status', 'eq', 'completed');
 
         if (pendingError) {
           console.error('Error fetching pending links:', pendingError);
