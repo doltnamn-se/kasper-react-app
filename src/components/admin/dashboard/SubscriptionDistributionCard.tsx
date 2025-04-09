@@ -48,11 +48,11 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col h-[280px]">
-          {/* Fixed height container with centered chart */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="w-full max-w-[180px] mx-auto">
-              <ChartContainer className="w-full" config={{}}>
-                <PieChart>
+          {/* Chart container with proper spacing and position */}
+          <div className="flex-1 flex items-center justify-center py-4">
+            <div className="w-full max-w-[220px] mx-auto">
+              <ChartContainer className="h-[160px] w-full" config={{}}>
+                <PieChart margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
                   <Pie
                     data={data}
                     dataKey="value"
@@ -73,7 +73,7 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
           </div>
           
           {/* Data grid with fixed position at the bottom */}
-          <div className="grid grid-cols-2 gap-4 mt-4 text-sm">
+          <div className="grid grid-cols-2 gap-4 mt-auto text-sm">
             {subscriptionData.map((item) => (
               <div key={item.plan} className="flex justify-between items-center">
                 <span className="text-gray-500 dark:text-gray-400">
