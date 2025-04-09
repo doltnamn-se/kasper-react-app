@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -104,7 +105,6 @@ export const ui: UITranslations = {
   'pagination.page': 'Sida',
   'pagination.items.per.page': 'Objekt per sida',
   'pagination.total.items': 'Totalt antal objekt',
-  'total.customers': 'Aktiva Kunder',
   'private.customers': 'Privatkunder',
   'business.customers': 'Företagskunder',
   'subscription.period.1month': '1 månad:',
