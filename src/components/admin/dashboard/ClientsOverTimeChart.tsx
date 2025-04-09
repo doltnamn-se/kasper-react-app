@@ -30,10 +30,10 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     if (active && payload && payload.length) {
       try {
         const date = new Date(label);
-        // Format date using timezone-aware function
+        // Format date using timezone-aware function, but only show the date part
         const formattedDate = language === 'en' 
-          ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, h:mma", { locale: enUS })
-          : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM HH:mm", { locale: sv }).replace('.', '');
+          ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, yyyy", { locale: enUS })
+          : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM yyyy", { locale: sv }).replace('.', '');
         
         return (
           <div className="bg-white dark:bg-[#1c1c1e] p-2 border border-[#e5e7eb] dark:border-[#232325] rounded shadow-sm text-xs">
@@ -53,11 +53,11 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   const firstDate = data.length > 0 ? new Date(data[0]?.date) : new Date();
   const lastDate = data.length > 0 ? new Date(data[data.length - 1]?.date) : new Date();
 
-  // Format the bottom dates based on language with timezone conversion
+  // Format the bottom dates based on language with timezone conversion, showing only the date part
   const formatBottomDate = (date: Date) => {
     return language === 'en'
-      ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, h:mma", { locale: enUS })
-      : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM HH:mm", { locale: sv }).replace('.', '');
+      ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, yyyy", { locale: enUS })
+      : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM yyyy", { locale: sv }).replace('.', '');
   };
 
   return (
