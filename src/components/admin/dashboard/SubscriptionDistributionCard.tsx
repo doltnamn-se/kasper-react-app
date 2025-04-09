@@ -48,7 +48,7 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col h-[280px]">
-          <div className="text-2xl font-bold mb-8">
+          <div className="text-2xl font-bold mb-12">
             {total}
           </div>
           

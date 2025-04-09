@@ -60,7 +60,7 @@ export const OnlineUsersCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="text-2xl font-bold mb-8">{onlineCount}</div>
+        <div className="text-2xl font-bold mb-12">{onlineCount}</div>
         
         <div className="space-y-3 mt-2">
           {onlineUsersList.map(user => (

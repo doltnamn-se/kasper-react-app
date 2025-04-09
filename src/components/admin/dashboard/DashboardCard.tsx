@@ -45,7 +45,7 @@ export const DashboardCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 flex flex-col flex-grow">
-        <div className="text-2xl font-bold mb-8">
+        <div className="text-2xl font-bold mb-12">
           {value}
         </div>
         
