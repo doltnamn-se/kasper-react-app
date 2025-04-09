@@ -3,6 +3,7 @@ import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
+import { formatInTimeZone } from "date-fns-tz";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ClientsOverTimeData {
@@ -13,6 +14,9 @@ interface ClientsOverTimeData {
 interface ClientsOverTimeChartProps {
   data: ClientsOverTimeData[];
 }
+
+// Swedish timezone
+const SWEDISH_TIMEZONE = "Europe/Stockholm";
 
 export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data }) => {
   const { t, language } = useLanguage();
@@ -26,10 +30,10 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     if (active && payload && payload.length) {
       try {
         const date = new Date(label);
-        // Format date based on language
+        // Format date using timezone-aware function
         const formattedDate = language === 'en' 
-          ? format(date, "MMM d, h:mma", { locale: enUS })
-          : format(date, "d MMM HH:mm", { locale: sv }).replace('.', '');
+          ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, h:mma", { locale: enUS })
+          : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM HH:mm", { locale: sv }).replace('.', '');
         
         return (
           <div className="bg-white dark:bg-[#1c1c1e] p-2 border border-[#e5e7eb] dark:border-[#232325] rounded shadow-sm text-xs">
@@ -38,6 +42,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
           </div>
         );
       } catch (error) {
+        console.error("Error formatting date:", error);
         return null;
       }
     }
@@ -48,11 +53,11 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   const firstDate = data.length > 0 ? new Date(data[0]?.date) : new Date();
   const lastDate = data.length > 0 ? new Date(data[data.length - 1]?.date) : new Date();
 
-  // Format the bottom dates based on language
+  // Format the bottom dates based on language with timezone conversion
   const formatBottomDate = (date: Date) => {
     return language === 'en'
-      ? format(date, "MMM d, h:mma", { locale: enUS })
-      : format(date, "d MMM HH:mm", { locale: sv }).replace('.', '');
+      ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, h:mma", { locale: enUS })
+      : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM HH:mm", { locale: sv }).replace('.', '');
   };
 
   return (
