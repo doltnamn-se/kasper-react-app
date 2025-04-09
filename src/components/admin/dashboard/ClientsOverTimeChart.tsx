@@ -26,7 +26,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     if (active && payload && payload.length) {
       try {
         const date = new Date(label);
-        const formattedDate = format(date, "MMM d, HH:mm", { locale: sv });
+        const formattedDate = format(date, "d MMM yyyy", { locale: sv });
         return (
           <div className="bg-white dark:bg-[#1c1c1e] p-2 border border-[#e5e7eb] dark:border-[#232325] rounded shadow-sm text-xs">
             <p className="font-medium">{formattedDate}</p>
@@ -39,6 +39,10 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     }
     return null;
   };
+
+  // Get first and last date from the data
+  const firstDate = data.length > 0 ? new Date(data[0]?.date) : new Date();
+  const lastDate = data.length > 0 ? new Date(data[data.length - 1]?.date) : new Date();
 
   return (
     <div className="w-full h-[100px] mt-2">
@@ -64,8 +68,8 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
         </BarChart>
       </ResponsiveContainer>
       <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 px-1">
-        <span>{format(new Date(data[0]?.date || new Date()), "MMM d, HH:mm", { locale: sv })}</span>
-        <span>{format(new Date(data[data.length - 1]?.date || new Date()), "MMM d, HH:mm", { locale: sv })}</span>
+        <span>{format(firstDate, "MMM yyyy", { locale: sv })}</span>
+        <span>{format(lastDate, "MMM yyyy", { locale: sv })}</span>
       </div>
     </div>
   );

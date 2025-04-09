@@ -45,7 +45,8 @@ export const useAdminDashboardData = () => {
             customer_type,
             subscription_plan,
             created_at
-          `);
+          `)
+          .order('created_at', { ascending: true });
 
         if (error) {
           console.error('Error fetching customer data:', error);
@@ -91,18 +92,8 @@ export const useAdminDashboardData = () => {
         };
 
         // Process customer registration dates
-        // Group registrations by hour for the last 2 days
-        const now = new Date();
-        const twoDaysAgo = subDays(now, 2);
-        const hourlyData: { [key: string]: number } = {};
-
-        // Initialize hourly buckets for the last 2 days (48 hours)
-        for (let i = 0; i < 48; i++) {
-          const hourDate = subDays(now, 2 - i/24);
-          hourDate.setMinutes(0, 0, 0);
-          const hourKey = hourDate.toISOString();
-          hourlyData[hourKey] = 0;
-        }
+        // Group registrations by month for all time
+        const monthlyData: { [key: string]: number } = {};
 
         // Process each customer
         data.forEach((customer: any) => {
@@ -126,23 +117,19 @@ export const useAdminDashboardData = () => {
           if (customer.created_at) {
             const createdDate = new Date(customer.created_at);
             
-            // Only include registrations from the last 2 days
-            if (createdDate >= twoDaysAgo) {
-              // Round to the nearest hour
-              createdDate.setMinutes(0, 0, 0);
-              const hourKey = createdDate.toISOString();
-              
-              if (hourlyData[hourKey] !== undefined) {
-                hourlyData[hourKey]++;
-              } else {
-                hourlyData[hourKey] = 1;
-              }
+            // Group by month for a cleaner historical view
+            const monthKey = format(createdDate, 'yyyy-MM-dd');
+            
+            if (monthlyData[monthKey]) {
+              monthlyData[monthKey]++;
+            } else {
+              monthlyData[monthKey] = 1;
             }
           }
         });
 
-        // Convert hourly data to array format for the chart
-        const registrationData = Object.entries(hourlyData).map(([date, count]) => ({
+        // Convert monthly data to array format for the chart
+        const registrationData = Object.entries(monthlyData).map(([date, count]) => ({
           date,
           count
         })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
