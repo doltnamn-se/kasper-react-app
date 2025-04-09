@@ -4,6 +4,7 @@ import { useAdminDashboardData } from "@/hooks/useAdminDashboardData";
 import { OnlineUsersCard } from "@/components/admin/dashboard/OnlineUsersCard";
 import { DashboardCard } from "@/components/admin/dashboard/DashboardCard";
 import { LinkManagementCard } from "@/components/admin/dashboard/LinkManagementCard";
+import { SubscriptionDistributionCard } from "@/components/admin/dashboard/SubscriptionDistributionCard";
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
@@ -25,31 +26,36 @@ const AdminDashboard = () => {
       </h1>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {/* Active Customers Card (1) */}
+        {/* Active Customers Card */}
         <DashboardCard 
           title={t('total.customers')}
           value={totalCustomers}
           subscriptionData={totalSubscriptionData}
         />
         
-        {/* Online Users Card (2) */}
-        <OnlineUsersCard />
+        {/* Subscription Distribution Card */}
+        <SubscriptionDistributionCard 
+          subscriptionData={totalSubscriptionData}
+        />
         
-        {/* Private Customers Card (3) */}
+        {/* Private Customers Card */}
         <DashboardCard 
           title={t('private.customers')}
           value={privateSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
           subscriptionData={privateSubscriptionData}
         />
         
-        {/* Business Customers Card (4) */}
+        {/* Business Customers Card */}
         <DashboardCard 
           title={t('business.customers')}
           value={businessSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
           subscriptionData={businessSubscriptionData}
         />
 
-        {/* Link Management Card (5) */}
+        {/* Online Users Card */}
+        <OnlineUsersCard />
+
+        {/* Link Management Card */}
         <LinkManagementCard />
       </div>
     </div>

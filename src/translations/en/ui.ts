@@ -114,4 +114,5 @@ export const ui: UITranslations = {
   'link.management': 'Link Management',
   'total.links': 'Total Links',
   'pending.links': 'Pending Links',
+  'subscription.distribution': 'Subscription Distribution',
 };

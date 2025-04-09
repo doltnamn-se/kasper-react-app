@@ -112,4 +112,5 @@ export interface UITranslations {
   'link.management': string;
   'total.links': string;
   'pending.links': string;
+  'subscription.distribution': string;
 };
