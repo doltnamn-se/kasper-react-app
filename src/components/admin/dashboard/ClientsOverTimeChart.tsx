@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
@@ -19,6 +20,7 @@ const SWEDISH_TIMEZONE = "Europe/Stockholm";
 
 export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data }) => {
   const { t, language } = useLanguage();
+  const [activeBarIndex, setActiveBarIndex] = useState<number | null>(null);
   
   // Custom tooltip component
   const CustomTooltip = ({
@@ -59,10 +61,21 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
       : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM yyyy", { locale: sv }).replace('.', '');
   };
 
+  // Handle mouse enter for the bars
+  const handleMouseEnter = (data: any, index: number) => {
+    setActiveBarIndex(index);
+  };
+
+  // Handle mouse leave for the bars
+  const handleMouseLeave = () => {
+    setActiveBarIndex(null);
+  };
+
   return (
     <div className="w-full h-[100px] pb-6">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 0, right: 0, left: -20, bottom: 5 }}>
+        <BarChart data={data} margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
+          onMouseLeave={handleMouseLeave}>
           <XAxis 
             dataKey="date" 
             axisLine={false}
@@ -76,9 +89,36 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
           <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
           <Bar 
             dataKey="count" 
-            fill="#10b981" 
+            className="fill-[#10b981] hover:fill-[#16b674] dark:hover:fill-[#006239]"
             barSize={4} 
             radius={[2, 2, 0, 0]}
+            onMouseEnter={handleMouseEnter}
+            shape={(props) => {
+              const { x, y, width, height, index } = props;
+              return (
+                <rect
+                  x={x}
+                  y={y}
+                  width={width}
+                  height={height}
+                  radius={[2, 2, 0, 0]}
+                  fill={
+                    activeBarIndex === index
+                      ? "#3fcf8e" // Light mode hover color for active bar
+                      : activeBarIndex !== null
+                      ? "#16b674" // Light mode hover color for inactive bars
+                      : "#10b981" // Default color
+                  }
+                  className={
+                    activeBarIndex === index
+                      ? "dark:fill-[#3ecf8e]" // Dark mode hover color for active bar
+                      : activeBarIndex !== null
+                      ? "dark:fill-[#006239]" // Dark mode hover color for inactive bars
+                      : "dark:fill-[#10b981]" // Default dark mode color
+                  }
+                />
+              );
+            }}
           />
         </BarChart>
       </ResponsiveContainer>
@@ -89,3 +129,4 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     </div>
   );
 };
+
