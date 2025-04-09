@@ -91,7 +91,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
             dataKey="count" 
             className="fill-[#10b981] hover:fill-[#16b674] dark:hover:fill-[#006239]"
             barSize={4} 
-            radius={[2, 2, 0, 0]}
+            radius={2}
             onMouseEnter={handleMouseEnter}
             shape={(props) => {
               const { x, y, width, height, index } = props;
@@ -101,7 +101,8 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
                   y={y}
                   width={width}
                   height={height}
-                  radius={[2, 2, 0, 0]}
+                  rx={2}
+                  ry={2}
                   fill={
                     activeBarIndex === index
                       ? "#3fcf8e" // Light mode hover color for active bar
@@ -129,4 +130,3 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     </div>
   );
 };
-
