@@ -38,7 +38,7 @@ const AdminLayout = () => {
           {/* Main Content */}
           <div className={cn("flex-1 min-h-screen transition-[margin] duration-300 ease-in-out", isMobile ? "ml-0" : isCollapsed ? "ml-16" : "ml-72")}>
             <TopNav />
-            <main className="px-12 pt-12 my-[30px]">
+            <main className="px-12 pt-12 my-[20px]">
               <div className="max-w-[1400px] mx-auto">
                 <Outlet />
               </div>
