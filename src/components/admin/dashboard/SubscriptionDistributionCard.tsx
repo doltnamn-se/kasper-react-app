@@ -47,35 +47,42 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="h-[200px] w-full">
-          <ChartContainer className="w-full" config={{}}>
-            <PieChart>
-              <Pie
-                data={data}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-              >
-                {data.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <ChartTooltip content={<ChartTooltipContent />} />
-            </PieChart>
-          </ChartContainer>
-        </div>
-        <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
-          {subscriptionData.map((item) => (
-            <div key={item.plan} className="flex justify-between items-center">
-              <span className="text-gray-500 dark:text-gray-400">
-                {formatPlanName(item.plan)}:
-              </span>
-              <span>{((item.count / total) * 100).toFixed(1)}%</span>
+        <div className="flex flex-col h-[280px]">
+          {/* Fixed height container with centered chart */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-[180px] mx-auto">
+              <ChartContainer className="w-full" config={{}}>
+                <PieChart>
+                  <Pie
+                    data={data}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}
+                    outerRadius={60}
+                  >
+                    {data.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                </PieChart>
+              </ChartContainer>
             </div>
-          ))}
+          </div>
+          
+          {/* Data grid with fixed position at the bottom */}
+          <div className="grid grid-cols-2 gap-4 mt-4 text-sm">
+            {subscriptionData.map((item) => (
+              <div key={item.plan} className="flex justify-between items-center">
+                <span className="text-gray-500 dark:text-gray-400">
+                  {formatPlanName(item.plan)}:
+                </span>
+                <span>{((item.count / total) * 100).toFixed(1)}%</span>
+              </div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </div>
