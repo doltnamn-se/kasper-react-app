@@ -13,9 +13,16 @@ interface DashboardCardProps {
   value: number | string;
   icon?: ReactNode;
   subscriptionData?: SubscriptionData[];
+  showSubscriptionBreakdown?: boolean;
 }
 
-export const DashboardCard = ({ title, value, icon, subscriptionData }: DashboardCardProps) => {
+export const DashboardCard = ({ 
+  title, 
+  value, 
+  icon, 
+  subscriptionData,
+  showSubscriptionBreakdown = false 
+}: DashboardCardProps) => {
   const { t } = useLanguage();
   
   const formatPlanName = (plan: string) => {
@@ -38,7 +45,7 @@ export const DashboardCard = ({ title, value, icon, subscriptionData }: Dashboar
       <CardContent className="p-0">
         <div className="text-2xl font-bold mb-4">{value}</div>
         
-        {subscriptionData && subscriptionData.length > 0 && (
+        {showSubscriptionBreakdown && subscriptionData && subscriptionData.length > 0 && (
           <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
             {subscriptionData.map((item) => (
               <div key={item.plan} className="flex justify-between items-center">

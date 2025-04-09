@@ -24,11 +24,12 @@ const AdminDashboard = () => {
       </h1>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {/* Active Customers Card */}
+        {/* Active Customers Card - No subscription breakdown */}
         <DashboardCard 
           title={t('total.customers')}
           value={totalCustomers}
           subscriptionData={totalSubscriptionData}
+          showSubscriptionBreakdown={false}
         />
         
         {/* Subscription Distribution Card */}
