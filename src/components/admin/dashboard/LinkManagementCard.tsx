@@ -56,7 +56,7 @@ export const LinkManagementCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="text-2xl font-bold mb-4">
+        <div className="text-2xl font-bold mb-8">
           {isLoading ? "..." : totalLinks}
         </div>
         

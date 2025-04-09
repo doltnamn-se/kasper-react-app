@@ -45,7 +45,9 @@ export const DashboardCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 flex flex-col flex-grow">
-        <div className="text-2xl font-bold mb-4">{value}</div>
+        <div className="text-2xl font-bold mb-8">
+          {value}
+        </div>
         
         {showSubscriptionBreakdown && subscriptionData && subscriptionData.length > 0 && (
           <div className="grid grid-cols-2 gap-2 mt-2 text-sm">

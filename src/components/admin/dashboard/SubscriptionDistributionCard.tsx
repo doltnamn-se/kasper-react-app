@@ -48,8 +48,12 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col h-[280px]">
+          <div className="text-2xl font-bold mb-8">
+            {total}
+          </div>
+          
           {/* Chart container with proper spacing and position */}
-          <div className="flex-1 flex items-center justify-center py-4">
+          <div className="flex-1 flex items-center justify-center">
             <div className="w-full max-w-[220px] mx-auto">
               <ChartContainer className="h-[160px] w-full" config={{}}>
                 <PieChart margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
