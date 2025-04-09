@@ -18,7 +18,7 @@ const AdminDashboard = () => {
         {t('nav.admin.dashboard')}
       </h1>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2">
         {/* Three main cards with subscription breakdowns */}
         <CustomerTypeCards 
           totalCustomers={totalCustomers} 
