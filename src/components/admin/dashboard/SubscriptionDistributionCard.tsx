@@ -8,7 +8,7 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
-import { PieChart, Pie, Cell } from "recharts";
+import { PieChart, Pie, Cell, Label, Sector } from "recharts";
 import { Tooltip } from "@/components/ui/tooltip";
 
 interface SubscriptionData {
@@ -32,12 +32,54 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
     return t(`subscription.${uiPlanKey}` as any);
   };
   
-  const data = subscriptionData.map(item => ({
+  const total = subscriptionData.reduce((sum, item) => sum + item.count, 0);
+  
+  const data = subscriptionData.map((item, index) => ({
     name: formatPlanName(item.plan),
-    value: item.count
+    plan: item.plan,
+    value: item.count,
+    percentage: ((item.count / total) * 100).toFixed(1),
+    color: COLORS[index % COLORS.length]
   }));
 
-  const total = subscriptionData.reduce((sum, item) => sum + item.count, 0);
+  // Custom rendering component for the labels
+  const renderCustomizedLabel = (props: any) => {
+    const { cx, cy, midAngle, innerRadius, outerRadius, plan, percentage, color } = props;
+    
+    // Calculate the position for the text
+    const radius = outerRadius * 1.1;
+    const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
+    const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
+    
+    // Get formatted plan name
+    const planName = formatPlanName(plan);
+    
+    return (
+      <g>
+        <text 
+          x={x} 
+          y={y-8} 
+          fill={color}
+          textAnchor={x > cx ? 'start' : 'end'} 
+          dominantBaseline="central"
+          fontSize="12"
+          fontWeight="bold"
+        >
+          {planName}
+        </text>
+        <text 
+          x={x} 
+          y={y+8} 
+          fill={color}
+          textAnchor={x > cx ? 'start' : 'end'} 
+          dominantBaseline="central"
+          fontSize="12"
+        >
+          {percentage}%
+        </text>
+      </g>
+    );
+  };
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
@@ -52,40 +94,44 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
             {total}
           </div>
           
-          {/* Chart container with proper spacing and position */}
+          {/* Chart container with proper spacing and position - now takes full height */}
           <div className="flex-1 flex items-center justify-center">
-            <div className="w-full max-w-[220px] mx-auto">
-              <ChartContainer className="h-[160px] w-full" config={{}}>
-                <PieChart margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-                  <Pie
-                    data={data}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={40}
-                    outerRadius={60}
-                  >
-                    {data.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </PieChart>
-              </ChartContainer>
-            </div>
-          </div>
-          
-          {/* Data grid with fixed position at the bottom */}
-          <div className="grid grid-cols-2 gap-4 mt-auto text-sm">
-            {subscriptionData.map((item) => (
-              <div key={item.plan} className="flex justify-between items-center">
-                <span className="text-gray-500 dark:text-gray-400">
-                  {formatPlanName(item.plan)}:
-                </span>
-                <span>{((item.count / total) * 100).toFixed(1)}%</span>
-              </div>
-            ))}
+            <ChartContainer className="h-[200px] w-full" config={{}}>
+              <PieChart margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
+                <Pie
+                  data={data}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={40}
+                  outerRadius={70}
+                  paddingAngle={2}
+                  labelLine={true}
+                >
+                  {data.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.color} 
+                      plan={entry.plan}
+                      percentage={entry.percentage}
+                    />
+                  ))}
+                  {data.map((entry, index) => 
+                    renderCustomizedLabel({
+                      ...entry,
+                      cx: 250, // center x
+                      cy: 100, // center y
+                      midAngle: 45 + (index * 90), // distribute labels evenly
+                      innerRadius: 40,
+                      outerRadius: 70,
+                      color: entry.color
+                    })
+                  )}
+                </Pie>
+                <ChartTooltip content={<ChartTooltipContent />} />
+              </PieChart>
+            </ChartContainer>
           </div>
         </div>
       </CardContent>
