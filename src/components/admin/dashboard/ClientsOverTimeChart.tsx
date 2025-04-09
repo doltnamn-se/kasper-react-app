@@ -4,7 +4,6 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { formatInTimeZone } from "date-fns-tz";
 
 interface ClientsOverTimeData {
   date: string;
@@ -17,7 +16,6 @@ interface ClientsOverTimeChartProps {
 
 export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data }) => {
   const { t, language } = useLanguage();
-  const timeZone = "Europe/Stockholm"; // Swedish timezone
   
   // Custom tooltip component
   const CustomTooltip = ({
@@ -28,10 +26,10 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     if (active && payload && payload.length) {
       try {
         const date = new Date(label);
-        // Format date based on language using the Swedish timezone
+        // Format date based on language
         const formattedDate = language === 'en' 
-          ? formatInTimeZone(date, timeZone, "MMM d, h:mma", { locale: enUS })
-          : formatInTimeZone(date, timeZone, "d MMM HH:mm", { locale: sv }).replace('.', '');
+          ? format(date, "MMM d, h:mma", { locale: enUS })
+          : format(date, "d MMM HH:mm", { locale: sv }).replace('.', '');
         
         return (
           <div className="bg-white dark:bg-[#1c1c1e] p-2 border border-[#e5e7eb] dark:border-[#232325] rounded shadow-sm text-xs">
@@ -53,8 +51,8 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   // Format the bottom dates based on language
   const formatBottomDate = (date: Date) => {
     return language === 'en'
-      ? formatInTimeZone(date, timeZone, "MMM d, h:mma", { locale: enUS })
-      : formatInTimeZone(date, timeZone, "d MMM HH:mm", { locale: sv }).replace('.', '');
+      ? format(date, "MMM d, h:mma", { locale: enUS })
+      : format(date, "d MMM HH:mm", { locale: sv }).replace('.', '');
   };
 
   return (
