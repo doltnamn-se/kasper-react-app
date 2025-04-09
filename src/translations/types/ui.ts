@@ -108,4 +108,5 @@ export interface UITranslations {
   'pagination.page': string;
   'pagination.items.per.page': string;
   'pagination.total.items': string;
+  'online.users': string;
 };

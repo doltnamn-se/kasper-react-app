@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -111,4 +110,5 @@ export const ui: UITranslations = {
   'subscription.period.6months': '6 månader:',
   'subscription.period.12months': '12 månader:',
   'subscription.period.24months': '24 månader:',
+  'online.users': 'Användare online',
 };

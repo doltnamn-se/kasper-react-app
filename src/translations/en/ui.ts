@@ -110,4 +110,5 @@ export const ui: UITranslations = {
   'subscription.period.6months': '6 months:',
   'subscription.period.12months': '12 months:',
   'subscription.period.24months': '24 months:',
+  'online.users': 'Online Users',
 };
