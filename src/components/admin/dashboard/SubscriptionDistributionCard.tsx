@@ -113,22 +113,22 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
                     <Cell 
                       key={`cell-${index}`} 
                       fill={entry.color} 
-                      plan={entry.plan}
-                      percentage={entry.percentage}
                     />
                   ))}
-                  {data.map((entry, index) => 
-                    renderCustomizedLabel({
-                      ...entry,
-                      cx: 250, // center x
-                      cy: 100, // center y
-                      midAngle: 45 + (index * 90), // distribute labels evenly
-                      innerRadius: 40,
-                      outerRadius: 70,
-                      color: entry.color
-                    })
-                  )}
                 </Pie>
+                {/* Render labels separately outside the Pie component */}
+                {data.map((entry, index) => 
+                  renderCustomizedLabel({
+                    cx: 250, // center x
+                    cy: 100, // center y
+                    midAngle: 45 + (index * 90), // distribute labels evenly
+                    innerRadius: 40,
+                    outerRadius: 70,
+                    plan: entry.plan,
+                    percentage: entry.percentage,
+                    color: entry.color
+                  })
+                )}
                 <ChartTooltip content={<ChartTooltipContent />} />
               </PieChart>
             </ChartContainer>
