@@ -4,7 +4,6 @@ import { useAdminDashboardData } from "@/hooks/useAdminDashboardData";
 import { OnlineUsersCard } from "@/components/admin/dashboard/OnlineUsersCard";
 import { DashboardCard } from "@/components/admin/dashboard/DashboardCard";
 import { LinkManagementCard } from "@/components/admin/dashboard/LinkManagementCard";
-import { UsersRound, User, Briefcase } from "lucide-react";
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
@@ -30,7 +29,6 @@ const AdminDashboard = () => {
         <DashboardCard 
           title={t('total.customers')}
           value={totalCustomers}
-          icon={<UsersRound className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />}
           subscriptionData={totalSubscriptionData}
         />
         
@@ -41,7 +39,6 @@ const AdminDashboard = () => {
         <DashboardCard 
           title={t('private.customers')}
           value={privateSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
-          icon={<User className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />}
           subscriptionData={privateSubscriptionData}
         />
         
@@ -49,7 +46,6 @@ const AdminDashboard = () => {
         <DashboardCard 
           title={t('business.customers')}
           value={businessSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
-          icon={<Briefcase className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />}
           subscriptionData={businessSubscriptionData}
         />
 

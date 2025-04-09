@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "lucide-react";
 
 export const LinkManagementCard = () => {
   const { t } = useLanguage();
@@ -55,7 +54,6 @@ export const LinkManagementCard = () => {
         <CardTitle className="text-sm font-medium">
           {t('link.management')}
         </CardTitle>
-        <Link className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
       </CardHeader>
       <CardContent className="p-0">
         <div className="text-2xl font-bold mb-4">

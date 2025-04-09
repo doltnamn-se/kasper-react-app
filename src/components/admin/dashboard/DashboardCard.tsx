@@ -34,7 +34,6 @@ export const DashboardCard = ({ title, value, icon, subscriptionData }: Dashboar
         <CardTitle className="text-sm font-medium">
           {title}
         </CardTitle>
-        {icon}
       </CardHeader>
       <CardContent className="p-0">
         <div className="text-2xl font-bold mb-4">{value}</div>
