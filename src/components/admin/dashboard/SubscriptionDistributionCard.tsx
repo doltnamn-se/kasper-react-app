@@ -46,13 +46,10 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
   const renderCustomizedLabel = (props: any) => {
     const { cx, cy, midAngle, innerRadius, outerRadius, plan, percentage, color } = props;
     
-    // Calculate position for labels - using proper math to position them correctly
-    const RADIAN = Math.PI / 180;
-    // Increase radius to move labels further from the chart
-    const radius = outerRadius * 1.3;
-    // Use midAngle to place each label at the middle of its segment
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    // Calculate the position for the text
+    const radius = outerRadius * 1.1;
+    const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
+    const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
     
     // Get formatted plan name
     const planName = formatPlanName(plan);
@@ -93,14 +90,14 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col h-[280px]">
-          <div className="text-2xl font-bold mb-4">
+          <div className="text-2xl font-bold mb-12">
             {total}
           </div>
           
-          {/* Chart container, reduced top margin and centered */}
+          {/* Chart container with proper spacing and position - now takes full height */}
           <div className="flex-1 flex items-center justify-center">
-            <ChartContainer className="h-[220px] w-full" config={{}}>
-              <PieChart width={500} height={200}>
+            <ChartContainer className="h-[200px] w-full" config={{}}>
+              <PieChart margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
                 <Pie
                   data={data}
                   dataKey="value"
@@ -110,7 +107,7 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
                   innerRadius={40}
                   outerRadius={70}
                   paddingAngle={2}
-                  labelLine={false}
+                  labelLine={true}
                 >
                   {data.map((entry, index) => (
                     <Cell 
@@ -119,30 +116,19 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
                     />
                   ))}
                 </Pie>
-                {/* Render labels with carefully calculated positions based on segment angles */}
-                {data.map((entry, index) => {
-                  // Calculate proper angle distribution based on data values
-                  const angleOffset = data.reduce((acc, item, i) => {
-                    if (i < index) {
-                      return acc + (item.value / total) * 360;
-                    }
-                    return acc;
-                  }, 0);
-                  
-                  const segmentAngle = (entry.value / total) * 360;
-                  const midAngle = angleOffset + (segmentAngle / 2);
-                  
-                  return renderCustomizedLabel({
-                    cx: "50%",
-                    cy: "50%",
-                    midAngle: midAngle,
+                {/* Render labels separately outside the Pie component */}
+                {data.map((entry, index) => 
+                  renderCustomizedLabel({
+                    cx: 250, // center x
+                    cy: 100, // center y
+                    midAngle: 45 + (index * 90), // distribute labels evenly
                     innerRadius: 40,
                     outerRadius: 70,
                     plan: entry.plan,
                     percentage: entry.percentage,
                     color: entry.color
-                  });
-                })}
+                  })
+                )}
                 <ChartTooltip content={<ChartTooltipContent />} />
               </PieChart>
             </ChartContainer>
