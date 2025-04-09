@@ -4,37 +4,58 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
+import { getUserInitials } from "@/utils/profileUtils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Check } from "lucide-react";
+
+type OnlineUserInfo = {
+  id: string;
+  display_name: string | null;
+  email: string | null;
+  avatar_url: string | null;
+};
 
 export const OnlineUsersCard = () => {
   const { t } = useLanguage();
   const { onlineUsers } = useCustomerPresence();
   const [onlineCount, setOnlineCount] = useState<number>(0);
+  const [onlineUsersList, setOnlineUsersList] = useState<OnlineUserInfo[]>([]);
   
   useEffect(() => {
-    // Get all profiles to find the admin user ID
-    const fetchAdminUserId = async () => {
-      const { data } = await supabase
+    // Get all profiles to find the admin user ID and fetch online users data
+    const fetchOnlineUsersData = async () => {
+      // Find admin ID
+      const { data: adminData } = await supabase
         .from('profiles')
         .select('id')
         .eq('email', 'info@doltnamn.se')
-        .single();
+        .maybeSingle();
       
-      const adminId = data?.id;
+      const adminId = adminData?.id;
+      
+      // Filter out admin from online users
+      const onlineUserIds = Array.from(onlineUsers).filter(id => id !== adminId);
       
       // Count online users excluding the admin
-      let count = 0;
-      if (adminId) {
-        // If we found the admin ID, exclude it from the count
-        count = Array.from(onlineUsers).filter(id => id !== adminId).length;
-      } else {
-        // Fallback to counting all users if we couldn't find the admin
-        count = onlineUsers.size;
-      }
+      setOnlineCount(onlineUserIds.length);
       
-      setOnlineCount(count);
+      if (onlineUserIds.length > 0) {
+        // Fetch profile information for online users
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('id, display_name, email, avatar_url')
+          .in('id', onlineUserIds);
+        
+        if (profilesData) {
+          setOnlineUsersList(profilesData);
+        }
+      } else {
+        setOnlineUsersList([]);
+      }
     };
     
-    fetchAdminUserId();
+    fetchOnlineUsersData();
   }, [onlineUsers]);
   
   return (
@@ -45,7 +66,44 @@ export const OnlineUsersCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="text-2xl font-bold">{onlineCount}</div>
+        <div className="text-2xl font-bold mb-4">{onlineCount}</div>
+        
+        {/* List of online users */}
+        <div className="space-y-3 mt-4">
+          {onlineUsersList.map(user => (
+            <div key={user.id} className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Avatar className="h-7 w-7">
+                  {user.avatar_url ? (
+                    <AvatarImage src={user.avatar_url} alt={user.display_name || user.email || ''} />
+                  ) : (
+                    <AvatarFallback className="text-xs">
+                      {getUserInitials({ 
+                        display_name: user.display_name, 
+                        email: user.email 
+                      })}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+                <span className="text-sm font-medium truncate max-w-[150px]">
+                  {user.display_name || user.email || t('no.name')}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-0 flex items-center gap-1 px-2 py-0.5">
+                  <Check size={12} className="text-green-600 dark:text-green-400" />
+                  <span className="text-xs">{t('online')}</span>
+                </Badge>
+              </div>
+            </div>
+          ))}
+          
+          {onlineUsersList.length === 0 && onlineCount === 0 && (
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {t('no.customers')}
+            </div>
+          )}
+        </div>
       </CardContent>
     </div>
   );
