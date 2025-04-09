@@ -14,10 +14,8 @@ const AdminDashboard = () => {
     getSubscriptionDataForType 
   } = useAdminDashboardData();
 
-  // Get subscription data for each card
+  // Get subscription data for total customers
   const totalSubscriptionData = getSubscriptionDataForType('all');
-  const privateSubscriptionData = getSubscriptionDataForType('private');
-  const businessSubscriptionData = getSubscriptionDataForType('business');
 
   return (
     <div>
@@ -36,20 +34,6 @@ const AdminDashboard = () => {
         {/* Subscription Distribution Card */}
         <SubscriptionDistributionCard 
           subscriptionData={totalSubscriptionData}
-        />
-        
-        {/* Private Customers Card */}
-        <DashboardCard 
-          title={t('private.customers')}
-          value={privateSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
-          subscriptionData={privateSubscriptionData}
-        />
-        
-        {/* Business Customers Card */}
-        <DashboardCard 
-          title={t('business.customers')}
-          value={businessSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
-          subscriptionData={businessSubscriptionData}
         />
 
         {/* Online Users Card */}
