@@ -9,13 +9,12 @@ interface SubscriptionData {
 
 interface DashboardCardProps {
   title: string;
-  value?: number | string;
-  icon?: ReactNode;
+  value: number | string;
+  icon: ReactNode;
   subscriptionData?: SubscriptionData[];
-  children?: ReactNode;
 }
 
-export const DashboardCard = ({ title, value, icon, subscriptionData, children }: DashboardCardProps) => {
+export const DashboardCard = ({ title, value, icon, subscriptionData }: DashboardCardProps) => {
   const formatPlanName = (plan: string) => {
     switch (plan) {
       case '1_month': return '1 month:';
@@ -32,9 +31,10 @@ export const DashboardCard = ({ title, value, icon, subscriptionData, children }
         <CardTitle className="text-sm font-medium">
           {title}
         </CardTitle>
+        {icon}
       </CardHeader>
       <CardContent className="p-0">
-        {value !== undefined && <div className="text-2xl font-bold mb-4">{value}</div>}
+        <div className="text-2xl font-bold mb-4">{value}</div>
         
         {subscriptionData && subscriptionData.length > 0 && (
           <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
@@ -46,8 +46,6 @@ export const DashboardCard = ({ title, value, icon, subscriptionData, children }
             ))}
           </div>
         )}
-        
-        {children}
       </CardContent>
     </div>
   );
