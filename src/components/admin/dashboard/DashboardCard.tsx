@@ -14,6 +14,7 @@ interface DashboardCardProps {
   icon?: ReactNode;
   subscriptionData?: SubscriptionData[];
   showSubscriptionBreakdown?: boolean;
+  chart?: ReactNode;
 }
 
 export const DashboardCard = ({ 
@@ -21,7 +22,8 @@ export const DashboardCard = ({
   value, 
   icon, 
   subscriptionData,
-  showSubscriptionBreakdown = false 
+  showSubscriptionBreakdown = false,
+  chart
 }: DashboardCardProps) => {
   const { t } = useLanguage();
   
@@ -53,6 +55,12 @@ export const DashboardCard = ({
                 <span>{item.count}</span>
               </div>
             ))}
+          </div>
+        )}
+
+        {chart && (
+          <div className="mt-2 border-t border-[#e5e7eb] dark:border-[#232325] pt-4">
+            {chart}
           </div>
         )}
       </CardContent>

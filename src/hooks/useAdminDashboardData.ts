@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { handleQueryResult } from "@/utils/supabaseHelpers";
+import { format, subDays } from "date-fns";
 
 type SubscriptionCount = {
   plan: string;
@@ -21,9 +22,15 @@ type CustomerSubscriptionBreakdown = {
   };
 }
 
+type CustomerRegistrationData = {
+  date: string;
+  count: number;
+}
+
 export const useAdminDashboardData = () => {
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
   const [customerBreakdown, setCustomerBreakdown] = useState<CustomerSubscriptionBreakdown[]>([]);
+  const [customerRegistrationData, setCustomerRegistrationData] = useState<CustomerRegistrationData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -36,7 +43,8 @@ export const useAdminDashboardData = () => {
           .select(`
             id, 
             customer_type,
-            subscription_plan
+            subscription_plan,
+            created_at
           `);
 
         if (error) {
@@ -82,6 +90,20 @@ export const useAdminDashboardData = () => {
           '24_months': 0
         };
 
+        // Process customer registration dates
+        // Group registrations by hour for the last 2 days
+        const now = new Date();
+        const twoDaysAgo = subDays(now, 2);
+        const hourlyData: { [key: string]: number } = {};
+
+        // Initialize hourly buckets for the last 2 days (48 hours)
+        for (let i = 0; i < 48; i++) {
+          const hourDate = subDays(now, 2 - i/24);
+          hourDate.setMinutes(0, 0, 0);
+          const hourKey = hourDate.toISOString();
+          hourlyData[hourKey] = 0;
+        }
+
         // Process each customer
         data.forEach((customer: any) => {
           const type = customer.customer_type || 'private';
@@ -99,7 +121,33 @@ export const useAdminDashboardData = () => {
           if (totalSubscriptions[plan] !== undefined) {
             totalSubscriptions[plan]++;
           }
+          
+          // Process registration date
+          if (customer.created_at) {
+            const createdDate = new Date(customer.created_at);
+            
+            // Only include registrations from the last 2 days
+            if (createdDate >= twoDaysAgo) {
+              // Round to the nearest hour
+              createdDate.setMinutes(0, 0, 0);
+              const hourKey = createdDate.toISOString();
+              
+              if (hourlyData[hourKey] !== undefined) {
+                hourlyData[hourKey]++;
+              } else {
+                hourlyData[hourKey] = 1;
+              }
+            }
+          }
         });
+
+        // Convert hourly data to array format for the chart
+        const registrationData = Object.entries(hourlyData).map(([date, count]) => ({
+          date,
+          count
+        })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+        setCustomerRegistrationData(registrationData);
 
         // Add the total breakdown
         const allBreakdown = {
@@ -138,6 +186,7 @@ export const useAdminDashboardData = () => {
   return {
     totalCustomers,
     customerBreakdown,
+    customerRegistrationData,
     isLoading,
     getSubscriptionDataForType
   };
