@@ -25,9 +25,15 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
   
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
   
-  // Fix: Cast the string to keyof Translations to satisfy TypeScript
+  // Format the plan name for display
+  const formatPlanName = (plan: string): string => {
+    // Convert plan from database format (e.g., '1_month') to UI format (e.g., '1month')
+    const uiPlanKey = plan.replace('_', '');
+    return t(`subscription.${uiPlanKey}` as any);
+  };
+  
   const data = subscriptionData.map(item => ({
-    name: t(`subscription.period.${item.plan}` as any),
+    name: formatPlanName(item.plan),
     value: item.count
   }));
 
@@ -57,7 +63,6 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              {/* Fix: Use the ChartTooltip as a self-closing tag with content prop */}
               <ChartTooltip content={<ChartTooltipContent />} />
             </PieChart>
           </ChartContainer>
@@ -66,8 +71,7 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
           {subscriptionData.map((item) => (
             <div key={item.plan} className="flex justify-between items-center">
               <span className="text-gray-500 dark:text-gray-400">
-                {/* Fix: Cast the string to keyof Translations to satisfy TypeScript */}
-                {t(`subscription.period.${item.plan}` as any)}
+                {formatPlanName(item.plan)}:
               </span>
               <span>{((item.count / total) * 100).toFixed(1)}%</span>
             </div>
