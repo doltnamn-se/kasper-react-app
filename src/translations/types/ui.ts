@@ -64,6 +64,12 @@ export interface UITranslations {
   'password.updated.successfully': string;
   'password.update.error': string;
   'total.customers': string;
+  'private.customers': string;
+  'business.customers': string;
+  'subscription.period.1month': string;
+  'subscription.period.6months': string;
+  'subscription.period.12months': string;
+  'subscription.period.24months': string;
   'view.all.columns': string;
   'toggle.columns': string;
   'add.customer': string;

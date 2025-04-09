@@ -103,5 +103,12 @@ export const ui: UITranslations = {
   'pagination.previous': 'Föregående',
   'pagination.page': 'Sida',
   'pagination.items.per.page': 'Objekt per sida',
-  'pagination.total.items': 'Totalt antal objekt'
+  'pagination.total.items': 'Totalt antal objekt',
+  'total.customers': 'Aktiva Kunder',
+  'private.customers': 'Privatkunder',
+  'business.customers': 'Företagskunder',
+  'subscription.period.1month': '1 månad:',
+  'subscription.period.6months': '6 månader:',
+  'subscription.period.12months': '12 månader:',
+  'subscription.period.24months': '24 månader:',
 };

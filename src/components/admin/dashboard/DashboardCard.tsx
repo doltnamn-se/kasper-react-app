@@ -1,6 +1,7 @@
 
 import { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SubscriptionData {
   plan: string;
@@ -10,17 +11,19 @@ interface SubscriptionData {
 interface DashboardCardProps {
   title: string;
   value: number | string;
-  icon: ReactNode;
+  icon?: ReactNode;
   subscriptionData?: SubscriptionData[];
 }
 
 export const DashboardCard = ({ title, value, icon, subscriptionData }: DashboardCardProps) => {
+  const { t } = useLanguage();
+  
   const formatPlanName = (plan: string) => {
     switch (plan) {
-      case '1_month': return '1 month:';
-      case '6_months': return '6 months:';
-      case '12_months': return '12 months:';
-      case '24_months': return '24 months:';
+      case '1_month': return t('subscription.period.1month');
+      case '6_months': return t('subscription.period.6months');
+      case '12_months': return t('subscription.period.12months');
+      case '24_months': return t('subscription.period.24months');
       default: return `${plan}:`;
     }
   };

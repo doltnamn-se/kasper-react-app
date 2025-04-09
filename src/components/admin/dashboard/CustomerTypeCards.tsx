@@ -26,14 +26,14 @@ export const CustomerTypeCards = ({ totalCustomers, getSubscriptionDataForType }
       />
       
       <DashboardCard 
-        title="Privatkunder"
+        title={t('private.customers')}
         value={privateSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
         icon={<User className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />}
         subscriptionData={privateSubscriptionData}
       />
       
       <DashboardCard 
-        title="Företagskunder"
+        title={t('business.customers')}
         value={businessSubscriptionData.reduce((sum, item) => sum + item.count, 0)}
         icon={<Briefcase className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />}
         subscriptionData={businessSubscriptionData}
