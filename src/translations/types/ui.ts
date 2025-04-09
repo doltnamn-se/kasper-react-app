@@ -109,4 +109,7 @@ export interface UITranslations {
   'pagination.items.per.page': string;
   'pagination.total.items': string;
   'online.users': string;
+  'link.management': string;
+  'total.links': string;
+  'pending.links': string;
 };

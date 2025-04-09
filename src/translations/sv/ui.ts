@@ -111,4 +111,7 @@ export const ui: UITranslations = {
   'subscription.period.12months': '12 månader:',
   'subscription.period.24months': '24 månader:',
   'online.users': 'Användare online',
+  'link.management': 'Länkhantering',
+  'total.links': 'Totalt antal länkar',
+  'pending.links': 'Pågående länkar',
 };

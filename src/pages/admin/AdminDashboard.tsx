@@ -1,9 +1,9 @@
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdminDashboardData } from "@/hooks/useAdminDashboardData";
-import { CustomerTypeCards } from "@/components/admin/dashboard/CustomerTypeCards";
 import { OnlineUsersCard } from "@/components/admin/dashboard/OnlineUsersCard";
 import { DashboardCard } from "@/components/admin/dashboard/DashboardCard";
+import { LinkManagementCard } from "@/components/admin/dashboard/LinkManagementCard";
 import { UsersRound, User, Briefcase } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -52,6 +52,9 @@ const AdminDashboard = () => {
           icon={<Briefcase className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />}
           subscriptionData={businessSubscriptionData}
         />
+
+        {/* Link Management Card (5) */}
+        <LinkManagementCard />
       </div>
     </div>
   );
