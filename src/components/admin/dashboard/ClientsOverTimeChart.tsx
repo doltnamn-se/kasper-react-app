@@ -29,7 +29,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
         // Format date based on language
         const formattedDate = language === 'en' 
           ? format(date, "MMM d, h:mma", { locale: enUS })
-          : format(date, "d MMM, HH:mm", { locale: sv });
+          : format(date, "d MMM HH:mm", { locale: sv });
         
         return (
           <div className="bg-white dark:bg-[#1c1c1e] p-2 border border-[#e5e7eb] dark:border-[#232325] rounded shadow-sm text-xs">
@@ -52,7 +52,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   const formatBottomDate = (date: Date) => {
     return language === 'en'
       ? format(date, "MMM d, h:mma", { locale: enUS })
-      : format(date, "d MMM, HH:mm", { locale: sv });
+      : format(date, "d MMM HH:mm", { locale: sv });
   };
 
   return (
