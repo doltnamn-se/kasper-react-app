@@ -42,43 +42,58 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
     color: COLORS[index % COLORS.length]
   }));
 
-  // Custom rendering component for the labels
-  const renderCustomizedLabel = (props: any) => {
-    const { cx, cy, midAngle, innerRadius, outerRadius, plan, percentage, color } = props;
+  // Custom rendering component for the active sector
+  const renderActiveShape = (props: any) => {
+    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
     
-    // Calculate position for labels - using proper math to position them correctly
+    return (
+      <g>
+        <Sector
+          cx={cx}
+          cy={cy}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius + 6}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          fill={fill}
+        />
+      </g>
+    );
+  };
+
+  // Calculate the proper position for each label
+  const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, name, value, fill, percent }: any) => {
     const RADIAN = Math.PI / 180;
-    // Increase radius to move labels further from the chart
-    const radius = outerRadius * 1.3;
-    // Use midAngle to place each label at the middle of its segment
+    // Position labels further away from the chart
+    const radius = outerRadius * 1.4;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     
-    // Get formatted plan name
-    const planName = formatPlanName(plan);
+    // Position text anchors based on which side of the chart they're on
+    const textAnchor = x > cx ? 'start' : 'end';
     
     return (
       <g>
         <text 
           x={x} 
-          y={y-8} 
-          fill={color}
-          textAnchor={x > cx ? 'start' : 'end'} 
+          y={y - 10} 
+          fill={fill} 
+          textAnchor={textAnchor} 
           dominantBaseline="central"
           fontSize="12"
           fontWeight="bold"
         >
-          {planName}
+          {name}
         </text>
         <text 
           x={x} 
-          y={y+8} 
-          fill={color}
-          textAnchor={x > cx ? 'start' : 'end'} 
+          y={y + 10} 
+          fill={fill} 
+          textAnchor={textAnchor} 
           dominantBaseline="central"
           fontSize="12"
         >
-          {percentage}%
+          {`${(percent * 100).toFixed(1)}% (${value})`}
         </text>
       </g>
     );
@@ -93,56 +108,33 @@ export const SubscriptionDistributionCard = ({ subscriptionData }: SubscriptionD
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex flex-col h-[280px]">
-          <div className="text-2xl font-bold mb-4">
+          <div className="text-2xl font-bold">
             {total}
           </div>
           
-          {/* Chart container, reduced top margin and centered */}
+          {/* Chart container with centered positioning */}
           <div className="flex-1 flex items-center justify-center">
             <ChartContainer className="h-[220px] w-full" config={{}}>
-              <PieChart width={500} height={200}>
+              <PieChart width={500} height={220}>
                 <Pie
                   data={data}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  innerRadius={40}
-                  outerRadius={70}
+                  innerRadius={50}
+                  outerRadius={80}
                   paddingAngle={2}
+                  label={renderCustomizedLabel}
                   labelLine={false}
                 >
                   {data.map((entry, index) => (
                     <Cell 
                       key={`cell-${index}`} 
-                      fill={entry.color} 
+                      fill={entry.color}
                     />
                   ))}
                 </Pie>
-                {/* Render labels with carefully calculated positions based on segment angles */}
-                {data.map((entry, index) => {
-                  // Calculate proper angle distribution based on data values
-                  const angleOffset = data.reduce((acc, item, i) => {
-                    if (i < index) {
-                      return acc + (item.value / total) * 360;
-                    }
-                    return acc;
-                  }, 0);
-                  
-                  const segmentAngle = (entry.value / total) * 360;
-                  const midAngle = angleOffset + (segmentAngle / 2);
-                  
-                  return renderCustomizedLabel({
-                    cx: "50%",
-                    cy: "50%",
-                    midAngle: midAngle,
-                    innerRadius: 40,
-                    outerRadius: 70,
-                    plan: entry.plan,
-                    percentage: entry.percentage,
-                    color: entry.color
-                  });
-                })}
                 <ChartTooltip content={<ChartTooltipContent />} />
               </PieChart>
             </ChartContainer>
