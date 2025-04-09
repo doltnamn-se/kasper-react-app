@@ -32,9 +32,13 @@ export const useCustomers = () => {
         return;
       }
 
-      // Filter out entries with no profile data or duplicate profiles
+      // Filter out entries with no profile data, duplicate profiles, and the admin account
       const uniqueCustomers = data?.reduce((acc: CustomerWithProfile[], current) => {
-        if (current.profile && !acc.some(item => item.profile?.id === current.profile?.id)) {
+        if (
+          current.profile && 
+          !acc.some(item => item.profile?.id === current.profile?.id) &&
+          current.profile.email !== 'info@doltnamn.se' // Filter out the admin account
+        ) {
           acc.push(current);
         }
         return acc;
