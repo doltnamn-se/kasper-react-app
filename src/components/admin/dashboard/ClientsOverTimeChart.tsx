@@ -61,12 +61,14 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
       : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM yyyy", { locale: sv }).replace('.', '');
   };
 
-  // Handle mouse enter for the bars
-  const handleMouseEnter = (data: any, index: number) => {
-    setActiveBarIndex(index);
+  // Handle mouse enter for the entire chart area
+  const handleMouseMove = (e: any) => {
+    if (e && e.activeTooltipIndex !== undefined) {
+      setActiveBarIndex(e.activeTooltipIndex);
+    }
   };
 
-  // Handle mouse leave for the bars
+  // Handle mouse leave for the chart area
   const handleMouseLeave = () => {
     setActiveBarIndex(null);
   };
@@ -74,8 +76,12 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   return (
     <div className="w-full h-[100px] pb-6">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
-          onMouseLeave={handleMouseLeave}>
+        <BarChart 
+          data={data} 
+          margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
           <XAxis 
             dataKey="date" 
             axisLine={false}
@@ -92,7 +98,6 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
             className="fill-[#10b981]"
             barSize={4} 
             radius={2}
-            onMouseEnter={handleMouseEnter}
             shape={(props) => {
               const { x, y, width, height, index } = props;
               return (
