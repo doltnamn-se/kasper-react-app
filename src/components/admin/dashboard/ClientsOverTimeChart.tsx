@@ -1,10 +1,10 @@
-
 import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { formatInTimeZone } from "date-fns-tz";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { CustomerRegistrationData } from "@/types/admin";
 
 interface ClientsOverTimeData {
   date: string;
@@ -12,7 +12,7 @@ interface ClientsOverTimeData {
 }
 
 interface ClientsOverTimeChartProps {
-  data: ClientsOverTimeData[];
+  data: CustomerRegistrationData[] | ClientsOverTimeData[];
 }
 
 // Swedish timezone
@@ -21,6 +21,19 @@ const SWEDISH_TIMEZONE = "Europe/Stockholm";
 export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data }) => {
   const { t, language } = useLanguage();
   const [activeBarIndex, setActiveBarIndex] = useState<number | null>(null);
+  
+  // Transform data if needed (to handle both data formats)
+  const chartData = data.map(item => {
+    // Check if the item is CustomerRegistrationData (has registration_date)
+    if ('registration_date' in item) {
+      return {
+        date: item.registration_date,
+        count: item.count
+      };
+    }
+    // Otherwise, it's already in the correct format
+    return item;
+  });
   
   // Custom tooltip component
   const CustomTooltip = ({
@@ -51,11 +64,15 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   };
 
   // Get first and last date from the data
-  const firstDate = data.length > 0 ? new Date(data[0]?.date) : new Date();
-  const lastDate = data.length > 0 ? new Date(data[data.length - 1]?.date) : new Date();
+  const firstDate = chartData.length > 0 ? new Date(chartData[0]?.date) : new Date();
+  const lastDate = chartData.length > 0 ? new Date(chartData[chartData.length - 1]?.date) : new Date();
 
   // Format the bottom dates based on language with timezone conversion, showing only the date part
   const formatBottomDate = (date: Date) => {
+    if (isNaN(date.getTime())) {
+      return ""; // Return empty string for invalid dates
+    }
+    
     return language === 'en'
       ? formatInTimeZone(date, SWEDISH_TIMEZONE, "MMM d, yyyy", { locale: enUS })
       : formatInTimeZone(date, SWEDISH_TIMEZONE, "d MMM yyyy", { locale: sv }).replace('.', '');
@@ -77,7 +94,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     <div className="w-full h-[100px] pb-6">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart 
-          data={data} 
+          data={chartData} 
           margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
