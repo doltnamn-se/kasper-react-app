@@ -1,180 +1,75 @@
-
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { handleQueryResult } from "@/utils/supabaseHelpers";
-import { format, subDays } from "date-fns";
-
-type SubscriptionCount = {
-  plan: string;
-  count: number;
-}
-
-type CustomerTypeCount = {
-  type: string;
-  count: number;
-}
-
-type CustomerSubscriptionBreakdown = {
-  type: string;
-  totalCount: number;
-  subscriptions: {
-    [key: string]: number;
-  };
-}
-
-type CustomerRegistrationData = {
-  date: string;
-  count: number;
-}
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { CustomerRegistrationData, SubscriptionData } from '@/types/admin';
 
 export const useAdminDashboardData = () => {
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
-  const [customerBreakdown, setCustomerBreakdown] = useState<CustomerSubscriptionBreakdown[]>([]);
   const [customerRegistrationData, setCustomerRegistrationData] = useState<CustomerRegistrationData[]>([]);
+  const [subscriptionData, setSubscriptionData] = useState<SubscriptionData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch all customers with their customer_type and subscription_plan
-        const { data, error } = await supabase
-          .from('customers')
-          .select(`
-            id, 
-            customer_type,
-            subscription_plan,
-            created_at
-          `)
-          .order('created_at', { ascending: true });
+  const fetchDashboardData = async () => {
+    setIsLoading(true);
+    try {
+      // Fetch total customers
+      const { count: customersCount, error: customersError } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact' });
 
-        if (error) {
-          console.error('Error fetching customer data:', error);
-          return;
-        }
-
-        console.log('Raw customer data:', data);
-
-        // Process the data
-        const totalCount = data.length;
-        setTotalCustomers(totalCount);
-
-        // Initialize breakdown structure with default values for all subscription plans
-        const breakdown: { [key: string]: CustomerSubscriptionBreakdown } = {
-          'private': {
-            type: 'private',
-            totalCount: 0,
-            subscriptions: {
-              '1_month': 0,
-              '6_months': 0,
-              '12_months': 0,
-              '24_months': 0
-            }
-          },
-          'business': {
-            type: 'business',
-            totalCount: 0,
-            subscriptions: {
-              '1_month': 0,
-              '6_months': 0,
-              '12_months': 0,
-              '24_months': 0
-            }
-          }
-        };
-        
-        // Totals across all customer types
-        const totalSubscriptions = {
-          '1_month': 0,
-          '6_months': 0,
-          '12_months': 0,
-          '24_months': 0
-        };
-
-        // Process customer registration dates
-        // Group registrations by month for all time
-        const monthlyData: { [key: string]: number } = {};
-
-        // Process each customer
-        data.forEach((customer: any) => {
-          const type = customer.customer_type || 'private';
-          const plan = customer.subscription_plan || '1_month';
-          
-          // Increment type count
-          breakdown[type].totalCount++;
-          
-          // Increment subscription count for this type
-          if (breakdown[type].subscriptions[plan] !== undefined) {
-            breakdown[type].subscriptions[plan]++;
-          }
-          
-          // Increment total subscription count
-          if (totalSubscriptions[plan] !== undefined) {
-            totalSubscriptions[plan]++;
-          }
-          
-          // Process registration date
-          if (customer.created_at) {
-            const createdDate = new Date(customer.created_at);
-            
-            // Group by month for a cleaner historical view
-            const monthKey = format(createdDate, 'yyyy-MM-dd');
-            
-            if (monthlyData[monthKey]) {
-              monthlyData[monthKey]++;
-            } else {
-              monthlyData[monthKey] = 1;
-            }
-          }
-        });
-
-        // Convert monthly data to array format for the chart
-        const registrationData = Object.entries(monthlyData).map(([date, count]) => ({
-          date,
-          count
-        })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-        setCustomerRegistrationData(registrationData);
-
-        // Add the total breakdown
-        const allBreakdown = {
-          type: 'all',
-          totalCount,
-          subscriptions: totalSubscriptions
-        };
-
-        // Convert to array
-        setCustomerBreakdown([
-          allBreakdown,
-          breakdown.private,
-          breakdown.business
-        ]);
-      } catch (error) {
-        console.error('Error processing dashboard data:', error);
-      } finally {
-        setIsLoading(false);
+      if (customersError) {
+        console.error("Error fetching total customers:", customersError);
+      } else {
+        setTotalCustomers(customersCount || 0);
       }
-    };
 
-    fetchData();
+      // Fetch customer registration data over time
+      const { data: registrationData, error: registrationError } = await supabase
+        .from('customer_registrations_over_time')
+        .select('*')
+        .order('registration_date');
+
+      if (registrationError) {
+        console.error("Error fetching customer registration data:", registrationError);
+      } else {
+        setCustomerRegistrationData(registrationData || []);
+      }
+
+      // Fetch subscription data
+      const { data: subscriptionDataResult, error: subscriptionError } = await supabase
+        .from('subscription_distribution')
+        .select('*');
+
+      if (subscriptionError) {
+        console.error("Error fetching subscription data:", subscriptionError);
+      } else {
+        setSubscriptionData(subscriptionDataResult || []);
+      }
+
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
   }, []);
 
-  // Helper function to get subscription counts for a specific type
-  const getSubscriptionDataForType = (type: 'all' | 'private' | 'business') => {
-    const typeData = customerBreakdown.find(item => item.type === type);
-    if (!typeData) return [];
-    
-    return Object.entries(typeData.subscriptions).map(([plan, count]) => ({
-      plan,
-      count
-    }));
+  const getSubscriptionDataForType = (type: 'all' | 'private' | 'business'): SubscriptionData[] => {
+    if (type === 'all') {
+      return subscriptionData;
+    }
+
+    return subscriptionData.filter(item => item.customer_type === type);
   };
 
   return {
     totalCustomers,
-    customerBreakdown,
     customerRegistrationData,
+    subscriptionData,
     isLoading,
-    getSubscriptionDataForType
+    getSubscriptionDataForType,
+    fetchDashboardData
   };
 };

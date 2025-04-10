@@ -6,6 +6,9 @@ import { DashboardCard } from "@/components/admin/dashboard/DashboardCard";
 import { LinkManagementCard } from "@/components/admin/dashboard/LinkManagementCard";
 import { SubscriptionDistributionCard } from "@/components/admin/dashboard/SubscriptionDistributionCard";
 import { ClientsOverTimeChart } from "@/components/admin/dashboard/ClientsOverTimeChart";
+import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
+import { Button } from "@/components/ui/button";
+import { UserRoundPlus } from "lucide-react";
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
@@ -13,7 +16,8 @@ const AdminDashboard = () => {
     totalCustomers, 
     isLoading,
     customerRegistrationData,
-    getSubscriptionDataForType 
+    getSubscriptionDataForType,
+    fetchDashboardData
   } = useAdminDashboardData();
 
   // Get subscription data for total customers
@@ -21,9 +25,24 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {t('nav.admin.dashboard')}
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+          {t('nav.admin.dashboard')}
+        </h1>
+        
+        <CreateCustomerDialog onCustomerCreated={fetchDashboardData}>
+          <Button 
+            className="
+              text-[#000000] bg-[#72e3ad] border-[#16b674bf] hover:bg-[#3fcf8ecc] hover:border-[#097c4f]
+              dark:text-white dark:bg-[#3ecf8e80] dark:border-[#3ecf8e] dark:hover:bg-[#3ecf8e80] dark:hover:border-[#3ecf8e]
+              border flex items-center gap-2
+            "
+          >
+            <UserRoundPlus className="h-4 w-4 text-[#16b674bf] dark:text-[#3ecf8e]" />
+            {t('add.customer')}
+          </Button>
+        </CreateCustomerDialog>
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         {/* Left Column */}
