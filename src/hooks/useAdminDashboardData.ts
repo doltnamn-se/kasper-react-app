@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CustomerRegistrationData, SubscriptionData } from '@/types/admin';
+import { handleQueryResult } from '@/utils/supabaseHelpers';
 
 export const useAdminDashboardData = () => {
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
@@ -22,27 +24,58 @@ export const useAdminDashboardData = () => {
         setTotalCustomers(customersCount || 0);
       }
 
-      // Fetch customer registration data over time
-      const { data: registrationData, error: registrationError } = await supabase
-        .from('customer_registrations_over_time')
-        .select('*')
-        .order('registration_date');
+      // Since "customer_registrations_over_time" doesn't exist, we'll use the profiles table
+      // to generate registration data based on created_at
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('created_at')
+        .order('created_at');
 
-      if (registrationError) {
-        console.error("Error fetching customer registration data:", registrationError);
-      } else {
-        setCustomerRegistrationData(registrationData || []);
+      if (profilesError) {
+        console.error("Error fetching profiles for registration data:", profilesError);
+      } else if (profilesData) {
+        // Process profiles data to create registration over time data
+        const registrationMap = new Map<string, number>();
+        
+        profilesData.forEach(profile => {
+          // Extract the date part only (YYYY-MM-DD)
+          const dateStr = new Date(profile.created_at).toISOString().split('T')[0];
+          
+          // Increment count for this date
+          const currentCount = registrationMap.get(dateStr) || 0;
+          registrationMap.set(dateStr, currentCount + 1);
+        });
+        
+        // Convert map to array and sort by date
+        const registrationData: CustomerRegistrationData[] = Array.from(registrationMap.entries())
+          .map(([registration_date, count]) => ({ registration_date, count }))
+          .sort((a, b) => a.registration_date.localeCompare(b.registration_date));
+        
+        setCustomerRegistrationData(registrationData);
       }
 
-      // Fetch subscription data
-      const { data: subscriptionDataResult, error: subscriptionError } = await supabase
-        .from('subscription_distribution')
-        .select('*');
+      // For subscription data, use customers table and group by subscription_plan
+      const { data: customerData, error: customerError } = await supabase
+        .from('customers')
+        .select('subscription_plan, customer_type');
 
-      if (subscriptionError) {
-        console.error("Error fetching subscription data:", subscriptionError);
-      } else {
-        setSubscriptionData(subscriptionDataResult || []);
+      if (customerError) {
+        console.error("Error fetching customer subscription data:", customerError);
+      } else if (customerData) {
+        // Process customers data to create subscription distribution
+        const planMap = new Map<string, number>();
+        
+        customerData.forEach(customer => {
+          const plan = customer.subscription_plan || 'none';
+          const currentCount = planMap.get(plan) || 0;
+          planMap.set(plan, currentCount + 1);
+        });
+        
+        // Convert map to array
+        const subscriptionDistribution: SubscriptionData[] = Array.from(planMap.entries())
+          .map(([plan, count]) => ({ plan, count }));
+        
+        setSubscriptionData(subscriptionDistribution);
       }
 
     } catch (error) {
