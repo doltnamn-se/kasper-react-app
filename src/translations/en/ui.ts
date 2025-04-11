@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -65,7 +66,7 @@ export const ui: UITranslations = {
   'upload': 'Upload',
   'password.updated.successfully': 'Password updated successfully',
   'password.update.error': 'Failed to update password',
-  'total.customers': 'Active Customers',
+  'total.customers': 'Customers',
   'view.all.columns': 'All columns',
   'toggle.columns': 'Select columns to show',
   'add.customer': 'Add Customer',

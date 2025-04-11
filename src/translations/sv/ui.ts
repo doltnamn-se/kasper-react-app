@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -65,7 +66,7 @@ export const ui: UITranslations = {
   'upload': 'Ladda upp',
   'password.updated.successfully': 'Lösenord uppdaterat',
   'password.update.error': 'Det gick inte att uppdatera lösenordet',
-  'total.customers': 'Aktiva Kunder',
+  'total.customers': 'Kunder',
   'view.all.columns': 'Alla kolumner',
   'toggle.columns': 'Välj kolumner att visa',
   'add.customer': 'Lägg till kund',
