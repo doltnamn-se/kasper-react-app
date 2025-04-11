@@ -34,11 +34,11 @@ const AdminDashboard = () => {
           <Button 
             className="
               text-[#000000] bg-[#72e3ad] border-[#16b674bf] hover:bg-[#3fcf8ecc] hover:border-[#097c4f]
-              dark:text-white dark:bg-[#3ecf8e80] dark:border-[#3ecf8e] dark:hover:bg-[#3ecf8e80] dark:hover:border-[#3ecf8e]
-              border flex items-center gap-2
+              dark:text-white dark:bg-[#006239] dark:border-[#3ecf8e4d] dark:hover:bg-[#3ecf8e80] dark:hover:border-[#3ecf8e]
+              border flex items-center gap-2 text-xs rounded-md h-8 px-[0.625rem]
             "
           >
-            <UserRoundPlus className="h-4 w-4 text-[#16b674bf] dark:text-[#3ecf8e]" />
+            <UserRoundPlus className="[&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#097c4f] dark:text-[#85e0ba]" />
             {t('add.customer')}
           </Button>
         </CreateCustomerDialog>
