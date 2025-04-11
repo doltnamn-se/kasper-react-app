@@ -5,6 +5,9 @@ import { CustomerRegistrationData, SubscriptionData } from '@/types/admin';
 import { handleQueryResult } from '@/utils/supabaseHelpers';
 import { addDays, addMonths, addWeeks, addYears, startOfMonth, startOfYear, subYears } from 'date-fns';
 
+// Define TimeRange type to match other components
+type TimeRange = 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week';
+
 export const useAdminDashboardData = () => {
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
   const [customerRegistrationData, setCustomerRegistrationData] = useState<CustomerRegistrationData[]>([]);
@@ -98,7 +101,7 @@ export const useAdminDashboardData = () => {
   // Filter customer registration data by time range
   const filterCustomerDataByTimeRange = (
     data: CustomerRegistrationData[],
-    timeRange: 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week'
+    timeRange: TimeRange
   ): CustomerRegistrationData[] => {
     if (timeRange === 'alltime' || !data.length) return data;
     
@@ -133,7 +136,7 @@ export const useAdminDashboardData = () => {
   // Filter subscription data by time range 
   const filterSubscriptionDataByTimeRange = (
     data: SubscriptionData[],
-    timeRange: 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week'
+    timeRange: TimeRange
   ): SubscriptionData[] => {
     if (timeRange === 'alltime' || !data.length) return data;
     

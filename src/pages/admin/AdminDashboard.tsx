@@ -43,6 +43,11 @@ const AdminDashboard = () => {
   // Filter chart data based on selected time range
   const filteredChartData = filterCustomerDataByTimeRange(customerRegistrationData, customersTimeRange);
 
+  // Type-safe handler for subscription time range changes
+  const handleSubscriptionTimeRangeChange = (range: TimeRange) => {
+    setSubscriptionTimeRange(range);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -122,7 +127,7 @@ const AdminDashboard = () => {
           <SubscriptionDistributionCard 
             subscriptionData={filteredSubscriptionData}
             timeRange={subscriptionTimeRange}
-            onTimeRangeChange={setSubscriptionTimeRange}
+            onTimeRangeChange={handleSubscriptionTimeRangeChange}
           />
         </div>
       </div>

@@ -21,10 +21,13 @@ interface SubscriptionData {
   count: number;
 }
 
+// Define TimeRange type to match the one in AdminDashboard
+type TimeRange = 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week';
+
 interface SubscriptionDistributionCardProps {
   subscriptionData: SubscriptionData[];
-  timeRange?: string;
-  onTimeRangeChange?: (range: string) => void;
+  timeRange?: TimeRange;
+  onTimeRangeChange?: (range: TimeRange) => void;
 }
 
 export const SubscriptionDistributionCard = ({ 
@@ -97,7 +100,7 @@ export const SubscriptionDistributionCard = ({
           variant="outline" 
           className="h-8 border border-[#e5e7eb] dark:border-[#232325] text-xs px-3 flex items-center gap-1"
         >
-          {t(`timerange.${timeRange}`)}
+          {t('timerange.' + timeRange)}
           <ChevronDown className="h-3.5 w-3.5 opacity-70" />
         </Button>
       </DropdownMenuTrigger>
