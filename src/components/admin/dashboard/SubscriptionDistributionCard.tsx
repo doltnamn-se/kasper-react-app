@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 
 interface SubscriptionData {
@@ -141,45 +142,49 @@ export const SubscriptionDistributionCard = ({
             {total}
           </div>
           
-          <div className="flex-1 mt-6">
-            <ChartContainer className="h-[200px] w-full" config={{}}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={data}
-                  layout="vertical"
-                  margin={{ top: 5, right: 90, left: 0, bottom: 5 }}
-                >
-                  <XAxis type="number" hide />
-                  <YAxis 
-                    type="category"
-                    dataKey="name"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#6B7280', fontSize: 12 }}
-                    className="dark:text-gray-400"
-                    width={80}
-                  />
-                  <Tooltip 
-                    content={<CustomTooltip />}
-                    cursor={{ fill: 'transparent' }}
-                  />
-                  <Bar 
-                    dataKey="value"
-                    barSize={12}
-                    radius={6}
-                    label={renderCustomBarLabel}
-                    className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
-                  >
-                    {data.map((entry, index) => (
-                      <Cell 
-                        key={`cell-${index}`}
-                        className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+          <div className="flex-1 mt-6 overflow-hidden">
+            <ScrollArea className="h-[200px] w-full" orientation="horizontal">
+              <div className="min-w-[600px] h-[200px]">
+                <ChartContainer className="h-[200px] w-full" config={{}}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={data}
+                      layout="vertical"
+                      margin={{ top: 5, right: 90, left: 0, bottom: 5 }}
+                    >
+                      <XAxis type="number" hide />
+                      <YAxis 
+                        type="category"
+                        dataKey="name"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fill: '#6B7280', fontSize: 12 }}
+                        className="dark:text-gray-400"
+                        width={80}
                       />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+                      <Tooltip 
+                        content={<CustomTooltip />}
+                        cursor={{ fill: 'transparent' }}
+                      />
+                      <Bar 
+                        dataKey="value"
+                        barSize={12}
+                        radius={6}
+                        label={renderCustomBarLabel}
+                        className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+                      >
+                        {data.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`}
+                            className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </div>
