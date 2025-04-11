@@ -58,23 +58,32 @@ export const useAdminDashboardData = () => {
       // For subscription data, use customers table and group by subscription_plan
       const { data: customerData, error: customerError } = await supabase
         .from('customers')
-        .select('subscription_plan, customer_type');
+        .select('subscription_plan, customer_type, created_at');
 
       if (customerError) {
         console.error("Error fetching customer subscription data:", customerError);
       } else if (customerData) {
         // Process customers data to create subscription distribution
-        const planMap = new Map<string, number>();
+        const planMap = new Map<string, {count: number, customer_type?: string, created_at: string}>();
         
         customerData.forEach(customer => {
           const plan = customer.subscription_plan || 'none';
-          const currentCount = planMap.get(plan) || 0;
-          planMap.set(plan, currentCount + 1);
+          const item = planMap.get(plan) || {count: 0, customer_type: customer.customer_type, created_at: customer.created_at};
+          planMap.set(plan, {
+            count: item.count + 1,
+            customer_type: customer.customer_type,
+            created_at: customer.created_at
+          });
         });
         
         // Convert map to array
         const subscriptionDistribution: SubscriptionData[] = Array.from(planMap.entries())
-          .map(([plan, count]) => ({ plan, count }));
+          .map(([plan, data]) => ({ 
+            plan, 
+            count: data.count, 
+            customer_type: data.customer_type,
+            created_at: data.created_at
+          }));
         
         setSubscriptionData(subscriptionDistribution);
       }
@@ -121,6 +130,18 @@ export const useAdminDashboardData = () => {
     return data.filter(item => item.registration_date >= cutoffDateStr);
   };
 
+  // Filter subscription data by time range 
+  const filterSubscriptionDataByTimeRange = (
+    data: SubscriptionData[],
+    timeRange: 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week'
+  ): SubscriptionData[] => {
+    if (timeRange === 'alltime' || !data.length) return data;
+    
+    // For now, we'll just return the full dataset since we don't have time-based subscription data
+    // This can be enhanced later to filter subscriptions based on created_at date
+    return data;
+  };
+
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -140,6 +161,7 @@ export const useAdminDashboardData = () => {
     isLoading,
     getSubscriptionDataForType,
     fetchDashboardData,
-    filterCustomerDataByTimeRange
+    filterCustomerDataByTimeRange,
+    filterSubscriptionDataByTimeRange
   };
 };

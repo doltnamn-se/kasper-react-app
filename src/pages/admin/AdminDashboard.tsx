@@ -22,22 +22,26 @@ type TimeRange = 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week';
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
-  const [timeRange, setTimeRange] = useState<TimeRange>('alltime');
+  const [customersTimeRange, setCustomersTimeRange] = useState<TimeRange>('alltime');
+  const [subscriptionTimeRange, setSubscriptionTimeRange] = useState<TimeRange>('alltime');
   
   const { 
     totalCustomers, 
     isLoading,
     customerRegistrationData,
+    subscriptionData,
     getSubscriptionDataForType,
     fetchDashboardData,
-    filterCustomerDataByTimeRange
+    filterCustomerDataByTimeRange,
+    filterSubscriptionDataByTimeRange
   } = useAdminDashboardData();
 
-  // Get subscription data for total customers
+  // Get subscription data for total customers and filter by time range
   const totalSubscriptionData = getSubscriptionDataForType('all');
+  const filteredSubscriptionData = filterSubscriptionDataByTimeRange(totalSubscriptionData, subscriptionTimeRange);
   
   // Filter chart data based on selected time range
-  const filteredChartData = filterCustomerDataByTimeRange(customerRegistrationData, timeRange);
+  const filteredChartData = filterCustomerDataByTimeRange(customerRegistrationData, customersTimeRange);
 
   return (
     <div>
@@ -80,27 +84,27 @@ const AdminDashboard = () => {
                     variant="outline" 
                     className="h-8 border border-[#e5e7eb] dark:border-[#232325] text-xs px-3 flex items-center gap-1"
                   >
-                    {t(`timerange.${timeRange}`)}
+                    {t(`timerange.${customersTimeRange}`)}
                     <ChevronDown className="h-3.5 w-3.5 opacity-70" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] shadow-sm text-xs">
-                  <DropdownMenuItem onClick={() => setTimeRange('alltime')} className="py-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => setCustomersTimeRange('alltime')} className="py-2 cursor-pointer">
                     {t('timerange.alltime')}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTimeRange('ytd')} className="py-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => setCustomersTimeRange('ytd')} className="py-2 cursor-pointer">
                     {t('timerange.ytd')}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTimeRange('mtd')} className="py-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => setCustomersTimeRange('mtd')} className="py-2 cursor-pointer">
                     {t('timerange.mtd')}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTimeRange('1year')} className="py-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => setCustomersTimeRange('1year')} className="py-2 cursor-pointer">
                     {t('timerange.1year')}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTimeRange('4weeks')} className="py-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => setCustomersTimeRange('4weeks')} className="py-2 cursor-pointer">
                     {t('timerange.4weeks')}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTimeRange('1week')} className="py-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => setCustomersTimeRange('1week')} className="py-2 cursor-pointer">
                     {t('timerange.1week')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -116,7 +120,9 @@ const AdminDashboard = () => {
 
           {/* 4. Subscription Distribution Card */}
           <SubscriptionDistributionCard 
-            subscriptionData={totalSubscriptionData}
+            subscriptionData={filteredSubscriptionData}
+            timeRange={subscriptionTimeRange}
+            onTimeRangeChange={setSubscriptionTimeRange}
           />
         </div>
       </div>
