@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -70,7 +69,7 @@ export const ui: UITranslations = {
   'view.all.columns': 'Alla kolumner',
   'toggle.columns': 'Välj kolumner att visa',
   'add.customer': 'Lägg till kund',
-  'no.customers': 'Inga kunder hittades.',
+  'no.customers': 'Inga kunder online',
   'name': 'Namn',
   'email': 'E-post',
   'checklist': 'Checklista',
@@ -111,11 +110,10 @@ export const ui: UITranslations = {
   'subscription.period.6months': '6 månader:',
   'subscription.period.12months': '12 månader:',
   'subscription.period.24months': '24 månader:',
-  'online.users': 'Användare online',
+  'online.users': 'Kunder online',
   'link.management': 'Länkhantering',
   'total.links': 'Totalt antal länkar',
   'pending.links': 'Pågående länkar',
   'subscription.distribution': 'Prenumerationsfördelning',
-  'customers': 'Kunder',  // Add the missing key
+  'customers': 'Kunder',
 };
-

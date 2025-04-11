@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -70,7 +69,7 @@ export const ui: UITranslations = {
   'view.all.columns': 'All columns',
   'toggle.columns': 'Select columns to show',
   'add.customer': 'Add Customer',
-  'no.customers': 'No customers found.',
+  'no.customers': 'No customers online',
   'name': 'Name',
   'email': 'Email',
   'checklist': 'Checklist',
@@ -111,11 +110,10 @@ export const ui: UITranslations = {
   'subscription.period.6months': '6 months:',
   'subscription.period.12months': '12 months:',
   'subscription.period.24months': '24 months:',
-  'online.users': 'Online Users',
+  'online.users': 'Customers Online',
   'link.management': 'Link Management',
   'total.links': 'Total Links',
   'pending.links': 'Pending Links',
   'subscription.distribution': 'Subscription Distribution',
-  'customers': 'Customers',  // Add the missing key
+  'customers': 'Customers',
 };
-
