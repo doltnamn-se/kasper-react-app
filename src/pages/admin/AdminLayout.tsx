@@ -48,8 +48,8 @@ const AdminLayout = () => {
             isMobile ? "ml-0" : isCollapsed ? "ml-16" : "ml-72"
           )}>
             <TopNav />
-            <main className="px-4 sm:px-8 md:px-12 pt-12 my-[20px] max-w-full overflow-hidden">
-              <div className="max-w-[1400px] mx-auto">
+            <main className="px-4 sm:px-8 md:px-12 pt-12 my-[20px] max-w-full">
+              <div className="max-w-[1400px] mx-auto overflow-visible">
                 <Outlet />
               </div>
             </main>

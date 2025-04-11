@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
 import { format } from "date-fns";
@@ -95,65 +96,67 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
   const minWidth = Math.max(600, chartData.length * 10); // Ensure at least 600px, but expand if many data points
 
   return (
-    <div className="w-full h-[100px] pb-6 overflow-hidden">
-      <ScrollArea className="w-full h-full">
-        <div style={{ width: `${minWidth}px`, height: '100%' }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart 
-              data={chartData} 
-              margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-            >
-              <XAxis 
-                dataKey="date" 
-                axisLine={false}
-                tickLine={false}
-                tick={false}
-                height={10}
-              />
-              <YAxis 
-                hide={true}
-              />
-              <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-              <Bar 
-                dataKey="count" 
-                className="fill-[#10b981]"
-                barSize={4} 
-                radius={2}
-                shape={(props) => {
-                  const { x, y, width, height, index } = props;
-                  return (
-                    <rect
-                      x={x}
-                      y={y}
-                      width={width}
-                      height={height}
-                      rx={2}
-                      ry={2}
-                      fill={
-                        activeBarIndex === index
-                          ? "#3fcf8e" // Light mode hover color for active bar
-                          : activeBarIndex !== null
-                          ? "#16b674" // Light mode hover color for inactive bars
-                          : "#10b981" // Default color
-                      }
-                      className={`
-                        ${activeBarIndex === index
-                          ? "dark:fill-[#3ecf8e]" // Dark mode hover color for active bar
-                          : activeBarIndex !== null
-                          ? "dark:fill-[#006239]" // Dark mode hover color for inactive bars
-                          : "dark:fill-[#10b981]"} // Default dark mode color
-                        transition-colors duration-300 ease-in-out
-                      `}
-                    />
-                  );
-                }}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </ScrollArea>
+    <div className="w-full h-[180px] pb-6 overflow-hidden">
+      <div className="h-[140px] w-full">
+        <ScrollArea className="h-full w-full">
+          <div style={{ width: `${minWidth}px`, height: '140px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart 
+                data={chartData} 
+                margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                <XAxis 
+                  dataKey="date" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={false}
+                  height={10}
+                />
+                <YAxis 
+                  hide={true}
+                />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+                <Bar 
+                  dataKey="count" 
+                  className="fill-[#10b981]"
+                  barSize={4} 
+                  radius={2}
+                  shape={(props) => {
+                    const { x, y, width, height, index } = props;
+                    return (
+                      <rect
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={height}
+                        rx={2}
+                        ry={2}
+                        fill={
+                          activeBarIndex === index
+                            ? "#3fcf8e" // Light mode hover color for active bar
+                            : activeBarIndex !== null
+                            ? "#16b674" // Light mode hover color for inactive bars
+                            : "#10b981" // Default color
+                        }
+                        className={`
+                          ${activeBarIndex === index
+                            ? "dark:fill-[#3ecf8e]" // Dark mode hover color for active bar
+                            : activeBarIndex !== null
+                            ? "dark:fill-[#006239]" // Dark mode hover color for inactive bars
+                            : "dark:fill-[#10b981]"} // Default dark mode color
+                          transition-colors duration-300 ease-in-out
+                        `}
+                      />
+                    );
+                  }}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </ScrollArea>
+      </div>
       <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 px-1 mb-2">
         <span>{formatBottomDate(firstDate)}</span>
         <span>{formatBottomDate(lastDate)}</span>
