@@ -100,7 +100,7 @@ export const SubscriptionDistributionCard = ({
           variant="outline" 
           className="h-8 border border-[#e5e7eb] dark:border-[#232325] text-xs px-3 flex items-center gap-1"
         >
-          {t('timerange.' + timeRange)}
+          {t(`timerange.${timeRange}` as keyof typeof t)}
           <ChevronDown className="h-3.5 w-3.5 opacity-70" />
         </Button>
       </DropdownMenuTrigger>
