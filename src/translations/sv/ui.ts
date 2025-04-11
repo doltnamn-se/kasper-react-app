@@ -117,4 +117,10 @@ export const ui: UITranslations = {
   'pending.links': 'Pågående länkar',
   'subscription.distribution': 'Prenumerationsfördelning',
   'customers': 'Kunder',
+  'timerange.alltime': 'All tid',
+  'timerange.ytd': 'År till datum',
+  'timerange.mtd': 'Månad till datum',
+  'timerange.1year': '1 År',
+  'timerange.4weeks': '4 Veckor',
+  'timerange.1week': '1 Vecka',
 };

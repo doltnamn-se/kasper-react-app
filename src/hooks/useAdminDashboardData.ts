@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CustomerRegistrationData, SubscriptionData } from '@/types/admin';
 import { handleQueryResult } from '@/utils/supabaseHelpers';
+import { addDays, addMonths, addWeeks, addYears, startOfMonth, startOfYear, subYears } from 'date-fns';
 
 export const useAdminDashboardData = () => {
   const [totalCustomers, setTotalCustomers] = useState<number>(0);
@@ -85,6 +86,41 @@ export const useAdminDashboardData = () => {
     }
   };
 
+  // Filter customer registration data by time range
+  const filterCustomerDataByTimeRange = (
+    data: CustomerRegistrationData[],
+    timeRange: 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week'
+  ): CustomerRegistrationData[] => {
+    if (timeRange === 'alltime' || !data.length) return data;
+    
+    const now = new Date();
+    let cutoffDate: Date;
+    
+    switch (timeRange) {
+      case 'ytd':
+        cutoffDate = startOfYear(now);
+        break;
+      case 'mtd':
+        cutoffDate = startOfMonth(now);
+        break;
+      case '1year':
+        cutoffDate = subYears(now, 1);
+        break;
+      case '4weeks':
+        cutoffDate = addDays(now, -28);
+        break;
+      case '1week':
+        cutoffDate = addDays(now, -7);
+        break;
+      default:
+        return data;
+    }
+    
+    const cutoffDateStr = cutoffDate.toISOString().split('T')[0];
+    
+    return data.filter(item => item.registration_date >= cutoffDateStr);
+  };
+
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -103,6 +139,7 @@ export const useAdminDashboardData = () => {
     subscriptionData,
     isLoading,
     getSubscriptionDataForType,
-    fetchDashboardData
+    fetchDashboardData,
+    filterCustomerDataByTimeRange
   };
 };

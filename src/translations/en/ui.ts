@@ -117,4 +117,10 @@ export const ui: UITranslations = {
   'pending.links': 'Pending Links',
   'subscription.distribution': 'Subscription Distribution',
   'customers': 'Customers',
+  'timerange.alltime': 'All Time',
+  'timerange.ytd': 'Year to Date',
+  'timerange.mtd': 'Month to Date',
+  'timerange.1year': '1 Year',
+  'timerange.4weeks': '4 Weeks',
+  'timerange.1week': '1 Week',
 };

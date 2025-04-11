@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -114,6 +113,11 @@ export interface UITranslations {
   'total.links': string;
   'pending.links': string;
   'subscription.distribution': string;
-  'customers': string;  // Add the missing key
+  'customers': string;
+  'timerange.alltime': string;
+  'timerange.ytd': string;
+  'timerange.mtd': string;
+  'timerange.1year': string;
+  'timerange.4weeks': string;
+  'timerange.1week': string;
 };
-

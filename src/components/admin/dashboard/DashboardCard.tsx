@@ -15,6 +15,7 @@ interface DashboardCardProps {
   subscriptionData?: SubscriptionData[];
   showSubscriptionBreakdown?: boolean;
   chart?: ReactNode;
+  actionButton?: ReactNode;
 }
 
 export const DashboardCard = ({ 
@@ -23,7 +24,8 @@ export const DashboardCard = ({
   icon, 
   subscriptionData,
   showSubscriptionBreakdown = false,
-  chart
+  chart,
+  actionButton
 }: DashboardCardProps) => {
   const { t } = useLanguage();
   
@@ -43,6 +45,7 @@ export const DashboardCard = ({
         <CardTitle className="text-sm font-medium">
           {title}
         </CardTitle>
+        {actionButton}
       </CardHeader>
       <CardContent className="p-0 flex flex-col flex-grow">
         <div className="text-2xl font-bold mb-12">
