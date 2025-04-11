@@ -47,7 +47,10 @@ const AdminDashboard = () => {
       <div className="grid gap-4 md:grid-cols-2">
         {/* Left Column */}
         <div className="flex flex-col space-y-4">
-          {/* Active Customers Card - with chart */}
+          {/* 1. Online Users Card */}
+          <OnlineUsersCard />
+          
+          {/* 3. Active Customers Card - with chart */}
           <DashboardCard 
             title={t('total.customers')}
             value={totalCustomers}
@@ -55,20 +58,17 @@ const AdminDashboard = () => {
             showSubscriptionBreakdown={false}
             chart={<ClientsOverTimeChart data={customerRegistrationData} />}
           />
-          
-          {/* Subscription Distribution Card */}
-          <SubscriptionDistributionCard 
-            subscriptionData={totalSubscriptionData}
-          />
         </div>
         
         {/* Right Column */}
         <div className="flex flex-col space-y-4">
-          {/* Online Users Card */}
-          <OnlineUsersCard />
-
-          {/* Link Management Card */}
+          {/* 2. Link Management Card */}
           <LinkManagementCard />
+
+          {/* 4. Subscription Distribution Card */}
+          <SubscriptionDistributionCard 
+            subscriptionData={totalSubscriptionData}
+          />
         </div>
       </div>
     </div>
