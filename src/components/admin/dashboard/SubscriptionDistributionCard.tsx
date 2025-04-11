@@ -143,7 +143,7 @@ export const SubscriptionDistributionCard = ({
           </div>
           
           <div className="flex-1 mt-6 overflow-hidden">
-            <ScrollArea className="h-[200px] w-full" orientation="horizontal">
+            <ScrollArea className="h-[200px] w-full">
               <div className="min-w-[600px] h-[200px]">
                 <ChartContainer className="h-[200px] w-full" config={{}}>
                   <ResponsiveContainer width="100%" height="100%">

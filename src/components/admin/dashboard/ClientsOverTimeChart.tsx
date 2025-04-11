@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
 import { format } from "date-fns";
@@ -97,7 +96,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
 
   return (
     <div className="w-full h-[100px] pb-6 overflow-hidden">
-      <ScrollArea className="w-full h-full" orientation="horizontal">
+      <ScrollArea className="w-full h-full">
         <div style={{ width: `${minWidth}px`, height: '100%' }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart 
