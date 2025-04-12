@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -35,7 +36,7 @@ const AdminVersionLog = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">{t('nav.admin.version.log')}</h1>
+        <h1 className="text-3xl font-bold">{t('version.log.title')}</h1>
       </div>
 
       <Card className="rounded-[4px]">
