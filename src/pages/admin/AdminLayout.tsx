@@ -9,6 +9,7 @@ import { SidebarFooter } from "@/components/nav/SidebarFooter";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { Badge } from "@/components/ui/badge";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+
 const AdminLayout = () => {
   const {
     isCollapsed,
@@ -27,8 +28,6 @@ const AdminLayout = () => {
                 Admin
               </Badge>
             </div>
-
-            {/* Removed the bottom space (div with h-px bg-[#e5e7eb]) */}
 
             <div className="px-6">
               <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
@@ -50,3 +49,4 @@ const AdminLayout = () => {
     </LanguageProvider>;
 };
 export default AdminLayout;
+
