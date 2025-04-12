@@ -90,13 +90,8 @@ const AdminVersionLog = () => {
                           {remainingChanges.map((change: VersionChange, changeIndex: number) => (
                             <li 
                               key={changeIndex} 
-                              className="text-sm text-black dark:text-white relative"
+                              className="text-sm text-black dark:text-white"
                             >
-                              {/* Small circle on timeline for each bullet point */}
-                              <div 
-                                className="absolute left-[-10.3rem] w-[5px] h-[5px] rounded-full bg-[#dedede] dark:bg-[#333333]"
-                                style={{ top: '0.6em' }} // Aligns with the middle of the text
-                              />
                               {change.description}
                             </li>
                           ))}
@@ -121,3 +116,4 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
+
