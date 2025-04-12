@@ -8,7 +8,7 @@ import { useVersionStore } from "@/config/version";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FilePdf, FileText } from "lucide-react";
+import { FilePdf, FileText } from "lucide-react";  // Corrected import
 import { exportVersionLogsToCSV, exportVersionLogsToPDF } from "@/utils/exportUtils";
 import { toast } from "@/components/ui/use-toast";
 
