@@ -23,13 +23,43 @@ const AdminVersionLog = () => {
     }
   };
 
+  // Function to generate a version title based on the version string and changes
+  const getVersionTitle = (version: string, changes: VersionChange[]) => {
+    // Find the first major feature or improvement to use as title
+    const featureChange = changes.find(change => 
+      change.type === 'feature' || change.type === 'improvement'
+    );
+    
+    if (featureChange) {
+      // Use the first sentence of the description as the title
+      const firstSentence = featureChange.description.split('.')[0];
+      return firstSentence;
+    }
+    
+    // Fallback titles based on types of changes
+    if (changes.some(c => c.type === 'bug')) {
+      return `Bug fixes and improvements`;
+    }
+    
+    if (changes.some(c => c.type === 'feature')) {
+      return `New features in v${version}`;
+    }
+    
+    if (changes.some(c => c.type === 'improvement')) {
+      return `Enhancements in v${version}`;
+    }
+    
+    // Default title
+    return `Update v${version}`;
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">{t('nav.admin.version.log')}</h1>
       </div>
 
-      <Card>
+      <Card className="rounded-[4px]">
         <CardContent className="pt-6">
           {isLoading ? (
             <div className="py-8 text-center">
@@ -63,10 +93,10 @@ const AdminVersionLog = () => {
                     
                     <div className="mb-2">
                       <h3 className="text-lg font-semibold">
-                        Change Title
+                        {getVersionTitle(log.version_string, log.changes)}
                       </h3>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
-                        Developer Name • {formatReleaseDate(log.release_date)}
+                        Development Team • {formatReleaseDate(log.release_date)}
                       </div>
                     </div>
                     
