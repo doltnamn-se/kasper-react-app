@@ -1,4 +1,3 @@
-
 import { Outlet } from "react-router-dom";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { TopNav } from "@/components/TopNav";
@@ -9,7 +8,6 @@ import { SidebarFooter } from "@/components/nav/SidebarFooter";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { Badge } from "@/components/ui/badge";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-
 const AdminLayout = () => {
   const {
     isCollapsed,
@@ -49,4 +47,3 @@ const AdminLayout = () => {
     </LanguageProvider>;
 };
 export default AdminLayout;
-
