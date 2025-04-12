@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -6,6 +7,10 @@ import { format, parseISO } from "date-fns";
 import { useVersionStore } from "@/config/version";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FilePdf, FileText } from "lucide-react";
+import { exportVersionLogsToCSV, exportVersionLogsToPDF } from "@/utils/exportUtils";
+import { toast } from "@/components/ui/use-toast";
 
 const AdminVersionLog = () => {
   const { t } = useLanguage();
@@ -32,10 +37,80 @@ const AdminVersionLog = () => {
     return { title, remainingChanges };
   };
 
+  const handleExportToPDF = async () => {
+    if (!versionLogs || versionLogs.length === 0) {
+      toast({
+        title: "Export failed",
+        description: "No data available to export",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      await exportVersionLogsToPDF(versionLogs);
+      toast({
+        title: t('success'),
+        description: "Version history exported to PDF",
+      });
+    } catch (error) {
+      console.error("PDF export error:", error);
+      toast({
+        title: "Export failed",
+        description: "Failed to export to PDF. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleExportToCSV = () => {
+    if (!versionLogs || versionLogs.length === 0) {
+      toast({
+        title: "Export failed",
+        description: "No data available to export",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      exportVersionLogsToCSV(versionLogs);
+      toast({
+        title: t('success'),
+        description: "Version history exported to CSV",
+      });
+    } catch (error) {
+      console.error("CSV export error:", error);
+      toast({
+        title: "Export failed",
+        description: "Failed to export to CSV. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">{t('nav.admin.version.log')}</h1>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleExportToCSV}
+            disabled={isLoading || !versionLogs || versionLogs.length === 0}
+          >
+            <FileText className="mr-1" size={16} />
+            CSV
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleExportToPDF}
+            disabled={isLoading || !versionLogs || versionLogs.length === 0}
+          >
+            <FilePdf className="mr-1" size={16} />
+            PDF
+          </Button>
+        </div>
       </div>
 
       <Card className="rounded-[4px]">
