@@ -52,7 +52,10 @@ const AdminVersionLog = () => {
             </div>
           ) : (
             <div className="relative">
-              <div className="absolute left-[24px] top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700" />
+              <div className={cn(
+                "absolute left-[24px] top-0 bottom-0 w-px",
+                "bg-[#dedede] dark:bg-[#333333]"
+              )} />
               
               <div className="space-y-8">
                 {versionLogs?.map((log, index) => {
@@ -66,7 +69,7 @@ const AdminVersionLog = () => {
                         className={cn(
                           "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
                           isCurrentVersion
-                            ? "bg-black text-white dark:bg-black dark:text-black" // Current version black badge with white text on light mode, black text on dark mode
+                            ? "bg-black text-white dark:bg-white dark:text-black" // Current version black badge with white text on light mode, white background with black text on dark mode
                             : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white" // Other versions with light gray badge and black text on light mode, dark gray badge with white text on dark mode
                         )}
                       >
@@ -113,3 +116,4 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
+
