@@ -79,17 +79,17 @@ const AdminVersionLog = () => {
                         {log.version_string}
                       </Badge>
                       
-                      <div className="mb-2">
-                        <h3 className="text-lg font-semibold">
+                      <div className="mb-2 ml-14">
+                        <h3 className="text-lg font-medium">
                           {title}
                         </h3>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm text-[#000000A6] font-medium">
                           Development Team • {formatReleaseDate(log.release_date)}
                         </div>
                       </div>
                       
                       {remainingChanges.length > 0 && (
-                        <ul className="space-y-2 mt-3">
+                        <ul className="space-y-2 mt-3 ml-14">
                           {remainingChanges.map((change: VersionChange, changeIndex: number) => (
                             <li 
                               key={changeIndex} 
@@ -119,3 +119,4 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
+
