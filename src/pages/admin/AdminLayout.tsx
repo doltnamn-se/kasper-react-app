@@ -1,3 +1,4 @@
+
 import { Outlet } from "react-router-dom";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { TopNav } from "@/components/TopNav";
@@ -27,8 +28,8 @@ const AdminLayout = () => {
             isMobile ? cn("w-64 transform", isMobileMenuOpen ? "translate-x-0" : "-translate-x-full") : cn("block", isCollapsed ? "w-16" : "w-72")
           )}>
             <div className="px-8 py-6 flex items-center gap-3">
-              <AuthLogo className="relative h-8 -mb-1" />
-              <Badge variant="secondary" className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1 -mt-1">
+              <AuthLogo className="relative h-8" />
+              <Badge variant="secondary" className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1 -translate-y-[2px]">
                 Admin
               </Badge>
             </div>
