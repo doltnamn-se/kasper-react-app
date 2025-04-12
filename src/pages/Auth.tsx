@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +8,7 @@ import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
+import { initializeVersionTracking } from "@/config/version";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -32,6 +34,9 @@ const Auth = () => {
     if (isDark) {
       document.documentElement.classList.add('dark');
     }
+
+    // Initialize version tracking
+    initializeVersionTracking();
 
     const handleRecoveryFlow = async () => {
       const type = searchParams.get('type');
