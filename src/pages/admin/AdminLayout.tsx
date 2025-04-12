@@ -30,8 +30,8 @@ const AdminLayout = () => {
             <div className="px-8 py-6 flex items-center gap-3">
               <AuthLogo className="relative h-8" />
               <Badge 
-                variant="secondary" 
-                className="bg-black text-white dark:bg-white dark:text-black !hover:bg-black !hover:text-white dark:!hover:bg-white dark:!hover:text-black"
+                variant="static" 
+                className="bg-black text-white dark:bg-white dark:text-black"
               >
                 Admin
               </Badge>
