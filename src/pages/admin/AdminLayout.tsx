@@ -1,4 +1,3 @@
-
 import { Outlet } from "react-router-dom";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { TopNav } from "@/components/TopNav";
@@ -31,7 +30,7 @@ const AdminLayout = () => {
               <AuthLogo className="relative h-8" />
               <Badge 
                 variant="secondary" 
-                className="bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-white/80 py-1"
+                className="bg-black text-white dark:bg-white dark:text-black"
               >
                 Admin
               </Badge>
@@ -64,4 +63,3 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
-
