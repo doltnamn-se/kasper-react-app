@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -69,15 +68,15 @@ const AdminVersionLog = () => {
                         className={cn(
                           "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
                           isCurrentVersion
-                            ? "bg-black text-white dark:bg-white dark:text-black" // Current version black badge with white text on light mode, white background with black text on dark mode
-                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white" // Other versions with light gray badge and black text on light mode, dark gray badge with white text on dark mode
+                            ? "bg-black text-white dark:bg-white dark:text-black"
+                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white"
                         )}
                       >
                         {log.version_string}
                       </Badge>
                       
                       <div className="mb-2">
-                        <h3 className="text-lg font-medium">
+                        <h3 className="text-lg font-medium leading-[1.5rem]">
                           {title}
                         </h3>
                         <div className="text-sm font-normal text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -116,4 +115,3 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
-
