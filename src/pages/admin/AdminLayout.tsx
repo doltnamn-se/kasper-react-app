@@ -1,3 +1,4 @@
+
 import { Outlet } from "react-router-dom";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { TopNav } from "@/components/TopNav";
@@ -27,7 +28,7 @@ const AdminLayout = () => {
               </Badge>
             </div>
 
-            <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
+            {/* Removed the bottom space (div with h-px bg-[#e5e7eb]) */}
 
             <div className="px-6">
               <AdminNavigation toggleMobileMenu={toggleMobileMenu} />
