@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useVersionLogs, VersionChange } from "@/hooks/useVersionLogs";
 import { format, parseISO } from "date-fns";
@@ -49,7 +49,7 @@ const AdminVersionLog = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">{t('nav.admin.version.log')}</CardTitle>
+          {/* Removed the redundant CardTitle */}
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -100,3 +100,4 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
+
