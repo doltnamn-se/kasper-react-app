@@ -31,7 +31,7 @@ const AdminLayout = () => {
               <AuthLogo className="relative h-8" />
               <Badge 
                 variant="secondary" 
-                className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1 mb-[10px]"
+                className="bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-white/80 py-1"
               >
                 Admin
               </Badge>
@@ -64,3 +64,4 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+
