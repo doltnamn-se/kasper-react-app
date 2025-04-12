@@ -5,8 +5,10 @@ import { useLocation } from "react-router-dom";
 import { 
   UsersRound, 
   ChartNoAxesGantt,
-  EyeOff
+  EyeOff,
+  History
 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 interface AdminNavigationProps {
   toggleMobileMenu?: () => void;
@@ -53,7 +55,15 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
         <EyeOff className="w-[18px] h-[18px]" />, 
         t('nav.admin.links')
       )}
+      
+      <div className="py-1">
+        <Separator className="bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
+      </div>
+
+      {renderNavLink("/admin/version-log", 
+        <History className="w-[18px] h-[18px]" />, 
+        t('nav.admin.version.log')
+      )}
     </nav>
   );
 };
-

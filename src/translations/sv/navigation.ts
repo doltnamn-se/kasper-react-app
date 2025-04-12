@@ -11,9 +11,9 @@ export const navigation: NavigationTranslations = {
   'nav.admin.dashboard': 'Översikt',
   'nav.admin.customers': 'Kunder',
   'nav.admin.links': 'Länkhantering',
+  'nav.admin.version.log': 'Versionslogg',
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
   'status': 'Status',
   'last.seen': 'Senast sedd'
 };
-

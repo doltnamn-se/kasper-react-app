@@ -9,9 +9,9 @@ export interface NavigationTranslations {
   'nav.admin.dashboard': string;
   'nav.admin.customers': string;
   'nav.admin.links': string;
+  'nav.admin.version.log': string;
   'dark.mode': string;
   'light.mode': string;
   'status': string;
   'last.seen': string;
 }
-

@@ -11,9 +11,9 @@ export const navigation: NavigationTranslations = {
   'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Customers',
   'nav.admin.links': 'Link Management',
+  'nav.admin.version.log': 'Version log',
   'dark.mode': 'Dark mode',
   'light.mode': 'Light mode',
   'status': 'Status',
   'last.seen': 'Last seen'
 };
-
