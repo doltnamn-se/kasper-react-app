@@ -1,143 +1,115 @@
-
-import { useState } from "react";
-import { useVersionLogs } from "@/hooks/useVersionLogs";
-import { exportVersionLogsToCSV, exportVersionLogsToPDF } from "@/utils/exportUtils";
-import { Button } from "@/components/ui/button";
-import { AdminHeader } from "@/components/admin/AdminHeader";
-import { format } from "date-fns";
-import { Suspense } from "react";
-import { FileText, FileType } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useVersionLogs, VersionChange } from "@/hooks/useVersionLogs";
+import { format, parseISO } from "date-fns";
+import { useVersionStore } from "@/config/version";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 const AdminVersionLog = () => {
+  const { t } = useLanguage();
   const { data: versionLogs, isLoading, error } = useVersionLogs();
-  const [isExporting, setIsExporting] = useState(false);
+  const currentVersion = useVersionStore((state) => state.version);
 
-  const handleExportCSV = () => {
+  const formatReleaseDate = (dateString: string) => {
     try {
-      if (!versionLogs || versionLogs.length === 0) {
-        toast({
-          title: "Export Failed",
-          description: "No version logs to export",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      exportVersionLogsToCSV(versionLogs);
-      
-      toast({
-        title: "Export Successful",
-        description: "Version logs exported to CSV",
-      });
+      return format(parseISO(dateString), "yyyy-MM-dd");
     } catch (error) {
-      console.error("CSV export error:", error);
-      toast({
-        title: "Export Failed",
-        description: "Could not export to CSV",
-        variant: "destructive",
-      });
+      console.error("Error formatting date:", error);
+      return dateString;
     }
   };
 
-  const handleExportPDF = async () => {
-    try {
-      setIsExporting(true);
-      
-      if (!versionLogs || versionLogs.length === 0) {
-        toast({
-          title: "Export Failed",
-          description: "No version logs to export",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      await exportVersionLogsToPDF(versionLogs);
-      
-      toast({
-        title: "Export Successful",
-        description: "Version logs exported to PDF",
-      });
-    } catch (error) {
-      console.error("PDF export error:", error);
-      toast({
-        title: "Export Failed",
-        description: "Could not export to PDF",
-        variant: "destructive",
-      });
-    } finally {
-      setIsExporting(false);
+  const getVersionContent = (changes: VersionChange[]) => {
+    if (!changes || changes.length === 0) {
+      return { title: "Version update", remainingChanges: [] };
     }
+    
+    const title = changes[0].description;
+    const remainingChanges = changes.slice(1);
+    
+    return { title, remainingChanges };
   };
-
-  const exportActions = (
-    <div className="flex gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleExportCSV}
-        className="flex items-center gap-1"
-      >
-        <FileText className="w-4 h-4" />
-        Export CSV
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleExportPDF}
-        disabled={isExporting}
-        className="flex items-center gap-1"
-      >
-        <FileType className="w-4 h-4" />
-        {isExporting ? "Exporting..." : "Export PDF"}
-      </Button>
-    </div>
-  );
 
   return (
-    <div className="space-y-8">
-      <AdminHeader 
-        title="Version Log" 
-        description="View and manage application version history"
-        onCustomerCreated={() => {}}
-      >
-        {exportActions}
-      </AdminHeader>
-
-      <div className="rounded-lg border bg-white dark:bg-[#1c1c1e] overflow-hidden">
-        {isLoading ? (
-          <div className="p-8 text-center">Loading version history...</div>
-        ) : error ? (
-          <div className="p-8 text-center text-red-500">
-            Error loading version history
-          </div>
-        ) : versionLogs?.length === 0 ? (
-          <div className="p-8 text-center">No version history available</div>
-        ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-800">
-            {versionLogs?.map((log) => (
-              <div key={log.id} className="p-6">
-                <div className="flex flex-wrap justify-between items-start gap-2 mb-4">
-                  <h3 className="text-lg font-semibold">
-                    Version {log.version_string}
-                  </h3>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {format(new Date(log.release_date), "MMMM d, yyyy")}
-                  </span>
-                </div>
-                <ul className="space-y-2 pl-6 list-disc">
-                  {log.changes.map((change, index) => (
-                    <li key={index} className="text-gray-700 dark:text-gray-300">
-                      {change.description}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">{t('nav.admin.version.log')}</h1>
       </div>
+
+      <Card className="rounded-[4px]">
+        <CardContent className="pt-6">
+          {isLoading ? (
+            <div className="py-8 text-center">
+              <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
+              <p className="mt-2 text-sm text-muted-foreground">Loading version history...</p>
+            </div>
+          ) : error ? (
+            <div className="py-8 text-center text-red-500">
+              <p>Failed to load version history. Please try again later.</p>
+            </div>
+          ) : (
+            <div className="relative">
+              <div className={cn(
+                "absolute left-[24px] top-0 bottom-0 w-px",
+                "bg-[#dedede] dark:bg-[#333333]"
+              )} />
+              
+              <div className="space-y-8">
+                {versionLogs?.map((log, index) => {
+                  const { title, remainingChanges } = getVersionContent(log.changes);
+                  const isCurrentVersion = log.version_string === currentVersion;
+                  
+                  return (
+                    <div key={log.id} className="relative pl-14">
+                      <Badge 
+                        variant="static"
+                        className={cn(
+                          "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
+                          isCurrentVersion
+                            ? "bg-black text-white dark:bg-white dark:text-black"
+                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white"
+                        )}
+                      >
+                        {log.version_string}
+                      </Badge>
+                      
+                      <div className="mb-2">
+                        <h3 className="text-lg font-medium leading-[1.5rem]">
+                          {title}
+                        </h3>
+                        <div className="text-sm font-normal text-[#000000A6] dark:text-[#FFFFFFA6]">
+                          Sirus Hadsson &nbsp;·&nbsp; {formatReleaseDate(log.release_date)}
+                        </div>
+                      </div>
+                      
+                      {remainingChanges.length > 0 && (
+                        <ul className="space-y-2 mt-3">
+                          {remainingChanges.map((change: VersionChange, changeIndex: number) => (
+                            <li 
+                              key={changeIndex} 
+                              className="text-sm text-black dark:text-white"
+                            >
+                              {change.description}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  );
+                })}
+
+                {versionLogs?.length === 0 && (
+                  <div className="py-4 text-center">
+                    <p className="text-muted-foreground">No version history available.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
