@@ -36,7 +36,11 @@ export const useVersionLogs = () => {
       // Parse the JSON changes field to convert it to the VersionChange[] type
       return result.map(item => ({
         ...item,
-        changes: Array.isArray(item.changes) ? item.changes : JSON.parse(item.changes as string)
+        changes: Array.isArray(item.changes) 
+          ? item.changes 
+          : typeof item.changes === 'string' 
+            ? JSON.parse(item.changes) 
+            : JSON.parse(JSON.stringify(item.changes))
       })) as VersionLog[];
     }
   });

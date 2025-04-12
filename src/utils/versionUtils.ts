@@ -11,13 +11,16 @@ export const addNewVersion = async (
   changes: VersionChange[]
 ) => {
   try {
+    // Convert the changes array to a JSON string that Supabase can handle
+    const changesJson = JSON.stringify(changes);
+    
     const { data, error } = await supabase
       .from("version_logs")
       .insert([
         {
           version_string: versionString,
           release_date: releaseDate.toISOString(),
-          changes: changes // Supabase will handle the JSON serialization
+          changes: changesJson
         }
       ])
       .select();
@@ -27,7 +30,16 @@ export const addNewVersion = async (
       return null;
     }
     
-    return data?.[0] || null;
+    if (data?.[0]) {
+      return {
+        ...data[0],
+        changes: Array.isArray(data[0].changes) 
+          ? data[0].changes 
+          : JSON.parse(data[0].changes as string)
+      };
+    }
+    
+    return null;
   } catch (err) {
     console.error("Exception adding new version:", err);
     return null;
@@ -55,7 +67,9 @@ export const getLatestVersion = async () => {
     if (data) {
       return {
         ...data,
-        changes: Array.isArray(data.changes) ? data.changes : JSON.parse(data.changes as string)
+        changes: Array.isArray(data.changes) 
+          ? data.changes 
+          : JSON.parse(data.changes as string)
       };
     }
     
