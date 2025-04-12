@@ -64,18 +64,13 @@ const AdminVersionLog = () => {
                   
                   return (
                     <div key={log.id} className="relative pl-14">
-                      <div className={cn(
-                        "absolute left-[18px] top-0 w-3 h-3 rounded-full",
-                        "bg-[#dedede] dark:bg-[#333333]"
-                      )} />
-                      
                       <Badge 
                         variant="static"
                         className={cn(
                           "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
                           isCurrentVersion
-                            ? "bg-black text-white dark:bg-white dark:text-black"
-                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white"
+                            ? "bg-black text-white dark:bg-white dark:text-black" // Current version black badge with white text on light mode, white background with black text on dark mode
+                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white" // Other versions with light gray badge and black text on light mode, dark gray badge with white text on dark mode
                         )}
                       >
                         {log.version_string}
@@ -95,16 +90,9 @@ const AdminVersionLog = () => {
                           {remainingChanges.map((change: VersionChange, changeIndex: number) => (
                             <li 
                               key={changeIndex} 
-                              className="relative"
+                              className="text-sm text-black dark:text-white"
                             >
-                              {/* Small circle on the timeline for each bullet */}
-                              <div className={cn(
-                                "absolute left-[-50px] top-[0.5em] w-1.5 h-1.5 rounded-full",
-                                "bg-[#dedede] dark:bg-[#333333]"
-                              )} />
-                              <a href="#" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                                {change.description}
-                              </a>
+                              {change.description}
                             </li>
                           ))}
                         </ul>
@@ -128,3 +116,4 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
+
