@@ -6,6 +6,7 @@ import { useVersionLogs, VersionChange } from "@/hooks/useVersionLogs";
 import { format, parseISO } from "date-fns";
 import { useVersionStore } from "@/config/version";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 const AdminVersionLog = () => {
   const { t } = useLanguage();
@@ -19,26 +20,6 @@ const AdminVersionLog = () => {
     } catch (error) {
       console.error("Error formatting date:", error);
       return dateString;
-    }
-  };
-
-  // Function to render an icon based on change type
-  const getChangeTypeClass = (type: string) => {
-    switch (type) {
-      case "feature":
-        return "text-blue-600 dark:text-blue-400";
-      case "improvement":
-        return "text-green-600 dark:text-green-400";
-      case "fix":
-        return "text-amber-600 dark:text-amber-400";
-      case "security":
-        return "text-red-600 dark:text-red-400";
-      case "performance":
-        return "text-purple-600 dark:text-purple-400";
-      case "major":
-        return "text-indigo-600 dark:text-indigo-400";
-      default:
-        return "text-gray-600 dark:text-gray-400";
     }
   };
 
@@ -67,37 +48,33 @@ const AdminVersionLog = () => {
               <div className="space-y-8">
                 {versionLogs?.map((log, index) => (
                   <div key={log.id} className="relative pl-14">
-                    {/* Version indicator */}
-                    <div 
+                    {/* Version indicator - now black for current version */}
+                    <Badge 
+                      variant="static"
                       className={cn(
                         "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
                         log.version_string === currentVersion
-                          ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300"
+                          ? "bg-black text-white dark:bg-black dark:text-white"
                           : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
                       )}
                     >
                       {log.version_string}
-                    </div>
+                    </Badge>
                     
-                    <div className="mb-1 flex items-baseline">
+                    <div className="mb-2">
                       <h3 className="text-lg font-semibold">
-                        {log.version_string === currentVersion && (
-                          <span className="ml-2 text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-0.5 rounded-full">
-                            Current
-                          </span>
-                        )}
+                        Change Title
                       </h3>
-                      <span className="ml-auto text-sm text-muted-foreground">{formatReleaseDate(log.release_date)}</span>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Developer Name • {formatReleaseDate(log.release_date)}
+                      </div>
                     </div>
                     
-                    <ul className="space-y-2 mt-2">
+                    <ul className="space-y-2 mt-3">
                       {log.changes.map((change: VersionChange, changeIndex: number) => (
                         <li 
                           key={changeIndex} 
-                          className={cn(
-                            "text-sm",
-                            getChangeTypeClass(change.type)
-                          )}
+                          className="text-sm text-gray-800 dark:text-gray-200"
                         >
                           {change.description}
                         </li>
