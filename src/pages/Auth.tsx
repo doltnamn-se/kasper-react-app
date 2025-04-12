@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +20,7 @@ const Auth = () => {
   const { t, language } = useLanguage();
   const [isResetPasswordMode, setIsResetPasswordMode] = useState(false);
   const setVersion = useVersionStore((state) => state.setVersion);
+  const [versionInitialized, setVersionInitialized] = useState(false);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -41,9 +43,18 @@ const Auth = () => {
 
     // Also fetch latest version directly to ensure it's available immediately
     const fetchLatestVersion = async () => {
-      const latestVersion = await getLatestVersion();
-      if (latestVersion) {
-        setVersion(latestVersion.version_string);
+      try {
+        const latestVersion = await getLatestVersion();
+        if (latestVersion) {
+          console.log('Setting version on Auth page:', latestVersion.version_string);
+          setVersion(latestVersion.version_string);
+        } else {
+          console.log('No version found, keeping default');
+        }
+        setVersionInitialized(true);
+      } catch (err) {
+        console.error('Error fetching version:', err);
+        setVersionInitialized(true);
       }
     };
     
