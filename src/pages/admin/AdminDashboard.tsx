@@ -49,7 +49,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
+    <div className="w-full overflow-hidden">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-6">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.admin.dashboard')}
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
 
       <div className="grid gap-4 md:grid-cols-2">
         {/* Left Column */}
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4 w-full">
           {/* 1. Online Users Card */}
           <OnlineUsersCard />
           
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
         </div>
         
         {/* Right Column */}
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4 w-full">
           {/* 2. Link Management Card */}
           <LinkManagementCard />
 

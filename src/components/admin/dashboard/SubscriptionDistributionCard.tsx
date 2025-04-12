@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SubscriptionData {
   plan: string;
@@ -37,6 +38,7 @@ export const SubscriptionDistributionCard = ({
   onTimeRangeChange
 }: SubscriptionDistributionCardProps) => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   
   // Format the plan name for display
   const formatPlanName = (plan: string): string => {
@@ -128,6 +130,9 @@ export const SubscriptionDistributionCard = ({
     </DropdownMenu>
   ) : null;
 
+  // Calculate chart width for mobile
+  const chartWidth = isMobile ? 600 : '100%';
+
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <div className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
@@ -143,48 +148,89 @@ export const SubscriptionDistributionCard = ({
           </div>
           
           <div className="flex-1 mt-6 overflow-hidden">
-            <ScrollArea className="h-[200px] w-full">
-              <div className="min-w-[600px] h-[200px]">
-                <ChartContainer className="h-[200px] w-full" config={{}}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={data}
-                      layout="vertical"
-                      margin={{ top: 5, right: 90, left: 0, bottom: 5 }}
-                    >
-                      <XAxis type="number" hide />
-                      <YAxis 
-                        type="category"
-                        dataKey="name"
-                        axisLine={false}
-                        tickLine={false}
-                        tick={{ fill: '#6B7280', fontSize: 12 }}
-                        className="dark:text-gray-400"
-                        width={80}
-                      />
-                      <Tooltip 
-                        content={<CustomTooltip />}
-                        cursor={{ fill: 'transparent' }}
-                      />
-                      <Bar 
-                        dataKey="value"
-                        barSize={12}
-                        radius={6}
-                        label={renderCustomBarLabel}
-                        className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+            {isMobile ? (
+              <ScrollArea className="h-[200px] w-full">
+                <div style={{ width: `${chartWidth}px`, height: '200px' }}>
+                  <ChartContainer className="h-[200px] w-full" config={{}}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={data}
+                        layout="vertical"
+                        margin={{ top: 5, right: 90, left: 0, bottom: 5 }}
                       >
-                        {data.map((entry, index) => (
-                          <Cell 
-                            key={`cell-${index}`}
-                            className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </div>
-            </ScrollArea>
+                        <XAxis type="number" hide />
+                        <YAxis 
+                          type="category"
+                          dataKey="name"
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fill: '#6B7280', fontSize: 12 }}
+                          className="dark:text-gray-400"
+                          width={80}
+                        />
+                        <Tooltip 
+                          content={<CustomTooltip />}
+                          cursor={{ fill: 'transparent' }}
+                        />
+                        <Bar 
+                          dataKey="value"
+                          barSize={12}
+                          radius={6}
+                          label={renderCustomBarLabel}
+                          className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+                        >
+                          {data.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`}
+                              className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </div>
+              </ScrollArea>
+            ) : (
+              <ChartContainer className="h-[200px] w-full" config={{}}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={data}
+                    layout="vertical"
+                    margin={{ top: 5, right: 90, left: 0, bottom: 5 }}
+                  >
+                    <XAxis type="number" hide />
+                    <YAxis 
+                      type="category"
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6B7280', fontSize: 12 }}
+                      className="dark:text-gray-400"
+                      width={80}
+                    />
+                    <Tooltip 
+                      content={<CustomTooltip />}
+                      cursor={{ fill: 'transparent' }}
+                    />
+                    <Bar 
+                      dataKey="value"
+                      barSize={12}
+                      radius={6}
+                      label={renderCustomBarLabel}
+                      className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+                    >
+                      {data.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`}
+                          className="fill-[#10b981] dark:fill-[#10b981] hover:fill-[#3fcf8e] dark:hover:fill-[#3ecf8e]"
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            )}
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerRegistrationData } from "@/types/admin";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ClientsOverTimeData {
   date: string;
@@ -23,6 +24,7 @@ const SWEDISH_TIMEZONE = "Europe/Stockholm";
 export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data }) => {
   const { t, language } = useLanguage();
   const [activeBarIndex, setActiveBarIndex] = useState<number | null>(null);
+  const isMobile = useIsMobile();
   
   // Transform data if needed (to handle both data formats)
   const chartData = data.map(item => {
@@ -92,70 +94,127 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     setActiveBarIndex(null);
   };
 
-  // Calculate min width - if we have many data points, make sure to provide enough horizontal space
-  const minWidth = Math.max(600, chartData.length * 10); // Ensure at least 600px, but expand if many data points
+  // Calculate chart width based on data points - only for mobile scrolling
+  const chartWidth = isMobile ? Math.max(600, chartData.length * 10) : '100%';
 
   return (
     <div className="w-full h-[180px] pb-6 overflow-hidden">
       <div className="h-[140px] w-full">
-        <ScrollArea className="h-full w-full">
-          <div style={{ width: `${minWidth}px`, height: '140px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart 
-                data={chartData} 
-                margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-              >
-                <XAxis 
-                  dataKey="date" 
-                  axisLine={false}
-                  tickLine={false}
-                  tick={false}
-                  height={10}
-                />
-                <YAxis 
-                  hide={true}
-                />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-                <Bar 
-                  dataKey="count" 
-                  className="fill-[#10b981]"
-                  barSize={4} 
-                  radius={2}
-                  shape={(props) => {
-                    const { x, y, width, height, index } = props;
-                    return (
-                      <rect
-                        x={x}
-                        y={y}
-                        width={width}
-                        height={height}
-                        rx={2}
-                        ry={2}
-                        fill={
-                          activeBarIndex === index
-                            ? "#3fcf8e" // Light mode hover color for active bar
-                            : activeBarIndex !== null
-                            ? "#16b674" // Light mode hover color for inactive bars
-                            : "#10b981" // Default color
-                        }
-                        className={`
-                          ${activeBarIndex === index
-                            ? "dark:fill-[#3ecf8e]" // Dark mode hover color for active bar
-                            : activeBarIndex !== null
-                            ? "dark:fill-[#006239]" // Dark mode hover color for inactive bars
-                            : "dark:fill-[#10b981]"} // Default dark mode color
-                          transition-colors duration-300 ease-in-out
-                        `}
-                      />
-                    );
-                  }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </ScrollArea>
+        {isMobile ? (
+          <ScrollArea className="h-full w-full">
+            <div style={{ width: `${chartWidth}px`, height: '140px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart 
+                  data={chartData} 
+                  margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <XAxis 
+                    dataKey="date" 
+                    axisLine={false}
+                    tickLine={false}
+                    tick={false}
+                    height={10}
+                  />
+                  <YAxis 
+                    hide={true}
+                  />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+                  <Bar 
+                    dataKey="count" 
+                    className="fill-[#10b981]"
+                    barSize={4} 
+                    radius={2}
+                    shape={(props) => {
+                      const { x, y, width, height, index } = props;
+                      return (
+                        <rect
+                          x={x}
+                          y={y}
+                          width={width}
+                          height={height}
+                          rx={2}
+                          ry={2}
+                          fill={
+                            activeBarIndex === index
+                              ? "#3fcf8e" // Light mode hover color for active bar
+                              : activeBarIndex !== null
+                              ? "#16b674" // Light mode hover color for inactive bars
+                              : "#10b981" // Default color
+                          }
+                          className={`
+                            ${activeBarIndex === index
+                              ? "dark:fill-[#3ecf8e]" // Dark mode hover color for active bar
+                              : activeBarIndex !== null
+                              ? "dark:fill-[#006239]" // Dark mode hover color for inactive bars
+                              : "dark:fill-[#10b981]"} // Default dark mode color
+                            transition-colors duration-300 ease-in-out
+                          `}
+                        />
+                      );
+                    }}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </ScrollArea>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart 
+              data={chartData} 
+              margin={{ top: 0, right: 0, left: -20, bottom: 5 }}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <XAxis 
+                dataKey="date" 
+                axisLine={false}
+                tickLine={false}
+                tick={false}
+                height={10}
+              />
+              <YAxis 
+                hide={true}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+              <Bar 
+                dataKey="count" 
+                className="fill-[#10b981]"
+                barSize={4} 
+                radius={2}
+                shape={(props) => {
+                  const { x, y, width, height, index } = props;
+                  return (
+                    <rect
+                      x={x}
+                      y={y}
+                      width={width}
+                      height={height}
+                      rx={2}
+                      ry={2}
+                      fill={
+                        activeBarIndex === index
+                          ? "#3fcf8e" // Light mode hover color for active bar
+                          : activeBarIndex !== null
+                          ? "#16b674" // Light mode hover color for inactive bars
+                          : "#10b981" // Default color
+                      }
+                      className={`
+                        ${activeBarIndex === index
+                          ? "dark:fill-[#3ecf8e]" // Dark mode hover color for active bar
+                          : activeBarIndex !== null
+                          ? "dark:fill-[#006239]" // Dark mode hover color for inactive bars
+                          : "dark:fill-[#10b981]"} // Default dark mode color
+                        transition-colors duration-300 ease-in-out
+                      `}
+                    />
+                  );
+                }}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </div>
       <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 px-1 mb-2">
         <span>{formatBottomDate(firstDate)}</span>
