@@ -63,46 +63,40 @@ const AdminVersionLog = () => {
                   const isCurrentVersion = log.version_string === currentVersion;
                   
                   return (
-                    <div key={log.id} className="relative pl-14 flex items-center">
-                      {/* Timeline dot */}
-                      <div className={cn(
-                        "absolute left-[22px] w-2 h-2 rounded-full",
-                        "bg-[#dedede] dark:bg-[#333333]"
-                      )} />
-                      
+                    <div key={log.id} className="relative pl-14">
                       <Badge 
                         variant="static"
                         className={cn(
                           "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
                           isCurrentVersion
-                            ? "bg-black text-white dark:bg-white dark:text-black"
-                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white"
+                            ? "bg-black text-white dark:bg-white dark:text-black" // Current version black badge with white text on light mode, white background with black text on dark mode
+                            : "bg-[#dedede] text-black dark:bg-[#333333] dark:text-white" // Other versions with light gray badge and black text on light mode, dark gray badge with white text on dark mode
                         )}
                       >
                         {log.version_string}
                       </Badge>
                       
-                      <div className="ml-16">
+                      <div className="mb-2">
                         <h3 className="text-lg font-medium">
                           {title}
                         </h3>
                         <div className="text-sm font-normal text-[#000000A6] dark:text-[#FFFFFFA6]">
                           Sirus Hadsson &nbsp;·&nbsp; {formatReleaseDate(log.release_date)}
                         </div>
-                        
-                        {remainingChanges.length > 0 && (
-                          <ul className="space-y-2 mt-3">
-                            {remainingChanges.map((change: VersionChange, changeIndex: number) => (
-                              <li 
-                                key={changeIndex} 
-                                className="text-sm text-black dark:text-white"
-                              >
-                                {change.description}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
                       </div>
+                      
+                      {remainingChanges.length > 0 && (
+                        <ul className="space-y-2 mt-3">
+                          {remainingChanges.map((change: VersionChange, changeIndex: number) => (
+                            <li 
+                              key={changeIndex} 
+                              className="text-sm text-black dark:text-white"
+                            >
+                              {change.description}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   );
                 })}
@@ -122,3 +116,4 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
+
