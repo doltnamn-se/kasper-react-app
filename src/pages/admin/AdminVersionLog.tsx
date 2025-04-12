@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -76,7 +77,7 @@ const AdminVersionLog = () => {
                           {title}
                         </h3>
                         <div className="text-sm font-normal text-[#000000A6] dark:text-[#FFFFFFA6]">
-                          Sirus Hadsson   ·   {formatReleaseDate(log.release_date)}
+                          Sirus Hadsson &nbsp;·&nbsp; {formatReleaseDate(log.release_date)}
                         </div>
                       </div>
                       
