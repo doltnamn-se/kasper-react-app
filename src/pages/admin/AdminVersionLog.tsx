@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -13,7 +12,6 @@ const AdminVersionLog = () => {
   const { data: versionLogs, isLoading, error } = useVersionLogs();
   const currentVersion = useVersionStore((state) => state.version);
 
-  // Function to format the release date
   const formatReleaseDate = (dateString: string) => {
     try {
       return format(parseISO(dateString), "yyyy-MM-dd");
@@ -23,16 +21,12 @@ const AdminVersionLog = () => {
     }
   };
 
-  // Function to get the title (first change) and remaining changes
   const getVersionContent = (changes: VersionChange[]) => {
     if (!changes || changes.length === 0) {
       return { title: "Version update", remainingChanges: [] };
     }
     
-    // Use the first change as the title
     const title = changes[0].description;
-    
-    // The remaining changes (exclude the first one)
     const remainingChanges = changes.slice(1);
     
     return { title, remainingChanges };
@@ -57,7 +51,6 @@ const AdminVersionLog = () => {
             </div>
           ) : (
             <div className="relative">
-              {/* Timeline vertical line */}
               <div className="absolute left-[24px] top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700" />
               
               <div className="space-y-8">
@@ -66,7 +59,6 @@ const AdminVersionLog = () => {
                   
                   return (
                     <div key={log.id} className="relative pl-14">
-                      {/* Version indicator */}
                       <Badge 
                         variant="static"
                         className={cn(
@@ -83,7 +75,7 @@ const AdminVersionLog = () => {
                         <h3 className="text-lg font-medium">
                           {title}
                         </h3>
-                        <div className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+                        <div className="text-sm font-normal text-[#000000A6] dark:text-[#FFFFFFA6]">
                           Sirus Hadsson   ·   {formatReleaseDate(log.release_date)}
                         </div>
                       </div>
