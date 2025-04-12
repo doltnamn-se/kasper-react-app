@@ -7,6 +7,7 @@ import { format, parseISO } from "date-fns";
 import { useVersionStore } from "@/config/version";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Circle } from "lucide-react";
 
 const AdminVersionLog = () => {
   const { t } = useLanguage();
@@ -90,8 +91,13 @@ const AdminVersionLog = () => {
                           {remainingChanges.map((change: VersionChange, changeIndex: number) => (
                             <li 
                               key={changeIndex} 
-                              className="text-sm text-black dark:text-white"
+                              className="text-sm text-black dark:text-white relative pl-6"
                             >
+                              <Circle 
+                                className="absolute left-[-24px] text-[#dedede] dark:text-[#333333]" 
+                                size={6}
+                                fill="currentColor"
+                              />
                               {change.description}
                             </li>
                           ))}
@@ -116,4 +122,3 @@ const AdminVersionLog = () => {
 };
 
 export default AdminVersionLog;
-
