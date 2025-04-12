@@ -31,7 +31,7 @@ const AdminLayout = () => {
               <AuthLogo className="relative h-8" />
               <Badge 
                 variant="static" 
-                className="bg-black text-white dark:bg-white dark:text-black"
+                className="bg-black text-white dark:bg-white dark:text-black mb-[10px]"
               >
                 Admin
               </Badge>
