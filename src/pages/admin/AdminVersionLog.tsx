@@ -23,34 +23,19 @@ const AdminVersionLog = () => {
     }
   };
 
-  // Function to generate a version title based on the version string and changes
-  const getVersionTitle = (version: string, changes: VersionChange[]) => {
-    // Find the first major feature or improvement to use as title
-    const featureChange = changes.find(change => 
-      change.type === 'feature' || change.type === 'improvement'
-    );
-    
-    if (featureChange) {
-      // Use the first sentence of the description as the title
-      const firstSentence = featureChange.description.split('.')[0];
-      return firstSentence;
+  // Function to get the title (first change) and remaining changes
+  const getVersionContent = (changes: VersionChange[]) => {
+    if (!changes || changes.length === 0) {
+      return { title: "Version update", remainingChanges: [] };
     }
     
-    // Fallback titles based on types of changes
-    if (changes.some(c => c.type === 'bug')) {
-      return `Bug fixes and improvements`;
-    }
+    // Use the first change as the title
+    const title = changes[0].description;
     
-    if (changes.some(c => c.type === 'feature')) {
-      return `New features in v${version}`;
-    }
+    // The remaining changes (exclude the first one)
+    const remainingChanges = changes.slice(1);
     
-    if (changes.some(c => c.type === 'improvement')) {
-      return `Enhancements in v${version}`;
-    }
-    
-    // Default title
-    return `Update v${version}`;
+    return { title, remainingChanges };
   };
 
   return (
@@ -76,42 +61,48 @@ const AdminVersionLog = () => {
               <div className="absolute left-[24px] top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700" />
               
               <div className="space-y-8">
-                {versionLogs?.map((log, index) => (
-                  <div key={log.id} className="relative pl-14">
-                    {/* Version indicator - now black for current version */}
-                    <Badge 
-                      variant="static"
-                      className={cn(
-                        "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
-                        log.version_string === currentVersion
-                          ? "bg-black text-white dark:bg-black dark:text-white"
-                          : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
-                      )}
-                    >
-                      {log.version_string}
-                    </Badge>
-                    
-                    <div className="mb-2">
-                      <h3 className="text-lg font-semibold">
-                        {getVersionTitle(log.version_string, log.changes)}
-                      </h3>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        Development Team • {formatReleaseDate(log.release_date)}
+                {versionLogs?.map((log, index) => {
+                  const { title, remainingChanges } = getVersionContent(log.changes);
+                  
+                  return (
+                    <div key={log.id} className="relative pl-14">
+                      {/* Version indicator - now black for current version */}
+                      <Badge 
+                        variant="static"
+                        className={cn(
+                          "absolute left-0 flex items-center justify-center w-12 h-6 rounded-full text-xs font-medium",
+                          log.version_string === currentVersion
+                            ? "bg-black text-white dark:bg-black dark:text-white"
+                            : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
+                        )}
+                      >
+                        {log.version_string}
+                      </Badge>
+                      
+                      <div className="mb-2">
+                        <h3 className="text-lg font-semibold">
+                          {title}
+                        </h3>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          Development Team • {formatReleaseDate(log.release_date)}
+                        </div>
                       </div>
+                      
+                      {remainingChanges.length > 0 && (
+                        <ul className="space-y-2 mt-3">
+                          {remainingChanges.map((change: VersionChange, changeIndex: number) => (
+                            <li 
+                              key={changeIndex} 
+                              className="text-sm text-gray-800 dark:text-gray-200"
+                            >
+                              {change.description}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                    
-                    <ul className="space-y-2 mt-3">
-                      {log.changes.map((change: VersionChange, changeIndex: number) => (
-                        <li 
-                          key={changeIndex} 
-                          className="text-sm text-gray-800 dark:text-gray-200"
-                        >
-                          {change.description}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                  );
+                })}
 
                 {versionLogs?.length === 0 && (
                   <div className="py-4 text-center">
