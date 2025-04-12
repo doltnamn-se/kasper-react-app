@@ -5,12 +5,9 @@ import { exportVersionLogsToCSV, exportVersionLogsToPDF } from "@/utils/exportUt
 import { Button } from "@/components/ui/button";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { format } from "date-fns";
-import { Suspense, lazy } from "react";
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
+import { Suspense } from "react";
+import { FileText, FileType } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
-
-const FilePdfIcon = lazy(() => import("lucide-react").then(mod => ({ default: mod.FilePdf })));
-const FileTextIcon = lazy(() => import("lucide-react").then(mod => ({ default: mod.FileText })));
 
 const AdminVersionLog = () => {
   const { data: versionLogs, isLoading, error } = useVersionLogs();
@@ -74,37 +71,38 @@ const AdminVersionLog = () => {
     }
   };
 
+  const exportActions = (
+    <div className="flex gap-2">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleExportCSV}
+        className="flex items-center gap-1"
+      >
+        <FileText className="w-4 h-4" />
+        Export CSV
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleExportPDF}
+        disabled={isExporting}
+        className="flex items-center gap-1"
+      >
+        <FileType className="w-4 h-4" />
+        {isExporting ? "Exporting..." : "Export PDF"}
+      </Button>
+    </div>
+  );
+
   return (
     <div className="space-y-8">
       <AdminHeader 
         title="Version Log" 
         description="View and manage application version history"
+        onCustomerCreated={() => {}}
       >
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExportCSV}
-            className="flex items-center gap-1"
-          >
-            <Suspense fallback={<div className="w-4 h-4" />}>
-              <FileTextIcon className="w-4 h-4" />
-            </Suspense>
-            Export CSV
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExportPDF}
-            disabled={isExporting}
-            className="flex items-center gap-1"
-          >
-            <Suspense fallback={<div className="w-4 h-4" />}>
-              <FilePdfIcon className="w-4 h-4" />
-            </Suspense>
-            {isExporting ? "Exporting..." : "Export PDF"}
-          </Button>
-        </div>
+        {exportActions}
       </AdminHeader>
 
       <div className="rounded-lg border bg-white dark:bg-[#1c1c1e] overflow-hidden">
