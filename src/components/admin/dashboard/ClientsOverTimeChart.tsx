@@ -94,14 +94,15 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
     setActiveBarIndex(null);
   };
 
-  // Calculate chart width based on data points - only for mobile scrolling
+  // On mobile, make the chart wider to allow for scrolling while 
+  // containing it within parent container bounds
   const chartWidth = isMobile ? Math.max(600, chartData.length * 10) : '100%';
 
   return (
     <div className="w-full h-[180px] pb-6 overflow-hidden">
       <div className="h-[140px] w-full">
         {isMobile ? (
-          <ScrollArea className="h-full w-full">
+          <ScrollArea className="h-full w-full overflow-hidden">
             <div style={{ width: `${chartWidth}px`, height: '140px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart 

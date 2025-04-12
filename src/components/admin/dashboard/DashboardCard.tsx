@@ -40,14 +40,14 @@ export const DashboardCard = ({
   };
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 flex flex-col h-full">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 flex flex-col h-full overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
         <CardTitle className="text-sm font-medium">
           {title}
         </CardTitle>
         {actionButton}
       </CardHeader>
-      <CardContent className="p-0 flex flex-col flex-grow">
+      <CardContent className="p-0 flex flex-col flex-grow overflow-hidden">
         <div className="text-2xl font-bold mb-12">
           {value}
         </div>
@@ -64,7 +64,7 @@ export const DashboardCard = ({
         )}
 
         {chart && (
-          <div className="mt-auto">
+          <div className="mt-auto overflow-hidden">
             {chart}
           </div>
         )}

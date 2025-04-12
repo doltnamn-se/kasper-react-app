@@ -69,9 +69,9 @@ const AdminDashboard = () => {
         </CreateCustomerDialog>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 overflow-hidden">
         {/* Left Column */}
-        <div className="flex flex-col space-y-4 w-full">
+        <div className="flex flex-col space-y-4 w-full overflow-hidden">
           {/* 1. Online Users Card */}
           <OnlineUsersCard />
           
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
         </div>
         
         {/* Right Column */}
-        <div className="flex flex-col space-y-4 w-full">
+        <div className="flex flex-col space-y-4 w-full overflow-hidden">
           {/* 2. Link Management Card */}
           <LinkManagementCard />
 
