@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useVersionLogs, VersionChange } from "@/hooks/useVersionLogs";
 import { format, parseISO } from "date-fns";
+import { useVersionStore } from "@/config/version";
 
 const AdminVersionLog = () => {
   const { t } = useLanguage();
   const { data: versionLogs, isLoading, error } = useVersionLogs();
+  const currentVersion = useVersionStore((state) => state.version);
 
   // Function to format the release date
   const formatReleaseDate = (dateString: string) => {
@@ -64,7 +66,14 @@ const AdminVersionLog = () => {
               {versionLogs?.map((log, index) => (
                 <div key={log.id} className={`${index < versionLogs.length - 1 ? 'border-b pb-4' : 'pb-4'}`}>
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold text-lg">{log.version_string}</h3>
+                    <h3 className="font-semibold text-lg">
+                      {log.version_string}
+                      {log.version_string === currentVersion && (
+                        <span className="ml-2 text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded-full">
+                          Current
+                        </span>
+                      )}
+                    </h3>
                     <span className="text-sm text-muted-foreground">{formatReleaseDate(log.release_date)}</span>
                   </div>
                   <ul className="list-disc pl-5 space-y-1">

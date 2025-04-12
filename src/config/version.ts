@@ -1,6 +1,7 @@
 import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
 import { create } from 'zustand';
+import { getLatestVersion } from '@/utils/versionUtils';
 
 interface VersionState {
   version: string;
@@ -8,7 +9,7 @@ interface VersionState {
 }
 
 export const useVersionStore = create<VersionState>((set) => ({
-  version: '1.1.0', // Default version
+  version: '1.0.0', // Default version until loaded from DB
   setVersion: (version) => set({ version }),
 }));
 
@@ -17,52 +18,40 @@ let versionChannel: RealtimeChannel;
 export const initializeVersionTracking = async () => {
   console.log('Initializing version tracking...');
   
-  // Initial fetch
-  const { data, error } = await supabase
-    .from('app_changes')
-    .select('major, minor, patch')
-    .limit(1)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Error fetching initial version:', error);
-    return;
+  // Fetch latest version from version_logs table
+  const latestVersion = await getLatestVersion();
+  
+  if (latestVersion) {
+    const versionString = latestVersion.version_string;
+    console.log('Initial version from version_logs:', versionString);
+    useVersionStore.getState().setVersion(versionString);
+  } else {
+    console.log('No version found in version_logs, falling back to default version');
+    // We keep the default value set in the store
   }
 
-  if (data) {
-    const version = `${data.major}.${data.minor}.${data.patch}`;
-    console.log('Initial version:', version);
-    useVersionStore.getState().setVersion(version);
-  }
-
-  // Set up real-time subscription
-  versionChannel = supabase.channel('version-tracking')
+  // Set up real-time subscription to version_logs table for future updates
+  versionChannel = supabase.channel('version-logs-tracking')
     .on(
       'postgres_changes',
       {
-        event: '*',
+        event: 'INSERT',
         schema: 'public',
-        table: 'app_changes'
+        table: 'version_logs'
       },
       (payload: RealtimePostgresChangesPayload<{
-        major: number;
-        minor: number;
-        patch: number;
+        version_string: string;
       }>) => {
-        console.log('Version change detected:', payload);
-        if (payload.new && 
-            'major' in payload.new && 
-            'minor' in payload.new && 
-            'patch' in payload.new) {
-          const { major, minor, patch } = payload.new;
-          const newVersion = `${major}.${minor}.${patch}`;
+        console.log('Version log insertion detected:', payload);
+        if (payload.new && 'version_string' in payload.new) {
+          const newVersion = payload.new.version_string;
           console.log('Updating to version:', newVersion);
           useVersionStore.getState().setVersion(newVersion);
         }
       }
     )
     .subscribe((status) => {
-      console.log('Version subscription status:', status);
+      console.log('Version logs subscription status:', status);
     });
 };
 
