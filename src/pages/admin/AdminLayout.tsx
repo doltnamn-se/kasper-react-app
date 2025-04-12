@@ -29,7 +29,10 @@ const AdminLayout = () => {
           )}>
             <div className="px-8 py-6 flex items-center gap-3">
               <AuthLogo className="relative h-8" />
-              <Badge variant="secondary" className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1">
+              <Badge 
+                variant="secondary" 
+                className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark py-1 mb-[10px]"
+              >
                 Admin
               </Badge>
             </div>
