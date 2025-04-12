@@ -12,6 +12,7 @@ export type Database = {
       app_changes: {
         Row: {
           change_count: number
+          changelog: Json | null
           id: number
           last_updated: string | null
           major: number
@@ -20,6 +21,7 @@ export type Database = {
         }
         Insert: {
           change_count?: number
+          changelog?: Json | null
           id?: number
           last_updated?: string | null
           major?: number
@@ -28,6 +30,7 @@ export type Database = {
         }
         Update: {
           change_count?: number
+          changelog?: Json | null
           id?: number
           last_updated?: string | null
           major?: number
@@ -416,6 +419,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      version_logs: {
+        Row: {
+          changes: Json
+          created_at: string
+          id: string
+          release_date: string
+          updated_at: string
+          version_string: string
+        }
+        Insert: {
+          changes?: Json
+          created_at?: string
+          id?: string
+          release_date?: string
+          updated_at?: string
+          version_string: string
+        }
+        Update: {
+          changes?: Json
+          created_at?: string
+          id?: string
+          release_date?: string
+          updated_at?: string
+          version_string?: string
+        }
+        Relationships: []
       }
     }
     Views: {
