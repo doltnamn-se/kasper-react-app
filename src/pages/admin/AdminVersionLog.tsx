@@ -66,7 +66,7 @@ const AdminVersionLog = () => {
                   
                   return (
                     <div key={log.id} className="relative pl-14">
-                      {/* Version indicator - now black for current version */}
+                      {/* Version indicator */}
                       <Badge 
                         variant="static"
                         className={cn(
@@ -84,7 +84,7 @@ const AdminVersionLog = () => {
                           {title}
                         </h3>
                         <div className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-                          Sirus Hadsson • {formatReleaseDate(log.release_date)}
+                          Sirus Hadsson   ·   {formatReleaseDate(log.release_date)}
                         </div>
                       </div>
                       
@@ -93,7 +93,7 @@ const AdminVersionLog = () => {
                           {remainingChanges.map((change: VersionChange, changeIndex: number) => (
                             <li 
                               key={changeIndex} 
-                              className="text-sm text-gray-800 dark:text-gray-200"
+                              className="text-sm text-black dark:text-white"
                             >
                               {change.description}
                             </li>
