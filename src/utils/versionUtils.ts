@@ -17,7 +17,7 @@ export const addNewVersion = async (
         {
           version_string: versionString,
           release_date: releaseDate.toISOString(),
-          changes
+          changes: changes // Supabase will handle the JSON serialization
         }
       ])
       .select();
@@ -51,7 +51,15 @@ export const getLatestVersion = async () => {
       return null;
     }
     
-    return data || null;
+    // Parse the changes field if it exists
+    if (data) {
+      return {
+        ...data,
+        changes: Array.isArray(data.changes) ? data.changes : JSON.parse(data.changes as string)
+      };
+    }
+    
+    return null;
   } catch (err) {
     console.error("Exception getting latest version:", err);
     return null;
