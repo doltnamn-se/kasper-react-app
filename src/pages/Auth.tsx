@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,7 +7,8 @@ import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
-import { initializeVersionTracking } from "@/config/version";
+import { initializeVersionTracking, useVersionStore } from "@/config/version";
+import { getLatestVersion } from "@/utils/versionUtils";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const Auth = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { t, language } = useLanguage();
   const [isResetPasswordMode, setIsResetPasswordMode] = useState(false);
+  const setVersion = useVersionStore((state) => state.setVersion);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -37,6 +38,16 @@ const Auth = () => {
 
     // Initialize version tracking
     initializeVersionTracking();
+
+    // Also fetch latest version directly to ensure it's available immediately
+    const fetchLatestVersion = async () => {
+      const latestVersion = await getLatestVersion();
+      if (latestVersion) {
+        setVersion(latestVersion.version_string);
+      }
+    };
+    
+    fetchLatestVersion();
 
     const handleRecoveryFlow = async () => {
       const type = searchParams.get('type');
@@ -67,7 +78,7 @@ const Auth = () => {
     };
 
     handleRecoveryFlow();
-  }, [language, searchParams, t]);
+  }, [language, searchParams, t, setVersion]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
