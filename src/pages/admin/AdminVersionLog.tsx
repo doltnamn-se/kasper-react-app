@@ -80,11 +80,11 @@ const AdminVersionLog = () => {
                       </Badge>
                       
                       <div className="mb-2">
-                        <h3 className="text-lg font-semibold">
+                        <h3 className="text-lg font-medium">
                           {title}
                         </h3>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                          Development Team • {formatReleaseDate(log.release_date)}
+                        <div className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+                          Sirus Hadsson • {formatReleaseDate(log.release_date)}
                         </div>
                       </div>
                       
