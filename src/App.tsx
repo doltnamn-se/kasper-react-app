@@ -23,6 +23,7 @@ import PasswordTest from "@/pages/PasswordTest";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminCustomers from "@/pages/admin/AdminCustomers";
+import AdminVersionLog from "@/pages/admin/AdminVersionLog";
 import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -52,6 +53,7 @@ function App() {
                   <Route index element={<AdminDashboard />} />
                   <Route path="customers" element={<AdminCustomers />} />
                   <Route path="deindexing" element={<AdminDeindexingView />} />
+                  <Route path="version-log" element={<AdminVersionLog />} />
                 </Route>
 
                 {/* Customer routes */}
