@@ -13,6 +13,7 @@ const AdminVersionLog = () => {
   const { data: versionLogs, isLoading, error } = useVersionLogs();
   const currentVersion = useVersionStore((state) => state.version);
 
+  // Function to format the release date
   const formatReleaseDate = (dateString: string) => {
     try {
       return format(parseISO(dateString), "yyyy-MM-dd");
@@ -28,7 +29,7 @@ const AdminVersionLog = () => {
         <h1 className="text-3xl font-bold">{t('nav.admin.version.log')}</h1>
       </div>
 
-      <Card className="rounded-lg"> {/* Ensure standard border radius */}
+      <Card>
         <CardContent className="pt-6">
           {isLoading ? (
             <div className="py-8 text-center">
