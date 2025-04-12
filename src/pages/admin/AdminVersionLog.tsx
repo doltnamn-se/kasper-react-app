@@ -7,7 +7,6 @@ import { format, parseISO } from "date-fns";
 import { useVersionStore } from "@/config/version";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Circle } from "lucide-react";
 
 const AdminVersionLog = () => {
   const { t } = useLanguage();
@@ -96,14 +95,16 @@ const AdminVersionLog = () => {
                           {remainingChanges.map((change: VersionChange, changeIndex: number) => (
                             <li 
                               key={changeIndex} 
-                              className="text-sm text-black dark:text-white relative pl-6"
+                              className="relative"
                             >
-                              <Circle 
-                                className="absolute left-[-30px] text-[#dedede] dark:text-[#333333]" 
-                                size={6}
-                                fill="currentColor"
-                              />
-                              {change.description}
+                              {/* Small circle on the timeline for each bullet */}
+                              <div className={cn(
+                                "absolute left-[-50px] top-[0.5em] w-1.5 h-1.5 rounded-full",
+                                "bg-[#dedede] dark:bg-[#333333]"
+                              )} />
+                              <a href="#" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                {change.description}
+                              </a>
                             </li>
                           ))}
                         </ul>
