@@ -120,4 +120,5 @@ export interface UITranslations {
   'timerange.1year': string;
   'timerange.4weeks': string;
   'timerange.1week': string;
-};
+  'version.log.title': string;
+}

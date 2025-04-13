@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -123,4 +122,5 @@ export const ui: UITranslations = {
   'timerange.1year': '1 År',
   'timerange.4weeks': '4 Veckor',
   'timerange.1week': '1 Vecka',
+  'version.log.title': 'Versionlogg',
 };
