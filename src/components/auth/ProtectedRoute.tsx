@@ -27,7 +27,7 @@ export const ProtectedRoute = ({ children, adminOnly, customerOnly }: ProtectedR
     return <Navigate to="/auth" replace />;
   }
 
-  const isAdmin = userEmail === 'info@doltnamn.se';
+  const isAdmin = userEmail === 'info@digitaltskydd.se';
 
   if (adminOnly && !isAdmin) {
     return <Navigate to="/" replace />;
