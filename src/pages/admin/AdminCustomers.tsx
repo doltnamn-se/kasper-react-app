@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerTable } from "@/components/admin/customers/CustomerTable";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
+import { AdminHeader } from "@/components/admin/AdminHeader";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
@@ -11,9 +12,13 @@ const AdminCustomers = () => {
 
   return (
     <div className="w-full overflow-hidden">
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {t('nav.admin.customers')}
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+          {t('nav.admin.customers')}
+        </h1>
+        
+        <AdminHeader onCustomerCreated={fetchCustomers} />
+      </div>
 
       <div className="shadow-sm transition-colors duration-200 overflow-hidden">
         {isLoading ? (

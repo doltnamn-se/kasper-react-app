@@ -81,8 +81,8 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
   };
 
   return (
-    <div className="space-y-4">
-      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
+    <div className="space-y-4 w-full overflow-hidden">
+      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e] overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
             <CustomerTableHeader 
@@ -160,4 +160,3 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
     </div>
   );
 };
-
