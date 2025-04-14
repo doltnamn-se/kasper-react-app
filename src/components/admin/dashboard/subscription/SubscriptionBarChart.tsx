@@ -37,7 +37,6 @@ export const SubscriptionBarChart = ({
         <text
           x={x + width + 5}
           y={y + 15}
-          fill="var(--foreground)"
           textAnchor="start"
           fontSize="12"
           className="recharts-bar-label"
@@ -63,9 +62,7 @@ export const SubscriptionBarChart = ({
             axisLine={false}
             tickLine={false}
             tick={{
-              fill: 'var(--foreground)',
-              fontSize: 12,
-              style: { fill: 'var(--foreground)' }
+              fontSize: 12
             }}
             width={80}
           />

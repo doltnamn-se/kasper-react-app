@@ -113,19 +113,37 @@
 
 /* Recharts text color override with higher specificity */
 .recharts-text {
-  fill: var(--foreground) !important;
+  fill: #000000 !important;
 }
 
 .dark .recharts-text {
-  fill: var(--foreground) !important;
+  fill: #FFFFFF !important;
 }
 
-/* Specific override for the bar chart labels with higher specificity */
+/* Bar chart specific overrides with even higher specificity */
 .recharts-bar-rectangle + text {
   fill: #000000 !important;
 }
 
 .dark .recharts-bar-rectangle + text {
+  fill: #FFFFFF !important;
+}
+
+/* Target the Y-axis labels with highest specificity */
+.recharts-cartesian-axis-tick-value {
+  fill: #000000 !important;
+}
+
+.dark .recharts-cartesian-axis-tick-value {
+  fill: #FFFFFF !important;
+}
+
+/* Target all text elements in the chart */
+.recharts-layer text {
+  fill: #000000 !important;
+}
+
+.dark .recharts-layer text {
   fill: #FFFFFF !important;
 }
 
