@@ -37,8 +37,7 @@ export const SubscriptionBarChart = ({
         <text
           x={x + width + 5}
           y={y + 15}
-          fill="#10b981"
-          className="dark:fill-[#3ecf8e]"
+          className="text-black dark:text-white"  // Updated text color classes
           textAnchor="start"
           fontSize="12"
         >
