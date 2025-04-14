@@ -7,7 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 export const LinkManagementCard = () => {
   const { t } = useLanguage();
   const [totalLinks, setTotalLinks] = useState<number>(0);
-  const [pendingLinks, setPendingLinks] = useState<number>(0);
+  const [receivedLinks, setReceivedLinks] = useState<number>(0);
+  const [caseStartedLinks, setCaseStartedLinks] = useState<number>(0);
+  const [requestSubmittedLinks, setRequestSubmittedLinks] = useState<number>(0);
+  const [removalApprovedLinks, setRemovalApprovedLinks] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -24,20 +27,55 @@ export const LinkManagementCard = () => {
           return;
         }
 
-        // Fetch number of links not in "removal_approved" status
-        // These are the "pending" links - links that haven't reached the final status
-        const { count: pendingCount, error: pendingError } = await supabase
+        // Fetch links with "received" status
+        const { count: receivedCount, error: receivedError } = await supabase
           .from('removal_urls')
           .select('*', { count: 'exact', head: true })
-          .not('status', 'eq', 'removal_approved');
+          .eq('status', 'received');
 
-        if (pendingError) {
-          console.error('Error fetching pending links:', pendingError);
+        if (receivedError) {
+          console.error('Error fetching received links:', receivedError);
+          return;
+        }
+
+        // Fetch links with "case_started" status
+        const { count: caseStartedCount, error: caseStartedError } = await supabase
+          .from('removal_urls')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'case_started');
+
+        if (caseStartedError) {
+          console.error('Error fetching case_started links:', caseStartedError);
+          return;
+        }
+
+        // Fetch links with "request_submitted" status
+        const { count: requestSubmittedCount, error: requestSubmittedError } = await supabase
+          .from('removal_urls')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'request_submitted');
+
+        if (requestSubmittedError) {
+          console.error('Error fetching request_submitted links:', requestSubmittedError);
+          return;
+        }
+
+        // Fetch links with "removal_approved" status
+        const { count: removalApprovedCount, error: removalApprovedError } = await supabase
+          .from('removal_urls')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'removal_approved');
+
+        if (removalApprovedError) {
+          console.error('Error fetching removal_approved links:', removalApprovedError);
           return;
         }
 
         setTotalLinks(totalCount || 0);
-        setPendingLinks(pendingCount || 0);
+        setReceivedLinks(receivedCount || 0);
+        setCaseStartedLinks(caseStartedCount || 0);
+        setRequestSubmittedLinks(requestSubmittedCount || 0);
+        setRemovalApprovedLinks(removalApprovedCount || 0);
       } catch (error) {
         console.error('Error in fetchLinkData:', error);
       } finally {
@@ -62,12 +100,20 @@ export const LinkManagementCard = () => {
         
         <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('total.links')}:</span>
-            <span>{isLoading ? "..." : totalLinks}</span>
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.received')}:</span>
+            <span>{isLoading ? "..." : receivedLinks}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('pending.links')}:</span>
-            <span>{isLoading ? "..." : pendingLinks}</span>
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.case.started')}:</span>
+            <span>{isLoading ? "..." : caseStartedLinks}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.request.submitted')}:</span>
+            <span>{isLoading ? "..." : requestSubmittedLinks}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.removal.approved')}:</span>
+            <span>{isLoading ? "..." : removalApprovedLinks}</span>
           </div>
         </div>
       </CardContent>
