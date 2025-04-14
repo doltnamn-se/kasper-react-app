@@ -112,9 +112,6 @@ const AdminDashboard = () => {
               </DropdownMenu>
             }
           />
-          
-          {/* Bottom Left - Link Management Card (Länkhantering) */}
-          <LinkManagementCard />
         </div>
         
         {/* Right Column */}
@@ -122,7 +119,12 @@ const AdminDashboard = () => {
           {/* Top Right - Online Users Card (Kunder Online) */}
           <OnlineUsersCard />
 
-          {/* Bottom Right - Subscription Distribution Card (Prenumerationsfördelning) */}
+          {/* Bottom Right - Link Management Card (Länkhantering) */}
+          <LinkManagementCard />
+        </div>
+
+        {/* Bottom Left - Subscription Distribution Card (Prenumerationsfördelning) */}
+        <div className="flex flex-col space-y-4 w-full overflow-hidden">
           <SubscriptionDistributionCard 
             subscriptionData={filteredSubscriptionData}
             timeRange={subscriptionTimeRange}
