@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
@@ -93,7 +92,7 @@ export const OnlineUsersCard = () => {
           ))}
           
           {onlineUsersList.length === 0 && onlineCount === 0 && (
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-sm text-gray-500 dark:text-[#ffffffa6]">
               {t('no.customers')}
             </div>
           )}
