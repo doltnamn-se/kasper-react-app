@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -32,7 +31,6 @@ interface CustomerTableProps {
 
 export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: CustomerTableProps) => {
   const { t } = useLanguage();
-  const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -83,28 +81,26 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
   };
 
   return (
-    <div className="space-y-4 w-full">
-      <div className={`border border-[#dfdfdf] dark:border-[#2e2e2e] ${!isMobile ? "overflow-hidden" : ""}`}>
-        <CustomerTableHeader 
-          table={table}
-          globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter}
-          onRefresh={onRefresh}
-        />
-        
-        {isMobile ? (
-          <CustomerTableBody table={table} onRowClick={handleRowClick} />
-        ) : (
-          <div className="overflow-x-auto max-w-full">
-            <Table>
-              <CustomerTableBody table={table} onRowClick={handleRowClick} />
-            </Table>
-          </div>
-        )}
+    <div className="space-y-4 w-full overflow-hidden">
+      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e] overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <CustomerTableHeader 
+              table={table}
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+              onRefresh={onRefresh}
+            />
+            <CustomerTableBody 
+              table={table}
+              onRowClick={handleRowClick}
+            />
+          </Table>
+        </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 gap-3 text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-6 gap-2">
+      <div className="flex items-center justify-between px-2 text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
             <p>
               {t('pagination.page')} {table.getState().pagination.pageIndex + 1} {t('pagination.of')}{' '}
