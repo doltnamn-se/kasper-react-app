@@ -88,14 +88,14 @@ export const LinkManagementCard = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 h-[280px] flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
         <CardTitle className="text-sm font-medium">
           {t('link.management')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
-        <div className="text-2xl font-bold mb-12">
+      <CardContent className="p-0 flex-1">
+        <div className="text-2xl font-bold mb-6">
           {isLoading ? "..." : totalLinks}
         </div>
         

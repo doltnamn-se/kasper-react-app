@@ -44,12 +44,11 @@ export const SubscriptionBarChart = ({
   };
 
   return (
-    <ChartContainer className="h-[200px] w-full" config={{}}>
+    <ChartContainer className="h-full w-full" config={{}}>
       <ResponsiveContainer width={chartWidth} height="100%">
         <BarChart
           data={data}
           layout="vertical"
-          // Updated margin to move chart further left
           margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
         >
           <XAxis type="number" hide />
