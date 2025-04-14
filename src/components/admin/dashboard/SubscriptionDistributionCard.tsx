@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ChartContainer,
@@ -22,6 +23,7 @@ interface SubscriptionData {
   count: number;
 }
 
+// Define TimeRange type to match the one in AdminDashboard
 type TimeRange = 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week';
 
 interface SubscriptionDistributionCardProps {
@@ -38,13 +40,16 @@ export const SubscriptionDistributionCard = ({
   const { t } = useLanguage();
   const isMobile = useIsMobile();
   
+  // Format the plan name for display
   const formatPlanName = (plan: string): string => {
+    // Convert plan from database format (e.g., '1_month') to UI format (e.g., '1month')
     const uiPlanKey = plan.replace('_', '');
     return t(`subscription.${uiPlanKey}` as any);
   };
   
   const total = subscriptionData.reduce((sum, item) => sum + item.count, 0);
   
+  // Prepare data for the chart with percentages
   const data = subscriptionData.map((item, index) => ({
     name: formatPlanName(item.plan),
     plan: item.plan,
@@ -52,6 +57,7 @@ export const SubscriptionDistributionCard = ({
     percentage: ((item.count / total) * 100).toFixed(1)
   }));
 
+  // Custom tooltip component
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -64,9 +70,11 @@ export const SubscriptionDistributionCard = ({
     return null;
   };
 
+  // Create a custom label that shows plan and percentage
   const renderCustomBarLabel = (props: any) => {
     const { x, y, width, value, index } = props;
     
+    // Only render label if bar is wide enough
     if (width < 30) return null;
     
     const item = data[index];
@@ -87,6 +95,7 @@ export const SubscriptionDistributionCard = ({
     );
   };
 
+  // Time range dropdown
   const timeRangeDropdown = onTimeRangeChange ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -121,6 +130,7 @@ export const SubscriptionDistributionCard = ({
     </DropdownMenu>
   ) : null;
 
+  // Calculate chart width for mobile - set fixed width for scrolling
   const chartWidth = isMobile ? 600 : '100%';
 
   return (
@@ -154,11 +164,8 @@ export const SubscriptionDistributionCard = ({
                           dataKey="name"
                           axisLine={false}
                           tickLine={false}
-                          tick={{ 
-                            fill: '#000000',
-                            className: 'dark:text-[#ffffff]',
-                            fontSize: 12 
-                          }}
+                          tick={{ fill: '#6B7280', fontSize: 12 }}
+                          className="dark:text-gray-400"
                           width={80}
                         />
                         <Tooltip 
@@ -198,11 +205,8 @@ export const SubscriptionDistributionCard = ({
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ 
-                        fill: '#000000',
-                        className: 'dark:text-[#ffffff]',
-                        fontSize: 12 
-                      }}
+                      tick={{ fill: '#6B7280', fontSize: 12 }}
+                      className="dark:text-gray-400"
                       width={80}
                     />
                     <Tooltip 
