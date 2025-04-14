@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
@@ -53,13 +52,13 @@ export const OnlineUsersCard = () => {
   }, [onlineUsers]);
   
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 flex flex-col h-full">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
         <CardTitle className="text-sm font-medium">
           {t('online.users')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0 flex flex-col flex-grow">
+      <CardContent className="p-0">
         <div className="text-2xl font-bold mb-12">{onlineCount}</div>
         
         <div className="space-y-3 mt-2">
@@ -93,7 +92,7 @@ export const OnlineUsersCard = () => {
           ))}
           
           {onlineUsersList.length === 0 && onlineCount === 0 && (
-            <div className="text-sm text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] flex justify-center items-center h-full">
+            <div className="text-sm text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">
               {t('no.customers')}
             </div>
           )}
