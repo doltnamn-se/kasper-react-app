@@ -88,19 +88,19 @@ export const LinkManagementCard = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 flex flex-col h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
         <CardTitle className="text-sm font-medium">
           {t('link.management')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex flex-col flex-grow">
         <div className="text-2xl font-bold mb-12">
           {isLoading ? "..." : totalLinks}
         </div>
         
         <div className="grid grid-cols-2 gap-4 mt-2 text-sm">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start">
             <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
               {t('deindexing.status.received')}
             </span>
@@ -111,7 +111,7 @@ export const LinkManagementCard = () => {
               {isLoading ? "..." : receivedLinks}
             </Badge>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start">
             <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
               {t('deindexing.status.case.started')}
             </span>
@@ -122,7 +122,7 @@ export const LinkManagementCard = () => {
               {isLoading ? "..." : caseStartedLinks}
             </Badge>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start">
             <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
               {t('deindexing.status.request.submitted')}
             </span>
@@ -133,7 +133,7 @@ export const LinkManagementCard = () => {
               {isLoading ? "..." : requestSubmittedLinks}
             </Badge>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start">
             <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
               {t('deindexing.status.removal.approved')}
             </span>
