@@ -9,7 +9,7 @@ interface AdminHeaderProps {
 
 export const AdminHeader = ({ onCustomerCreated }: AdminHeaderProps) => {
   return (
-    <div className="flex justify-end items-center mb-6">
+    <div className="flex justify-between items-center mb-6">
       <CreateCustomerDialog onCustomerCreated={onCustomerCreated}>
         <Button 
           className="
