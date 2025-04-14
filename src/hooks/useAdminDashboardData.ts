@@ -20,7 +20,8 @@ export const useAdminDashboardData = () => {
       // Fetch total customers
       const { count: customersCount, error: customersError } = await supabase
         .from('profiles')
-        .select('*', { count: 'exact' });
+        .select('*', { count: 'exact' })
+        .neq('email', 'info@doltnamn.se'); // Exclude admin account from count
 
       if (customersError) {
         console.error("Error fetching total customers:", customersError);
@@ -33,6 +34,7 @@ export const useAdminDashboardData = () => {
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
         .select('created_at')
+        .neq('email', 'info@doltnamn.se') // Exclude admin account from registration data
         .order('created_at');
 
       if (profilesError) {
@@ -59,9 +61,16 @@ export const useAdminDashboardData = () => {
       }
 
       // For subscription data, use customers table and group by subscription_plan
+      // Join with profiles to exclude admin account
       const { data: customerData, error: customerError } = await supabase
         .from('customers')
-        .select('subscription_plan, customer_type, created_at');
+        .select(`
+          subscription_plan, 
+          customer_type, 
+          created_at,
+          profile: profiles!inner(email)
+        `)
+        .neq('profiles.email', 'info@doltnamn.se'); // Exclude admin account via join
 
       if (customerError) {
         console.error("Error fetching customer subscription data:", customerError);
