@@ -111,13 +111,22 @@
   }
 }
 
-/* Recharts text color override */
+/* Recharts text color override with higher specificity */
 .recharts-text {
   fill: var(--foreground) !important;
 }
 
 .dark .recharts-text {
   fill: var(--foreground) !important;
+}
+
+/* Specific override for the bar chart labels with higher specificity */
+.recharts-bar-rectangle + text {
+  fill: #000000 !important;
+}
+
+.dark .recharts-bar-rectangle + text {
+  fill: #FFFFFF !important;
 }
 
 /* Remove autofill background color */

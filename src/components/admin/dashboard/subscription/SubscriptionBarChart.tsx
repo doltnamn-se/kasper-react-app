@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { SubscriptionTooltip } from "./SubscriptionTooltip";
@@ -37,12 +38,9 @@ export const SubscriptionBarChart = ({
           x={x + width + 5}
           y={y + 15}
           fill="var(--foreground)"
-          style={{
-            color: 'var(--foreground)',
-            fill: document.documentElement.classList.contains('dark') ? '#FFFFFF' : '#000000'
-          }}
           textAnchor="start"
           fontSize="12"
+          className="recharts-bar-label"
         >
           {`${item.percentage}% (${item.value})`}
         </text>
