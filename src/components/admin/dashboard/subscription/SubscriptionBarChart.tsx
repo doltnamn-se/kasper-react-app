@@ -37,10 +37,10 @@ export const SubscriptionBarChart = ({
         <text
           x={x + width + 5}
           y={y + 15}
-          fill="currentColor"
+          fill="#000000"
+          className="dark:fill-white"
           textAnchor="start"
           fontSize="12"
-          className="fill-black dark:fill-white"
         >
           {`${item.percentage}% (${item.value})`}
         </text>
@@ -62,12 +62,11 @@ export const SubscriptionBarChart = ({
             dataKey="name"
             axisLine={false}
             tickLine={false}
-            tick={{ 
-              fill: 'currentColor', 
+            tick={{
+              fill: "#000000", 
               fontSize: 12,
-              className: "fill-black dark:fill-white"
+              className: "dark:fill-white"
             }}
-            className="text-black dark:text-white"
             width={80}
           />
           <Tooltip 
