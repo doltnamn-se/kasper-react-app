@@ -37,7 +37,7 @@ export const SubscriptionBarChart = ({
         <text
           x={x + width + 5}
           y={y + 15}
-          className="text-black dark:text-white"  // Updated text color classes
+          className="text-black dark:text-white"  
           textAnchor="start"
           fontSize="12"
         >
@@ -62,7 +62,7 @@ export const SubscriptionBarChart = ({
             axisLine={false}
             tickLine={false}
             tick={{ 
-              fill: '#000000', 
+              fill: 'currentColor', 
               fontSize: 12 
             }}
             className="text-black dark:text-white"
@@ -70,7 +70,6 @@ export const SubscriptionBarChart = ({
           />
           <Tooltip 
             content={(props) => {
-              // Ensure we're passing the correct props
               const { active, payload, label } = props;
               return <SubscriptionTooltip active={active} payload={payload} label={label} />;
             }}
@@ -95,3 +94,4 @@ export const SubscriptionBarChart = ({
     </ChartContainer>
   );
 };
+
