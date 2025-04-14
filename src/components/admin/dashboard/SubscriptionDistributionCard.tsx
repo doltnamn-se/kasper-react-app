@@ -36,30 +36,28 @@ export const SubscriptionDistributionCard = ({
   ) : null;
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 h-[280px] flex flex-col">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
       <div className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
         <h3 className="text-sm font-medium">
           {t('subscription.distribution')}
         </h3>
         {timeRangeDropdown}
       </div>
-      <div className="p-0 flex-1 overflow-hidden">
-        <div className="flex flex-col h-full">
+      <div className="p-0">
+        <div className="flex flex-col h-[280px] overflow-hidden">
           <div className="text-2xl font-bold">
             {total}
           </div>
           
-          <div className="mt-6 flex-1 overflow-hidden">
+          <div className="flex-1 mt-6 overflow-hidden">
             {isMobile ? (
-              <ScrollArea className="h-[180px] w-full overflow-hidden">
-                <div style={{ width: `${chartWidth}px`, height: '180px' }}>
+              <ScrollArea className="h-[200px] w-full overflow-hidden">
+                <div style={{ width: `${chartWidth}px`, height: '200px' }}>
                   <SubscriptionBarChart data={data} isMobile={isMobile} chartWidth={chartWidth} />
                 </div>
               </ScrollArea>
             ) : (
-              <div className="h-[180px]">
-                <SubscriptionBarChart data={data} />
-              </div>
+              <SubscriptionBarChart data={data} />
             )}
           </div>
         </div>

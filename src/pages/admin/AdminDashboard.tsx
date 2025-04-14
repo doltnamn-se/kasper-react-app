@@ -70,9 +70,12 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 overflow-hidden">
-        {/* First Row */}
-        {/* Top Left - Total Customers Card (Kunder) */}
-        <div className="w-full overflow-hidden">
+        {/* Left Column */}
+        <div className="flex flex-col space-y-4 w-full overflow-hidden">
+          {/* 1. Online Users Card */}
+          <OnlineUsersCard />
+          
+          {/* 3. Active Customers Card - with chart */}
           <DashboardCard 
             title={t('total.customers')}
             value={totalCustomers}
@@ -115,24 +118,17 @@ const AdminDashboard = () => {
           />
         </div>
         
-        {/* Top Right - Online Users Card (Kunder Online) */}
-        <div className="w-full overflow-hidden">
-          <OnlineUsersCard />
-        </div>
+        {/* Right Column */}
+        <div className="flex flex-col space-y-4 w-full overflow-hidden">
+          {/* 2. Link Management Card */}
+          <LinkManagementCard />
 
-        {/* Second Row */}
-        {/* Bottom Left - Subscription Distribution Card (Prenumerationsfördelning) */}
-        <div className="w-full overflow-hidden">
+          {/* 4. Subscription Distribution Card */}
           <SubscriptionDistributionCard 
             subscriptionData={filteredSubscriptionData}
             timeRange={subscriptionTimeRange}
             onTimeRangeChange={handleSubscriptionTimeRangeChange}
           />
-        </div>
-
-        {/* Bottom Right - Link Management Card (Länkhantering) */}
-        <div className="w-full overflow-hidden">
-          <LinkManagementCard />
         </div>
       </div>
     </div>
