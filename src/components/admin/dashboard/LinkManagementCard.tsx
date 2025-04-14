@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
 
 export const LinkManagementCard = () => {
   const { t } = useLanguage();
@@ -98,22 +99,50 @@ export const LinkManagementCard = () => {
           {isLoading ? "..." : totalLinks}
         </div>
         
-        <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.received')}:</span>
-            <span>{isLoading ? "..." : receivedLinks}</span>
+        <div className="grid grid-cols-2 gap-4 mt-2 text-sm">
+          <div className="flex flex-col items-center">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+              {t('deindexing.status.received')}
+            </span>
+            <Badge 
+              variant="static" 
+              className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+            >
+              {isLoading ? "..." : receivedLinks}
+            </Badge>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.case.started')}:</span>
-            <span>{isLoading ? "..." : caseStartedLinks}</span>
+          <div className="flex flex-col items-center">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+              {t('deindexing.status.case.started')}
+            </span>
+            <Badge 
+              variant="static" 
+              className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+            >
+              {isLoading ? "..." : caseStartedLinks}
+            </Badge>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.request.submitted')}:</span>
-            <span>{isLoading ? "..." : requestSubmittedLinks}</span>
+          <div className="flex flex-col items-center">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+              {t('deindexing.status.request.submitted')}
+            </span>
+            <Badge 
+              variant="static" 
+              className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400"
+            >
+              {isLoading ? "..." : requestSubmittedLinks}
+            </Badge>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('deindexing.status.removal.approved')}:</span>
-            <span>{isLoading ? "..." : removalApprovedLinks}</span>
+          <div className="flex flex-col items-center">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+              {t('deindexing.status.removal.approved')}
+            </span>
+            <Badge 
+              variant="static" 
+              className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+            >
+              {isLoading ? "..." : removalApprovedLinks}
+            </Badge>
           </div>
         </div>
       </CardContent>
