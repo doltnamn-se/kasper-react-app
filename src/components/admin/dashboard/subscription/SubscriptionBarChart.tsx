@@ -70,7 +70,7 @@ export const SubscriptionBarChart = ({
             width={80}
           />
           <Tooltip 
-            content={<SubscriptionTooltip />}
+            content={(props) => <SubscriptionTooltip {...props} />}
             cursor={{ fill: 'transparent' }}
           />
           <Bar 

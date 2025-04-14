@@ -7,7 +7,10 @@ interface SubscriptionTooltipProps {
   label?: string;
 }
 
-export const SubscriptionTooltip = ({ active, payload }: SubscriptionTooltipProps) => {
+export const SubscriptionTooltip: React.FC<SubscriptionTooltipProps> = ({ 
+  active, 
+  payload 
+}: SubscriptionTooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white dark:bg-[#1c1c1e] p-2 border border-[#e5e7eb] dark:border-[#232325] rounded shadow-sm text-xs">
