@@ -53,16 +53,16 @@ export const OnlineUsersCard = () => {
   }, [onlineUsers]);
   
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-0">
         <CardTitle className="text-sm font-medium">
           {t('online.users')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
-        <div className="text-2xl font-bold mb-4">{onlineCount}</div>
+      <CardContent className="p-0 flex flex-col h-full">
+        <div className="text-2xl font-bold mb-12">{onlineCount}</div>
         
-        <div className="space-y-3">
+        <div className="mt-auto space-y-3">
           {onlineUsersList.map(user => (
             <div key={user.id} className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
