@@ -26,6 +26,7 @@ export const CustomerTableBody = ({
               <TableCell 
                 key={cell.id}
                 onClick={() => onRowClick(row.original, cellIndex === 0)}
+                className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]"
               >
                 {flexRender(
                   cell.column.columnDef.cell,
