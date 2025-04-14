@@ -164,8 +164,11 @@ export const SubscriptionDistributionCard = ({
                           dataKey="name"
                           axisLine={false}
                           tickLine={false}
-                          tick={{ fill: '#6B7280', fontSize: 12 }}
-                          className="dark:text-gray-400"
+                          tick={{ 
+                            fill: '#000000', 
+                            fontSize: 12 
+                          }}
+                          className="text-black dark:text-white"
                           width={80}
                         />
                         <Tooltip 
@@ -205,8 +208,11 @@ export const SubscriptionDistributionCard = ({
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#6B7280', fontSize: 12 }}
-                      className="dark:text-gray-400"
+                      tick={{ 
+                        fill: '#000000', 
+                        fontSize: 12 
+                      }}
+                      className="text-black dark:text-white"
                       width={80}
                     />
                     <Tooltip 
