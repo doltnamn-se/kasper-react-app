@@ -49,8 +49,8 @@ export const SubscriptionBarChart = ({
         <BarChart
           data={data}
           layout="vertical"
-          // Adjust margins to align chart to the left, matching title positioning
-          margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
+          // Updated margin to move chart further left
+          margin={{ top: 5, right: 20, left: -20, bottom: 5 }}
         >
           <XAxis type="number" hide />
           <YAxis 
