@@ -8,7 +8,6 @@ export const LinkManagementCard = () => {
   const { t } = useLanguage();
   const [totalLinks, setTotalLinks] = useState<number>(0);
   const [pendingLinks, setPendingLinks] = useState<number>(0);
-  const [approvedLinks, setApprovedLinks] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -37,21 +36,8 @@ export const LinkManagementCard = () => {
           return;
         }
 
-        // Fetch number of links in "removal_approved" status
-        // These are the "approved" links that have been successfully removed
-        const { count: approvedCount, error: approvedError } = await supabase
-          .from('removal_urls')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'removal_approved');
-
-        if (approvedError) {
-          console.error('Error fetching approved links:', approvedError);
-          return;
-        }
-
         setTotalLinks(totalCount || 0);
         setPendingLinks(pendingCount || 0);
-        setApprovedLinks(approvedCount || 0);
       } catch (error) {
         console.error('Error in fetchLinkData:', error);
       } finally {
@@ -80,8 +66,8 @@ export const LinkManagementCard = () => {
             <span>{isLoading ? "..." : totalLinks}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('removed.links')}:</span>
-            <span>{isLoading ? "..." : approvedLinks}</span>
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">{t('pending.links')}:</span>
+            <span>{isLoading ? "..." : pendingLinks}</span>
           </div>
         </div>
       </CardContent>

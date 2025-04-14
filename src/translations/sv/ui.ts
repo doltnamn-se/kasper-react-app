@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -115,7 +114,6 @@ export const ui: UITranslations = {
   'link.management': 'Länkhantering',
   'total.links': 'Totalt antal länkar',
   'pending.links': 'Pågående länkar',
-  'removed.links': 'Borttagna länkar',
   'subscription.distribution': 'Prenumerationsfördelning',
   'customers': 'Kunder',
   'timerange.alltime': 'All tid',
