@@ -3,24 +3,17 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerTable } from "@/components/admin/customers/CustomerTable";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
-import { AdminHeader } from "@/components/admin/AdminHeader";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
   const { customers, isLoading, fetchCustomers } = useCustomers();
   const { onlineUsers, lastSeen } = useCustomerPresence();
-  const isMobile = useIsMobile();
 
   return (
-    <div className={`w-full ${isMobile ? "px-0" : ""}`}>
-      <div className={`flex justify-between items-center mb-6 ${isMobile ? "px-4" : ""}`}>
-        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
-          {t('nav.admin.customers')}
-        </h1>
-        
-        <AdminHeader onCustomerCreated={fetchCustomers} />
-      </div>
+    <div>
+      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+        {t('nav.admin.customers')}
+      </h1>
 
       <div className="shadow-sm transition-colors duration-200">
         {isLoading ? (

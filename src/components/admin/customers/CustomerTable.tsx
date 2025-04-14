@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -32,7 +31,6 @@ interface CustomerTableProps {
 
 export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: CustomerTableProps) => {
   const { t } = useLanguage();
-  const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -83,9 +81,9 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
   };
 
   return (
-    <div className="space-y-4 w-full">
-      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e] rounded-sm overflow-hidden">
-        <div className={`overflow-x-auto ${isMobile ? "-mx-4 px-0 w-screen" : ""}`}>
+    <div className="space-y-4">
+      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
+        <div className="overflow-x-auto">
           <Table>
             <CustomerTableHeader 
               table={table}
@@ -162,3 +160,4 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
     </div>
   );
 };
+
