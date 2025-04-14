@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { SubscriptionTooltip } from "./SubscriptionTooltip";
@@ -31,7 +32,7 @@ export const SubscriptionBarChart = ({
       <g>
         <text
           x={x + width + 5}
-          y={y + 10} /* Adjusted from y + 9 to y + 10 to fine-tune vertical centering */
+          y={y + 10}
           textAnchor="start"
           fontSize="12"
           className="recharts-bar-label"
@@ -48,7 +49,8 @@ export const SubscriptionBarChart = ({
         <BarChart
           data={data}
           layout="vertical"
-          margin={{ top: 5, right: 90, left: 0, bottom: 5 }}
+          // Reduced left and right margins to align chart to the left
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
         >
           <XAxis type="number" hide />
           <YAxis 
