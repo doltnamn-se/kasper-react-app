@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { SubscriptionTooltip } from "./SubscriptionTooltip";
@@ -34,7 +33,7 @@ export const SubscriptionBarChart = ({
       <g>
         <text
           x={x + width + 5}
-          y={y + 7} /* Adjusted from y + 15 to y + 7 to center text vertically with the bar */
+          y={y + 9} /* Adjusted from y + 7 to y + 9 to fine-tune vertical centering */
           textAnchor="start"
           fontSize="12"
           className="recharts-bar-label"
@@ -77,13 +76,11 @@ export const SubscriptionBarChart = ({
             radius={6}
             label={renderCustomBarLabel}
             className="fill-[#10b981] dark:fill-[#10b981]"
-            // Remove any hover-related effects
           >
             {data.map((entry, index) => (
               <Cell 
                 key={`cell-${index}`}
                 className="fill-[#10b981] dark:fill-[#10b981]"
-                // Remove any hover-related effects
               />
             ))}
           </Bar>
