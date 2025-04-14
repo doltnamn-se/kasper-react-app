@@ -112,39 +112,48 @@
 }
 
 /* Recharts text color override with higher specificity */
-.recharts-text {
+.recharts-text,
+.recharts-cartesian-axis-tick text,
+.recharts-yAxis text,
+.recharts-xAxis text,
+.recharts-label,
+.recharts-legend-item-text,
+.recharts-tooltip-item-name,
+.recharts-tooltip-item-value,
+.recharts-tooltip-label,
+.recharts-default-tooltip,
+.recharts-bar-rectangle + text,
+.recharts-layer text,
+.recharts-polar-angle-axis-tick text,
+.recharts-radial-bar-chart text,
+.recharts-pie-label text,
+.recharts-funnel-labels text,
+.recharts-treemap-text,
+.recharts-sankey-text {
   fill: #000000 !important;
+  color: #000000 !important;
 }
 
-.dark .recharts-text {
+.dark .recharts-text,
+.dark .recharts-cartesian-axis-tick text,
+.dark .recharts-yAxis text,
+.dark .recharts-xAxis text,
+.dark .recharts-label,
+.dark .recharts-legend-item-text,
+.dark .recharts-tooltip-item-name,
+.dark .recharts-tooltip-item-value,
+.dark .recharts-tooltip-label,
+.dark .recharts-default-tooltip,
+.dark .recharts-bar-rectangle + text,
+.dark .recharts-layer text,
+.dark .recharts-polar-angle-axis-tick text,
+.dark .recharts-radial-bar-chart text,
+.dark .recharts-pie-label text,
+.dark .recharts-funnel-labels text,
+.dark .recharts-treemap-text,
+.dark .recharts-sankey-text {
   fill: #FFFFFF !important;
-}
-
-/* Bar chart specific overrides with even higher specificity */
-.recharts-bar-rectangle + text {
-  fill: #000000 !important;
-}
-
-.dark .recharts-bar-rectangle + text {
-  fill: #FFFFFF !important;
-}
-
-/* Target the Y-axis labels with highest specificity */
-.recharts-cartesian-axis-tick-value {
-  fill: #000000 !important;
-}
-
-.dark .recharts-cartesian-axis-tick-value {
-  fill: #FFFFFF !important;
-}
-
-/* Target all text elements in the chart */
-.recharts-layer text {
-  fill: #000000 !important;
-}
-
-.dark .recharts-layer text {
-  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
 }
 
 /* Remove autofill background color */

@@ -8,6 +8,15 @@ export interface SubscriptionData {
   created_at?: string;
 }
 
+// Define the order of subscription plans
+const PLAN_ORDER = {
+  '1_month': 1,
+  '6_month': 2,
+  '12_month': 3,
+  '24_month': 4,
+  'none': 5
+};
+
 export const useSubscriptionFormatter = () => {
   const { t } = useLanguage();
   
@@ -23,12 +32,19 @@ export const useSubscriptionFormatter = () => {
     const total = subscriptionData.reduce((sum, item) => sum + item.count, 0);
     
     // Prepare data for the chart with percentages
-    const data = subscriptionData.map((item) => ({
-      name: formatPlanName(item.plan),
-      plan: item.plan,
-      value: item.count,
-      percentage: ((item.count / total) * 100).toFixed(1)
-    }));
+    const data = subscriptionData
+      .map((item) => ({
+        name: formatPlanName(item.plan),
+        plan: item.plan,
+        value: item.count,
+        percentage: ((item.count / total) * 100).toFixed(1)
+      }))
+      // Sort based on defined plan order
+      .sort((a, b) => {
+        const orderA = PLAN_ORDER[a.plan as keyof typeof PLAN_ORDER] || 999;
+        const orderB = PLAN_ORDER[b.plan as keyof typeof PLAN_ORDER] || 999;
+        return orderA - orderB;
+      });
     
     return { data, total };
   };
