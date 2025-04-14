@@ -92,7 +92,7 @@ export const OnlineUsersCard = () => {
           ))}
           
           {onlineUsersList.length === 0 && onlineCount === 0 && (
-            <div className="text-sm text-gray-500 dark:text-[#ffffffa6]">
+            <div className="text-sm text-gray-500 text-[#000000a6] dark:text-[#ffffffa6]">
               {t('no.customers')}
             </div>
           )}
