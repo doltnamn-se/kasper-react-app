@@ -23,13 +23,11 @@ export const SubscriptionBarChart = ({
   chartWidth = "100%" 
 }: SubscriptionBarChartProps) => {
   
-  // Create a custom label that shows plan and percentage
+  // Create a custom label that always shows regardless of bar width
   const renderCustomBarLabel = (props: any) => {
     const { x, y, width, value, index } = props;
     
-    // Only render label if bar is wide enough
-    if (width < 30) return null;
-    
+    // Always render the label - removed width check to ensure all labels show
     const item = data[index];
     
     return (
