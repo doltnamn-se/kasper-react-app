@@ -34,7 +34,7 @@ export const SubscriptionBarChart = ({
       <g>
         <text
           x={x + width + 5}
-          y={y + 15}
+          y={y + 7} /* Adjusted from y + 15 to y + 7 to center text vertically with the bar */
           textAnchor="start"
           fontSize="12"
           className="recharts-bar-label"
