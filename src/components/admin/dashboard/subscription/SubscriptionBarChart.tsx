@@ -22,18 +22,16 @@ export const SubscriptionBarChart = ({
   chartWidth = "100%" 
 }: SubscriptionBarChartProps) => {
   
-  // Create a custom label that always shows regardless of bar width
   const renderCustomBarLabel = (props: any) => {
     const { x, y, width, value, index } = props;
     
-    // Always render the label - removed width check to ensure all labels show
     const item = data[index];
     
     return (
       <g>
         <text
           x={x + width + 5}
-          y={y + 9} /* Adjusted from y + 7 to y + 9 to fine-tune vertical centering */
+          y={y + 10} /* Adjusted from y + 9 to y + 10 to fine-tune vertical centering */
           textAnchor="start"
           fontSize="12"
           className="recharts-bar-label"
