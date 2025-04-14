@@ -100,46 +100,46 @@ export const LinkManagementCard = () => {
         </div>
         
         <div className="grid grid-cols-2 gap-4 mt-2 text-sm">
-          <div className="flex flex-col items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+          <div className="flex flex-col items-start">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
               {t('deindexing.status.received')}
             </span>
             <Badge 
               variant="static" 
-              className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+              className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 self-start"
             >
               {isLoading ? "..." : receivedLinks}
             </Badge>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+          <div className="flex flex-col items-start">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
               {t('deindexing.status.case.started')}
             </span>
             <Badge 
               variant="static" 
-              className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+              className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 self-start"
             >
               {isLoading ? "..." : caseStartedLinks}
             </Badge>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+          <div className="flex flex-col items-start">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
               {t('deindexing.status.request.submitted')}
             </span>
             <Badge 
               variant="static" 
-              className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400"
+              className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400 self-start"
             >
               {isLoading ? "..." : requestSubmittedLinks}
             </Badge>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2">
+          <div className="flex flex-col items-start">
+            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
               {t('deindexing.status.removal.approved')}
             </span>
             <Badge 
               variant="static" 
-              className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+              className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 self-start"
             >
               {isLoading ? "..." : removalApprovedLinks}
             </Badge>
