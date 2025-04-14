@@ -37,9 +37,10 @@ export const SubscriptionBarChart = ({
         <text
           x={x + width + 5}
           y={y + 15}
-          className="text-black dark:text-white"  
+          fill="currentColor"
           textAnchor="start"
           fontSize="12"
+          className="fill-black dark:fill-white"
         >
           {`${item.percentage}% (${item.value})`}
         </text>
@@ -63,7 +64,8 @@ export const SubscriptionBarChart = ({
             tickLine={false}
             tick={{ 
               fill: 'currentColor', 
-              fontSize: 12 
+              fontSize: 12,
+              className: "fill-black dark:fill-white"
             }}
             className="text-black dark:text-white"
             width={80}
@@ -94,4 +96,3 @@ export const SubscriptionBarChart = ({
     </ChartContainer>
   );
 };
-
