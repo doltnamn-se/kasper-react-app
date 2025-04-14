@@ -64,7 +64,6 @@ export const DeindexedLinks = () => {
 
     return formatDistanceStrict(new Date(endDate), startDate, {
       locale: language === 'sv' ? sv : enUS,
-      addSuffix: false
     });
   };
 
@@ -77,7 +76,7 @@ export const DeindexedLinks = () => {
     if (language === 'sv') {
       return format(date, 'd MMMM yyyy', { locale: sv });
     } else {
-      return format(date, 'do MMMM yyyy', { locale: enUS });
+      return format(date, 'MMMM do yyyy', { locale: enUS });
     }
   };
 

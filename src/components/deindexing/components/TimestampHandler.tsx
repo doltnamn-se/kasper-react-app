@@ -1,3 +1,4 @@
+
 import { formatDistanceToNow } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { URLStatusHistory } from "@/types/url-management";
@@ -36,7 +37,6 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
           const formattedTime = formatDistanceToNow(new Date(firstEntry.timestamp), {
             addSuffix: true,
             locale: language === 'sv' ? sv : enUS,
-            includeSeconds: false
           });
           console.log('Formatted time for received step:', formattedTime);
           return formattedTime.replace('about ', '').replace('ungefär ', '');
@@ -52,7 +52,6 @@ export const useTimestampHandler = ({ statusHistory = [], language }: TimestampH
         const formattedTime = formatDistanceToNow(new Date(historyEntry.timestamp), {
           addSuffix: true,
           locale: language === 'sv' ? sv : enUS,
-          includeSeconds: false
         });
         console.log('Formatted time for step', step, ':', formattedTime);
         return formattedTime.replace('about ', '').replace('ungefär ', '');
