@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
 import { format } from "date-fns";
@@ -217,7 +216,7 @@ export const ClientsOverTimeChart: React.FC<ClientsOverTimeChartProps> = ({ data
           </ResponsiveContainer>
         )}
       </div>
-      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 px-1 mb-2">
+      <div className="flex justify-between text-xs text-gray-500 dark:text-[#ffffffa6] mt-1 px-1 mb-2">
         <span>{formatBottomDate(firstDate)}</span>
         <span>{formatBottomDate(lastDate)}</span>
       </div>
