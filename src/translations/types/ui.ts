@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -112,6 +113,7 @@ export interface UITranslations {
   'link.management': string;
   'total.links': string;
   'pending.links': string;
+  'removed.links': string;
   'subscription.distribution': string;
   'customers': string;
   'timerange.alltime': string;
