@@ -76,12 +76,12 @@ export const SubscriptionBarChart = ({
             barSize={12}
             radius={6}
             label={renderCustomBarLabel}
-            className="fill-[#10b981] dark:fill-[#10b981]" // Removed hover effect
+            className="fill-[#10b981] dark:fill-[#10b981]" // No hover effect
           >
             {data.map((entry, index) => (
               <Cell 
                 key={`cell-${index}`}
-                className="fill-[#10b981] dark:fill-[#10b981]" // Removed hover effect
+                className="fill-[#10b981] dark:fill-[#10b981]" // No hover effect
               />
             ))}
           </Bar>
