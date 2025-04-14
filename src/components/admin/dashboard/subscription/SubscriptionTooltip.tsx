@@ -2,8 +2,8 @@
 import React from "react";
 
 interface SubscriptionTooltipProps {
-  active: boolean;
-  payload: any[];
+  active?: boolean;
+  payload?: any[];
   label?: string;
 }
 

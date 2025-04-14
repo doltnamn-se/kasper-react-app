@@ -69,7 +69,11 @@ export const SubscriptionBarChart = ({
             width={80}
           />
           <Tooltip 
-            content={(props) => <SubscriptionTooltip {...props} />}
+            content={(props) => {
+              // Ensure we're passing the correct props
+              const { active, payload, label } = props;
+              return <SubscriptionTooltip active={active} payload={payload} label={label} />;
+            }}
             cursor={{ fill: 'transparent' }}
           />
           <Bar 
