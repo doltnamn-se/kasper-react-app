@@ -38,7 +38,7 @@ export const SubscriptionBarChart = ({
           x={x + width + 5}
           y={y + 15}
           fill="#000000"
-          className="dark:fill-white"
+          style={{ fill: 'var(--foreground)' }}
           textAnchor="start"
           fontSize="12"
         >
@@ -63,9 +63,9 @@ export const SubscriptionBarChart = ({
             axisLine={false}
             tickLine={false}
             tick={{
-              fill: "#000000", 
+              fill: 'var(--foreground)',
               fontSize: 12,
-              className: "dark:fill-white"
+              style: { fill: 'var(--foreground)' }
             }}
             width={80}
           />
