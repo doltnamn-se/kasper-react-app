@@ -62,11 +62,11 @@ export const LinkManagementCard = () => {
         
         <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 dark:text-gray-400">{t('total.links')}:</span>
+            <span className="text-gray-500 dark:text-[#ffffffa6]">{t('total.links')}:</span>
             <span>{isLoading ? "..." : totalLinks}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 dark:text-gray-400">{t('pending.links')}:</span>
+            <span className="text-gray-500 dark:text-[#ffffffa6]">{t('pending.links')}:</span>
             <span>{isLoading ? "..." : pendingLinks}</span>
           </div>
         </div>
