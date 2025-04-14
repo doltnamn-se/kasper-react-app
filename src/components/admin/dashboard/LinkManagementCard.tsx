@@ -101,7 +101,7 @@ export const LinkManagementCard = () => {
         
         <div className="grid grid-cols-2 gap-4 mt-2 text-sm">
           <div className="flex flex-col items-start">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
+            <span className="text-[#000000] dark:text-[#ffffff] text-xs mb-2 text-left">
               {t('deindexing.status.received')}
             </span>
             <Badge 
@@ -112,7 +112,7 @@ export const LinkManagementCard = () => {
             </Badge>
           </div>
           <div className="flex flex-col items-start">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
+            <span className="text-[#000000] dark:text-[#ffffff] text-xs mb-2 text-left">
               {t('deindexing.status.case.started')}
             </span>
             <Badge 
@@ -123,7 +123,7 @@ export const LinkManagementCard = () => {
             </Badge>
           </div>
           <div className="flex flex-col items-start">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
+            <span className="text-[#000000] dark:text-[#ffffff] text-xs mb-2 text-left">
               {t('deindexing.status.request.submitted')}
             </span>
             <Badge 
@@ -134,7 +134,7 @@ export const LinkManagementCard = () => {
             </Badge>
           </div>
           <div className="flex flex-col items-start">
-            <span className="text-gray-500 text-[#000000a6] dark:text-[#ffffffa6] mb-2 text-left">
+            <span className="text-[#000000] dark:text-[#ffffff] text-xs mb-2 text-left">
               {t('deindexing.status.removal.approved')}
             </span>
             <Badge 
