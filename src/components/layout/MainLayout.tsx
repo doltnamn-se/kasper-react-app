@@ -7,6 +7,9 @@ import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { MainNavigation } from "@/components/nav/MainNavigation";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
 import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
+import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { UserBottomNav } from "@/components/nav/UserBottomNav";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -17,6 +20,7 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
   const { userProfile } = useUserProfile();
   const { t } = useLanguage();
   const isAdmin = userProfile?.role === 'super_admin';
+  const isMobile = useIsMobile();
 
   const Navigation = () => {
     return (
@@ -71,12 +75,15 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
       {/* Main Content */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
-        <main className="px-4 md:px-12 pt-12 relative z-0">
+        <main className="px-4 md:px-12 pt-12 relative z-0 pb-16 md:pb-0">
           <div>
             {children}
           </div>
         </main>
       </div>
+
+      {/* Bottom Navigation - Mobile Only */}
+      {isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
     </>
   );
 };

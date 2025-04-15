@@ -1,3 +1,4 @@
+
 import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import { AuthLogo } from "@/components/auth/AuthLogo";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { ThemeToggle } from "@/components/nav/ThemeToggle";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { UserBottomNav } from "@/components/nav/UserBottomNav";
 
 const ChecklistContent = () => {
   const { t, language } = useLanguage();
@@ -58,7 +60,7 @@ const ChecklistContent = () => {
   const progress = calculateProgress();
 
   return (
-    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12 checklist-page">
+    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] p-6 md:p-12 checklist-page pb-16 md:pb-6">
       <div className="max-w-[1400px] mx-auto">
         <TooltipProvider>
           <div className="flex justify-between items-center mb-6">
@@ -107,11 +109,14 @@ const ChecklistContent = () => {
           </div>
 
           {/* Footer with Language Selector */}
-          <div className="fixed bottom-6 left-6">
+          <div className="fixed bottom-6 left-6 md:block hidden">
             <LanguageSwitch />
           </div>
         </TooltipProvider>
       </div>
+
+      {/* Bottom Navigation - Mobile Only */}
+      {isMobile && <UserBottomNav />}
     </div>
   );
 };
