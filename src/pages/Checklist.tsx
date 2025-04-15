@@ -115,7 +115,7 @@ const ChecklistContent = () => {
         </TooltipProvider>
       </div>
 
-      {/* Bottom Navigation - Only show in standalone mode */}
+      {/* Mobile bottom navigation */}
       {isMobile && <UserBottomNav />}
     </div>
   );
