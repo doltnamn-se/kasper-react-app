@@ -1,11 +1,11 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { 
-  Home, 
-  ClipboardCheck, 
+  House, 
+  UserRoundSearch, 
   EyeOff,
-  BookOpen,
-  Settings
+  MapPinHouse,
+  MousePointerClick
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -26,20 +26,20 @@ export const UserBottomNav = () => {
               : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
-          <Home className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.overview')}</span>
+          <House className="h-5 w-5" />
+          <span className="text-xs mt-1">{t('nav.home')}</span>
         </Link>
 
         <Link 
-          to="/checklist" 
+          to="/monitoring" 
           className={`flex flex-col items-center justify-center ${
-            isActive('/checklist') 
+            isActive('/monitoring') 
               ? 'text-black dark:text-white' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
-          <ClipboardCheck className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.checklist')}</span>
+          <UserRoundSearch className="h-5 w-5" />
+          <span className="text-xs mt-1">{t('nav.monitoring')}</span>
         </Link>
 
         <Link 
@@ -51,7 +51,19 @@ export const UserBottomNav = () => {
           }`}
         >
           <EyeOff className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.deindexing')}</span>
+          <span className="text-xs mt-1">{t('nav.my.links')}</span>
+        </Link>
+
+        <Link 
+          to="/address-alerts" 
+          className={`flex flex-col items-center justify-center ${
+            isActive('/address-alerts') 
+              ? 'text-black dark:text-white' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+          }`}
+        >
+          <MapPinHouse className="h-5 w-5" />
+          <span className="text-xs mt-1">{t('nav.address.alerts')}</span>
         </Link>
 
         <Link 
@@ -62,20 +74,8 @@ export const UserBottomNav = () => {
               : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
-          <BookOpen className="h-5 w-5" />
+          <MousePointerClick className="h-5 w-5" />
           <span className="text-xs mt-1">{t('nav.guides')}</span>
-        </Link>
-
-        <Link 
-          to="/settings" 
-          className={`flex flex-col items-center justify-center ${
-            isActive('/settings') 
-              ? 'text-black dark:text-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
-          }`}
-        >
-          <Settings className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.settings')}</span>
         </Link>
       </div>
     </div>
