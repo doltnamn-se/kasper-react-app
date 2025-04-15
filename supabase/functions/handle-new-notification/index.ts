@@ -17,18 +17,23 @@ interface Notification {
 }
 
 async function sendPushNotification(notification: Notification) {
+  console.log("sendPushNotification called with notification:", notification);
+  
   // Create Supabase client using service role key
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
   const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
   
   if (!supabaseUrl || !supabaseKey) {
+    console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables");
     throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
   }
   
+  console.log("Creating Supabase client with URL:", supabaseUrl);
   const supabase = createClient(supabaseUrl, supabaseKey);
   
   try {
     // Get the user's device tokens
+    console.log("Fetching device tokens for user:", notification.user_id);
     const { data: tokens, error: tokensError } = await supabase
       .from("device_tokens")
       .select("token")
@@ -47,8 +52,10 @@ async function sendPushNotification(notification: Notification) {
     // Get the tokens as an array of strings
     const tokenList = tokens.map(t => t.token);
     console.log(`Found ${tokenList.length} device tokens for user:`, notification.user_id);
+    console.log("Token samples:", tokenList.map(t => t.substring(0, 10) + "..."));
     
     // Invoke the send-push-notification function
+    console.log("Invoking send-push-notification function with tokens");
     const response = await supabase.functions.invoke(
       "send-push-notification",
       {
@@ -65,7 +72,7 @@ async function sendPushNotification(notification: Notification) {
     );
     
     if (response.error) {
-      console.error("Error sending push notification:", response.error);
+      console.error("Error response from send-push-notification:", response.error);
       return { success: false, error: response.error };
     }
     
@@ -78,8 +85,11 @@ async function sendPushNotification(notification: Notification) {
 }
 
 const handler = async (req: Request) => {
+  console.log("Received request to handle-new-notification function");
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log("Handling CORS preflight request");
     return new Response(null, { headers: corsHeaders });
   }
 
@@ -88,10 +98,13 @@ const handler = async (req: Request) => {
     console.log("Processing notification:", notification);
     
     if (!notification.user_id || !notification.title || !notification.message) {
+      console.error("Missing required fields in notification payload:", notification);
       throw new Error("Missing required fields in notification payload");
     }
     
+    console.log("Calling sendPushNotification function");
     const result = await sendPushNotification(notification);
+    console.log("sendPushNotification result:", result);
     
     return new Response(
       JSON.stringify(result),

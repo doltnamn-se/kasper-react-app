@@ -22,7 +22,10 @@ class PushNotificationService {
     }
 
     try {
+      console.log('Initializing push notifications...');
+      
       // Request permission to use push notifications
+      console.log('Requesting push notification permissions');
       const permission = await PushNotifications.requestPermissions();
       console.log('Push notification permission status:', permission);
 
@@ -32,10 +35,12 @@ class PushNotificationService {
       }
 
       // Register with FCM (Firebase Cloud Messaging)
+      console.log('Registering with Firebase Cloud Messaging');
       await PushNotifications.register();
       this.initialized = true;
 
       // Setup listeners for push notification events
+      console.log('Setting up push notification listeners');
       this.setupListeners();
 
       console.log('Push notification registration successful');
@@ -58,6 +63,8 @@ class PushNotificationService {
           return;
         }
 
+        console.log('Saving token to database for user:', session.user.id);
+        
         // Save token to database using custom type assertion
         const { error } = await supabase
           .from('device_tokens' as any)
@@ -74,6 +81,19 @@ class PushNotificationService {
           console.error('Error saving push token:', error);
         } else {
           console.log('Push token saved successfully');
+          
+          // Verify token was saved correctly
+          const { data: savedTokens, error: verifyError } = await supabase
+            .from('device_tokens')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('token', token.value);
+          
+          if (verifyError) {
+            console.error('Error verifying saved token:', verifyError);
+          } else {
+            console.log('Token verification result:', savedTokens);
+          }
         }
       } catch (err) {
         console.error('Error saving push token to database:', err);
@@ -101,7 +121,7 @@ class PushNotificationService {
 
     // Error handling
     PushNotifications.addListener('registrationError', (error) => {
-      console.error('Error on registration:', error);
+      console.error('Error on push notification registration:', error);
     });
   }
 
