@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -14,11 +13,9 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
   useEffect(() => {
-    // Initial check for dark mode
     const isDark = document.documentElement.classList.contains('dark');
     setIsDarkMode(isDark);
 
-    // Create observer to watch for class changes on html element
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (mutation.attributeName === 'class') {
@@ -28,16 +25,14 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       });
     });
 
-    // Start observing
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class']
     });
 
-    // Cleanup
     return () => observer.disconnect();
   }, []);
-  
+
   const isAdminRoute = location.pathname.startsWith('/admin');
   return (
     <div 
@@ -48,7 +43,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
         <img 
           src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
           alt="Admin Logo" 
-          className="h-6 w-auto object-contain" 
+          className="h-10 w-auto object-contain" 
         />
       ) : (
         <>
