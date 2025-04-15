@@ -74,7 +74,7 @@ export const TopNav = () => {
                   variant="ghost"
                   size="icon"
                   className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
-                  onClick={() => window.open("https://doltnamn.se/support/", "_blank")}
+                  onClick={() => window.open("https://digitaltskydd.se/support/", "_blank")}
                 >
                   <MessageSquare className="w-4 h-4" />
                 </Button>
