@@ -24,8 +24,6 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   useEffect(() => {
     console.log('Setting language in localStorage:', language);
     localStorage.setItem('language', language);
-    // Force a re-render by updating document attributes
-    document.documentElement.lang = language;
   }, [language]);
 
   const t = (key: keyof Translations, params?: Record<string, string | number>): string => {
@@ -38,17 +36,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     return text;
   };
 
-  const contextValue = {
-    language,
-    setLanguage: (lang: Language) => {
-      console.log('Language changing to:', lang);
-      setLanguage(lang);
-    },
-    t,
-  };
-
   return (
-    <LanguageContext.Provider value={contextValue}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

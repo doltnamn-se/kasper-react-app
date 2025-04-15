@@ -1,7 +1,7 @@
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Globe } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,6 @@ export const LanguageSwitch = () => {
   };
 
   const handleLanguageChange = (lang: 'sv' | 'en') => {
-    console.log('Language change requested:', lang);
     setLanguage(lang);
   };
 
@@ -26,22 +25,22 @@ export const LanguageSwitch = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="outline" 
+          variant="ghost" 
           size="sm"
-          className="flex items-center gap-2 px-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#2d2d2d] text-black dark:text-white"
+          className="flex items-center gap-2 px-2"
         >
-          <Globe className="h-4 w-4" />
-          <span className="text-sm font-medium">
-            {languages[language].flag} {languages[language].label}
+          <span>{languages[language].flag}</span>
+          <span className="text-sm text-black dark:text-gray-300">
+            {languages[language].label}
           </span>
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="h-4 w-4 text-[#4c4c49] dark:text-[#67676c]" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[120px]">
-        <DropdownMenuItem onClick={() => handleLanguageChange('sv')} className="flex items-center gap-2 cursor-pointer">
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => handleLanguageChange('sv')} className="flex items-center gap-2">
           <span>🇸🇪</span> Svenska
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleLanguageChange('en')} className="flex items-center gap-2 cursor-pointer">
+        <DropdownMenuItem onClick={() => handleLanguageChange('en')} className="flex items-center gap-2">
           <span>🇬🇧</span> English
         </DropdownMenuItem>
       </DropdownMenuContent>
