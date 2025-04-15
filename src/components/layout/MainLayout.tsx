@@ -15,7 +15,7 @@ interface MainLayoutProps {
 
 // Inside the MainLayout component:
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { isCollapsed, toggleCollapse, toggleMobileMenu } = useSidebar();
+  const { isCollapsed, toggleCollapse } = useSidebar();
   const isMobile = useIsMobile();
   const location = useLocation();
 
@@ -74,7 +74,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <UserBottomNav unreadCounts={unreadCounts} />
+      {isMobile && <UserBottomNav unreadCounts={unreadCounts} />}
     </div>
   );
 };
