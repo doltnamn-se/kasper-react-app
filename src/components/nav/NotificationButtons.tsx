@@ -15,14 +15,12 @@ import { NotificationIcon } from "../notifications/NotificationIcon";
 import { NotificationList } from "../notifications/NotificationList";
 import { useNavigate } from "react-router-dom";
 import { useNotificationFiltering } from "@/hooks/useNotificationFiltering";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 export const NotificationButtons = () => {
   const { notifications = [], markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   
   const { filteredNotifications, totalUnreadCount } = useNotificationFiltering(notifications);
 
@@ -92,7 +90,7 @@ export const NotificationButtons = () => {
           align="end" 
           className={cn(
             "w-80 dark:bg-[#1c1c1e] dark:border-[#232325]",
-            isMobile && "ml-[25px] mt-[5px]"
+            "max-md:ml-[25px] max-md:mt-[5px]"
           )}
         >
           <div className="flex items-center justify-between px-4 py-2">
