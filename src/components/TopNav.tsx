@@ -12,11 +12,14 @@ import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthLogo } from "./auth/AuthLogo";
+import { useLocation } from "react-router-dom";
 
 export const TopNav = () => {
   const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const isMobile = useIsMobile();
   const { t } = useLanguage();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -49,8 +52,8 @@ export const TopNav = () => {
       )
     )}>
       <div className="flex items-center justify-between h-full w-full">
-        {isMobile && (
-          <div className="flex-none mr-auto w-[10rem] flex items-center justify-center">
+        {isMobile && isAdminRoute && (
+          <div className="flex-none mr-auto w-[10rem] flex items-center justify-left">
             <AuthLogo className="h-8 w-auto" />
           </div>
         )}
