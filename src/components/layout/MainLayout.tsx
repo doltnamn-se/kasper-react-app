@@ -75,7 +75,7 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
       {/* Main Content */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
-        <main className="px-4 md:px-12 pt-12 relative z-0 pb-16 md:pb-0">
+        <main className="px-4 md:px-12 pt-12 relative z-0 pb-20 md:pb-0">
           <div>
             {children}
           </div>

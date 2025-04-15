@@ -3,9 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   Home, 
   ClipboardCheck, 
-  Eye, 
   EyeOff,
-  MapPin,
   BookOpen,
   Settings
 } from "lucide-react";
@@ -18,7 +16,7 @@ export const UserBottomNav = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-50">
       <div className="grid grid-cols-5 h-full">
         <Link 
           to="/" 
