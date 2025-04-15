@@ -40,7 +40,7 @@ export const TopNav = () => {
     <div className={cn(
       "sticky top-0 right-0 h-16 z-[40] transition-[left] duration-200",
       isMobile ? (
-        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e]"
+        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] w-full"
       ) : (
         cn(
           "bg-[#f4f4f4] dark:bg-[#161618]",
@@ -50,7 +50,7 @@ export const TopNav = () => {
     )}>
       <div className="flex items-center justify-between h-full w-full">
         {isMobile && (
-          <div className="flex-none mr-auto">
+          <div className="flex-none mr-auto w-10rem">  {/* Updated width here */}
             <AuthLogo className="h-5 w-auto" />
           </div>
         )}
@@ -88,3 +88,4 @@ export const TopNav = () => {
     </div>
   );
 };
+
