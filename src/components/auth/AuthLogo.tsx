@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AuthLogoProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -13,6 +14,8 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     const isDark = document.documentElement.classList.contains('dark');
     setIsDarkMode(isDark);
@@ -35,9 +38,11 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   }, []);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const logoHeight = isMobile ? 'h-6' : 'h-12';
+
   return (
     <div 
-      className={`relative ${isAdminRoute ? 'h-auto w-auto' : 'h-12 w-48'} ${centered ? 'mx-auto' : ''}`} 
+      className={`relative ${isAdminRoute ? 'h-auto w-auto' : `${logoHeight} w-48`} ${centered ? 'mx-auto' : ''}`} 
       {...props}
     >
       {isAdminRoute ? (
@@ -51,12 +56,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
           <img 
             src="/lovable-uploads/digitaltskydd.se-app-logo-dark.svg" 
             alt="Logo" 
-            className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
+            className={`${logoHeight} w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
           />
           <img 
             src="/lovable-uploads/digitaltskydd.se-app-logo-white.svg" 
             alt="Logo" 
-            className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
+            className={`${logoHeight} w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
           />
         </>
       )}
