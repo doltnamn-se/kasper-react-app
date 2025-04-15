@@ -1,3 +1,4 @@
+
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
@@ -16,6 +17,10 @@ export const LanguageSwitch = () => {
     en: { flag: '🇬🇧', label: 'English' }
   };
 
+  const handleLanguageChange = (lang: 'sv' | 'en') => {
+    setLanguage(lang);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,10 +37,10 @@ export const LanguageSwitch = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setLanguage('sv')} className="flex items-center gap-2">
+        <DropdownMenuItem onClick={() => handleLanguageChange('sv')} className="flex items-center gap-2">
           <span>🇸🇪</span> Svenska
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLanguage('en')} className="flex items-center gap-2">
+        <DropdownMenuItem onClick={() => handleLanguageChange('en')} className="flex items-center gap-2">
           <span>🇬🇧</span> English
         </DropdownMenuItem>
       </DropdownMenuContent>

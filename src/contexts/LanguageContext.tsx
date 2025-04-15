@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Language, Translations } from '@/translations/types';
 import { en } from '@/translations/en';
@@ -16,10 +17,12 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('language');
+    console.log('Initial language from localStorage:', saved);
     return (saved === 'en' || saved === 'sv') ? saved : 'sv';
   });
 
   useEffect(() => {
+    console.log('Setting language in localStorage:', language);
     localStorage.setItem('language', language);
   }, [language]);
 

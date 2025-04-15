@@ -1,3 +1,4 @@
+
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { useVersionStore } from "@/config/version";
 
