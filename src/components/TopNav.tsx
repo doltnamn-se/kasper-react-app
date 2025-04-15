@@ -52,7 +52,7 @@ export const TopNav = () => {
       )
     )}>
       <div className="flex items-center justify-between h-full w-full">
-        {isMobile && isAdminRoute && (
+        {isMobile && (
           <div className="flex-none mr-auto w-[10rem] flex items-center justify-left">
             <AuthLogo className="h-8 w-auto" />
           </div>
