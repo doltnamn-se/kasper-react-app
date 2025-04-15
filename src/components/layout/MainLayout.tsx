@@ -1,9 +1,10 @@
+
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TopNav } from '@/components/TopNav';
 import { UserBottomNav } from '@/components/nav/UserBottomNav';
 import { useSidebar } from '@/contexts/SidebarContext';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useUnreadNotifications } from '@/components/nav/hooks/useUnreadNotifications';
@@ -14,8 +15,8 @@ interface MainLayoutProps {
 
 // Inside the MainLayout component:
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { isCollapsed, toggleMobileMenu, setIsCollapsed } = useSidebar();
-  const isMobile = useMobile();
+  const { isCollapsed, toggleCollapse, toggleMobileMenu } = useSidebar();
+  const isMobile = useIsMobile();
   const location = useLocation();
 
   // Get unread notification counts for mobile bottom nav
@@ -36,8 +37,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   };
 
   useEffect(() => {
-    setIsCollapsed(localStorage.getItem('sidebarCollapsed') === 'true');
-  }, [setIsCollapsed]);
+    // Check localStorage for sidebar state
+    const savedState = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isCollapsed !== savedState) {
+      toggleCollapse();
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('sidebarCollapsed', String(isCollapsed));
@@ -53,12 +58,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             isCollapsed ? "-translate-x-full" : "translate-x-0"
           )}
         >
-          <TopNav toggleMobileMenu={toggleMobileMenu} />
+          <TopNav />
           {/* Mobile Sidebar Content */}
           <div className="p-4">{children}</div>
         </div>
       ) : (
-        <TopNav toggleMobileMenu={() => { }} />
+        <TopNav />
       )}
 
       {/* Main Content */}

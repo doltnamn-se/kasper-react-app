@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface SidebarContextType {
@@ -5,6 +6,7 @@ interface SidebarContextType {
   isMobileMenuOpen: boolean;
   toggleCollapse: () => void;
   toggleMobileMenu: () => void;
+  setIsCollapsed?: (value: boolean) => void; // Optional backward compatibility
 }
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
@@ -27,7 +29,8 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
       isCollapsed, 
       isMobileMenuOpen, 
       toggleCollapse, 
-      toggleMobileMenu 
+      toggleMobileMenu,
+      setIsCollapsed // Added for backward compatibility
     }}>
       {children}
     </SidebarContext.Provider>
