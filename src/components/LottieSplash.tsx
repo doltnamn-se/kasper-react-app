@@ -12,7 +12,7 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
   const playerRef = useRef<Player>(null);
   
   useEffect(() => {
-    // Hide the splash after animation completes or times out
+    // Fallback timeout to hide the splash after a set time
     const timeout = setTimeout(() => {
       setVisible(false);
       if (onComplete) onComplete();
@@ -21,8 +21,42 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
     return () => clearTimeout(timeout);
   }, [onComplete]);
   
-  // Instead of trying to use addEventListener, we'll handle animation completion
-  // via the onComplete prop in the Player component
+  useEffect(() => {
+    // Set up event listener for animation completion with the lottie-player element
+    const player = playerRef.current;
+    if (player) {
+      // We need to wait for the player to be ready
+      const handlePlayerEvent = () => {
+        // Add event listener to the Lottie player's internal element
+        const lottiePlayer = player.container?.querySelector('lottie-player');
+        if (lottiePlayer) {
+          lottiePlayer.addEventListener('complete', () => {
+            setVisible(false);
+            if (onComplete) onComplete();
+          });
+        }
+      };
+      
+      // Check if player is loaded
+      if (player.isLoaded) {
+        handlePlayerEvent();
+      } else {
+        // Wait for player to load
+        player.addEventListener('load', handlePlayerEvent);
+      }
+      
+      // Cleanup function
+      return () => {
+        if (player.isLoaded) {
+          const lottiePlayer = player.container?.querySelector('lottie-player');
+          if (lottiePlayer) {
+            lottiePlayer.removeEventListener('complete', () => {});
+          }
+        }
+        player.removeEventListener('load', handlePlayerEvent);
+      };
+    }
+  }, [onComplete]);
   
   if (!visible) return null;
   
@@ -47,10 +81,6 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
         loop={false}
         src={animationPath}
         style={{ width: '80%', maxWidth: '300px' }}
-        onComplete={() => {
-          setVisible(false);
-          if (onComplete) onComplete();
-        }}
       />
     </div>
   );
