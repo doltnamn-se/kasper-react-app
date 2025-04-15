@@ -26,8 +26,8 @@ export const SubscriptionBadge = ({ plan }: SubscriptionBadgeProps) => {
 
   return (
     <Badge 
-      variant="static"
-      className="bg-[#20a5fb1a] border border-[#20a5fb] text-[#20a5fb] py-1.5"
+      variant="static"  // Using static variant to prevent hover effects
+      className="bg-[#20A5FB] dark:bg-[#20A5FB] text-white dark:text-white py-1.5"
     >
       {getSubscriptionLabel(plan)}
     </Badge>
