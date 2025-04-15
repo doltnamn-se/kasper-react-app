@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { Progress } from "@/components/ui/progress";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -81,7 +82,7 @@ export const DeindexingProgress = () => {
       <div className="px-3">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-sm font-bold text-[#000000] dark:text-white">
-            {language === 'sv' ? 'Avindexering' : 'Deindexing'}
+            {t('deindexing.title')}
           </h3>
           <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'sv' 

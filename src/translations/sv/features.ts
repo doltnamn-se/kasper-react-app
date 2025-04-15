@@ -84,6 +84,7 @@ const features: FeaturesTranslations = {
   'deindexing.status.notification.message': 'Statusen för din avindexeringsbegäran har uppdaterats',
   'user.details': 'Användaruppgifter',
   'success.delete.url': 'URL borttagen',
+  'deindexing.title': 'Länkar',
 };
 
 export default features;

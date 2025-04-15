@@ -84,6 +84,7 @@ const features: FeaturesTranslations = {
   'deindexing.status.notification.message': 'The status of your deindexing request has been updated',
   'user.details': 'User Details',
   'success.delete.url': 'URL deleted successfully',
+  'deindexing.title': 'Links',
 };
 
 export default features;
