@@ -25,7 +25,7 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
         ${message}
       </p>
       <div style="text-align: center; margin: 40px 0;">
-        <a href="https://app.digitaltskydd.se/auth" class="button">Gå till plattformen</a>
+        <a href="https://app.digitaltskydd.se/auth" class="button">Mitt konto</a>
       </div>
       <p style="text-align: left; font-size: 16px; color: #333333;">
         Om du har några frågor eller behöver hjälp, maila
@@ -43,3 +43,4 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </html>
 `;
 };
+
