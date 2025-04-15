@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -50,7 +49,7 @@ export const TopNav = () => {
     )}>
       <div className="flex items-center justify-between h-full">
         {isMobile && (
-          <div className="flex items-center justify-start w-full pl-0">
+          <div className="flex items-center w-full">
             <div className="scale-75 transform-origin-left">
               <AuthLogo className="h-5 w-auto" />
             </div>
