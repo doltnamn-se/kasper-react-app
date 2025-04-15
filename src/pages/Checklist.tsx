@@ -13,7 +13,6 @@ import { AuthLogo } from "@/components/auth/AuthLogo";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { ThemeToggle } from "@/components/nav/ThemeToggle";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { UserBottomNav } from "@/components/nav/UserBottomNav";
 
 const ChecklistContent = () => {
   const { t, language } = useLanguage();
@@ -114,9 +113,6 @@ const ChecklistContent = () => {
           </div>
         </TooltipProvider>
       </div>
-
-      {/* Mobile bottom navigation */}
-      {isMobile && <UserBottomNav />}
     </div>
   );
 };
