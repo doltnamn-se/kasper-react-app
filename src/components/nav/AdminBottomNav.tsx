@@ -22,7 +22,7 @@ export const AdminBottomNav = () => {
           className={`flex flex-col items-center justify-center ${
             isActive('/admin') 
               ? 'text-black dark:text-white' 
-              : 'text-gray-500 dark:text-gray-400'
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
           <ChartNoAxesGantt className="h-5 w-5" />
@@ -34,7 +34,7 @@ export const AdminBottomNav = () => {
           className={`flex flex-col items-center justify-center ${
             isActive('/admin/customers') 
               ? 'text-black dark:text-white' 
-              : 'text-gray-500 dark:text-gray-400'
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
           <UsersRound className="h-5 w-5" />
@@ -46,7 +46,7 @@ export const AdminBottomNav = () => {
           className={`flex flex-col items-center justify-center ${
             isActive('/admin/deindexing') 
               ? 'text-black dark:text-white' 
-              : 'text-gray-500 dark:text-gray-400'
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
           <EyeOff className="h-5 w-5" />
@@ -58,7 +58,7 @@ export const AdminBottomNav = () => {
           className={`flex flex-col items-center justify-center ${
             isActive('/admin/version-log') 
               ? 'text-black dark:text-white' 
-              : 'text-gray-500 dark:text-gray-400'
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}
         >
           <History className="h-5 w-5" />
