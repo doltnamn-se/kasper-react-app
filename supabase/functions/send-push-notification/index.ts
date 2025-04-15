@@ -17,7 +17,7 @@ interface PushNotificationPayload {
 
 // Firebase Admin SDK initialization
 async function initializeFirebase() {
-  // In a real scenario, you'd use env variables for these credentials
+  // Retrieve Firebase service account from Supabase secret
   const firebaseServiceAccount = Deno.env.get("FIREBASE_SERVICE_ACCOUNT");
   
   if (!firebaseServiceAccount) {
