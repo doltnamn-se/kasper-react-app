@@ -1,0 +1,20 @@
+
+{
+  "appId": "app.lovable.d9e386f94e5444ac91d892db773a7ddc",
+  "appName": "Digitaltskydd",
+  "server": {
+    "url": "https://d9e386f9-4e54-44ac-91d8-92db773a7ddc.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#0066FF",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
+}
