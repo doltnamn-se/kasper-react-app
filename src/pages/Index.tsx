@@ -95,7 +95,7 @@ const Index = () => {
 
   return (
     <MainLayout>
-      <div className="animate-fadeIn space-y-6 pb-20 md:pb-0">
+      <div className="animate-fadeIn space-y-6">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {language === 'sv' ? 
             `Välkommen, ${firstNameOnly} 👋` : 

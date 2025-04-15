@@ -32,7 +32,7 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
   };
 
   return (
-    <>
+    <div className="relative">
       {/* Sidebar - Desktop */}
       <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0 z-[1000]">
         <div className="px-8 py-6">
@@ -75,16 +75,14 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
       {/* Main Content */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
         <TopNav />
-        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative z-0">
-          <div>
-            {children}
-          </div>
+        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative">
+          {children}
         </main>
       </div>
 
       {/* Bottom Navigation - Mobile Only */}
       {isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
-    </>
+    </div>
   );
 };
 
