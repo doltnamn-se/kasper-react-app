@@ -1,4 +1,3 @@
-
 import { Outlet } from "react-router-dom";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { TopNav } from "@/components/TopNav";
@@ -28,7 +27,7 @@ const AdminLayout = () => {
               <AuthLogo className="relative h-8" />
               <Badge 
                 variant="static" 
-                className="bg-black text-white dark:bg-white dark:text-black mb-[10px]"
+                className="bg-black text-white dark:bg-white dark:text-black"
               >
                 Admin
               </Badge>
