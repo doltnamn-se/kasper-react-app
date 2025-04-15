@@ -38,55 +38,14 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       
       console.log('URLStatusSelect - Creating notification');
       
-      // Create the notification in the database
-      const { data: notificationData, error: notificationError } = await supabase
-        .from('notifications')
-        .insert({
-          user_id: customerId,
-          title: "Länkstatus uppdaterad",
-          message: "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer.",
-          type: 'removal',
-          read: false
-        })
-        .select()
-        .single();
-
-      if (notificationError) {
-        console.error('Error creating notification:', notificationError);
-        throw notificationError;
-      }
-
-      console.log('Notification created successfully:', notificationData);
-
-      // Get user email from profiles table
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('email')
-        .eq('id', customerId)
-        .single();
-
-      if (profileError) {
-        console.error('Error getting user email:', profileError);
-        throw profileError;
-      }
-
-      if (profileData?.email) {
-        // Send email notification
-        const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
-          body: {
-            email: profileData.email,
-            title: "Länkstatus uppdaterad",
-            message: "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer.",
-            type: 'removal'
-          }
-        });
-
-        if (emailError) {
-          console.error('Error sending email notification:', emailError);
-          // Don't throw here - we still created the in-app notification successfully
-        }
-      }
+      // Call the notification utility from the hook
+      await createStatusNotification(
+        customerId,
+        "Länkstatus uppdaterad",
+        "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer."
+      );
       
+      console.log('URLStatusSelect - Notification created successfully');
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();

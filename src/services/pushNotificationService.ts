@@ -2,11 +2,12 @@
 import { PushNotifications } from '@capacitor/push-notifications';
 import { isNativePlatform } from '@/capacitor';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 // Service for handling push notifications
 class PushNotificationService {
   private initialized = false;
+  private registerPromise: Promise<void> | null = null;
 
   // Register device for push notifications and handle events
   async register() {
@@ -15,21 +16,45 @@ class PushNotificationService {
       return;
     }
 
+    if (this.registerPromise) {
+      console.log('Registration already in progress, returning existing promise');
+      return this.registerPromise;
+    }
+
     if (this.initialized) {
       console.log('Push notifications already initialized');
       return;
     }
 
+    console.log('Starting push notification registration process');
+    
+    // Create a single registration promise that we can reuse
+    this.registerPromise = this._register();
+    return this.registerPromise;
+  }
+
+  // Internal registration method
+  private async _register() {
     try {
       console.log('Initializing push notifications...');
       
+      // Check auth state first
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        console.error('No active session, cannot register for push notifications');
+        this.registerPromise = null;
+        return;
+      }
+      console.log('User authenticated:', session.user.id);
+
       // Request permission to use push notifications
       console.log('Requesting push notification permissions');
       const permission = await PushNotifications.requestPermissions();
       console.log('Push notification permission status:', permission);
 
       if (permission.receive !== 'granted') {
-        console.log('Push notification permission not granted');
+        console.error('Push notification permission not granted');
+        this.registerPromise = null;
         return;
       }
 
@@ -48,8 +73,9 @@ class PushNotificationService {
       toast({
         title: 'Notification Error',
         description: 'Failed to register for push notifications',
-        variant: 'destructive',
       });
+      this.initialized = false;
+      this.registerPromise = null;
     }
   }
 
@@ -63,7 +89,7 @@ class PushNotificationService {
         // Get current user
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.user) {
-          console.log('No active session, cannot save push token');
+          console.error('No active session, cannot save push token');
           return;
         }
 
@@ -75,51 +101,39 @@ class PushNotificationService {
           return;
         }
 
-        // Save token to database with explicit table name
-        const { data, error } = await supabase
+        // Save token directly with an explicit insert
+        const insertResult = await supabase
           .from('device_tokens')
-          .upsert({
+          .insert({
             user_id: session.user.id,
             token: token.value,
-            device_type: navigator.userAgent.includes('Android') ? 'android' : 'ios',
-            last_updated: new Date().toISOString()
-          }, {
-            onConflict: 'user_id, token'
+            device_type: navigator.userAgent.includes('Android') ? 'android' : 'ios'
           });
-
-        if (error) {
-          console.error('Error saving push token:', error);
           
-          // Try again with different approach if first attempt failed
-          const insertResult = await supabase
+        if (insertResult.error) {
+          console.error('Error saving push token:', insertResult.error);
+          
+          // Try again with upsert if insert failed
+          const upsertResult = await supabase
             .from('device_tokens')
-            .insert({
+            .upsert({
               user_id: session.user.id,
               token: token.value,
               device_type: navigator.userAgent.includes('Android') ? 'android' : 'ios',
               last_updated: new Date().toISOString()
+            }, {
+              onConflict: 'user_id, token'
             });
             
-          if (insertResult.error) {
-            console.error('Second attempt to save token failed:', insertResult.error);
+          if (upsertResult.error) {
+            console.error('Second attempt to save token failed:', upsertResult.error);
           } else {
             console.log('Push token saved on second attempt');
+            this.verifyTokenSaved(session.user.id, token.value);
           }
         } else {
-          console.log('Push token saved successfully');
-          
-          // Verify token was saved correctly
-          const { data: savedTokens, error: verifyError } = await supabase
-            .from('device_tokens')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .eq('token', token.value);
-          
-          if (verifyError) {
-            console.error('Error verifying saved token:', verifyError);
-          } else {
-            console.log('Token verification result:', savedTokens);
-          }
+          console.log('Push token saved successfully on first attempt');
+          this.verifyTokenSaved(session.user.id, token.value);
         }
       } catch (err) {
         console.error('Error saving push token to database:', err);
@@ -151,9 +165,27 @@ class PushNotificationService {
       toast({
         title: 'Registration Error',
         description: 'Failed to register for push notifications',
-        variant: 'destructive',
       });
     });
+  }
+
+  // Verify token was saved correctly
+  private async verifyTokenSaved(userId: string, tokenValue: string) {
+    try {
+      const { data: savedTokens, error: verifyError } = await supabase
+        .from('device_tokens')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('token', tokenValue);
+      
+      if (verifyError) {
+        console.error('Error verifying saved token:', verifyError);
+      } else {
+        console.log('Token verification result:', savedTokens);
+      }
+    } catch (err) {
+      console.error('Error verifying token:', err);
+    }
   }
 
   // Get the device token

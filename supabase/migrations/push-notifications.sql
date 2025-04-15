@@ -2,7 +2,7 @@
 -- Create a table to store device tokens for push notifications
 CREATE TABLE IF NOT EXISTS device_tokens (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   token TEXT NOT NULL,
   device_type TEXT NOT NULL, -- 'android' or 'ios'
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS device_tokens (
 
 -- Add a unique constraint to prevent duplicate tokens for a user
 ALTER TABLE device_tokens ADD CONSTRAINT device_token_unique UNIQUE (user_id, token);
+
+-- Create an index to speed up lookup by user_id
+CREATE INDEX IF NOT EXISTS device_tokens_user_id_idx ON device_tokens (user_id);
 
 -- Add RLS policies for device_tokens table
 ALTER TABLE device_tokens ENABLE ROW LEVEL SECURITY;
@@ -34,6 +37,9 @@ CREATE POLICY "Users can update their own device tokens"
 CREATE POLICY "Users can delete their own device tokens" 
   ON device_tokens FOR DELETE 
   USING (auth.uid() = user_id);
+
+-- Add the table to the publication for realtime updates
+ALTER PUBLICATION supabase_realtime ADD TABLE device_tokens;
 
 -- Update the existing notification trigger function to call our edge function
 CREATE OR REPLACE FUNCTION handle_notification_email()
@@ -91,22 +97,38 @@ BEGIN
     
     -- Always send push notification regardless of email preferences
     RAISE LOG 'Attempting to send push notification';
-    SELECT net.http_post(
-        url := 'https://upfapfohwnkiugvebujh.supabase.co/functions/v1/handle-new-notification',
-        headers := jsonb_build_object(
-            'Content-Type', 'application/json',
-            'Authorization', 'Bearer ' || service_role_key
-        ),
-        body := jsonb_build_object(
-            'id', NEW.id,
-            'user_id', NEW.user_id,
-            'title', NEW.title,
-            'message', NEW.message,
-            'type', NEW.type
-        )
-    ) INTO response;
     
-    RAISE LOG 'Push notification response received: %', response;
+    -- Check if user has device tokens first
+    DECLARE
+        token_count INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO token_count 
+        FROM device_tokens 
+        WHERE user_id = NEW.user_id;
+        
+        RAISE LOG 'Found % device tokens for user %', token_count, NEW.user_id;
+        
+        IF token_count > 0 THEN
+            SELECT net.http_post(
+                url := 'https://upfapfohwnkiugvebujh.supabase.co/functions/v1/handle-new-notification',
+                headers := jsonb_build_object(
+                    'Content-Type', 'application/json',
+                    'Authorization', 'Bearer ' || service_role_key
+                ),
+                body := jsonb_build_object(
+                    'id', NEW.id,
+                    'user_id', NEW.user_id,
+                    'title', NEW.title,
+                    'message', NEW.message,
+                    'type', NEW.type
+                )
+            ) INTO response;
+            
+            RAISE LOG 'Push notification response received: %', response;
+        ELSE
+            RAISE LOG 'No device tokens found for user %, skipping push notification', NEW.user_id;
+        END IF;
+    END;
     
     RAISE LOG 'handle_notification_email END - Completed successfully';
     RETURN NEW;
@@ -115,3 +137,13 @@ EXCEPTION WHEN OTHERS THEN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SET search_path = public;
+
+-- Ensure the notifications trigger is created
+DROP TRIGGER IF EXISTS on_notification_created ON notifications;
+CREATE TRIGGER on_notification_created
+    AFTER INSERT ON notifications
+    FOR EACH ROW
+    EXECUTE FUNCTION handle_notification_email();
+
+-- Make sure the device_tokens table has replica identity full for real-time updates
+ALTER TABLE device_tokens REPLICA IDENTITY FULL;

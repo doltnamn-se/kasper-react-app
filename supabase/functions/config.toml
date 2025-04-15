@@ -3,3 +3,9 @@ project_id = "upfapfohwnkiugvebujh"
 
 [send-notification-email]
 verify_jwt = false
+
+[handle-new-notification]
+verify_jwt = false
+
+[send-push-notification]
+verify_jwt = false

@@ -32,11 +32,30 @@ async function sendPushNotification(notification: Notification) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   
   try {
+    // Double-check user exists
+    const { data: userData, error: userError } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", notification.user_id)
+      .single();
+      
+    if (userError) {
+      console.error("Error verifying user:", userError);
+      return { success: false, error: userError };
+    }
+    
+    if (!userData) {
+      console.error("User not found:", notification.user_id);
+      return { success: false, error: "User not found" };
+    }
+    
+    console.log("User verified:", userData.id);
+    
     // Get the user's device tokens
     console.log("Fetching device tokens for user:", notification.user_id);
     const { data: tokens, error: tokensError } = await supabase
       .from("device_tokens")
-      .select("token")
+      .select("token, device_type, created_at")
       .eq("user_id", notification.user_id);
       
     if (tokensError) {
@@ -46,13 +65,26 @@ async function sendPushNotification(notification: Notification) {
     
     if (!tokens || tokens.length === 0) {
       console.log("No device tokens found for user:", notification.user_id);
+      
+      // Debug: Check device_tokens table overall
+      const { data: allTokens, error: allTokensError } = await supabase
+        .from("device_tokens")
+        .select("user_id, token")
+        .limit(5);
+        
+      if (allTokensError) {
+        console.error("Error checking device_tokens table:", allTokensError);
+      } else {
+        console.log("Sample from device_tokens table:", allTokens);
+      }
+      
       return { success: false, error: "No device tokens found" };
     }
     
     // Get the tokens as an array of strings
     const tokenList = tokens.map(t => t.token);
     console.log(`Found ${tokenList.length} device tokens for user:`, notification.user_id);
-    console.log("Token samples:", tokenList.map(t => t.substring(0, 10) + "..."));
+    console.log("Tokens:", tokens);
     
     // Invoke the send-push-notification function
     console.log("Invoking send-push-notification function with tokens");
@@ -94,6 +126,10 @@ const handler = async (req: Request) => {
   }
 
   try {
+    // Debug: Log headers
+    const headers = Object.fromEntries(req.headers);
+    console.log("Request headers:", headers);
+    
     const notification: Notification = await req.json();
     console.log("Processing notification:", notification);
     
