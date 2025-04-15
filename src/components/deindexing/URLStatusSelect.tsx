@@ -44,9 +44,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
         .insert({
           user_id: customerId,
           title: t('deindexing.status.notification.title'),
-          message: t('deindexing.status.notification.message', { 
-            status: getStatusText(newStatus, t)
-          }),
+          message: t('deindexing.status.notification.message'),
           type: 'removal',
           read: false
         })
@@ -78,9 +76,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
           body: {
             email: profileData.email,
             title: t('deindexing.status.notification.title'),
-            message: t('deindexing.status.notification.message', { 
-              status: getStatusText(newStatus, t)
-            }),
+            message: t('deindexing.status.notification.message'),
             type: 'removal'
           }
         });

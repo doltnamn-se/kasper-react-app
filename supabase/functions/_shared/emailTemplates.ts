@@ -1,4 +1,3 @@
-
 import { passwordResetStyles, activationEmailStyles } from './styles.ts';
 
 export const getPasswordResetTemplate = (resetLink: string) => {
@@ -136,4 +135,3 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </html>
 `;
 };
-

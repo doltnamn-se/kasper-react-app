@@ -43,4 +43,3 @@ export const getNotificationEmailTemplate = (title: string, message: string) => 
 </html>
 `;
 };
-
