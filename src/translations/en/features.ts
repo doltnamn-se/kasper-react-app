@@ -1,3 +1,4 @@
+
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
