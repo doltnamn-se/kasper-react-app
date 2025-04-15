@@ -22,11 +22,6 @@ const Index = () => {
     document.title = language === 'sv' ? 
       "Översikt | Doltnamn.se" : 
       "Overview | Doltnamn.se";
-      
-    const root = document.getElementById('root');
-    if (root) {
-      root.classList.add('animate-fadeIn');
-    }
 
     const now = new Date();
     const minutes = now.getMinutes();
@@ -95,7 +90,7 @@ const Index = () => {
 
   return (
     <MainLayout>
-      <div className="animate-fadeIn space-y-6">
+      <div className="space-y-6">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {language === 'sv' ? 
             `Välkommen, ${firstNameOnly} 👋` : 
@@ -103,7 +98,7 @@ const Index = () => {
           }
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-24 md:pb-0">
           <PrivacyScoreCard />
           <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
             <div className="flex items-center justify-between mb-4">
