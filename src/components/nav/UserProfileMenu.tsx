@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -58,15 +59,16 @@ export const UserProfileMenu = () => {
 
   const initials = getUserInitials(userProfile);
   const displayName = getDisplayName();
+  const avatarSize = isMobile ? "h-7 w-7" : "h-8 w-8";
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group p-2"
+          className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ${isMobile ? 'p-1 ml-0' : 'ml-2 group p-2'}`}
         >
-          <Avatar className="h-8 w-8 shrink-0">
+          <Avatar className={avatarSize}>
             <AvatarImage 
               src={userProfile?.avatar_url} 
               alt={displayName}

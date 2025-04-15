@@ -38,9 +38,9 @@ export const TopNav = () => {
 
   return (
     <div className={cn(
-      "sticky top-0 right-0 h-16 z-[40] transition-[left] duration-200",
+      "sticky top-0 right-0 h-16 z-[40] transition-[left] duration-200 overflow-hidden",
       isMobile ? (
-        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e]"
+        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] w-full"
       ) : (
         cn(
           "bg-[#f4f4f4] dark:bg-[#161618]",
@@ -65,21 +65,23 @@ export const TopNav = () => {
         <div className="flex items-center gap-1 ml-auto">
           <TooltipProvider delayDuration={300}>
             <ThemeToggle />
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
-                  onClick={() => window.open("https://doltnamn.se/support/", "_blank")}
-                >
-                  <MessageSquare className="w-4 h-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('messages')}</p>
-              </TooltipContent>
-            </Tooltip>
+            {!isMobile && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
+                    onClick={() => window.open("https://doltnamn.se/support/", "_blank")}
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('messages')}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
             <NotificationButtons />
           </TooltipProvider>
           <UserProfileMenu />
