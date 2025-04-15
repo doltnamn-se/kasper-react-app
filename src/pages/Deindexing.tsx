@@ -104,8 +104,8 @@ const Deindexing = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Avindexering | Digitaltskydd.se" : 
-      "Deindexing | Digitaltskydd.se";
+      "Länkar | Digitaltskydd.se" : 
+      "Links | Digitaltskydd.se";
   }, [language]);
 
   const urlLimit = urlLimits?.additional_urls || 0;
