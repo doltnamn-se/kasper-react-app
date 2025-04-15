@@ -16,13 +16,11 @@ import { NotificationIcon } from "../notifications/NotificationIcon";
 import { NotificationList } from "../notifications/NotificationList";
 import { useNavigate } from "react-router-dom";
 import { useNotificationFiltering } from "@/hooks/useNotificationFiltering";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export const NotificationButtons = () => {
   const { notifications = [], markAsRead, markAllAsRead } = useNotifications();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   
   const { filteredNotifications, totalUnreadCount } = useNotificationFiltering(notifications);
 
@@ -68,11 +66,6 @@ export const NotificationButtons = () => {
     navigate('/settings', { state: { defaultTab: 'notifications' } });
   };
 
-  const iconSize = isMobile ? "h-7 w-7" : "h-8 w-8";
-  const buttonClass = isMobile 
-    ? "relative hover:bg-transparent dark:hover:bg-transparent p-1"
-    : "relative hover:bg-transparent dark:hover:bg-transparent";
-
   return (
     <>
       <DropdownMenu>
@@ -82,7 +75,7 @@ export const NotificationButtons = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className={buttonClass}
+                className="relative hover:bg-transparent dark:hover:bg-transparent"
               >
                 <NotificationIcon unreadCount={totalUnreadCount} />
               </Button>
