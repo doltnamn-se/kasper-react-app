@@ -3,7 +3,6 @@ import { PushNotifications } from '@capacitor/push-notifications';
 import { isNativePlatform } from '@/capacitor';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { DeviceToken } from '@/utils/supabaseHelpers';
 
 // Service for handling push notifications
 class PushNotificationService {
@@ -46,6 +45,11 @@ class PushNotificationService {
       console.log('Push notification registration successful');
     } catch (error) {
       console.error('Error registering for push notifications:', error);
+      toast({
+        title: 'Notification Error',
+        description: 'Failed to register for push notifications',
+        variant: 'destructive',
+      });
     }
   }
 
@@ -53,7 +57,7 @@ class PushNotificationService {
   private setupListeners() {
     // On registration success, save the token to the database
     PushNotifications.addListener('registration', async (token) => {
-      console.log('Push registration success, token:', token.value);
+      console.log('Push registration success, token received:', token.value);
       
       try {
         // Get current user
@@ -65,9 +69,15 @@ class PushNotificationService {
 
         console.log('Saving token to database for user:', session.user.id);
         
-        // Save token to database using custom type assertion
-        const { error } = await supabase
-          .from('device_tokens' as any)
+        // Debug: Verify the token is well-formed
+        if (!token.value || token.value.length < 10) {
+          console.error('Invalid token received:', token.value);
+          return;
+        }
+
+        // Save token to database with explicit table name
+        const { data, error } = await supabase
+          .from('device_tokens')
           .upsert({
             user_id: session.user.id,
             token: token.value,
@@ -79,6 +89,22 @@ class PushNotificationService {
 
         if (error) {
           console.error('Error saving push token:', error);
+          
+          // Try again with different approach if first attempt failed
+          const insertResult = await supabase
+            .from('device_tokens')
+            .insert({
+              user_id: session.user.id,
+              token: token.value,
+              device_type: navigator.userAgent.includes('Android') ? 'android' : 'ios',
+              last_updated: new Date().toISOString()
+            });
+            
+          if (insertResult.error) {
+            console.error('Second attempt to save token failed:', insertResult.error);
+          } else {
+            console.log('Push token saved on second attempt');
+          }
         } else {
           console.log('Push token saved successfully');
           
@@ -122,6 +148,11 @@ class PushNotificationService {
     // Error handling
     PushNotifications.addListener('registrationError', (error) => {
       console.error('Error on push notification registration:', error);
+      toast({
+        title: 'Registration Error',
+        description: 'Failed to register for push notifications',
+        variant: 'destructive',
+      });
     });
   }
 

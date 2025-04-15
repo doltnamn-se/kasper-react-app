@@ -41,12 +41,27 @@ function App() {
 
   // Initialize push notifications for native platforms
   useEffect(() => {
-    if (isNativePlatform()) {
-      console.log('Initializing push notifications...');
-      pushNotificationService.register().catch(err => {
-        console.error('Error initializing push notifications:', err);
-      });
-    }
+    const initNotifications = async () => {
+      if (isNativePlatform()) {
+        console.log('Initializing push notifications from App component...');
+        try {
+          await pushNotificationService.register();
+          console.log('Push notification registration completed successfully');
+        } catch (err) {
+          console.error('Error initializing push notifications:', err);
+        }
+      }
+    };
+    
+    // Initialize immediately, then retry after a short delay to ensure auth is ready
+    initNotifications();
+    
+    // Try again after a delay to ensure auth session is loaded
+    const timer = setTimeout(() => {
+      initNotifications();
+    }, 3000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   return (

@@ -89,7 +89,7 @@ BEGIN
         RAISE LOG 'Email notifications disabled for user: %', user_email;
     END IF;
     
-    -- Send push notification
+    -- Always send push notification regardless of email preferences
     RAISE LOG 'Attempting to send push notification';
     SELECT net.http_post(
         url := 'https://upfapfohwnkiugvebujh.supabase.co/functions/v1/handle-new-notification',
@@ -114,4 +114,4 @@ EXCEPTION WHEN OTHERS THEN
     RAISE LOG 'Error in handle_notification_email: %', SQLERRM;
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
