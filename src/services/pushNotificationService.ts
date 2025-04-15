@@ -3,6 +3,7 @@ import { PushNotifications } from '@capacitor/push-notifications';
 import { isNativePlatform } from '@/capacitor';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { DeviceToken } from '@/utils/supabaseHelpers';
 
 // Service for handling push notifications
 class PushNotificationService {
@@ -57,9 +58,9 @@ class PushNotificationService {
           return;
         }
 
-        // Save token to database
+        // Save token to database using custom type assertion
         const { error } = await supabase
-          .from('device_tokens')
+          .from('device_tokens' as any)
           .upsert({
             user_id: session.user.id,
             token: token.value,

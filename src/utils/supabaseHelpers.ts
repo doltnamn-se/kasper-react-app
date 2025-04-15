@@ -1,3 +1,4 @@
+
 import { PostgrestError } from '@supabase/supabase-js';
 
 export function isError<T>(
@@ -26,3 +27,13 @@ export function ensureResult<T>(
   }
   return result;
 }
+
+// Add this type to define the device token structure
+export type DeviceToken = {
+  id: string;
+  user_id: string;
+  token: string;
+  device_type: string;
+  created_at: string;
+  last_updated: string;
+};

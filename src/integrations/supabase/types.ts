@@ -207,6 +207,33 @@ export type Database = {
           },
         ]
       }
+      device_tokens: {
+        Row: {
+          created_at: string | null
+          device_type: string
+          id: string
+          last_updated: string | null
+          token: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          device_type: string
+          id?: string
+          last_updated?: string | null
+          token: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          device_type?: string
+          id?: string
+          last_updated?: string | null
+          token?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       hiding_preferences: {
         Row: {
           created_at: string
