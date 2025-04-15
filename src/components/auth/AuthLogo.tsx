@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -43,7 +44,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
         <img 
           src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
           alt="Admin Logo" 
-          className="h-10 w-auto object-contain" 
+          className="h-[2.5rem] w-auto object-contain" 
         />
       ) : (
         <>
