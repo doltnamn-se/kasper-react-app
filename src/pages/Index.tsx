@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
@@ -28,25 +27,20 @@ const Index = () => {
       root.classList.add('animate-fadeIn');
     }
 
-    // Set initial states
     const now = new Date();
     const minutes = now.getMinutes();
     const currentInterval = minutes - (minutes % 5);
     
-    // Check if we're in the scanning period (between XX:00 and XX:01 of any 5-minute interval)
     const isInScanningPeriod = minutes % 5 === 0;
     setIsScanning(isInScanningPeriod);
     
-    // Set the last checked time
     if (isInScanningPeriod) {
-      // Show the previous interval
       const previousInterval = new Date(now);
       previousInterval.setMinutes(currentInterval - 5);
       previousInterval.setSeconds(0);
       previousInterval.setMilliseconds(0);
       setLastChecked(previousInterval);
     } else {
-      // Show the most recent completed interval
       const lastInterval = new Date(now);
       lastInterval.setMinutes(currentInterval);
       lastInterval.setSeconds(0);
@@ -54,17 +48,14 @@ const Index = () => {
       setLastChecked(lastInterval);
     }
 
-    // Update states every second
     const interval = setInterval(() => {
       const newTime = new Date();
       const newMinutes = newTime.getMinutes();
       const newSeconds = newTime.getSeconds();
       
-      // Check if we're in a scanning period
       const shouldBeScanningNow = newMinutes % 5 === 0;
       setIsScanning(shouldBeScanningNow);
       
-      // Update last checked time at XX:01
       if (newMinutes % 5 === 1 && newSeconds === 0) {
         const lastInterval = new Date(newTime);
         lastInterval.setMinutes(newMinutes - 1);
@@ -77,7 +68,6 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [language]);
 
-  // Dot animation effect
   useEffect(() => {
     if (isScanning) {
       let count = 0;
