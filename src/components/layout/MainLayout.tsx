@@ -1,80 +1,95 @@
 
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { TopNav } from '@/components/TopNav';
-import { UserBottomNav } from '@/components/nav/UserBottomNav';
-import { useSidebar } from '@/contexts/SidebarContext';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { useUnreadNotifications } from '@/components/nav/hooks/useUnreadNotifications';
+import { TopNav } from "@/components/TopNav";
+import { AuthLogo } from "@/components/auth/AuthLogo";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useSidebar } from "@/contexts/SidebarContext";
+import { AdminNavigation } from "@/components/nav/AdminNavigation";
+import { MainNavigation } from "@/components/nav/MainNavigation";
+import { SidebarFooter } from "@/components/nav/SidebarFooter";
+import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
+import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { UserBottomNav } from "@/components/nav/UserBottomNav";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-// Inside the MainLayout component:
-export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { isCollapsed, toggleCollapse } = useSidebar();
-  const isMobile = useIsMobile();
-  const location = useLocation();
-
-  // Get unread notification counts for mobile bottom nav
+const LayoutContent = ({ children }: MainLayoutProps) => {
+  const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const { userProfile } = useUserProfile();
-  const {
-    unreadGuideNotifications,
-    unreadMonitoringNotifications,
-    unreadDeindexingNotifications,
-    unreadAddressAlerts
-  } = useUnreadNotifications(userProfile?.id);
+  const { t } = useLanguage();
+  const isAdmin = userProfile?.role === 'super_admin';
+  const isMobile = useIsMobile();
 
-  // Combine unread counts for bottom nav
-  const unreadCounts = {
-    monitoring: unreadMonitoringNotifications,
-    deindexing: unreadDeindexingNotifications,
-    addressAlerts: unreadAddressAlerts,
-    guides: unreadGuideNotifications,
+  const Navigation = () => {
+    return (
+      <nav>
+        {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
+        <MainNavigation toggleMobileMenu={toggleMobileMenu} />
+      </nav>
+    );
   };
 
-  useEffect(() => {
-    // Check localStorage for sidebar state
-    const savedState = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isCollapsed !== savedState) {
-      toggleCollapse();
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('sidebarCollapsed', String(isCollapsed));
-  }, [isCollapsed]);
-
   return (
-    <div className="flex h-screen overflow-hidden bg-white dark:bg-[#070707]">
-      {/* Sidebar */}
-      {isMobile ? (
-        <div
-          className={cn(
-            "fixed inset-y-0 z-50 w-64 bg-white border-r border-gray-200 dark:bg-[#1c1c1e] dark:border-[#232325] transform transition-transform duration-300 ease-in-out",
-            isCollapsed ? "-translate-x-full" : "translate-x-0"
-          )}
-        >
-          <TopNav />
-          {/* Mobile Sidebar Content */}
-          <div className="p-4">{children}</div>
+    <div className="relative">
+      {/* Sidebar - Desktop */}
+      <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0 z-[1000]">
+        <div className="px-8 py-6">
+          <AuthLogo className="relative h-8" />
         </div>
-      ) : (
-        <TopNav />
-      )}
+
+        <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
+
+        <div className="px-6">
+          <Navigation />
+        </div>
+
+        <SidebarFooter />
+      </div>
+
+      {/* Sidebar - Mobile */}
+      <div className={`fixed inset-0 bg-black bg-opacity-50 z-[1000] transition-opacity duration-200 md:hidden ${
+        isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`} onClick={toggleMobileMenu}>
+        <div 
+          className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-[#1c1c1e] transform transition-transform duration-200 ${
+            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="px-8 py-6">
+            <AuthLogo className="relative h-8" />
+          </div>
+
+          <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
+
+          <div className="px-6">
+            <Navigation />
+          </div>
+
+          <SidebarFooter />
+        </div>
+      </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-x-hidden">
-        <main className="relative py-4 px-4 sm:px-6 lg:px-8">
+      <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
+        <TopNav />
+        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative">
           {children}
         </main>
       </div>
 
-      {/* Mobile Bottom Navigation */}
-      {isMobile && <UserBottomNav unreadCounts={unreadCounts} />}
+      {/* Bottom Navigation - Mobile Only */}
+      {isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
     </div>
+  );
+};
+
+export const MainLayout = ({ children }: MainLayoutProps) => {
+  return (
+    <LanguageProvider>
+      <LayoutContent>{children}</LayoutContent>
+    </LanguageProvider>
   );
 };
