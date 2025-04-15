@@ -43,8 +43,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
         .from('notifications')
         .insert({
           user_id: customerId,
-          title: t('deindexing.status.notification.title'),
-          message: t('deindexing.status.notification.message'),
+          title: "Länkstatus uppdaterad",
+          message: "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer.",
           type: 'removal',
           read: false
         })
@@ -75,8 +75,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
         const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
           body: {
             email: profileData.email,
-            title: t('deindexing.status.notification.title'),
-            message: t('deindexing.status.notification.message'),
+            title: "Länkstatus uppdaterad",
+            message: "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer.",
             type: 'removal'
           }
         });
