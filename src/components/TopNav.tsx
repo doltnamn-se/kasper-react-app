@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -7,10 +6,11 @@ import { ThemeToggle } from "./nav/ThemeToggle";
 import { NotificationButtons } from "./nav/NotificationButtons";
 import { UserProfileMenu } from "./nav/UserProfileMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, MessageSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { AuthLogo } from "./auth/AuthLogo";
 
 export const TopNav = () => {
   const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
@@ -49,16 +49,11 @@ export const TopNav = () => {
     )}>
       <div className="flex items-center justify-between h-full">
         {isMobile && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleMobileMenu}
-            className="mr-2"
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
+          <div className="flex items-center">
+            <AuthLogo className="h-8 w-auto mr-2" />
+          </div>
         )}
-
+        
         <div className={cn(
           "flex-1 max-w-md",
           isMobile ? "hidden" : "block"
