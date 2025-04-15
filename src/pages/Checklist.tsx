@@ -22,8 +22,8 @@ const ChecklistContent = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Checklista | Doltnamn.se" : 
-      "Checklist | Doltnamn.se";
+      "Checklista | Digitaltskydd.se" : 
+      "Checklist | Digitaltskydd.se";
   }, [language]);
 
   const handleStepClick = (stepNumber: number) => {

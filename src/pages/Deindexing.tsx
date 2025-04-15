@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -103,8 +104,8 @@ const Deindexing = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Avindexering | Doltnamn.se" : 
-      "Deindexing | Doltnamn.se";
+      "Avindexering | Digitaltskydd.se" : 
+      "Deindexing | Digitaltskydd.se";
   }, [language]);
 
   const urlLimit = urlLimits?.additional_urls || 0;

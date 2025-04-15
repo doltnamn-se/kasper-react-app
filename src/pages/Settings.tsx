@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,8 +15,8 @@ const Settings = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Inställningar | Doltnamn.se" : 
-      "Settings | Doltnamn.se";
+      "Inställningar | Digitaltskydd.se" : 
+      "Settings | Digitaltskydd.se";
   }, [language]);
 
   useEffect(() => {

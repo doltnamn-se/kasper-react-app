@@ -39,8 +39,8 @@ const Guides = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Guider | Doltnamn.se" : 
-      "Guides | Doltnamn.se";
+      "Guider | Digitaltskydd.se" : 
+      "Guides | Digitaltskydd.se";
   }, [language]);
 
   const handleAccordionChange = (accordionId: string) => {

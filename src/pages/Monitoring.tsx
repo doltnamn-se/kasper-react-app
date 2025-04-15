@@ -12,8 +12,8 @@ const Monitoring = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Bevakning | Doltnamn.se" : 
-      "Monitoring | Doltnamn.se";
+      "Bevakning | Digitaltskydd.se" : 
+      "Monitoring | Digitaltskydd.se";
   }, [language]);
 
   return (

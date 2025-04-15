@@ -20,8 +20,8 @@ const Index = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Översikt | Doltnamn.se" : 
-      "Overview | Doltnamn.se";
+      "Översikt | Digitaltskydd.se" : 
+      "Overview | Digitaltskydd.se";
       
     const now = new Date();
     const minutes = now.getMinutes();
