@@ -10,12 +10,22 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-export const AdminNavigation = () => {
+interface AdminNavigationProps {
+  toggleMobileMenu?: () => void;
+}
+
+export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {}) => {
   const { t } = useLanguage();
   const location = useLocation();
 
   const renderNavLink = (path: string, icon: React.ReactNode, label: string) => {
     const isActive = location.pathname === path;
+    
+    const handleClick = () => {
+      if (toggleMobileMenu) {
+        toggleMobileMenu();
+      }
+    };
     
     return (
       <Link 
@@ -25,6 +35,7 @@ export const AdminNavigation = () => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
+        onClick={handleClick}
       >
         <div className="flex items-center gap-3 px-3">
           <span className="text-black dark:text-white">{icon}</span>
