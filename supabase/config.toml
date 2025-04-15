@@ -1,4 +1,14 @@
+
 project_id = "upfapfohwnkiugvebujh"
 
 [functions.create-customer]
+verify_jwt = false
+
+[functions.send-notification-email]
+verify_jwt = false
+
+[functions.send-push-notification]
+verify_jwt = false
+
+[functions.handle-new-notification]
 verify_jwt = false

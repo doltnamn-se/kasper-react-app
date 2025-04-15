@@ -7,6 +7,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/contexts/SidebarContext";
 import { useEffect } from "react";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
+import { isNativePlatform } from "@/capacitor";
+import { pushNotificationService } from "@/services/pushNotificationService";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -35,6 +37,16 @@ function App() {
   useEffect(() => {
     initializeVersionTracking();
     return () => cleanupVersionTracking();
+  }, []);
+
+  // Initialize push notifications for native platforms
+  useEffect(() => {
+    if (isNativePlatform()) {
+      console.log('Initializing push notifications...');
+      pushNotificationService.register().catch(err => {
+        console.error('Error initializing push notifications:', err);
+      });
+    }
   }, []);
 
   return (

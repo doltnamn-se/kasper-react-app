@@ -1,7 +1,10 @@
+
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { pushNotificationService } from '@/services/pushNotificationService';
+import { isNativePlatform } from '@/capacitor';
 
 export type Notification = {
   id: string;
@@ -16,6 +19,15 @@ export type Notification = {
 export const useNotifications = () => {
   const { toast } = useToast();
   const [unreadCount, setUnreadCount] = useState(0);
+
+  // Initialize push notifications on mobile devices
+  useEffect(() => {
+    if (isNativePlatform()) {
+      pushNotificationService.register().catch(err => {
+        console.error("Error registering for push notifications:", err);
+      });
+    }
+  }, []);
 
   // Fetch notifications
   const { data: notifications = [], refetch } = useQuery({
