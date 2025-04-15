@@ -22,38 +22,19 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
   }, [onComplete]);
   
   useEffect(() => {
-    // Set up event listener for animation completion with the lottie-player element
     const player = playerRef.current;
     if (player) {
-      // We need to wait for the player to be ready
-      const handlePlayerEvent = () => {
-        // Add event listener to the Lottie player's internal element
-        const lottiePlayer = player.container?.querySelector('lottie-player');
-        if (lottiePlayer) {
-          lottiePlayer.addEventListener('complete', () => {
-            setVisible(false);
-            if (onComplete) onComplete();
-          });
-        }
+      // Use the available events from the Player component
+      const handleComplete = () => {
+        setVisible(false);
+        if (onComplete) onComplete();
       };
       
-      // Check if player is loaded
-      if (player.isLoaded) {
-        handlePlayerEvent();
-      } else {
-        // Wait for player to load
-        player.addEventListener('load', handlePlayerEvent);
-      }
+      // The Player instance has a method to listen for events
+      player.addEventListener('complete', handleComplete);
       
-      // Cleanup function
       return () => {
-        if (player.isLoaded) {
-          const lottiePlayer = player.container?.querySelector('lottie-player');
-          if (lottiePlayer) {
-            lottiePlayer.removeEventListener('complete', () => {});
-          }
-        }
-        player.removeEventListener('load', handlePlayerEvent);
+        player.removeEventListener('complete', handleComplete);
       };
     }
   }, [onComplete]);
