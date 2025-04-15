@@ -18,7 +18,7 @@ const handler = async (req: Request) => {
 
   try {
     const { email, title, message } = await req.json();
-    console.log("Preparing to send notification email:", { email, title });
+    console.log("Preparing to send notification email:", { email, title, message });
     
     // Generate email HTML using our template
     const htmlContent = getNotificationEmailTemplate(title, message);
