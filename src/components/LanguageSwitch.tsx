@@ -18,6 +18,7 @@ export const LanguageSwitch = () => {
   };
 
   const handleLanguageChange = (lang: 'sv' | 'en') => {
+    console.log('Language change clicked:', lang);
     setLanguage(lang);
   };
 
@@ -36,11 +37,20 @@ export const LanguageSwitch = () => {
           <ChevronDown className="h-4 w-4 text-[#4c4c49] dark:text-[#67676c]" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => handleLanguageChange('sv')} className="flex items-center gap-2">
+      <DropdownMenuContent 
+        align="end" 
+        className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] z-[1001]"
+      >
+        <DropdownMenuItem 
+          onClick={() => handleLanguageChange('sv')} 
+          className="flex items-center gap-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
+        >
           <span>🇸🇪</span> Svenska
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleLanguageChange('en')} className="flex items-center gap-2">
+        <DropdownMenuItem 
+          onClick={() => handleLanguageChange('en')} 
+          className="flex items-center gap-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
+        >
           <span>🇬🇧</span> English
         </DropdownMenuItem>
       </DropdownMenuContent>
