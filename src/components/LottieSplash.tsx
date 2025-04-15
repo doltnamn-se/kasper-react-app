@@ -33,25 +33,17 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
         if (onComplete) onComplete();
       };
       
-      // The Player component from @lottiefiles/react-lottie-player uses
-      // a different event system - we should check if it has a specific method
-      if (typeof player.lottie !== 'undefined') {
-        // For newer versions that expose the lottie instance
-        player.lottie?.addEventListener('complete', handleComplete);
+      // The Player component uses a container that hosts the actual animation
+      // We can access the DOM element and attach event listeners to it
+      const container = player.container as HTMLElement;
+      if (container) {
+        // Add the event listener to the container element
+        container.addEventListener('complete', handleComplete);
         
+        // Cleanup function to remove the event listener
         return () => {
-          player.lottie?.removeEventListener('complete', handleComplete);
+          container.removeEventListener('complete', handleComplete);
         };
-      } else {
-        // For versions that don't expose lottie directly
-        const element = player.container;
-        if (element) {
-          element.addEventListener('complete', handleComplete);
-          
-          return () => {
-            element.removeEventListener('complete', handleComplete);
-          };
-        }
       }
     }
   }, [onComplete]);
