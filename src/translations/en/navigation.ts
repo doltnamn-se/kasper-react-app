@@ -3,11 +3,14 @@ import { NavigationTranslations } from '../types/navigation';
 
 export const navigation: NavigationTranslations = {
   'nav.home': 'Home',
+  'nav.overview': 'Overview',
   'nav.checklist': 'Checklist',
   'nav.monitoring': 'Monitoring',
   'nav.my.links': 'Deindexing',
+  'nav.deindexing': 'Deindexing',
   'nav.address.alerts': 'Address Alerts',
   'nav.guides': 'Guides',
+  'nav.settings': 'Settings',
   'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Customers',
   'nav.admin.links': 'Link Management',

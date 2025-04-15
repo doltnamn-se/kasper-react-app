@@ -3,11 +3,14 @@ import { NavigationTranslations } from '../types/navigation';
 
 export const navigation: NavigationTranslations = {
   'nav.home': 'Hem',
+  'nav.overview': 'Översikt',
   'nav.checklist': 'Checklista',
   'nav.monitoring': 'Bevakning',
   'nav.my.links': 'Avindexering',
+  'nav.deindexing': 'Avindexering',
   'nav.address.alerts': 'Adresslarm',
   'nav.guides': 'Guider',
+  'nav.settings': 'Inställningar',
   'nav.admin.dashboard': 'Översikt',
   'nav.admin.customers': 'Kunder',
   'nav.admin.links': 'Länkhantering',
