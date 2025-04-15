@@ -21,16 +21,9 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     return (saved === 'en' || saved === 'sv') ? saved : 'sv';
   });
 
-  const handleLanguageChange = (lang: Language) => {
-    console.log('Language changed to:', lang);
-    setLanguage(lang);
-  };
-
   useEffect(() => {
     console.log('Setting language in localStorage:', language);
     localStorage.setItem('language', language);
-    // Force a re-render of components that depend on language
-    document.documentElement.setAttribute('data-language', language);
   }, [language]);
 
   const t = (key: keyof Translations, params?: Record<string, string | number>): string => {
@@ -44,7 +37,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleLanguageChange, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
