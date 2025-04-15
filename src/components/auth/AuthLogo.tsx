@@ -38,7 +38,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   }, []);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const logoHeight = isMobile ? 'h-10' : 'h-12';
+  const logoHeight = isMobile ? 'h-8' : 'h-12';
 
   return (
     <div 
@@ -49,13 +49,13 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
         <img 
           src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
           alt="Admin Logo" 
-          className="h-[2.5rem] w-auto object-contain" 
+          className="h-[2rem] w-auto object-contain" 
         />
       ) : isMobile ? (
         <img 
           src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
           alt="Mobile Logo" 
-          className="h-[2.5rem] w-auto object-contain" 
+          className="h-[2rem] w-auto object-contain" 
         />
       ) : (
         <>
