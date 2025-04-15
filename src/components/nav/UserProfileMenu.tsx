@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -77,17 +78,15 @@ export const UserProfileMenu = () => {
             </AvatarFallback>
           </Avatar>
           {!isMobile && (
-            <>
-              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-                {displayName}
-              </span>
-              <ChevronDown 
-                className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
-                  isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
-                }`}
-              />
-            </>
+            <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+              {displayName}
+            </span>
           )}
+          <ChevronDown 
+            className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
+              isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
+            }`}
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]">
