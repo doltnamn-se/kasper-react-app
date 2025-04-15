@@ -51,7 +51,9 @@ export const TopNav = () => {
       <div className="flex items-center justify-between h-full">
         {isMobile && (
           <div className="flex items-center">
-            <AuthLogo className="h-6 w-auto mr-2" />
+            <div className="scale-75 transform-origin-left">
+              <AuthLogo className="h-5 w-auto" />
+            </div>
           </div>
         )}
         
@@ -62,7 +64,7 @@ export const TopNav = () => {
           <SearchBar />
         </div>
         
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-1 ml-auto">
           <TooltipProvider delayDuration={300}>
             <ThemeToggle />
             <Tooltip>
