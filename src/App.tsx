@@ -1,12 +1,13 @@
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/contexts/SidebarContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
+import { LottieSplash } from "@/components/LottieSplash";
+import { splashScreenService } from "./services/splashScreen";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -32,16 +33,29 @@ import { AuthRoute } from "@/components/auth/AuthRoute";
 const queryClient = new QueryClient();
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
   useEffect(() => {
     initializeVersionTracking();
     return () => cleanupVersionTracking();
   }, []);
+
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+    splashScreenService.hide();
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <LanguageProvider>
           <SidebarProvider>
+            {showSplash && (
+              <LottieSplash 
+                animationPath="/animations/splash.json" 
+                onComplete={handleSplashComplete} 
+              />
+            )}
             <Router>
               <Routes>
                 {/* Auth routes */}
