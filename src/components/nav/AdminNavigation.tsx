@@ -10,11 +10,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-interface AdminNavigationProps {
-  toggleMobileMenu?: () => void;
-}
-
-export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
+export const AdminNavigation = () => {
   const { t } = useLanguage();
   const location = useLocation();
 
@@ -29,7 +25,6 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps) => {
             ? "bg-gray-100 dark:bg-[#2d2d2d]" 
             : "hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         }`}
-        onClick={toggleMobileMenu}
       >
         <div className="flex items-center gap-3 px-3">
           <span className="text-black dark:text-white">{icon}</span>
