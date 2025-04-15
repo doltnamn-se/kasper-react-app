@@ -50,7 +50,7 @@ export const TopNav = () => {
     )}>
       <div className="flex items-center justify-between h-full">
         {isMobile && (
-          <div className="flex items-center ml-0">
+          <div className="flex items-center justify-start w-full pl-0">
             <div className="scale-75 transform-origin-left">
               <AuthLogo className="h-5 w-auto" />
             </div>
