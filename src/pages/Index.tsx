@@ -23,11 +23,6 @@ const Index = () => {
       "Översikt | Doltnamn.se" : 
       "Overview | Doltnamn.se";
       
-    const root = document.getElementById('root');
-    if (root) {
-      root.classList.add('animate-fadeIn');
-    }
-
     const now = new Date();
     const minutes = now.getMinutes();
     const currentInterval = minutes - (minutes % 5);
@@ -95,7 +90,7 @@ const Index = () => {
 
   return (
     <MainLayout>
-      <div className="animate-fadeIn space-y-6">
+      <div className="space-y-6 pb-20 md:pb-0">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {language === 'sv' ? 
             `Välkommen, ${firstNameOnly} 👋` : 
