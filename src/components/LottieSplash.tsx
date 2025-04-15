@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
 
 interface LottieSplashProps {
@@ -9,6 +9,7 @@ interface LottieSplashProps {
 
 export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) => {
   const [visible, setVisible] = useState(true);
+  const playerRef = useRef<Player>(null);
   
   useEffect(() => {
     // Hide the splash after animation completes or times out
@@ -18,6 +19,16 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
     }, 3000); // Adjust timeout as needed
     
     return () => clearTimeout(timeout);
+  }, [onComplete]);
+  
+  useEffect(() => {
+    // Set up event listener for animation completion
+    if (playerRef.current) {
+      playerRef.current.addEventListener('complete', () => {
+        setVisible(false);
+        if (onComplete) onComplete();
+      });
+    }
   }, [onComplete]);
   
   if (!visible) return null;
@@ -38,14 +49,11 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
       }}
     >
       <Player
+        ref={playerRef}
         autoplay
         loop={false}
         src={animationPath}
         style={{ width: '80%', maxWidth: '300px' }}
-        onComplete={() => {
-          setVisible(false);
-          if (onComplete) onComplete();
-        }}
       />
     </div>
   );
