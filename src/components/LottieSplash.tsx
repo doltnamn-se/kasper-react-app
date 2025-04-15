@@ -21,15 +21,8 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
     return () => clearTimeout(timeout);
   }, [onComplete]);
   
-  useEffect(() => {
-    // Set up event listener for animation completion
-    if (playerRef.current) {
-      playerRef.current.addEventListener('complete', () => {
-        setVisible(false);
-        if (onComplete) onComplete();
-      });
-    }
-  }, [onComplete]);
+  // Instead of trying to use addEventListener, we'll handle animation completion
+  // via the onComplete prop in the Player component
   
   if (!visible) return null;
   
@@ -54,6 +47,10 @@ export const LottieSplash = ({ animationPath, onComplete }: LottieSplashProps) =
         loop={false}
         src={animationPath}
         style={{ width: '80%', maxWidth: '300px' }}
+        onComplete={() => {
+          setVisible(false);
+          if (onComplete) onComplete();
+        }}
       />
     </div>
   );
