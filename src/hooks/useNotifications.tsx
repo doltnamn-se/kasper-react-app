@@ -23,6 +23,7 @@ export const useNotifications = () => {
   // Initialize push notifications on mobile devices
   useEffect(() => {
     if (isNativePlatform()) {
+      console.log('useNotifications - Initializing push notifications...');
       pushNotificationService.register().catch(err => {
         console.error("Error registering for push notifications:", err);
       });
