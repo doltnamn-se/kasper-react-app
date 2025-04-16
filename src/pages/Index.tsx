@@ -4,8 +4,6 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { format } from "date-fns";
-import { sv, enUS } from "date-fns/locale";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 
@@ -32,13 +30,6 @@ const Index = () => {
 
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
-
-  const getFormattedDate = () => {
-    if (language === 'sv') {
-      return `CET ${format(lastChecked, 'HH:mm eeee d MMMM yyyy', { locale: sv })}`;
-    }
-    return `CET ${format(lastChecked, 'h:mma, EEEE, MMMM d, yyyy', { locale: enUS })}`;
-  };
 
   const sites = [
     { name: 'Mrkoll', status: 'OK', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
@@ -68,22 +59,16 @@ const Index = () => {
               </h2>
             </div>
             <div className="mt-2">
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-xs mb-4">
-                {language === 'sv' ? 
-                  `Senast kontrollerat ${getFormattedDate()}` : 
-                  `Last checked ${getFormattedDate()}`
-                }
-              </p>
               <Table>
                 <TableHeader>
-                  <TableRow>
+                  <TableRow className="!hover:bg-transparent">
                     <TableHead>{language === 'sv' ? 'Sida' : 'Site'}</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sites.map((site) => (
-                    <TableRow key={site.name}>
+                    <TableRow key={site.name} className="!hover:bg-transparent">
                       <TableCell className="flex items-center gap-2 py-2">
                         <img 
                           src={site.icon} 
