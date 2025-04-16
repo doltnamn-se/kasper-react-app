@@ -12,4 +12,3 @@ verify_jwt = false
 
 [functions.handle-new-notification]
 verify_jwt = false
-
