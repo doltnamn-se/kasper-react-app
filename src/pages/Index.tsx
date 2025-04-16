@@ -53,7 +53,7 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <PrivacyScoreCard />
           <Card className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-[50px]">
               <h2 className="text-lg font-semibold flex items-center">
                 {language === 'sv' ? 'Status' : 'Status'}
               </h2>
@@ -61,23 +61,23 @@ const Index = () => {
             <div className="mt-2">
               <Table>
                 <TableHeader>
-                  <TableRow className="!hover:bg-transparent">
+                  <TableRow className="!hover:bg-transparent border-none">
                     <TableHead>{language === 'sv' ? 'Sida' : 'Site'}</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sites.map((site) => (
-                    <TableRow key={site.name} className="!hover:bg-transparent">
-                      <TableCell className="flex items-center gap-2 py-2">
+                    <TableRow key={site.name} className="!hover:bg-transparent border-none py-4">
+                      <TableCell className="flex items-center gap-4 py-4">
                         <img 
                           src={site.icon} 
                           alt={site.name} 
-                          className="w-5 h-5 object-contain" 
+                          className="w-8 h-8 object-contain" 
                         />
-                        <span>{site.name}</span>
+                        <span className="text-sm font-medium">{site.name}</span>
                       </TableCell>
-                      <TableCell>{site.status}</TableCell>
+                      <TableCell className="text-sm font-medium py-4">{site.status}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
