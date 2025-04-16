@@ -27,7 +27,7 @@ export const SubscriptionBadge = ({ plan }: SubscriptionBadgeProps) => {
   return (
     <Badge 
       variant="static"
-      className="bg-[#e8e8e8] dark:bg-[#303032] text-[#000000] dark:text-[#ffffff] py-1.5"
+      className="bg-[#e8e8e8] dark:bg-[#303032] text-[#000000] dark:text-[#ffffff] py-1.5 font-medium" // Changed from font-semibold to font-medium
     >
       {getSubscriptionLabel(plan)}
     </Badge>
