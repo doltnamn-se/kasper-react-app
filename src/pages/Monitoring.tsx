@@ -2,9 +2,6 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NewLinks } from "@/components/monitoring/NewLinks";
-import { RemovedLinks } from "@/components/monitoring/RemovedLinks";
 import { HourlyCountdown } from "@/components/monitoring/HourlyCountdown";
 import { Spinner } from "@/components/ui/spinner";
 import { format } from "date-fns";
@@ -15,7 +12,6 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 
 const Monitoring = () => {
   const { t, language } = useLanguage();
-  const [activeTab, setActiveTab] = useState("new");
   const { userProfile } = useUserProfile();
   const [lastChecked, setLastChecked] = useState(new Date());
   const [isScanning, setIsScanning] = useState(false);
@@ -100,8 +96,8 @@ const Monitoring = () => {
           {t('nav.monitoring')}
         </h1>
 
-        {/* Monitoring Widget - Duplicated from Home Page */}
-        <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 mb-8">
+        {/* Monitoring Widget */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold flex items-center">
               {language === 'sv' ? 'Bevakning' : 'Monitoring'}
@@ -153,35 +149,6 @@ const Monitoring = () => {
             </div>
           </div>
         </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="new" className="flex-1">
-              {language === 'sv' ? 'Nya länkar' : 'New links'}
-            </TabsTrigger>
-            <TabsTrigger value="removed" className="flex-1">
-              {language === 'sv' ? 'Borttagna länkar' : 'Removed links'}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="new" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                {language === 'sv' ? 'Nya länkar' : 'New links'}
-              </h2>
-              <NewLinks />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="removed" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
-                {language === 'sv' ? 'Borttagna länkar' : 'Removed links'}
-              </h2>
-              <RemovedLinks />
-            </div>
-          </TabsContent>
-        </Tabs>
       </div>
     </MainLayout>
   );
