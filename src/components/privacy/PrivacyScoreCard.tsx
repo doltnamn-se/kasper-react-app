@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
 import { Progress } from "@/components/ui/progress";
@@ -248,7 +249,7 @@ export const PrivacyScoreCard = () => {
         />
         <ScoreItem
           icon={EyeOff}
-          title={language === 'sv' ? 'Avindexering' : 'Deindexing'}
+          title={language === 'sv' ? 'Länkar' : 'Links'}
           score={score.individual.urls}
           progress={`${completedUrls}/${totalUrls || 1}`}
         />
