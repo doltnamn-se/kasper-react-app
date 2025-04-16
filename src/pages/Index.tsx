@@ -6,6 +6,7 @@ import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -81,7 +82,12 @@ const Index = () => {
                         />
                         <span className="text-sm font-medium">{site.name}</span>
                       </TableCell>
-                      <TableCell className="text-sm font-medium py-4">{site.status}</TableCell>
+                      <TableCell className="text-sm font-medium py-4 flex items-center gap-2">
+                        <div className="flex items-center">
+                          <Spinner color="#20f922" size={20} />
+                        </div>
+                        {site.status}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
