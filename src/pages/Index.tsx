@@ -62,8 +62,12 @@ const Index = () => {
               <Table>
                 <TableHeader>
                   <TableRow className="!hover:bg-transparent border-none">
-                    <TableHead>{language === 'sv' ? 'Sida' : 'Site'}</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
+                      {language === 'sv' ? 'Sida' : 'Site'}
+                    </TableHead>
+                    <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
+                      Status
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
