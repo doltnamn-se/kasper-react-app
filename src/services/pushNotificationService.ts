@@ -70,10 +70,7 @@ class PushNotificationService {
       console.log('Push notification registration successful');
     } catch (error) {
       console.error('Error registering for push notifications:', error);
-      toast({
-        title: 'Notification Error',
-        description: 'Failed to register for push notifications',
-      });
+      toast('Notification Error: Failed to register for push notifications');
       this.initialized = false;
       this.registerPromise = null;
     }
@@ -146,10 +143,7 @@ class PushNotificationService {
       
       // Show in-app toast for foreground notifications
       if (notification.title && notification.body) {
-        toast({
-          title: notification.title,
-          description: notification.body,
-        });
+        toast(`${notification.title}: ${notification.body}`);
       }
     });
 
@@ -162,10 +156,7 @@ class PushNotificationService {
     // Error handling
     PushNotifications.addListener('registrationError', (error) => {
       console.error('Error on push notification registration:', error);
-      toast({
-        title: 'Registration Error',
-        description: 'Failed to register for push notifications',
-      });
+      toast('Registration Error: Failed to register for push notifications');
     });
   }
 
