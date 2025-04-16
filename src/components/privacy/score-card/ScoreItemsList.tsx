@@ -30,11 +30,10 @@ export const ScoreItemsList = ({
   return (
     <div className="space-y-2">
       <ScoreItem
-        icon={UserSearch}
-        title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
-        score={scores.monitoring}
-        progress="1/1"
-        showBadge={true}
+        icon={MousePointerClick}
+        title={language === 'sv' ? 'Guider' : 'Guides'}
+        score={scores.guides}
+        progress={`${completedGuidesCount}/${totalGuidesCount}`}
         language={language}
       />
       <ScoreItem
@@ -45,19 +44,20 @@ export const ScoreItemsList = ({
         language={language}
       />
       <ScoreItem
+        icon={UserSearch}
+        title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
+        score={scores.monitoring}
+        progress="1/1"
+        showBadge={true}
+        language={language}
+      />
+      <ScoreItem
         icon={MapPinHouse}
         title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
         score={scores.address}
         progress={hasAddress ? "1/1" : "0/1"}
         showBadge={true}
         isAddress={true}
-        language={language}
-      />
-      <ScoreItem
-        icon={MousePointerClick}
-        title={language === 'sv' ? 'Guider' : 'Guides'}
-        score={scores.guides}
-        progress={`${completedGuidesCount}/${totalGuidesCount}`}
         language={language}
       />
     </div>
