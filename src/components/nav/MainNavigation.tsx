@@ -1,9 +1,10 @@
+
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { DeindexingProgress } from "./DeindexingProgress";
-import { ProfileSection } from "./profile/ProfileSection";
-import { NavigationLinks } from "./navigation/NavigationLinks";
 import { useAdminCheck } from "./hooks/useAdminCheck";
 import { useUnreadNotifications } from "./hooks/useUnreadNotifications";
+import { ProfileSection } from "./profile/ProfileSection";
+import { NavigationLinks } from "./navigation/NavigationLinks";
 
 interface MainNavigationProps {
   toggleMobileMenu: () => void;
