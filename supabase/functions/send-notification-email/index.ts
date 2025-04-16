@@ -20,6 +20,10 @@ const handler = async (req: Request) => {
     const { email, title, message } = await req.json();
     console.log("Preparing to send notification email:", { email, title, message });
     
+    if (!email || !title || !message) {
+      throw new Error("Missing required parameters: email, title, and message are required");
+    }
+    
     // Generate email HTML using our template
     const htmlContent = getNotificationEmailTemplate(title, message);
 

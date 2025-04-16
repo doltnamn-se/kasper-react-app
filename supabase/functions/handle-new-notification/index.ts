@@ -35,6 +35,73 @@ const handler = async (req: Request) => {
       throw new Error("Invalid notification payload");
     }
 
+    // Get user email and preferences
+    const { data: user, error: userError } = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("id", payload.user_id)
+      .single();
+
+    if (userError) {
+      throw new Error(`Error fetching user: ${userError.message}`);
+    }
+
+    if (!user?.email) {
+      throw new Error("User email not found");
+    }
+
+    console.log(`Found user email: ${user.email}`);
+
+    // Get notification preferences
+    const { data: preferences, error: prefError } = await supabase
+      .from("notification_preferences")
+      .select("*")
+      .eq("user_id", payload.user_id)
+      .single();
+
+    if (prefError) {
+      console.error(`Error fetching notification preferences: ${prefError.message}`);
+      // Continue with default preferences
+    }
+
+    // Determine if we should send email based on type and preferences
+    let shouldSendEmail = preferences?.email_notifications ?? true;
+    
+    if (payload.type === 'removal') {
+      shouldSendEmail = preferences?.email_deindexing ?? true;
+    } else if (payload.type === 'monitoring') {
+      shouldSendEmail = preferences?.email_monitoring ?? true;
+    } else if (payload.type === 'address_alert') {
+      shouldSendEmail = preferences?.email_address_alerts ?? true;
+    } else if (payload.type === 'news') {
+      shouldSendEmail = preferences?.email_news ?? true;
+    }
+
+    console.log(`Should send email for type ${payload.type}: ${shouldSendEmail}`);
+
+    // Send email notification if preferences allow
+    if (shouldSendEmail) {
+      console.log("Sending email notification");
+      const emailResponse = await fetch(
+        "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-notification-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${supabaseServiceRoleKey}`,
+          },
+          body: JSON.stringify({
+            email: user.email,
+            title: payload.title,
+            message: payload.message,
+          }),
+        }
+      );
+
+      const emailResult = await emailResponse.json();
+      console.log("Email notification response:", emailResult);
+    }
+
     // Get device tokens for the user
     const { data: tokens, error: tokenError } = await supabase
       .from("device_tokens")
@@ -47,49 +114,41 @@ const handler = async (req: Request) => {
 
     console.log(`Found ${tokens?.length || 0} device tokens for user ${payload.user_id}`);
 
-    // If there are no tokens, we don't need to send a push notification
-    if (!tokens || tokens.length === 0) {
-      console.log("No device tokens found, skipping push notification");
-      return new Response(
-        JSON.stringify({ message: "No device tokens found" }),
+    // If there are tokens, send push notification
+    if (tokens && tokens.length > 0) {
+      // Extract just the token strings
+      const deviceTokens = tokens.map(t => t.token);
+
+      // Call the send-push-notification function to deliver the notification
+      const pushResponse = await fetch(
+        "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-push-notification",
         {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-          status: 200,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${supabaseServiceRoleKey}`,
+          },
+          body: JSON.stringify({
+            tokens: deviceTokens,
+            title: payload.title,
+            body: payload.message,
+            data: {
+              notificationId: payload.id,
+              type: payload.type,
+            },
+          }),
         }
       );
+
+      const pushResult = await pushResponse.json();
+      console.log("Push notification response:", pushResult);
     }
-
-    // Extract just the token strings
-    const deviceTokens = tokens.map(t => t.token);
-
-    // Call the send-push-notification function to deliver the notification
-    const pushResponse = await fetch(
-      "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-push-notification",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${supabaseServiceRoleKey}`,
-        },
-        body: JSON.stringify({
-          tokens: deviceTokens,
-          title: payload.title,
-          body: payload.message,
-          data: {
-            notificationId: payload.id,
-            type: payload.type,
-          },
-        }),
-      }
-    );
-
-    const pushResult = await pushResponse.json();
-    console.log("Push notification response:", pushResult);
 
     return new Response(
       JSON.stringify({ 
         message: "Notification processed",
-        pushResult
+        emailSent: shouldSendEmail,
+        pushSent: tokens && tokens.length > 0
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

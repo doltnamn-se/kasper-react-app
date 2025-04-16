@@ -41,109 +41,80 @@ CREATE POLICY "Users can delete their own device tokens"
 -- Add the table to the publication for realtime updates
 ALTER PUBLICATION supabase_realtime ADD TABLE device_tokens;
 
--- Update the existing notification trigger function to call our edge function
-CREATE OR REPLACE FUNCTION handle_notification_email()
+-- Update notification trigger to use the handle-new-notification function directly
+CREATE OR REPLACE FUNCTION handle_notification_inserted()
 RETURNS TRIGGER AS $$
 DECLARE
-    user_email TEXT;
-    email_notifications BOOLEAN;
     response JSONB;
     service_role_key TEXT;
 BEGIN
-    -- Initial trigger logging
-    RAISE LOG 'handle_notification_email START - Notification details: ID=%, Type=%, User ID=%', 
-        NEW.id, NEW.type, NEW.user_id;
-    
-    -- Get and log service role key
+    -- Get the service role key
     service_role_key := current_setting('supabase.service_role.key', true);
     
-    -- Get user email and preferences
-    SELECT 
-        u.email,
-        np.email_notifications
-    INTO 
-        user_email,
-        email_notifications
-    FROM auth.users u
-    JOIN notification_preferences np ON np.user_id = u.id
-    WHERE u.id = NEW.user_id;
-
-    RAISE LOG 'User data retrieved - Email: %, Notifications enabled: %',
-        user_email,
-        email_notifications;
-
-    -- Check if email notifications are enabled
-    IF email_notifications THEN
-        RAISE LOG 'Email notifications enabled - Attempting to send email';
-        
-        SELECT net.http_post(
-            url := 'https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-notification-email',
-            headers := jsonb_build_object(
-                'Content-Type', 'application/json',
-                'Authorization', 'Bearer ' || service_role_key
-            ),
-            body := jsonb_build_object(
-                'email', user_email,
-                'title', NEW.title,
-                'message', NEW.message,
-                'type', NEW.type
-            )
-        ) INTO response;
-        
-        RAISE LOG 'Email response received: %', response;
-    ELSE
-        RAISE LOG 'Email notifications disabled for user: %', user_email;
-    END IF;
+    -- Log the notification details
+    RAISE LOG 'New notification inserted: ID=%, Type=%, User ID=%', 
+        NEW.id, NEW.type, NEW.user_id;
     
-    -- Always send push notification regardless of email preferences
-    RAISE LOG 'Attempting to send push notification';
+    -- Call the handle-new-notification edge function
+    SELECT net.http_post(
+        url := 'https://upfapfohwnkiugvebujh.supabase.co/functions/v1/handle-new-notification',
+        headers := jsonb_build_object(
+            'Content-Type', 'application/json',
+            'Authorization', 'Bearer ' || service_role_key
+        ),
+        body := jsonb_build_object(
+            'id', NEW.id,
+            'user_id', NEW.user_id,
+            'title', NEW.title,
+            'message', NEW.message,
+            'type', NEW.type
+        )
+    ) INTO response;
     
-    -- Check if user has device tokens first
-    DECLARE
-        token_count INTEGER;
-    BEGIN
-        SELECT COUNT(*) INTO token_count 
-        FROM device_tokens 
-        WHERE user_id = NEW.user_id;
-        
-        RAISE LOG 'Found % device tokens for user %', token_count, NEW.user_id;
-        
-        IF token_count > 0 THEN
-            SELECT net.http_post(
-                url := 'https://upfapfohwnkiugvebujh.supabase.co/functions/v1/handle-new-notification',
-                headers := jsonb_build_object(
-                    'Content-Type', 'application/json',
-                    'Authorization', 'Bearer ' || service_role_key
-                ),
-                body := jsonb_build_object(
-                    'id', NEW.id,
-                    'user_id', NEW.user_id,
-                    'title', NEW.title,
-                    'message', NEW.message,
-                    'type', NEW.type
-                )
-            ) INTO response;
-            
-            RAISE LOG 'Push notification response received: %', response;
-        ELSE
-            RAISE LOG 'No device tokens found for user %, skipping push notification', NEW.user_id;
-        END IF;
-    END;
+    RAISE LOG 'handle-new-notification response: %', response;
     
-    RAISE LOG 'handle_notification_email END - Completed successfully';
     RETURN NEW;
 EXCEPTION WHEN OTHERS THEN
-    RAISE LOG 'Error in handle_notification_email: %', SQLERRM;
+    RAISE LOG 'Error in handle_notification_inserted: %', SQLERRM;
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SET search_path = public;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
--- Ensure the notifications trigger is created
+-- Recreate the trigger for new notifications
 DROP TRIGGER IF EXISTS on_notification_created ON notifications;
 CREATE TRIGGER on_notification_created
     AFTER INSERT ON notifications
     FOR EACH ROW
-    EXECUTE FUNCTION handle_notification_email();
+    EXECUTE FUNCTION handle_notification_inserted();
 
 -- Make sure the device_tokens table has replica identity full for real-time updates
 ALTER TABLE device_tokens REPLICA IDENTITY FULL;
+
+-- Update notification_preferences to make sure it includes all the necessary columns
+DO $$
+BEGIN
+    -- Check if columns exist and add them if they don't
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                  WHERE table_name = 'notification_preferences' 
+                  AND column_name = 'email_monitoring') THEN
+        ALTER TABLE notification_preferences ADD COLUMN email_monitoring BOOLEAN DEFAULT true;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                  WHERE table_name = 'notification_preferences' 
+                  AND column_name = 'email_deindexing') THEN
+        ALTER TABLE notification_preferences ADD COLUMN email_deindexing BOOLEAN DEFAULT true;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                  WHERE table_name = 'notification_preferences' 
+                  AND column_name = 'email_address_alerts') THEN
+        ALTER TABLE notification_preferences ADD COLUMN email_address_alerts BOOLEAN DEFAULT true;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                  WHERE table_name = 'notification_preferences' 
+                  AND column_name = 'email_news') THEN
+        ALTER TABLE notification_preferences ADD COLUMN email_news BOOLEAN DEFAULT true;
+    END IF;
+END $$;
