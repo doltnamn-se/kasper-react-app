@@ -5,7 +5,6 @@ import { URLStatusStep } from "@/types/url-management";
 import { getStatusText } from "./utils/statusUtils";
 import { useUrlNotifications } from "./hooks/useUrlNotifications";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -15,7 +14,7 @@ interface URLStatusSelectProps {
 }
 
 export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChange }: URLStatusSelectProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { createStatusNotification, showErrorToast } = useUrlNotifications();
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
@@ -38,25 +37,56 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       onStatusChange(newStatus);
       
       console.log('URLStatusSelect - Creating notification');
+      
+      // Create the notification in the database
+      const { data: notificationData, error: notificationError } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: customerId,
+          title: "Länkstatus uppdaterad",
+          message: "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer.",
+          type: 'removal',
+          read: false
+        })
+        .select()
+        .single();
 
-      // Prepare notification content
-      const title = language === 'sv' ? "Länkstatus uppdaterad" : "Link status updated";
-      const message = language === 'sv' 
-        ? "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer."
-        : "The process has progressed for one or more of your links. Log in to your account to see more.";
+      if (notificationError) {
+        console.error('Error creating notification:', notificationError);
+        throw notificationError;
+      }
+
+      console.log('Notification created successfully:', notificationData);
+
+      // Get user email from profiles table
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('id', customerId)
+        .single();
+
+      if (profileError) {
+        console.error('Error getting user email:', profileError);
+        throw profileError;
+      }
+
+      if (profileData?.email) {
+        // Send email notification
+        const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+          body: {
+            email: profileData.email,
+            title: "Länkstatus uppdaterad",
+            message: "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer.",
+            type: 'removal'
+          }
+        });
+
+        if (emailError) {
+          console.error('Error sending email notification:', emailError);
+          // Don't throw here - we still created the in-app notification successfully
+        }
+      }
       
-      // Call the notification utility from the hook
-      await createStatusNotification(
-        customerId,
-        title,
-        message
-      );
-      
-      console.log('URLStatusSelect - Notification created successfully');
-      
-      toast.success(t('success'), {
-        description: t('success.update.status')
-      });
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();

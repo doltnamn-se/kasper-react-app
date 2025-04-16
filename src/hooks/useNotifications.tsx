@@ -19,62 +19,22 @@ export type Notification = {
 export const useNotifications = () => {
   const { toast } = useToast();
   const [unreadCount, setUnreadCount] = useState(0);
-  const [hasAttemptedRegistration, setHasAttemptedRegistration] = useState(false);
-
-  // Get current user session
-  const { data: session } = useQuery({
-    queryKey: ['auth-session'],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      return session;
-    },
-  });
 
   // Initialize push notifications on mobile devices
   useEffect(() => {
-    if (isNativePlatform() && session?.user && !hasAttemptedRegistration) {
-      console.log('useNotifications - Initializing push notifications for user:', session.user.id);
-      setHasAttemptedRegistration(true);
-      
+    if (isNativePlatform()) {
       pushNotificationService.register().catch(err => {
         console.error("Error registering for push notifications:", err);
       });
-      
-      // Check if device token is registered
-      const checkDeviceToken = async () => {
-        try {
-          console.log('Checking if device token is registered for user:', session.user.id);
-          const { data, error } = await supabase
-            .from('device_tokens')
-            .select('*')
-            .eq('user_id', session.user.id);
-            
-          if (error) {
-            console.error('Error checking device tokens:', error);
-          } else {
-            console.log('Device tokens found:', data?.length || 0, data);
-            
-            // If no tokens found, try registering again
-            if (!data || data.length === 0) {
-              console.log('No device tokens found, attempting registration again');
-              await pushNotificationService.register();
-            }
-          }
-        } catch (err) {
-          console.error('Error in checkDeviceToken:', err);
-        }
-      };
-      
-      // Check after a delay to ensure auth is ready
-      setTimeout(checkDeviceToken, 5000);
     }
-  }, [session, hasAttemptedRegistration]);
+  }, []);
 
   // Fetch notifications
   const { data: notifications = [], refetch } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
       console.log('Fetching notifications...');
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         console.log('No active session, returning empty notifications array');
         return [];
@@ -94,7 +54,6 @@ export const useNotifications = () => {
       console.log('Notifications fetched:', data);
       return data as Notification[];
     },
-    enabled: !!session?.user,
   });
 
   // Update unread count whenever notifications change
@@ -108,12 +67,7 @@ export const useNotifications = () => {
 
   // Subscribe to real-time notifications
   useEffect(() => {
-    if (!session?.user) {
-      console.log('No active session, skipping real-time subscription');
-      return;
-    }
-    
-    console.log('Setting up notifications subscription for user:', session.user.id);
+    console.log('Setting up notifications subscription...');
     const channel = supabase
       .channel('notifications-channel')
       .on(
@@ -122,7 +76,6 @@ export const useNotifications = () => {
           event: 'INSERT',
           schema: 'public',
           table: 'notifications',
-          filter: `user_id=eq.${session.user.id}`,
         },
         (payload) => {
           console.log('New notification received:', payload);
@@ -133,15 +86,13 @@ export const useNotifications = () => {
           refetch();
         }
       )
-      .subscribe((status) => {
-        console.log('Notification subscription status:', status);
-      });
+      .subscribe();
 
     return () => {
       console.log('Cleaning up notifications subscription...');
       supabase.removeChannel(channel);
     };
-  }, [toast, refetch, session]);
+  }, [toast, refetch]);
 
   // Mark notification as read
   const markAsRead = async (notificationId: string) => {
@@ -173,16 +124,10 @@ export const useNotifications = () => {
 
   // Mark all notifications as read
   const markAllAsRead = async () => {
-    if (!session?.user) {
-      console.log('No active session, cannot mark all as read');
-      return false;
-    }
-    
-    console.log('Marking all notifications as read for user:', session.user.id);
+    console.log('Marking all notifications as read');
     const { error } = await supabase
       .from('notifications')
       .update({ read: true })
-      .eq('user_id', session.user.id)
       .eq('read', false);
 
     if (error) {

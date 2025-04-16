@@ -3,14 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as SonnerToaster } from "sonner";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/contexts/SidebarContext";
 import { useEffect } from "react";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
-import { supabase } from "@/integrations/supabase/client";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -33,14 +31,7 @@ import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
@@ -50,51 +41,12 @@ function App() {
 
   // Initialize push notifications for native platforms
   useEffect(() => {
-    const initNotifications = async () => {
-      if (isNativePlatform()) {
-        console.log('App: Initializing push notifications...');
-        
-        // First check if user is authenticated
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user) {
-          console.log('App: No active session, skipping push notification initialization');
-          return;
-        }
-        
-        console.log('App: User authenticated, registering push notifications for user:', session.user.id);
-        
-        try {
-          await pushNotificationService.register();
-          console.log('App: Push notification registration completed successfully');
-        } catch (err) {
-          console.error('App: Error initializing push notifications:', err);
-        }
-      }
-    };
-    
-    // Initialize immediately, then retry after a short delay to ensure auth is ready
-    initNotifications();
-    
-    // Try again after a delay to ensure auth session is loaded
-    const timer = setTimeout(() => {
-      initNotifications();
-    }, 3000);
-    
-    // Also set up listener for auth state changes to register/unregister push notifications
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('App: Auth state changed:', event);
-      if (event === 'SIGNED_IN' && isNativePlatform()) {
-        console.log('App: User signed in, registering push notifications');
-        setTimeout(() => {
-          pushNotificationService.register();
-        }, 1000); // Short delay to ensure auth is fully initialized
-      }
-    });
-    
-    return () => {
-      clearTimeout(timer);
-      subscription.unsubscribe();
-    };
+    if (isNativePlatform()) {
+      console.log('Initializing push notifications...');
+      pushNotificationService.register().catch(err => {
+        console.error('Error initializing push notifications:', err);
+      });
+    }
   }, []);
 
   return (
@@ -127,7 +79,6 @@ function App() {
                 <Route path="/password-test" element={<PasswordTest />} />
               </Routes>
               <Toaster />
-              <SonnerToaster position="top-right" />
             </Router>
           </SidebarProvider>
         </LanguageProvider>
