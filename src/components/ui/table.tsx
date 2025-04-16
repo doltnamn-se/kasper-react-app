@@ -1,4 +1,6 @@
+
 import * as React from "react"
+
 import { cn } from "@/lib/utils"
 
 const Table = React.forwardRef<
@@ -69,7 +71,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-10 px-2 text-left align-middle font-medium text-xs text-black dark:text-white border-r border-[#dfdfdf] dark:border-[#2e2e2e] last:border-r-0 [&:has([role=checkbox])]:pr-0",
+      "h-10 px-2 text-left align-middle font-medium text-xs text-black dark:text-white border-none last:border-r-0 [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
