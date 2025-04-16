@@ -32,12 +32,12 @@ const Index = () => {
   const firstNameOnly = displayName.split(' ')[0];
 
   const sites = [
-    { name: 'Mrkoll', status: 'OK', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
-    { name: 'Ratsit', status: 'OK', icon: '/lovable-uploads/logo-icon-ratsit.webp' },
-    { name: 'Hitta', status: 'OK', icon: '/lovable-uploads/logo-icon-hittase.webp' },
-    { name: 'Merinfo', status: 'OK', icon: '/lovable-uploads/logo-icon-merinfo.webp' },
-    { name: 'Eniro', status: 'OK', icon: '/lovable-uploads/logo-icon-eniro.webp' },
-    { name: 'Birthday', status: 'OK', icon: '/lovable-uploads/logo-icon-birthdayse.webp' },
+    { name: 'Mrkoll', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
+    { name: 'Ratsit', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-ratsit.webp' },
+    { name: 'Hitta', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-hittase.webp' },
+    { name: 'Merinfo', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-merinfo.webp' },
+    { name: 'Eniro', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-eniro.webp' },
+    { name: 'Birthday', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-birthdayse.webp' },
   ];
 
   return (
