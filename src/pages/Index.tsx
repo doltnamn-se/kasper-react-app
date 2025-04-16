@@ -1,7 +1,6 @@
-
+import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useEffect, useState } from "react";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Spinner } from "@/components/ui/spinner";
@@ -103,7 +102,7 @@ const Index = () => {
           <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold flex items-center">
-                {language === 'sv' ? 'Bevakning' : 'Monitoring'}
+                {language === 'sv' ? 'Status' : 'Status'}
               </h2>
               <div className="flex items-center gap-3">
                 <HourlyCountdown />
