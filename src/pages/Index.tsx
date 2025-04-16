@@ -83,7 +83,7 @@ const Index = () => {
                         <span className="text-sm font-medium">{site.name}</span>
                       </TableCell>
                       <TableCell className="text-sm font-medium py-4 flex items-center gap-2">
-                        <div className="flex items-center mr-2">
+                        <div className="flex items-center">
                           <Spinner color="#20f922" size={20} />
                         </div>
                         {site.status}
