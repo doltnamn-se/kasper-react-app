@@ -41,7 +41,7 @@ CREATE POLICY "Users can delete their own device tokens"
 -- Add the table to the publication for realtime updates
 ALTER PUBLICATION supabase_realtime ADD TABLE device_tokens;
 
--- Update notification trigger to use the handle-new-notification function directly
+-- Recreate the handle_notification_inserted function to properly handle notifications
 CREATE OR REPLACE FUNCTION handle_notification_inserted()
 RETURNS TRIGGER AS $$
 DECLARE

@@ -59,7 +59,7 @@ const handler = async (req: Request) => {
       .eq("user_id", payload.user_id)
       .single();
 
-    if (prefError) {
+    if (prefError && prefError.code !== 'PGRST116') {
       console.error(`Error fetching notification preferences: ${prefError.message}`);
       // Continue with default preferences
     }
@@ -81,7 +81,7 @@ const handler = async (req: Request) => {
 
     // Send email notification if preferences allow
     if (shouldSendEmail) {
-      console.log("Sending email notification");
+      console.log("Sending email notification to:", user.email);
       const emailResponse = await fetch(
         "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-notification-email",
         {
@@ -98,6 +98,12 @@ const handler = async (req: Request) => {
         }
       );
 
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text();
+        console.error("Email notification error:", errorText);
+        throw new Error(`Email notification failed: ${errorText}`);
+      }
+
       const emailResult = await emailResponse.json();
       console.log("Email notification response:", emailResult);
     }
@@ -109,39 +115,48 @@ const handler = async (req: Request) => {
       .eq("user_id", payload.user_id);
 
     if (tokenError) {
-      throw new Error(`Error fetching device tokens: ${tokenError.message}`);
-    }
+      console.error(`Error fetching device tokens: ${tokenError.message}`);
+    } else {
+      console.log(`Found ${tokens?.length || 0} device tokens for user ${payload.user_id}`);
 
-    console.log(`Found ${tokens?.length || 0} device tokens for user ${payload.user_id}`);
+      // If there are tokens, send push notification
+      if (tokens && tokens.length > 0) {
+        // Extract just the token strings
+        const deviceTokens = tokens.map(t => t.token);
 
-    // If there are tokens, send push notification
-    if (tokens && tokens.length > 0) {
-      // Extract just the token strings
-      const deviceTokens = tokens.map(t => t.token);
+        try {
+          // Call the send-push-notification function to deliver the notification
+          const pushResponse = await fetch(
+            "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-push-notification",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${supabaseServiceRoleKey}`,
+              },
+              body: JSON.stringify({
+                tokens: deviceTokens,
+                title: payload.title,
+                body: payload.message,
+                data: {
+                  notificationId: payload.id,
+                  type: payload.type,
+                },
+              }),
+            }
+          );
 
-      // Call the send-push-notification function to deliver the notification
-      const pushResponse = await fetch(
-        "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-push-notification",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${supabaseServiceRoleKey}`,
-          },
-          body: JSON.stringify({
-            tokens: deviceTokens,
-            title: payload.title,
-            body: payload.message,
-            data: {
-              notificationId: payload.id,
-              type: payload.type,
-            },
-          }),
+          if (!pushResponse.ok) {
+            const errorText = await pushResponse.text();
+            console.error("Push notification error:", errorText);
+          } else {
+            const pushResult = await pushResponse.json();
+            console.log("Push notification response:", pushResult);
+          }
+        } catch (pushError) {
+          console.error("Error sending push notification:", pushError);
         }
-      );
-
-      const pushResult = await pushResponse.json();
-      console.log("Push notification response:", pushResult);
+      }
     }
 
     return new Response(

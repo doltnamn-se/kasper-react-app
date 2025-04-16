@@ -70,7 +70,7 @@ class PushNotificationService {
       console.log('Push notification registration successful');
     } catch (error) {
       console.error('Error registering for push notifications:', error);
-      toast('Notification Error: Failed to register for push notifications');
+      toast.error('Notification Error: Failed to register for push notifications');
       this.initialized = false;
       this.registerPromise = null;
     }
@@ -156,7 +156,7 @@ class PushNotificationService {
     // Error handling
     PushNotifications.addListener('registrationError', (error) => {
       console.error('Error on push notification registration:', error);
-      toast('Registration Error: Failed to register for push notifications');
+      toast.error('Registration Error: Failed to register for push notifications');
     });
   }
 

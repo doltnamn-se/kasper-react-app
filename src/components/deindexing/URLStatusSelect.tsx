@@ -5,6 +5,7 @@ import { URLStatusStep } from "@/types/url-management";
 import { getStatusText } from "./utils/statusUtils";
 import { useUrlNotifications } from "./hooks/useUrlNotifications";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -14,7 +15,7 @@ interface URLStatusSelectProps {
 }
 
 export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChange }: URLStatusSelectProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { createStatusNotification, showErrorToast } = useUrlNotifications();
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
@@ -37,15 +38,25 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       onStatusChange(newStatus);
       
       console.log('URLStatusSelect - Creating notification');
+
+      // Prepare notification content
+      const title = language === 'sv' ? "Länkstatus uppdaterad" : "Link status updated";
+      const message = language === 'sv' 
+        ? "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer."
+        : "The process has progressed for one or more of your links. Log in to your account to see more.";
       
       // Call the notification utility from the hook
       await createStatusNotification(
         customerId,
-        "Länkstatus uppdaterad",
-        "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer."
+        title,
+        message
       );
       
       console.log('URLStatusSelect - Notification created successfully');
+      
+      toast.success(t('success'), {
+        description: t('success.update.status')
+      });
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
       showErrorToast();

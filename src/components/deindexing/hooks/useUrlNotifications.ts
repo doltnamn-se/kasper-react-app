@@ -54,23 +54,10 @@ export const useUrlNotifications = () => {
       }
       
       console.log('useUrlNotifications - Notification created successfully:', data);
-      
-      // Verify if the user has any device tokens for push notifications
-      const { data: tokens, error: tokensError } = await supabase
-        .from('device_tokens')
-        .select('id')
-        .eq('user_id', customerId);
-        
-      if (tokensError) {
-        console.error('useUrlNotifications - Error checking device tokens:', tokensError);
-      } else {
-        console.log('useUrlNotifications - Device tokens found:', tokens?.length || 0);
-      }
-      
       return data;
     } catch (error) {
       console.error('useUrlNotifications - Error in createStatusNotification:', error);
-      toast(t('error'), {
+      toast.error(t('error'), {
         description: t('error.update.status'),
       });
       throw error;
@@ -78,7 +65,7 @@ export const useUrlNotifications = () => {
   };
 
   const showErrorToast = () => {
-    toast(t('error'), {
+    toast.error(t('error'), {
       description: t('error.unexpected'),
     });
   };
