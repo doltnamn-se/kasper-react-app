@@ -1,15 +1,20 @@
+
 import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuTrigger 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
@@ -52,6 +57,7 @@ export const UserProfileMenu = () => {
     }
   };
 
+  const initials = getUserInitials(userProfile);
   const displayName = getDisplayName();
 
   return (
@@ -61,6 +67,16 @@ export const UserProfileMenu = () => {
           variant="ghost" 
           className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group p-2"
         >
+          <Avatar className="h-8 w-8 shrink-0">
+            <AvatarImage 
+              src={userProfile?.avatar_url} 
+              alt={displayName}
+              className="aspect-square object-cover"
+            />
+            <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
           {!isMobile && (
             <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
               {displayName}
