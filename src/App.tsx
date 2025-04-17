@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
+import { splashScreenService } from "@/services/splashScreenService";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -47,6 +48,18 @@ function App() {
         console.error('Error initializing push notifications:', err);
       });
     }
+  }, []);
+
+  // Hide the splash screen after the app is loaded
+  useEffect(() => {
+    const hideSplashScreen = async () => {
+      // Allow a little time for the app to render
+      setTimeout(async () => {
+        await splashScreenService.hide();
+      }, 1000); // Hide after 1 second, adjust as needed
+    };
+    
+    hideSplashScreen();
   }, []);
 
   return (
