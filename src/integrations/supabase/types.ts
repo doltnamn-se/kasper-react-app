@@ -131,6 +131,41 @@ export type Database = {
           },
         ]
       }
+      customer_site_statuses: {
+        Row: {
+          customer_id: string
+          id: string
+          site_name: string
+          status: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          customer_id: string
+          id?: string
+          site_name: string
+          status?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          customer_id?: string
+          id?: string
+          site_name?: string
+          status?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_site_statuses_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           checklist_completed: boolean | null

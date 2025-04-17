@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -11,6 +12,7 @@ import { AccountInfo } from "./components/AccountInfo";
 import { UrlSubmissions } from "./components/UrlSubmissions";
 import { ChecklistProgress } from "./components/ChecklistProgress";
 import { AdminActions } from "./components/AdminActions";
+import { SiteStatusManager } from "./components/SiteStatusManager";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useCustomerActions } from "./hooks/useCustomerActions";
@@ -150,6 +152,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
                   <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
                   
+                  {/* Add the new SiteStatusManager component */}
+                  <SiteStatusManager customerId={customer.id} />
+
                   <ChecklistProgress 
                     progressPercentage={customer.checklist_completed ? 100 : 0}
                     completedSteps={customer.checklist_completed ? 1 : 0}

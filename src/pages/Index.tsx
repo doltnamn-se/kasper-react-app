@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -6,11 +7,14 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const { language } = useLanguage();
   const { userProfile } = useUserProfile();
   const [lastChecked, setLastChecked] = useState(new Date());
+  const [siteStatuses, setSiteStatuses] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -28,17 +32,67 @@ const Index = () => {
     setLastChecked(lastInterval);
   }, [language]);
 
+  useEffect(() => {
+    const fetchSiteStatuses = async () => {
+      if (!userProfile?.id) return;
+      
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('customer_site_statuses')
+          .select('*')
+          .eq('customer_id', userProfile.id);
+
+        if (error) {
+          console.error('Error fetching site statuses:', error);
+          return;
+        }
+
+        // Create a map of site statuses
+        const statusMap = new Map();
+        data?.forEach(status => {
+          statusMap.set(status.site_name, status.status);
+        });
+
+        setSiteStatuses(statusMap);
+      } catch (error) {
+        console.error('Error in fetchSiteStatuses:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSiteStatuses();
+  }, [userProfile?.id]);
+
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
 
   const sites = [
-    { name: 'Mrkoll', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
-    { name: 'Ratsit', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-ratsit.webp' },
-    { name: 'Hitta', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-hittase.webp' },
-    { name: 'Merinfo', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-merinfo.webp' },
-    { name: 'Eniro', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-eniro.webp' },
-    { name: 'Birthday', status: language === 'sv' ? 'Granskar' : 'Reviewing', icon: '/lovable-uploads/logo-icon-birthdayse.webp' },
+    { name: 'Mrkoll', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
+    { name: 'Ratsit', icon: '/lovable-uploads/logo-icon-ratsit.webp' },
+    { name: 'Hitta', icon: '/lovable-uploads/logo-icon-hittase.webp' },
+    { name: 'Merinfo', icon: '/lovable-uploads/logo-icon-merinfo.webp' },
+    { name: 'Eniro', icon: '/lovable-uploads/logo-icon-eniro.webp' },
+    { name: 'Birthday', icon: '/lovable-uploads/logo-icon-birthdayse.webp' },
   ];
+
+  // Get translated status text
+  const getStatusText = (siteName: string) => {
+    const status = siteStatuses.get(siteName) || 'Granskar';
+    
+    switch (status) {
+      case 'Adress dold':
+        return language === 'sv' ? 'Adress dold' : 'Address hidden';
+      case 'Dold':
+        return language === 'sv' ? 'Dold' : 'Hidden';
+      case 'Borttagen':
+        return language === 'sv' ? 'Borttagen' : 'Removed';
+      case 'Granskar':
+      default:
+        return language === 'sv' ? 'Granskar' : 'Reviewing';
+    }
+  };
 
   return (
     <MainLayout>
@@ -89,7 +143,7 @@ const Index = () => {
                       <TableCell className="py-4">
                         <div className="flex items-center gap-2">
                           <Spinner color="#20f922" size={20} />
-                          <span className="text-sm">{site.status}</span>
+                          <span className="text-sm">{getStatusText(site.name)}</span>
                         </div>
                       </TableCell>
                     </TableRow>
