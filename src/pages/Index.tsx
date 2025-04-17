@@ -9,11 +9,16 @@ import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { supabase } from "@/integrations/supabase/client";
 
+interface SiteStatus {
+  site_name: string;
+  status: string;
+}
+
 const Index = () => {
   const { language } = useLanguage();
   const { userProfile } = useUserProfile();
   const [lastChecked, setLastChecked] = useState(new Date());
-  const [siteStatuses, setSiteStatuses] = useState<any[]>([]);
+  const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -48,13 +53,9 @@ const Index = () => {
           return;
         }
 
-        // Create a map of site statuses
-        const statusMap = new Map();
-        data?.forEach(status => {
-          statusMap.set(status.site_name, status.status);
-        });
-
-        setSiteStatuses(statusMap);
+        // Convert the data to our SiteStatus array format
+        const statusArray = data || [];
+        setSiteStatuses(statusArray);
       } catch (error) {
         console.error('Error in fetchSiteStatuses:', error);
       } finally {
@@ -79,7 +80,8 @@ const Index = () => {
 
   // Get translated status text
   const getStatusText = (siteName: string) => {
-    const status = siteStatuses.get(siteName) || 'Granskar';
+    const siteStatus = siteStatuses.find(status => status.site_name === siteName);
+    const status = siteStatus ? siteStatus.status : 'Granskar';
     
     switch (status) {
       case 'Adress dold':
