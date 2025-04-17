@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -106,14 +105,13 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                     <span className="text-xs md:text-sm">{getStatusText(site.name)}</span>
                   </div>
                   {status === 'Synlig' && (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="text-xs"
+                    <Badge 
+                      variant="static" 
+                      className="bg-[#ea384c] text-[#000000] text-xs cursor-pointer hover:bg-[#c02c3c]"
                       onClick={() => onRemoveSite(site.name)}
                     >
                       {language === 'sv' ? 'Ta bort' : 'Remove'}
-                    </Button>
+                    </Badge>
                   )}
                 </div>
               </TableCell>
