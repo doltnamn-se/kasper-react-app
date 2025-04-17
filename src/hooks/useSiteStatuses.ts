@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SiteStatus {
@@ -11,7 +11,7 @@ export const useSiteStatuses = (userId?: string) => {
   const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchSiteStatuses = async () => {
+  const fetchSiteStatuses = useCallback(async () => {
     if (!userId) {
       console.log('No user ID provided to useSiteStatuses');
       setIsLoading(false);
@@ -39,7 +39,7 @@ export const useSiteStatuses = (userId?: string) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     // Initial fetch
@@ -58,7 +58,25 @@ export const useSiteStatuses = (userId?: string) => {
         },
         (payload) => {
           console.log('Real-time update received:', payload);
-          fetchSiteStatuses(); // Refetch all statuses when any change occurs
+          // Instead of refetching, update the state directly for better performance
+          if (payload.eventType === 'INSERT') {
+            setSiteStatuses(prev => [...prev, payload.new as SiteStatus]);
+          } else if (payload.eventType === 'UPDATE') {
+            setSiteStatuses(prev => 
+              prev.map(status => 
+                status.site_name === (payload.new as SiteStatus).site_name 
+                  ? payload.new as SiteStatus 
+                  : status
+              )
+            );
+          } else if (payload.eventType === 'DELETE') {
+            setSiteStatuses(prev => 
+              prev.filter(status => status.site_name !== (payload.old as SiteStatus).site_name)
+            );
+          } else {
+            // For other cases or as a fallback, refetch all statuses
+            fetchSiteStatuses();
+          }
         }
       )
       .subscribe((status) => {
@@ -71,7 +89,7 @@ export const useSiteStatuses = (userId?: string) => {
       console.log('Cleaning up subscription');
       supabase.removeChannel(statusChannel);
     };
-  }, [userId]);
+  }, [userId, fetchSiteStatuses]);
 
-  return { siteStatuses, isLoading };
+  return { siteStatuses, isLoading, refetch: fetchSiteStatuses };
 };

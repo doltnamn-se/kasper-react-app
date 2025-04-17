@@ -5,8 +5,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { StatusTable } from "./StatusTable";
 import { useGuideService } from "@/services/guideService";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
 import { useUrlNotifications } from "@/components/deindexing/hooks/useUrlNotifications";
+import { useToast } from "@/hooks/use-toast";
 
 interface SiteStatus {
   site_name: string;
@@ -25,6 +25,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
   const { language, t } = useLanguage();
   const { getGuideForSite } = useGuideService();
   const { createStatusNotification } = useUrlNotifications();
+  const { toast } = useToast();
 
   const sites = [
     { name: 'Mrkoll', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
@@ -42,7 +43,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         console.error('No authenticated user found');
-        return;
+        return false;
       }
 
       const customerId = session.user.id;
@@ -58,7 +59,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       if (queryError) {
         console.error('Error querying existing status:', queryError);
-        throw queryError;
+        return false;
       }
 
       console.log('Existing status entry:', existingStatus);
@@ -70,7 +71,10 @@ export const StatusCard: React.FC<StatusCardProps> = ({
         console.log(`Updating existing status entry for ${siteName} to ${newStatus}`);
         result = await supabase
           .from('customer_site_statuses')
-          .update({ status: newStatus })
+          .update({ 
+            status: newStatus,
+            updated_at: new Date().toISOString()
+          })
           .eq('id', existingStatus.id)
           .select();
       } else {
@@ -88,7 +92,16 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       if (result.error) {
         console.error('Error updating site status:', result.error);
-        throw result.error;
+        // Check if it's a permissions error
+        if (result.error.code === '42501' || result.error.message.includes('permission')) {
+          console.error('Permission denied when updating site status. This might be due to RLS policies.');
+          toast({
+            title: t('error.update.status'),
+            description: 'Permission denied. You may not have rights to update status.',
+            variant: 'destructive',
+          });
+        }
+        return false;
       }
 
       console.log('Status update successful:', result.data);
@@ -103,7 +116,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
         
         if (adminsError) {
           console.error('Error fetching admins:', adminsError);
-          return;
+          return true; // Continue even if admin notification fails
         }
         
         console.log('Found admins:', admins);
@@ -127,7 +140,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
               message: notificationMessage,
               type: 'status_change',
               read: false
-            });
+            })
+            .select();
             
           if (notifError) {
             console.error('Failed to create admin notification:', notifError);
@@ -135,12 +149,16 @@ export const StatusCard: React.FC<StatusCardProps> = ({
             console.log('Admin notification created successfully:', notification);
           }
         }
+        
+        return true;
       } catch (notifError) {
         console.error('Failed to create admin notification:', notifError);
+        return true; // Continue even if admin notification fails
       }
       
     } catch (error) {
       console.error('Error updating site status:', error);
+      return false;
     }
   };
 
@@ -154,7 +172,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     }
     
     // Update the status from "Synlig" to "Granskar"
-    await updateSiteStatus(siteName, 'Granskar');
+    const success = await updateSiteStatus(siteName, 'Granskar');
+    console.log(`Status update for ${siteName} success:`, success);
   };
 
   return (
