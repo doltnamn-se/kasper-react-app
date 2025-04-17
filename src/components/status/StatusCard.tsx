@@ -41,7 +41,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       if (!session?.user) {
         toast({ 
           title: t('error'),
-          description: t('error.unauthorized'),
+          description: t('error.generic'),
           variant: "destructive"
         });
         return;

@@ -1,3 +1,4 @@
+
 import { ErrorTranslations } from '../types/errors';
 
 export const errors: ErrorTranslations = {
@@ -28,4 +29,5 @@ export const errors: ErrorTranslations = {
   'error.invalidFileType': 'Ogiltig filtyp. Vänligen ladda upp en bild.',
   'error.fileTooLarge': 'Filen är för stor. Maximal storlek är 5MB.',
   'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
+  'error.update.status': 'Det gick inte att uppdatera sidans status.',
 };

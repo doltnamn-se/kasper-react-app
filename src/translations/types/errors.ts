@@ -1,3 +1,4 @@
+
 export interface ErrorTranslations {
   'error': string;
   'error.title': string;
@@ -26,4 +27,5 @@ export interface ErrorTranslations {
   'error.invalidFileType': string;
   'error.fileTooLarge': string;
   'error.avatarUpload': string;
+  'error.update.status': string;
 }
