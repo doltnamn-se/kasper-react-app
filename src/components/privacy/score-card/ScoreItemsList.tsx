@@ -31,9 +31,9 @@ export const ScoreItemsList = ({
     <div className="space-y-2">
       <ScoreItem
         icon={MousePointerClick}
-        title={language === 'sv' ? 'Guider' : 'Guides'}
+        title={language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
         score={scores.guides}
-        progress={`${completedGuidesCount}/${totalGuidesCount}`}
+        showProgress={false}
         language={language}
       />
       <ScoreItem
