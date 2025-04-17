@@ -2,6 +2,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 
+type BadgeVariant = 'green' | 'red' | 'yellow';
+
 export const useSiteStatusBadge = (sites: string[], userId?: string) => {
   const { siteStatuses } = useSiteStatuses(userId);
   const { language } = useLanguage();
@@ -10,7 +12,7 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
     if (!siteStatuses || siteStatuses.length === 0) {
       return {
         text: language === 'sv' ? 'Granskar' : 'Reviewing',
-        variant: 'yellow'
+        variant: 'yellow' as BadgeVariant
       };
     }
 
@@ -26,23 +28,23 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
         case 'Granskar':
           return {
             text: language === 'sv' ? 'Granskar' : 'Reviewing',
-            variant: 'yellow'
+            variant: 'yellow' as BadgeVariant
           };
         case 'Synlig':
           return {
             text: language === 'sv' ? 'Synlig' : 'Visible',
-            variant: 'red'
+            variant: 'red' as BadgeVariant
           };
         case 'Dold':
         case 'Adress dold':
           return {
             text: language === 'sv' ? 'Dold' : 'Hidden',
-            variant: 'green'
+            variant: 'green' as BadgeVariant
           };
         case 'Borttagen':
           return {
             text: language === 'sv' ? 'Borttagen' : 'Removed',
-            variant: 'green'
+            variant: 'green' as BadgeVariant
           };
       }
     }
@@ -50,7 +52,7 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
     // Mixed statuses
     return {
       text: language === 'sv' ? 'Pågående' : 'In progress',
-      variant: 'yellow'
+      variant: 'yellow' as BadgeVariant
     };
   };
 
