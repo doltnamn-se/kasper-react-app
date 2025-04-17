@@ -6,6 +6,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { Separator } from "@/components/ui/separator";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -71,25 +72,36 @@ const Index = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sites.map((site) => (
-                    <TableRow key={site.name} className="!hover:bg-transparent border-none py-4">
-                      <TableCell className="py-4">
-                        <div className="flex items-center gap-4">
-                          <img 
-                            src={site.icon} 
-                            alt={site.name} 
-                            className="w-8 h-8 object-contain" 
-                          />
-                          <span className="text-sm font-medium">{site.name}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="py-4">
-                        <div className="flex items-center gap-2">
-                          <Spinner color="#20f922" size={20} />
-                          <span className="text-sm">{site.status}</span>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                  {sites.map((site, index) => (
+                    <React.Fragment key={site.name}>
+                      <TableRow className="!hover:bg-transparent border-none py-4">
+                        <TableCell className="py-4">
+                          <div className="flex items-center gap-4">
+                            <img 
+                              src={site.icon} 
+                              alt={site.name} 
+                              className="w-8 h-8 object-contain" 
+                            />
+                            <span className="text-sm font-medium">{site.name}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-4">
+                          <div className="flex items-center gap-2">
+                            <Spinner color="#20f922" size={20} />
+                            <span className="text-sm">{site.status}</span>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                      {index < sites.length - 1 && (
+                        <tr>
+                          <td colSpan={2} className="p-0">
+                            <Separator 
+                              className="h-[1px] bg-[#e5e7eb] dark:bg-[#232325]" 
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))}
                 </TableBody>
               </Table>
