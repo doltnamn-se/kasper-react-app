@@ -90,6 +90,8 @@ const Index = () => {
         return language === 'sv' ? 'Dold' : 'Hidden';
       case 'Borttagen':
         return language === 'sv' ? 'Borttagen' : 'Removed';
+      case 'Synlig':
+        return language === 'sv' ? 'Synlig' : 'Visible';
       case 'Granskar':
       default:
         return language === 'sv' ? 'Granskar' : 'Reviewing';

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -34,6 +33,7 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
     { value: 'Adress dold', label: language === 'sv' ? 'Adress dold' : 'Address hidden' },
     { value: 'Dold', label: language === 'sv' ? 'Dold' : 'Hidden' },
     { value: 'Borttagen', label: language === 'sv' ? 'Borttagen' : 'Removed' },
+    { value: 'Synlig', label: language === 'sv' ? 'Synlig' : 'Visible' },
   ];
 
   useEffect(() => {
@@ -56,22 +56,20 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
         return;
       }
 
-      // Create a map of existing statuses
       const statusMap = new Map();
       data?.forEach(status => {
         statusMap.set(status.site_name, status);
       });
 
-      // Prepare the full status list, using defaults for missing entries
       const fullStatuses = sites.map(site => {
         const existingStatus = statusMap.get(site.name);
         if (existingStatus) {
           return existingStatus;
         } else {
           return {
-            id: '',  // Empty ID for new entries
+            id: '',
             site_name: site.name,
-            status: 'Granskar', // Default status
+            status: 'Granskar',
             customer_id: customerId
           };
         }
@@ -91,7 +89,6 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
       const existingStatus = siteStatuses.find(s => s.site_name === siteName);
       
       if (existingStatus?.id) {
-        // Update existing status
         const { error } = await supabase
           .from('customer_site_statuses')
           .update({ 
@@ -103,7 +100,6 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
 
         if (error) throw error;
       } else {
-        // Insert new status
         const { error } = await supabase
           .from('customer_site_statuses')
           .insert({ 
@@ -116,7 +112,6 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
         if (error) throw error;
       }
 
-      // Update local state
       setSiteStatuses(prev => 
         prev.map(s => 
           s.site_name === siteName 
@@ -127,7 +122,6 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
 
       toast.success('Site status updated successfully');
       
-      // Refresh data to get any new IDs
       fetchSiteStatuses();
     } catch (error) {
       console.error('Error updating site status:', error);
