@@ -22,8 +22,8 @@ export const UserBottomNav = () => {
           to="/" 
           className={`flex flex-col items-center justify-center ${
             isActive('/') 
-              ? 'text-black dark:text-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+              ? 'text-black dark:text-white font-medium' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
           <House className="h-5 w-5" />
@@ -34,8 +34,8 @@ export const UserBottomNav = () => {
           to="/monitoring" 
           className={`flex flex-col items-center justify-center ${
             isActive('/monitoring') 
-              ? 'text-black dark:text-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+              ? 'text-black dark:text-white font-medium' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
           <UserRoundSearch className="h-5 w-5" />
@@ -46,8 +46,8 @@ export const UserBottomNav = () => {
           to="/deindexing" 
           className={`flex flex-col items-center justify-center ${
             isActive('/deindexing') 
-              ? 'text-black dark:text-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+              ? 'text-black dark:text-white font-medium' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
           <EyeOff className="h-5 w-5" />
@@ -58,8 +58,8 @@ export const UserBottomNav = () => {
           to="/address-alerts" 
           className={`flex flex-col items-center justify-center ${
             isActive('/address-alerts') 
-              ? 'text-black dark:text-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+              ? 'text-black dark:text-white font-medium' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
           <MapPinHouse className="h-5 w-5" />
@@ -70,8 +70,8 @@ export const UserBottomNav = () => {
           to="/guides" 
           className={`flex flex-col items-center justify-center ${
             isActive('/guides') 
-              ? 'text-black dark:text-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+              ? 'text-black dark:text-white font-medium' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
           <MousePointerClick className="h-5 w-5" />
