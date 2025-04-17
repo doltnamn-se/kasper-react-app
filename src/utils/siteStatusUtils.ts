@@ -71,7 +71,7 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
           };
         case 'Adress dold':
           return {
-            text: language === 'sv' ? 'Dold' : 'Hidden',
+            text: language === 'sv' ? 'Adress dold' : 'Address hidden',
             variant: 'green' as BadgeVariant
           };
         default:
@@ -82,9 +82,18 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
       }
     }
 
-    // Case 2: Special case - when all sites are either 'Dold' or 'Borttagen'
-    if (hiddenCount === sites.length) {
-      console.log('All sites are hidden/removed');
+    // Case 4: All sites are active (Synlig)
+    if (activeCount === sites.length) {
+      console.log('All sites are active (Synlig)');
+      return {
+        text: language === 'sv' ? 'Synlig' : 'Visible',
+        variant: 'red' as BadgeVariant
+      };
+    }
+    
+    // Case 2: All sites are hidden/removed (any combination of hidden statuses)
+    if ((statuses.filter(s => s === 'Dold' || s === 'Borttagen' || s === 'Adress dold').length) === sites.length) {
+      console.log('All sites are hidden/removed (combination)');
       return {
         text: language === 'sv' ? 'Dold' : 'Hidden',
         variant: 'green' as BadgeVariant
@@ -92,28 +101,9 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
     }
     
     // Case 3: Special case - when 5 are "Dold"/"Borttagen" and 1 is "Adress dold"
-    if (hiddenCount === sites.length && 
-        (statuses.filter(s => s === 'Dold' || s === 'Borttagen').length === sites.length - 1) && 
-        addressDoldCount === 1) {
-      console.log('5 Dold/Borttagen and 1 Adress dold');
-      return {
-        text: language === 'sv' ? 'Dold' : 'Hidden',
-        variant: 'green' as BadgeVariant
-      };
-    }
-    
-    // Case 4: All sites are active (Synlig)
-    if (activeCount === sites.length) {
-      console.log('All sites are active');
-      return {
-        text: language === 'sv' ? 'Synlig' : 'Visible',
-        variant: 'red' as BadgeVariant
-      };
-    }
-    
-    // Case 5: Mix of hidden types (Dold, Borttagen) with no other types
-    if (hiddenCount === sites.length) {
-      console.log('All sites are one of the hidden types');
+    if ((statuses.filter(s => s === 'Dold' || s === 'Borttagen').length + addressDoldCount) === sites.length && 
+        addressDoldCount > 0) {
+      console.log('Mix of Dold/Borttagen with Adress dold');
       return {
         text: language === 'sv' ? 'Dold' : 'Hidden',
         variant: 'green' as BadgeVariant
