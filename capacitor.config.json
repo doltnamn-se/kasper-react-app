@@ -26,8 +26,8 @@
     "buildOptions": {
       "keystorePath": "digitaltskydd.keystore",
       "keystoreAlias": "digitaltskydd",
-      "keystorePassword": "YOUR_KEYSTORE_PASSWORD",
-      "keystoreAliasPassword": "YOUR_KEY_ALIAS_PASSWORD"
+      "keystorePassword": "YOUR_ACTUAL_KEYSTORE_PASSWORD",
+      "keystoreAliasPassword": "YOUR_ACTUAL_KEY_ALIAS_PASSWORD"
     }
   }
 }
