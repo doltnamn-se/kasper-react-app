@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ScoreItem } from './ScoreItem';
 import { MousePointerClick, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
