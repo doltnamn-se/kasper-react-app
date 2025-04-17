@@ -526,6 +526,10 @@ export type Database = {
       }
     }
     Functions: {
+      can_update_site_status: {
+        Args: { user_id: string; customer_id: string }
+        Returns: boolean
+      }
       is_super_admin: {
         Args: Record<PropertyKey, never> | { user_id: string }
         Returns: boolean

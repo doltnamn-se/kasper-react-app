@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -135,17 +136,12 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       console.log('Status update successful:', result.data);
       
-      // Optionally notify admins
+      // Notify admins about the status change
       try {
-        const { data: admins, error: adminsError } = await supabase
+        const { data: admins } = await supabase
           .from('profiles')
           .select('id')
           .eq('role', 'super_admin');
-        
-        if (adminsError) {
-          console.error('Error fetching admins:', adminsError);
-          return true;
-        }
         
         if (admins && admins.length > 0) {
           const adminId = admins[0].id;
@@ -153,8 +149,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
             ? 'Status uppdaterad av användare' 
             : 'Status updated by user';
           const notificationMessage = language === 'sv' 
-            ? `${siteName} status har ändrats till "Granskar" av en användare` 
-            : `${siteName} status has been changed to "Reviewing" by a user`;
+            ? `${siteName} status har ändrats till "${newStatus}" av en användare` 
+            : `${siteName} status has been changed to "${newStatus}" by a user`;
           
           await supabase
             .from('notifications')
@@ -166,9 +162,17 @@ export const StatusCard: React.FC<StatusCardProps> = ({
             });
         }
         
+        toast({
+          title: language === 'sv' ? 'Status uppdaterad' : 'Status updated',
+          description: language === 'sv' 
+            ? `${siteName} status har ändrats till "${newStatus}"` 
+            : `${siteName} status has been changed to "${newStatus}"`,
+        });
+        
         return true;
       } catch (notifError) {
         console.error('Failed to create admin notification:', notifError);
+        // Still return true since the status update was successful
         return true;
       }
       
@@ -188,18 +192,28 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     
     // Get the guide URL and open it in a new tab
     const guide = getGuideForSite(siteName.toLowerCase());
-    if (guide?.steps[0]?.text) {
-      // Update status BEFORE opening the window
-      const success = await updateSiteStatus(siteName, 'Granskar');
-      console.log(`Status update for ${siteName} success:`, success);
-      
-      if (success) {
-        window.open(guide.steps[0].text, '_blank');
-      } else {
-        console.error('Failed to update status before opening guide');
-      }
-    } else {
+    if (!guide?.steps[0]?.text) {
       console.warn('No guide found for site:', siteName);
+      return;
+    }
+    
+    // Update status BEFORE opening the window
+    const success = await updateSiteStatus(siteName, 'Granskar');
+    console.log(`Status update for ${siteName} success:`, success);
+    
+    if (success) {
+      // Only open the guide if the status update was successful
+      window.open(guide.steps[0].text, '_blank');
+      
+      // Show confirmation toast
+      toast({
+        title: language === 'sv' ? 'Guide öppnad' : 'Guide opened',
+        description: language === 'sv' 
+          ? `${siteName} guiden har öppnats i en ny flik` 
+          : `${siteName} guide has been opened in a new tab`,
+      });
+    } else {
+      console.error('Failed to update status before opening guide');
     }
   };
 
