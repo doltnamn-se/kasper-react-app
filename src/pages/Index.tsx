@@ -107,8 +107,9 @@ const Index = () => {
       case 'Synlig':
         return "#ea384c"; // Red for visible
       case 'Granskar':
-        return "#FEF7CD"; // Yellow for reviewing
+        return "#8E9196"; // Grey for reviewing
       case 'Adress dold':
+        return "#FFC107"; // Amber yellow for address hidden
       case 'Dold':
       case 'Borttagen':
       default:
