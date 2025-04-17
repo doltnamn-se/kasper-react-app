@@ -37,16 +37,11 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
   const updateSiteStatus = async (siteName: string, newStatus: string) => {
     try {
-      console.log(`Updating status for ${siteName} to ${newStatus}`);
+      console.log(`Starting updateSiteStatus for ${siteName} to ${newStatus}`);
       
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         console.error('No authenticated user found');
-        toast({ 
-          title: t('error'),
-          description: t('error.generic'),
-          variant: "destructive"
-        });
         return;
       }
 
@@ -68,33 +63,35 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       console.log('Existing status entry:', existingStatus);
 
-      let updateResult;
+      let result;
       
       if (existingStatus) {
         // Update existing status
         console.log(`Updating existing status entry for ${siteName} to ${newStatus}`);
-        updateResult = await supabase
+        result = await supabase
           .from('customer_site_statuses')
           .update({ status: newStatus })
-          .eq('id', existingStatus.id);
+          .eq('id', existingStatus.id)
+          .select();
       } else {
         // Create new status
         console.log(`Creating new status entry for ${siteName} with status ${newStatus}`);
-        updateResult = await supabase
+        result = await supabase
           .from('customer_site_statuses')
           .insert({
             customer_id: customerId,
             site_name: siteName,
             status: newStatus
-          });
+          })
+          .select();
       }
 
-      if (updateResult.error) {
-        console.error('Error updating site status:', updateResult.error);
-        throw updateResult.error;
+      if (result.error) {
+        console.error('Error updating site status:', result.error);
+        throw result.error;
       }
 
-      console.log('Status update successful:', updateResult);
+      console.log('Status update successful:', result.data);
 
       // Create notification for admin
       try {
@@ -144,11 +141,6 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       
     } catch (error) {
       console.error('Error updating site status:', error);
-      toast({
-        title: t('error'),
-        description: t('error.update.status'),
-        variant: "destructive"
-      });
     }
   };
 
@@ -163,9 +155,6 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     
     // Update the status from "Synlig" to "Granskar"
     await updateSiteStatus(siteName, 'Granskar');
-    
-    // Remove the toast notification as requested
-    // No toast here
   };
 
   return (
