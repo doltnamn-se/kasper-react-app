@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -87,7 +86,7 @@ const Index = () => {
                       <TableCell className="py-4">
                         <div className="flex items-center gap-2">
                           <Spinner color="#20f922" size={20} />
-                          <span>{site.status}</span>
+                          <span className="text-sm">{site.status}</span>
                         </div>
                       </TableCell>
                     </TableRow>
