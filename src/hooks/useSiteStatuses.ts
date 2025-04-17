@@ -37,6 +37,27 @@ export const useSiteStatuses = (userId?: string) => {
     };
 
     fetchSiteStatuses();
+
+    // Set up real-time subscription for status changes
+    const statusChannel = supabase
+      .channel('site-status-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'customer_site_statuses',
+          filter: `customer_id=eq.${userId}`
+        },
+        () => {
+          fetchSiteStatuses();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(statusChannel);
+    };
   }, [userId]);
 
   return { siteStatuses, isLoading };
