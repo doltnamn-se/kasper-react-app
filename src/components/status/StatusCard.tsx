@@ -129,13 +129,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     // Update the status from "Synlig" to "Granskar"
     await updateSiteStatus(siteName, 'Granskar');
     
-    // Show success toast
-    toast({
-      title: language === 'sv' ? 'Status uppdaterad' : 'Status updated',
-      description: language === 'sv' ? 
-        `${siteName} status har ändrats till "Granskar"` : 
-        `${siteName} status has been changed to "Reviewing"`
-    });
+    // Remove the toast notification as requested
+    // No toast here
   };
 
   return (

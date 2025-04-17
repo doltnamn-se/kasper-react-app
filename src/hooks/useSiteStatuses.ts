@@ -27,6 +27,7 @@ export const useSiteStatuses = (userId?: string) => {
           return;
         }
 
+        console.log('Fetched site statuses:', data);
         const statusArray = data || [];
         setSiteStatuses(statusArray);
       } catch (error) {
@@ -40,7 +41,7 @@ export const useSiteStatuses = (userId?: string) => {
 
     // Set up real-time subscription for status changes
     const statusChannel = supabase
-      .channel('site-status-changes')
+      .channel('customer-site-statuses')
       .on(
         'postgres_changes',
         {
@@ -49,7 +50,8 @@ export const useSiteStatuses = (userId?: string) => {
           table: 'customer_site_statuses',
           filter: `customer_id=eq.${userId}`
         },
-        () => {
+        (payload) => {
+          console.log('Real-time update received:', payload);
           fetchSiteStatuses();
         }
       )
