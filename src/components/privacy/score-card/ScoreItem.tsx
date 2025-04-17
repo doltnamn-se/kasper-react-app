@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -123,34 +124,36 @@ export const ScoreItem = ({
               }
             </Badge>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
-              {Array.from({ length: segments }).map((_, i) => (
-                <path
-                  key={`bg-${i}`}
-                  d={getSegmentPath(i, 0).path}
-                  stroke="#e8e8e5"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  className="dark:stroke-[#2f2e31]"
-                />
-              ))}
-              {Array.from({ length: segments }).map((_, i) => {
-                const segment = getSegmentPath(i, score);
-                if (!segment.visible) return null;
-                return (
+            <div className="flex items-center gap-1">
+              <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
+                {Array.from({ length: segments }).map((_, i) => (
                   <path
-                    key={`progress-${i}`}
-                    d={segment.path}
-                    stroke={segment.color}
+                    key={`bg-${i}`}
+                    d={getSegmentPath(i, 0).path}
+                    stroke="#e8e8e5"
                     strokeWidth="2"
                     strokeLinecap="round"
+                    className="dark:stroke-[#2f2e31]"
                   />
-                );
-              })}
-            </svg>
-            <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
-              {score}%
-            </span>
+                ))}
+                {Array.from({ length: segments }).map((_, i) => {
+                  const segment = getSegmentPath(i, score);
+                  if (!segment.visible) return null;
+                  return (
+                    <path
+                      key={`progress-${i}`}
+                      d={segment.path}
+                      stroke={segment.color}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  );
+                })}
+              </svg>
+              <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
+                {score}%
+              </span>
+            </div>
           )}
         </div>
       </div>
