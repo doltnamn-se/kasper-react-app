@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -63,12 +62,12 @@ export const ScoreItem = ({
 
   const getLinksBadgeStyle = () => {
     if (!incomingUrls || incomingUrls.length === 0) {
-      return "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]";
+      return "text-[#097c4f] dark:text-[#85e0ba] bg-[#F2FCE2] border-[#16b674] dark:bg-[#3fcf8e1a] dark:border-[#006239]";
     }
     const allRemoved = incomingUrls.every(url => url.status === 'removal_approved');
     return allRemoved
       ? "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
-      : "text-[#ffb224] dark:text-[#ffe7af] bg-[#fec84b1a] border-[#fec84b] dark:border-[#8c6107]";
+      : "text-[#8C6107] dark:text-[#ffe7af] bg-[#FFF4CC] border-[#FEC84B] dark:bg-[#fec84b1a] dark:border-[#8c6107]";
   };
 
   const [current, total] = progress?.split('/') || [];
