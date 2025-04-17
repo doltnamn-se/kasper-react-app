@@ -108,7 +108,7 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                   {status === 'Synlig' && (
                     <Badge 
                       variant="static" 
-                      className="bg-[#ea384c] text-white dark:text-[#1c1c1e] text-xs cursor-pointer hover:bg-[#c02c3c]"
+                      className="bg-[#ea384c] text-white dark:text-[#1c1c1e] text-xs cursor-pointer hover:bg-[#c02c3c] py-[0.2rem]"
                       onClick={() => onRemoveSite(site.name)}
                     >
                       {language === 'sv' ? 'Ta bort' : 'Remove'}
