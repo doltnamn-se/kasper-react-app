@@ -34,6 +34,7 @@ export const ScoreItemsList = ({
         title={language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
         score={scores.guides}
         showProgress={false}
+        showBadge={true}
         language={language}
       />
       <ScoreItem
