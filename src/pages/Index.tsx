@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -8,6 +7,9 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { useGuideService } from "@/services/guideService";
 
 interface SiteStatus {
   site_name: string;
@@ -20,6 +22,7 @@ const Index = () => {
   const [lastChecked, setLastChecked] = useState(new Date());
   const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { getGuideForSite } = useGuideService();
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -53,7 +56,6 @@ const Index = () => {
           return;
         }
 
-        // Convert the data to our SiteStatus array format
         const statusArray = data || [];
         setSiteStatuses(statusArray);
       } catch (error) {
@@ -78,7 +80,6 @@ const Index = () => {
     { name: 'Birthday', icon: '/lovable-uploads/logo-icon-birthdayse.webp' },
   ];
 
-  // Get translated status text
   const getStatusText = (siteName: string) => {
     const siteStatus = siteStatuses.find(status => status.site_name === siteName);
     const status = siteStatus ? siteStatus.status : 'Granskar';
@@ -98,7 +99,6 @@ const Index = () => {
     }
   };
 
-  // Get spinner color based on status
   const getSpinnerColor = (siteName: string) => {
     const siteStatus = siteStatuses.find(status => status.site_name === siteName);
     const status = siteStatus ? siteStatus.status : 'Granskar';
@@ -114,6 +114,13 @@ const Index = () => {
       case 'Borttagen':
       default:
         return "#20f922"; // Keep green for all other statuses
+    }
+  };
+
+  const handleRemoveSite = (siteName: string) => {
+    const guide = getGuideForSite(siteName.toLowerCase());
+    if (guide?.steps[0]?.text) {
+      window.open(guide.steps[0].text, '_blank');
     }
   };
 
@@ -151,31 +158,49 @@ const Index = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sites.map((site) => (
-                    <TableRow key={site.name} className="!hover:bg-transparent border-none py-2 md:py-4">
-                      <TableCell className="py-2 md:py-4">
-                        <div className="flex items-center gap-2 md:gap-4">
-                          <img 
-                            src={site.icon} 
-                            alt={site.name} 
-                            className="w-6 h-6 md:w-8 md:h-8 object-contain" 
-                          />
-                          <span className="text-xs md:text-sm font-medium">{site.name}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="py-2 md:py-4">
-                        <div className="flex items-center gap-1 md:gap-2">
-                          <Spinner 
-                            color={getSpinnerColor(site.name)} 
-                            size={16} 
-                            centerSize={5}  
-                            className="md:size-[20px]"
-                          />
-                          <span className="text-xs md:text-sm">{getStatusText(site.name)}</span>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {sites.map((site) => {
+                    const siteStatus = siteStatuses.find(status => status.site_name === site.name);
+                    const status = siteStatus ? siteStatus.status : 'Granskar';
+                    
+                    return (
+                      <TableRow key={site.name} className="!hover:bg-transparent border-none py-2 md:py-4">
+                        <TableCell className="py-2 md:py-4">
+                          <div className="flex items-center gap-2 md:gap-4">
+                            <img 
+                              src={site.icon} 
+                              alt={site.name} 
+                              className="w-6 h-6 md:w-8 md:h-8 object-contain" 
+                            />
+                            <span className="text-xs md:text-sm font-medium">{site.name}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-2 md:py-4">
+                          <div className="flex items-center justify-between gap-1 md:gap-2">
+                            <div className="flex items-center gap-1 md:gap-2">
+                              <Spinner 
+                                color={getSpinnerColor(site.name)} 
+                                size={16} 
+                                centerSize={5}  
+                                className="md:size-[20px]"
+                              />
+                              <span className="text-xs md:text-sm">{getStatusText(site.name)}</span>
+                            </div>
+                            {status === 'Synlig' && (
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="text-xs flex items-center gap-1"
+                                onClick={() => handleRemoveSite(site.name)}
+                              >
+                                {language === 'sv' ? 'Ta bort' : 'Remove'}
+                                <ArrowRight size={14} />
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>
