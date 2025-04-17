@@ -98,6 +98,24 @@ const Index = () => {
     }
   };
 
+  // Get spinner color based on status
+  const getSpinnerColor = (siteName: string) => {
+    const siteStatus = siteStatuses.find(status => status.site_name === siteName);
+    const status = siteStatus ? siteStatus.status : 'Granskar';
+    
+    switch (status) {
+      case 'Synlig':
+        return "#ea384c"; // Red for visible
+      case 'Granskar':
+        return "#FEF7CD"; // Yellow for reviewing
+      case 'Adress dold':
+      case 'Dold':
+      case 'Borttagen':
+      default:
+        return "#20f922"; // Keep green for all other statuses
+    }
+  };
+
   return (
     <MainLayout>
       <div className="space-y-6 pb-20 md:pb-0">
@@ -146,7 +164,7 @@ const Index = () => {
                       </TableCell>
                       <TableCell className="py-4">
                         <div className="flex items-center gap-2">
-                          <Spinner color="#20f922" size={20} />
+                          <Spinner color={getSpinnerColor(site.name)} size={20} />
                           <span className="text-sm">{getStatusText(site.name)}</span>
                         </div>
                       </TableCell>
