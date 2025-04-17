@@ -12,6 +12,8 @@ interface ScoreItemProps {
   showBadge?: boolean;
   isAddress?: boolean;
   language: string;
+  incomingUrls?: { status: string }[];
+  isLinks?: boolean;
 }
 
 export const ScoreItem = ({ 
@@ -22,7 +24,9 @@ export const ScoreItem = ({
   showProgress = true,
   showBadge,
   isAddress,
-  language
+  language,
+  incomingUrls,
+  isLinks
 }: ScoreItemProps) => {
   const segments = 10;
   const radius = 6;
@@ -42,6 +46,29 @@ export const ScoreItem = ({
       visible: index <= Math.floor((progress / 100) * segments),
       color: progress <= 25 ? '#e64028' : '#16B674'
     };
+  };
+
+  const getLinksBadgeContent = () => {
+    if (!incomingUrls || incomingUrls.length === 0) {
+      return language === 'sv' ? 'Inga länkar' : 'No links';
+    }
+
+    const allRemoved = incomingUrls.every(url => url.status === 'removal_approved');
+    if (allRemoved) {
+      return language === 'sv' ? 'Länkar borttagna' : 'Links removed';
+    }
+
+    return language === 'sv' ? 'Borttagning pågår' : 'Removal in progress';
+  };
+
+  const getLinksBadgeStyle = () => {
+    if (!incomingUrls || incomingUrls.length === 0) {
+      return "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]";
+    }
+    const allRemoved = incomingUrls.every(url => url.status === 'removal_approved');
+    return allRemoved
+      ? "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
+      : "text-[#ffb224] dark:text-[#ffe7af] bg-[#fec84b1a] border-[#fec84b] dark:border-[#8c6107]";
   };
 
   const [current, total] = progress?.split('/') || [];
@@ -67,14 +94,16 @@ export const ScoreItem = ({
               variant="secondary" 
               className={cn(
                 "border",
+                isLinks ? getLinksBadgeStyle() :
                 (isAddress && score === 0) 
                   ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
                   : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
               )}
             >
-              {isAddress && score === 0 
-                ? language === 'sv' ? 'Inaktiv' : 'Inactive'
-                : language === 'sv' ? 'Aktiv' : 'Active'
+              {isLinks ? getLinksBadgeContent() :
+                isAddress && score === 0 
+                  ? language === 'sv' ? 'Inaktiv' : 'Inactive'
+                  : language === 'sv' ? 'Aktiv' : 'Active'
               }
             </Badge>
           ) : (

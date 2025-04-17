@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ScoreItem } from './ScoreItem';
 import { MousePointerClick, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
@@ -16,6 +15,7 @@ interface ScoreItemsListProps {
   completedGuidesCount: number;
   totalGuidesCount: number;
   hasAddress: boolean;
+  incomingUrls?: { status: string }[];
 }
 
 export const ScoreItemsList = ({
@@ -25,7 +25,8 @@ export const ScoreItemsList = ({
   totalUrls,
   completedGuidesCount,
   totalGuidesCount,
-  hasAddress
+  hasAddress,
+  incomingUrls
 }: ScoreItemsListProps) => {
   return (
     <div className="space-y-2">
@@ -43,6 +44,8 @@ export const ScoreItemsList = ({
         score={scores.urls}
         showProgress={false}
         showBadge={true}
+        isLinks={true}
+        incomingUrls={incomingUrls}
         language={language}
       />
       <ScoreItem

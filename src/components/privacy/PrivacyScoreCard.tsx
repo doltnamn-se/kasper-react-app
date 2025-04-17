@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -52,6 +51,7 @@ export const PrivacyScoreCard = () => {
         completedGuidesCount={completedGuidesCount}
         totalGuidesCount={allGuides.length}
         hasAddress={Boolean(addressData?.street_address)}
+        incomingUrls={incomingUrls}
       />
     </div>
   );
