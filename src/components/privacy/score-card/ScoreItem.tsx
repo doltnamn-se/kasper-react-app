@@ -62,7 +62,7 @@ export const ScoreItem = ({
 
   const getLinksBadgeStyle = () => {
     if (!incomingUrls || incomingUrls.length === 0) {
-      return "text-[#097c4f] dark:text-[#85e0ba] bg-[#F2FCE2] border-[#16b674] dark:bg-[#3fcf8e1a] dark:border-[#006239]";
+      return "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]";
     }
     const allRemoved = incomingUrls.every(url => url.status === 'removal_approved');
     return allRemoved
