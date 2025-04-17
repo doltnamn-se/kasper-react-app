@@ -189,11 +189,10 @@ const Index = () => {
                               <Button 
                                 variant="outline" 
                                 size="sm" 
-                                className="text-xs flex items-center gap-1"
+                                className="text-xs"
                                 onClick={() => handleRemoveSite(site.name)}
                               >
                                 {language === 'sv' ? 'Ta bort' : 'Remove'}
-                                <ArrowRight size={14} />
                               </Button>
                             )}
                           </div>
