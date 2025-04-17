@@ -165,7 +165,11 @@ const Index = () => {
                       </TableCell>
                       <TableCell className="py-4">
                         <div className="flex items-center gap-2">
-                          <Spinner color={getSpinnerColor(site.name)} size={20} />
+                          <Spinner 
+                            color={getSpinnerColor(site.name)} 
+                            size={20} 
+                            centerSize={5} // Larger center dot specifically for this status widget
+                          />
                           <span className="text-sm">{getStatusText(site.name)}</span>
                         </div>
                       </TableCell>
