@@ -23,31 +23,30 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
     );
 
     console.log('Current site statuses:', statuses);
-
-    // SIMPLIFIED RULE 1: If ALL are Synlig, return Synlig (red)
-    const allSynlig = statuses.every(status => status === 'Synlig');
-    if (allSynlig) {
-      console.log('Rule 1: All sites are Synlig');
+    
+    // 1. If ALL are Synlig, it says Synlig (red)
+    if (statuses.length > 0 && statuses.every(status => status === 'Synlig')) {
+      console.log('Rule 1 applied: All statuses are Synlig -> badge = Synlig (red)');
       return {
         text: language === 'sv' ? 'Synlig' : 'Visible',
         variant: 'red' as BadgeVariant
       };
     }
-
-    // SIMPLIFIED RULE 2: If ALL are Dold/Borttagen/Adress dold, return Dold (green)
-    const allHiddenTypes = ['Dold', 'Borttagen', 'Adress dold'];
-    const allHidden = statuses.every(status => allHiddenTypes.includes(status));
     
-    if (allHidden) {
-      console.log('Rule 2: All sites are hidden types (Dold, Borttagen, or Adress dold)');
+    // 2. If ALL are Dold, Borttagen or Adress dold or all of these mixed with each other, it says "Dold" (green)
+    const hiddenTypes = ['Dold', 'Borttagen', 'Adress dold'];
+    const onlyHiddenStatuses = statuses.length > 0 && statuses.every(status => hiddenTypes.includes(status));
+    
+    if (onlyHiddenStatuses) {
+      console.log('Rule 2 applied: All statuses are hidden types -> badge = Dold (green)');
       return {
         text: language === 'sv' ? 'Dold' : 'Hidden',
         variant: 'green' as BadgeVariant
       };
     }
-
-    // SIMPLIFIED RULE 3: For any other combination, return Pågående (yellow)
-    console.log('Rule 3: Mixed statuses - defaulting to Pågående');
+    
+    // 3. All other ways it says "Pågående (yellow)
+    console.log('Rule 3 applied: Mixed statuses -> badge = Pågående (yellow)');
     return {
       text: language === 'sv' ? 'Pågående' : 'In progress',
       variant: 'yellow' as BadgeVariant
