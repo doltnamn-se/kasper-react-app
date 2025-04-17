@@ -134,7 +134,7 @@ const Index = () => {
               <h2 className="text-lg font-semibold">
                 {language === 'sv' ? 'Status' : 'Status'}
               </h2>
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-6 md:mb-10">
                 {language === 'sv' ? 'Din synlighet på upplysningssidor' : 'Your visibility on search sites'}
               </p>
             </div>
@@ -142,35 +142,36 @@ const Index = () => {
               <Table>
                 <TableHeader>
                   <TableRow className="!hover:bg-transparent border-none">
-                    <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
+                    <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6] text-xs md:text-sm font-medium">
                       {language === 'sv' ? 'Sida' : 'Site'}
                     </TableHead>
-                    <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
+                    <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6] text-xs md:text-sm font-medium">
                       Status
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sites.map((site) => (
-                    <TableRow key={site.name} className="!hover:bg-transparent border-none py-4">
-                      <TableCell className="py-4">
-                        <div className="flex items-center gap-4">
+                    <TableRow key={site.name} className="!hover:bg-transparent border-none py-2 md:py-4">
+                      <TableCell className="py-2 md:py-4">
+                        <div className="flex items-center gap-2 md:gap-4">
                           <img 
                             src={site.icon} 
                             alt={site.name} 
-                            className="w-8 h-8 object-contain" 
+                            className="w-6 h-6 md:w-8 md:h-8 object-contain" 
                           />
-                          <span className="text-sm font-medium">{site.name}</span>
+                          <span className="text-xs md:text-sm font-medium">{site.name}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="py-4">
-                        <div className="flex items-center gap-2">
+                      <TableCell className="py-2 md:py-4">
+                        <div className="flex items-center gap-1 md:gap-2">
                           <Spinner 
                             color={getSpinnerColor(site.name)} 
-                            size={20} 
-                            centerSize={5} // Larger center dot specifically for this status widget
+                            size={16} 
+                            centerSize={5}  
+                            className="md:size-[20px]"
                           />
-                          <span className="text-sm">{getStatusText(site.name)}</span>
+                          <span className="text-xs md:text-sm">{getStatusText(site.name)}</span>
                         </div>
                       </TableCell>
                     </TableRow>
