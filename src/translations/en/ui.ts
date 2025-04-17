@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -123,4 +124,6 @@ export const ui: UITranslations = {
   'timerange.4weeks': '4 Weeks',
   'timerange.1week': '1 Week',
   'version.log.title': 'Version Log',
+  'warning': 'Warning',
+  'warning.admin.notification': 'Could not notify admin about this change'
 };

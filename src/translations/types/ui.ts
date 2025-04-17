@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -121,4 +122,6 @@ export interface UITranslations {
   'timerange.4weeks': string;
   'timerange.1week': string;
   'version.log.title': string;
+  'warning': string;
+  'warning.admin.notification': string;
 }

@@ -30,4 +30,7 @@ export const errors: ErrorTranslations = {
   'error.fileTooLarge': 'File is too large. Maximum size is 5MB.',
   'error.avatarUpload': 'Failed to upload avatar.',
   'error.update.status': 'Failed to update site status.',
+  'error.authentication': 'Authentication failed. Please sign in again.',
+  'error.permission': 'You do not have permission to perform this action.',
+  'error.unexpected': 'An unexpected error occurred. Please try again later.'
 };

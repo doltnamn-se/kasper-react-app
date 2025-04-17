@@ -28,4 +28,7 @@ export interface ErrorTranslations {
   'error.fileTooLarge': string;
   'error.avatarUpload': string;
   'error.update.status': string;
+  'error.authentication': string;
+  'error.permission': string;
+  'error.unexpected': string;
 }

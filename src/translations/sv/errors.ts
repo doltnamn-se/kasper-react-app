@@ -30,4 +30,7 @@ export const errors: ErrorTranslations = {
   'error.fileTooLarge': 'Filen är för stor. Maximal storlek är 5MB.',
   'error.avatarUpload': 'Det gick inte att ladda upp avataren.',
   'error.update.status': 'Det gick inte att uppdatera sidans status.',
+  'error.authentication': 'Autentisering misslyckades. Vänligen logga in igen.',
+  'error.permission': 'Du har inte behörighet att utföra denna åtgärd.',
+  'error.unexpected': 'Ett oväntat fel inträffade. Vänligen försök igen senare.'
 };
