@@ -1,8 +1,10 @@
+
 import React from "react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { StatusActions } from "./StatusActions";
+import { getSpinnerColor, getStatusText } from "./SiteConfig";
 
 interface SiteStatus {
   site_name: string;
@@ -27,41 +29,9 @@ export const StatusTable: React.FC<StatusTableProps> = ({
 }) => {
   const { language } = useLanguage();
 
-  const getStatusText = (siteName: string) => {
+  const getSiteStatus = (siteName: string): string => {
     const siteStatus = siteStatuses.find(status => status.site_name === siteName);
-    const status = siteStatus ? siteStatus.status : 'Granskar';
-    
-    switch (status) {
-      case 'Adress dold':
-        return language === 'sv' ? 'Adress dold' : 'Address hidden';
-      case 'Dold':
-        return language === 'sv' ? 'Dold' : 'Hidden';
-      case 'Borttagen':
-        return language === 'sv' ? 'Borttagen' : 'Removed';
-      case 'Synlig':
-        return language === 'sv' ? 'Synlig' : 'Visible';
-      case 'Granskar':
-      default:
-        return language === 'sv' ? 'Granskar' : 'Reviewing';
-    }
-  };
-
-  const getSpinnerColor = (siteName: string) => {
-    const siteStatus = siteStatuses.find(status => status.site_name === siteName);
-    const status = siteStatus ? siteStatus.status : 'Granskar';
-    
-    switch (status) {
-      case 'Synlig':
-        return "#ea384c"; // Red for visible
-      case 'Granskar':
-        return "#8E9196"; // Grey for reviewing
-      case 'Adress dold':
-        return "#FFC107"; // Amber yellow for address hidden
-      case 'Dold':
-      case 'Borttagen':
-      default:
-        return "#20f922"; // Keep green for all other statuses
-    }
+    return siteStatus ? siteStatus.status : 'Granskar';
   };
 
   return (
@@ -78,8 +48,7 @@ export const StatusTable: React.FC<StatusTableProps> = ({
       </TableHeader>
       <TableBody>
         {sites.map((site) => {
-          const siteStatus = siteStatuses.find(status => status.site_name === site.name);
-          const status = siteStatus ? siteStatus.status : 'Granskar';
+          const status = getSiteStatus(site.name);
           
           return (
             <TableRow key={site.name} className="!hover:bg-transparent border-none py-2 md:py-4">
@@ -97,22 +66,18 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                 <div className="flex items-center justify-between gap-1 md:gap-2">
                   <div className="flex items-center gap-1 md:gap-2">
                     <Spinner 
-                      color={getSpinnerColor(site.name)} 
+                      color={getSpinnerColor(status)} 
                       size={16} 
                       centerSize={5}  
                       className="md:size-[20px]"
                     />
-                    <span className="text-xs md:text-sm">{getStatusText(site.name)}</span>
+                    <span className="text-xs md:text-sm">{getStatusText(status, language)}</span>
                   </div>
-                  {status === 'Synlig' && (
-                    <Badge 
-                      variant="static" 
-                      className="bg-[#ea384c] text-white dark:text-[#1c1c1e] text-xs cursor-pointer hover:bg-[#c02c3c] py-[0.2rem]"
-                      onClick={() => onRemoveSite(site.name)}
-                    >
-                      {language === 'sv' ? 'Ta bort' : 'Remove'}
-                    </Badge>
-                  )}
+                  <StatusActions 
+                    status={status}
+                    siteName={site.name}
+                    onRemoveSite={onRemoveSite}
+                  />
                 </div>
               </TableCell>
             </TableRow>
