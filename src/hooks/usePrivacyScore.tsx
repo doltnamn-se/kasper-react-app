@@ -44,7 +44,7 @@ export const usePrivacyScore = () => {
       guides: subscriptionPlan === '1_month' ? 0.4 : 0.25,
       address: subscriptionPlan === '1_month' ? 0.4 : 0.25,
       urls: subscriptionPlan === '1_month' ? 0 : 0.25,
-      monitoring: subscriptionPlan === '1_month' ? 0.2 : 0.25 // Updated to 0.25 for non-1_month plans
+      monitoring: subscriptionPlan === '1_month' ? 0.2 : 0.25
     };
 
     console.log('Using weights:', weights);
@@ -60,7 +60,7 @@ export const usePrivacyScore = () => {
     // Calculate individual scores with detailed logging
     const scores = {
       guides: allGuides.length > 0 ? 
-        ((checklistProgress?.completed_guides?.length || 0) / allGuides.length) : 1,
+        Math.min(1, ((checklistProgress?.completed_guides?.length || 0) / allGuides.length)) : 1,
       address: hasAddress ? 1 : 0,
       urls: calculateUrlScore(),
       monitoring: 1 // Always 100% as we're always monitoring
@@ -78,11 +78,11 @@ export const usePrivacyScore = () => {
     console.log('Final total score:', totalScore);
 
     return {
-      total: Math.round(totalScore * 100),
+      total: Math.round(Math.min(100, totalScore * 100)),
       individual: {
-        guides: Math.round(scores.guides * 100),
+        guides: Math.round(Math.min(100, scores.guides * 100)),
         address: Math.round(scores.address * 100),
-        urls: Math.round(scores.urls * 100),
+        urls: Math.round(Math.min(100, scores.urls * 100)),
         monitoring: Math.round(scores.monitoring * 100)
       }
     };
