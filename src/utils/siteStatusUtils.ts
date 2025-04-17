@@ -10,6 +10,7 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
 
   const getSiteStatusBadge = () => {
     if (!siteStatuses || siteStatuses.length === 0) {
+      console.log('No siteStatuses, returning Reviewing/yellow');
       return {
         text: language === 'sv' ? 'Granskar' : 'Reviewing',
         variant: 'yellow' as BadgeVariant
@@ -23,95 +24,30 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
 
     console.log('Current site statuses:', statuses);
 
-    // Group related statuses for easier checking
-    const hiddenStatuses = ['Dold', 'Borttagen', 'Adress dold'];
-    const activeStatuses = ['Synlig'];
-    const reviewingStatuses = ['Granskar'];
-
-    // Count occurrences of each status type
-    const hiddenCount = statuses.filter(s => hiddenStatuses.includes(s)).length;
-    const activeCount = statuses.filter(s => activeStatuses.includes(s)).length;
-    const reviewingCount = statuses.filter(s => reviewingStatuses.includes(s)).length;
-    const addressDoldCount = statuses.filter(s => s === 'Adress dold').length;
-    
-    console.log('Status counts:', {
-      hiddenCount,
-      activeCount,
-      reviewingCount,
-      addressDoldCount,
-      total: statuses.length
-    });
-
-    // Case 1: All statuses are the same single status
-    const uniqueStatuses = new Set(statuses);
-    if (uniqueStatuses.size === 1) {
-      const status = uniqueStatuses.values().next().value;
-      console.log('All statuses are the same:', status);
-      
-      switch (status) {
-        case 'Granskar':
-          return {
-            text: language === 'sv' ? 'Granskar' : 'Reviewing',
-            variant: 'yellow' as BadgeVariant
-          };
-        case 'Synlig':
-          return {
-            text: language === 'sv' ? 'Synlig' : 'Visible',
-            variant: 'red' as BadgeVariant
-          };
-        case 'Dold':
-          return {
-            text: language === 'sv' ? 'Dold' : 'Hidden',
-            variant: 'green' as BadgeVariant
-          };
-        case 'Borttagen':
-          return {
-            text: language === 'sv' ? 'Borttagen' : 'Removed',
-            variant: 'green' as BadgeVariant
-          };
-        case 'Adress dold':
-          return {
-            text: language === 'sv' ? 'Adress dold' : 'Address hidden',
-            variant: 'green' as BadgeVariant
-          };
-        default:
-          return {
-            text: language === 'sv' ? 'Pågående' : 'In progress',
-            variant: 'yellow' as BadgeVariant
-          };
-      }
-    }
-
-    // Case 4: All sites are active (Synlig)
-    if (activeCount === sites.length) {
-      console.log('All sites are active (Synlig)');
+    // SIMPLIFIED RULE 1: If ALL are Synlig, return Synlig (red)
+    const allSynlig = statuses.every(status => status === 'Synlig');
+    if (allSynlig) {
+      console.log('Rule 1: All sites are Synlig');
       return {
         text: language === 'sv' ? 'Synlig' : 'Visible',
         variant: 'red' as BadgeVariant
       };
     }
+
+    // SIMPLIFIED RULE 2: If ALL are Dold/Borttagen/Adress dold, return Dold (green)
+    const allHiddenTypes = ['Dold', 'Borttagen', 'Adress dold'];
+    const allHidden = statuses.every(status => allHiddenTypes.includes(status));
     
-    // Case 2: All sites are hidden/removed (any combination of hidden statuses)
-    if ((statuses.filter(s => s === 'Dold' || s === 'Borttagen' || s === 'Adress dold').length) === sites.length) {
-      console.log('All sites are hidden/removed (combination)');
-      return {
-        text: language === 'sv' ? 'Dold' : 'Hidden',
-        variant: 'green' as BadgeVariant
-      };
-    }
-    
-    // Case 3: Special case - when 5 are "Dold"/"Borttagen" and 1 is "Adress dold"
-    if ((statuses.filter(s => s === 'Dold' || s === 'Borttagen').length + addressDoldCount) === sites.length && 
-        addressDoldCount > 0) {
-      console.log('Mix of Dold/Borttagen with Adress dold');
+    if (allHidden) {
+      console.log('Rule 2: All sites are hidden types (Dold, Borttagen, or Adress dold)');
       return {
         text: language === 'sv' ? 'Dold' : 'Hidden',
         variant: 'green' as BadgeVariant
       };
     }
 
-    // Default case: Mixed statuses (any other combination)
-    console.log('Mixed statuses - using default');
+    // SIMPLIFIED RULE 3: For any other combination, return Pågående (yellow)
+    console.log('Rule 3: Mixed statuses - defaulting to Pågående');
     return {
       text: language === 'sv' ? 'Pågående' : 'In progress',
       variant: 'yellow' as BadgeVariant
