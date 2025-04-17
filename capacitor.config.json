@@ -24,7 +24,7 @@
   },
   "android": {
     "buildOptions": {
-      "keystorePath": "digitaltskydd.keystore",
+      "keystorePath": "android/app/digitaltskydd.keystore",
       "keystoreAlias": "digitaltskydd",
       "keystorePassword": "TheOnlyCompetitionIsYou247!?",
       "keystoreAliasPassword": "TheOnlyCompetitionIsYou247!?"
