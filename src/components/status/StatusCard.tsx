@@ -136,42 +136,53 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       console.log('Status update successful:', result.data);
       
-      // Notify admins about the status change
+      // Notify admins about the status change - improved implementation
       try {
-        const { data: admins } = await supabase
+        // First get super_admin users
+        const { data: admins, error: adminError } = await supabase
           .from('profiles')
           .select('id')
           .eq('role', 'super_admin');
         
-        if (admins && admins.length > 0) {
-          const adminId = admins[0].id;
-          const notificationTitle = language === 'sv' 
-            ? 'Status uppdaterad av användare' 
-            : 'Status updated by user';
-          const notificationMessage = language === 'sv' 
-            ? `${siteName} status har ändrats till "${newStatus}" av en användare` 
-            : `${siteName} status has been changed to "${newStatus}" by a user`;
-          
-          await supabase
-            .from('notifications')
-            .insert({
-              user_id: adminId,
-              title: notificationTitle,
-              message: notificationMessage,
-              type: 'status_change'
-            });
+        if (adminError) {
+          console.error('Error fetching admin users:', adminError);
         }
         
-        toast({
-          title: language === 'sv' ? 'Status uppdaterad' : 'Status updated',
-          description: language === 'sv' 
-            ? `${siteName} status har ändrats till "${newStatus}"` 
-            : `${siteName} status has been changed to "${newStatus}"`,
-        });
+        if (admins && admins.length > 0) {
+          console.log(`Found ${admins.length} admins to notify about status change`);
+          
+          // Create notification for each admin
+          for (const admin of admins) {
+            const notificationTitle = language === 'sv' 
+              ? 'Status uppdaterad av användare' 
+              : 'Status updated by user';
+              
+            const notificationMessage = language === 'sv' 
+              ? `${siteName} status har ändrats till "${newStatus}" av en användare` 
+              : `${siteName} status has been changed to "${newStatus}" by a user`;
+            
+            const { error: notifError } = await supabase
+              .from('notifications')
+              .insert({
+                user_id: admin.id,
+                title: notificationTitle,
+                message: notificationMessage,
+                type: 'status_change'
+              });
+              
+            if (notifError) {
+              console.error(`Failed to notify admin ${admin.id}:`, notifError);
+            } else {
+              console.log(`Successfully notified admin ${admin.id} about status change`);
+            }
+          }
+        } else {
+          console.log('No admins found to notify about status change');
+        }
         
         return true;
       } catch (notifError) {
-        console.error('Failed to create admin notification:', notifError);
+        console.error('Failed to create admin notifications:', notifError);
         // Still return true since the status update was successful
         return true;
       }
@@ -205,13 +216,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       // Only open the guide if the status update was successful
       window.open(guide.steps[0].text, '_blank');
       
-      // Show confirmation toast
-      toast({
-        title: language === 'sv' ? 'Guide öppnad' : 'Guide opened',
-        description: language === 'sv' 
-          ? `${siteName} guiden har öppnats i en ny flik` 
-          : `${siteName} guide has been opened in a new tab`,
-      });
+      // Removed the toast notification as requested
     } else {
       console.error('Failed to update status before opening guide');
     }
