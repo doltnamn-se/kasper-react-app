@@ -40,14 +40,14 @@ export const ScoreItemsList = ({
         icon={EyeOff}
         title={language === 'sv' ? 'Länkar' : 'Links'}
         score={scores.urls}
-        progress={`${completedUrls}/${totalUrls || 1}`}
+        showProgress={false}
         language={language}
       />
       <ScoreItem
         icon={UserSearch}
         title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
         score={scores.monitoring}
-        progress="1/1"
+        showProgress={false}
         showBadge={true}
         language={language}
       />
@@ -55,7 +55,7 @@ export const ScoreItemsList = ({
         icon={MapPinHouse}
         title={language === 'sv' ? 'Adresslarm' : 'Address Alerts'}
         score={scores.address}
-        progress={hasAddress ? "1/1" : "0/1"}
+        showProgress={false}
         showBadge={true}
         isAddress={true}
         language={language}

@@ -1,13 +1,14 @@
 
 import React from 'react';
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 interface ScoreItemProps { 
   icon: React.ElementType; 
   title: string; 
   score: number;
-  progress: string;
+  progress?: string;
+  showProgress?: boolean;
   showBadge?: boolean;
   isAddress?: boolean;
   language: string;
@@ -18,6 +19,7 @@ export const ScoreItem = ({
   title, 
   score,
   progress,
+  showProgress = true,
   showBadge,
   isAddress,
   language
@@ -42,7 +44,7 @@ export const ScoreItem = ({
     };
   };
 
-  const [current, total] = progress.split('/');
+  const [current, total] = progress?.split('/') || [];
 
   return (
     <div className="space-y-2 p-3 rounded-lg">
@@ -51,12 +53,14 @@ export const ScoreItem = ({
           <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
           <div className="text-sm font-medium">{title}</div>
         </div>
-        <div className="flex-1 text-center">
-          <span className="text-sm font-medium">
-            <span className="text-[#000000] dark:text-[#FFFFFF]">{current}</span>
-            <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">/{total}</span>
-          </span>
-        </div>
+        {showProgress && progress && (
+          <div className="flex-1 text-center">
+            <span className="text-sm font-medium">
+              <span className="text-[#000000] dark:text-[#FFFFFF]">{current}</span>
+              <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">/{total}</span>
+            </span>
+          </div>
+        )}
         <div className="flex items-center gap-3 flex-1 justify-end">
           {showBadge ? (
             <Badge 
