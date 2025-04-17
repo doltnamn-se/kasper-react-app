@@ -66,6 +66,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       let result;
       
+      // Try to do the update with a simpler approach first (to diagnose permissions issues)
+      // Log this attempt explicitly
       if (existingStatus) {
         // Update existing status
         console.log(`Updating existing status entry for ${siteName} to ${newStatus}`);
@@ -92,21 +94,30 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       if (result.error) {
         console.error('Error updating site status:', result.error);
-        // Check if it's a permissions error
-        if (result.error.code === '42501' || result.error.message.includes('permission')) {
-          console.error('Permission denied when updating site status. This might be due to RLS policies.');
+        
+        // Check if it's a permissions error and show detailed error
+        if (result.error.code === '42501' || 
+            result.error.message.includes('permission') || 
+            result.error.code === 'PGRST116') {
+          console.error('Permission denied when updating site status. This is likely due to RLS policies.');
           toast({
             title: t('error.update.status'),
             description: 'Permission denied. You may not have rights to update status.',
             variant: 'destructive',
           });
+          return false;
         }
         return false;
       }
 
-      console.log('Status update successful:', result.data);
+      if (!result.data || result.data.length === 0) {
+        console.error('No data returned from update operation. Operation may have failed silently.');
+        return false;
+      }
 
-      // Create notification for admin
+      console.log('Status update successful:', result.data);
+      
+      // Create notification for admin - since we've successfully updated the status
       try {
         // Fetch all admin users
         const { data: admins, error: adminsError } = await supabase
@@ -138,8 +149,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
               user_id: adminId,
               title: notificationTitle,
               message: notificationMessage,
-              type: 'status_change',
-              read: false
+              type: 'status_change'
             })
             .select();
             
@@ -171,9 +181,16 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       window.open(guide.steps[0].text, '_blank');
     }
     
+    // This needs to happen before the window.open to ensure it registers
     // Update the status from "Synlig" to "Granskar"
     const success = await updateSiteStatus(siteName, 'Granskar');
     console.log(`Status update for ${siteName} success:`, success);
+    
+    // If status update was successful, trigger a UI refresh
+    if (success) {
+      // We will now rely on the real-time subscription to update the UI
+      console.log('Status update was successful, UI should update via subscription');
+    }
   };
 
   return (

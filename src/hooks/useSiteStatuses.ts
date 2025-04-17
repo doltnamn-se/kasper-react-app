@@ -46,6 +46,11 @@ export const useSiteStatuses = (userId?: string) => {
     fetchSiteStatuses();
 
     // Set up real-time subscription for status changes
+    if (!userId) {
+      console.log('No userId for real-time updates');
+      return () => {};
+    }
+    
     const statusChannel = supabase
       .channel('customer-site-statuses')
       .on(
