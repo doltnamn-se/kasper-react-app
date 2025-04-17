@@ -42,6 +42,7 @@ export const ScoreItemsList = ({
         title={language === 'sv' ? 'Länkar' : 'Links'}
         score={scores.urls}
         showProgress={false}
+        showBadge={true}
         language={language}
       />
       <ScoreItem
