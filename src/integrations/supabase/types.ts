@@ -527,7 +527,7 @@ export type Database = {
     }
     Functions: {
       is_super_admin: {
-        Args: { user_id: string } | Record<PropertyKey, never>
+        Args: Record<PropertyKey, never> | { user_id: string }
         Returns: boolean
       }
       update_user_password: {

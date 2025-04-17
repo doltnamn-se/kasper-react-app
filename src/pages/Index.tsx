@@ -165,16 +165,6 @@ const Index = () => {
                     return (
                       <TableRow key={site.name} className="!hover:bg-transparent border-none py-2 md:py-4">
                         <TableCell className="py-2 md:py-4">
-                          <div className="flex items-center gap-2 md:gap-4">
-                            <img 
-                              src={site.icon} 
-                              alt={site.name} 
-                              className="w-6 h-6 md:w-8 md:h-8 object-contain" 
-                            />
-                            <span className="text-xs md:text-sm font-medium">{site.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-2 md:py-4">
                           <div className="flex items-center justify-between gap-1 md:gap-2">
                             <div className="flex items-center gap-1 md:gap-2">
                               <Spinner 
