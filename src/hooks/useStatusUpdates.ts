@@ -22,6 +22,11 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         console.error('No authenticated user found');
+        toast({
+          title: t('error'),
+          description: t('error.authentication'),
+          variant: "destructive",
+        });
         return false;
       }
 
@@ -38,6 +43,11 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
 
       if (queryError) {
         console.error('Error querying existing status:', queryError);
+        toast({
+          title: t('error'),
+          description: t('error.update.status'),
+          variant: "destructive",
+        });
         return false;
       }
 
@@ -77,14 +87,29 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
             result.error.message.includes('permission') || 
             result.error.code === 'PGRST116') {
           console.error('Permission denied when updating site status');
+          toast({
+            title: t('error'),
+            description: t('error.permission'),
+            variant: "destructive",
+          });
           return false;
         }
         
+        toast({
+          title: t('error'),
+          description: t('error.update.status'),
+          variant: "destructive",
+        });
         return false;
       }
 
       if (!result.data || result.data.length === 0) {
         console.error('No data returned from update operation');
+        toast({
+          title: t('error'),
+          description: t('error.update.status'),
+          variant: "destructive",
+        });
         return false;
       }
 
@@ -107,6 +132,11 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
         
         if (error) {
           console.error('Failed to notify admin via edge function:', error);
+          toast({
+            title: t('warning'),
+            description: t('warning.admin.notification'),
+            variant: "destructive",
+          });
           // Continue despite notification error - status update was successful
         } else {
           console.log('Successfully notified admin via edge function:', data);
@@ -115,12 +145,22 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
         return true;
       } catch (notifError) {
         console.error('Failed to call notify-status-change function:', notifError);
+        toast({
+          title: t('warning'),
+          description: t('warning.admin.notification'),
+          variant: "destructive",
+        });
         // Still return true since the status update was successful
         return true;
       }
       
     } catch (error) {
       console.error('Unexpected error updating site status:', error);
+      toast({
+        title: t('error'),
+        description: t('error.unexpected'),
+        variant: "destructive",
+      });
       return false;
     } finally {
       setIsUpdating(false);

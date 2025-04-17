@@ -36,18 +36,41 @@ serve(async (req) => {
     );
 
     // Create a standard client to verify the request
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
 
     // Get the request data
     const { siteName, newStatus, language, userId } = await req.json();
 
-    // Verify the user is authenticated
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (!siteName || !newStatus || !userId) {
+      console.error("Missing required data:", { siteName, newStatus, userId });
+      return new Response(
+        JSON.stringify({ error: "Missing required data" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Verify the user is authenticated using the JWT in the Authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error("Missing Authorization header");
+      return new Response(
+        JSON.stringify({ error: "Missing Authorization header" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     
     if (authError || !user) {
       console.error("Authentication error:", authError);
       return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
+        JSON.stringify({ error: "Unauthorized", details: authError }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -58,6 +81,7 @@ serve(async (req) => {
 
     // Ensure the authenticated user matches the claimed user ID
     if (user.id !== userId) {
+      console.error(`User ID mismatch: ${user.id} vs ${userId}`);
       return new Response(
         JSON.stringify({ error: "User ID mismatch" }),
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -74,16 +98,22 @@ serve(async (req) => {
       : `${siteName} status has been changed to "${newStatus}" by a user`;
 
     // Get user display name for better context
-    const { data: profile } = await supabaseAdmin
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('display_name, email')
       .eq('id', userId)
       .single();
 
+    if (profileError) {
+      console.error("Error fetching user profile:", profileError);
+    }
+
     const userIdentifier = profile?.display_name || profile?.email || user.email || userId;
     const enrichedMessage = `${notificationMessage} (${userIdentifier})`;
 
     // Create notification for super admin using service role (bypasses RLS)
+    console.log(`Creating notification for super admin ${SUPER_ADMIN_ID}: ${enrichedMessage}`);
+    
     const { data: notification, error: insertError } = await supabaseAdmin
       .from('notifications')
       .insert({
