@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -43,6 +42,11 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
         console.error('No authenticated user found');
+        toast({
+          title: t('error'),
+          description: 'You must be logged in to update status',
+          variant: 'destructive'
+        });
         return false;
       }
 
@@ -59,6 +63,11 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       if (queryError) {
         console.error('Error querying existing status:', queryError);
+        toast({
+          title: t('error'),
+          description: 'Failed to query existing status',
+          variant: 'destructive'
+        });
         return false;
       }
 
@@ -66,8 +75,6 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
       let result;
       
-      // Try to do the update with a simpler approach first (to diagnose permissions issues)
-      // Log this attempt explicitly
       if (existingStatus) {
         // Update existing status
         console.log(`Updating existing status entry for ${siteName} to ${newStatus}`);
@@ -95,11 +102,11 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       if (result.error) {
         console.error('Error updating site status:', result.error);
         
-        // Check if it's a permissions error and show detailed error
+        // Detailed error handling for permissions
         if (result.error.code === '42501' || 
             result.error.message.includes('permission') || 
             result.error.code === 'PGRST116') {
-          console.error('Permission denied when updating site status. This is likely due to RLS policies.');
+          console.error('Permission denied when updating site status');
           toast({
             title: t('error.update.status'),
             description: 'Permission denied. You may not have rights to update status.',
@@ -107,19 +114,29 @@ export const StatusCard: React.FC<StatusCardProps> = ({
           });
           return false;
         }
+        
+        toast({
+          title: t('error'),
+          description: 'Failed to update site status',
+          variant: 'destructive'
+        });
         return false;
       }
 
       if (!result.data || result.data.length === 0) {
-        console.error('No data returned from update operation. Operation may have failed silently.');
+        console.error('No data returned from update operation');
+        toast({
+          title: t('error'),
+          description: 'Update operation failed silently',
+          variant: 'destructive'
+        });
         return false;
       }
 
       console.log('Status update successful:', result.data);
       
-      // Create notification for admin - since we've successfully updated the status
+      // Optionally notify admins
       try {
-        // Fetch all admin users
         const { data: admins, error: adminsError } = await supabase
           .from('profiles')
           .select('id')
@@ -127,47 +144,41 @@ export const StatusCard: React.FC<StatusCardProps> = ({
         
         if (adminsError) {
           console.error('Error fetching admins:', adminsError);
-          return true; // Continue even if admin notification fails
+          return true;
         }
-        
-        console.log('Found admins:', admins);
         
         if (admins && admins.length > 0) {
           const adminId = admins[0].id;
-          const notificationTitle = language === 'sv' ? 
-            'Status uppdaterad av användare' : 
-            'Status updated by user';
-          const notificationMessage = language === 'sv' ? 
-            `${siteName} status har ändrats till "Granskar" av en användare` : 
-            `${siteName} status has been changed to "Reviewing" by a user`;
+          const notificationTitle = language === 'sv' 
+            ? 'Status uppdaterad av användare' 
+            : 'Status updated by user';
+          const notificationMessage = language === 'sv' 
+            ? `${siteName} status har ändrats till "Granskar" av en användare` 
+            : `${siteName} status has been changed to "Reviewing" by a user`;
           
-          console.log(`Creating notification for admin ${adminId}`);
-          
-          const { data: notification, error: notifError } = await supabase
+          await supabase
             .from('notifications')
             .insert({
               user_id: adminId,
               title: notificationTitle,
               message: notificationMessage,
               type: 'status_change'
-            })
-            .select();
-            
-          if (notifError) {
-            console.error('Failed to create admin notification:', notifError);
-          } else {
-            console.log('Admin notification created successfully:', notification);
-          }
+            });
         }
         
         return true;
       } catch (notifError) {
         console.error('Failed to create admin notification:', notifError);
-        return true; // Continue even if admin notification fails
+        return true;
       }
       
     } catch (error) {
-      console.error('Error updating site status:', error);
+      console.error('Unexpected error updating site status:', error);
+      toast({
+        title: t('error'),
+        description: 'An unexpected error occurred',
+        variant: 'destructive'
+      });
       return false;
     }
   };
@@ -178,18 +189,17 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     // Get the guide URL and open it in a new tab
     const guide = getGuideForSite(siteName.toLowerCase());
     if (guide?.steps[0]?.text) {
-      window.open(guide.steps[0].text, '_blank');
-    }
-    
-    // This needs to happen before the window.open to ensure it registers
-    // Update the status from "Synlig" to "Granskar"
-    const success = await updateSiteStatus(siteName, 'Granskar');
-    console.log(`Status update for ${siteName} success:`, success);
-    
-    // If status update was successful, trigger a UI refresh
-    if (success) {
-      // We will now rely on the real-time subscription to update the UI
-      console.log('Status update was successful, UI should update via subscription');
+      // Update status BEFORE opening the window
+      const success = await updateSiteStatus(siteName, 'Granskar');
+      console.log(`Status update for ${siteName} success:`, success);
+      
+      if (success) {
+        window.open(guide.steps[0].text, '_blank');
+      } else {
+        console.error('Failed to update status before opening guide');
+      }
+    } else {
+      console.warn('No guide found for site:', siteName);
     }
   };
 
