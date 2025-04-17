@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -54,14 +53,14 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <PrivacyScoreCard />
           <Card className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-            <div className="flex items-center justify-between mb-[50px]">
-              <h2 className="text-lg font-semibold flex items-center">
+            <div>
+              <h2 className="text-lg font-semibold">
                 {language === 'sv' ? 'Status' : 'Status'}
               </h2>
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
+                {language === 'sv' ? 'Din synlighet på upplysningssidor' : 'Your visibility on search sites'}
+              </p>
             </div>
-            <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
-              {language === 'sv' ? 'Din synlighet på upplysningssidor' : 'Your visibility on search sites'}
-            </p>
             <div className="mt-2">
               <Table>
                 <TableHeader>
