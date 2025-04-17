@@ -90,38 +90,31 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
 
       console.log('Status update successful:', result.data);
       
-      // Notify admin about the status change - fixed implementation
+      // Call edge function to notify admin using REST API instead of direct database insertion
       try {
-        // Direct notification to super admin using the specific ID
-        const superAdminId = 'a0e63991-d45b-43d4-a8fe-3ecda8c64e9d';
-        console.log(`Creating notification for super admin with ID: ${superAdminId}`);
+        console.log(`Calling edge function to notify admin about status change for ${siteName}`);
         
-        const notificationTitle = language === 'sv' 
-          ? 'Status uppdaterad av användare' 
-          : 'Status updated by user';
-          
-        const notificationMessage = language === 'sv' 
-          ? `${siteName} status har ändrats till "${newStatus}" av en användare` 
-          : `${siteName} status has been changed to "${newStatus}" by a user`;
+        const notificationData = {
+          siteName: siteName,
+          newStatus: newStatus,
+          language: language,
+          userId: customerId
+        };
         
-        const { error: notifError } = await supabase
-          .from('notifications')
-          .insert({
-            user_id: superAdminId,
-            title: notificationTitle,
-            message: notificationMessage,
-            type: 'status_change'
-          });
-          
-        if (notifError) {
-          console.error(`Failed to notify admin ${superAdminId}:`, notifError);
+        const { data, error } = await supabase.functions.invoke('notify-status-change', {
+          body: notificationData
+        });
+        
+        if (error) {
+          console.error('Failed to notify admin via edge function:', error);
+          // Continue despite notification error - status update was successful
         } else {
-          console.log(`Successfully notified super admin about status change for ${siteName}`);
+          console.log('Successfully notified admin via edge function:', data);
         }
         
         return true;
       } catch (notifError) {
-        console.error('Failed to create admin notification:', notifError);
+        console.error('Failed to call notify-status-change function:', notifError);
         // Still return true since the status update was successful
         return true;
       }
