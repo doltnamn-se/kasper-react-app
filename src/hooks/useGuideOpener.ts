@@ -20,18 +20,22 @@ export const useGuideOpener = () => {
       return;
     }
     
-    // Update status BEFORE opening the window
-    const success = await updateSiteStatus(siteName, 'Granskar');
-    console.log(`Status update for ${siteName} success:`, success);
+    // Open the URL immediately, don't wait for the status update
+    window.open(guide.steps[0].text, '_blank');
     
-    if (success) {
-      // Only open the guide if the status update was successful
-      window.open(guide.steps[0].text, '_blank');
-    } else {
-      console.error('Failed to update status before opening guide');
+    // Update status AFTER opening the window
+    try {
+      const success = await updateSiteStatus(siteName, 'Granskar');
+      console.log(`Status update for ${siteName} success:`, success);
+      
+      if (!success) {
+        console.error('Failed to update status after opening guide');
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+    } finally {
+      setIsOpening(false);
     }
-    
-    setIsOpening(false);
   };
 
   return {
