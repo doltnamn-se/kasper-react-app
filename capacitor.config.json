@@ -20,5 +20,13 @@
     "CapacitorHttp": {
       "enabled": true
     }
+  },
+  "android": {
+    "buildOptions": {
+      "keystorePath": "digitaltskydd.keystore",
+      "keystoreAlias": "digitaltskydd",
+      "keystorePassword": "YOUR_KEYSTORE_PASSWORD",
+      "keystoreAliasPassword": "YOUR_ALIAS_PASSWORD"
+    }
   }
 }
