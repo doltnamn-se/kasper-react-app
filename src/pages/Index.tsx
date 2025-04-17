@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -58,6 +59,9 @@ const Index = () => {
                 {language === 'sv' ? 'Status' : 'Status'}
               </h2>
             </div>
+            <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
+              {language === 'sv' ? 'Din synlighet på upplysningssidor' : 'Your visibility on search sites'}
+            </p>
             <div className="mt-2">
               <Table>
                 <TableHeader>
