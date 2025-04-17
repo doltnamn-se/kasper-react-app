@@ -37,8 +37,11 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 
   const updateSiteStatus = async (siteName: string, newStatus: string) => {
     try {
+      console.log(`Updating status for ${siteName} to ${newStatus}`);
+      
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
+        console.error('No authenticated user found');
         toast({ 
           title: t('error'),
           description: t('error.generic'),
@@ -48,43 +51,65 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       }
 
       const customerId = session.user.id;
+      console.log(`Customer ID: ${customerId}`);
       
       // Check if there's an existing status entry
-      const { data: existingStatus } = await supabase
+      const { data: existingStatus, error: queryError } = await supabase
         .from('customer_site_statuses')
         .select('id')
         .eq('customer_id', customerId)
         .eq('site_name', siteName)
         .maybeSingle();
 
+      if (queryError) {
+        console.error('Error querying existing status:', queryError);
+        throw queryError;
+      }
+
+      console.log('Existing status entry:', existingStatus);
+
+      let updateResult;
+      
       if (existingStatus) {
         // Update existing status
-        const { error } = await supabase
+        console.log(`Updating existing status entry for ${siteName} to ${newStatus}`);
+        updateResult = await supabase
           .from('customer_site_statuses')
           .update({ status: newStatus })
           .eq('id', existingStatus.id);
-
-        if (error) throw error;
       } else {
         // Create new status
-        const { error } = await supabase
+        console.log(`Creating new status entry for ${siteName} with status ${newStatus}`);
+        updateResult = await supabase
           .from('customer_site_statuses')
           .insert({
             customer_id: customerId,
             site_name: siteName,
             status: newStatus
           });
-
-        if (error) throw error;
       }
+
+      if (updateResult.error) {
+        console.error('Error updating site status:', updateResult.error);
+        throw updateResult.error;
+      }
+
+      console.log('Status update successful:', updateResult);
 
       // Create notification for admin
       try {
         // Fetch all admin users
-        const { data: admins } = await supabase
+        const { data: admins, error: adminsError } = await supabase
           .from('profiles')
           .select('id')
           .eq('role', 'super_admin');
+        
+        if (adminsError) {
+          console.error('Error fetching admins:', adminsError);
+          return;
+        }
+        
+        console.log('Found admins:', admins);
         
         if (admins && admins.length > 0) {
           const adminId = admins[0].id;
@@ -95,7 +120,9 @@ export const StatusCard: React.FC<StatusCardProps> = ({
             `${siteName} status har ändrats till "Granskar" av en användare` : 
             `${siteName} status has been changed to "Reviewing" by a user`;
           
-          await supabase
+          console.log(`Creating notification for admin ${adminId}`);
+          
+          const { data: notification, error: notifError } = await supabase
             .from('notifications')
             .insert({
               user_id: adminId,
@@ -104,6 +131,12 @@ export const StatusCard: React.FC<StatusCardProps> = ({
               type: 'status_change',
               read: false
             });
+            
+          if (notifError) {
+            console.error('Failed to create admin notification:', notifError);
+          } else {
+            console.log('Admin notification created successfully:', notification);
+          }
         }
       } catch (notifError) {
         console.error('Failed to create admin notification:', notifError);
@@ -120,6 +153,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
   };
 
   const handleRemoveSite = async (siteName: string) => {
+    console.log(`Handling remove for site: ${siteName}`);
+    
     // Get the guide URL and open it in a new tab
     const guide = getGuideForSite(siteName.toLowerCase());
     if (guide?.steps[0]?.text) {

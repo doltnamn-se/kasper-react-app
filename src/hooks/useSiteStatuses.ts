@@ -13,10 +13,15 @@ export const useSiteStatuses = (userId?: string) => {
 
   useEffect(() => {
     const fetchSiteStatuses = async () => {
-      if (!userId) return;
+      if (!userId) {
+        console.log('No user ID provided to useSiteStatuses');
+        setIsLoading(false);
+        return;
+      }
       
       setIsLoading(true);
       try {
+        console.log(`Fetching site statuses for user: ${userId}`);
         const { data, error } = await supabase
           .from('customer_site_statuses')
           .select('*')
@@ -57,7 +62,10 @@ export const useSiteStatuses = (userId?: string) => {
       )
       .subscribe();
 
+    console.log('Subscribed to real-time updates for customer_site_statuses');
+
     return () => {
+      console.log('Cleaning up subscription');
       supabase.removeChannel(statusChannel);
     };
   }, [userId]);
