@@ -9,6 +9,8 @@ interface ScoreItemProps {
   progress?: string;
   showProgress?: boolean;
   showBadge?: boolean;
+  badgeText?: string;
+  badgeVariant?: 'green' | 'red' | 'yellow';
   isAddress?: boolean;
   language: string;
   incomingUrls?: { status: string }[];
@@ -22,6 +24,8 @@ export const ScoreItem = ({
   progress,
   showProgress = true,
   showBadge,
+  badgeText,
+  badgeVariant,
   isAddress,
   language,
   incomingUrls,
@@ -70,6 +74,19 @@ export const ScoreItem = ({
       : "text-[#8C6107] dark:text-[#ffe7af] bg-[#FFF4CC] border-[#FEC84B] dark:bg-[#fec84b1a] dark:border-[#8c6107]";
   };
 
+  const getBadgeStyle = () => {
+    switch (badgeVariant) {
+      case 'green':
+        return "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]";
+      case 'red':
+        return "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]";
+      case 'yellow':
+        return "text-[#8C6107] dark:text-[#ffe7af] bg-[#FFF4CC] border-[#FEC84B] dark:bg-[#fec84b1a] dark:border-[#8c6107]";
+      default:
+        return "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]";
+    }
+  };
+
   const [current, total] = progress?.split('/') || [];
 
   return (
@@ -96,13 +113,13 @@ export const ScoreItem = ({
                 isLinks ? getLinksBadgeStyle() :
                 (isAddress && score === 0) 
                   ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
-                  : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
+                  : badgeVariant ? getBadgeStyle() : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
               )}
             >
               {isLinks ? getLinksBadgeContent() :
-                isAddress && score === 0 
-                  ? language === 'sv' ? 'Inaktiv' : 'Inactive'
-                  : language === 'sv' ? 'Aktiv' : 'Active'
+                (isAddress && score === 0) 
+                  ? (language === 'sv' ? 'Inaktiv' : 'Inactive')
+                  : badgeText || (language === 'sv' ? 'Aktiv' : 'Active')
               }
             </Badge>
           ) : (

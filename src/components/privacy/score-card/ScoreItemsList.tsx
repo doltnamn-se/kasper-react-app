@@ -1,6 +1,8 @@
 import React from 'react';
 import { ScoreItem } from './ScoreItem';
 import { MousePointerClick, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
+import { useSiteStatusBadge } from '@/utils/siteStatusUtils';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 interface ScoreItemsListProps {
   language: string;
@@ -28,6 +30,17 @@ export const ScoreItemsList = ({
   hasAddress,
   incomingUrls
 }: ScoreItemsListProps) => {
+  const { userProfile } = useUserProfile();
+  const siteStatusBadge = useSiteStatusBadge([
+    'Eniro',
+    'Mrkoll',
+    'Hitta',
+    'Merinfo',
+    'Ratsit',
+    'Birthday',
+    'Upplysning'
+  ], userProfile?.id);
+
   return (
     <div className="space-y-2">
       <ScoreItem
@@ -36,6 +49,8 @@ export const ScoreItemsList = ({
         score={scores.guides}
         showProgress={false}
         showBadge={true}
+        badgeText={siteStatusBadge.text}
+        badgeVariant={siteStatusBadge.variant}
         language={language}
       />
       <ScoreItem
