@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -73,17 +74,21 @@ const Index = () => {
                 <TableBody>
                   {sites.map((site) => (
                     <TableRow key={site.name} className="!hover:bg-transparent border-none py-4">
-                      <TableCell className="flex items-center gap-4 py-4">
-                        <img 
-                          src={site.icon} 
-                          alt={site.name} 
-                          className="w-8 h-8 object-contain" 
-                        />
-                        <span className="text-sm font-medium">{site.name}</span>
+                      <TableCell className="py-4">
+                        <div className="flex items-center gap-4">
+                          <img 
+                            src={site.icon} 
+                            alt={site.name} 
+                            className="w-8 h-8 object-contain" 
+                          />
+                          <span className="text-sm font-medium">{site.name}</span>
+                        </div>
                       </TableCell>
-                      <TableCell className="text-sm font-medium py-4 flex items-center gap-2">
-                        <Spinner color="#20f922" size={20} />
-                        {site.status}
+                      <TableCell className="py-4">
+                        <div className="flex items-center gap-2">
+                          <Spinner color="#20f922" size={20} />
+                          <span>{site.status}</span>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
