@@ -30,24 +30,25 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       id="status-widget"
       className={cn(
         "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]",
-        "transition-all duration-300 outline-none"
+        "transition-all duration-300 outline-none p-[2px]"
       )}
     >
-      <div>
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-[2px] p-4 md:p-6">
         <h2 className="text-lg font-semibold">
           {language === 'sv' ? 'Status' : 'Status'}
         </h2>
         <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-6 md:mb-10">
           {language === 'sv' ? 'Din synlighet på upplysningssidor' : 'Your visibility on search sites'}
         </p>
-      </div>
-      <div className="mt-2">
-        <StatusTable 
-          siteStatuses={siteStatuses} 
-          sites={siteConfig} 
-          onRemoveSite={handleRemoveSite} 
-        />
+        <div className="mt-2">
+          <StatusTable 
+            siteStatuses={siteStatuses} 
+            sites={siteConfig} 
+            onRemoveSite={handleRemoveSite} 
+          />
+        </div>
       </div>
     </Card>
   );
 };
+
