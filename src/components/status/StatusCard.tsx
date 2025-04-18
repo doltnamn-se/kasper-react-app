@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -28,8 +29,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     <Card 
       id="status-widget"
       className={cn(
-        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200",
-        "transition-all duration-300"
+        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]",
+        "transition-all duration-300 outline-none"
       )}
     >
       <div>
