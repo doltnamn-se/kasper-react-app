@@ -32,10 +32,10 @@ export const useCustomerPresence = () => {
       });
 
     const fetchPresenceData = async () => {
-      // Fetch online users
+      // Fetch online users with web_device_type included
       const { data: onlineData, error: onlineError } = await supabase
         .from('user_presence')
-        .select('user_id')
+        .select('user_id, web_device_type')
         .eq('status', 'online')
         .gt('last_seen', new Date(Date.now() - 5 * 60 * 1000).toISOString());
 
@@ -45,10 +45,10 @@ export const useCustomerPresence = () => {
         return;
       }
 
-      // Fetch last seen times for all users
+      // Fetch last seen times and web_device_type for all users
       const { data: presenceData, error: presenceError } = await supabase
         .from('user_presence')
-        .select('user_id, last_seen, status');
+        .select('user_id, last_seen, status, web_device_type');
 
       if (presenceError) {
         console.error('Error fetching presence data:', presenceError);
@@ -67,7 +67,7 @@ export const useCustomerPresence = () => {
         newOnlineUsers.add(presence.user_id);
       });
 
-      // Process all users' last seen times
+      // Process all users' last seen times and device types
       presenceData.forEach(presence => {
         newLastSeen[presence.user_id] = presence.last_seen;
         

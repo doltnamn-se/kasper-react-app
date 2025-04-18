@@ -9,6 +9,7 @@ export type Profile = {
   role: "super_admin" | "customer";
   created_at: string;
   updated_at: string;
+  web_device_type?: Database["public"]["Enums"]["web_device_type"] | null;
 };
 
 export type Customer = Database['public']['Tables']['customers']['Row'];

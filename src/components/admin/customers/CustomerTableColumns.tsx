@@ -7,6 +7,7 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -101,7 +102,11 @@ export const getColumns = (
       header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
-        const deviceType = row.original.profile?.web_device_type;
+        let deviceType = null;
+        
+        if (isOnline && row.original.profile?.id) {
+          deviceType = row.original.profile?.web_device_type;
+        }
         
         return (
           <div className="flex items-center gap-2">
