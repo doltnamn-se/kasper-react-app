@@ -63,6 +63,7 @@ export const ScoreItemsList = ({
         isLinks={true}
         incomingUrls={incomingUrls}
         language={language}
+        linkTo="/deindexing"
       />
       <ScoreItem
         icon={UserSearch}
@@ -71,6 +72,7 @@ export const ScoreItemsList = ({
         showProgress={false}
         showBadge={true}
         language={language}
+        linkTo="/monitoring"
       />
       <ScoreItem
         icon={MapPinHouse}
@@ -80,6 +82,7 @@ export const ScoreItemsList = ({
         showBadge={true}
         isAddress={true}
         language={language}
+        linkTo="/address-alerts"
       />
     </div>
   );
