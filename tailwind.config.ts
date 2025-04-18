@@ -67,19 +67,19 @@ export default {
           '0%': { 
             'outline': '2px solid transparent',
             'background': 'linear-gradient(90deg, #EA3861 0%, #F97316 25%, #FEC84B 50%, #0EA5E9 75%, #10B981 100%)',
-            'background-size': '400% 100%',
+            'background-size': '800% 100%',
             'background-position': '0% 50%'
           },
           '50%': {
             'outline': '2px solid transparent',
             'background': 'linear-gradient(90deg, #EA3861 0%, #F97316 25%, #FEC84B 50%, #0EA5E9 75%, #10B981 100%)',
-            'background-size': '400% 100%',
+            'background-size': '800% 100%',
             'background-position': '100% 50%'
           },
           '100%': {
             'outline': '2px solid transparent',
             'background': 'linear-gradient(90deg, #EA3861 0%, #F97316 25%, #FEC84B 50%, #0EA5E9 75%, #10B981 100%)',
-            'background-size': '400% 100%',
+            'background-size': '800% 100%',
             'background-position': '0% 50%'
           }
         },
@@ -91,7 +91,7 @@ export default {
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
         'icon-fill': 'icon-fill 2s linear infinite',
-        'rainbow-border': 'rainbow-border 8s ease infinite',
+        'rainbow-border': 'rainbow-border 12s ease infinite',
       },
       colors: {
         border: 'hsl(var(--border))',

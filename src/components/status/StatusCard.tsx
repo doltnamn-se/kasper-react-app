@@ -33,7 +33,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
         "transition-all duration-300 outline-none p-[2px]"
       )}
     >
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-[2px] p-4 md:p-6">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-[2px] p-4 md:p-6 relative">
+        <div className="absolute inset-0 animate-rainbow-border rounded-[2px]" style={{ border: '2px solid transparent' }}></div>
         <h2 className="text-lg font-semibold">
           {language === 'sv' ? 'Status' : 'Status'}
         </h2>
