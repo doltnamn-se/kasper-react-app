@@ -18,6 +18,7 @@ interface ScoreItemProps {
   incomingUrls?: { status: string }[];
   isLinks?: boolean;
   linkTo?: string;
+  onClick?: () => void;
 }
 
 export const ScoreItem = ({ 
@@ -33,7 +34,8 @@ export const ScoreItem = ({
   language,
   incomingUrls,
   isLinks,
-  linkTo
+  linkTo,
+  onClick
 }: ScoreItemProps) => {
   const segments = 10;
   const radius = 6;
@@ -164,7 +166,11 @@ export const ScoreItem = ({
 
   return (
     <div className="space-y-2 p-3 rounded-lg">
-      {linkTo ? (
+      {onClick ? (
+        <button onClick={onClick} className="w-full text-left">
+          {content}
+        </button>
+      ) : linkTo ? (
         <Link to={linkTo} className="block">
           {content}
         </Link>

@@ -1,9 +1,9 @@
-
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ScoreItem } from './ScoreItem';
 import { SearchX, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
 import { useSiteStatusBadge } from '@/utils/siteStatusUtils';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 interface ScoreItemsListProps {
   language: string;
@@ -32,6 +32,7 @@ export const ScoreItemsList = ({
   incomingUrls
 }: ScoreItemsListProps) => {
   const { userProfile } = useUserProfile();
+  const isDesktop = useBreakpoint('(min-width: 768px)');
   const siteStatusBadge = useSiteStatusBadge([
     'Eniro',
     'Mrkoll',
@@ -41,6 +42,20 @@ export const ScoreItemsList = ({
     'Birthday',
     'Upplysning'
   ], userProfile?.id);
+
+  const handleUplysningClick = useCallback(() => {
+    const statusWidget = document.getElementById('status-widget');
+    if (!statusWidget) return;
+
+    if (isDesktop) {
+      statusWidget.classList.add('ring-4', 'ring-primary', 'ring-opacity-50');
+      setTimeout(() => {
+        statusWidget.classList.remove('ring-4', 'ring-primary', 'ring-opacity-50');
+      }, 2000);
+    } else {
+      statusWidget.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isDesktop]);
 
   return (
     <div className="space-y-2">
@@ -53,6 +68,7 @@ export const ScoreItemsList = ({
         badgeText={siteStatusBadge.text}
         badgeVariant={siteStatusBadge.variant}
         language={language}
+        onClick={handleUplysningClick}
       />
       <ScoreItem
         icon={EyeOff}

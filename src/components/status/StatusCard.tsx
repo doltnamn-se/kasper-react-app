@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -6,6 +5,7 @@ import { StatusTable } from "./StatusTable";
 import { siteConfig } from "./SiteConfig";
 import { useGuideOpener } from "@/hooks/useGuideOpener";
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
+import { cn } from "@/lib/utils";
 
 interface SiteStatus {
   site_name: string;
@@ -25,7 +25,13 @@ export const StatusCard: React.FC<StatusCardProps> = ({
   const { handleRemoveSite } = useGuideOpener();
 
   return (
-    <Card className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <Card 
+      id="status-widget"
+      className={cn(
+        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200",
+        "transition-all duration-300"
+      )}
+    >
       <div>
         <h2 className="text-lg font-semibold">
           {language === 'sv' ? 'Status' : 'Status'}
