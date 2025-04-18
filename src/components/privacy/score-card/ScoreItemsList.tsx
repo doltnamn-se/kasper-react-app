@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ScoreItem } from './ScoreItem';
-import { MousePointerClick, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
+import { SearchX, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
 import { useSiteStatusBadge } from '@/utils/siteStatusUtils';
 import { useUserProfile } from '@/hooks/useUserProfile';
 
@@ -45,7 +45,7 @@ export const ScoreItemsList = ({
   return (
     <div className="space-y-2">
       <ScoreItem
-        icon={MousePointerClick}
+        icon={SearchX}
         title={language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
         score={scores.guides}
         showProgress={false}
