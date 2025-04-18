@@ -1,5 +1,4 @@
 
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLTableRow } from "./URLTableRow";
 import { URLTableToolbar } from "./URLTableToolbar";
@@ -46,11 +45,6 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
       header: t('deindexing.url'),
     },
     {
-      id: "customer",
-      accessorKey: "customer.profiles.email",
-      header: t('deindexing.customer'),
-    },
-    {
       id: "status",
       accessorKey: "status",
       header: t('deindexing.status'),
@@ -77,7 +71,6 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
   });
 
   const handleRefresh = () => {
-    // Refresh logic can be implemented here if needed
     console.log("Refresh clicked");
   };
 
@@ -85,37 +78,45 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
     <div className="space-y-4">
       <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
         <div className="overflow-x-auto" style={{ overflowY: 'visible' }}>
-          <Table>
-            <TableHeader>
-              <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
-                <TableHead colSpan={5} className="h-12 bg-[#f3f3f3] dark:bg-[#212121] !p-0">
-                  <URLTableToolbar
-                    table={table}
-                    globalFilter={globalFilter}
-                    setGlobalFilter={setGlobalFilter}
-                    onRefresh={handleRefresh}
-                  />
-                </TableHead>
-              </TableRow>
-              <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
-                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
-                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
-                <TableHead className="w-[35%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
-                <TableHead className="w-[15%] !px-4 h-[2.5rem] py-0">Change Status</TableHead>
-                <TableHead className="w-[10%] !px-4 h-[2.5rem] py-0">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {table.getFilteredRowModel().rows.map((row) => (
-                <URLTableRow
-                  key={row.original.id}
-                  url={row.original}
-                  onStatusChange={onStatusChange}
-                  onDelete={onDelete}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          <div className="bg-[#f3f3f3] dark:bg-[#212121] p-4">
+            <URLTableToolbar
+              table={table}
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+              onRefresh={handleRefresh}
+            />
+          </div>
+          <div className="divide-y divide-[#dfdfdf] dark:divide-[#2e2e2e]">
+            {table.getFilteredRowModel().rows.map((row) => (
+              <div key={row.original.id} className="p-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <div className="text-[#000000A6] dark:text-[#FFFFFFA6] text-xs md:text-sm font-medium mb-2">
+                      {t('deindexing.url')}
+                    </div>
+                    <a 
+                      href={row.original.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs md:text-sm text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white break-all block"
+                    >
+                      {row.original.url}
+                    </a>
+                  </div>
+                  <div>
+                    <div className="text-[#000000A6] dark:text-[#FFFFFFA6] text-xs md:text-sm font-medium mb-2">
+                      {t('deindexing.status')}
+                    </div>
+                    <URLTableRow
+                      url={row.original}
+                      onStatusChange={onStatusChange}
+                      onDelete={onDelete}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
