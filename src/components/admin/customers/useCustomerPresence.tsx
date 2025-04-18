@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { getWebDeviceType } from "@/utils/deviceUtils";
 
 export const useCustomerPresence = () => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
@@ -93,7 +94,7 @@ export const useCustomerPresence = () => {
     };
   }, []);
 
-  // Update current user's presence regardless of role
+  // Update current user's presence with device type
   useEffect(() => {
     if (!userId) {
       console.log('No authenticated user found');
@@ -108,7 +109,8 @@ export const useCustomerPresence = () => {
             {
               user_id: userId,
               last_seen: new Date().toISOString(),
-              status: 'online'
+              status: 'online',
+              web_device_type: getWebDeviceType()
             },
             {
               onConflict: 'user_id'
@@ -137,7 +139,8 @@ export const useCustomerPresence = () => {
           {
             user_id: userId,
             last_seen: new Date().toISOString(),
-            status: 'offline'
+            status: 'offline',
+            web_device_type: getWebDeviceType()
           },
           {
             onConflict: 'user_id'

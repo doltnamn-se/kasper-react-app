@@ -101,6 +101,8 @@ export const getColumns = (
       header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
+        const deviceType = row.original.profile?.web_device_type;
+        
         return (
           <div className="flex items-center gap-2">
             <svg width="12" height="12" viewBox="0 0 12 12">
@@ -122,7 +124,18 @@ export const getColumns = (
               />
             </svg>
             <span className="text-black dark:text-white">
-              {isOnline ? t('online') : t('offline')}
+              {isOnline ? (
+                <span className="flex items-center gap-1">
+                  {t('online')}
+                  {deviceType && (
+                    <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                      ({deviceType})
+                    </span>
+                  )}
+                </span>
+              ) : (
+                t('offline')
+              )}
             </span>
           </div>
         );
