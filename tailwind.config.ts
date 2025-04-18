@@ -62,6 +62,11 @@ export default {
             'clip-path': 'inset(0 0 0 100%)',
             opacity: '0'
           }
+        },
+        'gradient-move': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' }
         }
       },
       animation: {
@@ -70,7 +75,8 @@ export default {
         'progress-line': 'progress-line 5s linear forwards',
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
-        'icon-fill': 'icon-fill 2s linear infinite'
+        'icon-fill': 'icon-fill 2s linear infinite',
+        'gradient-move': 'gradient-move 8s linear infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
