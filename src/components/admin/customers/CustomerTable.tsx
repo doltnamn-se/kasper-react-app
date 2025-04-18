@@ -40,6 +40,7 @@ export const CustomerTable = ({
   const [rowSelection, setRowSelection] = useState({});
   const [isDetailsSheetOpen, setIsDetailsSheetOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
+  const [globalFilter, setGlobalFilter] = useState<string>("");
 
   const columns = getColumns(onlineUsers, lastSeen, deviceTypes);
 
@@ -59,7 +60,9 @@ export const CustomerTable = ({
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
     },
+    globalFilterFn: "includesString",
   });
 
   const handleRowClick = (customer: CustomerWithProfile) => {
@@ -72,11 +75,18 @@ export const CustomerTable = ({
       <CustomerTableToolbar 
         table={table} 
         onRefresh={onRefresh}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
       />
 
       <div className="border rounded-md">
         <Table>
-          <CustomerTableHeader table={table} />
+          <CustomerTableHeader 
+            table={table} 
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            onRefresh={onRefresh}
+          />
           <CustomerTableBody 
             table={table} 
             onRowClick={handleRowClick}
@@ -87,7 +97,6 @@ export const CustomerTable = ({
       {selectedCustomer && (
         <CustomerDetailsSheet 
           customer={selectedCustomer}
-          open={isDetailsSheetOpen}
           onOpenChange={setIsDetailsSheetOpen}
           onCustomerUpdated={onRefresh}
         />
