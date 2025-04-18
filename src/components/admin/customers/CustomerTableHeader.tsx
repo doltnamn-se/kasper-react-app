@@ -29,14 +29,18 @@ export const CustomerTableHeader = ({
                       className={`flex items-center gap-1 cursor-pointer select-none`}
                       onClick={header.column.getToggleSortingHandler()}
                     >
-                      {header.column.columnDef.header}
+                      {typeof header.column.columnDef.header === 'function'
+                        ? header.column.columnDef.header(header.getContext())
+                        : header.column.columnDef.header}
                       {{
                         asc: <span className="text-xs">▲</span>,
                         desc: <span className="text-xs">▼</span>,
                       }[header.column.getIsSorted() as string] ?? null}
                     </div>
                   ) : (
-                    header.column.columnDef.header
+                    typeof header.column.columnDef.header === 'function'
+                      ? header.column.columnDef.header(header.getContext())
+                      : header.column.columnDef.header
                   )}
             </TableHead>
           ))}
