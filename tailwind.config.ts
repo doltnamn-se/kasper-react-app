@@ -62,16 +62,6 @@ export default {
             'clip-path': 'inset(0 0 0 100%)',
             opacity: '0'
           }
-        },
-        'gradient-x': {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center'
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center'
-          }
         }
       },
       animation: {
@@ -80,8 +70,7 @@ export default {
         'progress-line': 'progress-line 5s linear forwards',
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
-        'icon-fill': 'icon-fill 2s linear infinite',
-        'gradient-x': 'gradient-x 12s linear infinite'
+        'icon-fill': 'icon-fill 2s linear infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -167,9 +156,6 @@ export default {
       height: {
         10: '3rem',
       }
-    },
-    backgroundImage: {
-      'primary-gradient': 'linear-gradient(90deg, rgb(234, 56, 76) 0%, rgb(249, 115, 22) 25%, rgb(254, 247, 205) 50%, rgb(14, 165, 233) 75%, rgb(16, 185, 129) 100%)'
     }
   },
   plugins: [require("tailwindcss-animate")],
