@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -124,4 +123,6 @@ export interface UITranslations {
   'version.log.title': string;
   'warning': string;
   'warning.admin.notification': string;
+  'notification.status.update.title': string;
+  'notification.status.update.message': string;
 }

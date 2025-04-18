@@ -125,5 +125,7 @@ export const ui: UITranslations = {
   'timerange.1week': '1 Week',
   'version.log.title': 'Version Log',
   'warning': 'Warning',
-  'warning.admin.notification': 'Could not notify admin about this change'
+  'warning.admin.notification': 'Could not notify admin about this change',
+  'notification.status.update.title': 'Link status updated',
+  'notification.status.update.message': 'The process has progressed for one or more of your links. Log in to your account to see more.'
 };
