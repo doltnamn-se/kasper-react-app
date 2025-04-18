@@ -18,8 +18,8 @@ const handler = async (req: Request) => {
   }
 
   try {
-    const { email, title, message } = await req.json();
-    console.log("Preparing to send notification email:", { email, title, message });
+    const { email, title, message, type } = await req.json();
+    console.log("Preparing to send notification email:", { email, title, message, type });
     
     if (!email) {
       console.error("No email address provided");
