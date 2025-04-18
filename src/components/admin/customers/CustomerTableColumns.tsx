@@ -139,20 +139,13 @@ export const getColumns = (
                 filter="url(#glow)"
               />
             </svg>
-            <span className="text-black dark:text-white">
-              {isOnline ? (
-                <span className="flex items-center gap-1">
-                  {t('online')}
-                  {deviceType && (
-                    <span className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      ({deviceType}) {getDeviceIcon(deviceType)}
-                    </span>
-                  )}
-                </span>
-              ) : (
-                t('offline')
-              )}
-            </span>
+            {isOnline && deviceType && (
+              <div className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                {deviceType === 'desktop' && <Computer className="h-4 w-4" />}
+                {deviceType === 'mobile' && <Smartphone className="h-4 w-4" />}
+                {deviceType === 'tablet' && <Tablet className="h-4 w-4" />}
+              </div>
+            )}
           </div>
         );
       },
