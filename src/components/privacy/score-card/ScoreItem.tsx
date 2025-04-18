@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -92,78 +93,84 @@ export const ScoreItem = ({
 
   const [current, total] = progress?.split('/') || [];
 
-  const ContentWrapper = linkTo ? Link : 'div';
-  const wrapperProps = linkTo ? { to: linkTo, className: "block" } : {};
+  // Create the content element that will be either directly rendered or wrapped in a Link
+  const content = (
+    <div className="flex items-center">
+      <div className="flex items-center space-x-2 flex-1">
+        <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
+        <div className="text-sm font-medium">{title}</div>
+      </div>
+      {showProgress && progress && (
+        <div className="flex-1 text-center">
+          <span className="text-sm font-medium">
+            <span className="text-[#000000] dark:text-[#FFFFFF]">{current}</span>
+            <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">/{total}</span>
+          </span>
+        </div>
+      )}
+      <div className="flex items-center gap-3 flex-1 justify-end">
+        {showBadge ? (
+          <Badge 
+            variant="secondary" 
+            className={cn(
+              "border",
+              isLinks ? getLinksBadgeStyle() :
+              (isAddress && score === 0) 
+                ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
+                : badgeVariant ? getBadgeStyle() : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
+            )}
+          >
+            {isLinks ? getLinksBadgeContent() :
+              (isAddress && score === 0) 
+                ? (language === 'sv' ? 'Inaktiv' : 'Inactive')
+                : badgeText || (language === 'sv' ? 'Aktiv' : 'Active')
+            }
+          </Badge>
+        ) : (
+          <div className="flex items-center gap-1">
+            <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
+              {Array.from({ length: segments }).map((_, i) => (
+                <path
+                  key={`bg-${i}`}
+                  d={getSegmentPath(i, 0).path}
+                  stroke="#e8e8e5"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  className="dark:stroke-[#2f2e31]"
+                />
+              ))}
+              {Array.from({ length: segments }).map((_, i) => {
+                const segment = getSegmentPath(i, score);
+                if (!segment.visible) return null;
+                return (
+                  <path
+                    key={`progress-${i}`}
+                    d={segment.path}
+                    stroke={segment.color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                );
+              })}
+            </svg>
+            <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
+              {score}%
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-2 p-3 rounded-lg">
-      <ContentWrapper {...wrapperProps}>
-        <div className="flex items-center">
-          <div className="flex items-center space-x-2 flex-1">
-            <Icon className={cn("w-5 h-5 text-[#000000] dark:text-[#FFFFFF]")} />
-            <div className="text-sm font-medium">{title}</div>
-          </div>
-          {showProgress && progress && (
-            <div className="flex-1 text-center">
-              <span className="text-sm font-medium">
-                <span className="text-[#000000] dark:text-[#FFFFFF]">{current}</span>
-                <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">/{total}</span>
-              </span>
-            </div>
-          )}
-          <div className="flex items-center gap-3 flex-1 justify-end">
-            {showBadge ? (
-              <Badge 
-                variant="secondary" 
-                className={cn(
-                  "border",
-                  isLinks ? getLinksBadgeStyle() :
-                  (isAddress && score === 0) 
-                    ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
-                    : badgeVariant ? getBadgeStyle() : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
-                )}
-              >
-                {isLinks ? getLinksBadgeContent() :
-                  (isAddress && score === 0) 
-                    ? (language === 'sv' ? 'Inaktiv' : 'Inactive')
-                    : badgeText || (language === 'sv' ? 'Aktiv' : 'Active')
-                }
-              </Badge>
-            ) : (
-              <div className="flex items-center gap-1">
-                <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
-                  {Array.from({ length: segments }).map((_, i) => (
-                    <path
-                      key={`bg-${i}`}
-                      d={getSegmentPath(i, 0).path}
-                      stroke="#e8e8e5"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      className="dark:stroke-[#2f2e31]"
-                    />
-                  ))}
-                  {Array.from({ length: segments }).map((_, i) => {
-                    const segment = getSegmentPath(i, score);
-                    if (!segment.visible) return null;
-                    return (
-                      <path
-                        key={`progress-${i}`}
-                        d={segment.path}
-                        stroke={segment.color}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    );
-                  })}
-                </svg>
-                <span className={cn("text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]")}>
-                  {score}%
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      </ContentWrapper>
+      {linkTo ? (
+        <Link to={linkTo} className="block">
+          {content}
+        </Link>
+      ) : (
+        content
+      )}
     </div>
   );
 };
