@@ -1,3 +1,4 @@
+
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,20 +8,8 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
-import { Computer, Smartphone, Tablet } from "lucide-react";
-
-const getDeviceIcon = (deviceType: string | null) => {
-  switch(deviceType) {
-    case 'desktop':
-      return <Computer className="h-4 w-4 text-gray-500" />;
-    case 'mobile':
-      return <Smartphone className="h-4 w-4 text-gray-500" />;
-    case 'tablet':
-      return <Tablet className="h-4 w-4 text-gray-500" />;
-    default:
-      return null;
-  }
-};
+import { CustomerStatusCell } from "./components/CustomerStatusCell";
+import { SubscriptionLabel } from "./components/SubscriptionLabel";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -28,21 +17,6 @@ export const getColumns = (
   deviceTypes: Record<string, string>
 ): ColumnDef<CustomerWithProfile>[] => {
   const { t } = useLanguage();
-
-  const getSubscriptionLabel = (plan: string | null) => {
-    switch(plan) {
-      case '1_month':
-        return t('subscription.1month');
-      case '6_months':
-        return t('subscription.6months');
-      case '12_months':
-        return t('subscription.12months');
-      case '24_months':
-        return t('subscription.24months');
-      default:
-        return t('subscription.none');
-    }
-  };
 
   return [
     {
@@ -97,9 +71,7 @@ export const getColumns = (
       accessorKey: "subscription_plan",
       header: t('plan'),
       cell: ({ row }) => (
-        <span className="text-black dark:text-white">
-          {getSubscriptionLabel(row.original.subscription_plan)}
-        </span>
+        <SubscriptionLabel plan={row.original.subscription_plan} />
       ),
     },
     {
@@ -117,36 +89,13 @@ export const getColumns = (
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
         const userId = row.original.profile?.id;
-        let deviceType = userId ? deviceTypes[userId] : null;
+        const deviceType = userId ? deviceTypes[userId] : null;
         
         return (
-          <div className="flex items-center gap-2">
-            <svg width="12" height="12" viewBox="0 0 12 12">
-              <defs>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                  <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
-              <circle 
-                cx="6" 
-                cy="6" 
-                r="3" 
-                fill={isOnline ? '#20f922' : '#ea384c'} 
-                filter="url(#glow)"
-              />
-            </svg>
-            {isOnline && deviceType && (
-              <div className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                {deviceType === 'desktop' && <Computer className="h-4 w-4" />}
-                {deviceType === 'mobile' && <Smartphone className="h-4 w-4" />}
-                {deviceType === 'tablet' && <Tablet className="h-4 w-4" />}
-              </div>
-            )}
-          </div>
+          <CustomerStatusCell 
+            isOnline={isOnline} 
+            deviceType={deviceType}
+          />
         );
       },
     },
