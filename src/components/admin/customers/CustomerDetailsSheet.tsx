@@ -21,10 +21,9 @@ import { toast } from "sonner";
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
   onOpenChange: (open: boolean) => void;
-  onCustomerUpdated: () => void;
 }
 
-export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated }: CustomerDetailsSheetProps) => {
+export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetailsSheetProps) => {
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const { t } = useLanguage();
   const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customer);
@@ -84,12 +83,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated
     const success = await handleUpdateUrlLimits(additionalUrls);
     if (success) {
       refetchData();
-      onCustomerUpdated(); // Call the parent's callback to refresh data
     }
   };
-
-  // Check if the sheet should be open based on whether there is a customer
-  const isOpen = !!customer;
 
   if (!customer) return null;
 
@@ -101,7 +96,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated
 
   if (isLoading) {
     return (
-      <Sheet open={isOpen} onOpenChange={onOpenChange}>
+      <Sheet open={!!customer} onOpenChange={onOpenChange}>
         <SheetContent side="right" className="sm:max-w-xl w-full p-0">
           <div className="flex items-center justify-center h-full">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
@@ -112,7 +107,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
+    <Sheet open={!!customer} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
         <ScrollArea className="h-full">
           <div className="px-6 py-6">
@@ -157,6 +152,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated
 
                   <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
                   
+                  {/* Add the new SiteStatusManager component */}
                   <SiteStatusManager customerId={customer.id} />
 
                   <ChecklistProgress 

@@ -7,7 +7,7 @@ import { useCustomerPresence } from "@/components/admin/customers/useCustomerPre
 const AdminCustomers = () => {
   const { t } = useLanguage();
   const { customers, isLoading, fetchCustomers } = useCustomers();
-  const { onlineUsers, lastSeen, deviceTypes } = useCustomerPresence();
+  const { onlineUsers, lastSeen } = useCustomerPresence();
 
   return (
     <div>
@@ -29,7 +29,6 @@ const AdminCustomers = () => {
             customers={customers}
             onlineUsers={onlineUsers}
             lastSeen={lastSeen}
-            deviceTypes={deviceTypes}
             onRefresh={fetchCustomers}
           />
         )}

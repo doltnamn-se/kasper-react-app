@@ -7,25 +7,10 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
-import { Computer, Smartphone, Tablet } from "lucide-react";
-
-const getDeviceIcon = (deviceType: string | null) => {
-  switch(deviceType) {
-    case 'desktop':
-      return <Computer className="h-4 w-4 text-gray-500" />;
-    case 'mobile':
-      return <Smartphone className="h-4 w-4 text-gray-500" />;
-    case 'tablet':
-      return <Tablet className="h-4 w-4 text-gray-500" />;
-    default:
-      return null;
-  }
-};
 
 export const getColumns = (
   onlineUsers: Set<string>,
-  lastSeen: Record<string, string>,
-  deviceTypes: Record<string, string>
+  lastSeen: Record<string, string>
 ): ColumnDef<CustomerWithProfile>[] => {
   const { t } = useLanguage();
 
@@ -116,9 +101,6 @@ export const getColumns = (
       header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
-        const userId = row.original.profile?.id;
-        let deviceType = userId ? deviceTypes[userId] : null;
-        
         return (
           <div className="flex items-center gap-2">
             <svg width="12" height="12" viewBox="0 0 12 12">
@@ -140,18 +122,7 @@ export const getColumns = (
               />
             </svg>
             <span className="text-black dark:text-white">
-              {isOnline ? (
-                <span className="flex items-center gap-1">
-                  {t('online')}
-                  {deviceType && (
-                    <span className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      ({deviceType}) {getDeviceIcon(deviceType)}
-                    </span>
-                  )}
-                </span>
-              ) : (
-                t('offline')
-              )}
+              {isOnline ? t('online') : t('offline')}
             </span>
           </div>
         );

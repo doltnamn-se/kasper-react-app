@@ -440,7 +440,6 @@ export type Database = {
           status: Database["public"]["Enums"]["presence_status"]
           updated_at: string | null
           user_id: string
-          web_device_type: Database["public"]["Enums"]["web_device_type"] | null
         }
         Insert: {
           created_at?: string | null
@@ -449,9 +448,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["presence_status"]
           updated_at?: string | null
           user_id: string
-          web_device_type?:
-            | Database["public"]["Enums"]["web_device_type"]
-            | null
         }
         Update: {
           created_at?: string | null
@@ -460,9 +456,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["presence_status"]
           updated_at?: string | null
           user_id?: string
-          web_device_type?:
-            | Database["public"]["Enums"]["web_device_type"]
-            | null
         }
         Relationships: []
       }
@@ -558,7 +551,7 @@ export type Database = {
         | "merinfo"
         | "mrkoll"
         | "upplysning"
-      presence_status: "online" | "offline" | "device_type"
+      presence_status: "online" | "offline"
       subscription_plan: "1_month" | "6_months" | "12_months" | "24_months"
       url_status_step:
         | "received"
@@ -566,7 +559,6 @@ export type Database = {
         | "request_submitted"
         | "removal_approved"
       user_role: "super_admin" | "customer"
-      web_device_type: "desktop" | "mobile" | "tablet"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -691,7 +683,7 @@ export const Constants = {
         "mrkoll",
         "upplysning",
       ],
-      presence_status: ["online", "offline", "device_type"],
+      presence_status: ["online", "offline"],
       subscription_plan: ["1_month", "6_months", "12_months", "24_months"],
       url_status_step: [
         "received",
@@ -700,7 +692,6 @@ export const Constants = {
         "removal_approved",
       ],
       user_role: ["super_admin", "customer"],
-      web_device_type: ["desktop", "mobile", "tablet"],
     },
   },
 } as const
