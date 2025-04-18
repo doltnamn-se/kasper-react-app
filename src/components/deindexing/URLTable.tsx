@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLTableRow } from "./URLTableRow";
@@ -85,14 +86,32 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
       <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
         <div className="overflow-x-auto" style={{ overflowY: 'visible' }}>
           <Table>
+            <TableHeader>
+              <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
+                <TableHead colSpan={5} className="h-12 bg-[#f3f3f3] dark:bg-[#212121] !p-0">
+                  <URLTableToolbar
+                    table={table}
+                    globalFilter={globalFilter}
+                    setGlobalFilter={setGlobalFilter}
+                    onRefresh={handleRefresh}
+                  />
+                </TableHead>
+              </TableRow>
+              <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
+                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
+                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
+                <TableHead className="w-[35%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
+                <TableHead className="w-[15%] !px-4 h-[2.5rem] py-0">Change Status</TableHead>
+                <TableHead className="w-[10%] !px-4 h-[2.5rem] py-0">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
             <TableBody>
-              {table.getFilteredRowModel().rows.map((row, index) => (
+              {table.getFilteredRowModel().rows.map((row) => (
                 <URLTableRow
                   key={row.original.id}
                   url={row.original}
                   onStatusChange={onStatusChange}
                   onDelete={onDelete}
-                  isLast={index === table.getFilteredRowModel().rows.length - 1}
                 />
               ))}
             </TableBody>
