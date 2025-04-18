@@ -1,4 +1,3 @@
-
 import React, { useCallback } from 'react';
 import { ScoreItem } from './ScoreItem';
 import { SearchX, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
@@ -49,10 +48,10 @@ export const ScoreItemsList = ({
     if (!statusWidget) return;
 
     if (isDesktop) {
-      statusWidget.classList.add('animate-rainbow-border');
+      statusWidget.classList.add('ring-4', 'ring-primary', 'ring-opacity-50');
       setTimeout(() => {
-        statusWidget.classList.remove('animate-rainbow-border');
-      }, 1000);
+        statusWidget.classList.remove('ring-4', 'ring-primary', 'ring-opacity-50');
+      }, 2000);
     } else {
       statusWidget.scrollIntoView({ behavior: 'smooth' });
     }

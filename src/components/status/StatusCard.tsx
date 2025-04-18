@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -29,27 +28,25 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     <Card 
       id="status-widget"
       className={cn(
-        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]",
-        "transition-all duration-300 outline-none p-[2px]"
+        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200",
+        "transition-all duration-300"
       )}
     >
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-[2px] p-4 md:p-6 relative">
-        <div className="absolute inset-0 animate-rainbow-border rounded-[2px]" style={{ border: '2px solid transparent' }}></div>
+      <div>
         <h2 className="text-lg font-semibold">
           {language === 'sv' ? 'Status' : 'Status'}
         </h2>
         <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-6 md:mb-10">
           {language === 'sv' ? 'Din synlighet på upplysningssidor' : 'Your visibility on search sites'}
         </p>
-        <div className="mt-2">
-          <StatusTable 
-            siteStatuses={siteStatuses} 
-            sites={siteConfig} 
-            onRemoveSite={handleRemoveSite} 
-          />
-        </div>
+      </div>
+      <div className="mt-2">
+        <StatusTable 
+          siteStatuses={siteStatuses} 
+          sites={siteConfig} 
+          onRemoveSite={handleRemoveSite} 
+        />
       </div>
     </Card>
   );
 };
-
