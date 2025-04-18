@@ -12,6 +12,7 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request) => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -19,6 +20,11 @@ const handler = async (req: Request) => {
   try {
     const { email, title, message } = await req.json();
     console.log("Preparing to send notification email:", { email, title, message });
+    
+    if (!email) {
+      console.error("No email address provided");
+      throw new Error("No email address provided");
+    }
     
     // Generate email HTML using our template
     const htmlContent = getNotificationEmailTemplate(title, message);
