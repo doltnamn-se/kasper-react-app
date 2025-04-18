@@ -38,14 +38,14 @@ export const StatusCard: React.FC<StatusCardProps> = ({
           className="absolute inset-[-2px] rounded-[6px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
             background: `linear-gradient(90deg, 
-              rgb(234, 56, 76) 0%, 
-              rgb(249, 115, 22) 25%, 
-              rgb(254, 247, 205) 50%, 
-              rgb(14, 165, 233) 75%, 
+              rgb(16, 185, 129) 0%, 
+              rgb(14, 165, 233) 25%, 
+              rgb(249, 115, 22) 50%, 
+              rgb(234, 56, 76) 75%, 
               rgb(16, 185, 129) 100%
             )`,
             backgroundSize: '400% 100%',
-            animation: 'gradient-move 8s linear infinite',
+            animation: 'gradient-move 12s linear infinite',
           }}
         />
       </div>
@@ -67,4 +67,3 @@ export const StatusCard: React.FC<StatusCardProps> = ({
     </Card>
   );
 };
-

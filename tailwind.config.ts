@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -76,7 +77,7 @@ export default {
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
         'icon-fill': 'icon-fill 2s linear infinite',
-        'gradient-move': 'gradient-move 8s linear infinite'
+        'gradient-move': 'gradient-move 12s linear infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
