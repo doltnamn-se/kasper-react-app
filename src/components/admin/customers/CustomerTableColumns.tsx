@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 import { Computer, Smartphone, Tablet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import React from "react";
 
 const getDeviceIcon = (deviceType: string | null) => {
   switch(deviceType) {
@@ -116,9 +117,33 @@ export const getColumns = (
       header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
-        let deviceType = row.original.profile?.web_device_type;
+        let deviceType = null;
         
-        console.log('Profile device type:', deviceType);
+        if (isOnline && row.original.profile?.id) {
+          const userId = row.original.profile.id;
+          React.useEffect(() => {
+            const fetchDeviceType = async () => {
+              const { data, error } = await supabase
+                .from('user_presence')
+                .select('web_device_type')
+                .eq('user_id', userId)
+                .maybeSingle();
+              
+              if (data && data.web_device_type) {
+                console.log(`Fetched device type for ${userId}:`, data.web_device_type);
+                const deviceElement = document.getElementById(`device-type-${userId}`);
+                if (deviceElement) {
+                  const deviceIcon = getDeviceIcon(data.web_device_type);
+                  if (deviceIcon) {
+                    deviceElement.innerHTML = `(${data.web_device_type})`;
+                  }
+                }
+              }
+            };
+            
+            fetchDeviceType();
+          }, [userId]);
+        }
         
         return (
           <div className="flex items-center gap-2">
@@ -144,10 +169,12 @@ export const getColumns = (
               {isOnline ? (
                 <span className="flex items-center gap-1">
                   {t('online')}
-                  {deviceType && (
-                    <span className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                      {getDeviceIcon(deviceType)}
-                      ({deviceType})
+                  {row.original.profile?.id && (
+                    <span 
+                      id={`device-type-${row.original.profile.id}`}
+                      className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]"
+                    >
+                      {/* Device type will be populated by useEffect */}
                     </span>
                   )}
                 </span>

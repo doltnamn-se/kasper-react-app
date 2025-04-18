@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { getWebDeviceType } from "@/utils/deviceUtils";
+import { isWeb } from "@/capacitor";
 
 export const useCustomerPresence = () => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
@@ -102,8 +104,26 @@ export const useCustomerPresence = () => {
       return;
     }
 
+    // Only run presence updates on web platform
+    if (!isWeb()) {
+      console.log('Not updating presence on non-web platform');
+      return;
+    }
+
+    const deviceType = getWebDeviceType();
+    console.log('Current device type:', deviceType);
+
     const updatePresence = async () => {
       try {
+        // First check if user already has a presence record
+        const { data: existingPresence } = await supabase
+          .from('user_presence')
+          .select('web_device_type')
+          .eq('user_id', userId)
+          .maybeSingle();
+
+        console.log('Existing presence record:', existingPresence);
+        
         const { error: presenceError } = await supabase
           .from('user_presence')
           .upsert(
@@ -111,7 +131,7 @@ export const useCustomerPresence = () => {
               user_id: userId,
               last_seen: new Date().toISOString(),
               status: 'online',
-              web_device_type: getWebDeviceType()
+              web_device_type: deviceType
             },
             {
               onConflict: 'user_id'
@@ -121,6 +141,8 @@ export const useCustomerPresence = () => {
         if (presenceError) {
           console.error('Error updating presence:', presenceError);
           toast.error('Failed to update presence status');
+        } else {
+          console.log('Updated presence with device type:', deviceType);
         }
       } catch (error) {
         console.error('Error in updatePresence:', error);
@@ -141,7 +163,7 @@ export const useCustomerPresence = () => {
             user_id: userId,
             last_seen: new Date().toISOString(),
             status: 'offline',
-            web_device_type: getWebDeviceType()
+            web_device_type: deviceType
           },
           {
             onConflict: 'user_id'
