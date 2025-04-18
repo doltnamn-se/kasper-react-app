@@ -25,14 +25,18 @@ interface URLTableRowProps {
   };
   onStatusChange: (urlId: string, newStatus: string) => void;
   onDelete: (urlId: string) => void;
+  isLast: boolean;
 }
 
-export const URLTableRow = ({ url, onStatusChange, onDelete }: URLTableRowProps) => {
+export const URLTableRow = ({ url, onStatusChange, onDelete, isLast }: URLTableRowProps) => {
   const { t } = useLanguage();
   
   return (
-    <TableRow className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]">
-      <TableCell className="w-[20%] !px-4">
+    <TableRow className={`bg-[#f8f8f8] dark:bg-[#171717] ${!isLast ? 'border-b border-[#ededed] dark:border-[#242424]' : ''} hover:bg-[#f3f3f3] dark:hover:bg-[#212121]`}>
+      <TableCell className="w-[50%] !px-4 space-y-1">
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] block mb-1">
+          {t('deindexing.url')}
+        </span>
         <a 
           href={url.url} 
           target="_blank" 
@@ -43,23 +47,13 @@ export const URLTableRow = ({ url, onStatusChange, onDelete }: URLTableRowProps)
           {url.url}
         </a>
       </TableCell>
-      <TableCell className="w-[20%] !px-4">
-        <span className="text-black dark:text-white truncate block" title={url.customer.profiles.email}>
-          {url.customer.profiles.email}
+      <TableCell className="w-[40%] !px-4 space-y-1">
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] block mb-1">
+          {t('deindexing.status')}
         </span>
-      </TableCell>
-      <TableCell className="w-[35%] !px-4">
-        <span className="text-black dark:text-white capitalize">
+        <span className="text-black dark:text-white capitalize text-xs">
           {getStatusText(url.status, t)}
         </span>
-      </TableCell>
-      <TableCell className="w-[15%] !px-4">
-        <URLStatusSelect
-          currentStatus={url.status}
-          urlId={url.id}
-          customerId={url.customer.id}
-          onStatusChange={(newStatus) => onStatusChange(url.id, newStatus)}
-        />
       </TableCell>
       <TableCell className="w-[10%] !px-4">
         <Button
