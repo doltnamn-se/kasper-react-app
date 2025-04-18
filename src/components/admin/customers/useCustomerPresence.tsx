@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -71,6 +70,9 @@ export const useCustomerPresence = () => {
       presenceData.forEach(presence => {
         newLastSeen[presence.user_id] = presence.last_seen;
         
+        // Log device types
+        console.log(`User ${presence.user_id} device type: ${presence.web_device_type}`);
+        
         // Add users who were active recently but might not be marked as online
         if (presence.status === 'online' && 
             new Date(presence.last_seen).getTime() > Date.now() - 5 * 60 * 1000) {
@@ -94,7 +96,6 @@ export const useCustomerPresence = () => {
     };
   }, []);
 
-  // Update current user's presence with device type
   useEffect(() => {
     if (!userId) {
       console.log('No authenticated user found');

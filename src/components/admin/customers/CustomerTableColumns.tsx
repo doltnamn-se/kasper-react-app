@@ -7,7 +7,21 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
+import { Computer, Smartphone, Tablet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+
+const getDeviceIcon = (deviceType: string | null) => {
+  switch(deviceType) {
+    case 'desktop':
+      return <Computer className="h-4 w-4 text-gray-500" />;
+    case 'mobile':
+      return <Smartphone className="h-4 w-4 text-gray-500" />;
+    case 'tablet':
+      return <Tablet className="h-4 w-4 text-gray-500" />;
+    default:
+      return null;
+  }
+};
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -102,11 +116,9 @@ export const getColumns = (
       header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
-        let deviceType = null;
+        let deviceType = row.original.profile?.web_device_type;
         
-        if (isOnline && row.original.profile?.id) {
-          deviceType = row.original.profile?.web_device_type;
-        }
+        console.log('Profile device type:', deviceType);
         
         return (
           <div className="flex items-center gap-2">
@@ -133,7 +145,8 @@ export const getColumns = (
                 <span className="flex items-center gap-1">
                   {t('online')}
                   {deviceType && (
-                    <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                    <span className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                      {getDeviceIcon(deviceType)}
                       ({deviceType})
                     </span>
                   )}
