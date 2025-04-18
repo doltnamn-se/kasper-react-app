@@ -125,5 +125,7 @@ export const ui: UITranslations = {
   'timerange.1week': '1 Vecka',
   'version.log.title': 'Versionlogg',
   'warning': 'Varning',
-  'warning.admin.notification': 'Kunde inte meddela administratören om denna ändring'
+  'warning.admin.notification': 'Kunde inte meddela administratören om denna ändring',
+  'notification.status.update.title': 'Länkstatus uppdaterad',
+  'notification.status.update.message': 'Processen har gjort framsteg för en eller flera av dina länkare. Logga in på ditt konto för att se mer.'
 };
