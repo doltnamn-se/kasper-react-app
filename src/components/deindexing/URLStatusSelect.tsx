@@ -33,7 +33,7 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
 
       // First update the status
       console.log('URLStatusSelect - Calling onStatusChange');
-      onStatusChange(newStatus);
+      await onStatusChange(newStatus);
       
       console.log('URLStatusSelect - Creating notification');
       
@@ -41,8 +41,8 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       // to send the email (with rate limiting)
       const { error: notificationError } = await createStatusNotification(
         customerId,
-        "Länkstatus uppdaterad",
-        "Processen har gått framåt för en eller flera av dina länkar. Logga in på ditt konto för att se mer."
+        t('notification.status.update.title'),
+        t('notification.status.update.message')
       );
 
       if (notificationError) {
