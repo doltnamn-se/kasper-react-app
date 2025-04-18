@@ -118,7 +118,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated
           <div className="px-6 py-6">
             <div className="space-y-8">
               <div className="space-y-6">
-                <h3 className="text-sm font-semibold text-[#000000] dark:text-white">User Details</h3>
                 <div className="flex flex-col items-start gap-4">
                   <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
                   <CustomerDetails customer={customer} />
@@ -173,3 +172,4 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange, onCustomerUpdated
     </Sheet>
   );
 };
+
