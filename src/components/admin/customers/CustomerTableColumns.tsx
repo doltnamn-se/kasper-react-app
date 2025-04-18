@@ -8,8 +8,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 import { Computer, Smartphone, Tablet } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import React from "react";
 
 const getDeviceIcon = (deviceType: string | null) => {
   switch(deviceType) {
@@ -26,7 +24,8 @@ const getDeviceIcon = (deviceType: string | null) => {
 
 export const getColumns = (
   onlineUsers: Set<string>,
-  lastSeen: Record<string, string>
+  lastSeen: Record<string, string>,
+  deviceTypes: Record<string, string>
 ): ColumnDef<CustomerWithProfile>[] => {
   const { t } = useLanguage();
 
@@ -117,33 +116,8 @@ export const getColumns = (
       header: t('status'),
       cell: ({ row }) => {
         const isOnline = row.original.profile?.id && onlineUsers.has(row.original.profile.id);
-        let deviceType = null;
-        
-        if (isOnline && row.original.profile?.id) {
-          const userId = row.original.profile.id;
-          React.useEffect(() => {
-            const fetchDeviceType = async () => {
-              const { data, error } = await supabase
-                .from('user_presence')
-                .select('web_device_type')
-                .eq('user_id', userId)
-                .maybeSingle();
-              
-              if (data && data.web_device_type) {
-                console.log(`Fetched device type for ${userId}:`, data.web_device_type);
-                const deviceElement = document.getElementById(`device-type-${userId}`);
-                if (deviceElement) {
-                  const deviceIcon = getDeviceIcon(data.web_device_type);
-                  if (deviceIcon) {
-                    deviceElement.innerHTML = `(${data.web_device_type})`;
-                  }
-                }
-              }
-            };
-            
-            fetchDeviceType();
-          }, [userId]);
-        }
+        const userId = row.original.profile?.id;
+        let deviceType = userId ? deviceTypes[userId] : null;
         
         return (
           <div className="flex items-center gap-2">
@@ -169,12 +143,9 @@ export const getColumns = (
               {isOnline ? (
                 <span className="flex items-center gap-1">
                   {t('online')}
-                  {row.original.profile?.id && (
-                    <span 
-                      id={`device-type-${row.original.profile.id}`}
-                      className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]"
-                    >
-                      {/* Device type will be populated by useEffect */}
+                  {deviceType && (
+                    <span className="flex items-center gap-1 text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                      ({deviceType}) {getDeviceIcon(deviceType)}
                     </span>
                   )}
                 </span>

@@ -9,6 +9,7 @@ import { isWeb } from "@/capacitor";
 export const useCustomerPresence = () => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   const [lastSeen, setLastSeen] = useState<Record<string, string>>({});
+  const [deviceTypes, setDeviceTypes] = useState<Record<string, string>>({});
   const { userId } = useAuthStatus();
 
   useEffect(() => {
@@ -62,18 +63,25 @@ export const useCustomerPresence = () => {
 
       const newOnlineUsers = new Set<string>();
       const newLastSeen: Record<string, string> = {};
+      const newDeviceTypes: Record<string, string> = {};
 
       // Add users who are explicitly online
       onlineData.forEach(presence => {
         newOnlineUsers.add(presence.user_id);
+        if (presence.web_device_type) {
+          newDeviceTypes[presence.user_id] = presence.web_device_type;
+        }
       });
 
       // Process all users' last seen times and device types
       presenceData.forEach(presence => {
         newLastSeen[presence.user_id] = presence.last_seen;
         
-        // Log device types
-        console.log(`User ${presence.user_id} device type: ${presence.web_device_type}`);
+        // Store device types for all users
+        if (presence.web_device_type) {
+          newDeviceTypes[presence.user_id] = presence.web_device_type;
+          console.log(`User ${presence.user_id} device type: ${presence.web_device_type}`);
+        }
         
         // Add users who were active recently but might not be marked as online
         if (presence.status === 'online' && 
@@ -84,6 +92,7 @@ export const useCustomerPresence = () => {
 
       setOnlineUsers(newOnlineUsers);
       setLastSeen(newLastSeen);
+      setDeviceTypes(newDeviceTypes);
     };
 
     // Initial fetch
@@ -180,5 +189,5 @@ export const useCustomerPresence = () => {
     };
   }, [userId]);
 
-  return { onlineUsers, lastSeen };
+  return { onlineUsers, lastSeen, deviceTypes };
 };
