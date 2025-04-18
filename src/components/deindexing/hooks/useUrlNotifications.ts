@@ -16,7 +16,8 @@ export const useUrlNotifications = () => {
     });
     
     try {
-      const { data, error: notificationError } = await supabase
+      // Create in-app notification - the database trigger will handle email sending with rate limiting
+      const { data, error } = await supabase
         .from('notifications')
         .insert({
           user_id: customerId,
@@ -28,12 +29,13 @@ export const useUrlNotifications = () => {
         .select()
         .single();
 
-      if (notificationError) {
-        console.error('useUrlNotifications - Error creating notification:', notificationError);
-        throw notificationError;
+      if (error) {
+        console.error('useUrlNotifications - Error creating notification:', error);
+        return { error };
       }
       
       console.log('useUrlNotifications - Notification created successfully:', data);
+      return { data };
     } catch (error) {
       console.error('useUrlNotifications - Error in createStatusNotification:', error);
       toast({
@@ -41,7 +43,7 @@ export const useUrlNotifications = () => {
         description: t('error.update.status'),
         variant: "destructive",
       });
-      throw error;
+      return { error };
     }
   };
 

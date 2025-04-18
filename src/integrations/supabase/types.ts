@@ -306,6 +306,7 @@ export type Database = {
           created_at: string
           email_notifications: boolean | null
           in_app_notifications: boolean | null
+          last_email_sent_at: string | null
           updated_at: string
           user_id: string
         }
@@ -313,6 +314,7 @@ export type Database = {
           created_at?: string
           email_notifications?: boolean | null
           in_app_notifications?: boolean | null
+          last_email_sent_at?: string | null
           updated_at?: string
           user_id: string
         }
@@ -320,6 +322,7 @@ export type Database = {
           created_at?: string
           email_notifications?: boolean | null
           in_app_notifications?: boolean | null
+          last_email_sent_at?: string | null
           updated_at?: string
           user_id?: string
         }
