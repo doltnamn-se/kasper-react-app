@@ -51,8 +51,8 @@ export const StatusTable: React.FC<StatusTableProps> = ({
           const status = getSiteStatus(site.name);
           
           return (
-            <TableRow key={site.name} className="!hover:bg-transparent border-none py-2 md:py-4">
-              <TableCell className="py-2 md:py-4">
+            <TableRow key={site.name} className="!hover:bg-transparent border-none">
+              <TableCell className="py-3 md:py-4">
                 <div className="flex items-center gap-2 md:gap-4">
                   <img 
                     src={site.icon} 
@@ -62,7 +62,7 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                   <span className="text-xs md:text-sm font-medium">{site.name}</span>
                 </div>
               </TableCell>
-              <TableCell className="py-2 md:py-4">
+              <TableCell className="py-3 md:py-4">
                 <div className="flex items-center justify-between gap-1 md:gap-2">
                   <div className="flex items-center gap-1 md:gap-2">
                     <Spinner 
