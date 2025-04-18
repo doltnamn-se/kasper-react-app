@@ -119,8 +119,9 @@ export const useCustomerPresence = () => {
       return;
     }
 
+    // Get device type using our improved detection
     const deviceType = getWebDeviceType();
-    console.log('Current device type:', deviceType);
+    console.log('Current device type detected:', deviceType, 'User Agent:', navigator.userAgent);
 
     const updatePresence = async () => {
       try {
