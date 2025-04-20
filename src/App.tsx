@@ -50,13 +50,34 @@ function App() {
     }
   }, []);
 
-  // Hide the splash screen after the app is loaded
+  // Hide the splash screen after the app is fully loaded and rendered
   useEffect(() => {
     const hideSplashScreen = async () => {
-      // Allow a little time for the app to render
-      setTimeout(async () => {
-        await splashScreenService.hide();
-      }, 1000); // Hide after 1 second, adjust as needed
+      // Wait for DOM to be fully ready
+      if (document.readyState === 'complete') {
+        console.log('Document ready, hiding splash screen');
+        setTimeout(async () => {
+          try {
+            await splashScreenService.hide();
+            console.log('Splash screen hidden successfully');
+          } catch (error) {
+            console.error('Error hiding splash screen:', error);
+          }
+        }, 500);
+      } else {
+        // If document not ready yet, wait for load event
+        window.addEventListener('load', () => {
+          console.log('Window loaded, hiding splash screen');
+          setTimeout(async () => {
+            try {
+              await splashScreenService.hide();
+              console.log('Splash screen hidden successfully on window load');
+            } catch (error) {
+              console.error('Error hiding splash screen on window load:', error);
+            }
+          }, 500);
+        }, { once: true });
+      }
     };
     
     hideSplashScreen();

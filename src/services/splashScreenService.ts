@@ -12,10 +12,13 @@ export const splashScreenService = {
   hide: async () => {
     if (isNativePlatform()) {
       try {
-        await SplashScreen.hide();
+        await SplashScreen.hide({
+          fadeOutDuration: 500
+        });
         console.log('Splash screen hidden');
       } catch (error) {
         console.error('Error hiding splash screen:', error);
+        throw error;
       }
     }
   },
@@ -33,6 +36,7 @@ export const splashScreenService = {
         console.log('Splash screen shown');
       } catch (error) {
         console.error('Error showing splash screen:', error);
+        throw error;
       }
     }
   }
