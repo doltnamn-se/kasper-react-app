@@ -1,4 +1,3 @@
-
 import { PushNotifications } from '@capacitor/push-notifications';
 import { isNativePlatform } from '@/capacitor';
 import { supabase } from '@/integrations/supabase/client';
@@ -108,7 +107,6 @@ class PushNotificationService {
       
       // Show in-app toast for foreground notifications
       if (notification.title && notification.body) {
-        // Sonner toast accepts a simple message or an object with options
         toast(notification.title, {
           description: notification.body,
         });
