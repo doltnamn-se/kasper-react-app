@@ -1,6 +1,6 @@
 
 {
-  "appId": "app.lovable.d9e386f94e5444ac91d892db773a7ddc",
+  "appId": "com.digitaltskydd.app",
   "appName": "Digitaltskydd",
   "webDir": "www",
   "server": {
@@ -20,14 +20,6 @@
     },
     "CapacitorHttp": {
       "enabled": true
-    }
-  },
-  "android": {
-    "buildOptions": {
-      "keystorePath": "${rootDir}/digitaltskydd.keystore",
-      "keystoreAlias": "digitaltskydd",
-      "keystorePassword": "TheOnlyCompetitionIsYou247!?",
-      "keystoreAliasPassword": "TheOnlyCompetitionIsYou247!?"
     }
   }
 }
