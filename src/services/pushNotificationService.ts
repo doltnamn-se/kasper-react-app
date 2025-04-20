@@ -108,8 +108,8 @@ class PushNotificationService {
       
       // Show in-app toast for foreground notifications
       if (notification.title && notification.body) {
-        toast({
-          title: notification.title,
+        // Sonner toast accepts a simple message or an object with options
+        toast(notification.title, {
           description: notification.body,
         });
       }
