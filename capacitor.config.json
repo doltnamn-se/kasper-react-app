@@ -2,7 +2,7 @@
 {
   "appId": "com.digitaltskydd.app",
   "appName": "Digitaltskydd",
-  "webDir": "www",
+  "webDir": "dist",
   "server": {
     "url": "https://d9e386f9-4e54-44ac-91d8-92db773a7ddc.lovableproject.com?forceHideBadge=true",
     "cleartext": true
