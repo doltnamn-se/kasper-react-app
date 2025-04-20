@@ -2,8 +2,8 @@
 import { PushNotifications } from '@capacitor/push-notifications';
 import { isNativePlatform } from '@/capacitor';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import { DeviceToken } from '@/utils/supabaseHelpers';
+import { toast } from 'sonner';
+import { DeviceToken } from '@/types/device-token';
 
 // Service for handling push notifications
 class PushNotificationService {
@@ -34,8 +34,8 @@ class PushNotificationService {
         return;
       }
 
-      // Register with FCM (Firebase Cloud Messaging)
-      console.log('Registering with Firebase Cloud Messaging');
+      // Register with FCM (Firebase Cloud Messaging) or APNs
+      console.log('Registering push notifications');
       await PushNotifications.register();
       this.initialized = true;
 
@@ -65,15 +65,17 @@ class PushNotificationService {
 
         console.log('Saving token to database for user:', session.user.id);
         
-        // Save token to database using custom type assertion
+        // Save token to database
+        const deviceToken: DeviceToken = {
+          user_id: session.user.id,
+          token: token.value,
+          device_type: isNativePlatform() ? (navigator.userAgent.includes('Android') ? 'android' : 'ios') : 'web',
+          last_updated: new Date().toISOString()
+        };
+
         const { error } = await supabase
-          .from('device_tokens' as any)
-          .upsert({
-            user_id: session.user.id,
-            token: token.value,
-            device_type: navigator.userAgent.includes('Android') ? 'android' : 'ios',
-            last_updated: new Date().toISOString()
-          }, {
+          .from('device_tokens')
+          .upsert(deviceToken, {
             onConflict: 'user_id, token'
           });
 
