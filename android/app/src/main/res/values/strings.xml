@@ -5,4 +5,5 @@
     <string name="title_activity_main">Digitaltskydd</string>
     <string name="package_name">com.digitaltskydd.app</string>
     <string name="custom_url_scheme">com.digitaltskydd.app</string>
+    <string name="fileprovider">com.digitaltskydd.app.fileprovider</string>
 </resources>
