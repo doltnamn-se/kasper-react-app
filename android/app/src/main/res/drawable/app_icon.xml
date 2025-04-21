@@ -5,10 +5,16 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- Background Circle -->
     <path
         android:fillColor="#FFFFFF"
         android:pathData="M54,54m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0" />
+    <!-- Shield Icon -->
     <path
-        android:fillColor="#48A7FF"
-        android:pathData="M67.5,46.93L61.07,40.5L54,47.57L46.93,40.5L40.5,46.93L47.57,54L40.5,61.07L46.93,67.5L54,60.43L61.07,67.5L67.5,61.07L60.43,54L67.5,46.93Z" />
+        android:fillColor="#0066FF"
+        android:pathData="M54,30C45.44,30 38.33,33.44 33,38C33,50.67 39.56,62.33 54,70C68.44,62.33 75,50.67 75,38C69.67,33.44 62.56,30 54,30ZM54,64C43.33,58.33 39,49.67 39,41C42.67,38 47.67,36 54,36C60.33,36 65.33,38 69,41C69,49.67 64.67,58.33 54,64Z" />
+    <!-- Lock Inside Shield -->
+    <path
+        android:fillColor="#0066FF"
+        android:pathData="M54,44C51.79,44 50,45.79 50,48V52C50,54.21 51.79,56 54,56C56.21,56 58,54.21 58,52V48C58,45.79 56.21,44 54,44ZM54,52C53.45,52 53,51.55 53,51V49C53,48.45 53.45,48 54,48C54.55,48 55,48.45 55,49V51C55,51.55 54.55,52 54,52Z" />
 </vector>
