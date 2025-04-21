@@ -1,4 +1,12 @@
 
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 include ':app'
 include ':capacitor-android'
 include ':capacitor-cordova-android-plugins'

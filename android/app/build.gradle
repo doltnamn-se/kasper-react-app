@@ -1,7 +1,7 @@
 
 plugins {
     id 'com.android.application'
-    id 'kotlin-android' version '1.9.0'
+    id 'kotlin-android'
 }
 
 android {
