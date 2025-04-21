@@ -2,6 +2,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'  // Add Google Services plugin
 }
 
 android {
@@ -52,7 +53,14 @@ dependencies {
     implementation project(':capacitor-android')
     implementation project(':capacitor-push-notifications')
     implementation project(':capacitor-splash-screen')
+    
+    // Add Firebase Messaging for push notifications
+    implementation 'com.google.firebase:firebase-messaging:23.3.1'
+    
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+// Apply the Google services plugin (at the bottom)
+apply plugin: 'com.google.gms.google-services'

@@ -40,14 +40,24 @@ function App() {
     return () => cleanupVersionTracking();
   }, []);
 
-  // Initialize push notifications for native platforms
+  // Initialize push notifications for native platforms with error handling
   useEffect(() => {
-    if (isNativePlatform()) {
-      console.log('Initializing push notifications...');
-      pushNotificationService.register().catch(err => {
-        console.error('Error initializing push notifications:', err);
-      });
-    }
+    const initializePushNotifications = async () => {
+      if (isNativePlatform()) {
+        try {
+          console.log('Initializing push notifications...');
+          await pushNotificationService.register();
+        } catch (err) {
+          // Silently handle errors to prevent app crashes
+          console.error('Error initializing push notifications (handled):', err);
+        }
+      }
+    };
+    
+    // Small delay to ensure app is fully loaded
+    setTimeout(() => {
+      initializePushNotifications();
+    }, 1000);
   }, []);
 
   // Hide the splash screen after the app is fully loaded and rendered

@@ -20,13 +20,20 @@ export const useNotifications = () => {
   const { toast } = useToast();
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // Initialize push notifications on mobile devices
+  // Initialize push notifications on mobile devices with error handling
   useEffect(() => {
-    if (isNativePlatform()) {
-      pushNotificationService.register().catch(err => {
-        console.error("Error registering for push notifications:", err);
-      });
-    }
+    const initPushNotifications = async () => {
+      if (isNativePlatform()) {
+        try {
+          await pushNotificationService.register();
+        } catch (err) {
+          // Silently handle errors to prevent app crashes
+          console.error('Error registering for push notifications (handled):', err);
+        }
+      }
+    };
+    
+    initPushNotifications();
   }, []);
 
   // Fetch notifications
