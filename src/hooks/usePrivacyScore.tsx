@@ -7,10 +7,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useAddressData } from "@/components/address/hooks/useAddressData";
 import { URLStatusStep } from "@/types/url-management";
 import { useSiteStatusBadge } from "@/utils/siteStatusUtils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const usePrivacyScore = () => {
   const { incomingUrls } = useIncomingUrls();
   const { addressData } = useAddressData();
+  const { language } = useLanguage();
   const siteStatusBadge = useSiteStatusBadge([
     'Eniro',
     'Mrkoll',
@@ -23,6 +25,7 @@ export const usePrivacyScore = () => {
 
   const calculateScore = () => {
     console.log('Calculating privacy score with new weights');
+    console.log('Site status badge:', siteStatusBadge);
 
     // Initialize base scores
     let scores = {
@@ -32,9 +35,13 @@ export const usePrivacyScore = () => {
       address: 0     // Adresslarm - 25% if active
     };
 
-    // Check Upplysningssidor status
-    if (siteStatusBadge.variant === 'green' && siteStatusBadge.text === 'Dold') {
+    // Check Upplysningssidor status - fix to handle both English and Swedish versions of "Dold"
+    if (siteStatusBadge.variant === 'green' && 
+        (siteStatusBadge.text === 'Dold' || siteStatusBadge.text === 'Hidden')) {
       scores.sites = 25;
+      console.log('Site status is green and hidden, adding 25 points');
+    } else {
+      console.log('Site status is not qualifying for points:', siteStatusBadge);
     }
 
     // Check URLs status
