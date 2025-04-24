@@ -1,3 +1,4 @@
+
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
@@ -7,11 +8,15 @@ import { useAddressData } from "@/components/address/hooks/useAddressData";
 import { URLStatusStep } from "@/types/url-management";
 import { useSiteStatusBadge } from "@/utils/siteStatusUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 export const usePrivacyScore = () => {
   const { incomingUrls } = useIncomingUrls();
   const { addressData } = useAddressData();
   const { language } = useLanguage();
+  const { userProfile } = useUserProfile();
+  
+  // Ensure we're using the same userId as in the UI components
   const siteStatusBadge = useSiteStatusBadge([
     'Eniro',
     'Mrkoll',
@@ -20,7 +25,7 @@ export const usePrivacyScore = () => {
     'Ratsit',
     'Birthday',
     'Upplysning'
-  ]);
+  ], userProfile?.id);
 
   const calculateScore = () => {
     console.log('Calculating privacy score with new weights');
