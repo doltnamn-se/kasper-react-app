@@ -1,4 +1,3 @@
-
 import { useGuideData } from "@/hooks/useGuideData";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
@@ -35,11 +34,10 @@ export const usePrivacyScore = () => {
       address: 0     // Adresslarm - 25% if active
     };
 
-    // Check Upplysningssidor status - fix to handle both English and Swedish versions of "Dold"
-    if (siteStatusBadge.variant === 'green' && 
-        (siteStatusBadge.text === 'Dold' || siteStatusBadge.text === 'Hidden')) {
+    // Check Upplysningssidor status based on the badge variant
+    if (siteStatusBadge.variant === 'green') {
       scores.sites = 25;
-      console.log('Site status is green and hidden, adding 25 points');
+      console.log('Site status is green, adding 25 points');
     } else {
       console.log('Site status is not qualifying for points:', siteStatusBadge);
     }
