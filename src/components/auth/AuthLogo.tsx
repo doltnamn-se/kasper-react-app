@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -43,7 +44,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
 
   if (isAuthRoute) {
     return (
-      <div className={`relative h-16 w-auto ${centered ? 'mx-auto' : ''}`} {...props}>
+      <div className={`relative h-16 w-auto flex justify-center ${centered ? 'mx-auto' : ''}`} {...props}>
         <img 
           src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
           alt="Logo" 
