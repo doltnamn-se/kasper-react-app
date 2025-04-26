@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -7,6 +6,7 @@ interface AuthLogoProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   centered?: boolean;
 }
+
 export const AuthLogo: React.FC<AuthLogoProps> = ({
   className,
   centered = false,
@@ -37,8 +37,26 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
     return () => observer.disconnect();
   }, []);
 
+  const isAuthRoute = location.pathname.startsWith('/auth');
   const isAdminRoute = location.pathname.startsWith('/admin');
   const logoHeight = isMobile ? 'h-8' : 'h-12';
+
+  if (isAuthRoute) {
+    return (
+      <div className={`relative h-16 w-auto ${centered ? 'mx-auto' : ''}`} {...props}>
+        <img 
+          src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
+          alt="Logo" 
+          className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
+        />
+        <img 
+          src="/lovable-uploads/digitaltskydd.se-logo-white-auth.svg" 
+          alt="Logo" 
+          className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
+        />
+      </div>
+    );
+  }
 
   return (
     <div 
