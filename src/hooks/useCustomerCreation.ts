@@ -10,7 +10,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const [formData, setFormData] = useState<CustomerFormData>({
     email: "",
     displayName: "",
-    subscriptionPlan: "1_month",
+    subscriptionPlan: "3_months", // Updated default to 3_months
     customerType: "private",
     hasAddressAlert: true
   });

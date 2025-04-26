@@ -559,7 +559,12 @@ export type Database = {
         | "mrkoll"
         | "upplysning"
       presence_status: "online" | "offline" | "device_type"
-      subscription_plan: "1_month" | "6_months" | "12_months" | "24_months"
+      subscription_plan:
+        | "1_month"
+        | "6_months"
+        | "12_months"
+        | "24_months"
+        | "3_months"
       url_status_step:
         | "received"
         | "case_started"
@@ -692,7 +697,13 @@ export const Constants = {
         "upplysning",
       ],
       presence_status: ["online", "offline", "device_type"],
-      subscription_plan: ["1_month", "6_months", "12_months", "24_months"],
+      subscription_plan: [
+        "1_month",
+        "6_months",
+        "12_months",
+        "24_months",
+        "3_months",
+      ],
       url_status_step: [
         "received",
         "case_started",
