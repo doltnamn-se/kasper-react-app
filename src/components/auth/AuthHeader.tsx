@@ -3,7 +3,7 @@ import { AuthLogo } from "./AuthLogo";
 
 export const AuthHeader = () => {
   return (
-    <div className="text-center flex justify-center">
+    <div className="w-full flex justify-center items-center">
       <AuthLogo centered />
     </div>
   );
