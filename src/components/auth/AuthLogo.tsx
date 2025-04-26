@@ -45,7 +45,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   if (isAuthRoute) {
     return (
       <div className="flex justify-center w-full">
-        <div className="relative h-16 w-auto">
+        <div className="relative h-16 w-64">
           <img 
             src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
             alt="Logo" 
