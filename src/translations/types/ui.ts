@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -11,11 +12,13 @@ export interface UITranslations {
   'link.to.removal': string;
   'subscription.active': string;
   'subscription.1month': string;
+  'subscription.3months': string;
   'subscription.6months': string;
   'subscription.12months': string;
   'subscription.24months': string;
   'subscription.none': string;
   'subscription.tooltip.1month': string;
+  'subscription.tooltip.3months': string;
   'subscription.tooltip.6months': string;
   'subscription.tooltip.12months': string;
   'subscription.tooltip.24months': string;

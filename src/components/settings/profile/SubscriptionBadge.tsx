@@ -13,6 +13,8 @@ export const SubscriptionBadge = ({ plan }: SubscriptionBadgeProps) => {
     switch(plan) {
       case '1_month':
         return t('subscription.1month');
+      case '3_months':
+        return t('subscription.3months');
       case '6_months':
         return t('subscription.6months');
       case '12_months':
