@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -44,16 +43,16 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
 
   if (isAuthRoute) {
     return (
-      <div className={`relative h-16 w-auto flex items-center justify-center ${centered ? 'mx-auto' : ''}`} {...props}>
+      <div className={`relative h-16 w-auto ${centered ? 'mx-auto' : ''}`} {...props}>
         <img 
           src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
           alt="Logo" 
-          className={`h-16 w-auto absolute transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
+          className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
         />
         <img 
           src="/lovable-uploads/digitaltskydd.se-logo-white-auth.svg" 
           alt="Logo" 
-          className={`h-16 w-auto absolute transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
+          className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
         />
       </div>
     );
