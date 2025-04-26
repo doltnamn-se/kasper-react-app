@@ -1,3 +1,4 @@
+
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,6 +19,8 @@ export const getColumns = (
     switch(plan) {
       case '1_month':
         return t('subscription.1month');
+      case '3_months':
+        return t('subscription.3months');
       case '6_months':
         return t('subscription.6months');
       case '12_months':

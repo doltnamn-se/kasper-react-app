@@ -28,7 +28,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     setFormData({
       email: "",
       displayName: "",
-      subscriptionPlan: "1_month",
+      subscriptionPlan: "3_months", // Update here as well
       customerType: "private",
       hasAddressAlert: true
     });

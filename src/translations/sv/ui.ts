@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -13,11 +14,13 @@ export const ui: UITranslations = {
   'link.to.removal': 'Länk till borttagningssida',
   'subscription.active': 'Aktiv',
   'subscription.1month': '1 Mån',
+  'subscription.3months': '3 Mån',
   'subscription.6months': '6 Mån',
   'subscription.12months': '12 Mån',
   'subscription.24months': '24 Mån',
   'subscription.none': 'Ingen plan',
   'subscription.tooltip.1month': 'Månadsabonnemang',
+  'subscription.tooltip.3months': 'Tremånadersabonnemang',
   'subscription.tooltip.6months': 'Halvårsabonnemang',
   'subscription.tooltip.12months': 'Årsabonnemang',
   'subscription.tooltip.24months': '24 Månadsabonnemang',
