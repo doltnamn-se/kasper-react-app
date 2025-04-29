@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,7 +6,7 @@ import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
 import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 import { Button } from "@/components/ui/button";
-import { Link2, Link2Off, ArrowRight } from "lucide-react";
+import { Link2, Link2Off } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
@@ -151,30 +150,15 @@ const Deindexing = () => {
               </TabsList>
 
               <div className="flex flex-col items-end">
-                <div className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
-                  {language === 'sv' 
-                    ? `${usedUrls} av ${urlLimit} använda`
-                    : `${usedUrls} out of ${urlLimit} used`}
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="default" 
-                    className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                    disabled={hasReachedLimit}
-                    onClick={handleNewLinkClick}
-                  >
-                    {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
-                    {language === 'sv' ? 'Ny länk' : 'New link'}
-                  </Button>
-                  <Button
-                    variant="default"
-                    className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                    onClick={() => window.open('https://buy.stripe.com/7sI00ZdkU1i11A4eV2', '_blank')}
-                  >
-                    <span>{language === 'sv' ? 'Lägg till' : 'Add more'}</span>
-                    <ArrowRight className="h-4 w-4 -rotate-45" />
-                  </Button>
-                </div>
+                <Button 
+                  variant="default" 
+                  className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+                  disabled={hasReachedLimit}
+                  onClick={handleNewLinkClick}
+                >
+                  {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+                  {language === 'sv' ? 'Ny länk' : 'New link'}
+                </Button>
               </div>
             </div>
           </div>
