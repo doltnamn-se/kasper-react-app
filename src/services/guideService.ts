@@ -1,4 +1,5 @@
 
+
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const useGuideService = () => {
@@ -41,7 +42,7 @@ export const useGuideService = () => {
       'ratsit': {
         title: t('guide.ratsit.title'),
         steps: [
-          { text: 'https://www.ratsit.se/redigera/dolj' },
+          { text: 'https://www.ratsit.se/tabort' },
           { text: t('guide.ratsit.step1') },
           { text: t('guide.ratsit.step2') }
         ]
