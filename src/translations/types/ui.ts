@@ -128,4 +128,7 @@ export interface UITranslations {
   'warning.admin.notification': string;
   'notification.status.update.title': string;
   'notification.status.update.message': string;
+  'deindexing.title': string;
+  'deindexing.need.more': string;
+  'unlimited': string;
 }

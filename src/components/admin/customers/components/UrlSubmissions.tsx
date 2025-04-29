@@ -8,6 +8,10 @@ interface UrlSubmissionsProps {
 
 export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps) => {
   const { t } = useLanguage();
+  
+  // Check if the user has unlimited URLs (very high number)
+  const isUnlimited = totalUrlLimit > 10000;
+  const displayLimit = isUnlimited ? t('unlimited') : totalUrlLimit.toString();
 
   return (
     <div>
@@ -24,7 +28,7 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
         <p className="text-xs font-medium flex justify-between">
           <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('urls.available')}</span>
           <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {usedUrls} / {totalUrlLimit}
+            {isUnlimited ? displayLimit : `${usedUrls} / ${displayLimit}`}
           </span>
         </p>
       </div>

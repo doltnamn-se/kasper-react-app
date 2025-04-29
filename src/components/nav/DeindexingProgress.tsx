@@ -49,7 +49,8 @@ export const DeindexingProgress = () => {
   });
 
   const urlLimit = urlLimits?.additional_urls || 0;
-  const progressPercentage = (usedUrls / (urlLimit || 1)) * 100;
+  const isUnlimited = urlLimit > 10000;
+  const progressPercentage = isUnlimited ? 100 : (usedUrls / (urlLimit || 1)) * 100;
 
   return (
     <div className="mt-6">
@@ -85,16 +86,16 @@ export const DeindexingProgress = () => {
             {t('deindexing.title')}
           </h3>
           <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {language === 'sv' 
-              ? `${usedUrls} av ${urlLimit}` 
-              : `${usedUrls} out of ${urlLimit}`}
+            {isUnlimited 
+              ? (language === 'sv' ? `${usedUrls} av ${t('unlimited')}` : `${usedUrls} out of ${t('unlimited')}`)
+              : (language === 'sv' ? `${usedUrls} av ${urlLimit}` : `${usedUrls} out of ${urlLimit}`)}
           </span>
         </div>
         
         <Progress 
           value={progressPercentage} 
           className="h-2.5 bg-[#e8e8e5] dark:bg-[#2f2e31] rounded-full overflow-hidden" 
-          indicatorClassName="progress-indicator rounded-full"
+          indicatorClassName={`progress-indicator rounded-full ${isUnlimited ? 'bg-gradient-to-r from-green-400 to-green-600' : ''}`}
         />
         
         <div className="flex items-center gap-1 mt-4 text-xs">
