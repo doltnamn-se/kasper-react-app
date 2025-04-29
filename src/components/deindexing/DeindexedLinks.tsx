@@ -1,13 +1,6 @@
 
 import { useLanguage } from "@/contexts/LanguageContext";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Separator } from "@/components/ui/separator";
 import { Link2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -56,17 +49,6 @@ export const DeindexedLinks = () => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
-  const calculateLeadTime = (statusHistory: URLStatusHistory[]) => {
-    const startDate = new Date(statusHistory[0]?.timestamp || '');
-    const endDate = statusHistory[statusHistory.length - 1]?.timestamp;
-    
-    if (!endDate) return '';
-
-    return formatDistanceStrict(new Date(endDate), startDate, {
-      locale: language === 'sv' ? sv : enUS,
-    });
-  };
-
   const getRemovalDate = (statusHistory: URLStatusHistory[]) => {
     const removalEntry = statusHistory.find(entry => entry.status === 'removal_approved');
     if (!removalEntry) return '';
@@ -80,7 +62,16 @@ export const DeindexedLinks = () => {
     }
   };
 
-  console.log('Component state:', { isLoading, deindexedUrls: sortedUrls });
+  const calculateLeadTime = (statusHistory: URLStatusHistory[]) => {
+    const startDate = new Date(statusHistory[0]?.timestamp || '');
+    const endDate = statusHistory[statusHistory.length - 1]?.timestamp;
+    
+    if (!endDate) return '';
+
+    return formatDistanceStrict(new Date(endDate), startDate, {
+      locale: language === 'sv' ? sv : enUS,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -102,48 +93,49 @@ export const DeindexedLinks = () => {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="w-[250px] h-14">{t('deindexing.url')}</TableHead>
-            <TableHead className="h-14">
-              {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
-            </TableHead>
-            <TableHead className="w-[150px] h-14">
-              {language === 'sv' ? 'Ledtid' : 'Lead time'}
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedUrls.map((url) => (
-            <TableRow key={url.id} className="hover:bg-transparent">
-              <TableCell className="font-medium w-[250px] max-w-[250px] py-6">
-                <a 
-                  href={url.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
-                  title={url.url}
-                >
-                  <Link2 className="h-3 w-3 flex-shrink-0" />
-                  <span className="truncate">{url.url}</span>
-                </a>
-              </TableCell>
-              <TableCell className="py-6">
-                <span className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">
-                  {getRemovalDate(url.status_history as URLStatusHistory[])}
-                </span>
-              </TableCell>
-              <TableCell className="py-6">
+    <div className="space-y-4">
+      {sortedUrls.map((url, index) => (
+        <div key={url.id}>
+          <div className="grid grid-cols-3 gap-4 py-4">
+            <div className="space-y-2">
+              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                {t('deindexing.url')}
+              </p>
+              <a 
+                href={url.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
+                title={url.url}
+              >
+                <Link2 className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{url.url}</span>
+              </a>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
+              </p>
+              <p className="text-xs text-[#000000] dark:text-white capitalize">
+                {getRemovalDate(url.status_history as URLStatusHistory[])}
+              </p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                {language === 'sv' ? 'Ledtid' : 'Lead time'}
+              </p>
+              <p className="text-xs">
                 <span className="bg-badge-subscription-bg dark:bg-badge-subscription-bg-dark text-badge-subscription-text hover:bg-badge-subscription-bg dark:hover:bg-badge-subscription-bg-dark px-3 py-1.5 rounded-full text-xs font-semibold">
                   {calculateLeadTime(url.status_history as URLStatusHistory[])}
                 </span>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+              </p>
+            </div>
+          </div>
+          {index < sortedUrls.length - 1 && (
+            <Separator className="bg-[#ededed] dark:bg-[#242424]" />
+          )}
+        </div>
+      ))}
     </div>
   );
 };
