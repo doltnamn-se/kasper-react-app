@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -108,7 +109,8 @@ const Deindexing = () => {
   }, [language]);
 
   const urlLimit = urlLimits?.additional_urls || 0;
-  const hasReachedLimit = usedUrls >= urlLimit;
+  // Updated logic to consider URL limit of 0 as having reached the limit
+  const hasReachedLimit = urlLimit === 0 || usedUrls >= urlLimit;
   const isAdmin = profile?.role === 'super_admin';
 
   const handleNewLinkClick = () => {
@@ -151,8 +153,12 @@ const Deindexing = () => {
 
               <div className="flex flex-col items-end">
                 <Button 
-                  variant="default" 
-                  className="h-10 flex items-center gap-2 bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+                  variant={hasReachedLimit ? "outline" : "default"}
+                  className={`h-10 flex items-center gap-2 ${
+                    hasReachedLimit 
+                      ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed" 
+                      : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
+                  }`}
                   disabled={hasReachedLimit}
                   onClick={handleNewLinkClick}
                 >
