@@ -96,7 +96,7 @@ export const DeindexedLinks = () => {
     <div className="space-y-4">
       {sortedUrls.map((url, index) => (
         <div key={url.id}>
-          <div className="grid grid-cols-3 gap-4 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
             <div className="space-y-2">
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                 {t('deindexing.url')}
