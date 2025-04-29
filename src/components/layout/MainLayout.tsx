@@ -39,7 +39,7 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
           <AuthLogo className="relative h-8" />
         </div>
 
-        <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
+        {/* Removed border/separator line that was here */}
 
         <div className="px-6">
           <Navigation />
@@ -62,7 +62,7 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
             <AuthLogo className="relative h-8" />
           </div>
 
-          <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
+          {/* Removed border/separator line that was here */}
 
           <div className="px-6">
             <Navigation />
