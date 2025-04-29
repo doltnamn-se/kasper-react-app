@@ -39,7 +39,8 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
           <AuthLogo className="relative h-8" />
         </div>
 
-        {/* Removed border/separator line that was here */}
+        {/* Restored border/separator line here */}
+        <div className="border-b border-[#e5e7eb] dark:border-[#232325]"></div>
 
         <div className="px-6">
           <Navigation />
@@ -62,7 +63,8 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
             <AuthLogo className="relative h-8" />
           </div>
 
-          {/* Removed border/separator line that was here */}
+          {/* Restored border/separator line here */}
+          <div className="border-b border-[#e5e7eb] dark:border-[#232325]"></div>
 
           <div className="px-6">
             <Navigation />
