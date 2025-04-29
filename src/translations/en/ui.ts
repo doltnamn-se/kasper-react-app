@@ -129,5 +129,9 @@ export const ui: UITranslations = {
   'warning': 'Warning',
   'warning.admin.notification': 'Could not notify admin about this change',
   'notification.status.update.title': 'Link status updated',
-  'notification.status.update.message': 'The process has progressed for one or more of your links. Log in to your account to see more.'
+  'notification.status.update.message': 'The process has progressed for one or more of your links. Log in to your account to see more.',
+  // Adding the missing translations
+  'deindexing.title': 'Deindexing Progress',
+  'deindexing.need.more': 'Need more URLs?',
+  'unlimited': 'Unlimited'
 };
