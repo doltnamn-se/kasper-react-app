@@ -1,5 +1,5 @@
-
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { DeindexingProgress } from "./DeindexingProgress";
 import { ProfileSection } from "./profile/ProfileSection";
 import { NavigationLinks } from "./navigation/NavigationLinks";
 import { useAdminCheck } from "./hooks/useAdminCheck";
@@ -40,6 +40,7 @@ export const MainNavigation = ({ toggleMobileMenu }: MainNavigationProps) => {
         unreadCounts={unreadCounts}
         toggleMobileMenu={toggleMobileMenu}
       />
+      <DeindexingProgress />
     </>
   );
 };
