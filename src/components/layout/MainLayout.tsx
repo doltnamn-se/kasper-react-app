@@ -36,7 +36,7 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
       {/* Sidebar - Desktop */}
       <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0 z-[1000]">
         <div className="px-8 py-6">
-          <AuthLogo className="relative h-8" />
+          <AuthLogo className="w-full h-auto" />
         </div>
 
         <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />

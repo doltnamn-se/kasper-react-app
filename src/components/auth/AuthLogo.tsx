@@ -81,14 +81,14 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       ) : (
         <>
           <img 
-            src="/lovable-uploads/digitaltskydd.se-app-logo-dark.svg" 
+            src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
             alt="Logo" 
-            className={`${logoHeight} w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
+            className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
           />
           <img 
-            src="/lovable-uploads/digitaltskydd.se-app-logo-white.svg" 
+            src="/lovable-uploads/digitaltskydd.se-logo-white-auth.svg" 
             alt="Logo" 
-            className={`${logoHeight} w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
+            className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
           />
         </>
       )}
