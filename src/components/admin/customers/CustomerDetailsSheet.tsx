@@ -24,11 +24,15 @@ interface CustomerDetailsSheetProps {
 }
 
 export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetailsSheetProps) => {
+  // Always call hooks at the top level, regardless of whether customer is null or not
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const { t } = useLanguage();
-  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customer);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [additionalUrls, setAdditionalUrls] = useState<string>("");
+  const [additionalUrls, setAdditionalUrls] = useState<string>("0");
+  
+  // Use empty ID if customer is null to prevent hook conditionally
+  const customerId = customer?.id || "";
+  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customerId);
 
   const {
     isUpdating,
@@ -37,16 +41,16 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleUpdateUrlLimits,
     handleResendActivationEmail,
     handleDeleteUser
-  } = useCustomerActions(customer?.id, () => onOpenChange(false));
+  } = useCustomerActions(customerId || "", () => onOpenChange(false));
 
   useEffect(() => {
     const fetchUrlLimits = async () => {
-      if (!customer?.id) return;
+      if (!customerId) return;
       
       const { data, error } = await supabase
         .from('user_url_limits')
         .select('additional_urls')
-        .eq('customer_id', customer.id)
+        .eq('customer_id', customerId)
         .maybeSingle();
       
       if (error) {
@@ -56,11 +60,15 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       
       if (data) {
         setAdditionalUrls(data.additional_urls.toString());
+      } else {
+        setAdditionalUrls("0");
       }
     };
 
-    fetchUrlLimits();
-  }, [customer?.id]);
+    if (customerId) {
+      fetchUrlLimits();
+    }
+  }, [customerId]);
 
   useEffect(() => {
     const checkSuperAdmin = async () => {
@@ -80,12 +88,14 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   };
 
   const handleUrlLimitsUpdate = async () => {
+    if (!customerId) return;
     const success = await handleUpdateUrlLimits(additionalUrls);
     if (success) {
       refetchData();
     }
   };
 
+  // Return null early but AFTER all hooks have been called
   if (!customer) return null;
 
   const isOnline = customer.id ? onlineUsers.has(customer.id) : false;
@@ -152,7 +162,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
                   <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
                   
-                  {/* Add the new SiteStatusManager component */}
                   <SiteStatusManager customerId={customer.id} />
 
                   <ChecklistProgress 
