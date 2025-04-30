@@ -1,7 +1,6 @@
-
 import { UITranslations } from '../types/ui';
 
-export const ui: UITranslations = {
+export const ui = {
   'cancel': 'Cancel',
   'loading': 'Loading...',
   'success': 'Success',
@@ -130,8 +129,8 @@ export const ui: UITranslations = {
   'warning.admin.notification': 'Could not notify admin about this change',
   'notification.status.update.title': 'Link status updated',
   'notification.status.update.message': 'The process has progressed for one or more of your links. Log in to your account to see more.',
-  // Adding the missing translations
   'deindexing.title': 'Deindexing Progress',
   'deindexing.need.more': 'Need more URLs?',
-  'unlimited': 'Unlimited'
-};
+  'unlimited': 'Unlimited',
+  'back': 'Back'
+} as const;

@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -133,5 +132,6 @@ export const ui: UITranslations = {
   // Adding the missing translations in Swedish
   'deindexing.title': 'Avindexeringsstatus',
   'deindexing.need.more': 'Behöver du fler URLer?',
-  'unlimited': 'Obegränsad'
-};
+  'unlimited': 'Obegränsad',
+  'back': 'Tillbaka'
+} as const;
