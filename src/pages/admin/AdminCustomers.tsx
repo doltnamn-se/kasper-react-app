@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerTable } from "@/components/admin/customers/CustomerTable";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
-import { CustomerView } from "@/components/admin/customers/CustomerView";
+import { CustomerDetailsSheet } from "@/components/admin/customers/CustomerDetailsSheet";
 import { CustomerWithProfile } from "@/types/customer";
 import { useState } from "react";
 
@@ -17,8 +17,10 @@ const AdminCustomers = () => {
     setSelectedCustomer(customer);
   };
 
-  const handleBack = () => {
-    setSelectedCustomer(null);
+  const handleSheetClose = (open: boolean) => {
+    if (!open) {
+      setSelectedCustomer(null);
+    }
   };
 
   return (
@@ -36,11 +38,6 @@ const AdminCustomers = () => {
           <p className="text-gray-600 dark:text-gray-300 text-center py-8">
             No customers found.
           </p>
-        ) : selectedCustomer ? (
-          <CustomerView 
-            customer={selectedCustomer}
-            onBack={handleBack}
-          />
         ) : (
           <CustomerTable 
             customers={customers}
@@ -51,6 +48,11 @@ const AdminCustomers = () => {
           />
         )}
       </div>
+      
+      <CustomerDetailsSheet 
+        customer={selectedCustomer} 
+        onOpenChange={handleSheetClose} 
+      />
     </div>
   );
 };
