@@ -16,6 +16,7 @@ import { getColumns } from "./CustomerTableColumns";
 import { textFilterFn } from "./customerTableUtils";
 import { CustomerTableHeader } from "./CustomerTableHeader";
 import { CustomerTableBody } from "./CustomerTableBody";
+import { CustomerDetailsSheet } from "./CustomerDetailsSheet";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -26,22 +27,16 @@ interface CustomerTableProps {
   onlineUsers: Set<string>;
   lastSeen: Record<string, string>;
   onRefresh: () => void;
-  onSelectCustomer: (customer: CustomerWithProfile) => void;
 }
 
-export const CustomerTable = ({ 
-  customers, 
-  onlineUsers, 
-  lastSeen, 
-  onRefresh,
-  onSelectCustomer 
-}: CustomerTableProps) => {
+export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: CustomerTableProps) => {
   const { t } = useLanguage();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
   const [{ pageIndex, pageSize }, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -81,7 +76,7 @@ export const CustomerTable = ({
 
   const handleRowClick = (customer: CustomerWithProfile, isCheckboxCell: boolean) => {
     if (!isCheckboxCell) {
-      onSelectCustomer(customer);
+      setSelectedCustomer(customer);
     }
   };
 
@@ -157,6 +152,11 @@ export const CustomerTable = ({
           </Button>
         </div>
       </div>
+
+      <CustomerDetailsSheet 
+        customer={selectedCustomer}
+        onOpenChange={() => setSelectedCustomer(null)}
+      />
     </div>
   );
 };

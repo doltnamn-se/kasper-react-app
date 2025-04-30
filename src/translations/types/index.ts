@@ -1,9 +1,8 @@
-
 import { AuthTranslations } from './auth';
 import { NavigationTranslations } from './navigation';
 import { ErrorTranslations } from './errors';
 import { FeaturesTranslations } from './features';
-import { UiTranslations } from './ui';
+import { UITranslations } from './ui';
 
 export type Language = 'en' | 'sv';
 
@@ -12,4 +11,4 @@ export interface Translations extends
   NavigationTranslations,
   ErrorTranslations,
   FeaturesTranslations,
-  UiTranslations {}
+  UITranslations {}

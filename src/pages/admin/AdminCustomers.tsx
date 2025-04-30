@@ -3,25 +3,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerTable } from "@/components/admin/customers/CustomerTable";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
-import { CustomerDetailsSheet } from "@/components/admin/customers/CustomerDetailsSheet";
-import { CustomerWithProfile } from "@/types/customer";
-import { useState } from "react";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
   const { customers, isLoading, fetchCustomers } = useCustomers();
   const { onlineUsers, lastSeen } = useCustomerPresence();
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
-
-  const handleSelectCustomer = (customer: CustomerWithProfile) => {
-    setSelectedCustomer(customer);
-  };
-
-  const handleSheetClose = (open: boolean) => {
-    if (!open) {
-      setSelectedCustomer(null);
-    }
-  };
 
   return (
     <div>
@@ -44,15 +30,9 @@ const AdminCustomers = () => {
             onlineUsers={onlineUsers}
             lastSeen={lastSeen}
             onRefresh={fetchCustomers}
-            onSelectCustomer={handleSelectCustomer}
           />
         )}
       </div>
-      
-      <CustomerDetailsSheet 
-        customer={selectedCustomer} 
-        onOpenChange={handleSheetClose} 
-      />
     </div>
   );
 };
