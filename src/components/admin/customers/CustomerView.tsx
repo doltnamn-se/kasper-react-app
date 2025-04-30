@@ -27,7 +27,7 @@ interface CustomerViewProps {
 export const CustomerView = ({ customer, onBack }: CustomerViewProps) => {
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const { t } = useLanguage();
-  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customer);
+  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customer.id);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("");
 
