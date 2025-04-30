@@ -29,10 +29,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("");
   
-  // Return an empty Sheet when no customer is selected
-  if (!customer) return null;
-  
-  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customer);
+  // Always call hooks at the top level, regardless of whether customer exists
+  const customerId = customer?.id || "";
+  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customerId);
   
   const {
     isUpdating,
@@ -41,7 +40,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleUpdateUrlLimits,
     handleResendActivationEmail,
     handleDeleteUser
-  } = useCustomerActions(customer?.id, () => onOpenChange(false));
+  } = useCustomerActions(customerId, () => onOpenChange(false));
+
+  // Return an empty Sheet when no customer is selected
+  if (!customer) {
+    return null;
+  }
 
   useEffect(() => {
     const fetchUrlLimits = async () => {
@@ -97,7 +101,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
   return (
-    <Sheet open={true} onOpenChange={onOpenChange}>
+    <Sheet open={!!customer} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-xl w-full p-0">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
