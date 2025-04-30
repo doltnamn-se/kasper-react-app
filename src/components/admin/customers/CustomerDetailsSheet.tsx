@@ -17,6 +17,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useCustomerActions } from "./hooks/useCustomerActions";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { 
+  Drawer, 
+  DrawerContent
+} from "@/components/ui/drawer";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -29,6 +34,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const { t } = useLanguage();
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("0");
+  const isMobile = useIsMobile();
   
   // Use empty ID if customer is null to prevent hook conditionally
   const customerId = customer?.id || "";
@@ -105,7 +111,15 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
 
   if (isLoading) {
-    return (
+    return isMobile ? (
+      <Drawer open={!!customer} onOpenChange={onOpenChange}>
+        <DrawerContent className="px-4 pb-4 pt-6">
+          <div className="flex items-center justify-center h-20">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+          </div>
+        </DrawerContent>
+      </Drawer>
+    ) : (
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
         <SheetContent side="right" className="sm:max-w-xl w-full p-0">
           <div className="flex items-center justify-center h-full">
@@ -116,63 +130,75 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     );
   }
 
-  return (
+  const customerDetailsContent = (
+    <div className="px-6 py-6">
+      <div className="space-y-8">
+        <div className="space-y-6">
+          <h3 className="text-sm font-semibold text-[#000000] dark:text-white">User Details</h3>
+          <div className="flex flex-col items-start gap-4">
+            <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
+            <CustomerDetails customer={customer} />
+          </div>
+          <CustomerBadges customer={customer} />
+        </div>
+
+        <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
+          <div className="py-4 space-y-6">
+            <AccountInfo 
+              customer={customer}
+              isOnline={isOnline}
+              userLastSeen={userLastSeen}
+              onCopy={handleCopy}
+            />
+            
+            <AdminActions
+              customerId={customer.id}
+              isSuperAdmin={isSuperAdmin}
+              isSendingEmail={isSendingEmail}
+              isUpdating={isUpdating}
+              isDeleting={isDeleting}
+              additionalUrls={additionalUrls}
+              onSendActivationEmail={() => {
+                if (customer.profile?.email && customer.profile?.display_name) {
+                  handleResendActivationEmail(
+                    customer.profile.email,
+                    customer.profile.display_name
+                  );
+                }
+              }}
+              onUpdateUrlLimits={handleUrlLimitsUpdate}
+              onDeleteUser={handleDeleteUser}
+              setAdditionalUrls={setAdditionalUrls}
+            />
+
+            <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+            
+            <SiteStatusManager customerId={customer.id} />
+
+            <ChecklistProgress 
+              progressPercentage={customer.checklist_completed ? 100 : 0}
+              completedSteps={customer.checklist_completed ? 1 : 0}
+              totalSteps={1}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return isMobile ? (
+    <Drawer open={!!customer} onOpenChange={onOpenChange}>
+      <DrawerContent className="px-0 pb-16 max-h-[85vh]">
+        <ScrollArea className="h-full max-h-[85vh] overflow-y-auto">
+          {customerDetailsContent}
+        </ScrollArea>
+      </DrawerContent>
+    </Drawer>
+  ) : (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
         <ScrollArea className="h-full">
-          <div className="px-6 py-6">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <h3 className="text-sm font-semibold text-[#000000] dark:text-white">User Details</h3>
-                <div className="flex flex-col items-start gap-4">
-                  <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
-                  <CustomerDetails customer={customer} />
-                </div>
-                <CustomerBadges customer={customer} />
-              </div>
-
-              <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
-                <div className="py-4 space-y-6">
-                  <AccountInfo 
-                    customer={customer}
-                    isOnline={isOnline}
-                    userLastSeen={userLastSeen}
-                    onCopy={handleCopy}
-                  />
-                  
-                  <AdminActions
-                    customerId={customer.id}
-                    isSuperAdmin={isSuperAdmin}
-                    isSendingEmail={isSendingEmail}
-                    isUpdating={isUpdating}
-                    isDeleting={isDeleting}
-                    additionalUrls={additionalUrls}
-                    onSendActivationEmail={() => {
-                      if (customer.profile?.email && customer.profile?.display_name) {
-                        handleResendActivationEmail(
-                          customer.profile.email,
-                          customer.profile.display_name
-                        );
-                      }
-                    }}
-                    onUpdateUrlLimits={handleUrlLimitsUpdate}
-                    onDeleteUser={handleDeleteUser}
-                    setAdditionalUrls={setAdditionalUrls}
-                  />
-
-                  <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
-                  
-                  <SiteStatusManager customerId={customer.id} />
-
-                  <ChecklistProgress 
-                    progressPercentage={customer.checklist_completed ? 100 : 0}
-                    completedSteps={customer.checklist_completed ? 1 : 0}
-                    totalSteps={1}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          {customerDetailsContent}
         </ScrollArea>
       </SheetContent>
     </Sheet>
