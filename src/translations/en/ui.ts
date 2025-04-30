@@ -1,4 +1,5 @@
-import { UITranslations } from '../types/ui';
+
+import { UiTranslations } from '../types/ui';
 
 export const ui = {
   'cancel': 'Cancel',
