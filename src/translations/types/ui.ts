@@ -1,3 +1,4 @@
+
 export interface UiTranslations {
   "nav.admin.dashboard": string;
   "nav.admin.customers": string;
@@ -97,5 +98,42 @@ export interface UiTranslations {
   "pagination.previous": string;
   "pagination.next": string;
   "customer.details": string;
-  back: string;
+  "back": string;
+  "messages": string;
+  "name": string;
+  "email": string;
+  "plan": string;
+  "checklist": string;
+  "status": string;
+  "completed": string;
+  "in.progress": string;
+  "online": string;
+  "offline": string;
+  "last.seen": string;
+  "sort.descending": string;
+  "sort.ascending": string;
+  "view.all.columns": string;
+  "toggle.columns": string;
+  "add.customer": string;
+  "search.customers.placeholder": string;
+  "account.details": string;
+  "customer.id": string;
+  "created": string;
+  "not.available": string;
+  "url.submissions": string;
+  "total.urls": string;
+  "urls.available": string;
+  "progress": string;
+  "steps": string;
+  "unlimited": string;
+  "subscription.1month": string;
+  "subscription.3months": string;
+  "subscription.6months": string;
+  "subscription.12months": string;
+  "subscription.24months": string;
+  "subscription.none": string;
+  "total.customers": string;
+  "private.customers": string;
+  "business.customers": string;
+  "customers": string;
 }
