@@ -97,7 +97,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </Drawer>
   ) : (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
+      <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden" hideCloseButton={true}>
         <ScrollArea className="h-full">
           <CustomerDetailsContent
             customer={customer}
