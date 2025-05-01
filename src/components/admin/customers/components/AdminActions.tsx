@@ -97,7 +97,7 @@ export const AdminActionButtons = ({
         onClick={() => setShowDeleteDialog(true)}
         variant="outline"
         size="icon"
-        className="text-destructive hover:bg-transparent hover:text-destructive dark:hover:bg-transparent"
+        className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
         title="Delete user"
       >
         <Trash2 className="h-4 w-4" />
