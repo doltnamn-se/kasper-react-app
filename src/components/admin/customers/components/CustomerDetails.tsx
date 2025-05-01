@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
@@ -12,9 +13,9 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // Debug log to see EXACTLY what we're receiving
-  console.log("Raw customer in CustomerDetails:", customer);
-  console.log("Raw customer address in CustomerDetails:", customer.address);
+  // Log the customer object and address for debugging
+  console.log("CustomerDetails: Raw customer object =", customer);
+  console.log("CustomerDetails: Raw address value =", customer.address);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);

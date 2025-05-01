@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -44,12 +43,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Get the address directly from customerData - raw, no processing
+  // Get the address directly from customerData
   const address = customerData?.checklistProgress?.address || null;
   
-  console.log("Customer ID in CustomerDetailsSheet:", customerId);
-  console.log("Raw address in CustomerDetailsSheet:", address);
-  console.log("Full checklistProgress data:", customerData?.checklistProgress);
+  console.log("CustomerDetailsSheet: Customer ID =", customerId);
+  console.log("CustomerDetailsSheet: Raw checklistProgress data =", customerData?.checklistProgress);
+  console.log("CustomerDetailsSheet: Found address =", address);
   
   // Create a complete customer object with address included
   const customerWithAddress = {
@@ -83,7 +82,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   };
 
   // Log the final customer object being passed to CustomerDetailsContent
-  console.log("Final customer object passed to content:", customerWithAddress);
+  console.log("CustomerDetailsSheet: Final customer object =", customerWithAddress);
 
   return isMobile ? (
     <Drawer open={!!customer} onOpenChange={onOpenChange}>
