@@ -1,3 +1,4 @@
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
@@ -32,7 +33,7 @@ export const SubscriptionPlanSelect = ({
           <SelectTrigger className="w-[140px] h-8 text-xs font-medium">
             <SelectValue placeholder={t('subscription.select')} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="text-xs">
             <SelectItem value="none">{t('subscription.none')}</SelectItem>
             <SelectItem value="1_month">{t('subscription.1month')}</SelectItem>
             <SelectItem value="3_months">{t('subscription.3months')}</SelectItem>

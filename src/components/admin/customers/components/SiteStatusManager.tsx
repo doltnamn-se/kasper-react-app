@@ -150,7 +150,7 @@ export function SiteStatusManager({
                 <SelectTrigger className="w-[140px] h-8 text-xs font-medium">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="text-xs">
                   {statusOptions.map(option => <SelectItem key={option.value} value={option.value} className="text-xs">
                       {option.label}
                     </SelectItem>)}
