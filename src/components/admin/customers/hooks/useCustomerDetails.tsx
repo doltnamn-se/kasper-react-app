@@ -88,6 +88,12 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
       setIsRefreshing(false);
     }
   };
+  
+  const handleBanUser = () => {
+    toast.info('Ban functionality', {
+      description: 'Ban user functionality will be implemented soon'
+    });
+  };
 
   const isOnline = onlineUsers.has(customerId);
   const userLastSeen = lastSeen[customerId] || null;
@@ -112,6 +118,7 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     handleUrlLimitsUpdate,
     handleResendActivationEmail,
     handleDeleteUser,
+    handleBanUser,
     refetchData: handleRefresh
   };
 };

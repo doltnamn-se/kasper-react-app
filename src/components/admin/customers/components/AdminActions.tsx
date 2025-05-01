@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Trash, RefreshCw } from "lucide-react";
+import { Send, Trash, RefreshCw, Ban } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -76,13 +76,15 @@ export const AdminActionButtons = ({
   onSendActivationEmail,
   setShowDeleteDialog,
   onRefreshData,
-  isRefreshing = false
+  isRefreshing = false,
+  onBanUser
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
   setShowDeleteDialog: (show: boolean) => void;
   onRefreshData?: () => void;
   isRefreshing?: boolean;
+  onBanUser?: () => void;
 }) => {
   return (
     <div className="absolute right-6 top-6 flex gap-2">
@@ -110,6 +112,18 @@ export const AdminActionButtons = ({
         <Send className="h-4 w-4" />
       </Button>
       
+      {onBanUser && (
+        <Button
+          onClick={onBanUser}
+          variant="outline"
+          size="icon"
+          title="Ban user"
+          className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+        >
+          <Ban className="h-4 w-4" />
+        </Button>
+      )}
+      
       <Button
         onClick={() => setShowDeleteDialog(true)}
         variant="outline"
@@ -122,3 +136,4 @@ export const AdminActionButtons = ({
     </div>
   );
 };
+

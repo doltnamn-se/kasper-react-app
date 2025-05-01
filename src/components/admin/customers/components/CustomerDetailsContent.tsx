@@ -27,6 +27,7 @@ interface CustomerDetailsContentProps {
   onSendActivationEmail: () => void;
   onUpdateUrlLimits: () => void;
   onDeleteUser: () => void;
+  onBanUser?: () => void;
   setAdditionalUrls: (urls: string) => void;
   onRefresh?: () => void;
   isRefreshing?: boolean;
@@ -47,6 +48,7 @@ export const CustomerDetailsContent = ({
   onSendActivationEmail,
   onUpdateUrlLimits,
   onDeleteUser,
+  onBanUser,
   setAdditionalUrls,
   onRefresh,
   isRefreshing = false
@@ -96,6 +98,7 @@ export const CustomerDetailsContent = ({
           setShowDeleteDialog={setShowDeleteDialog}
           onRefreshData={onRefresh}
           isRefreshing={isRefreshing}
+          onBanUser={onBanUser}
         />
       )}
       
@@ -157,3 +160,4 @@ export const CustomerDetailsContent = ({
     </div>
   );
 };
+

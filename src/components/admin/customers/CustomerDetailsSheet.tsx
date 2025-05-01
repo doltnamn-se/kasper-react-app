@@ -39,6 +39,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleUrlLimitsUpdate,
     handleResendActivationEmail,
     handleDeleteUser,
+    handleBanUser,
     refetchData
   } = useCustomerDetails(customerId, onOpenChange);
 
@@ -85,6 +86,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             onSendActivationEmail={handleActivationEmail}
             onUpdateUrlLimits={handleUrlLimitsUpdate}
             onDeleteUser={handleDeleteUser}
+            onBanUser={handleBanUser}
             setAdditionalUrls={setAdditionalUrls}
             onRefresh={refetchData}
             isRefreshing={isRefreshing}
@@ -118,6 +120,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             onSendActivationEmail={handleActivationEmail}
             onUpdateUrlLimits={handleUrlLimitsUpdate}
             onDeleteUser={handleDeleteUser}
+            onBanUser={handleBanUser}
             setAdditionalUrls={setAdditionalUrls}
             onRefresh={refetchData}
             isRefreshing={isRefreshing}
