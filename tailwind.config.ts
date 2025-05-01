@@ -54,6 +54,10 @@ export default {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
         },
+        'fade-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' }
+        },
         'icon-fill': {
           '0%': { 
             'clip-path': 'inset(0 100% 0 0)',
@@ -84,6 +88,7 @@ export default {
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
         'fade-in': 'fade-in 0.3s ease-out',
+        'fade-out': 'fade-out 0.2s ease-out',
         'icon-fill': 'icon-fill 2s linear infinite',
         'draw-check': 'draw-check 0.5s ease-in-out forwards'
       },
