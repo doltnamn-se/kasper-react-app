@@ -23,10 +23,12 @@ interface CustomerDetailsContentProps {
   isSendingEmail: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
+  isUpdatingSubscription: boolean;
   additionalUrls: string;
   onSendActivationEmail: () => void;
   onUpdateUrlLimits: () => void;
   onDeleteUser: () => void;
+  onUpdateSubscriptionPlan: (plan: string) => void; 
   onBanUser?: () => void;
   setAdditionalUrls: (urls: string) => void;
   onRefresh?: () => void;
@@ -44,10 +46,12 @@ export const CustomerDetailsContent = ({
   isSendingEmail,
   isUpdating,
   isDeleting,
+  isUpdatingSubscription,
   additionalUrls,
   onSendActivationEmail,
   onUpdateUrlLimits,
   onDeleteUser,
+  onUpdateSubscriptionPlan,
   onBanUser,
   setAdditionalUrls,
   onRefresh,
@@ -132,6 +136,9 @@ export const CustomerDetailsContent = ({
               isOnline={isOnline}
               userLastSeen={userLastSeen}
               onCopy={onCopy}
+              isSuperAdmin={isSuperAdmin}
+              isUpdatingSubscription={isUpdatingSubscription}
+              onUpdateSubscriptionPlan={onUpdateSubscriptionPlan}
             />
           </div>
         </div>

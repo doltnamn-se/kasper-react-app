@@ -1,44 +1,72 @@
 
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { generatePassword } from "@/utils/passwordGenerator";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-export const useCustomerActions = (customerId: string | undefined, onClose: () => void) => {
+export const useCustomerActions = (customerId: string, onSuccess?: () => void) => {
+  const { t } = useLanguage();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdatingSubscription, setIsUpdatingSubscription] = useState(false);
+
+  const handleResendActivationEmail = async (email?: string, displayName?: string) => {
+    if (!email || !displayName) {
+      toast.error(t('errors.missing_data'), {
+        description: t('errors.missing_email_or_name')
+      });
+      return;
+    }
+
+    setIsSendingEmail(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-activation-email', {
+        body: { email, displayName },
+      });
+
+      if (error) throw error;
+
+      toast.success(t('success.email_sent'), {
+        description: t('success.activation_email_sent')
+      });
+    } catch (error) {
+      console.error('Error sending activation email:', error);
+      toast.error(t('errors.email_failed'), {
+        description: t('errors.activation_email_failed')
+      });
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
 
   const handleUpdateUrlLimits = async (additionalUrls: string) => {
-    if (!customerId) return;
-    
+    setIsUpdating(true);
     try {
-      setIsUpdating(true);
       const numericValue = parseInt(additionalUrls);
       
       if (isNaN(numericValue)) {
-        toast("Please enter a valid number", {
-          description: "The URL limit must be a number"
+        toast.error(t('errors.invalid_input'), {
+          description: t('errors.enter_valid_number')
         });
-        return;
+        return false;
       }
 
       const { error } = await supabase
         .from('user_url_limits')
-        .update({ additional_urls: numericValue })
+        .upsert({ customer_id: customerId, additional_urls: numericValue })
         .eq('customer_id', customerId);
 
       if (error) throw error;
 
-      toast("Success", {
-        description: "URL limits updated successfully"
+      toast.success(t('success.updated'), {
+        description: t('success.url_limits_updated')
       });
-      
       return true;
     } catch (error) {
-      console.error("Error updating URL limits:", error);
-      toast("Error", {
-        description: "Failed to update URL limits"
+      console.error('Error updating URL limits:', error);
+      toast.error(t('errors.update_failed'), {
+        description: t('errors.url_limits_update_failed')
       });
       return false;
     } finally {
@@ -46,87 +74,51 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
     }
   };
 
-  const handleResendActivationEmail = async (email: string, displayName: string) => {
-    if (!customerId) return;
-    
+  const handleUpdateSubscriptionPlan = async (plan: string) => {
+    setIsUpdatingSubscription(true);
     try {
-      setIsSendingEmail(true);
-      const generatedPassword = generatePassword();
-      console.log("Attempting to update password for user:", customerId);
-      
-      const { error: passwordError } = await supabase.rpc('update_user_password', {
-        user_id: customerId,
-        new_password: generatedPassword
+      const { error } = await supabase
+        .from('customers')
+        .update({ subscription_plan: plan === 'none' ? null : plan })
+        .eq('id', customerId);
+
+      if (error) throw error;
+
+      toast.success(t('success.updated'), {
+        description: t('success.subscription_updated')
       });
-
-      if (passwordError) {
-        console.error("Error updating password:", passwordError);
-        throw passwordError;
-      }
-
-      console.log("Password updated successfully, sending activation email");
-
-      const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
-        body: {
-          email,
-          displayName,
-          password: generatedPassword
-        }
-      });
-
-      if (emailError) {
-        console.error("Error sending activation email:", emailError);
-        throw emailError;
-      }
-
-      toast("Success", {
-        description: "Activation email sent successfully"
-      });
+      return true;
     } catch (error) {
-      console.error("Error in handleResendActivationEmail:", error);
-      toast("Error", {
-        description: "Failed to send activation email"
+      console.error('Error updating subscription plan:', error);
+      toast.error(t('errors.update_failed'), {
+        description: t('errors.subscription_update_failed')
       });
+      return false;
     } finally {
-      setIsSendingEmail(false);
+      setIsUpdatingSubscription(false);
     }
   };
 
   const handleDeleteUser = async () => {
-    if (!customerId) {
-      console.error("No customer ID provided");
-      toast("Error", {
-        description: "Invalid user ID"
-      });
-      return;
-    }
-    
+    setIsDeleting(true);
     try {
-      setIsDeleting(true);
-      
       const { error } = await supabase.functions.invoke('delete-user', {
-        body: { user_id: customerId }
-      });
-      
-      if (error) {
-        console.error("Delete user error:", error);
-        throw error;
-      }
-      
-      toast("Success", {
-        description: "User deleted successfully"
+        body: { userId: customerId },
       });
 
-      // Close the sheet
-      onClose();
+      if (error) throw error;
 
-      // Refresh the page to update the table
-      window.location.reload();
-    } catch (error: any) {
-      console.error("Error deleting user:", error);
-      toast("Error", {
-        description: error.message || "Failed to delete user"
+      toast.success(t('success.deleted'), {
+        description: t('success.user_deleted')
       });
+      
+      if (onSuccess) onSuccess();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast.error(t('errors.delete_failed'), {
+        description: t('errors.user_delete_failed')
+      });
+    } finally {
       setIsDeleting(false);
     }
   };
@@ -135,8 +127,10 @@ export const useCustomerActions = (customerId: string | undefined, onClose: () =
     isUpdating,
     isSendingEmail,
     isDeleting,
-    handleUpdateUrlLimits,
+    isUpdatingSubscription,
     handleResendActivationEmail,
+    handleUpdateUrlLimits,
+    handleUpdateSubscriptionPlan,
     handleDeleteUser
   };
 };

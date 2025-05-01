@@ -18,9 +18,11 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isUpdating,
     isSendingEmail,
     isDeleting,
+    isUpdatingSubscription,
     handleUpdateUrlLimits,
     handleResendActivationEmail,
-    handleDeleteUser
+    handleDeleteUser,
+    handleUpdateSubscriptionPlan
   } = useCustomerActions(customerId, () => onOpenChange(false));
 
   useEffect(() => {
@@ -75,6 +77,14 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     }
   };
 
+  const handleSubscriptionUpdate = async (plan: string) => {
+    if (!customerId) return;
+    const success = await handleUpdateSubscriptionPlan(plan);
+    if (success) {
+      refetchData();
+    }
+  };
+
   const handleRefresh = async () => {
     if (!customerId) return;
     setIsRefreshing(true);
@@ -112,6 +122,7 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isSendingEmail,
     isDeleting,
     isRefreshing,
+    isUpdatingSubscription,
     additionalUrls,
     setAdditionalUrls,
     handleCopy,
@@ -119,6 +130,7 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     handleResendActivationEmail,
     handleDeleteUser,
     handleBanUser,
+    handleSubscriptionUpdate,
     refetchData: handleRefresh
   };
 };

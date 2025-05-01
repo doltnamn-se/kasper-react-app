@@ -33,6 +33,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     isSendingEmail,
     isDeleting,
     isRefreshing,
+    isUpdatingSubscription,
     additionalUrls,
     setAdditionalUrls,
     handleCopy,
@@ -40,6 +41,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleResendActivationEmail,
     handleDeleteUser,
     handleBanUser,
+    handleSubscriptionUpdate,
     refetchData
   } = useCustomerDetails(customerId, onOpenChange);
 
@@ -82,10 +84,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             isSendingEmail={isSendingEmail}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
+            isUpdatingSubscription={isUpdatingSubscription}
             additionalUrls={additionalUrls}
             onSendActivationEmail={handleActivationEmail}
             onUpdateUrlLimits={handleUrlLimitsUpdate}
             onDeleteUser={handleDeleteUser}
+            onUpdateSubscriptionPlan={handleSubscriptionUpdate}
             onBanUser={handleBanUser}
             setAdditionalUrls={setAdditionalUrls}
             onRefresh={refetchData}
@@ -116,10 +120,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             isSendingEmail={isSendingEmail}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
+            isUpdatingSubscription={isUpdatingSubscription}
             additionalUrls={additionalUrls}
             onSendActivationEmail={handleActivationEmail}
             onUpdateUrlLimits={handleUrlLimitsUpdate}
             onDeleteUser={handleDeleteUser}
+            onUpdateSubscriptionPlan={handleSubscriptionUpdate}
             onBanUser={handleBanUser}
             setAdditionalUrls={setAdditionalUrls}
             onRefresh={refetchData}

@@ -3,17 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useToast } from "@/components/ui/use-toast";
 import { CustomerWithProfile } from "@/types/customer";
+import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
 
 interface AccountInfoProps {
   customer: CustomerWithProfile;
   isOnline: boolean;
   userLastSeen: string | null;
   onCopy: (text: string, label: string) => void;
+  isSuperAdmin?: boolean;
+  isUpdatingSubscription?: boolean;
+  onUpdateSubscriptionPlan?: (plan: string) => void;
 }
 
-export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: AccountInfoProps) => {
+export const AccountInfo = ({ 
+  customer, 
+  isOnline, 
+  userLastSeen, 
+  onCopy, 
+  isSuperAdmin = false,
+  isUpdatingSubscription = false,
+  onUpdateSubscriptionPlan
+}: AccountInfoProps) => {
   const { t } = useLanguage();
 
   // Helper function to get the appropriate subscription label
@@ -38,9 +49,18 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
     <div className="space-y-4">
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
-        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {getSubscriptionLabel(customer.subscription_plan)}
-        </span>
+        
+        {isSuperAdmin && onUpdateSubscriptionPlan ? (
+          <SubscriptionPlanSelect 
+            currentPlan={customer.subscription_plan}
+            isUpdating={isUpdatingSubscription}
+            onUpdatePlan={onUpdateSubscriptionPlan}
+          />
+        ) : (
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+            {getSubscriptionLabel(customer.subscription_plan)}
+          </span>
+        )}
       </div>
       
       <div className="space-y-1">
