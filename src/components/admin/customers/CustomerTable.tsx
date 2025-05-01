@@ -140,9 +140,11 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
             </p>
           </div>
           <div className="flex items-center space-x-2">
-            <p>
-              {t('pagination.items.per.page')}:
-            </p>
+            {!isMobile && (
+              <p>
+                {t('pagination.items.per.page')}:
+              </p>
+            )}
             <Select
               value={`${pageSize}`}
               onValueChange={(value) => {
