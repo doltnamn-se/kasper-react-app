@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -81,11 +82,11 @@ export default {
         },
         'draw-check-ltr': {
           '0%': {
-            'stroke-dasharray': '0, 24',
+            'stroke-dasharray': '0 24',
             'stroke-dashoffset': '0'
           },
           '100%': {
-            'stroke-dasharray': '24, 24',
+            'stroke-dasharray': '24 0',
             'stroke-dashoffset': '0'
           }
         }
