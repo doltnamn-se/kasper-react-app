@@ -15,14 +15,14 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1">
+      <div className="flex items-center justify-between">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('total.urls')}</p>
         <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {usedUrls}
         </p>
       </div>
       
-      <div className="space-y-1">
+      <div className="flex items-center justify-between">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('urls.available')}</p>
         <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {isUnlimited ? displayLimit : `${usedUrls} / ${displayLimit}`}
