@@ -43,19 +43,16 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Extract address from customerData and add it to customer object
-  const formattedAddress = customerData?.checklistProgress?.formattedAddress || null;
+  // Simply get the address directly from the customerData
+  const customerAddress = customerData?.checklistProgress?.address || null;
+  
+  console.log("Direct customer address in sheet:", customerAddress);
   
   // Create a complete customer object with address included
   const customerWithAddress = {
     ...customer,
-    address: formattedAddress
+    address: customerAddress
   };
-  
-  // Log the address assignment for debugging
-  console.log("Customer data fetched:", customerData);
-  console.log("Formatted address from data:", formattedAddress);
-  console.log("Final customer with address:", customerWithAddress);
 
   if (isLoading) {
     return isMobile ? (

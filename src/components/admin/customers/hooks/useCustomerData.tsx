@@ -14,46 +14,25 @@ export const useCustomerData = (customerId: string) => {
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
         supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle(),
         supabase.from('customer_checklist_progress')
-          .select('*')  // Select all fields to ensure we get everything
+          .select('*')
           .eq('customer_id', customerId)
           .maybeSingle()
       ]);
 
       // Log full response data for debugging
-      console.log('Full Checklist Response:', checklistResponse);
+      console.log('Customer checklist data:', checklistResponse.data);
       
-      // Create formatted address from available data
-      let formattedAddress = null;
+      // Simply use the address field directly from the customer_checklist_progress table
+      const customerAddress = checklistResponse.data?.address || null;
       
-      if (checklistResponse.data) {
-        // Try different address fields based on what's available
-        if (checklistResponse.data.address && typeof checklistResponse.data.address === 'string' && checklistResponse.data.address.trim() !== '') {
-          console.log('Using full address field:', checklistResponse.data.address);
-          formattedAddress = checklistResponse.data.address.trim();
-        } 
-        // Fall back to constructing from parts if main address is empty/null
-        else if (checklistResponse.data.street_address || checklistResponse.data.city || checklistResponse.data.postal_code) {
-          const addressParts = [
-            checklistResponse.data.street_address,
-            checklistResponse.data.city,
-            checklistResponse.data.postal_code
-          ].filter(Boolean);
-          
-          if (addressParts.length > 0) {
-            formattedAddress = addressParts.join(', ');
-            console.log('Constructed address from parts:', formattedAddress);
-          }
-        }
-      }
-
-      console.log('Final formatted address:', formattedAddress);
+      console.log('Direct customer address from database:', customerAddress);
 
       return {
         urls: urlsResponse.data || [],
         limits: limitsResponse.data,
         checklistProgress: {
           ...checklistResponse.data,
-          formattedAddress
+          address: customerAddress
         }
       };
     },

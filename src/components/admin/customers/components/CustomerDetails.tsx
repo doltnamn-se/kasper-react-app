@@ -13,9 +13,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // Debug customer address
-  console.log("Customer in CustomerDetails:", customer);
-  console.log("Customer address in CustomerDetails:", customer.address);
+  // Simple log to debug what we're receiving
+  console.log("Customer in CustomerDetails - address:", customer.address);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -25,10 +24,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
     });
   };
 
-  // Get address for display - ensure it's a string with content
-  const displayAddress = typeof customer.address === 'string' && customer.address 
-    ? customer.address 
-    : t('no.address');
+  // Get address for display - simple check if it exists
+  const displayAddress = customer.address || t('no.address');
 
   return (
     <div className="space-y-4">
