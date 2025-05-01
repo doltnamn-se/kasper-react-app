@@ -9,30 +9,33 @@ export const useCustomerData = (customerId: string) => {
     queryFn: async () => {
       if (!customerId) return { urls: [], limits: null, checklistProgress: null };
       
-      // Debug the customerId we're using for the query
-      console.log('Fetching data for customer ID:', customerId);
-      
       // Fetch all customer data in parallel
       const [urlsResponse, limitsResponse, checklistResponse] = await Promise.all([
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
         supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle(),
-        supabase
-          .from('customer_checklist_progress')
-          .select('*')
+        supabase.from('customer_checklist_progress')
+          .select(`
+            password_updated,
+            removal_urls,
+            selected_sites,
+            street_address,
+            postal_code,
+            city,
+            completed_at
+          `)
           .eq('customer_id', customerId)
           .maybeSingle()
       ]);
 
-      // Log the raw response data to see exactly what we're getting back
-      console.log('Raw customer data responses:');
-      console.log('URLs response:', urlsResponse);
-      console.log('Limits response:', limitsResponse);
-      console.log('Checklist response:', checklistResponse);
-      
-      // Explicitly check if we have address data and log it
-      const addressData = checklistResponse.data?.address;
-      console.log('Address data from database:', addressData);
-      
+      // Log responses for debugging
+      console.log('Checklist Response:', checklistResponse);
+      console.log('URLs Response:', urlsResponse);
+      console.log('Limits Response:', limitsResponse);
+
+      if (urlsResponse.error) console.error('Error fetching URLs:', urlsResponse.error);
+      if (limitsResponse.error) console.error('Error fetching limits:', limitsResponse.error);
+      if (checklistResponse.error) console.error('Error fetching checklist:', checklistResponse.error);
+
       return {
         urls: urlsResponse.data || [],
         limits: limitsResponse.data,

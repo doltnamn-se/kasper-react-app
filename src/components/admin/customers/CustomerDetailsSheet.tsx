@@ -37,25 +37,20 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleCopy,
     handleUrlLimitsUpdate,
     handleResendActivationEmail,
-    handleDeleteUser,
-    customerData
+    handleDeleteUser
   } = useCustomerDetails(customerId, onOpenChange);
 
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
-  
+
   if (isLoading) {
     return isMobile ? (
       <Drawer open={!!customer} onOpenChange={onOpenChange}>
-        <DrawerContent className="px-0 pb-16 max-h-[85vh]">
-          <CustomerDetailsLoading isMobile={true} />
-        </DrawerContent>
+        <CustomerDetailsLoading isMobile={true} />
       </Drawer>
     ) : (
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
-        <SheetContent className="p-0">
-          <CustomerDetailsLoading isMobile={false} />
-        </SheetContent>
+        <CustomerDetailsLoading isMobile={false} />
       </Sheet>
     );
   }

@@ -73,8 +73,6 @@ export interface UITranslations {
   'no.customers': string;
   'name': string;
   'email': string;
-  'address': string;
-  'no.address': string;
   'checklist': string;
   'last.online': string;
   'plan': string;
