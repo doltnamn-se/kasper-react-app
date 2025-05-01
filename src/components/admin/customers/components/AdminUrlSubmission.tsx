@@ -83,7 +83,7 @@ export const AdminUrlSubmission = ({
       
       {/* Added separator with adjusted padding */}
       <div className="pt-4 pb-1.5 py-[25px]">
-        <Separator />
+        <Separator className="my-[10px]" />
       </div>
     </form>;
 };
