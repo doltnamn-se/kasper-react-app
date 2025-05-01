@@ -59,8 +59,32 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
     }, 1000); // Reduced from 1500ms to 1000ms to match faster animation
   };
 
+  // Inline styles for the check animation
+  const checkmarkStyle = {
+    animation: 'checkmark 0.3s ease-in-out forwards',
+  };
+
+  // Inline keyframes style to be injected once
+  const keyframesStyle = `
+    @keyframes checkmark {
+      0% {
+        stroke-dasharray: 0;
+        stroke-dashoffset: 24;
+        opacity: 0;
+      }
+      100% {
+        stroke-dasharray: 24;
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+    }
+  `;
+
   return (
     <div className="space-y-4">
+      {/* Inject the keyframes style */}
+      <style>{keyframesStyle}</style>
+      
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {t('name')}
@@ -77,7 +101,11 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           >
             {copiedFields['name'] ? (
               <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check-ltr [stroke-dasharray:24] [stroke-linejoin:round] [stroke-linecap:round]" 
+                className="h-4 w-4 text-green-500" 
+                style={checkmarkStyle}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth={2.5}
               />
             ) : (
               <Copy className={`h-4 w-4 ${fadeInActive['name'] ? 'animate-fade-in' : ''} ${fadeOutActive['name'] ? 'animate-fade-out' : ''}`} />
@@ -102,7 +130,11 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           >
             {copiedFields['email'] ? (
               <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check-ltr [stroke-dasharray:24] [stroke-linejoin:round] [stroke-linecap:round]" 
+                className="h-4 w-4 text-green-500" 
+                style={checkmarkStyle}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth={2.5}
               />
             ) : (
               <Copy className={`h-4 w-4 ${fadeInActive['email'] ? 'animate-fade-in' : ''} ${fadeOutActive['email'] ? 'animate-fade-out' : ''}`} />
@@ -128,7 +160,11 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             >
               {copiedFields['address'] ? (
                 <Check 
-                  className="h-4 w-4 text-green-500 animate-draw-check-ltr [stroke-dasharray:24] [stroke-linejoin:round] [stroke-linecap:round]" 
+                  className="h-4 w-4 text-green-500" 
+                  style={checkmarkStyle}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth={2.5}
                 />
               ) : (
                 <Copy className={`h-4 w-4 ${fadeInActive['address'] ? 'animate-fade-in' : ''} ${fadeOutActive['address'] ? 'animate-fade-out' : ''}`} />
@@ -150,7 +186,11 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           >
             {copiedFields['customer-id'] ? (
               <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check-ltr [stroke-dasharray:24] [stroke-linejoin:round] [stroke-linecap:round]" 
+                className="h-4 w-4 text-green-500" 
+                style={checkmarkStyle}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth={2.5}
               />
             ) : (
               <Copy className={`h-4 w-4 ${fadeInActive['customer-id'] ? 'animate-fade-in' : ''} ${fadeOutActive['customer-id'] ? 'animate-fade-out' : ''}`} />
@@ -161,3 +201,4 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
     </div>
   );
 };
+
