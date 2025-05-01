@@ -150,6 +150,9 @@ export const CustomerDetailsContent = ({
 
         {/* Add separator before URL submissions */}
         <Separator className="my-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
+        
+        {/* Add separator above URL submissions title */}
+        <Separator className="mb-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
 
         <div className="py-2 space-y-6">
           <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
@@ -160,3 +163,4 @@ export const CustomerDetailsContent = ({
     </div>
   );
 };
+
