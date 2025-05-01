@@ -66,12 +66,7 @@ export const CustomerDetailsContent = ({
           <div className="flex flex-col items-start gap-4">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
             <div className="flex flex-col sm:flex-row gap-8">
-              <div>
-                <CustomerDetails customer={customer} />
-                <div className="mt-4">
-                  <CustomerBadges customer={customer} />
-                </div>
-              </div>
+              <CustomerDetails customer={customer} />
               <AccountInfo 
                 customer={customer}
                 isOnline={isOnline}

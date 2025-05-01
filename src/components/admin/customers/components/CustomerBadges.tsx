@@ -8,7 +8,6 @@ interface CustomerBadgesProps {
 
 export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
   const { t } = useLanguage();
-  const capitalizedCustomerType = customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1);
   
   // Get the subscription label
   const getSubscriptionLabel = (plan: string | null) => {
@@ -34,19 +33,19 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
     <div className="space-y-4">
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {t('customer.type')}
+          {t('subscription')}
         </p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-          {capitalizedCustomerType}
+          {subscriptionLabel}
         </span>
       </div>
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {t('subscription')}
+          {t('customer.type')}
         </p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-          {subscriptionLabel}
+          {customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1)}
         </span>
       </div>
     </div>
