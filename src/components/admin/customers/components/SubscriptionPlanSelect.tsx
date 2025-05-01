@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { 
   Select, 
   SelectContent, 
@@ -7,7 +6,6 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SubscriptionPlanSelectProps {
@@ -22,23 +20,17 @@ export const SubscriptionPlanSelect = ({
   onUpdatePlan 
 }: SubscriptionPlanSelectProps) => {
   const { t } = useLanguage();
-  const [selectedPlan, setSelectedPlan] = useState<string>(currentPlan || 'none');
-  const [hasChanged, setHasChanged] = useState(false);
   
   const handlePlanChange = (value: string) => {
-    setSelectedPlan(value);
-    setHasChanged(value !== currentPlan);
-  };
-
-  const handleUpdateClick = () => {
-    onUpdatePlan(selectedPlan);
+    // Immediately trigger update when plan changes
+    onUpdatePlan(value);
   };
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
         <Select
-          value={selectedPlan}
+          value={currentPlan || 'none'}
           onValueChange={handlePlanChange}
           disabled={isUpdating}
         >
@@ -54,16 +46,6 @@ export const SubscriptionPlanSelect = ({
             <SelectItem value="24_months">{t('subscription.24months')}</SelectItem>
           </SelectContent>
         </Select>
-        
-        {hasChanged && (
-          <Button 
-            onClick={handleUpdateClick}
-            disabled={isUpdating}
-            size="sm"
-          >
-            {isUpdating ? t('updating') : t('update')}
-          </Button>
-        )}
       </div>
     </div>
   );
