@@ -139,7 +139,7 @@ export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold">Site Statuses</h3>
+      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">Site Statuses</h3>
       <div className="space-y-3">
         {sites.map((site) => {
           const siteStatus = siteStatuses.find(s => s.site_name === site.name);
