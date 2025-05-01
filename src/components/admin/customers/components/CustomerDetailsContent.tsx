@@ -11,7 +11,6 @@ import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 
 interface CustomerDetailsContentProps {
@@ -149,7 +148,7 @@ export const CustomerDetailsContent = ({
           onDeleteUser={onDeleteUser}
         />
 
-        {/* URL submission section */}
+        {/* URL submission section - removed duplicate title and merged with existing section */}
         <div className="py-2 space-y-6">
           <div className="space-y-4">
             <h3 className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h3>
