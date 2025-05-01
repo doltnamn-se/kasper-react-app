@@ -40,7 +40,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6"
+            className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
             onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
           >
             <Copy className="h-4 w-4" />
@@ -59,7 +59,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6"
+            className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
             onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
           >
             <Copy className="h-4 w-4" />
@@ -79,7 +79,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6"
+              className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
               onClick={() => handleCopy(customer.profile.address || '', t('address'))}
             >
               <Copy className="h-4 w-4" />
@@ -95,7 +95,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6"
+            className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
             onClick={() => handleCopy(customer.id, t('customer.id'))}
           >
             <Copy className="h-4 w-4" />
