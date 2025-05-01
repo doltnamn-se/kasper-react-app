@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Separator } from "@/components/ui/separator";
 
 interface AdminUrlSubmissionProps {
   customerId: string;
@@ -95,6 +96,11 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
             </>
           )}
         </Button>
+      </div>
+      
+      {/* Added separator with small padding */}
+      <div className="pt-2">
+        <Separator />
       </div>
     </form>
   );
