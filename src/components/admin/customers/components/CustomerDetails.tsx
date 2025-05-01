@@ -15,6 +15,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
+  const [fadeInActive, setFadeInActive] = useState<Record<string, boolean>>({});
 
   const handleCopy = (text: string, label: string, fieldId: string) => {
     if (onCopy) {
@@ -33,11 +34,18 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
   };
 
   const showCopiedAnimation = (fieldId: string) => {
+    // Set copied state to true to show checkmark
     setCopiedFields(prev => ({ ...prev, [fieldId]: true }));
     
-    // Reset back to copy icon after 1.5 seconds
+    // After animation, set fade-in state to true
     setTimeout(() => {
       setCopiedFields(prev => ({ ...prev, [fieldId]: false }));
+      setFadeInActive(prev => ({ ...prev, [fieldId]: true }));
+      
+      // Reset fade-in state after animation completes
+      setTimeout(() => {
+        setFadeInActive(prev => ({ ...prev, [fieldId]: false }));
+      }, 300);
     }, 1500);
   };
 
@@ -60,7 +68,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             {copiedFields['name'] ? (
               <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-dashoffset:24] [stroke-linecap:round] [stroke-linejoin:round]" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className={`h-4 w-4 ${fadeInActive['name'] ? 'animate-fade-in' : ''}`} />
             )}
           </Button>
         </div>
@@ -83,7 +91,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             {copiedFields['email'] ? (
               <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-dashoffset:24] [stroke-linecap:round] [stroke-linejoin:round]" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className={`h-4 w-4 ${fadeInActive['email'] ? 'animate-fade-in' : ''}`} />
             )}
           </Button>
         </div>
@@ -107,7 +115,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
               {copiedFields['address'] ? (
                 <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-dashoffset:24] [stroke-linecap:round] [stroke-linejoin:round]" />
               ) : (
-                <Copy className="h-4 w-4" />
+                <Copy className={`h-4 w-4 ${fadeInActive['address'] ? 'animate-fade-in' : ''}`} />
               )}
             </Button>
           </div>
@@ -127,7 +135,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             {copiedFields['customer-id'] ? (
               <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-dashoffset:24] [stroke-linecap:round] [stroke-linejoin:round]" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className={`h-4 w-4 ${fadeInActive['customer-id'] ? 'animate-fade-in' : ''}`} />
             )}
           </Button>
         </div>
