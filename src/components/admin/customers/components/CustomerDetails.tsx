@@ -117,7 +117,27 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
         </div>
       )}
       
-      {/* Customer ID field has been removed from here */}
+      <div className="space-y-1">
+        <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+            onClick={() => handleCopy(customer.id, t('customer.id'), 'customer-id')}
+          >
+            {copiedFields['customer-id'] ? (
+              <Check 
+                className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
+                style={{ strokeDashoffset: 0 }}
+              />
+            ) : (
+              <Copy className={`h-4 w-4 ${fadeInActive['customer-id'] ? 'animate-fade-in' : ''} ${fadeOutActive['customer-id'] ? 'animate-fade-out' : ''}`} />
+            )}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
