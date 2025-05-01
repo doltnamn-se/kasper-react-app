@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Trash2, RefreshCw } from "lucide-react";
+import { Send, Trash, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -107,7 +107,7 @@ export const AdminActionButtons = ({
         title="Resend activation email"
         className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
       >
-        <Mail className="h-4 w-4" />
+        <Send className="h-4 w-4" />
       </Button>
       
       <Button
@@ -117,7 +117,7 @@ export const AdminActionButtons = ({
         className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
         title="Delete user"
       >
-        <Trash2 className="h-4 w-4" />
+        <Trash className="h-4 w-4" />
       </Button>
     </div>
   );
