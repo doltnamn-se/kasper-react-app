@@ -78,6 +78,16 @@ export default {
           '100%': {
             'stroke-dashoffset': '0'
           }
+        },
+        'draw-check-ltr': {
+          '0%': {
+            'stroke-dasharray': '0, 24',
+            'stroke-dashoffset': '0'
+          },
+          '100%': {
+            'stroke-dasharray': '24, 24',
+            'stroke-dashoffset': '0'
+          }
         }
       },
       animation: {
@@ -89,7 +99,8 @@ export default {
         'fade-in': 'fade-in 0.3s ease-out',
         'fade-out': 'fade-out 0.2s ease-out',
         'icon-fill': 'icon-fill 2s linear infinite',
-        'draw-check': 'draw-check 0.3s ease-in-out forwards'
+        'draw-check': 'draw-check 0.3s ease-in-out forwards',
+        'draw-check-ltr': 'draw-check-ltr 0.3s ease-in-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',

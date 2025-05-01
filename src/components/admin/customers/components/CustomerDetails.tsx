@@ -77,7 +77,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           >
             {copiedFields['name'] ? (
               <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
+                className="h-4 w-4 text-green-500 animate-draw-check-ltr" 
               />
             ) : (
               <Copy className={`h-4 w-4 ${fadeInActive['name'] ? 'animate-fade-in' : ''} ${fadeOutActive['name'] ? 'animate-fade-out' : ''}`} />
@@ -102,7 +102,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           >
             {copiedFields['email'] ? (
               <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
+                className="h-4 w-4 text-green-500 animate-draw-check-ltr" 
               />
             ) : (
               <Copy className={`h-4 w-4 ${fadeInActive['email'] ? 'animate-fade-in' : ''} ${fadeOutActive['email'] ? 'animate-fade-out' : ''}`} />
@@ -128,7 +128,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             >
               {copiedFields['address'] ? (
                 <Check 
-                  className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
+                  className="h-4 w-4 text-green-500 animate-draw-check-ltr" 
                 />
               ) : (
                 <Copy className={`h-4 w-4 ${fadeInActive['address'] ? 'animate-fade-in' : ''} ${fadeOutActive['address'] ? 'animate-fade-out' : ''}`} />
@@ -150,7 +150,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           >
             {copiedFields['customer-id'] ? (
               <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
+                className="h-4 w-4 text-green-500 animate-draw-check-ltr" 
               />
             ) : (
               <Copy className={`h-4 w-4 ${fadeInActive['customer-id'] ? 'animate-fade-in' : ''} ${fadeOutActive['customer-id'] ? 'animate-fade-out' : ''}`} />
