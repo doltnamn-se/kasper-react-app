@@ -7,13 +7,19 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface CustomerDetailsProps {
   customer: CustomerWithProfile;
+  onCopy?: (text: string, label: string) => void;
 }
 
-export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
+export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
   const handleCopy = (text: string, label: string) => {
+    if (onCopy) {
+      onCopy(text, label);
+      return;
+    }
+    
     navigator.clipboard.writeText(text);
     toast({
       title: t('toast.copied.title'),
@@ -81,6 +87,21 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
           </div>
         </div>
       )}
+      
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => handleCopy(customer.id, t('customer.id'))}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

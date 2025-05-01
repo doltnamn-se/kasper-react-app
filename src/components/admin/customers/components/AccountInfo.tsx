@@ -37,13 +37,6 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.type')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-          {customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1)}
-        </span>
-      </div>
-      
-      <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
           {getSubscriptionLabel(customer.subscription_plan)}
@@ -51,18 +44,10 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       </div>
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={() => onCopy(customer.id, t('customer.id'))}
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
-        </div>
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.type')}</p>
+        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+          {customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1)}
+        </span>
       </div>
       
       <div className="space-y-1">
