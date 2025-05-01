@@ -1,6 +1,3 @@
-
-import { formatDistanceToNow } from "date-fns";
-
 interface UserProfile {
   first_name?: string | null;
   last_name?: string | null;
@@ -40,9 +37,4 @@ export const getFullName = (userProfile: UserProfile | null, userEmail: string |
     return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
   }
   return userEmail || '';
-};
-
-export const formatDateDistance = (date: string | Date | null): string => {
-  if (!date) return '';
-  return formatDistanceToNow(new Date(date), { addSuffix: true });
 };
