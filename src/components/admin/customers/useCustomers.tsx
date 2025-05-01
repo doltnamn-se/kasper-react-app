@@ -19,6 +19,7 @@ export const useCustomers = () => {
             display_name,
             email,
             avatar_url,
+            address,
             role,
             created_at,
             updated_at

@@ -6,6 +6,7 @@ export type Profile = {
   display_name: string | null;
   email: string | null;
   avatar_url: string | null;
+  address: string | null;
   role: "super_admin" | "customer";
   created_at: string;
   updated_at: string;
