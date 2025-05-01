@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -62,6 +63,14 @@ export default {
             'clip-path': 'inset(0 0 0 100%)',
             opacity: '0'
           }
+        },
+        'draw-check': {
+          '0%': {
+            'stroke-dashoffset': '40'
+          },
+          '100%': {
+            'stroke-dashoffset': '0'
+          }
         }
       },
       animation: {
@@ -70,7 +79,8 @@ export default {
         'progress-line': 'progress-line 5s linear forwards',
         'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
         'fadeIn': 'fadeIn 0.5s ease-out forwards',
-        'icon-fill': 'icon-fill 2s linear infinite'
+        'icon-fill': 'icon-fill 2s linear infinite',
+        'draw-check': 'draw-check 0.5s ease-in-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',
