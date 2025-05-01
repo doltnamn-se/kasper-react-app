@@ -16,7 +16,7 @@ export const useCustomerData = (customerId: string) => {
         const urlsPromise = supabase.from('removal_urls').select('*').eq('customer_id', customerId);
         const limitsPromise = supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle();
         
-        // Try to get address directly from profiles instead of customer_checklist_progress
+        // Try to get address directly from profiles
         const profilePromise = supabase
           .from('profiles')
           .select('*')
@@ -68,11 +68,17 @@ export const useCustomerData = (customerId: string) => {
           }
         }
 
+        // Ensure the profile data has an address property even if it's null
+        const profileData = profileResponse.data ? {
+          ...profileResponse.data,
+          address: profileResponse.data.address || null
+        } : null;
+
         return {
           urls: urlsResponse.data || [],
           limits: limitsResponse.data,
           checklistProgress: checklistData,
-          profile: profileResponse.data
+          profile: profileData
         };
       } catch (error) {
         console.error('Unexpected error in useCustomerData:', error);

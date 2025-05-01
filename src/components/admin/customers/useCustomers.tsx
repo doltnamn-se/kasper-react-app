@@ -21,7 +21,8 @@ export const useCustomers = () => {
             avatar_url,
             role,
             created_at,
-            updated_at
+            updated_at,
+            address
           )
         `)
         .order('created_at', { ascending: false });
@@ -39,7 +40,11 @@ export const useCustomers = () => {
           !acc.some(item => item.profile?.id === current.profile?.id) &&
           current.profile.email !== 'info@doltnamn.se' // Filter out the admin account
         ) {
-          acc.push(current);
+          // Ensure address field exists in profile
+          if (!current.profile.address) {
+            current.profile.address = null;
+          }
+          acc.push(current as CustomerWithProfile);
         }
         return acc;
       }, []) || [];
