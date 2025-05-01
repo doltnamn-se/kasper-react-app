@@ -61,31 +61,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {t('name')}
-        </p>
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-            {customer.profile?.display_name || t('no.name')}
-          </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-            onClick={() => handleCopy(customer.profile?.display_name || '', t('name'), 'name')}
-          >
-            {copiedFields['name'] ? (
-              <Check 
-                className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
-                style={{ strokeDashoffset: 0 }} // Set to 0 to draw from left to right
-              />
-            ) : (
-              <Copy className={`h-4 w-4 ${fadeInActive['name'] ? 'animate-fade-in' : ''} ${fadeOutActive['name'] ? 'animate-fade-out' : ''}`} />
-            )}
-          </Button>
-        </div>
-      </div>
+      {/* Removed name field */}
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
