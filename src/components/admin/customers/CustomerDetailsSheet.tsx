@@ -43,12 +43,14 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Get the address directly from customerData
+  // Get the address directly from customerData and add explicit debug logging
   const address = customerData?.checklistProgress?.address || null;
   
   console.log("CustomerDetailsSheet: Customer ID =", customerId);
   console.log("CustomerDetailsSheet: Raw checklistProgress data =", customerData?.checklistProgress);
   console.log("CustomerDetailsSheet: Found address =", address);
+  console.log("CustomerDetailsSheet: checklistProgress object type =", typeof customerData?.checklistProgress);
+  console.log("CustomerDetailsSheet: Full customerData =", customerData);
   
   // Create a complete customer object with address included
   const customerWithAddress = {

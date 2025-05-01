@@ -13,9 +13,10 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // Log the customer object and address for debugging
+  // Enhanced logging for debugging
   console.log("CustomerDetails: Raw customer object =", customer);
   console.log("CustomerDetails: Raw address value =", customer.address);
+  console.log("CustomerDetails: Address type =", typeof customer.address);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -27,6 +28,7 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
 
   // Simple display of address - if it exists, show it; otherwise show a fallback message
   const displayAddress = customer.address || t('no.address');
+  console.log("CustomerDetails: Final display address =", displayAddress);
 
   return (
     <div className="space-y-4">
