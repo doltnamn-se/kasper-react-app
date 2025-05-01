@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
+
 interface AdminUrlSubmissionProps {
   customerId: string;
 }
@@ -81,8 +82,8 @@ export const AdminUrlSubmission = ({
         </Button>
       </div>
       
-      {/* Added separator with adjusted padding */}
-      <div className="pt-4 pb-1.5 py-[25px]">
+      {/* Updated separator with adjusted padding (changed pt-4 to pt-0) */}
+      <div className="pt-0 pb-1.5 py-[25px]">
         <Separator className="my-[10px]" />
       </div>
     </form>;
