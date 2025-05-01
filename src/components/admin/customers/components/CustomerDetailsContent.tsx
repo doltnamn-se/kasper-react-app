@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -88,7 +89,15 @@ export const CustomerDetailsContent = ({
     }, 200);
   };
   return <div className="px-6 py-6 relative">
-      {isSuperAdmin && <AdminActionButtons isSendingEmail={isSendingEmail} onSendActivationEmail={onSendActivationEmail} setShowDeleteDialog={setShowDeleteDialog} onRefreshData={onRefresh} isRefreshing={isRefreshing} onBanUser={onBanUser} />}
+      {isSuperAdmin && <AdminActionButtons 
+        isSendingEmail={isSendingEmail} 
+        onSendActivationEmail={onSendActivationEmail} 
+        setShowDeleteDialog={setShowDeleteDialog} 
+        onRefreshData={onRefresh} 
+        isRefreshing={isRefreshing} 
+        onBanUser={onBanUser}
+        onDeleteUser={onDeleteUser}
+      />}
       
       <div className="space-y-8 mt-16 md:mt-12">
         <div className="space-y-8 md:space-y-6">

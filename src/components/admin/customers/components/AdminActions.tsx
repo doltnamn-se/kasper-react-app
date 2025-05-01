@@ -48,7 +48,8 @@ export const AdminActionButtons = ({
   setShowDeleteDialog,
   onRefreshData,
   isRefreshing = false,
-  onBanUser
+  onBanUser,
+  onDeleteUser
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
@@ -56,6 +57,7 @@ export const AdminActionButtons = ({
   onRefreshData?: () => void;
   isRefreshing?: boolean;
   onBanUser?: () => void;
+  onDeleteUser?: () => void;
 }) => {
   return (
     <div className="absolute right-6 top-8 md:top-6 flex gap-2">
