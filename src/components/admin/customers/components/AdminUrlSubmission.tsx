@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2 } from "lucide-react";
+import { Loader2, CornerDownLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -67,6 +67,8 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
 
   // Set placeholder text based on the current language
   const placeholderText = language === 'sv' ? 'Ange URL' : 'Enter URL';
+  // Set button text based on current language
+  const buttonText = language === 'sv' ? 'Lägg till' : 'Add';
 
   return (
     <form onSubmit={handleSubmit} className="mt-4 space-y-2">
@@ -87,7 +89,10 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            <Plus className="h-4 w-4" />
+            <>
+              <CornerDownLeft className="h-4 w-4 mr-2" />
+              {buttonText}
+            </>
           )}
         </Button>
       </div>
