@@ -41,40 +41,6 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     }
   };
 
-  const handleUpdateUrlLimits = async (additionalUrls: string) => {
-    setIsUpdating(true);
-    try {
-      const numericValue = parseInt(additionalUrls);
-      
-      if (isNaN(numericValue)) {
-        toast.error(t('errors.invalid_input'), {
-          description: t('errors.enter_valid_number')
-        });
-        return false;
-      }
-
-      const { error } = await supabase
-        .from('user_url_limits')
-        .upsert({ customer_id: customerId, additional_urls: numericValue })
-        .eq('customer_id', customerId);
-
-      if (error) throw error;
-
-      toast.success(t('success.updated'), {
-        description: t('success.url_limits_updated')
-      });
-      return true;
-    } catch (error) {
-      console.error('Error updating URL limits:', error);
-      toast.error(t('errors.update_failed'), {
-        description: t('errors.url_limits_update_failed')
-      });
-      return false;
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
   const handleUpdateSubscriptionPlan = async (plan: string) => {
     setIsUpdatingSubscription(true);
     try {
@@ -131,7 +97,6 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     isDeleting,
     isUpdatingSubscription,
     handleResendActivationEmail,
-    handleUpdateUrlLimits,
     handleUpdateSubscriptionPlan,
     handleDeleteUser
   };

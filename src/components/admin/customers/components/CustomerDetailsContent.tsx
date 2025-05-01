@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -24,13 +23,10 @@ interface CustomerDetailsContentProps {
   isUpdating: boolean;
   isDeleting: boolean;
   isUpdatingSubscription: boolean;
-  additionalUrls: string;
   onSendActivationEmail: () => void;
-  onUpdateUrlLimits: () => void;
   onDeleteUser: () => void;
   onUpdateSubscriptionPlan: (plan: string) => void; 
   onBanUser?: () => void;
-  setAdditionalUrls: (urls: string) => void;
   onRefresh?: () => void;
   isRefreshing?: boolean;
 }
@@ -47,13 +43,10 @@ export const CustomerDetailsContent = ({
   isUpdating,
   isDeleting,
   isUpdatingSubscription,
-  additionalUrls,
   onSendActivationEmail,
-  onUpdateUrlLimits,
   onDeleteUser,
   onUpdateSubscriptionPlan,
   onBanUser,
-  setAdditionalUrls,
   onRefresh,
   isRefreshing = false
 }: CustomerDetailsContentProps) => {
@@ -151,11 +144,8 @@ export const CustomerDetailsContent = ({
               isSendingEmail={isSendingEmail}
               isUpdating={isUpdating}
               isDeleting={isDeleting}
-              additionalUrls={additionalUrls}
               onSendActivationEmail={onSendActivationEmail}
-              onUpdateUrlLimits={onUpdateUrlLimits}
               onDeleteUser={onDeleteUser}
-              setAdditionalUrls={setAdditionalUrls}
             />
 
             <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />

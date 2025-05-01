@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCustomerData } from "./useCustomerData";
@@ -8,7 +9,6 @@ import { useCustomerPresence } from "../useCustomerPresence";
 export const useCustomerDetails = (customerId: string, onOpenChange: (open: boolean) => void) => {
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [additionalUrls, setAdditionalUrls] = useState<string>("0");
   const [isRefreshing, setIsRefreshing] = useState(false);
   
   const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customerId);
@@ -18,38 +18,10 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isSendingEmail,
     isDeleting,
     isUpdatingSubscription,
-    handleUpdateUrlLimits,
     handleResendActivationEmail,
     handleDeleteUser,
     handleUpdateSubscriptionPlan
   } = useCustomerActions(customerId, () => onOpenChange(false));
-
-  useEffect(() => {
-    const fetchUrlLimits = async () => {
-      if (!customerId) return;
-      
-      const { data, error } = await supabase
-        .from('user_url_limits')
-        .select('additional_urls')
-        .eq('customer_id', customerId)
-        .maybeSingle();
-      
-      if (error) {
-        console.error("Error fetching URL limits:", error);
-        return;
-      }
-      
-      if (data) {
-        setAdditionalUrls(data.additional_urls.toString());
-      } else {
-        setAdditionalUrls("0");
-      }
-    };
-
-    if (customerId) {
-      fetchUrlLimits();
-    }
-  }, [customerId]);
 
   useEffect(() => {
     const checkSuperAdmin = async () => {
@@ -66,14 +38,6 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     toast.success('Copied', {
       description: `${label} copied to clipboard`
     });
-  };
-
-  const handleUrlLimitsUpdate = async () => {
-    if (!customerId) return;
-    const success = await handleUpdateUrlLimits(additionalUrls);
-    if (success) {
-      refetchData();
-    }
   };
 
   const handleSubscriptionUpdate = async (plan: string) => {
@@ -133,10 +97,7 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isDeleting,
     isRefreshing,
     isUpdatingSubscription,
-    additionalUrls,
-    setAdditionalUrls,
     handleCopy,
-    handleUrlLimitsUpdate,
     handleResendActivationEmail,
     handleDeleteUser,
     handleBanUser,

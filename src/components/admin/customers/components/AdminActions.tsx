@@ -1,6 +1,4 @@
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Send, Trash, RefreshCw, Ban } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
@@ -13,11 +11,8 @@ interface AdminActionsProps {
   isSendingEmail: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
-  additionalUrls: string;
   onSendActivationEmail: () => void;
-  onUpdateUrlLimits: () => void;
   onDeleteUser: () => void;
-  setAdditionalUrls: (urls: string) => void;
 }
 
 export const AdminActions = ({
@@ -26,11 +21,8 @@ export const AdminActions = ({
   isSendingEmail,
   isUpdating,
   isDeleting,
-  additionalUrls,
   onSendActivationEmail,
-  onUpdateUrlLimits,
-  onDeleteUser,
-  setAdditionalUrls
+  onDeleteUser
 }: AdminActionsProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { t } = useLanguage();
@@ -43,22 +35,6 @@ export const AdminActions = ({
         <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
           {t('deindexing.title')}
         </h3>
-        <div className="flex gap-2 items-center">
-          <Input
-            type="number"
-            value={additionalUrls}
-            onChange={(e) => setAdditionalUrls(e.target.value)}
-            className="w-24"
-            min="0"
-          />
-          <Button 
-            onClick={onUpdateUrlLimits}
-            disabled={isUpdating}
-            size="sm"
-          >
-            {isUpdating ? t('updating') : t('update')}
-          </Button>
-        </div>
       </div>
       
       <AdminUrlSubmission customerId={customerId} />
