@@ -58,7 +58,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
                 className="h-4 w-4 text-green-500" 
                 style={{
                   strokeDasharray: 24,
-                  animation: "checkmark 0.3s ease-in-out forwards",
+                  animation: "drawCheck 0.3s ease-in-out forwards",
                 }}
               />
             ) : (
@@ -87,7 +87,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
                 className="h-4 w-4 text-green-500" 
                 style={{
                   strokeDasharray: 24,
-                  animation: "checkmark 0.3s ease-in-out forwards",
+                  animation: "drawCheck 0.3s ease-in-out forwards",
                 }}
               />
             ) : (
@@ -117,7 +117,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
                   className="h-4 w-4 text-green-500" 
                   style={{
                     strokeDasharray: 24,
-                    animation: "checkmark 0.3s ease-in-out forwards",
+                    animation: "drawCheck 0.3s ease-in-out forwards",
                   }}
                 />
               ) : (
@@ -143,7 +143,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
                 className="h-4 w-4 text-green-500" 
                 style={{
                   strokeDasharray: 24,
-                  animation: "checkmark 0.3s ease-in-out forwards",
+                  animation: "drawCheck 0.3s ease-in-out forwards",
                 }}
               />
             ) : (
@@ -153,8 +153,9 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes checkmark {
+      <style>
+        {`
+        @keyframes drawCheck {
           0% {
             stroke-dashoffset: 24;
           }
@@ -162,7 +163,8 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             stroke-dashoffset: 0;
           }
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
