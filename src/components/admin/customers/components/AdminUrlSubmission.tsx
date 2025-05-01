@@ -90,8 +90,8 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
-              <CornerDownLeft className="h-4 w-4 mr-2" />
               {buttonText}
+              <CornerDownLeft className="h-4 w-4 ml-2" />
             </>
           )}
         </Button>
