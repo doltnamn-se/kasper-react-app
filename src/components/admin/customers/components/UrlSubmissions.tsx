@@ -15,9 +15,6 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
 
   return (
     <div>
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mb-3">
-        {t('url.submissions')}
-      </h3>
       <div className="space-y-4">
         <div className="space-y-1">
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('total.urls')}</p>
