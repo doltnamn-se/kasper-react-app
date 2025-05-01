@@ -62,7 +62,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-bold text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">
           {t('name')}
         </p>
         <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
       </div>
       
       <div className="space-y-1">
-        <p className="text-xs font-bold text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">
           {t('email')}
         </p>
         <div className="flex items-center gap-2">
@@ -115,7 +115,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
 
       {customer.profile?.address && (
         <div className="space-y-1">
-          <p className="text-xs font-bold text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">
             {t('address')}
           </p>
           <div className="flex items-center gap-2">
@@ -142,7 +142,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
       )}
       
       <div className="space-y-1">
-        <p className="text-xs font-bold text-[#000000A6] dark:text-[#FFFFFFA6]">{t('customer.id')}</p>
+        <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
           <Button
