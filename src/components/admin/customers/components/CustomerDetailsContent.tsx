@@ -148,11 +148,13 @@ export const CustomerDetailsContent = ({
           onDeleteUser={onDeleteUser}
         />
 
-        {/* Separator added above URL submission section */}
-        <Separator className="my-2" />
+        {/* Separator with adjusted padding */}
+        <div className="pt-3 pb-1">
+          <Separator />
+        </div>
 
-        {/* URL submission section */}
-        <div className="py-2 space-y-6">
+        {/* URL submission section with reduced top padding */}
+        <div className="pt-1 pb-2 space-y-6">
           <div className="space-y-4">
             <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h3>
             
