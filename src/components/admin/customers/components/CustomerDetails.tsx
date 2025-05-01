@@ -13,7 +13,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // Log the address for debugging
+  // Debug customer address
+  console.log("Customer in CustomerDetails:", customer);
   console.log("Customer address in CustomerDetails:", customer.address);
 
   const handleCopy = (text: string, label: string) => {
@@ -23,6 +24,11 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
       description: `${label} ${t('toast.copied.description')}`
     });
   };
+
+  // Get address for display - ensure it's a string with content
+  const displayAddress = typeof customer.address === 'string' && customer.address 
+    ? customer.address 
+    : t('no.address');
 
   return (
     <div className="space-y-4">
@@ -70,13 +76,13 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
         </p>
         <div className="flex items-center gap-2">
           <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-            {typeof customer.address === 'string' && customer.address ? customer.address : t('no.address')}
+            {displayAddress}
           </span>
           <Button
             variant="ghost"
             size="icon"
             className="h-6 w-6"
-            onClick={() => handleCopy(typeof customer.address === 'string' ? customer.address || '' : '', t('address'))}
+            onClick={() => handleCopy(displayAddress !== t('no.address') ? displayAddress : '', t('address'))}
           >
             <Copy className="h-4 w-4" />
           </Button>

@@ -14,27 +14,25 @@ export const useCustomerData = (customerId: string) => {
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
         supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle(),
         supabase.from('customer_checklist_progress')
-          .select('address, street_address, city, postal_code')
+          .select('*')  // Select all fields to ensure we get everything
           .eq('customer_id', customerId)
           .maybeSingle()
       ]);
 
-      // Log responses for debugging
-      console.log('Checklist Response:', checklistResponse);
-      console.log('URLs Response:', urlsResponse);
-      console.log('Limits Response:', limitsResponse);
-
-      if (urlsResponse.error) console.error('Error fetching URLs:', urlsResponse.error);
-      if (limitsResponse.error) console.error('Error fetching limits:', limitsResponse.error);
-      if (checklistResponse.error) console.error('Error fetching checklist:', checklistResponse.error);
-
-      // Create formatted address from individual fields if available
+      // Log full response data for debugging
+      console.log('Full Checklist Response:', checklistResponse);
+      
+      // Create formatted address from available data
       let formattedAddress = null;
+      
       if (checklistResponse.data) {
-        if (checklistResponse.data.address && typeof checklistResponse.data.address === 'string') {
-          formattedAddress = checklistResponse.data.address;
-        } else if (checklistResponse.data.street_address) {
-          // Create address from individual components
+        // Try different address fields based on what's available
+        if (checklistResponse.data.address && typeof checklistResponse.data.address === 'string' && checklistResponse.data.address.trim() !== '') {
+          console.log('Using full address field:', checklistResponse.data.address);
+          formattedAddress = checklistResponse.data.address.trim();
+        } 
+        // Fall back to constructing from parts if main address is empty/null
+        else if (checklistResponse.data.street_address || checklistResponse.data.city || checklistResponse.data.postal_code) {
           const addressParts = [
             checklistResponse.data.street_address,
             checklistResponse.data.city,
@@ -43,9 +41,12 @@ export const useCustomerData = (customerId: string) => {
           
           if (addressParts.length > 0) {
             formattedAddress = addressParts.join(', ');
+            console.log('Constructed address from parts:', formattedAddress);
           }
         }
       }
+
+      console.log('Final formatted address:', formattedAddress);
 
       return {
         urls: urlsResponse.data || [],

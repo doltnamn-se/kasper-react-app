@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -44,16 +43,19 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Create a working copy of the customer to avoid modifying props directly
+  // Extract address from customerData and add it to customer object
+  const formattedAddress = customerData?.checklistProgress?.formattedAddress || null;
+  
+  // Create a complete customer object with address included
   const customerWithAddress = {
     ...customer,
-    address: customerData?.checklistProgress?.formattedAddress || 
-             (customerData?.checklistProgress?.address && typeof customerData.checklistProgress.address === 'string' 
-              ? customerData.checklistProgress.address 
-              : null)
+    address: formattedAddress
   };
   
-  console.log("Customer with address:", customerWithAddress);
+  // Log the address assignment for debugging
+  console.log("Customer data fetched:", customerData);
+  console.log("Formatted address from data:", formattedAddress);
+  console.log("Final customer with address:", customerWithAddress);
 
   if (isLoading) {
     return isMobile ? (
