@@ -58,7 +58,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             onClick={() => handleCopy(customer.profile?.display_name || '', t('name'), 'name')}
           >
             {copiedFields['name'] ? (
-              <Check className="h-4 w-4 text-green-500 animate-draw-check" />
+              <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" />
             ) : (
               <Copy className="h-4 w-4" />
             )}
@@ -81,7 +81,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             onClick={() => handleCopy(customer.profile?.email || '', t('email'), 'email')}
           >
             {copiedFields['email'] ? (
-              <Check className="h-4 w-4 text-green-500 animate-draw-check" />
+              <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" />
             ) : (
               <Copy className="h-4 w-4" />
             )}
@@ -105,7 +105,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
               onClick={() => handleCopy(customer.profile.address || '', t('address'), 'address')}
             >
               {copiedFields['address'] ? (
-                <Check className="h-4 w-4 text-green-500 animate-draw-check" />
+                <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" />
               ) : (
                 <Copy className="h-4 w-4" />
               )}
@@ -125,7 +125,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             onClick={() => handleCopy(customer.id, t('customer.id'), 'customer-id')}
           >
             {copiedFields['customer-id'] ? (
-              <Check className="h-4 w-4 text-green-500 animate-draw-check" />
+              <Check className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" />
             ) : (
               <Copy className="h-4 w-4" />
             )}

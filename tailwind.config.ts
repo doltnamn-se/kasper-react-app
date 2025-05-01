@@ -66,7 +66,7 @@ export default {
         },
         'draw-check': {
           '0%': {
-            'stroke-dashoffset': '40'
+            'stroke-dashoffset': '24'
           },
           '100%': {
             'stroke-dashoffset': '0'
