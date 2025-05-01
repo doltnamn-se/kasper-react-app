@@ -87,7 +87,7 @@ export const AdminActionButtons = ({
   onBanUser?: () => void;
 }) => {
   return (
-    <div className="absolute right-6 top-6 flex gap-2">
+    <div className="absolute right-6 top-8 md:top-6 flex gap-2">
       {onRefreshData && (
         <Button
           onClick={onRefreshData}
@@ -136,4 +136,3 @@ export const AdminActionButtons = ({
     </div>
   );
 };
-

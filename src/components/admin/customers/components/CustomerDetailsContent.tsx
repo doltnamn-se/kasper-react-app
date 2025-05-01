@@ -102,9 +102,9 @@ export const CustomerDetailsContent = ({
         />
       )}
       
-      <div className="space-y-8 mt-12">
-        <div className="space-y-6">
-          <div className="flex items-center gap-3">
+      <div className="space-y-8 mt-16 md:mt-12">
+        <div className="space-y-8 md:space-y-6">
+          <div className="flex items-center gap-3 pt-2 md:pt-0">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
             <div className="flex items-center gap-2">
               <h3 className="text-base font-medium text-black dark:text-white">{customerName}</h3>
@@ -160,4 +160,3 @@ export const CustomerDetailsContent = ({
     </div>
   );
 };
-
