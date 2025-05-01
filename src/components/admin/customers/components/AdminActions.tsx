@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Send, Trash, RefreshCw, Ban } from "lucide-react";
 import { useState } from "react";
@@ -31,10 +32,6 @@ export const AdminActions = ({
 
   return (
     <>
-      {/* Removing the duplicate heading that says "Länkar" (deindexing.title) */}
-      
-      <AdminUrlSubmission customerId={customerId} />
-
       <DeleteUserDialog
         isOpen={showDeleteDialog}
         onClose={() => setShowDeleteDialog(false)}

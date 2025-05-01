@@ -11,6 +11,7 @@ import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
+import { AdminUrlSubmission } from "./AdminUrlSubmission";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -155,7 +156,10 @@ export const CustomerDetailsContent = ({
             {/* URL data fields */}
             <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
             
-            {/* Removed duplicate AdminUrlSubmission component here */}
+            {/* URL input field - moved below the data display */}
+            {isSuperAdmin && (
+              <AdminUrlSubmission customerId={customer.id} />
+            )}
           </div>
           
           <SiteStatusManager customerId={customer.id} />
@@ -164,4 +168,3 @@ export const CustomerDetailsContent = ({
     </div>
   );
 };
-
