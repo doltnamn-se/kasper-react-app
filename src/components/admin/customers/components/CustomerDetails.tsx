@@ -24,7 +24,7 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {t('name')}
         </p>
         <div className="flex items-center gap-2">
@@ -43,7 +43,7 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
       </div>
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {t('email')}
         </p>
         <div className="flex items-center gap-2">

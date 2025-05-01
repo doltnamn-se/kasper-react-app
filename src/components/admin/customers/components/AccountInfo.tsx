@@ -19,7 +19,7 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</p>
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
         <div className="flex items-center gap-2">
           <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
           <Button
@@ -34,14 +34,14 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       </div>
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</p>
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('created')}</p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
           {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
         </span>
       </div>
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('status')}</p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
           {isOnline ? t('online') : t('offline')}
         </span>
@@ -49,7 +49,7 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       
       {!isOnline && userLastSeen && (
         <div className="space-y-1">
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</p>
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('last.seen')}</p>
           <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
             {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
           </span>

@@ -33,7 +33,7 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {t('customer.type')}
         </p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
@@ -42,7 +42,7 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
       </div>
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {t('subscription')}
         </p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
