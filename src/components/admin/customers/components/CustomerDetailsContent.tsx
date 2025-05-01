@@ -60,7 +60,7 @@ export const CustomerDetailsContent = ({
         />
       )}
       
-      <div className="space-y-8">
+      <div className="space-y-8 mt-8">
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
