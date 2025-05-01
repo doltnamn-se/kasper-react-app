@@ -19,21 +19,18 @@ export const useCustomerData = (customerId: string) => {
           .maybeSingle()
       ]);
 
-      // Log full response data for debugging
-      console.log('Customer checklist data:', checklistResponse.data);
+      // Log the raw data from database for debugging
+      console.log('Raw customer checklist data:', checklistResponse);
       
-      // Simply use the address field directly from the customer_checklist_progress table
-      const customerAddress = checklistResponse.data?.address || null;
+      // Get the address directly - no processing, no complications
+      const address = checklistResponse.data?.address || null;
       
-      console.log('Direct customer address from database:', customerAddress);
+      console.log('Raw address from database:', address);
 
       return {
         urls: urlsResponse.data || [],
         limits: limitsResponse.data,
-        checklistProgress: {
-          ...checklistResponse.data,
-          address: customerAddress
-        }
+        checklistProgress: checklistResponse.data
       };
     },
     enabled: !!customerId // Only run query if customerId exists

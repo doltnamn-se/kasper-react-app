@@ -13,8 +13,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // Simple log to debug what we're receiving
-  console.log("Customer in CustomerDetails - address:", customer.address);
+  // Debug log to see the raw value
+  console.log("Raw customer address in CustomerDetails:", customer.address);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -24,7 +24,7 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
     });
   };
 
-  // Get address for display - simple check if it exists
+  // Simple display of address - if it exists, show it; otherwise show a fallback message
   const displayAddress = customer.address || t('no.address');
 
   return (

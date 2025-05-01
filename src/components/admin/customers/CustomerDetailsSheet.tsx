@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -43,15 +44,16 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Simply get the address directly from the customerData
-  const customerAddress = customerData?.checklistProgress?.address || null;
+  // Get the address directly from customerData - raw, no processing
+  // We're just passing it through directly from the database
+  const address = customerData?.checklistProgress?.address || null;
   
-  console.log("Direct customer address in sheet:", customerAddress);
+  console.log("Raw address in CustomerDetailsSheet:", address);
   
   // Create a complete customer object with address included
   const customerWithAddress = {
     ...customer,
-    address: customerAddress
+    address: address
   };
 
   if (isLoading) {
