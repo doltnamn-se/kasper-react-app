@@ -23,7 +23,7 @@ export const UrlSubmissions = ({
         </div>
         
         {/* Values row - each value is aligned under its corresponding label */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-2">
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
             {usedUrls}
           </p>
