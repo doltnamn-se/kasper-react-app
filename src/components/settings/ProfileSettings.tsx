@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Profile } from "@/types/customer";
@@ -18,7 +17,7 @@ export const ProfileSettings = () => {
         console.log("Fetching profile for user:", session.user.id);
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('id, email, display_name, avatar_url, role, created_at, updated_at, address')
+          .select('id, email, display_name, avatar_url, role, created_at, updated_at')
           .eq('id', session.user.id)
           .single();
 
@@ -28,11 +27,7 @@ export const ProfileSettings = () => {
         }
 
         console.log("Profile data:", profileData);
-        // Ensure address is present even if null
-        setUserProfile({
-          ...profileData,
-          address: profileData.address || null
-        });
+        setUserProfile(profileData);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }
