@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -82,9 +83,9 @@ export const AdminUrlSubmission = ({
         </Button>
       </div>
       
-      {/* Updated separator with adjusted padding (changed pt-4 to pt-0) */}
-      <div className="pt-0 pb-1.5 py-[25px]">
-        <Separator className="my-[10px]" />
+      {/* Updated separator with consistent padding */}
+      <div className="pt-5 pb-5">
+        <Separator className="my-0" />
       </div>
     </form>;
 };

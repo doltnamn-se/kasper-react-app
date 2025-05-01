@@ -111,13 +111,13 @@ export const CustomerDetailsContent = ({
 
         <AdminActions customerId={customer.id} isSuperAdmin={isSuperAdmin} isSendingEmail={isSendingEmail} isUpdating={isUpdating} isDeleting={isDeleting} onSendActivationEmail={onSendActivationEmail} onDeleteUser={onDeleteUser} />
 
-        {/* Separator with adjusted padding */}
-        <div className="pt-3 pb-1 py-0">
+        {/* First separator with consistent padding */}
+        <div className="pt-3 pb-5">
           <Separator />
         </div>
 
-        {/* URL submission section with updated padding (changed from pt-4 to pt-0) */}
-        <div className="pt-1 pb-2 space-y-6 py-0">
+        {/* URL submission section with consistent spacing */}
+        <div className="space-y-6">
           <div className="space-y-4">
             <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h3>
             

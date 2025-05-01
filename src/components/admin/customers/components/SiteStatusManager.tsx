@@ -135,8 +135,8 @@ export function SiteStatusManager({
         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 dark:border-white"></div>
       </div>;
   }
-  return <div className="space-y-4">
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mt-[-8px]">
+  return <div className="space-y-4 pt-2">
+      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mt-[-25px]">
         {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
       </h3>
       <div className="space-y-3">
