@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getColumns } from "./CustomerTableColumns";
 import { textFilterFn } from "./customerTableUtils";
 import { CustomerTableHeader } from "./CustomerTableHeader";
@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -32,7 +31,6 @@ interface CustomerTableProps {
 
 export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: CustomerTableProps) => {
   const { t } = useLanguage();
-  const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -45,25 +43,6 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
   });
 
   const columns = getColumns(onlineUsers, lastSeen);
-
-  // Set column visibility based on device type
-  useEffect(() => {
-    if (isMobile) {
-      // Only show Name and Status columns on mobile
-      setColumnVisibility({
-        select: true, // Keep checkbox column
-        profile_display_name: true, // Name column
-        online_status: true, // Status column
-        profile_email: false,
-        subscription_plan: false,
-        checklist_completed: false,
-        last_seen: false,
-      });
-    } else {
-      // Reset to default visibility on desktop
-      setColumnVisibility({});
-    }
-  }, [isMobile]);
 
   const table = useReactTable({
     data: customers,
@@ -181,3 +160,4 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
     </div>
   );
 };
+
