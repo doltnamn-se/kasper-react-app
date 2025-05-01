@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Search, ChevronDown, RefreshCw } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CustomerTableToolbarProps {
   table: Table<CustomerWithProfile>;
@@ -21,6 +22,7 @@ export const CustomerTableToolbar = ({
   onRefresh,
 }: CustomerTableToolbarProps) => {
   const { t, language } = useLanguage();
+  const isMobile = useIsMobile();
 
   const getColumnLabel = (columnId: string) => {
     switch (columnId) {
@@ -55,45 +57,47 @@ export const CustomerTableToolbar = ({
           "
         />
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button 
-            variant="outline" 
-            className="
-              text-xs font-medium border-dashed flex items-center gap-2 text-[#000000] border-[#d4d4d4] hover:text-[#000000] hover:bg-background/80 hover:border-[#8f8f8f]
-              dark:text-[#FFFFFF] dark:border-[#363636] dark:hover:text-[#FFFFFF] dark:hover:border-[#454545] dark:hover:bg-transparent
-              border border-[1px] h-8 rounded-[0.375rem] px-[0.625rem]
-            "
+      {!isMobile && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="
+                text-xs font-medium border-dashed flex items-center gap-2 text-[#000000] border-[#d4d4d4] hover:text-[#000000] hover:bg-background/80 hover:border-[#8f8f8f]
+                dark:text-[#FFFFFF] dark:border-[#363636] dark:hover:text-[#FFFFFF] dark:hover:border-[#454545] dark:hover:bg-transparent
+                border border-[1px] h-8 rounded-[0.375rem] px-[0.625rem]
+              "
+            >
+              {t('view.all.columns')}
+              <ChevronDown className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="end"
+            className="text-xs bg-white dark:bg-[#212121] border-[#d4d4d4] dark:border-[#363636]"
           >
-            {t('view.all.columns')}
-            <ChevronDown className="h-4 w-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          align="end"
-          className="text-xs bg-white dark:bg-[#212121] border-[#d4d4d4] dark:border-[#363636]"
-        >
-          <DropdownMenuLabel className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('toggle.columns')}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-[#e8e8e8] dark:bg-[#333333]" />
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] bg-transparent hover:bg-transparent [&:hover]:bg-transparent !important [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:[&>span]:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span_svg]:h-3 [&>span_svg]:w-3 [&>span_svg]:stroke-[#FFFFFF] dark:[&>span_svg]:stroke-[#000000] [&>span_svg]:stroke-[3px]"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {getColumnLabel(column.id)}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            <DropdownMenuLabel className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {t('toggle.columns')}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-[#e8e8e8] dark:bg-[#333333]" />
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] bg-transparent hover:bg-transparent [&:hover]:bg-transparent !important [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:h-4 [&>span]:w-4 [&>span]:shrink-0 [&>span]:rounded-[4px] [&>span]:border [&>span]:border-[#c7c7c7] [&>span]:bg-[#f3f3f340] [&>span]:data-[state=checked]:border-[#000000] [&>span]:data-[state=checked]:bg-[#000000] dark:[&>span]:border-[#393939] dark:[&>span]:bg-[#24242440] dark:[&>span]:data-[state=checked]:border-[#FFFFFF] dark:[&>span]:data-[state=checked]:bg-[#FFFFFF] [&>span_svg]:h-3 [&>span_svg]:w-3 [&>span_svg]:stroke-[#FFFFFF] dark:[&>span_svg]:stroke-[#000000] [&>span_svg]:stroke-[3px]"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  >
+                    {getColumnLabel(column.id)}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       <div className="flex-1" />
       <Button
         variant="outline"
