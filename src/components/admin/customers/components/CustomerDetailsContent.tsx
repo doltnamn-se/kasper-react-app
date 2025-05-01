@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,6 +11,7 @@ import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
+import { Separator } from "@/components/ui/separator";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -147,6 +147,9 @@ export const CustomerDetailsContent = ({
           onSendActivationEmail={onSendActivationEmail}
           onDeleteUser={onDeleteUser}
         />
+
+        {/* Separator added above URL submission section */}
+        <Separator className="my-2" />
 
         {/* URL submission section */}
         <div className="py-2 space-y-6">
