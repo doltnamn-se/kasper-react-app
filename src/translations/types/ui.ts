@@ -131,4 +131,6 @@ export interface UITranslations {
   'deindexing.title': string;
   'deindexing.need.more': string;
   'unlimited': string;
+  'customer.type': string;
+  'subscription': string;
 }

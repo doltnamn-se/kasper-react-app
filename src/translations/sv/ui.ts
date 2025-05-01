@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
