@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -10,6 +11,7 @@ import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -136,22 +138,23 @@ export const CustomerDetailsContent = ({
           </div>
         </div>
 
-        <div>
-          <div className="py-4 space-y-6">
-            <AdminActions
-              customerId={customer.id}
-              isSuperAdmin={isSuperAdmin}
-              isSendingEmail={isSendingEmail}
-              isUpdating={isUpdating}
-              isDeleting={isDeleting}
-              onSendActivationEmail={onSendActivationEmail}
-              onDeleteUser={onDeleteUser}
-            />
+        <AdminActions
+          customerId={customer.id}
+          isSuperAdmin={isSuperAdmin}
+          isSendingEmail={isSendingEmail}
+          isUpdating={isUpdating}
+          isDeleting={isDeleting}
+          onSendActivationEmail={onSendActivationEmail}
+          onDeleteUser={onDeleteUser}
+        />
 
-            <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
-            
-            <SiteStatusManager customerId={customer.id} />
-          </div>
+        {/* Add separator before URL submissions */}
+        <Separator className="my-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
+
+        <div className="py-2 space-y-6">
+          <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+          
+          <SiteStatusManager customerId={customer.id} />
         </div>
       </div>
     </div>
