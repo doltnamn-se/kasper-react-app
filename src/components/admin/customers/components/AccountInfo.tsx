@@ -17,49 +17,44 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
   const { t } = useLanguage();
 
   return (
-    <div>
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-        {t('account.details')}
-      </h3>
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</p>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => onCopy(customer.id, t('customer.id'))}
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
-          </div>
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</p>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => onCopy(customer.id, t('customer.id'))}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
         </div>
-        
-        <div className="space-y-1">
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</p>
-          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
-          </p>
-        </div>
-        
-        <div className="space-y-1">
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
-          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {isOnline ? t('online') : t('offline')}
-          </p>
-        </div>
-        
-        {!isOnline && userLastSeen && (
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</p>
-            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
-            </p>
-          </div>
-        )}
       </div>
+      
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</p>
+        <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
+        </p>
+      </div>
+      
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
+        <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {isOnline ? t('online') : t('offline')}
+        </p>
+      </div>
+      
+      {!isOnline && userLastSeen && (
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

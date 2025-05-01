@@ -65,21 +65,25 @@ export const CustomerDetailsContent = ({
           <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6]">{customerName}</h3>
           <div className="flex flex-col items-start gap-4">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
-            <CustomerDetails customer={customer} />
-            <CustomerBadges customer={customer} />
+            <div className="flex flex-col sm:flex-row gap-8">
+              <div>
+                <CustomerDetails customer={customer} />
+                <div className="mt-4">
+                  <CustomerBadges customer={customer} />
+                </div>
+              </div>
+              <AccountInfo 
+                customer={customer}
+                isOnline={isOnline}
+                userLastSeen={userLastSeen}
+                onCopy={onCopy}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Removed border-t class from div below */}
         <div>
           <div className="py-4 space-y-6">
-            <AccountInfo 
-              customer={customer}
-              isOnline={isOnline}
-              userLastSeen={userLastSeen}
-              onCopy={onCopy}
-            />
-            
             <AdminActions
               customerId={customer.id}
               isSuperAdmin={isSuperAdmin}
