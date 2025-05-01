@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -148,13 +147,13 @@ export const CustomerDetailsContent = ({
           onDeleteUser={onDeleteUser}
         />
 
-        {/* Add separator before URL submissions */}
+        {/* Add separator between admin actions and URL submissions */}
         <Separator className="my-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
         
-        {/* Add separator above URL submissions title */}
-        <Separator className="mb-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
-
         <div className="py-2 space-y-6">
+          {/* Add separator above URL submissions title */}
+          <Separator className="mb-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
+          
           <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
           
           <SiteStatusManager customerId={customer.id} />
@@ -163,4 +162,3 @@ export const CustomerDetailsContent = ({
     </div>
   );
 };
-
