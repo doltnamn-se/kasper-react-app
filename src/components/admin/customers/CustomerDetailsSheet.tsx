@@ -47,7 +47,10 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Create a working copy of the customer to avoid modifying props directly
   const customerWithAddress = {
     ...customer,
-    address: customerData?.checklistProgress?.address || customer.address
+    address: customerData?.checklistProgress?.formattedAddress || 
+             (customerData?.checklistProgress?.address && typeof customerData.checklistProgress.address === 'string' 
+              ? customerData.checklistProgress.address 
+              : null)
   };
   
   console.log("Customer with address:", customerWithAddress);

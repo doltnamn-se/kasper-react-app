@@ -14,7 +14,7 @@ export const useCustomerData = (customerId: string) => {
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
         supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle(),
         supabase.from('customer_checklist_progress')
-          .select('address')
+          .select('address, street_address, city, postal_code')
           .eq('customer_id', customerId)
           .maybeSingle()
       ]);
@@ -28,10 +28,32 @@ export const useCustomerData = (customerId: string) => {
       if (limitsResponse.error) console.error('Error fetching limits:', limitsResponse.error);
       if (checklistResponse.error) console.error('Error fetching checklist:', checklistResponse.error);
 
+      // Create formatted address from individual fields if available
+      let formattedAddress = null;
+      if (checklistResponse.data) {
+        if (checklistResponse.data.address && typeof checklistResponse.data.address === 'string') {
+          formattedAddress = checklistResponse.data.address;
+        } else if (checklistResponse.data.street_address) {
+          // Create address from individual components
+          const addressParts = [
+            checklistResponse.data.street_address,
+            checklistResponse.data.city,
+            checklistResponse.data.postal_code
+          ].filter(Boolean);
+          
+          if (addressParts.length > 0) {
+            formattedAddress = addressParts.join(', ');
+          }
+        }
+      }
+
       return {
         urls: urlsResponse.data || [],
         limits: limitsResponse.data,
-        checklistProgress: checklistResponse.data
+        checklistProgress: {
+          ...checklistResponse.data,
+          formattedAddress
+        }
       };
     },
     enabled: !!customerId // Only run query if customerId exists
