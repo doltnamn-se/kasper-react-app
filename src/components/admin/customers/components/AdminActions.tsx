@@ -31,11 +31,7 @@ export const AdminActions = ({
 
   return (
     <>
-      <div>
-        <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-          {t('deindexing.title')}
-        </h3>
-      </div>
+      {/* Removing the duplicate heading that says "Länkar" (deindexing.title) */}
       
       <AdminUrlSubmission customerId={customerId} />
 
