@@ -79,7 +79,7 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     setIsUpdatingSubscription(true);
     try {
       // Convert 'none' to null, otherwise keep the plan value
-      const subscriptionValue = plan === 'none' ? null : plan as SubscriptionPlan | null;
+      const subscriptionValue = plan === 'none' ? null : plan;
       
       const { error } = await supabase
         .from('customers')

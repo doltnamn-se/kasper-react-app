@@ -2,6 +2,17 @@
 export interface ErrorTranslations {
   'error': string;
   'error.title': string;
+  'error.invalid.credentials': string;
+  'error.signin': string;
+  'error.signout': string;
+  'error.generic': string;
+  'error.missing.email': string;
+  'error.invalid.recovery.link': string;
+  'error.password.requirements': string;
+  'error.password.update': string;
+  'error.authentication': string;
+  'error.permission': string;
+  'error.update.preferences': string;
   'errors.invalid.credentials': string;
   'errors.email.not.confirmed': string;
   'errors.user.not.found': string;
