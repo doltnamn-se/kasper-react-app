@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getColumns } from "./CustomerTableColumns";
 import { textFilterFn } from "./customerTableUtils";
 import { CustomerTableHeader } from "./CustomerTableHeader";
@@ -21,6 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface CustomerTableProps {
   customers: CustomerWithProfile[];
@@ -41,8 +43,27 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
     pageIndex: 0,
     pageSize: 10,
   });
+  const isMobile = useIsMobile();
 
   const columns = getColumns(onlineUsers, lastSeen);
+
+  useEffect(() => {
+    if (isMobile) {
+      // On mobile, only show profile_display_name and online_status columns
+      setColumnVisibility({
+        profile_display_name: true,
+        online_status: true,
+        profile_email: false,
+        checklist_completed: false,
+        last_seen: false,
+        subscription_plan: false,
+        actions: true,
+      });
+    } else {
+      // On desktop, show all columns by default
+      setColumnVisibility({});
+    }
+  }, [isMobile]);
 
   const table = useReactTable({
     data: customers,
@@ -82,21 +103,23 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
 
   return (
     <div className="space-y-4">
-      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e]">
-        <div className="overflow-x-auto">
-          <Table>
-            <CustomerTableHeader 
-              table={table}
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              onRefresh={onRefresh}
-            />
-            <CustomerTableBody 
-              table={table}
-              onRowClick={handleRowClick}
-            />
-          </Table>
-        </div>
+      <div className="border border-[#dfdfdf] dark:border-[#2e2e2e] w-full max-w-full">
+        <ScrollArea className="w-full" type="scroll">
+          <div className="min-w-full w-max">
+            <Table>
+              <CustomerTableHeader 
+                table={table}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                onRefresh={onRefresh}
+              />
+              <CustomerTableBody 
+                table={table}
+                onRowClick={handleRowClick}
+              />
+            </Table>
+          </div>
+        </ScrollArea>
       </div>
 
       <div className="flex items-center justify-between px-2 text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -160,4 +183,3 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
     </div>
   );
 };
-
