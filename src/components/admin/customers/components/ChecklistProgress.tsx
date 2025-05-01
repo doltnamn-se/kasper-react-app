@@ -17,20 +17,21 @@ export const ChecklistProgress = ({ progressPercentage, completedSteps, totalSte
         <ListChecks className="w-4 h-4" />
         {t('checklist')}
       </h3>
-      <div className="space-y-2">
-        <p className="text-xs font-medium flex justify-between">
-          <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</span>
-          <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {progressPercentage === 100 ? t('completed') : t('in.progress')}
-          </span>
-        </p>
-        {progressPercentage !== 100 && (
-          <p className="text-xs font-medium flex justify-between">
-            <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('progress')}</span>
-            <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {completedSteps} / {totalSteps} {t('steps')}
-            </span>
           </p>
+        </div>
+        
+        {progressPercentage !== 100 && (
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('progress')}</p>
+            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {completedSteps} / {totalSteps} {t('steps')}
+            </p>
+          </div>
         )}
       </div>
     </div>

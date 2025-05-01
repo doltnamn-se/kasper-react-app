@@ -18,19 +18,20 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
       <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
         {t('url.submissions')}
       </h3>
-      <div className="space-y-2">
-        <p className="text-xs font-medium flex justify-between">
-          <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('total.urls')}</span>
-          <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('total.urls')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {usedUrls}
-          </span>
-        </p>
-        <p className="text-xs font-medium flex justify-between">
-          <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('urls.available')}</span>
-          <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+          </p>
+        </div>
+        
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('urls.available')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {isUnlimited ? displayLimit : `${usedUrls} / ${displayLimit}`}
-          </span>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
   );

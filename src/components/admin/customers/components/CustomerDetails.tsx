@@ -22,32 +22,43 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   };
 
   return (
-    <div className="space-y-1">
-      <div className="flex items-center gap-2">
+    <div className="space-y-4">
+      <div className="space-y-1">
         <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
-          {customer.profile?.display_name || t('no.name')}
+          {t('name')}
         </h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
-        >
-          <Copy className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <p className="text-xs text-[#000000] dark:text-white">
+            {customer.profile?.display_name || t('no.name')}
+          </p>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
-      <div className="flex items-center gap-2">
-        <p className="text-xs text-[#000000] dark:text-white">
-          {customer.profile?.email || t('no.email')}
-        </p>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
-        >
-          <Copy className="h-4 w-4" />
-        </Button>
+      
+      <div className="space-y-1">
+        <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
+          {t('email')}
+        </h2>
+        <div className="flex items-center gap-2">
+          <p className="text-xs text-[#000000] dark:text-white">
+            {customer.profile?.email || t('no.email')}
+          </p>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

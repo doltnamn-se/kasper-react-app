@@ -21,11 +21,11 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
         {t('account.details')}
       </h3>
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs font-medium">
-          <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</span>
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('customer.id')}</p>
           <div className="flex items-center gap-2">
-            <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{customer.id}</span>
             <Button
               variant="ghost"
               size="icon"
@@ -36,25 +36,28 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
             </Button>
           </div>
         </div>
-        <p className="text-xs font-medium flex justify-between">
-          <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</span>
-          <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+        
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
-          </span>
-        </p>
-        <p className="text-xs font-medium flex justify-between">
-          <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</span>
-          <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {isOnline ? t('online') : t('offline')}
-          </span>
-        </p>
-        {!isOnline && userLastSeen && (
-          <p className="text-xs font-medium flex justify-between">
-            <span className="text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</span>
-            <span className="text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
-            </span>
           </p>
+        </div>
+        
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {isOnline ? t('online') : t('offline')}
+          </p>
+        </div>
+        
+        {!isOnline && userLastSeen && (
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</p>
+            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
+            </p>
+          </div>
         )}
       </div>
     </div>
