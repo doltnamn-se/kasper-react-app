@@ -1,0 +1,100 @@
+
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useCustomerData } from "./useCustomerData";
+import { useCustomerActions } from "./useCustomerActions";
+import { toast } from "sonner";
+import { useCustomerPresence } from "../useCustomerPresence";
+
+export const useCustomerDetails = (customerId: string, onOpenChange: (open: boolean) => void) => {
+  const { onlineUsers, lastSeen } = useCustomerPresence();
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [additionalUrls, setAdditionalUrls] = useState<string>("0");
+  
+  const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customerId);
+
+  const {
+    isUpdating,
+    isSendingEmail,
+    isDeleting,
+    handleUpdateUrlLimits,
+    handleResendActivationEmail,
+    handleDeleteUser
+  } = useCustomerActions(customerId, () => onOpenChange(false));
+
+  useEffect(() => {
+    const fetchUrlLimits = async () => {
+      if (!customerId) return;
+      
+      const { data, error } = await supabase
+        .from('user_url_limits')
+        .select('additional_urls')
+        .eq('customer_id', customerId)
+        .maybeSingle();
+      
+      if (error) {
+        console.error("Error fetching URL limits:", error);
+        return;
+      }
+      
+      if (data) {
+        setAdditionalUrls(data.additional_urls.toString());
+      } else {
+        setAdditionalUrls("0");
+      }
+    };
+
+    if (customerId) {
+      fetchUrlLimits();
+    }
+  }, [customerId]);
+
+  useEffect(() => {
+    const checkSuperAdmin = async () => {
+      const { data, error } = await supabase.rpc('is_super_admin');
+      if (!error && data) {
+        setIsSuperAdmin(data);
+      }
+    };
+    checkSuperAdmin();
+  }, []);
+
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success('Copied', {
+      description: `${label} copied to clipboard`
+    });
+  };
+
+  const handleUrlLimitsUpdate = async () => {
+    if (!customerId) return;
+    const success = await handleUpdateUrlLimits(additionalUrls);
+    if (success) {
+      refetchData();
+    }
+  };
+
+  const isOnline = onlineUsers.has(customerId);
+  const userLastSeen = lastSeen[customerId] || null;
+  const usedUrls = customerData?.urls?.length || 0;
+  const totalUrlLimit = (customerData?.limits?.additional_urls || 0);
+
+  return {
+    isLoading,
+    customerData,
+    isOnline,
+    userLastSeen,
+    usedUrls,
+    totalUrlLimit,
+    isSuperAdmin,
+    isUpdating,
+    isSendingEmail,
+    isDeleting,
+    additionalUrls,
+    setAdditionalUrls,
+    handleCopy,
+    handleUrlLimitsUpdate,
+    handleResendActivationEmail,
+    handleDeleteUser
+  };
+};
