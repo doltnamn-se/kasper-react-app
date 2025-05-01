@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -135,7 +136,7 @@ export function SiteStatusManager({
       </div>;
   }
   return <div className="space-y-4">
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">
+      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mt-0">
         {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
       </h3>
       <div className="space-y-3">
