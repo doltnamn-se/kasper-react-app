@@ -20,7 +20,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   useEffect(() => {
     console.log('CustomerDetails: Customer ID:', customer.id);
     console.log('CustomerDetails: Data received:', data);
-    console.log('CustomerDetails: Address value:', data?.checklistProgress?.address);
+    console.log('CustomerDetails: Profile data:', data?.profile);
+    console.log('CustomerDetails: Checklist data:', data?.checklistProgress);
     console.log('CustomerDetails: Loading status:', isLoading);
     if (error) console.error('CustomerDetails: Error fetching data:', error);
   }, [data, isLoading, error, customer.id]);
@@ -33,8 +34,8 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
     });
   };
 
-  // Get address from customer data
-  const address = data?.checklistProgress?.address || '';
+  // Get address from profile first, then fallback to checklist data
+  const address = data?.profile?.address || data?.checklistProgress?.address || '';
 
   return (
     <div className="space-y-4">
