@@ -62,18 +62,18 @@ export const CustomerDetailsContent = ({
       
       <div className="space-y-8">
         <div className="space-y-6">
-          <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6]">{customerName}</h3>
-          <div className="flex flex-col items-start gap-4">
+          <div className="flex items-center gap-3">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
-            <div className="flex flex-col sm:flex-row gap-8">
-              <CustomerDetails customer={customer} onCopy={onCopy} />
-              <AccountInfo 
-                customer={customer}
-                isOnline={isOnline}
-                userLastSeen={userLastSeen}
-                onCopy={onCopy}
-              />
-            </div>
+            <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6]">{customerName}</h3>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-8">
+            <CustomerDetails customer={customer} onCopy={onCopy} />
+            <AccountInfo 
+              customer={customer}
+              isOnline={isOnline}
+              userLastSeen={userLastSeen}
+              onCopy={onCopy}
+            />
           </div>
         </div>
 
