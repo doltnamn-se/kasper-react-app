@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -73,6 +72,7 @@ export interface UITranslations {
   'no.customers': string;
   'name': string;
   'email': string;
+  'address': string;
   'checklist': string;
   'last.online': string;
   'plan': string;
