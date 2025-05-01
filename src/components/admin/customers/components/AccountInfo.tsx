@@ -16,6 +16,24 @@ interface AccountInfoProps {
 export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: AccountInfoProps) => {
   const { t } = useLanguage();
 
+  // Helper function to get the appropriate subscription label
+  const getSubscriptionLabel = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.1month');
+      case '3_months':
+        return t('subscription.3months');
+      case '6_months':
+        return t('subscription.6months');
+      case '12_months':
+        return t('subscription.12months');
+      case '24_months':
+        return t('subscription.24months');
+      default:
+        return t('subscription.none');
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-1">
@@ -28,7 +46,7 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
         <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-          {customer.subscription_plan ? t(`subscription.${customer.subscription_plan.replace('_', '')}`) : t('subscription.none')}
+          {getSubscriptionLabel(customer.subscription_plan)}
         </span>
       </div>
       
