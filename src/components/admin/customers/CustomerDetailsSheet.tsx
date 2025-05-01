@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -43,21 +44,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Get the address directly from customerData and add explicit debug logging
-  const address = customerData?.checklistProgress?.address || null;
-  
-  console.log("CustomerDetailsSheet: Customer ID =", customerId);
-  console.log("CustomerDetailsSheet: Raw checklistProgress data =", customerData?.checklistProgress);
-  console.log("CustomerDetailsSheet: Found address =", address);
-  console.log("CustomerDetailsSheet: checklistProgress object type =", typeof customerData?.checklistProgress);
-  console.log("CustomerDetailsSheet: Full customerData =", customerData);
-  
-  // Create a complete customer object with address included
-  const customerWithAddress = {
-    ...customer,
-    address: address
-  };
-
   if (isLoading) {
     return isMobile ? (
       <Drawer open={!!customer} onOpenChange={onOpenChange}>
@@ -83,15 +69,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     }
   };
 
-  // Log the final customer object being passed to CustomerDetailsContent
-  console.log("CustomerDetailsSheet: Final customer object =", customerWithAddress);
-
   return isMobile ? (
     <Drawer open={!!customer} onOpenChange={onOpenChange}>
       <DrawerContent className="px-0 pb-16 max-h-[85vh]">
         <ScrollArea className="h-full max-h-[85vh] overflow-y-auto">
           <CustomerDetailsContent
-            customer={customerWithAddress}
+            customer={customer}
             isOnline={isOnline}
             userLastSeen={userLastSeen}
             onCopy={handleCopy}
@@ -122,7 +105,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
         <ScrollArea className="h-full">
           <CustomerDetailsContent
-            customer={customerWithAddress}
+            customer={customer}
             isOnline={isOnline}
             userLastSeen={userLastSeen}
             onCopy={handleCopy}
