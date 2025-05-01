@@ -82,7 +82,7 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
         <Button 
           type="submit" 
           disabled={isSubmitting}
-          size="sm"
+          className="bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
