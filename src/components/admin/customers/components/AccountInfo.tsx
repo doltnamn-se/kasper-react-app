@@ -1,83 +1,73 @@
 
-import { CustomerWithProfile } from "@/types/customer";
+import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react";
+import { format, formatDistanceToNow } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
+import { CustomerWithProfile } from "@/types/customer";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
 
 interface AccountInfoProps {
   customer: CustomerWithProfile;
   isOnline: boolean;
   userLastSeen: string | null;
-  onCopy?: (text: string, label: string) => void;
+  onCopy: (text: string, label: string) => void;
   isSuperAdmin?: boolean;
   isUpdatingSubscription?: boolean;
   onUpdateSubscriptionPlan?: (plan: string) => void;
 }
 
-export const AccountInfo = ({
-  customer,
-  isOnline,
-  userLastSeen,
-  onCopy,
+export const AccountInfo = ({ 
+  customer, 
+  isOnline, 
+  userLastSeen, 
+  onCopy, 
   isSuperAdmin = false,
   isUpdatingSubscription = false,
   onUpdateSubscriptionPlan
 }: AccountInfoProps) => {
   const { t } = useLanguage();
-  
+
+  // Helper function to get the appropriate subscription label
+  const getSubscriptionLabel = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.1month');
+      case '3_months':
+        return t('subscription.3months');
+      case '6_months':
+        return t('subscription.6months');
+      case '12_months':
+        return t('subscription.12months');
+      case '24_months':
+        return t('subscription.24months');
+      default:
+        return t('subscription.none');
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {t('account.details')}
-        </p>
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
         
-        <div className="space-y-1">
-          <div className="space-y-px">
-            <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {t('status')}
-            </p>
-            <div className="flex items-center gap-1.5">
-              <div 
-                className={`w-1.5 h-1.5 rounded-full ${
-                  isOnline ? 'bg-green-500' : 'bg-gray-400'
-                }`}
-              />
-              <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-                {isOnline ? t('online') : t('offline')}
-                {!isOnline && userLastSeen && (
-                  <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6] ml-1">
-                    ({t('last.seen')} {userLastSeen})
-                  </span>
-                )}
-              </span>
-            </div>
-          </div>
-
-          {/* Removed the 'Created' field here */}
-
-          <div className="space-y-px mt-2">
-            <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {t('subscription')}
-            </p>
-            <div>
-              {isSuperAdmin && onUpdateSubscriptionPlan ? (
-                <SubscriptionPlanSelect 
-                  currentPlan={customer.subscription_plan}
-                  isUpdating={isUpdatingSubscription}
-                  onUpdatePlan={onUpdateSubscriptionPlan}
-                />
-              ) : (
-                <Badge variant="outline" className="text-xs font-medium bg-transparent border-[#00000033] dark:border-[#FFFFFF33] text-[#000000] dark:text-[#FFFFFF] rounded-sm">
-                  {customer.subscription_plan 
-                    ? t(`subscription.${customer.subscription_plan.replace('_', '')}`) 
-                    : t('no.plan')}
-                </Badge>
-              )}
-            </div>
-          </div>
-        </div>
+        {isSuperAdmin && onUpdateSubscriptionPlan ? (
+          <SubscriptionPlanSelect 
+            currentPlan={customer.subscription_plan}
+            isUpdating={isUpdatingSubscription}
+            onUpdatePlan={onUpdateSubscriptionPlan}
+          />
+        ) : (
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+            {getSubscriptionLabel(customer.subscription_plan)}
+          </span>
+        )}
+      </div>
+      
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('created')}</p>
+        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+          {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
+        </span>
       </div>
     </div>
   );
