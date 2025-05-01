@@ -19,6 +19,7 @@ export const ui: UITranslations = {
   'subscription.12months': '12 Mån',
   'subscription.24months': '24 Mån',
   'subscription.none': 'Ingen plan',
+  'subscription.select': 'Välj plan',
   'subscription.tooltip.1month': 'Månadsabonnemang',
   'subscription.tooltip.3months': 'Tremånadersabonnemang',
   'subscription.tooltip.6months': 'Halvårsabonnemang',
@@ -135,5 +136,14 @@ export const ui: UITranslations = {
   'subscription': 'Prenumeration',
   'deindexing.title': 'Avindexeringsstatus',
   'deindexing.need.more': 'Behöver du fler URLer?',
-  'unlimited': 'Obegränsad'
+  'unlimited': 'Obegränsad',
+  'updating': 'Uppdaterar...',
+  'update': 'Uppdatera',
+  'success.email_sent': 'E-post skickad',
+  'success.activation_email_sent': 'Aktiverings-e-post har skickats',
+  'success.updated': 'Uppdaterad',
+  'success.url_limits_updated': 'URL-gränser uppdaterade',
+  'success.subscription_updated': 'Prenumeration uppdaterad',
+  'success.deleted': 'Borttagen',
+  'success.user_deleted': 'Användaren har tagits bort'
 };

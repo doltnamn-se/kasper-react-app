@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -16,6 +17,7 @@ export interface UITranslations {
   'subscription.12months': string;
   'subscription.24months': string;
   'subscription.none': string;
+  'subscription.select': string;
   'subscription.tooltip.1month': string;
   'subscription.tooltip.3months': string;
   'subscription.tooltip.6months': string;
@@ -133,4 +135,13 @@ export interface UITranslations {
   'unlimited': string;
   'customer.type': string;
   'subscription': string;
+  'updating': string;
+  'update': string;
+  'success.email_sent': string;
+  'success.activation_email_sent': string;
+  'success.updated': string;
+  'success.url_limits_updated': string;
+  'success.subscription_updated': string;
+  'success.deleted': string;
+  'success.user_deleted': string;
 }

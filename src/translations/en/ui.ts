@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -19,6 +18,7 @@ export const ui: UITranslations = {
   'subscription.12months': '12 Mo',
   'subscription.24months': '24 Mo',
   'subscription.none': 'No Plan',
+  'subscription.select': 'Select Plan',
   'subscription.tooltip.1month': 'Monthly subscription',
   'subscription.tooltip.3months': 'Three-month subscription',
   'subscription.tooltip.6months': 'Six-month subscription',
@@ -135,5 +135,14 @@ export const ui: UITranslations = {
   'deindexing.need.more': 'Need more URLs?',
   'unlimited': 'Unlimited',
   'customer.type': 'Customer Type',
-  'subscription': 'Subscription'
+  'subscription': 'Subscription',
+  'updating': 'Updating...',
+  'update': 'Update',
+  'success.email_sent': 'Email Sent',
+  'success.activation_email_sent': 'Activation email has been sent',
+  'success.updated': 'Updated',
+  'success.url_limits_updated': 'URL limits updated successfully',
+  'success.subscription_updated': 'Subscription updated successfully',
+  'success.deleted': 'Deleted',
+  'success.user_deleted': 'User has been deleted successfully'
 };

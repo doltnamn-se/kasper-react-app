@@ -1,8 +1,9 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+type SubscriptionPlan = "1_month" | "3_months" | "6_months" | "12_months" | "24_months" | "none";
 
 export const useCustomerActions = (customerId: string, onSuccess?: () => void) => {
   const { t } = useLanguage();
@@ -77,9 +78,12 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
   const handleUpdateSubscriptionPlan = async (plan: string) => {
     setIsUpdatingSubscription(true);
     try {
+      // Convert 'none' to null, otherwise keep the plan value
+      const subscriptionValue = plan === 'none' ? null : plan as SubscriptionPlan | null;
+      
       const { error } = await supabase
         .from('customers')
-        .update({ subscription_plan: plan === 'none' ? null : plan })
+        .update({ subscription_plan: subscriptionValue })
         .eq('id', customerId);
 
       if (error) throw error;
