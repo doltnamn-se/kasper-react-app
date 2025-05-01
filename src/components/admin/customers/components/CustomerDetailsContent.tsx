@@ -70,7 +70,8 @@ export const CustomerDetailsContent = ({
           </div>
         </div>
 
-        <div className="border-t border-[#eaeaea] dark:border-[#2e2e2e]">
+        {/* Removed border-t class from div below */}
+        <div>
           <div className="py-4 space-y-6">
             <AccountInfo 
               customer={customer}
