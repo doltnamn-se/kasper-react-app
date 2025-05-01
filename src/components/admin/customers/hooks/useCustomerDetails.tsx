@@ -10,6 +10,7 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [additionalUrls, setAdditionalUrls] = useState<string>("0");
+  const [isRefreshing, setIsRefreshing] = useState(false);
   
   const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customerId);
 
@@ -74,6 +75,20 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     }
   };
 
+  const handleRefresh = async () => {
+    if (!customerId) return;
+    setIsRefreshing(true);
+    try {
+      await refetchData();
+      toast.success('Customer data refreshed');
+    } catch (error) {
+      console.error("Error refreshing customer data:", error);
+      toast.error('Failed to refresh customer data');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const isOnline = onlineUsers.has(customerId);
   const userLastSeen = lastSeen[customerId] || null;
   const usedUrls = customerData?.urls?.length || 0;
@@ -90,11 +105,13 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isUpdating,
     isSendingEmail,
     isDeleting,
+    isRefreshing,
     additionalUrls,
     setAdditionalUrls,
     handleCopy,
     handleUrlLimitsUpdate,
     handleResendActivationEmail,
-    handleDeleteUser
+    handleDeleteUser,
+    refetchData: handleRefresh
   };
 };

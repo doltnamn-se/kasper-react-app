@@ -28,6 +28,8 @@ interface CustomerDetailsContentProps {
   onUpdateUrlLimits: () => void;
   onDeleteUser: () => void;
   setAdditionalUrls: (urls: string) => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export const CustomerDetailsContent = ({
@@ -45,7 +47,9 @@ export const CustomerDetailsContent = ({
   onSendActivationEmail,
   onUpdateUrlLimits,
   onDeleteUser,
-  setAdditionalUrls
+  setAdditionalUrls,
+  onRefresh,
+  isRefreshing = false
 }: CustomerDetailsContentProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [copiedTitle, setCopiedTitle] = useState(false);
@@ -90,6 +94,8 @@ export const CustomerDetailsContent = ({
           isSendingEmail={isSendingEmail}
           onSendActivationEmail={onSendActivationEmail}
           setShowDeleteDialog={setShowDeleteDialog}
+          onRefreshData={onRefresh}
+          isRefreshing={isRefreshing}
         />
       )}
       

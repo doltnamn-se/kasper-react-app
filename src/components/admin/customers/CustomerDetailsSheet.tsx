@@ -32,12 +32,14 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     isUpdating,
     isSendingEmail,
     isDeleting,
+    isRefreshing,
     additionalUrls,
     setAdditionalUrls,
     handleCopy,
     handleUrlLimitsUpdate,
     handleResendActivationEmail,
-    handleDeleteUser
+    handleDeleteUser,
+    refetchData
   } = useCustomerDetails(customerId, onOpenChange);
 
   // Return null early but AFTER all hooks have been called
@@ -84,6 +86,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             onUpdateUrlLimits={handleUrlLimitsUpdate}
             onDeleteUser={handleDeleteUser}
             setAdditionalUrls={setAdditionalUrls}
+            onRefresh={refetchData}
+            isRefreshing={isRefreshing}
           />
         </ScrollArea>
       </DrawerContent>
@@ -115,6 +119,8 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             onUpdateUrlLimits={handleUrlLimitsUpdate}
             onDeleteUser={handleDeleteUser}
             setAdditionalUrls={setAdditionalUrls}
+            onRefresh={refetchData}
+            isRefreshing={isRefreshing}
           />
         </ScrollArea>
       </SheetContent>

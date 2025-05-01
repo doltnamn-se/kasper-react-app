@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Trash2 } from "lucide-react";
+import { Mail, Trash2, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -75,13 +75,30 @@ export const AdminActionButtons = ({
   isSendingEmail,
   onSendActivationEmail,
   setShowDeleteDialog,
+  onRefreshData,
+  isRefreshing = false
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
   setShowDeleteDialog: (show: boolean) => void;
+  onRefreshData?: () => void;
+  isRefreshing?: boolean;
 }) => {
   return (
     <div className="absolute right-6 top-6 flex gap-2">
+      {onRefreshData && (
+        <Button
+          onClick={onRefreshData}
+          disabled={isRefreshing}
+          variant="outline"
+          size="icon"
+          title="Refresh customer data"
+          className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+        >
+          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+        </Button>
+      )}
+      
       <Button
         onClick={onSendActivationEmail}
         disabled={isSendingEmail}
