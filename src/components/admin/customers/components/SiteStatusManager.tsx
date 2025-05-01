@@ -147,7 +147,7 @@ export function SiteStatusManager({
                 <span className="text-sm">{site.name}</span>
               </div>
               <Select value={siteStatus?.status || 'Granskar'} onValueChange={value => updateSiteStatus(site.name, value)}>
-                <SelectTrigger className="w-[140px] h-8 text-xs">
+                <SelectTrigger className="w-[140px] h-8 text-xs font-medium">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
