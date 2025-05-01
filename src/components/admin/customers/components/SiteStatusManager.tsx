@@ -136,7 +136,7 @@ export function SiteStatusManager({
       </div>;
   }
   return <div className="space-y-4">
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mt-[-25px]">
+      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mt-[-8px]">
         {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
       </h3>
       <div className="space-y-3">
