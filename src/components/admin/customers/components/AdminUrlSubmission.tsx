@@ -6,6 +6,7 @@ import { Plus, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AdminUrlSubmissionProps {
   customerId: string;
@@ -16,6 +17,7 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { t, language } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +65,9 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
     }
   };
 
+  // Set placeholder text based on the current language
+  const placeholderText = language === 'sv' ? 'Ange URL' : 'Enter URL';
+
   return (
     <form onSubmit={handleSubmit} className="mt-4 space-y-2">
       <div className="flex gap-2">
@@ -70,7 +75,7 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="Enter URL to add"
+          placeholder={placeholderText}
           className="flex-1"
           required
         />
