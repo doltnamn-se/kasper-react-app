@@ -12,7 +12,34 @@ export const useCustomerData = (customerId: string) => {
       // Debug the customerId we're using for the query
       console.log('Fetching data for customer ID:', customerId);
       
-      // Fetch all customer data in parallel
+      // First check if the customer checklist progress record exists
+      const { data: existingRecord, error: checkError } = await supabase
+        .from('customer_checklist_progress')
+        .select('*')
+        .eq('customer_id', customerId)
+        .maybeSingle();
+        
+      console.log('Checking if record exists:', existingRecord);
+      console.log('Check error:', checkError);
+      
+      // If no record exists and no error, create one
+      if (!existingRecord && !checkError) {
+        console.log('No checklist progress record found, creating one...');
+        const { data: newRecord, error: insertError } = await supabase
+          .from('customer_checklist_progress')
+          .insert([{ customer_id: customerId }])
+          .select()
+          .single();
+          
+        console.log('Created new record:', newRecord);
+        console.log('Insert error:', insertError);
+        
+        if (insertError) {
+          console.error('Error creating checklist progress record:', insertError);
+        }
+      }
+      
+      // Now fetch all customer data in parallel
       const [urlsResponse, limitsResponse, checklistResponse] = await Promise.all([
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
         supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle(),
