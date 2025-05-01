@@ -99,7 +99,7 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
       </div>
       
       {/* Added separator with adjusted padding */}
-      <div className="pt-3 pb-1.5">
+      <div className="pt-4 pb-1.5">
         <Separator />
       </div>
     </form>
