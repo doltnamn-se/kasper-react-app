@@ -17,13 +17,13 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
     <div className="space-y-4">
       <div className="space-y-2">
         {/* Labels row */}
-        <div className="flex gap-8">
+        <div className="grid grid-cols-2 gap-8">
           <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('url.count')}</p>
           <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('url.limit')}</p>
         </div>
         
-        {/* Values row */}
-        <div className="flex gap-8">
+        {/* Values row - each value is aligned under its corresponding label */}
+        <div className="grid grid-cols-2 gap-8">
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
             {usedUrls}
           </p>
