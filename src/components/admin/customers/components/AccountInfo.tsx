@@ -1,10 +1,9 @@
 
-import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
-import { format, formatDistanceToNow } from "date-fns";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useToast } from "@/components/ui/use-toast";
 import { CustomerWithProfile } from "@/types/customer";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Copy } from "lucide-react";
+import { format } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 
 interface AccountInfoProps {
   customer: CustomerWithProfile;
@@ -15,46 +14,69 @@ interface AccountInfoProps {
 
 export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: AccountInfoProps) => {
   const { t } = useLanguage();
-
+  
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={() => onCopy(customer.id, t('customer.id'))}
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-      
-      <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('created')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-          {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
-        </span>
-      </div>
-      
-      <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('status')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-          {isOnline ? t('online') : t('offline')}
-        </span>
-      </div>
-      
-      {!isOnline && userLastSeen && (
-        <div className="space-y-1">
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('last.seen')}</p>
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-            {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+          {t('account.details')}
+        </p>
+
+        {/* Customer Type - Moved up */}
+        <div className="flex flex-row items-center gap-1">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('customer.type')}:
+          </span>
+          <span className="text-xs text-[#000000] dark:text-white capitalize">
+            {customer.customer_type}
           </span>
         </div>
-      )}
+        
+        {/* Customer ID - Moved down */}
+        <div className="flex flex-row items-center gap-1">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('customer.id')}:
+          </span>
+          <span 
+            className="text-xs text-[#000000] dark:text-white cursor-pointer underline underline-offset-2"
+            onClick={() => onCopy(customer.id, t('customer.id'))}
+          >
+            {customer.id.slice(0, 8)}...
+            <Copy className="inline ml-1 h-3 w-3" />
+          </span>
+        </div>
+        
+        <div className="flex flex-row items-center gap-1">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('created')}:
+          </span>
+          <span className="text-xs text-[#000000] dark:text-white">
+            {customer.created_at ? format(new Date(customer.created_at), 'yyyy-MM-dd') : 'N/A'}
+          </span>
+        </div>
+
+        <div className="flex flex-row items-center gap-1">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('status')}:
+          </span>
+          {isOnline ? (
+            <Badge variant="outline" className="text-[10px] py-0 border-green-500 text-green-600 dark:text-green-400">
+              {t('online')}
+            </Badge>
+          ) : (
+            <div className="flex flex-col">
+              <Badge variant="outline" className="text-[10px] py-0 border-gray-400 text-gray-500">
+                {t('offline')}
+              </Badge>
+              {userLastSeen && (
+                <span className="text-[10px] text-[#000000A6] dark:text-[#FFFFFFA6] mt-1">
+                  {t('last.seen')} {userLastSeen}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
