@@ -152,8 +152,6 @@ export const CustomerDetailsContent = ({
         <Separator className="my-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
 
         <div className="py-2 space-y-6">
-          <h3 className="text-base font-medium text-black dark:text-white mb-4">{t('deindexing.title')}</h3>
-          
           <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
           
           <SiteStatusManager customerId={customer.id} />
