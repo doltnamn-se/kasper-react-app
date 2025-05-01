@@ -12,6 +12,7 @@ import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { AdminUrlSubmission } from "./AdminUrlSubmission";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -148,11 +149,17 @@ export const CustomerDetailsContent = ({
           onDeleteUser={onDeleteUser}
         />
 
-        {/* Add separator before URL submissions */}
-        <Separator className="my-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
-
+        {/* URL submission section */}
         <div className="py-2 space-y-6">
-          <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h3>
+            
+            {/* URL data fields */}
+            <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+            
+            {/* Admin URL input field */}
+            <AdminUrlSubmission customerId={customer.id} />
+          </div>
           
           <SiteStatusManager customerId={customer.id} />
         </div>
