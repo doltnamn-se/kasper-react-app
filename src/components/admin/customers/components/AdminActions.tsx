@@ -50,7 +50,7 @@ export const AdminActions = ({
             min="0"
           />
           <Button 
-            onClick={() => onUpdateUrlLimits(additionalUrls)}
+            onClick={onUpdateUrlLimits}
             disabled={isUpdating}
             size="sm"
           >
