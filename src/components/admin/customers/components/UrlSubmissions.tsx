@@ -1,23 +1,23 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
-
 interface UrlSubmissionsProps {
   usedUrls: number;
   totalUrlLimit: number;
 }
+export const UrlSubmissions = ({
+  usedUrls,
+  totalUrlLimit
+}: UrlSubmissionsProps) => {
+  const {
+    t
+  } = useLanguage();
 
-export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps) => {
-  const { t } = useLanguage();
-  
   // Check if the user has unlimited URLs (very high number)
   const isUnlimited = totalUrlLimit > 10000;
   const displayLimit = isUnlimited ? t('unlimited') : totalUrlLimit.toString();
-
-  return (
-    <div className="space-y-4">
+  return <div className="space-y-4">
       <div className="space-y-2">
         {/* Labels row */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-2">
           <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('url.count')}</p>
           <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('url.limit')}</p>
         </div>
@@ -32,6 +32,5 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
