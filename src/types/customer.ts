@@ -9,6 +9,7 @@ export type Profile = {
   role: "super_admin" | "customer";
   created_at: string;
   updated_at: string;
+  address: string | null; // Added address field
 };
 
 export type Customer = Database['public']['Tables']['customers']['Row'];

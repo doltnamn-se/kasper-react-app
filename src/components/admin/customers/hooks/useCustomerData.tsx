@@ -41,7 +41,7 @@ export const useCustomerData = (customerId: string) => {
 
         // As a fallback, try to fetch from checklist_progress if address is not in profile
         let checklistData = null;
-        if (!profileResponse.data?.address) {
+        if (!profileResponse.data || !profileResponse.data.address) {
           console.log('Address not found in profile, attempting to fetch from checklist_progress');
           const checklistResponse = await supabase
             .from('customer_checklist_progress')
