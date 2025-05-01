@@ -66,7 +66,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           {t('name')}
         </p>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
             {customer.profile?.display_name || t('no.name')}
           </span>
           <Button
@@ -92,7 +92,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           {t('email')}
         </p>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
             {customer.profile?.email || t('no.email')}
           </span>
           <Button
@@ -119,7 +119,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             {t('address')}
           </p>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+            <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
               {customer.profile.address}
             </span>
             <Button
@@ -144,7 +144,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
           <Button
             variant="ghost"
             size="icon"

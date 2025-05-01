@@ -4,11 +4,12 @@ import { CustomerAvatar } from "./CustomerAvatar";
 import { CustomerDetails } from "./CustomerDetails";
 import { CustomerBadges } from "./CustomerBadges";
 import { AccountInfo } from "./AccountInfo";
-import { AdminActions, AdminActionButtons } from "./AdminActions";
+import { AdminActions } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { ChecklistProgress } from "./ChecklistProgress";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -45,6 +46,7 @@ export const CustomerDetailsContent = ({
   onDeleteUser,
   setAdditionalUrls
 }: CustomerDetailsContentProps) => {
+  const { t } = useLanguage();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
   // Get display name or fallback to a default
@@ -53,54 +55,84 @@ export const CustomerDetailsContent = ({
   return (
     <div className="px-6 py-6 relative">
       {isSuperAdmin && (
-        <AdminActionButtons
-          isSendingEmail={isSendingEmail}
-          onSendActivationEmail={onSendActivationEmail}
-          setShowDeleteDialog={setShowDeleteDialog}
-        />
+        <div className="absolute top-6 right-6 flex flex-col gap-2">
+          <button
+            onClick={onSendActivationEmail}
+            disabled={isSendingEmail}
+            className="text-xs bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 disabled:bg-blue-300"
+          >
+            {isSendingEmail ? t('sending') : t('resend.activation')}
+          </button>
+          <button
+            onClick={() => setShowDeleteDialog(true)}
+            className="text-xs bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          >
+            {t('delete.user')}
+          </button>
+        </div>
       )}
       
-      <div className="space-y-8 mt-12">
+      <div className="space-y-8 mt-4">
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
             <h3 className="text-base font-medium text-black dark:text-white">{customerName}</h3>
           </div>
-          <div className="flex flex-col sm:flex-row gap-8">
-            <CustomerDetails customer={customer} onCopy={onCopy} />
-            <AccountInfo 
-              customer={customer}
-              isOnline={isOnline}
-              userLastSeen={userLastSeen}
-              onCopy={onCopy}
-            />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mb-4">
+                {t('personal.info')}
+              </h3>
+              <CustomerDetails customer={customer} onCopy={onCopy} />
+            </div>
+            
+            <div>
+              <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mb-4">
+                {t('account.info')}
+              </h3>
+              <AccountInfo 
+                customer={customer}
+                isOnline={isOnline}
+                userLastSeen={userLastSeen}
+                onCopy={onCopy}
+              />
+            </div>
           </div>
         </div>
 
-        <div>
-          <div className="py-4 space-y-6">
-            <AdminActions
-              customerId={customer.id}
-              isSuperAdmin={isSuperAdmin}
-              isSendingEmail={isSendingEmail}
-              isUpdating={isUpdating}
-              isDeleting={isDeleting}
-              additionalUrls={additionalUrls}
-              onSendActivationEmail={onSendActivationEmail}
-              onUpdateUrlLimits={onUpdateUrlLimits}
-              onDeleteUser={onDeleteUser}
-              setAdditionalUrls={setAdditionalUrls}
-            />
-
-            <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
-            
-            <SiteStatusManager customerId={customer.id} />
-
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
             <ChecklistProgress 
               progressPercentage={customer.checklist_completed ? 100 : 0}
               completedSteps={customer.checklist_completed ? 1 : 0}
               totalSteps={1}
             />
+          </div>
+          
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mb-3">
+                {t('url.management')}
+              </h3>
+              <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
+            </div>
+            
+            {isSuperAdmin && (
+              <div>
+                <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mb-3">
+                  {t('admin.actions')}
+                </h3>
+                <AdminActions
+                  customerId={customer.id}
+                  isSuperAdmin={isSuperAdmin}
+                  isSendingEmail={isSendingEmail}
+                  isDeleting={isDeleting}
+                  onSendActivationEmail={onSendActivationEmail}
+                  onDeleteUser={onDeleteUser}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

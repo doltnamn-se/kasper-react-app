@@ -5,19 +5,19 @@ import { getUserInitials } from "@/utils/profileUtils";
 
 interface CustomerAvatarProps {
   customer: CustomerWithProfile;
-  progressPercentage: number;
+  progressPercentage?: number;
+  size?: string;
 }
 
-export const CustomerAvatar = ({ customer, progressPercentage }: CustomerAvatarProps) => {
+export const CustomerAvatar = ({ customer, progressPercentage, size = "h-16 w-16" }: CustomerAvatarProps) => {
   return (
     <div className="relative">
-      <Avatar className="h-16 w-16">
+      <Avatar className={size}>
         <AvatarImage src={customer.profile?.avatar_url} />
         <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-lg">
           {getUserInitials(customer.profile)}
         </AvatarFallback>
       </Avatar>
-      {/* Removed the checkmark badge that was here */}
     </div>
   );
 };
