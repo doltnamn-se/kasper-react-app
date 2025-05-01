@@ -1,49 +1,35 @@
-
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
-
 interface SubscriptionPlanSelectProps {
   currentPlan: string | null;
   isUpdating: boolean;
   onUpdatePlan: (plan: string) => void;
 }
-
-export const SubscriptionPlanSelect = ({ 
-  currentPlan, 
-  isUpdating, 
-  onUpdatePlan 
+export const SubscriptionPlanSelect = ({
+  currentPlan,
+  isUpdating,
+  onUpdatePlan
 }: SubscriptionPlanSelectProps) => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const [selectedPlan, setSelectedPlan] = useState<string>(currentPlan || 'none');
-  
+
   // Update local state when props change (e.g., after refetch)
   useEffect(() => {
     setSelectedPlan(currentPlan || 'none');
   }, [currentPlan]);
-
   const handlePlanChange = (value: string) => {
     // Update local state immediately for visual feedback
     setSelectedPlan(value);
     // Trigger the update
     onUpdatePlan(value);
   };
-
-  return (
-    <div className="flex flex-col gap-2">
+  return <div className="flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-        <Select
-          value={selectedPlan}
-          onValueChange={handlePlanChange}
-          disabled={isUpdating}
-        >
-          <SelectTrigger className="w-full sm:w-48">
+        <Select value={selectedPlan} onValueChange={handlePlanChange} disabled={isUpdating}>
+          <SelectTrigger className="w-[140px] h-8 text-xs font-medium">
             <SelectValue placeholder={t('subscription.select')} />
           </SelectTrigger>
           <SelectContent>
@@ -56,6 +42,5 @@ export const SubscriptionPlanSelect = ({
           </SelectContent>
         </Select>
       </div>
-    </div>
-  );
+    </div>;
 };
