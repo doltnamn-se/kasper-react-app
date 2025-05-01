@@ -5,6 +5,7 @@ import { CustomerWithProfile } from "@/types/customer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useCustomerData } from "../hooks/useCustomerData";
+import { useEffect } from "react";
 
 interface CustomerDetailsProps {
   customer: CustomerWithProfile;
@@ -13,7 +14,16 @@ interface CustomerDetailsProps {
 export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const { data } = useCustomerData(customer.id);
+  const { data, isLoading, error } = useCustomerData(customer.id);
+
+  // Debug log when data changes
+  useEffect(() => {
+    console.log('CustomerDetails: Customer ID:', customer.id);
+    console.log('CustomerDetails: Data received:', data);
+    console.log('CustomerDetails: Address value:', data?.checklistProgress?.address);
+    console.log('CustomerDetails: Loading status:', isLoading);
+    if (error) console.error('CustomerDetails: Error fetching data:', error);
+  }, [data, isLoading, error, customer.id]);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -72,18 +82,24 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
           Address
         </p>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-            {address || 'No address provided'}
-          </span>
-          {address && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => handleCopy(address, 'Address')}
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
+          {isLoading ? (
+            <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">Loading address...</span>
+          ) : (
+            <>
+              <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+                {address || 'No address provided'}
+              </span>
+              {address && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={() => handleCopy(address, 'Address')}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              )}
+            </>
           )}
         </div>
       </div>

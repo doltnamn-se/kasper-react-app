@@ -9,6 +9,8 @@ export const useCustomerData = (customerId: string) => {
     queryFn: async () => {
       if (!customerId) return { urls: [], limits: null, checklistProgress: null };
       
+      console.log('Fetching customer data for ID:', customerId);
+      
       // Fetch all customer data in parallel
       const [urlsResponse, limitsResponse, checklistResponse] = await Promise.all([
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
@@ -30,6 +32,12 @@ export const useCustomerData = (customerId: string) => {
 
       // Log responses for debugging
       console.log('Checklist Response:', checklistResponse);
+      if (checklistResponse.data) {
+        console.log('Address from checklist data:', checklistResponse.data.address);
+      } else {
+        console.log('No checklist data found for customer');
+      }
+      
       console.log('URLs Response:', urlsResponse);
       console.log('Limits Response:', limitsResponse);
 
