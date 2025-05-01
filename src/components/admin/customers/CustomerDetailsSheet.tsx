@@ -45,10 +45,11 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   if (!customer) return null;
   
   // Get the address directly from customerData - raw, no processing
-  // We're just passing it through directly from the database
   const address = customerData?.checklistProgress?.address || null;
   
+  console.log("Customer ID in CustomerDetailsSheet:", customerId);
   console.log("Raw address in CustomerDetailsSheet:", address);
+  console.log("Full checklistProgress data:", customerData?.checklistProgress);
   
   // Create a complete customer object with address included
   const customerWithAddress = {
@@ -59,11 +60,15 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   if (isLoading) {
     return isMobile ? (
       <Drawer open={!!customer} onOpenChange={onOpenChange}>
-        <CustomerDetailsLoading isMobile={true} />
+        <DrawerContent className="px-0 pb-16 max-h-[85vh]">
+          <CustomerDetailsLoading isMobile={true} />
+        </DrawerContent>
       </Drawer>
     ) : (
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
-        <CustomerDetailsLoading isMobile={false} />
+        <SheetContent className="p-0">
+          <CustomerDetailsLoading isMobile={false} />
+        </SheetContent>
       </Sheet>
     );
   }
@@ -76,6 +81,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       );
     }
   };
+
+  // Log the final customer object being passed to CustomerDetailsContent
+  console.log("Final customer object passed to content:", customerWithAddress);
 
   return isMobile ? (
     <Drawer open={!!customer} onOpenChange={onOpenChange}>

@@ -9,6 +9,9 @@ export const useCustomerData = (customerId: string) => {
     queryFn: async () => {
       if (!customerId) return { urls: [], limits: null, checklistProgress: null };
       
+      // Debug the customerId we're using for the query
+      console.log('Fetching data for customer ID:', customerId);
+      
       // Fetch all customer data in parallel
       const [urlsResponse, limitsResponse, checklistResponse] = await Promise.all([
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
@@ -19,8 +22,11 @@ export const useCustomerData = (customerId: string) => {
           .maybeSingle()
       ]);
 
-      // Log the raw data from database for debugging
-      console.log('Raw customer checklist data:', checklistResponse);
+      // Log the raw response and specifically the customer ID being used
+      console.log(`Raw customer checklist data for ID ${customerId}:`, checklistResponse);
+      console.log('SQL query used:', `customer_checklist_progress where customer_id = ${customerId}`);
+      console.log('Response status:', checklistResponse.status);
+      console.log('Response error:', checklistResponse.error);
       
       // Get the address directly - no processing, no complications
       const address = checklistResponse.data?.address || null;
