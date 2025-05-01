@@ -135,7 +135,9 @@ export function SiteStatusManager({
       </div>;
   }
   return <div className="space-y-4">
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">Sidstatus</h3>
+      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">
+        {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
+      </h3>
       <div className="space-y-3">
         {sites.map(site => {
         const siteStatus = siteStatuses.find(s => s.site_name === site.name);
