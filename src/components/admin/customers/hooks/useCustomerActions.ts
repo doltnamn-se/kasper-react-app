@@ -88,9 +88,7 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
 
       if (error) throw error;
 
-      toast.success(t('success.updated'), {
-        description: t('success.subscription_updated')
-      });
+      console.log("Subscription updated successfully to:", plan);
       return true;
     } catch (error) {
       console.error('Error updating subscription plan:', error);

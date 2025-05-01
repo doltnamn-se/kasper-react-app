@@ -7,6 +7,7 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
 
 interface SubscriptionPlanSelectProps {
   currentPlan: string | null;
@@ -20,9 +21,17 @@ export const SubscriptionPlanSelect = ({
   onUpdatePlan 
 }: SubscriptionPlanSelectProps) => {
   const { t } = useLanguage();
+  const [selectedPlan, setSelectedPlan] = useState<string>(currentPlan || 'none');
   
+  // Update local state when props change (e.g., after refetch)
+  useEffect(() => {
+    setSelectedPlan(currentPlan || 'none');
+  }, [currentPlan]);
+
   const handlePlanChange = (value: string) => {
-    // Immediately trigger update when plan changes
+    // Update local state immediately for visual feedback
+    setSelectedPlan(value);
+    // Trigger the update
     onUpdatePlan(value);
   };
 
@@ -30,7 +39,7 @@ export const SubscriptionPlanSelect = ({
     <div className="flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
         <Select
-          value={currentPlan || 'none'}
+          value={selectedPlan}
           onValueChange={handlePlanChange}
           disabled={isUpdating}
         >

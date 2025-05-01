@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCustomerData } from "./useCustomerData";
@@ -79,10 +78,20 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
 
   const handleSubscriptionUpdate = async (plan: string) => {
     if (!customerId) return;
-    const success = await handleUpdateSubscriptionPlan(plan);
-    if (success) {
-      // This is the key change - we need to refresh the customer data immediately after subscription update
-      await refetchData();
+    setIsRefreshing(true);
+    try {
+      const success = await handleUpdateSubscriptionPlan(plan);
+      if (success) {
+        // Immediately refetch data to update UI
+        await refetchData();
+        toast.success('Subscription updated', {
+          description: 'Customer subscription has been updated'
+        });
+      }
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
