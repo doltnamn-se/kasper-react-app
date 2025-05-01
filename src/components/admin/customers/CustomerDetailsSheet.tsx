@@ -8,7 +8,8 @@ import { CustomerDetailsLoading } from "./components/CustomerDetailsLoading";
 import { CustomerDetailsContent } from "./components/CustomerDetailsContent";
 import { useCustomerDetails } from "./hooks/useCustomerDetails";
 import { DeleteUserDialog } from "./components/DeleteUserDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -39,6 +40,27 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleResendActivationEmail,
     handleDeleteUser
   } = useCustomerDetails(customerId, onOpenChange);
+
+  // Fetch address data when customer changes
+  useEffect(() => {
+    const fetchAddressData = async () => {
+      if (!customer?.id) return;
+
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('address')
+        .eq('customer_id', customer.id)
+        .single();
+
+      if (!error && data?.address) {
+        customer.address = data.address;
+      }
+    };
+
+    if (customer) {
+      fetchAddressData();
+    }
+  }, [customer]);
 
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;

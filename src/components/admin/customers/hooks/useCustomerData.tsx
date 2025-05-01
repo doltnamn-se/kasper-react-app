@@ -21,6 +21,7 @@ export const useCustomerData = (customerId: string) => {
             street_address,
             postal_code,
             city,
+            address,
             completed_at
           `)
           .eq('customer_id', customerId)

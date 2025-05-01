@@ -1,4 +1,3 @@
-
 import { CustomerWithProfile } from "@/types/customer";
 import { CustomerAvatar } from "./CustomerAvatar";
 import { CustomerDetails } from "./CustomerDetails";
@@ -57,22 +56,31 @@ export const CustomerDetailsContent = ({
     const fetchAddressInfo = async () => {
       if (!customer.id) return;
       
-      const { data, error } = await supabase
+      // First try to get the address from the customer_checklist_progress.address field
+      const { data: progressData, error: progressError } = await supabase
         .from('customer_checklist_progress')
-        .select('street_address, postal_code, city')
+        .select('address, street_address, postal_code, city')
         .eq('customer_id', customer.id)
         .single();
         
-      if (error) {
-        console.error("Error fetching address info:", error);
+      if (progressError) {
+        console.error("Error fetching address info:", progressError);
         return;
       }
       
-      if (data) {
+      if (progressData) {
+        // First check if there's a direct address field available
+        if (progressData.address) {
+          setAddressInfo(progressData.address);
+          customer.address = progressData.address;
+          return;
+        }
+        
+        // Otherwise, construct from the individual fields
         const addressParts = [
-          data.street_address, 
-          data.postal_code ? `${data.postal_code}` : '',
-          data.city
+          progressData.street_address, 
+          progressData.postal_code ? `${progressData.postal_code}` : '',
+          progressData.city
         ].filter(Boolean);
         
         const fullAddress = addressParts.join(', ');
