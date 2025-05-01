@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -8,8 +7,7 @@ import { CustomerDetailsLoading } from "./components/CustomerDetailsLoading";
 import { CustomerDetailsContent } from "./components/CustomerDetailsContent";
 import { useCustomerDetails } from "./hooks/useCustomerDetails";
 import { DeleteUserDialog } from "./components/DeleteUserDialog";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -38,32 +36,17 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleCopy,
     handleUrlLimitsUpdate,
     handleResendActivationEmail,
-    handleDeleteUser
+    handleDeleteUser,
+    customerData
   } = useCustomerDetails(customerId, onOpenChange);
-
-  // Fetch address data when customer changes
-  useEffect(() => {
-    const fetchAddressData = async () => {
-      if (!customer?.id) return;
-
-      const { data, error } = await supabase
-        .from('customer_checklist_progress')
-        .select('address')
-        .eq('customer_id', customer.id)
-        .single();
-
-      if (!error && data?.address) {
-        customer.address = data.address;
-      }
-    };
-
-    if (customer) {
-      fetchAddressData();
-    }
-  }, [customer]);
 
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
+  
+  // Set the address on the customer from the fetched data
+  if (customerData?.checklistProgress?.address) {
+    customer.address = customerData.checklistProgress.address;
+  }
 
   if (isLoading) {
     return isMobile ? (

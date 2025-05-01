@@ -14,16 +14,7 @@ export const useCustomerData = (customerId: string) => {
         supabase.from('removal_urls').select('*').eq('customer_id', customerId),
         supabase.from('user_url_limits').select('*').eq('customer_id', customerId).maybeSingle(),
         supabase.from('customer_checklist_progress')
-          .select(`
-            password_updated,
-            removal_urls,
-            selected_sites,
-            street_address,
-            postal_code,
-            city,
-            address,
-            completed_at
-          `)
+          .select('address, completed_at')
           .eq('customer_id', customerId)
           .maybeSingle()
       ]);
