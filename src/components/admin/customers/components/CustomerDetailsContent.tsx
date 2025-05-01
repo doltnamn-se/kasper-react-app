@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,6 +11,7 @@ import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
+import { Separator } from "@/components/ui/separator";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -148,6 +148,9 @@ export const CustomerDetailsContent = ({
           onDeleteUser={onDeleteUser}
         />
 
+        {/* Separator above URL submission section */}
+        <Separator className="my-2" />
+
         {/* URL submission section */}
         <div className="py-2 space-y-6">
           <div className="space-y-4">
@@ -164,6 +167,9 @@ export const CustomerDetailsContent = ({
           
           <SiteStatusManager customerId={customer.id} />
         </div>
+
+        {/* Separator below URL submission section */}
+        <Separator className="my-2" />
       </div>
     </div>
   );
