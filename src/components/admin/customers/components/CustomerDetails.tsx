@@ -64,7 +64,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
       {/* Removed name field */}
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+        <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">
           {t('email')}
         </p>
         <div className="flex items-center gap-2">
@@ -91,7 +91,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
 
       {customer.profile?.address && (
         <div className="space-y-1">
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+          <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">
             {t('address')}
           </p>
           <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
       )}
       
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
+        <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('customer.id')}</p>
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{customer.id}</span>
           <Button

@@ -48,7 +48,7 @@ export const AccountInfo = ({
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
+        <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
         
         {isSuperAdmin && onUpdateSubscriptionPlan ? (
           <SubscriptionPlanSelect 
