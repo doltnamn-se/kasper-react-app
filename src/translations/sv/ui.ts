@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -134,7 +133,7 @@ export const ui: UITranslations = {
   'notification.status.update.message': 'Processen har gjort framsteg för en eller flera av dina länkar. Logga in på ditt konto för att se mer.',
   'customer.type': 'Kundtyp',
   'subscription': 'Prenumeration',
-  'deindexing.title': 'Avindexeringsstatus',
+  'deindexing.title': 'Länkar',
   'deindexing.need.more': 'Behöver du fler URLer?',
   'unlimited': 'Obegränsad',
   'updating': 'Uppdaterar...',
