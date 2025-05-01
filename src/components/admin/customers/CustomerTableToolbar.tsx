@@ -3,9 +3,8 @@ import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Search, UserRoundPlus, ChevronDown, RefreshCw } from "lucide-react";
+import { Search, ChevronDown, RefreshCw } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
-import { CreateCustomerDialog } from "@/components/admin/CreateCustomerDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerTableToolbarProps {
@@ -108,18 +107,6 @@ export const CustomerTableToolbar = ({
         <RefreshCw className="[&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#000000A6] dark:text-[#FFFFFFA6]" />
         {language === 'sv' ? 'Uppdatera' : 'Refresh'}
       </Button>
-      <CreateCustomerDialog onCustomerCreated={() => table.resetRowSelection()}>
-        <Button 
-          className="
-            text-[#000000] bg-[#72e3ad] border-[#16b674bf] hover:bg-[#3fcf8ecc] hover:border-[#097c4f]
-            dark:text-white dark:bg-[#006239] dark:border-[#3ecf8e4d] dark:hover:bg-[#3ecf8e80] dark:hover:border-[#3ecf8e]
-            border flex items-center gap-2 text-xs rounded-md h-8 px-[0.625rem]
-          "
-        >
-          <UserRoundPlus className="[&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#097c4f] dark:text-[#85e0ba]" />
-          {t('add.customer')}
-        </Button>
-      </CreateCustomerDialog>
     </div>
   );
 };
