@@ -8,7 +8,8 @@ import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { ChecklistProgress } from "./ChecklistProgress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -46,9 +47,44 @@ export const CustomerDetailsContent = ({
   setAdditionalUrls
 }: CustomerDetailsContentProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [addressInfo, setAddressInfo] = useState<string>('');
   
   // Get display name or fallback to a default
   const customerName = customer.profile?.display_name || 'Customer';
+  
+  // Fetch address information when customer ID changes
+  useEffect(() => {
+    const fetchAddressInfo = async () => {
+      if (!customer.id) return;
+      
+      const { data, error } = await supabase
+        .from('customer_checklist_progress')
+        .select('street_address, postal_code, city')
+        .eq('customer_id', customer.id)
+        .single();
+        
+      if (error) {
+        console.error("Error fetching address info:", error);
+        return;
+      }
+      
+      if (data) {
+        const addressParts = [
+          data.street_address, 
+          data.postal_code ? `${data.postal_code}` : '',
+          data.city
+        ].filter(Boolean);
+        
+        const fullAddress = addressParts.join(', ');
+        setAddressInfo(fullAddress || '');
+        
+        // Update the customer object with the address information
+        customer.address = fullAddress || '';
+      }
+    };
+    
+    fetchAddressInfo();
+  }, [customer.id]);
   
   return (
     <div className="px-6 py-6 relative">
