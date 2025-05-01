@@ -94,6 +94,8 @@ export interface UITranslations {
   'status': string;
   'url.submissions': string;
   'total.urls': string;
+  'url.count': string;
+  'url.limit': string;
   'onboarding.status': string;
   'current.step': string;
   'not.available': string;
