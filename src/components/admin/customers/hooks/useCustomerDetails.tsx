@@ -81,7 +81,8 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     if (!customerId) return;
     const success = await handleUpdateSubscriptionPlan(plan);
     if (success) {
-      refetchData();
+      // This is the key change - we need to refresh the customer data immediately after subscription update
+      await refetchData();
     }
   };
 
