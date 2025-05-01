@@ -16,7 +16,7 @@ import { UrlSubmissions } from "./UrlSubmissions";
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
   isOnline: boolean;
-  userLastSeen?: Date | null;
+  userLastSeen?: Date | string | null;
   onCopy: (text: string, label: string) => void;
   usedUrls: number;
   totalUrlLimit: number;
@@ -82,7 +82,7 @@ export const CustomerDetailsContent = ({
           
           <div className="mt-3 text-center">
             <h3 className="font-semibold text-base">
-              {customer.profile?.display_name || t('customer.unnamed')}
+              {customer.profile?.display_name || t('no.name')}
             </h3>
             
             <div className="flex items-center justify-center gap-2 mt-1">
@@ -109,28 +109,33 @@ export const CustomerDetailsContent = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-6">
             <div className="bg-white dark:bg-black/20 rounded-md p-4 shadow-sm">
-              <h4 className="text-sm font-bold mb-3">{t('personal.information')}</h4>
+              <h4 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mb-3">{t('personal.info')}</h4>
               <CustomerDetails customer={customer} onCopy={onCopy} />
             </div>
             
             <div className="bg-white dark:bg-black/20 rounded-md p-4 shadow-sm">
-              <h4 className="text-sm font-bold mb-3">{t('account.info')}</h4>
-              <AccountInfo customer={customer} />
+              <h4 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mb-3">{t('account.info')}</h4>
+              <AccountInfo 
+                customer={customer}
+                isOnline={isOnline}
+                userLastSeen={userLastSeen}
+                onCopy={onCopy}
+              />
             </div>
             
             <div className="bg-white dark:bg-black/20 rounded-md p-4 shadow-sm">
-              <h4 className="text-sm font-bold mb-3">{t('checklist.progress')}</h4>
+              <h4 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mb-3">{t('checklist')}</h4>
               <ChecklistProgress customer={customer} />
             </div>
           </div>
           
           <div className="space-y-6">
             <div className="bg-white dark:bg-black/20 rounded-md p-4 shadow-sm">
-              <h4 className="text-sm font-bold mb-3">{t('subscription')}</h4>
+              <h4 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mb-3">{t('subscription')}</h4>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('subscription.type')}</p>
-                  <span className="text-xs font-medium">{customer.subscription?.plan || t('free')}</span>
+                  <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
+                  <span className="text-xs font-medium">{customer.subscription_plan || t('no.subscription')}</span>
                 </div>
                 
                 <div className="flex justify-between">
@@ -150,15 +155,16 @@ export const CustomerDetailsContent = ({
                 <div className="flex justify-between">
                   <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('last.seen')}</p>
                   <span className="text-xs font-medium">
-                    {userLastSeen ? formatDateDistance(userLastSeen) : t('unknown')}
+                    {userLastSeen ? formatDateDistance(userLastSeen) : t('not.available')}
                   </span>
                 </div>
               </div>
             </div>
             
             <div className="bg-white dark:bg-black/20 rounded-md p-4 shadow-sm">
-              <h4 className="text-sm font-bold mb-3">{t('url.management')}</h4>
+              <h4 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mb-3">{t('url.management')}</h4>
               <SiteStatusManager
+                customerId={customer.id}
                 usedUrls={usedUrls}
                 totalUrlLimit={totalUrlLimit}
               />
@@ -167,6 +173,7 @@ export const CustomerDetailsContent = ({
 
               {isSuperAdmin && (
                 <AdminUrlSubmission
+                  customerId={customer.id}
                   additionalUrls={additionalUrls}
                   setAdditionalUrls={setAdditionalUrls}
                   onUpdateUrlLimits={onUpdateUrlLimits}
@@ -177,9 +184,11 @@ export const CustomerDetailsContent = ({
             
             {isSuperAdmin && (
               <div className="bg-white dark:bg-black/20 rounded-md p-4 shadow-sm">
-                <h4 className="text-sm font-bold mb-3">{t('admin.actions')}</h4>
+                <h4 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mb-3">{t('admin.actions')}</h4>
                 <AdminActions
+                  customerId={customer.id}
                   customer={customer}
+                  isSuperAdmin={isSuperAdmin}
                   isSendingEmail={isSendingEmail}
                   isDeleting={isDeleting}
                   onSendActivationEmail={onSendActivationEmail}

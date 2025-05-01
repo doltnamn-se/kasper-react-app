@@ -3,104 +3,74 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { AdminUrlSubmission } from "./AdminUrlSubmission";
-import { DeleteUserDialog } from "./DeleteUserDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { CustomerWithProfile } from "@/types/customer";
 
 interface AdminActionsProps {
   customerId: string;
-  isSuperAdmin: boolean;
-  isSendingEmail: boolean;
-  isUpdating: boolean;
-  isDeleting: boolean;
-  additionalUrls: string;
-  onSendActivationEmail: () => void;
-  onUpdateUrlLimits: () => void;
-  onDeleteUser: () => void;
-  setAdditionalUrls: (urls: string) => void;
+  customer?: CustomerWithProfile;
+  isSuperAdmin?: boolean;
+  isSendingEmail?: boolean;
+  isUpdating?: boolean;
+  isDeleting?: boolean;
+  additionalUrls?: string;
+  onSendActivationEmail?: () => void;
+  onUpdateUrlLimits?: () => void;
+  onDeleteUser?: () => void;
+  setAdditionalUrls?: (urls: string) => void;
 }
 
 export const AdminActions = ({
   customerId,
-  isSuperAdmin,
-  isSendingEmail,
-  isUpdating,
-  isDeleting,
-  additionalUrls,
-  onSendActivationEmail,
-  onUpdateUrlLimits,
-  onDeleteUser,
-  setAdditionalUrls
+  customer,
+  isSuperAdmin = false,
+  isSendingEmail = false,
+  isUpdating = false,
+  isDeleting = false,
+  additionalUrls = "",
+  onSendActivationEmail = () => {},
+  onUpdateUrlLimits = () => {},
+  onDeleteUser = () => {},
+  setAdditionalUrls = () => {}
 }: AdminActionsProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { t } = useLanguage();
 
   if (!isSuperAdmin) return null;
 
   return (
     <>
-      <div>
-        <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-          URL Limits
-        </h3>
-        <div className="flex gap-2 items-center">
-          <Input
-            type="number"
-            value={additionalUrls}
-            onChange={(e) => setAdditionalUrls(e.target.value)}
-            className="w-24"
-            min="0"
-          />
-          <Button 
-            onClick={onUpdateUrlLimits}
-            disabled={isUpdating}
-            size="sm"
-          >
-            {isUpdating ? "Updating..." : "Update"}
-          </Button>
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mb-3">
+            {t('admin.actions')}
+          </h3>
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={onSendActivationEmail}
+              disabled={isSendingEmail}
+              variant="outline"
+              size="sm"
+              className="flex-1"
+            >
+              <Mail className="h-4 w-4 mr-2" />
+              {isSendingEmail ? t('sending') : t('resend.email')}
+            </Button>
+            
+            <Button
+              onClick={onDeleteUser}
+              variant="outline"
+              size="sm"
+              className="flex-1 text-destructive hover:bg-destructive/10"
+              disabled={isDeleting}
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              {isDeleting ? t('deleting') : t('delete.user')}
+            </Button>
+          </div>
         </div>
       </div>
-      
-      <AdminUrlSubmission customerId={customerId} />
-
-      <DeleteUserDialog
-        isOpen={showDeleteDialog}
-        onClose={() => setShowDeleteDialog(false)}
-        onConfirm={onDeleteUser}
-        isDeleting={isDeleting}
-      />
     </>
-  );
-};
-
-export const AdminActionButtons = ({
-  isSendingEmail,
-  onSendActivationEmail,
-  setShowDeleteDialog,
-}: {
-  isSendingEmail: boolean;
-  onSendActivationEmail: () => void;
-  setShowDeleteDialog: (show: boolean) => void;
-}) => {
-  return (
-    <div className="absolute right-6 top-6 flex gap-2">
-      <Button
-        onClick={onSendActivationEmail}
-        disabled={isSendingEmail}
-        variant="outline"
-        size="icon"
-        title="Resend activation email"
-      >
-        <Mail className="h-4 w-4" />
-      </Button>
-      
-      <Button
-        onClick={() => setShowDeleteDialog(true)}
-        variant="outline"
-        size="icon"
-        className="text-destructive hover:bg-destructive/10"
-        title="Delete user"
-      >
-        <Trash2 className="h-4 w-4" />
-      </Button>
-    </div>
   );
 };

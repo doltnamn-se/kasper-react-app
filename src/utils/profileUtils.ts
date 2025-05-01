@@ -1,3 +1,6 @@
+
+import { formatDistance } from 'date-fns';
+
 interface UserProfile {
   first_name?: string | null;
   last_name?: string | null;
@@ -37,4 +40,10 @@ export const getFullName = (userProfile: UserProfile | null, userEmail: string |
     return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
   }
   return userEmail || '';
+};
+
+// Add the missing formatDateDistance function
+export const formatDateDistance = (date: Date | string): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  return formatDistance(dateObj, new Date(), { addSuffix: true });
 };
