@@ -151,7 +151,7 @@ export const CustomerDetailsContent = ({
         {/* URL submission section */}
         <div className="py-2 space-y-6">
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h3>
+            <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h3>
             
             {/* URL data fields */}
             <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
