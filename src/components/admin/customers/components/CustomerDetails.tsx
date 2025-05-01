@@ -1,9 +1,10 @@
 
 import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 import { CustomerWithProfile } from "@/types/customer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 interface CustomerDetailsProps {
   customer: CustomerWithProfile;
@@ -13,10 +14,12 @@ interface CustomerDetailsProps {
 export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
 
-  const handleCopy = (text: string, label: string) => {
+  const handleCopy = (text: string, label: string, fieldId: string) => {
     if (onCopy) {
       onCopy(text, label);
+      showCopiedAnimation(fieldId);
       return;
     }
     
@@ -25,6 +28,17 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
       title: t('toast.copied.title'),
       description: `${label} ${t('toast.copied.description')}`
     });
+    
+    showCopiedAnimation(fieldId);
+  };
+
+  const showCopiedAnimation = (fieldId: string) => {
+    setCopiedFields(prev => ({ ...prev, [fieldId]: true }));
+    
+    // Reset back to copy icon after 1.5 seconds
+    setTimeout(() => {
+      setCopiedFields(prev => ({ ...prev, [fieldId]: false }));
+    }, 1500);
   };
 
   return (
@@ -41,9 +55,13 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             variant="ghost"
             size="icon"
             className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-            onClick={() => handleCopy(customer.profile?.display_name || '', t('name'))}
+            onClick={() => handleCopy(customer.profile?.display_name || '', t('name'), 'name')}
           >
-            <Copy className="h-4 w-4" />
+            {copiedFields['name'] ? (
+              <Check className="h-4 w-4 text-green-500" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
@@ -60,9 +78,13 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             variant="ghost"
             size="icon"
             className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-            onClick={() => handleCopy(customer.profile?.email || '', t('email'))}
+            onClick={() => handleCopy(customer.profile?.email || '', t('email'), 'email')}
           >
-            <Copy className="h-4 w-4" />
+            {copiedFields['email'] ? (
+              <Check className="h-4 w-4 text-green-500" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
@@ -80,9 +102,13 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
               variant="ghost"
               size="icon"
               className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-              onClick={() => handleCopy(customer.profile.address || '', t('address'))}
+              onClick={() => handleCopy(customer.profile.address || '', t('address'), 'address')}
             >
-              <Copy className="h-4 w-4" />
+              {copiedFields['address'] ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </div>
@@ -96,9 +122,13 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             variant="ghost"
             size="icon"
             className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-            onClick={() => handleCopy(customer.id, t('customer.id'))}
+            onClick={() => handleCopy(customer.id, t('customer.id'), 'customer-id')}
           >
-            <Copy className="h-4 w-4" />
+            {copiedFields['customer-id'] ? (
+              <Check className="h-4 w-4 text-green-500" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
