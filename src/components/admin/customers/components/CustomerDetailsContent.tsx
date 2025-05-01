@@ -50,6 +50,9 @@ export const CustomerDetailsContent = ({
   // Get display name or fallback to a default
   const customerName = customer.profile?.display_name || 'Customer';
   
+  // Log the address for debugging
+  console.log("Customer address in CustomerDetailsContent:", customer.address);
+  
   return (
     <div className="px-6 py-6 relative">
       {isSuperAdmin && (

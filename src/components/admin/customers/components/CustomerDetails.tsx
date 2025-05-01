@@ -13,6 +13,9 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
+  // Log the address for debugging
+  console.log("Customer address in CustomerDetails:", customer.address);
+
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast({

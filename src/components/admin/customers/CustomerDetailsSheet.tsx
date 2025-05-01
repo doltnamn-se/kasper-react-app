@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
@@ -43,7 +44,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Set the address on the customer from the fetched data
+  // Get the address from the fetched data if available
   if (customerData?.checklistProgress?.address) {
     customer.address = customerData.checklistProgress.address;
   }
