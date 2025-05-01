@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -95,6 +96,8 @@ export const ui: UITranslations = {
   'status': 'Status',
   'url.submissions': 'URL Submissions',
   'total.urls': 'Total URLs',
+  'url.count': 'Count',
+  'url.limit': 'Limit',
   'onboarding.status': 'Onboarding Status',
   'current.step': 'Current Step',
   'not.available': 'N/A',

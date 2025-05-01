@@ -17,14 +17,14 @@ export const UrlSubmissions = ({ usedUrls, totalUrlLimit }: UrlSubmissionsProps)
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('total.urls')}</p>
+          <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('url.count')}</p>
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] mt-1">
             {usedUrls}
           </p>
         </div>
         
         <div className="flex flex-col">
-          <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('urls.available')}</p>
+          <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('url.limit')}</p>
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF] mt-1">
             {isUnlimited ? displayLimit : `${usedUrls} / ${displayLimit}`}
           </p>
