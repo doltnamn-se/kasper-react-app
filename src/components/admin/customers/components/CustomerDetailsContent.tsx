@@ -10,6 +10,7 @@ import { AccountInfo } from "./AccountInfo";
 import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
+import { Copy, Check } from "lucide-react";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -47,10 +48,40 @@ export const CustomerDetailsContent = ({
   setAdditionalUrls
 }: CustomerDetailsContentProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [copiedTitle, setCopiedTitle] = useState(false);
+  const [fadeInActive, setFadeInActive] = useState(false);
+  const [fadeOutActive, setFadeOutActive] = useState(false);
   const { t } = useLanguage();
   
   // Get display name or fallback to a default
   const customerName = customer.profile?.display_name || 'Customer';
+  
+  const handleCopyTitle = () => {
+    // First trigger fade out animation
+    setFadeOutActive(true);
+    
+    // After fade out completes, show the checkmark
+    setTimeout(() => {
+      setFadeOutActive(false);
+      
+      // Copy the text and show notification
+      onCopy(customerName, t('name'));
+      
+      // Set copied state to true to show checkmark
+      setCopiedTitle(true);
+      
+      // After animation, set fade-in state to true
+      setTimeout(() => {
+        setCopiedTitle(false);
+        setFadeInActive(true);
+        
+        // Reset fade-in state after animation completes
+        setTimeout(() => {
+          setFadeInActive(false);
+        }, 300);
+      }, 1000);
+    }, 200);
+  };
   
   return (
     <div className="px-6 py-6 relative">
@@ -66,7 +97,24 @@ export const CustomerDetailsContent = ({
         <div className="space-y-6">
           <div className="flex items-center gap-3">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />
-            <h3 className="text-base font-medium text-black dark:text-white">{customerName}</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-base font-medium text-black dark:text-white">{customerName}</h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+                onClick={handleCopyTitle}
+              >
+                {copiedTitle ? (
+                  <Check 
+                    className="h-4 w-4 text-green-500 animate-draw-check [stroke-dasharray:24] [stroke-linecap:round] [stroke-linejoin:round]" 
+                    style={{ strokeDashoffset: 0 }}
+                  />
+                ) : (
+                  <Copy className={`h-4 w-4 ${fadeInActive ? 'animate-fade-in' : ''} ${fadeOutActive ? 'animate-fade-out' : ''}`} />
+                )}
+              </Button>
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-8">
             <CustomerDetails customer={customer} onCopy={onCopy} />
