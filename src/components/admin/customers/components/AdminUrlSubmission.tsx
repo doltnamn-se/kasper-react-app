@@ -98,8 +98,8 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
         </Button>
       </div>
       
-      {/* Added separator with small padding */}
-      <div className="pt-2">
+      {/* Added separator with adjusted padding */}
+      <div className="pt-3 pb-1.5">
         <Separator />
       </div>
     </form>
