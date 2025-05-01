@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,22 +7,25 @@ import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
-
 interface AdminUrlSubmissionProps {
   customerId: string;
 }
-
-export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
+export const AdminUrlSubmission = ({
+  customerId
+}: AdminUrlSubmissionProps) => {
   const [url, setUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const queryClient = useQueryClient();
-  const { t, language } = useLanguage();
-
+  const {
+    t,
+    language
+  } = useLanguage();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
-
     setIsSubmitting(true);
     try {
       // Initialize status history
@@ -32,34 +34,32 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
         status: 'received',
         timestamp: timestamp
       };
-
-      const { error } = await supabase
-        .from('removal_urls')
-        .insert({
-          customer_id: customerId,
-          url: url.trim(),
-          status: 'received',
-          display_in_incoming: true,
-          status_history: [initialStatus]
-        });
-
+      const {
+        error
+      } = await supabase.from('removal_urls').insert({
+        customer_id: customerId,
+        url: url.trim(),
+        status: 'received',
+        display_in_incoming: true,
+        status_history: [initialStatus]
+      });
       if (error) throw error;
 
       // Invalidate relevant queries
-      await queryClient.invalidateQueries({ queryKey: ['customer-data', customerId] });
-      
+      await queryClient.invalidateQueries({
+        queryKey: ['customer-data', customerId]
+      });
       toast({
         title: "Success",
-        description: "URL added successfully",
+        description: "URL added successfully"
       });
-      
       setUrl("");
     } catch (error) {
       console.error('Error adding URL:', error);
       toast({
         title: "Error",
         description: "Could not add URL. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
@@ -70,38 +70,20 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
   const placeholderText = language === 'sv' ? 'Ange URL' : 'Enter URL';
   // Set button text based on current language
   const buttonText = language === 'sv' ? 'Lägg till' : 'Add';
-
-  return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-2">
+  return <form onSubmit={handleSubmit} className="mt-4 space-y-2">
       <div className="flex gap-2">
-        <Input
-          type="url"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder={placeholderText}
-          className="flex-1 bg-[#ffffff] dark:bg-[#121212]"
-          required
-        />
-        <Button 
-          type="submit" 
-          disabled={isSubmitting}
-          className="bg-[#e0e0e0] text-[#000000] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:text-white dark:hover:bg-[#3a3a3b]"
-        >
-          {isSubmitting ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <>
+        <Input type="url" value={url} onChange={e => setUrl(e.target.value)} placeholder={placeholderText} className="flex-1 bg-[#ffffff] dark:bg-[#121212]" required />
+        <Button type="submit" disabled={isSubmitting} className="bg-[#e0e0e0] text-[#000000] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:text-white dark:hover:bg-[#3a3a3b]">
+          {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <>
               {buttonText}
               <CornerDownLeft className="h-4 w-4 ml-2" />
-            </>
-          )}
+            </>}
         </Button>
       </div>
       
       {/* Added separator with adjusted padding */}
-      <div className="pt-4 pb-1.5">
+      <div className="pt-4 pb-1.5 py-[25px]">
         <Separator />
       </div>
-    </form>
-  );
+    </form>;
 };
