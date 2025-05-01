@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -71,7 +72,7 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     setIsDeleting(true);
     try {
       const { error } = await supabase.functions.invoke('delete-user', {
-        body: { userId: customerId },
+        body: { user_id: customerId },
       });
 
       if (error) throw error;

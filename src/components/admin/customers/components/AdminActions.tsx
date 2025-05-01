@@ -98,7 +98,15 @@ export const AdminActionButtons = ({
       )}
       
       <Button
-        onClick={() => setShowDeleteDialog(true)}
+        onClick={() => {
+          if (onDeleteUser) {
+            // Call the delete function directly when the button is clicked
+            onDeleteUser();
+          } else {
+            // Fall back to just opening the dialog if no direct delete handler
+            setShowDeleteDialog(true);
+          }
+        }}
         variant="outline"
         size="icon"
         className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
