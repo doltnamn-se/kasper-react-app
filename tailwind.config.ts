@@ -66,10 +66,10 @@ export default {
         },
         'draw-check': {
           '0%': {
-            'stroke-dashoffset': '24 !important'
+            'stroke-dashoffset': '24'
           },
           '100%': {
-            'stroke-dashoffset': '0 !important'
+            'stroke-dashoffset': '0'
           }
         }
       },
