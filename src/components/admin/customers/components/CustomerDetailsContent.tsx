@@ -152,9 +152,6 @@ export const CustomerDetailsContent = ({
         <Separator className="my-6 bg-[#e0e0e0] dark:bg-[#2a2a2b]" />
 
         <div className="py-2 space-y-6">
-          <h4 className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF]">{t('deindexing.title')}</h4>
-          
-          {/* Move URL submission stats here, directly under the "Länkar" title */}
           <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
           
           <SiteStatusManager customerId={customer.id} />
