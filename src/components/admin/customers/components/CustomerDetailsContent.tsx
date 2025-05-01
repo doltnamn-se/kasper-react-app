@@ -1,4 +1,7 @@
 
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerWithProfile } from "@/types/customer";
 import { CustomerAvatar } from "./CustomerAvatar";
 import { CustomerDetails } from "./CustomerDetails";
@@ -7,9 +10,6 @@ import { AccountInfo } from "./AccountInfo";
 import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
-import { ChecklistProgress } from "./ChecklistProgress";
-import { useState } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -97,12 +97,6 @@ export const CustomerDetailsContent = ({
             <UrlSubmissions usedUrls={usedUrls} totalUrlLimit={totalUrlLimit} />
             
             <SiteStatusManager customerId={customer.id} />
-
-            <ChecklistProgress 
-              progressPercentage={customer.checklist_completed ? 100 : 0}
-              completedSteps={customer.checklist_completed ? 1 : 0}
-              totalSteps={1}
-            />
           </div>
         </div>
       </div>
