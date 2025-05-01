@@ -44,10 +44,13 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
   
-  // Get the address from the fetched data if available
-  if (customerData?.checklistProgress?.address) {
-    customer.address = customerData.checklistProgress.address;
-  }
+  // Create a working copy of the customer to avoid modifying props directly
+  const customerWithAddress = {
+    ...customer,
+    address: customerData?.checklistProgress?.address || customer.address
+  };
+  
+  console.log("Customer with address:", customerWithAddress);
 
   if (isLoading) {
     return isMobile ? (
@@ -75,7 +78,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       <DrawerContent className="px-0 pb-16 max-h-[85vh]">
         <ScrollArea className="h-full max-h-[85vh] overflow-y-auto">
           <CustomerDetailsContent
-            customer={customer}
+            customer={customerWithAddress}
             isOnline={isOnline}
             userLastSeen={userLastSeen}
             onCopy={handleCopy}
@@ -106,7 +109,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
       <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden">
         <ScrollArea className="h-full">
           <CustomerDetailsContent
-            customer={customer}
+            customer={customerWithAddress}
             isOnline={isOnline}
             userLastSeen={userLastSeen}
             onCopy={handleCopy}
