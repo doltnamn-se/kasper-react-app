@@ -54,7 +54,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+            className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
             onClick={() => handleCopy(customer.profile?.display_name || '', t('name'), 'name')}
           >
             {copiedFields['name'] ? (
@@ -77,7 +77,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+            className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
             onClick={() => handleCopy(customer.profile?.email || '', t('email'), 'email')}
           >
             {copiedFields['email'] ? (
@@ -101,7 +101,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+              className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
               onClick={() => handleCopy(customer.profile.address || '', t('address'), 'address')}
             >
               {copiedFields['address'] ? (
@@ -121,7 +121,7 @@ export const CustomerDetails = ({ customer, onCopy }: CustomerDetailsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+            className="h-6 w-6 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
             onClick={() => handleCopy(customer.id, t('customer.id'), 'customer-id')}
           >
             {copiedFields['customer-id'] ? (
