@@ -5,6 +5,7 @@ import { Send, Trash, RefreshCw, Ban } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AdminActionsProps {
   customerId: string;
@@ -32,6 +33,7 @@ export const AdminActions = ({
   setAdditionalUrls
 }: AdminActionsProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { t } = useLanguage();
 
   if (!isSuperAdmin) return null;
 
@@ -39,7 +41,7 @@ export const AdminActions = ({
     <>
       <div>
         <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
-          URL Limits
+          {t('deindexing.title')}
         </h3>
         <div className="flex gap-2 items-center">
           <Input
@@ -54,7 +56,7 @@ export const AdminActions = ({
             disabled={isUpdating}
             size="sm"
           >
-            {isUpdating ? "Updating..." : "Update"}
+            {isUpdating ? t('updating') : t('update')}
           </Button>
         </div>
       </div>

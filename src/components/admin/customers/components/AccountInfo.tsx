@@ -62,13 +62,6 @@ export const AccountInfo = ({
           </span>
         )}
       </div>
-      
-      <div className="space-y-1">
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('created')}</p>
-        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
-        </span>
-      </div>
     </div>
   );
 };
