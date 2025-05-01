@@ -78,7 +78,7 @@ export const AdminUrlSubmission = ({ customerId }: AdminUrlSubmissionProps) => {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder={placeholderText}
-          className="flex-1"
+          className="flex-1 bg-[#f5f5f5] dark:bg-[#161617]"
           required
         />
         <Button 
