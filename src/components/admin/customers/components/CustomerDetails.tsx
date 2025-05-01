@@ -28,7 +28,7 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
           {t('name')}
         </p>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
             {customer.profile?.display_name || t('no.name')}
           </span>
           <Button
@@ -47,7 +47,7 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
           {t('email')}
         </p>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
             {customer.profile?.email || t('no.email')}
           </span>
           <Button

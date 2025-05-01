@@ -36,7 +36,7 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
           {t('customer.type')}
         </p>
-        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
           {capitalizedCustomerType}
         </span>
       </div>
@@ -45,7 +45,7 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
           {t('subscription')}
         </p>
-        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
           {subscriptionLabel}
         </span>
       </div>
