@@ -75,6 +75,8 @@ export const ui: UITranslations = {
   'no.customers': 'Inga kunder online',
   'name': 'Namn',
   'email': 'E-post',
+  'address': 'Adress',
+  'no.address': 'Ingen adress',
   'checklist': 'Checklista',
   'last.online': 'Senast online',
   'plan': 'Plan',
