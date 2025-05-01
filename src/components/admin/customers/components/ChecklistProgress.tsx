@@ -1,26 +1,15 @@
 
 import { ListChecks } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CustomerWithProfile } from "@/types/customer";
-import { useMemo } from "react";
 
 interface ChecklistProgressProps {
-  customer: CustomerWithProfile;
+  progressPercentage: number;
+  completedSteps: number;
+  totalSteps: number;
 }
 
-export const ChecklistProgress = ({ customer }: ChecklistProgressProps) => {
+export const ChecklistProgress = ({ progressPercentage, completedSteps, totalSteps }: ChecklistProgressProps) => {
   const { t } = useLanguage();
-  
-  // Calculate progress based on onboarding steps
-  const { progressPercentage, completedSteps, totalSteps } = useMemo(() => {
-    const totalSteps = 5; // Example: total onboarding steps
-    const completedSteps = customer.onboarding_completed ? 
-      totalSteps : (customer.onboarding_step || 0);
-    const progressPercentage = customer.onboarding_completed ? 
-      100 : Math.round((completedSteps / totalSteps) * 100);
-    
-    return { progressPercentage, completedSteps, totalSteps };
-  }, [customer]);
 
   return (
     <div>
@@ -30,16 +19,16 @@ export const ChecklistProgress = ({ customer }: ChecklistProgressProps) => {
       </h3>
       <div className="space-y-4">
         <div className="space-y-1">
-          <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('status')}</p>
-          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+          <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
+          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {progressPercentage === 100 ? t('completed') : t('in.progress')}
           </p>
         </div>
         
         {progressPercentage !== 100 && (
           <div className="space-y-1">
-            <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('progress')}</p>
-            <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+            <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('progress')}</p>
+            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
               {completedSteps} / {totalSteps} {t('steps')}
             </p>
           </div>

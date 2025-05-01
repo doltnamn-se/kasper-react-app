@@ -5,20 +5,13 @@ import { getUserInitials } from "@/utils/profileUtils";
 
 interface CustomerAvatarProps {
   customer: CustomerWithProfile;
-  size?: "sm" | "md" | "lg";
-  progressPercentage?: number;
+  progressPercentage: number;
 }
 
-export const CustomerAvatar = ({ customer, size = "md", progressPercentage }: CustomerAvatarProps) => {
-  const sizeClasses = {
-    sm: "h-10 w-10",
-    md: "h-12 w-12",
-    lg: "h-16 w-16"
-  };
-  
+export const CustomerAvatar = ({ customer, progressPercentage }: CustomerAvatarProps) => {
   return (
     <div className="relative">
-      <Avatar className={sizeClasses[size]}>
+      <Avatar className="h-16 w-16">
         <AvatarImage src={customer.profile?.avatar_url} />
         <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6] text-lg">
           {getUserInitials(customer.profile)}

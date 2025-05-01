@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -7,25 +6,18 @@ import { toast } from "sonner";
 
 interface SiteStatusManagerProps {
   customerId: string;
-  usedUrls?: number;
-  totalUrlLimit?: number;
 }
 
 type SiteStatus = {
   id: string;
   site_name: string;
   status: string;
-  customer_id: string;
 };
 
-export const SiteStatusManager = ({ customerId, usedUrls = 0, totalUrlLimit = 0 }: SiteStatusManagerProps) => {
-  const { t, language } = useLanguage();
+export function SiteStatusManager({ customerId }: SiteStatusManagerProps) {
+  const { language } = useLanguage();
   const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Check if the user has unlimited URLs (very high number)
-  const isUnlimited = totalUrlLimit > 10000;
-  const displayLimit = isUnlimited ? t('unlimited') : totalUrlLimit.toString();
 
   const sites = [
     { name: 'Mrkoll', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
@@ -146,22 +138,8 @@ export const SiteStatusManager = ({ customerId, usedUrls = 0, totalUrlLimit = 0 
   }
 
   return (
-    <div>
-      <div className="space-y-1">
-        <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('total.urls')}</p>
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {usedUrls}
-        </p>
-      </div>
-      
-      <div className="space-y-1 mt-4">
-        <p className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{t('urls.available')}</p>
-        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {isUnlimited ? displayLimit : `${usedUrls} / ${displayLimit}`}
-        </p>
-      </div>
-
-      <h3 className="text-sm font-bold text-[#000000] dark:text-[#FFFFFF] mt-6 mb-4">{t('site.statuses')}</h3>
+    <div className="space-y-4">
+      <h3 className="text-sm font-semibold">Site Statuses</h3>
       <div className="space-y-3">
         {sites.map((site) => {
           const siteStatus = siteStatuses.find(s => s.site_name === site.name);
@@ -173,7 +151,7 @@ export const SiteStatusManager = ({ customerId, usedUrls = 0, totalUrlLimit = 0 
                   alt={site.name} 
                   className="w-6 h-6 object-contain"
                 />
-                <span className="text-sm font-medium">{site.name}</span>
+                <span className="text-sm">{site.name}</span>
               </div>
               <Select
                 value={siteStatus?.status || 'Granskar'}
@@ -196,4 +174,4 @@ export const SiteStatusManager = ({ customerId, usedUrls = 0, totalUrlLimit = 0 
       </div>
     </div>
   );
-};
+}
