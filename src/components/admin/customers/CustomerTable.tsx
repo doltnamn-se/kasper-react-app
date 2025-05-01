@@ -126,8 +126,17 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
             <p>
-              {t('pagination.page')} {table.getState().pagination.pageIndex + 1} {t('pagination.of')}{' '}
-              {table.getPageCount()} {t('pagination.pages')}
+              {isMobile ? (
+                <>
+                  {table.getState().pagination.pageIndex + 1} {t('pagination.of')}{' '}
+                  {table.getPageCount()}
+                </>
+              ) : (
+                <>
+                  {t('pagination.page')} {table.getState().pagination.pageIndex + 1} {t('pagination.of')}{' '}
+                  {table.getPageCount()} {t('pagination.pages')}
+                </>
+              )}
             </p>
           </div>
           <div className="flex items-center space-x-2">
