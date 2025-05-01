@@ -14,7 +14,7 @@ interface AdminActionsProps {
   isDeleting: boolean;
   additionalUrls: string;
   onSendActivationEmail: () => void;
-  onUpdateUrlLimits: (urls: string) => void;
+  onUpdateUrlLimits: () => void;
   onDeleteUser: () => void;
   setAdditionalUrls: (urls: string) => void;
 }
@@ -37,27 +37,6 @@ export const AdminActions = ({
 
   return (
     <>
-      <div className="space-y-2">
-        <Button
-          onClick={onSendActivationEmail}
-          disabled={isSendingEmail}
-          variant="outline"
-          className="w-full"
-        >
-          <Mail className="h-4 w-4 mr-2" />
-          {isSendingEmail ? "Sending..." : "Resend Activation Email"}
-        </Button>
-        
-        <Button
-          onClick={() => setShowDeleteDialog(true)}
-          variant="destructive"
-          className="w-full"
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Delete User
-        </Button>
-      </div>
-
       <div>
         <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFFA6] mb-3">
           URL Limits
@@ -89,5 +68,39 @@ export const AdminActions = ({
         isDeleting={isDeleting}
       />
     </>
+  );
+};
+
+export const AdminActionButtons = ({
+  isSendingEmail,
+  onSendActivationEmail,
+  setShowDeleteDialog,
+}: {
+  isSendingEmail: boolean;
+  onSendActivationEmail: () => void;
+  setShowDeleteDialog: (show: boolean) => void;
+}) => {
+  return (
+    <div className="absolute right-6 top-6 flex gap-2">
+      <Button
+        onClick={onSendActivationEmail}
+        disabled={isSendingEmail}
+        variant="outline"
+        size="icon"
+        title="Resend activation email"
+      >
+        <Mail className="h-4 w-4" />
+      </Button>
+      
+      <Button
+        onClick={() => setShowDeleteDialog(true)}
+        variant="outline"
+        size="icon"
+        className="text-destructive hover:bg-destructive/10"
+        title="Delete user"
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </div>
   );
 };

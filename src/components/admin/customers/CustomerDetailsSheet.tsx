@@ -7,6 +7,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { CustomerDetailsLoading } from "./components/CustomerDetailsLoading";
 import { CustomerDetailsContent } from "./components/CustomerDetailsContent";
 import { useCustomerDetails } from "./hooks/useCustomerDetails";
+import { DeleteUserDialog } from "./components/DeleteUserDialog";
+import { useState } from "react";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -15,6 +17,7 @@ interface CustomerDetailsSheetProps {
 
 export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetailsSheetProps) => {
   const isMobile = useIsMobile();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
   // Use empty ID if customer is null to prevent hook conditionally
   const customerId = customer?.id || "";
@@ -84,6 +87,13 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
           />
         </ScrollArea>
       </DrawerContent>
+      
+      <DeleteUserDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDeleteUser}
+        isDeleting={isDeleting}
+      />
     </Drawer>
   ) : (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
@@ -108,6 +118,13 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
           />
         </ScrollArea>
       </SheetContent>
+      
+      <DeleteUserDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDeleteUser}
+        isDeleting={isDeleting}
+      />
     </Sheet>
   );
 };

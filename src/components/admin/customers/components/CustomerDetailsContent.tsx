@@ -4,10 +4,11 @@ import { CustomerAvatar } from "./CustomerAvatar";
 import { CustomerDetails } from "./CustomerDetails";
 import { CustomerBadges } from "./CustomerBadges";
 import { AccountInfo } from "./AccountInfo";
-import { AdminActions } from "./AdminActions";
+import { AdminActions, AdminActionButtons } from "./AdminActions";
 import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { ChecklistProgress } from "./ChecklistProgress";
+import { useState } from "react";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -44,8 +45,18 @@ export const CustomerDetailsContent = ({
   onDeleteUser,
   setAdditionalUrls
 }: CustomerDetailsContentProps) => {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  
   return (
-    <div className="px-6 py-6">
+    <div className="px-6 py-6 relative">
+      {isSuperAdmin && (
+        <AdminActionButtons
+          isSendingEmail={isSendingEmail}
+          onSendActivationEmail={onSendActivationEmail}
+          setShowDeleteDialog={setShowDeleteDialog}
+        />
+      )}
+      
       <div className="space-y-8">
         <div className="space-y-6">
           <h3 className="text-sm font-semibold text-[#000000] dark:text-white">User Details</h3>
