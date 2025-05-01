@@ -9,6 +9,7 @@ import { UrlSubmissions } from "./UrlSubmissions";
 import { SiteStatusManager } from "./SiteStatusManager";
 import { ChecklistProgress } from "./ChecklistProgress";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -46,6 +47,7 @@ export const CustomerDetailsContent = ({
   setAdditionalUrls
 }: CustomerDetailsContentProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { t } = useLanguage();
   
   // Get display name or fallback to a default
   const customerName = customer.profile?.display_name || 'Customer';

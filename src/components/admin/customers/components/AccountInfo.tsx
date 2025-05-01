@@ -38,28 +38,28 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
     <div className="space-y-4">
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {getSubscriptionLabel(customer.subscription_plan)}
         </span>
       </div>
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('customer.type')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {customer.customer_type.charAt(0).toUpperCase() + customer.customer_type.slice(1)}
         </span>
       </div>
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('created')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
         </span>
       </div>
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('status')}</p>
-        <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+        <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
           {isOnline ? t('online') : t('offline')}
         </span>
       </div>
@@ -67,7 +67,7 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       {!isOnline && userLastSeen && (
         <div className="space-y-1">
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">{t('last.seen')}</p>
-          <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
             {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
           </span>
         </div>

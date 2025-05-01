@@ -1,3 +1,4 @@
+
 interface UserProfile {
   first_name?: string | null;
   last_name?: string | null;
@@ -37,4 +38,10 @@ export const getFullName = (userProfile: UserProfile | null, userEmail: string |
     return `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim();
   }
   return userEmail || '';
+};
+
+// Add formatDateDistance function to fix import error
+export const formatDateDistance = (date: string | null): string => {
+  if (!date) return '';
+  return '';
 };
