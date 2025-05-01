@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -133,5 +132,7 @@ export const ui: UITranslations = {
   // Adding the missing translations
   'deindexing.title': 'Deindexing Progress',
   'deindexing.need.more': 'Need more URLs?',
-  'unlimited': 'Unlimited'
+  'unlimited': 'Unlimited',
+  'customer.type': 'Customer Type',
+  'subscription': 'Subscription'
 };
