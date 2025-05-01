@@ -35,24 +35,24 @@ export const AccountInfo = ({ customer, isOnline, userLastSeen, onCopy }: Accoun
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('created')}</p>
-        <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
           {customer.created_at ? format(new Date(customer.created_at), 'PPP') : t('not.available')}
-        </p>
+        </span>
       </div>
       
       <div className="space-y-1">
         <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('status')}</p>
-        <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
           {isOnline ? t('online') : t('offline')}
-        </p>
+        </span>
       </div>
       
       {!isOnline && userLastSeen && (
         <div className="space-y-1">
           <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">{t('last.seen')}</p>
-          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {formatDistanceToNow(new Date(userLastSeen), { addSuffix: true })}
-          </p>
+          </span>
         </div>
       )}
     </div>

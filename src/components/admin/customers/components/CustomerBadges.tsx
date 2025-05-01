@@ -33,21 +33,21 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
           {t('customer.type')}
-        </h2>
-        <p className="text-xs text-[#000000] dark:text-white">
-          {capitalizedCustomerType}
         </p>
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {capitalizedCustomerType}
+        </span>
       </div>
       
       <div className="space-y-1">
-        <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
           {t('subscription')}
-        </h2>
-        <p className="text-xs text-[#000000] dark:text-white">
-          {subscriptionLabel}
         </p>
+        <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+          {subscriptionLabel}
+        </span>
       </div>
     </div>
   );

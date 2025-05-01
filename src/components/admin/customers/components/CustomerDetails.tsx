@@ -24,13 +24,13 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
           {t('name')}
-        </h2>
+        </p>
         <div className="flex items-center gap-2">
-          <p className="text-xs text-[#000000] dark:text-white">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {customer.profile?.display_name || t('no.name')}
-          </p>
+          </span>
           <Button
             variant="ghost"
             size="icon"
@@ -43,13 +43,13 @@ export const CustomerDetails = ({ customer }: CustomerDetailsProps) => {
       </div>
       
       <div className="space-y-1">
-        <h2 className="text-xs font-semibold text-[#000000] dark:text-white">
+        <p className="text-xs font-medium text-[#000000] dark:text-[#FFFFFFA6]">
           {t('email')}
-        </h2>
+        </p>
         <div className="flex items-center gap-2">
-          <p className="text-xs text-[#000000] dark:text-white">
+          <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {customer.profile?.email || t('no.email')}
-          </p>
+          </span>
           <Button
             variant="ghost"
             size="icon"
