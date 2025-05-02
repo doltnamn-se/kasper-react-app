@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -80,24 +79,24 @@ export default {
             'stroke-dashoffset': '0'
           }
         },
-        'fade-in-top': {
+        'toast-slide-in': {
           '0%': { 
             opacity: '0',
-            transform: 'translateY(-15px)'
+            transform: 'translateY(16px)'
           },
           '100%': { 
             opacity: '1',
             transform: 'translateY(0)'
           }
         },
-        'fade-out-top': {
+        'toast-slide-out': {
           '0%': { 
             opacity: '1',
             transform: 'translateY(0)'
           },
           '100%': { 
             opacity: '0',
-            transform: 'translateY(-15px)'
+            transform: 'translateY(16px)'
           }
         }
       },
@@ -111,8 +110,8 @@ export default {
         'fade-out': 'fade-out 0.2s ease-out',
         'icon-fill': 'icon-fill 2s linear infinite',
         'draw-check': 'draw-check 0.3s ease-in-out forwards',
-        'fade-in-top': 'fade-in-top 0.4s ease-out forwards',
-        'fade-out-top': 'fade-out-top 0.4s ease-out forwards'
+        'toast-slide-in': 'toast-slide-in 400ms ease-out forwards',
+        'toast-slide-out': 'toast-slide-out 300ms ease-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',
