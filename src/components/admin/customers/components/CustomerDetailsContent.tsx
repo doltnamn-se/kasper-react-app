@@ -12,7 +12,6 @@ import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { Separator } from "@/components/ui/separator";
-
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
   isOnline: boolean;
@@ -91,18 +90,8 @@ export const CustomerDetailsContent = ({
       }, 1000);
     }, 200);
   };
-  return <div className="px-6 py-6 relative">
-      {isSuperAdmin && <AdminActionButtons 
-        isSendingEmail={isSendingEmail} 
-        onSendActivationEmail={onSendActivationEmail} 
-        setShowDeleteDialog={setShowDeleteDialog} 
-        onRefreshData={onRefresh} 
-        isRefreshing={isRefreshing} 
-        onBanUser={onBanUser}
-        onDeleteUser={onDeleteUser}
-        isTogglingBan={isTogglingBan}
-        isBanned={isBanned}
-      />}
+  return <div className="px-6 py-6 relative bg-white">
+      {isSuperAdmin && <AdminActionButtons isSendingEmail={isSendingEmail} onSendActivationEmail={onSendActivationEmail} setShowDeleteDialog={setShowDeleteDialog} onRefreshData={onRefresh} isRefreshing={isRefreshing} onBanUser={onBanUser} onDeleteUser={onDeleteUser} isTogglingBan={isTogglingBan} isBanned={isBanned} />}
       
       <div className="space-y-8 mt-16 md:mt-12">
         <div className="space-y-8 md:space-y-6">
