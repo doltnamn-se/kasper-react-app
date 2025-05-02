@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -162,5 +163,6 @@ export const ui: UITranslations = {
   '3.months': '3 Months',
   '6.months': '6 Months',
   '12.months': '12 Months',
-  '24.months': '24 Months'
+  '24.months': '24 Months',
+  'mrkoll.not.checked': 'Not yet',
 };

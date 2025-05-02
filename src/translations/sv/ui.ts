@@ -163,5 +163,6 @@ export const ui: UITranslations = {
   '3.months': '3 Månader',
   '6.months': '6 Månader',
   '12.months': '12 Månader',
-  '24.months': '24 Månader'
+  '24.months': '24 Månader',
+  'mrkoll.not.checked': 'Inte än',
 };

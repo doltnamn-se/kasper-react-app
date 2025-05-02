@@ -99,8 +99,8 @@ export const AccountInfo = ({
                     {format(new Date(customer.profile.mrkoll_removal_checked_at), 'yyyy-MM-dd HH:mm')}
                   </span>
                 ) : (
-                  <span className="text-xs text-[#808080] dark:text-[#ABABAB]">
-                    {language === 'sv' ? 'Inte kontrollerad' : 'Not checked'}
+                  <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+                    {language === 'sv' ? 'Inte än' : 'Not yet'}
                   </span>
                 )}
               </div>

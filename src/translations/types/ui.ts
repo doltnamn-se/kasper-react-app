@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -146,7 +145,6 @@ export interface UITranslations {
   'success.subscription_updated': string;
   'success.deleted': string;
   'success.user_deleted': string;
-  // Add the missing translation keys
   'create.customer': string;
   'create.customer.description': string;
   'create.with.email': string;
@@ -163,4 +161,5 @@ export interface UITranslations {
   '6.months': string;
   '12.months': string;
   '24.months': string;
+  'mrkoll.not.checked': string;
 }
