@@ -7,7 +7,7 @@ import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserRoundCheck } from "lucide-react";
+import { UserRoundCheck, SendHorizontal } from "lucide-react";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -50,6 +50,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         disabled={isCreating || !isFormValid}
       >
         {isCreating ? t('creating') : t('create.with.email')}
+        <SendHorizontal className="h-4 w-4 ml-1" />
       </Button>
       <Button 
         className="w-full" 
@@ -69,7 +70,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         <DrawerTrigger asChild>
           {children}
         </DrawerTrigger>
-        <DrawerContent>
+        <DrawerContent className="bg-white">
           <DrawerHeader>
             <DrawerTitle className="font-medium flex items-center gap-2">
               <UserRoundCheck className="h-5 w-5" />
@@ -93,7 +94,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-white">
         <DialogHeader>
           <DialogTitle className="font-medium flex items-center gap-2">
             <UserRoundCheck className="h-5 w-5" />
