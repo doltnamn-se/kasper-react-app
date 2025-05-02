@@ -1,4 +1,3 @@
-
 import { Table } from "@/components/ui/table";
 import { CustomerWithProfile } from "@/types/customer";
 import {
@@ -39,11 +38,20 @@ export const CustomerTable = ({ customers, onlineUsers, lastSeen, onRefresh }: C
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
+  const isMobile = useIsMobile();
+  
   const [{ pageIndex, pageSize }, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: isMobile ? 5 : 10,
   });
-  const isMobile = useIsMobile();
+
+  // Update pageSize when screen size changes
+  useEffect(() => {
+    setPagination(prev => ({
+      pageIndex: prev.pageIndex,
+      pageSize: isMobile ? 5 : 10
+    }));
+  }, [isMobile]);
 
   const columns = getColumns(onlineUsers, lastSeen);
 
