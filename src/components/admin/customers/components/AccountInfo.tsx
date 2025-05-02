@@ -1,17 +1,12 @@
 
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerWithProfile } from "@/types/customer";
-import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { sv, enUS } from "date-fns/locale";
+import { format } from "date-fns";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
 
 interface AccountInfoProps {
   customer: CustomerWithProfile;
@@ -29,7 +24,6 @@ export const AccountInfo = ({
   onUpdateSubscriptionPlan,
   isSuperAdmin,
 }: AccountInfoProps) => {
-  const { toast } = useToast();
   const { language, t } = useLanguage();
   const [isUpdatingMrkoll, setIsUpdatingMrkoll] = useState(false);
   
@@ -47,22 +41,11 @@ export const AccountInfo = ({
         
       if (error) throw error;
       
-      toast({
-        title: language === 'sv' ? 'Uppdaterad' : 'Updated',
-        description: language === 'sv' 
-          ? 'Mrkoll borttagningsstatus har uppdaterats' 
-          : 'Mrkoll removal status has been updated'
-      });
+      // Toast notification removed
       
     } catch (error) {
       console.error('Error updating Mrkoll removal status:', error);
-      toast({
-        title: language === 'sv' ? 'Fel' : 'Error',
-        description: language === 'sv'
-          ? 'Kunde inte uppdatera Mrkoll borttagningsstatus'
-          : 'Failed to update Mrkoll removal status',
-        variant: "destructive"
-      });
+      // Toast error notification also removed
     } finally {
       setIsUpdatingMrkoll(false);
     }
