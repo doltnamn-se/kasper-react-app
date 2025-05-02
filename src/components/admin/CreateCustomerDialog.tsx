@@ -1,11 +1,11 @@
 
+import { useState, useEffect, ReactNode } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { UserRoundPlus } from "lucide-react";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
-import { useState } from "react";
-import { ReactNode } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -18,9 +18,73 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
     onCustomerCreated();
     setOpen(false);
   });
+  const isMobile = useIsMobile();
 
   const isFormValid = formData.email && formData.displayName;
-
+  
+  const FormContent = () => (
+    <div className="space-y-4 py-4">
+      <CustomerFormFields
+        email={formData.email}
+        displayName={formData.displayName}
+        subscriptionPlan={formData.subscriptionPlan}
+        customerType={formData.customerType}
+        hasAddressAlert={formData.hasAddressAlert}
+        onEmailChange={(email) => setFormData(prev => ({ ...prev, email }))}
+        onDisplayNameChange={(displayName) => setFormData(prev => ({ ...prev, displayName }))}
+        onSubscriptionPlanChange={(subscriptionPlan) => setFormData(prev => ({ ...prev, subscriptionPlan }))}
+        onCustomerTypeChange={(customerType) => setFormData(prev => ({ ...prev, customerType }))}
+        onHasAddressAlertChange={(hasAddressAlert) => setFormData(prev => ({ ...prev, hasAddressAlert }))}
+      />
+    </div>
+  );
+  
+  const FormActions = () => (
+    <div className="flex flex-col gap-2">
+      <Button 
+        className="w-full" 
+        onClick={() => handleCreateCustomer(true)}
+        disabled={isCreating || !isFormValid}
+      >
+        {isCreating ? "Creating..." : "Create & Send Welcome Email"}
+      </Button>
+      <Button 
+        className="w-full" 
+        variant="outline"
+        onClick={() => handleCreateCustomer(false)}
+        disabled={isCreating || !isFormValid}
+      >
+        {isCreating ? "Creating..." : "Create Without Email"}
+      </Button>
+    </div>
+  );
+  
+  // Use Drawer for mobile
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          {children}
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Create New Customer</DrawerTitle>
+            <DrawerDescription>
+              Add a new customer to the platform. Fill in their details below.
+            </DrawerDescription>
+          </DrawerHeader>
+          <div className="px-4">
+            <FormContent />
+          </div>
+          <DrawerFooter>
+            <FormActions />
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+  
+  // Use Dialog for desktop/tablet
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -33,37 +97,8 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
             Add a new customer to the platform. Fill in their details below.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4 py-4">
-          <CustomerFormFields
-            email={formData.email}
-            displayName={formData.displayName}
-            subscriptionPlan={formData.subscriptionPlan}
-            customerType={formData.customerType}
-            hasAddressAlert={formData.hasAddressAlert}
-            onEmailChange={(email) => setFormData(prev => ({ ...prev, email }))}
-            onDisplayNameChange={(displayName) => setFormData(prev => ({ ...prev, displayName }))}
-            onSubscriptionPlanChange={(subscriptionPlan) => setFormData(prev => ({ ...prev, subscriptionPlan }))}
-            onCustomerTypeChange={(customerType) => setFormData(prev => ({ ...prev, customerType }))}
-            onHasAddressAlertChange={(hasAddressAlert) => setFormData(prev => ({ ...prev, hasAddressAlert }))}
-          />
-          <div className="flex flex-col gap-2">
-            <Button 
-              className="w-full" 
-              onClick={() => handleCreateCustomer(true)}
-              disabled={isCreating || !isFormValid}
-            >
-              {isCreating ? "Creating..." : "Create & Send Welcome Email"}
-            </Button>
-            <Button 
-              className="w-full" 
-              variant="outline"
-              onClick={() => handleCreateCustomer(false)}
-              disabled={isCreating || !isFormValid}
-            >
-              {isCreating ? "Creating..." : "Create Without Email"}
-            </Button>
-          </div>
-        </div>
+        <FormContent />
+        <FormActions />
       </DialogContent>
     </Dialog>
   );
