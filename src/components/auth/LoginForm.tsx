@@ -49,6 +49,20 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
 
       if (data?.session) {
         console.log("Sign in successful, session established");
+        
+        // Check if the user is banned
+        const userData = data.session.user as any;
+        if (userData.banned_until && new Date(userData.banned_until) > new Date()) {
+          console.log("User is banned until:", userData.banned_until);
+          toast.error(t('errors.user_banned'), {
+            duration: 5000,
+          });
+          // Sign out the banned user immediately
+          await supabase.auth.signOut();
+          setIsLoading(false);
+          return;
+        }
+        
         await supabase.auth.setSession(data.session);
         
         // Check if user is admin

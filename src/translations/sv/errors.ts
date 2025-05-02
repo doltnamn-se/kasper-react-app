@@ -54,5 +54,6 @@ export const errors: ErrorTranslations = {
   'errors.url_limits_update_failed': 'Kunde inte uppdatera URL-gränser',
   'errors.subscription_update_failed': 'Kunde inte uppdatera prenumerationen',
   'errors.delete_failed': 'Borttagning misslyckades',
-  'errors.user_delete_failed': 'Kunde inte ta bort användaren'
+  'errors.user_delete_failed': 'Kunde inte ta bort användaren',
+  'errors.user_banned': 'Ditt konto har blivit avstängt. Vänligen kontakta support för hjälp.'
 };

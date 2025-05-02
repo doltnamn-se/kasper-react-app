@@ -54,5 +54,6 @@ export const errors: ErrorTranslations = {
   'errors.url_limits_update_failed': 'Failed to update URL limits',
   'errors.subscription_update_failed': 'Failed to update subscription',
   'errors.delete_failed': 'Delete failed',
-  'errors.user_delete_failed': 'Failed to delete user'
+  'errors.user_delete_failed': 'Failed to delete user',
+  'errors.user_banned': 'Your account has been banned. Please contact support for assistance.'
 };
