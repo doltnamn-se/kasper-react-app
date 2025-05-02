@@ -12,6 +12,7 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdatingSubscription, setIsUpdatingSubscription] = useState(false);
+  const [isTogglingBan, setIsTogglingBan] = useState(false);
 
   const handleResendActivationEmail = async (email?: string, displayName?: string) => {
     if (!email || !displayName) {
@@ -68,6 +69,36 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     }
   };
 
+  const handleToggleUserBan = async () => {
+    setIsTogglingBan(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('toggle-user-ban', {
+        body: { user_id: customerId }
+      });
+      
+      if (error || !data.success) {
+        throw error || new Error('Failed to toggle user ban status');
+      }
+      
+      // Show different messages based on whether user was banned or unbanned
+      toast.success(data.banned ? 'User banned' : 'User unbanned', {
+        description: data.banned 
+          ? 'User has been banned and will not be able to log in' 
+          : 'User has been unbanned and can now log in'
+      });
+      
+      return data;
+    } catch (error) {
+      console.error('Error toggling user ban status:', error);
+      toast.error('Action failed', {
+        description: 'Failed to update user ban status'
+      });
+      return false;
+    } finally {
+      setIsTogglingBan(false);
+    }
+  };
+
   const handleDeleteUser = async () => {
     setIsDeleting(true);
     try {
@@ -97,8 +128,10 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     isSendingEmail,
     isDeleting,
     isUpdatingSubscription,
+    isTogglingBan,
     handleResendActivationEmail,
     handleUpdateSubscriptionPlan,
-    handleDeleteUser
+    handleDeleteUser,
+    handleToggleUserBan
   };
 };

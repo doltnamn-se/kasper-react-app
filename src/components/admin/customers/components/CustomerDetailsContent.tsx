@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -22,10 +21,12 @@ interface CustomerDetailsContentProps {
   usedUrls: number;
   totalUrlLimit: number;
   isSuperAdmin: boolean;
+  isBanned?: boolean;
   isSendingEmail: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
   isUpdatingSubscription: boolean;
+  isTogglingBan?: boolean;
   onSendActivationEmail: () => void;
   onDeleteUser: () => void;
   onUpdateSubscriptionPlan: (plan: string) => void;
@@ -41,10 +42,12 @@ export const CustomerDetailsContent = ({
   usedUrls,
   totalUrlLimit,
   isSuperAdmin,
+  isBanned = false,
   isSendingEmail,
   isUpdating,
   isDeleting,
   isUpdatingSubscription,
+  isTogglingBan = false,
   onSendActivationEmail,
   onDeleteUser,
   onUpdateSubscriptionPlan,
@@ -97,6 +100,8 @@ export const CustomerDetailsContent = ({
         isRefreshing={isRefreshing} 
         onBanUser={onBanUser}
         onDeleteUser={onDeleteUser}
+        isTogglingBan={isTogglingBan}
+        isBanned={isBanned}
       />}
       
       <div className="space-y-8 mt-16 md:mt-12">

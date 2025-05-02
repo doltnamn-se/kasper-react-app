@@ -49,7 +49,9 @@ export const AdminActionButtons = ({
   onRefreshData,
   isRefreshing = false,
   onBanUser,
-  onDeleteUser
+  onDeleteUser,
+  isTogglingBan = false,
+  isBanned = false
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
@@ -58,6 +60,8 @@ export const AdminActionButtons = ({
   isRefreshing?: boolean;
   onBanUser?: () => void;
   onDeleteUser?: () => void;
+  isTogglingBan?: boolean;
+  isBanned?: boolean;
 }) => {
   return (
     <div className="absolute right-6 top-8 md:top-6 flex gap-2">
@@ -88,12 +92,13 @@ export const AdminActionButtons = ({
       {onBanUser && (
         <Button
           onClick={onBanUser}
+          disabled={isTogglingBan}
           variant="outline"
           size="icon"
-          title="Ban user"
-          className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+          title={isBanned ? "Unban user" : "Ban user"}
+          className={`hover:bg-transparent ${isBanned ? 'text-red-500 hover:text-red-600' : 'text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]'}`}
         >
-          <Ban className="h-4 w-4" />
+          <Ban className={`h-4 w-4 ${isTogglingBan ? 'animate-spin' : ''}`} />
         </Button>
       )}
       

@@ -29,11 +29,13 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     usedUrls,
     totalUrlLimit,
     isSuperAdmin,
+    isBanned,
     isUpdating,
     isSendingEmail,
     isDeleting,
     isRefreshing,
     isUpdatingSubscription,
+    isTogglingBan,
     handleCopy,
     handleResendActivationEmail,
     handleDeleteUser,
@@ -78,10 +80,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             usedUrls={usedUrls}
             totalUrlLimit={totalUrlLimit}
             isSuperAdmin={isSuperAdmin}
+            isBanned={isBanned}
             isSendingEmail={isSendingEmail}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
             isUpdatingSubscription={isUpdatingSubscription}
+            isTogglingBan={isTogglingBan}
             onSendActivationEmail={handleActivationEmail}
             onDeleteUser={handleDeleteUser}
             onUpdateSubscriptionPlan={handleSubscriptionUpdate}
@@ -111,10 +115,12 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             usedUrls={usedUrls}
             totalUrlLimit={totalUrlLimit}
             isSuperAdmin={isSuperAdmin}
+            isBanned={isBanned}
             isSendingEmail={isSendingEmail}
             isUpdating={isUpdating}
             isDeleting={isDeleting}
             isUpdatingSubscription={isUpdatingSubscription}
+            isTogglingBan={isTogglingBan}
             onSendActivationEmail={handleActivationEmail}
             onDeleteUser={handleDeleteUser}
             onUpdateSubscriptionPlan={handleSubscriptionUpdate}
