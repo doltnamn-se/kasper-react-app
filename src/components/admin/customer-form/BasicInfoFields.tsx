@@ -27,6 +27,16 @@ export const BasicInfoFields = ({
   return (
     <>
       <div className="space-y-2">
+        <Label htmlFor="displayName">{t('display.name')}</Label>
+        <Input
+          id="displayName"
+          placeholder="John Doe"
+          value={displayName}
+          onChange={(e) => onDisplayNameChange(e.target.value)}
+        />
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="email">{t('email')}</Label>
         <Input
           id="email"
@@ -34,16 +44,6 @@ export const BasicInfoFields = ({
           placeholder="customer@example.com"
           value={email}
           onChange={(e) => onEmailChange(e.target.value)}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="displayName">{t('display.name')}</Label>
-        <Input
-          id="displayName"
-          placeholder="John Doe"
-          value={displayName}
-          onChange={(e) => onDisplayNameChange(e.target.value)}
         />
       </div>
 

@@ -13,7 +13,7 @@ export const CustomerTypeField = ({ value, onChange }: CustomerTypeFieldProps) =
   const { t } = useLanguage();
   
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       <Label htmlFor="customerType">{t('customer.type')}</Label>
       <Select
         value={value}

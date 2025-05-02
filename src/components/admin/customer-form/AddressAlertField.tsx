@@ -12,7 +12,7 @@ export const AddressAlertField = ({ value, onChange }: AddressAlertFieldProps) =
   const { t } = useLanguage();
   
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       <Label htmlFor="hasAddressAlert">{t('address.alert')}</Label>
       <Select
         value={value ? "yes" : "no"}
