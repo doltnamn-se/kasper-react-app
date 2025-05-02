@@ -72,7 +72,7 @@ export const AccountInfo = ({
       <div className="space-y-6">
         {isSuperAdmin && (
           <div className="space-y-2">
-            <p className="text-xs text-[#808080] dark:text-[#ABABAB]">{t('subscription')}</p>
+            <p className="text-xs text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
             <SubscriptionPlanSelect 
               currentPlan={customer.subscription_plan || ''} 
               onUpdatePlan={onUpdateSubscriptionPlan}
@@ -83,7 +83,7 @@ export const AccountInfo = ({
         
         {isSuperAdmin && (
           <div className="space-y-2">
-            <p className="text-xs text-[#808080] dark:text-[#ABABAB]">
+            <p className="text-xs text-[#000000] dark:text-[#FFFFFF]">
               {language === 'sv' ? 'Borttagning Mrkoll' : 'Removal Mrkoll'}
             </p>
             <div className="flex items-center gap-2">
