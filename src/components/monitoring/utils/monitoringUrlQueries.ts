@@ -111,15 +111,9 @@ export async function updateMonitoringUrlStatus(
   console.log(`Updating monitoring URL status: ${urlId} to ${status}`);
   
   // First, update the status in the monitoring_urls table
-  const updateData: { status: MonitoringUrlStatus; reason?: string } = { status };
-  
-  if (reason) {
-    updateData.reason = reason;
-  }
-  
   const { data, error } = await supabase
     .from('monitoring_urls')
-    .update(updateData)
+    .update({ status, ...(reason ? { reason } : {}) })
     .eq('id', urlId)
     .select()
     .single();
@@ -129,8 +123,7 @@ export async function updateMonitoringUrlStatus(
     throw new Error(`Error updating monitoring URL status: ${error.message}`);
   }
   
-  // For approved status, we need to notify the admin and create an entry in removal_urls
-  // This is now handled by the edge function
+  // All logic for notification and removal_urls handling is now in the edge function
   if (status === 'approved' || status === 'rejected') {
     try {
       const { data: currentUser } = await supabase.auth.getUser();
@@ -141,12 +134,10 @@ export async function updateMonitoringUrlStatus(
       
       console.log('Calling edge function to handle status change notification');
       
-      // Get the URL details
-      const url = data.url;
-      
+      // Call the edge function to handle notifications and removal_url creation
       await supabase.functions.invoke('notify-status-change', {
         body: {
-          siteName: url,
+          siteName: data.url,
           newStatus: status,
           language: document.documentElement.lang || 'en',
           userId: currentUser.user.id,
@@ -154,8 +145,9 @@ export async function updateMonitoringUrlStatus(
         }
       });
     } catch (notifyError: any) {
-      console.error('Error notifying admin:', notifyError);
-      // We don't want to fail the entire operation if notification fails
+      console.error('Error calling edge function:', notifyError);
+      // We don't want to fail the entire operation if the edge function call fails
+      // The status update was successful, so we return the data
     }
   }
   
