@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CustomerWithProfile } from "@/types/customer";
+import { CustomerWithProfile, Profile } from "@/types/customer";
 import { toast } from "sonner";
 
 export const useCustomers = () => {
@@ -22,7 +22,8 @@ export const useCustomers = () => {
             address,
             role,
             created_at,
-            updated_at
+            updated_at,
+            mrkoll_removal_checked_at
           )
         `)
         .order('created_at', { ascending: false });
@@ -40,7 +41,7 @@ export const useCustomers = () => {
           !acc.some(item => item.profile?.id === current.profile?.id) &&
           current.profile.email !== 'info@doltnamn.se' // Filter out the admin account
         ) {
-          acc.push(current);
+          acc.push(current as CustomerWithProfile);
         }
         return acc;
       }, []) || [];

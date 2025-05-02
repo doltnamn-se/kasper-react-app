@@ -70,7 +70,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
 
   return isMobile ? (
     <Drawer open={!!customer} onOpenChange={onOpenChange}>
-      <DrawerContent className="px-0 pb-16 max-h-[85vh]">
+      <DrawerContent className="px-0 pb-16 max-h-[85vh] bg-[#FFFFFF] dark:bg-[#161617]">
         <ScrollArea className="h-full max-h-[85vh] overflow-y-auto">
           <CustomerDetailsContent
             customer={customer}
@@ -105,7 +105,7 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     </Drawer>
   ) : (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden" hideCloseButton={true}>
+      <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617]" hideCloseButton={true}>
         <ScrollArea className="h-full">
           <CustomerDetailsContent
             customer={customer}
