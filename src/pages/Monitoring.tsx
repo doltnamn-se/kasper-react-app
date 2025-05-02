@@ -12,13 +12,16 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserMonitoringUrlList } from "@/components/monitoring/UserMonitoringUrlList";
 import { useMonitoringUrls } from "@/components/monitoring/hooks/useMonitoringUrls";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Monitoring = () => {
   const { t, language } = useLanguage();
+  const { toast } = useToast();
   const { userProfile } = useUserProfile();
   const [lastChecked, setLastChecked] = useState(new Date());
   const [isScanning, setIsScanning] = useState(false);
   const [dots, setDots] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Get user ID for monitoring URLs
   const [userId, setUserId] = useState<string | null>(null);
@@ -40,11 +43,35 @@ const Monitoring = () => {
   } = useMonitoringUrls(userId || undefined);
 
   const handleApproveUrl = async (urlId: string) => {
-    await handleUpdateStatus(urlId, 'approved');
+    try {
+      setIsProcessing(true);
+      await handleUpdateStatus(urlId, 'approved');
+    } catch (error) {
+      console.error("Error approving URL:", error);
+      toast({
+        title: t('error'),
+        description: t('monitoring.url.error.approve'),
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleRejectUrl = async (urlId: string) => {
-    await handleUpdateStatus(urlId, 'rejected');
+    try {
+      setIsProcessing(true);
+      await handleUpdateStatus(urlId, 'rejected');
+    } catch (error) {
+      console.error("Error rejecting URL:", error);
+      toast({
+        title: t('error'),
+        description: t('monitoring.url.error.reject'),
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   useEffect(() => {
@@ -119,6 +146,8 @@ const Monitoring = () => {
     return `CET ${format(lastChecked, 'h:mma, EEEE, MMMM d, yyyy', { locale: enUS })}`;
   };
 
+  const pendingUrls = monitoringUrls.filter(url => url.status === 'pending');
+
   return (
     <MainLayout>
       <div className="space-y-8">
@@ -182,7 +211,7 @@ const Monitoring = () => {
           {/* User Monitoring URLs */}
           {userId && (
             <UserMonitoringUrlList 
-              monitoringUrls={monitoringUrls.filter(url => url.status === 'pending')}
+              monitoringUrls={pendingUrls}
               onApprove={handleApproveUrl}
               onReject={handleRejectUrl}
             />

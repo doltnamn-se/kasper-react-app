@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface UserMonitoringUrlListProps {
   monitoringUrls: MonitoringUrl[];
@@ -17,7 +19,9 @@ export const UserMonitoringUrlList = ({
   onApprove,
   onReject
 }: UserMonitoringUrlListProps) => {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
+  const { toast } = useToast();
+  const [processingUrls, setProcessingUrls] = useState<Record<string, boolean>>({});
   
   const formatTime = (dateString: string) => {
     try {
@@ -27,6 +31,46 @@ export const UserMonitoringUrlList = ({
       });
     } catch (error) {
       return 'Invalid date';
+    }
+  };
+
+  const handleApprove = async (urlId: string) => {
+    try {
+      setProcessingUrls(prev => ({ ...prev, [urlId]: true }));
+      await onApprove(urlId);
+      toast({
+        title: language === 'sv' ? 'Åtgärd slutförd' : 'Action completed',
+        description: language === 'sv' ? 'Din förfrågan har skickats' : 'Your request has been submitted',
+      });
+    } catch (error) {
+      console.error("Error approving URL:", error);
+      toast({
+        title: language === 'sv' ? 'Ett fel inträffade' : 'An error occurred',
+        description: language === 'sv' ? 'Kunde inte slutföra åtgärden' : 'Could not complete the action',
+        variant: "destructive"
+      });
+    } finally {
+      setProcessingUrls(prev => ({ ...prev, [urlId]: false }));
+    }
+  };
+
+  const handleReject = async (urlId: string) => {
+    try {
+      setProcessingUrls(prev => ({ ...prev, [urlId]: true }));
+      await onReject(urlId);
+      toast({
+        title: language === 'sv' ? 'Åtgärd slutförd' : 'Action completed',
+        description: language === 'sv' ? 'Din förfrågan har skickats' : 'Your request has been submitted',
+      });
+    } catch (error) {
+      console.error("Error rejecting URL:", error);
+      toast({
+        title: language === 'sv' ? 'Ett fel inträffade' : 'An error occurred',
+        description: language === 'sv' ? 'Kunde inte slutföra åtgärden' : 'Could not complete the action',
+        variant: "destructive"
+      });
+    } finally {
+      setProcessingUrls(prev => ({ ...prev, [urlId]: false }));
     }
   };
 
@@ -70,17 +114,23 @@ export const UserMonitoringUrlList = ({
                 </p>
                 <div className="flex gap-3">
                   <Button
-                    onClick={() => onApprove(url.id)}
+                    onClick={() => handleApprove(url.id)}
                     className="bg-green-600 hover:bg-green-700 text-white"
+                    disabled={processingUrls[url.id]}
                   >
-                    {language === 'sv' ? 'Ja' : 'Yes'}
+                    {processingUrls[url.id] ? 
+                      (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
+                      (language === 'sv' ? 'Ja' : 'Yes')}
                   </Button>
                   <Button
-                    onClick={() => onReject(url.id)}
+                    onClick={() => handleReject(url.id)}
                     variant="outline"
                     className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20"
+                    disabled={processingUrls[url.id]}
                   >
-                    {language === 'sv' ? 'Nej' : 'No'}
+                    {processingUrls[url.id] ? 
+                      (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
+                      (language === 'sv' ? 'Nej' : 'No')}
                   </Button>
                 </div>
               </div>

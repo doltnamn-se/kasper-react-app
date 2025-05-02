@@ -136,7 +136,7 @@ export async function updateMonitoringUrlStatus(
         console.log('Calling edge function to handle status change notification');
         
         // Call the edge function to handle notifications and removal_url creation
-        const { error: functionError } = await supabase.functions.invoke('notify-status-change', {
+        const { data: functionResult, error: functionError } = await supabase.functions.invoke('notify-status-change', {
           body: {
             siteName: data.url,
             newStatus: status,
@@ -148,8 +148,11 @@ export async function updateMonitoringUrlStatus(
         
         if (functionError) {
           console.error('Error from edge function:', functionError);
+          // Don't throw here - we want to continue regardless
+        } else {
+          console.log('Edge function response:', functionResult);
         }
-      } catch (notifyError: any) {
+      } catch (notifyError) {
         console.error('Error calling edge function:', notifyError);
         // We don't want to fail the entire operation if the edge function call fails
         // The status update was successful, so we still proceed
@@ -157,7 +160,7 @@ export async function updateMonitoringUrlStatus(
     }
     
     return data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in updateMonitoringUrlStatus:', error);
     throw error; // Re-throw for the caller to handle
   }
