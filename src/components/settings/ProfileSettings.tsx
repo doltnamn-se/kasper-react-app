@@ -18,7 +18,7 @@ export const ProfileSettings = () => {
         console.log("Fetching profile for user:", session.user.id);
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('id, email, display_name, avatar_url, address, role, created_at, updated_at')
+          .select('id, email, display_name, avatar_url, address, role, created_at, updated_at, mrkoll_removal_checked_at')
           .eq('id', session.user.id)
           .single();
 

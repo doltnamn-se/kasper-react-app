@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,7 +22,7 @@ export const useUserProfile = () => {
       console.log("Fetching profile for user:", session.user.id);
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select()
+        .select('*')  // Using select(*) ensures all fields including mrkoll_removal_checked_at are fetched
         .eq('id', session.user.id)
         .maybeSingle();
       
