@@ -1,7 +1,7 @@
 
 import { useState, ReactNode } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
@@ -70,10 +70,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>{t('create.customer')}</DrawerTitle>
-            <DrawerDescription>
-              {t('create.customer.description')}
-            </DrawerDescription>
+            <DrawerTitle className="font-medium">{t('create.customer')}</DrawerTitle>
           </DrawerHeader>
           <div className="px-4">
             <FormContent />
@@ -94,10 +91,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('create.customer')}</DialogTitle>
-          <DialogDescription>
-            {t('create.customer.description')}
-          </DialogDescription>
+          <DialogTitle className="font-medium">{t('create.customer')}</DialogTitle>
         </DialogHeader>
         <FormContent />
         <FormActions />
