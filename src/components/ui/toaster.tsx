@@ -8,7 +8,7 @@ import {
   ToastTitle,
   ToastViewport,
 } from "@/components/ui/toast"
-import { Check } from "lucide-react"
+import { Check, Minus } from "lucide-react"
 
 export function Toaster() {
   const { toasts } = useToast()
@@ -16,13 +16,23 @@ export function Toaster() {
   return (
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, variant, ...props }) {
+        const isDestructive = variant === "destructive";
+        
         return (
           <Toast key={id} {...props} variant={variant} className="w-auto max-w-[350px]">
             <div className="flex items-center gap-3">
-              <div className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-green-500">
-                <Check 
-                  className="h-3.5 w-3.5 text-white stroke-[3]" 
-                />
+              <div className={`flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full ${
+                isDestructive ? "bg-[#ea384c]" : "bg-green-500"
+              }`}>
+                {isDestructive ? (
+                  <Minus 
+                    className="h-3.5 w-3.5 text-white stroke-[3]" 
+                  />
+                ) : (
+                  <Check 
+                    className="h-3.5 w-3.5 text-white stroke-[3]" 
+                  />
+                )}
               </div>
               <div className="grid gap-1">
                 {title && <ToastTitle className="text-sm font-medium text-black dark:text-white">{title}</ToastTitle>}
