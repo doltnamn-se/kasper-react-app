@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SubscriptionPlan } from "@/types/customer-form";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BasicInfoFieldsProps {
   email: string;
@@ -21,10 +22,12 @@ export const BasicInfoFields = ({
   onDisplayNameChange,
   onSubscriptionPlanChange,
 }: BasicInfoFieldsProps) => {
+  const { t } = useLanguage();
+  
   return (
     <>
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t('email')}</Label>
         <Input
           id="email"
           type="email"
@@ -35,7 +38,7 @@ export const BasicInfoFields = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="displayName">Display Name</Label>
+        <Label htmlFor="displayName">{t('display.name')}</Label>
         <Input
           id="displayName"
           placeholder="John Doe"
@@ -45,20 +48,20 @@ export const BasicInfoFields = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="subscriptionPlan">Subscription Plan</Label>
+        <Label htmlFor="subscriptionPlan">{t('subscription')}</Label>
         <Select
           value={subscriptionPlan}
           onValueChange={onSubscriptionPlanChange}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select subscription plan" />
+            <SelectValue placeholder={t('select.subscription.plan')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1_month">1 Month</SelectItem>
-            <SelectItem value="3_months">3 Months</SelectItem>
-            <SelectItem value="6_months">6 Months</SelectItem>
-            <SelectItem value="12_months">12 Months</SelectItem>
-            <SelectItem value="24_months">24 Months</SelectItem>
+            <SelectItem value="1_month">{t('1.month')}</SelectItem>
+            <SelectItem value="3_months">{t('3.months')}</SelectItem>
+            <SelectItem value="6_months">{t('6.months')}</SelectItem>
+            <SelectItem value="12_months">{t('12.months')}</SelectItem>
+            <SelectItem value="24_months">{t('24.months')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

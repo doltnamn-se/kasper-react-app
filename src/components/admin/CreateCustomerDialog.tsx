@@ -1,11 +1,12 @@
 
-import { useState, useEffect, ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -19,6 +20,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
     setOpen(false);
   });
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
 
   const isFormValid = formData.email && formData.displayName;
   
@@ -46,7 +48,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         onClick={() => handleCreateCustomer(true)}
         disabled={isCreating || !isFormValid}
       >
-        {isCreating ? "Creating..." : "Create & Send Welcome Email"}
+        {isCreating ? t('creating') : t('create.with.email')}
       </Button>
       <Button 
         className="w-full" 
@@ -54,7 +56,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         onClick={() => handleCreateCustomer(false)}
         disabled={isCreating || !isFormValid}
       >
-        {isCreating ? "Creating..." : "Create Without Email"}
+        {isCreating ? t('creating') : t('create.without.email')}
       </Button>
     </div>
   );
@@ -68,9 +70,9 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>Create New Customer</DrawerTitle>
+            <DrawerTitle>{t('create.customer')}</DrawerTitle>
             <DrawerDescription>
-              Add a new customer to the platform. Fill in their details below.
+              {t('create.customer.description')}
             </DrawerDescription>
           </DrawerHeader>
           <div className="px-4">
@@ -92,9 +94,9 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Customer</DialogTitle>
+          <DialogTitle>{t('create.customer')}</DialogTitle>
           <DialogDescription>
-            Add a new customer to the platform. Fill in their details below.
+            {t('create.customer.description')}
           </DialogDescription>
         </DialogHeader>
         <FormContent />

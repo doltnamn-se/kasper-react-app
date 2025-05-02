@@ -1,5 +1,7 @@
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AddressAlertFieldProps {
   value: boolean;
@@ -7,19 +9,21 @@ interface AddressAlertFieldProps {
 }
 
 export const AddressAlertField = ({ value, onChange }: AddressAlertFieldProps) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="space-y-2">
-      <Label htmlFor="hasAddressAlert">Address Alert</Label>
+      <Label htmlFor="hasAddressAlert">{t('address.alert')}</Label>
       <Select
         value={value ? "yes" : "no"}
         onValueChange={(value) => onChange(value === "yes")}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Select address alert status" />
+          <SelectValue placeholder={t('select.address.alert')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="yes">Yes</SelectItem>
-          <SelectItem value="no">No</SelectItem>
+          <SelectItem value="yes">{t('success')}</SelectItem>
+          <SelectItem value="no">{t('cancel')}</SelectItem>
         </SelectContent>
       </Select>
     </div>

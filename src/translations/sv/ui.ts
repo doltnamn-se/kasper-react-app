@@ -147,5 +147,21 @@ export const ui: UITranslations = {
   'success.url_limits_updated': 'URL-gränser uppdaterade',
   'success.subscription_updated': 'Prenumeration uppdaterad',
   'success.deleted': 'Borttagen',
-  'success.user_deleted': 'Användaren har tagits bort'
+  'success.user_deleted': 'Användaren har tagits bort',
+  'create.customer': 'Skapa ny kund',
+  'create.customer.description': 'Lägg till en ny kund på plattformen. Fyll i deras uppgifter nedan.',
+  'create.with.email': 'Skapa & skicka välkomstmail',
+  'create.without.email': 'Skapa utan e-post',
+  'creating': 'Skapar...',
+  'address.alert': 'Adresslarm',
+  'private.customer': 'Privatkund',
+  'business.client': 'Företagskund',
+  'select.address.alert': 'Välj adresslarm',
+  'select.customer.type': 'Välj kundtyp',
+  'select.subscription.plan': 'Välj abonnemangsplan',
+  '1.month': '1 Månad',
+  '3.months': '3 Månader',
+  '6.months': '6 Månader',
+  '12.months': '12 Månader',
+  '24.months': '24 Månader'
 };
