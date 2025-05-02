@@ -110,59 +110,23 @@ export async function updateMonitoringUrlStatus(
 ): Promise<MonitoringUrl> {
   console.log(`Updating monitoring URL status: ${urlId} to ${status}`);
   
-  try {
-    const updateData: { status: MonitoringUrlStatus; reason?: string } = { status };
+  const updateData: { status: MonitoringUrlStatus; reason?: string } = { status };
   
-    if (reason) {
-      updateData.reason = reason;
-    }
-    
-    const { data, error } = await supabase
-      .from('monitoring_urls')
-      .update(updateData)
-      .eq('id', urlId)
-      .select()
-      .single();
-  
-    if (error) {
-      console.error('Error updating monitoring URL status:', error);
-      throw new Error(`Error updating monitoring URL status: ${error.message}`);
-    }
-  
-    return data;
-  } catch (error) {
-    console.error('Unexpected error updating monitoring URL status:', error);
-    throw error;
+  if (reason) {
+    updateData.reason = reason;
   }
-}
-
-// Notify admin about approval (using edge function)
-export async function notifyAdminAboutApproval(monitoringUrl: MonitoringUrl): Promise<boolean> {
-  try {
-    console.log(`Calling notify-status-change edge function for monitoring URL approval`);
-    
-    const { data, error } = await supabase.functions.invoke('notify-status-change', {
-      body: {
-        siteName: 'Monitoring URL',
-        newStatus: 'approved by user',
-        language: 'sv', // Default to Swedish
-        userId: monitoringUrl.customer_id,
-        urlData: {
-          id: monitoringUrl.id,
-          url: monitoringUrl.url
-        }
-      }
-    });
-    
-    if (error) {
-      console.error('Failed to notify admin about approval:', error);
-      return false;
-    }
-    
-    console.log('Successfully notified admin about approval:', data);
-    return true;
-  } catch (error) {
-    console.error('Error notifying admin about approval:', error);
-    return false;
+  
+  const { data, error } = await supabase
+    .from('monitoring_urls')
+    .update(updateData)
+    .eq('id', urlId)
+    .select()
+    .single();
+  
+  if (error) {
+    console.error('Error updating monitoring URL status:', error);
+    throw new Error(`Error updating monitoring URL status: ${error.message}`);
   }
+  
+  return data;
 }

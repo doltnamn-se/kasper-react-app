@@ -1,109 +1,192 @@
 
-import { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
 import { HourlyCountdown } from "@/components/monitoring/HourlyCountdown";
-import { NewLinks } from "@/components/monitoring/NewLinks";
-import { RemovedLinks } from "@/components/monitoring/RemovedLinks";
+import { Spinner } from "@/components/ui/spinner";
+import { format } from "date-fns";
+import { sv, enUS } from "date-fns/locale";
+import { Activity } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserMonitoringUrlList } from "@/components/monitoring/UserMonitoringUrlList";
 import { useMonitoringUrls } from "@/components/monitoring/hooks/useMonitoringUrls";
-import { Spinner } from "@/components/ui/spinner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Monitoring = () => {
   const { t, language } = useLanguage();
-  const auth = useAuth();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true);
+  const { userProfile } = useUserProfile();
+  const [lastChecked, setLastChecked] = useState(new Date());
+  const [isScanning, setIsScanning] = useState(false);
+  const [dots, setDots] = useState('');
 
-  const {
-    monitoringUrls,
-    isLoading: isLoadingUrls,
-    handleUpdateStatus
-  } = useMonitoringUrls(auth.user?.id);
+  // Get user ID for monitoring URLs
+  const [userId, setUserId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUserId(data.user.id);
+      }
+    };
+    fetchUserId();
+  }, []);
+  
+  // Get monitoring URLs for the user
+  const { 
+    monitoringUrls, 
+    handleUpdateStatus 
+  } = useMonitoringUrls(userId || undefined);
+
+  const handleApproveUrl = async (urlId: string) => {
+    await handleUpdateStatus(urlId, 'approved');
+  };
+
+  const handleRejectUrl = async (urlId: string) => {
+    await handleUpdateStatus(urlId, 'rejected');
+  };
 
   useEffect(() => {
-    // Set loading to false once user auth status is determined
-    if (auth.initialized) {
-      setIsLoading(false);
-    }
-  }, [auth.initialized]);
+    document.title = language === 'sv' ? 
+      "Bevakning | Digitaltskydd.se" : 
+      "Monitoring | Digitaltskydd.se";
+  }, [language]);
 
-  const handleApprove = async (urlId: string) => {
-    try {
-      await handleUpdateStatus(urlId, 'approved');
-      toast({
-        title: language === 'sv' ? 'Tack för ditt svar' : 'Thank you for your response',
-        description: language === 'sv' 
-          ? 'Vi kommer att hjälpa dig att ta bort länken' 
-          : 'We will help you remove this link',
-      });
-    } catch (error) {
-      console.error('Error approving URL:', error);
-      toast({
-        title: language === 'sv' ? 'Ett fel uppstod' : 'An error occurred',
-        description: language === 'sv' 
-          ? 'Det gick inte att uppdatera länkstatusen' 
-          : 'Failed to update link status',
-        variant: "destructive",
-      });
+  useEffect(() => {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const currentInterval = minutes - (minutes % 5);
+    
+    const isInScanningPeriod = minutes % 5 === 0;
+    setIsScanning(isInScanningPeriod);
+    
+    if (isInScanningPeriod) {
+      const previousInterval = new Date(now);
+      previousInterval.setMinutes(currentInterval - 5);
+      previousInterval.setSeconds(0);
+      previousInterval.setMilliseconds(0);
+      setLastChecked(previousInterval);
+    } else {
+      const lastInterval = new Date(now);
+      lastInterval.setMinutes(currentInterval);
+      lastInterval.setSeconds(0);
+      lastInterval.setMilliseconds(0);
+      setLastChecked(lastInterval);
     }
+
+    const interval = setInterval(() => {
+      const newTime = new Date();
+      const newMinutes = newTime.getMinutes();
+      const newSeconds = newTime.getSeconds();
+      
+      const shouldBeScanningNow = newMinutes % 5 === 0;
+      setIsScanning(shouldBeScanningNow);
+      
+      if (newMinutes % 5 === 1 && newSeconds === 0) {
+        const lastInterval = new Date(newTime);
+        lastInterval.setMinutes(newMinutes - 1);
+        lastInterval.setSeconds(0);
+        lastInterval.setMilliseconds(0);
+        setLastChecked(lastInterval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (isScanning) {
+      let count = 0;
+      const dotInterval = setInterval(() => {
+        count = (count + 1) % 4;
+        setDots('.'.repeat(count));
+      }, 500);
+
+      return () => clearInterval(dotInterval);
+    } else {
+      setDots('');
+    }
+  }, [isScanning]);
+
+  const displayName = userProfile?.display_name || '';
+  const firstNameOnly = displayName.split(' ')[0];
+
+  const getFormattedDate = () => {
+    if (language === 'sv') {
+      return `CET ${format(lastChecked, 'HH:mm eeee d MMMM yyyy', { locale: sv })}`;
+    }
+    return `CET ${format(lastChecked, 'h:mma, EEEE, MMMM d, yyyy', { locale: enUS })}`;
   };
-
-  const handleReject = async (urlId: string) => {
-    try {
-      await handleUpdateStatus(urlId, 'rejected');
-      toast({
-        title: language === 'sv' ? 'Tack för ditt svar' : 'Thank you for your response',
-        description: language === 'sv' 
-          ? 'Vi kommer inte att ta bort denna länk' 
-          : 'We will not remove this link',
-      });
-    } catch (error) {
-      console.error('Error rejecting URL:', error);
-      toast({
-        title: language === 'sv' ? 'Ett fel uppstod' : 'An error occurred',
-        description: language === 'sv' 
-          ? 'Det gick inte att uppdatera länkstatusen' 
-          : 'Failed to update link status',
-        variant: "destructive",
-      });
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <div className="flex justify-center items-center h-[80vh]">
-          <Spinner size={32} />
-        </div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>
-      <div className="space-y-8 max-w-4xl mx-auto py-6 px-4 sm:px-0">
-        <h1 className="text-2xl font-bold tracking-tight">
-          {language === 'sv' ? 'Bevakning' : 'Monitoring'}
+      <div className="space-y-8">
+        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+          {t('nav.monitoring')}
         </h1>
 
-        <div className="bg-white dark:bg-[#1c1c1e] shadow-sm rounded-md p-4 md:p-6 border border-[#e5e7eb] dark:border-[#232325]">
-          <HourlyCountdown />
-        </div>
-
-        {!isLoadingUrls && monitoringUrls.length > 0 && (
-          <UserMonitoringUrlList 
-            monitoringUrls={monitoringUrls}
-            onApprove={handleApprove}
-            onReject={handleReject}
-          />
-        )}
-
-        <div className="space-y-8">
-          <NewLinks />
-          <RemovedLinks />
+        {/* Monitoring Widget */}
+        <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold flex items-center">
+              {language === 'sv' ? 'Bevakning' : 'Monitoring'}
+            </h2>
+            <div className="flex items-center gap-3">
+              <HourlyCountdown />
+              <div className="flex items-center">
+                <Spinner color={isScanning ? "#ea384c" : "#20f922"} size={24} />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col items-start justify-center space-y-2">
+            <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-xs mt-12">
+              {language === 'sv' ? 
+                `Senast kontrollerat ${getFormattedDate()}` : 
+                `Last checked ${getFormattedDate()}`
+              }
+            </p>
+            <p className="text-[#000000] dark:text-white text-lg" style={{ marginBottom: '55px' }}>
+              <span className="font-normal">
+                {language === 'sv' ? 
+                  'Bevakar nya sökträffar för ' : 
+                  'Monitoring new search hits for '
+                }
+              </span>
+              <span className="font-bold">{displayName}</span>
+            </p>
+            <div className="flex items-center">
+              <Badge 
+                variant="outline" 
+                className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
+              >
+                <div className="relative w-[0.9rem] h-[0.9rem]">
+                  <Activity className="w-full h-full absolute inset-0 text-transparent" />
+                  <Activity 
+                    className={`w-full h-full absolute inset-0 ${isScanning ? 'text-[#ea384c] animate-icon-fill' : 'text-[#000000A6] dark:text-[#FFFFFFA6]'}`} 
+                  />
+                </div>
+                <span className="inline-flex items-center whitespace-nowrap">
+                  {isScanning ? 
+                    (language === 'sv' ? 
+                      <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
+                      <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
+                    ) :
+                    (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
+                  }
+                </span>
+              </Badge>
+            </div>
+          </div>
+          
+          {/* User Monitoring URLs */}
+          {userId && (
+            <UserMonitoringUrlList 
+              monitoringUrls={monitoringUrls.filter(url => url.status === 'pending')}
+              onApprove={handleApproveUrl}
+              onReject={handleRejectUrl}
+            />
+          )}
         </div>
       </div>
     </MainLayout>

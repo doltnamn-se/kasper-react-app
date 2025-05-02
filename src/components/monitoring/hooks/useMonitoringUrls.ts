@@ -6,8 +6,7 @@ import {
   fetchAllMonitoringUrls, 
   fetchCustomerMonitoringUrls,
   addMonitoringUrl, 
-  updateMonitoringUrlStatus,
-  notifyAdminAboutApproval
+  updateMonitoringUrlStatus 
 } from '../utils/monitoringUrlQueries';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -56,7 +55,7 @@ export const useMonitoringUrls = (customerId?: string) => {
 
   // Mutation for updating the status of a monitoring URL
   const updateStatusMutation = useMutation({
-    mutationFn: async ({ 
+    mutationFn: ({ 
       urlId, 
       status, 
       reason 
@@ -65,17 +64,13 @@ export const useMonitoringUrls = (customerId?: string) => {
       status: MonitoringUrlStatus; 
       reason?: string 
     }) => {
-      // First update the status
-      const updatedUrl = await updateMonitoringUrlStatus(urlId, status, reason);
-      
-      // If customer is approving a URL, also notify admin via edge function
-      if (customerId && status === 'approved') {
-        await notifyAdminAboutApproval(updatedUrl);
-      }
-      
-      return updatedUrl;
+      return updateMonitoringUrlStatus(urlId, status, reason);
     },
     onSuccess: async () => {
+      toast({
+        title: t('success'),
+        description: t('monitoring.url.updated'),
+      });
       await queryClient.invalidateQueries({ queryKey: ['admin-monitoring-urls'] });
       await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
     },
