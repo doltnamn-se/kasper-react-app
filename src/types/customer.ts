@@ -10,6 +10,7 @@ export type Profile = {
   role: "super_admin" | "customer";
   created_at: string;
   updated_at: string;
+  mrkoll_removal_checked_at: string | null;
 };
 
 export type Customer = Database['public']['Tables']['customers']['Row'];
