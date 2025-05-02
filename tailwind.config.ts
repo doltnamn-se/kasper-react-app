@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -82,7 +83,7 @@ export default {
         'toast-slide-in': {
           '0%': { 
             opacity: '0',
-            transform: 'translateY(16px)'
+            transform: 'translateY(-16px)'
           },
           '100%': { 
             opacity: '1',
@@ -96,7 +97,7 @@ export default {
           },
           '100%': { 
             opacity: '0',
-            transform: 'translateY(16px)'
+            transform: 'translateY(-16px)'
           }
         }
       },
