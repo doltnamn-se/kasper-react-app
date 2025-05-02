@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, CornerDownLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CustomerWithProfile } from "@/types/customer";
 
 interface AdminMonitoringUrlFormProps {
-  customers: CustomerWithProfile[];
+  customers: { id: string; profile: { display_name: string | null; email: string | null; } | null }[];
   onAddUrl: (url: string, customerId: string) => Promise<void>;
   isSubmitting: boolean;
 }

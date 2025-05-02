@@ -1,6 +1,4 @@
 
-import { User } from "@/types/auth";
-
 export type MonitoringUrlStatus = 'pending' | 'approved' | 'rejected';
 
 export interface MonitoringUrl {

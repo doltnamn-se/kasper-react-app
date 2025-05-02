@@ -14,17 +14,23 @@ const AdminMonitoring = () => {
   const { t, language } = useLanguage();
   const [isRefreshing, setIsRefreshing] = useState(false);
   
-  const { data: customers = [], isLoading: isLoadingCustomers } = useQuery({
+  const { data: customersData = [], isLoading: isLoadingCustomers } = useQuery({
     queryKey: ['all-customers'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('customers')
-        .select('id, profile:profiles(display_name, email)');
+        .select('id, profiles(display_name, email)');
       
       if (error) throw error;
       return data;
     },
   });
+
+  // Transform the data structure to match CustomerWithProfile type
+  const customers = customersData.map(c => ({
+    id: c.id,
+    profile: c.profiles
+  }));
 
   const {
     monitoringUrls,

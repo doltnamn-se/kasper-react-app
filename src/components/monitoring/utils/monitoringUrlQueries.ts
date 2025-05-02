@@ -8,7 +8,7 @@ export async function fetchAllMonitoringUrls(): Promise<MonitoringUrl[]> {
   
   const { data, error } = await supabase
     .from('monitoring_urls')
-    .select('*, customer:customer_id(profiles(display_name, email))')
+    .select('*, customer:customers!inner(profiles(display_name, email))')
     .order('created_at', { ascending: false });
   
   if (error) {

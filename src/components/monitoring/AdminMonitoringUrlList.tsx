@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MonitoringUrl } from "@/types/monitoring-urls";
+import { MonitoringUrl, MonitoringUrlStatus } from "@/types/monitoring-urls";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
@@ -26,7 +26,7 @@ import { ExternalLink } from "lucide-react";
 
 interface AdminMonitoringUrlListProps {
   monitoringUrls: MonitoringUrl[];
-  onUpdateStatus: (urlId: string, status: 'approved' | 'rejected', reason?: string) => Promise<void>;
+  onUpdateStatus: (urlId: string, status: MonitoringUrlStatus, reason?: string) => Promise<void>;
 }
 
 export const AdminMonitoringUrlList = ({
@@ -36,7 +36,7 @@ export const AdminMonitoringUrlList = ({
   const { t, language } = useLanguage();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState<MonitoringUrl | null>(null);
-  const [action, setAction] = useState<'approve' | 'reject' | null>(null);
+  const [action, setAction] = useState<'approved' | 'rejected' | null>(null);
   const [reason, setReason] = useState('');
 
   const getStatusColor = (status: string) => {
@@ -76,12 +76,12 @@ export const AdminMonitoringUrlList = ({
     }
   };
 
-  const handleActionClick = (url: MonitoringUrl, actionType: 'approve' | 'reject') => {
+  const handleActionClick = (url: MonitoringUrl, actionType: 'approved' | 'rejected') => {
     setSelectedUrl(url);
     setAction(actionType);
     
     // Only show dialog for rejection to get reason
-    if (actionType === 'reject') {
+    if (actionType === 'rejected') {
       setShowConfirmDialog(true);
     } else {
       // For approval, proceed directly
@@ -95,7 +95,7 @@ export const AdminMonitoringUrlList = ({
     await onUpdateStatus(
       selectedUrl.id, 
       action, 
-      action === 'reject' ? reason : undefined
+      action === 'rejected' ? reason : undefined
     );
     
     setShowConfirmDialog(false);
@@ -152,7 +152,7 @@ export const AdminMonitoringUrlList = ({
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => handleActionClick(url, 'approve')}
+                          onClick={() => handleActionClick(url, 'approved')}
                           className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:hover:bg-green-900/40 dark:text-green-400 dark:border-green-800"
                         >
                           {approveButtonText}
@@ -160,7 +160,7 @@ export const AdminMonitoringUrlList = ({
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => handleActionClick(url, 'reject')}
+                          onClick={() => handleActionClick(url, 'rejected')}
                           className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 dark:border-red-800"
                         >
                           {rejectButtonText}
