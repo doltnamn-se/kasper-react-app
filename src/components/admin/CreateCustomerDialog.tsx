@@ -7,6 +7,7 @@ import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { UserRoundCheck } from "lucide-react";
 
 interface CreateCustomerDialogProps {
   onCustomerCreated: () => void;
@@ -70,7 +71,10 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle className="font-medium">{t('create.customer')}</DrawerTitle>
+            <DrawerTitle className="font-medium flex items-center gap-2">
+              <UserRoundCheck className="h-5 w-5" />
+              {t('create.customer')}
+            </DrawerTitle>
           </DrawerHeader>
           <div className="px-4">
             <FormContent />
@@ -91,7 +95,10 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="font-medium">{t('create.customer')}</DialogTitle>
+          <DialogTitle className="font-medium flex items-center gap-2">
+            <UserRoundCheck className="h-5 w-5" />
+            {t('create.customer')}
+          </DialogTitle>
         </DialogHeader>
         <FormContent />
         <FormActions />
