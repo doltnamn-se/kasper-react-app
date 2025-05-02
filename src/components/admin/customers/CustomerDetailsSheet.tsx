@@ -34,8 +34,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     isDeleting,
     isRefreshing,
     isUpdatingSubscription,
-    isBanning,
-    isUserBanned,
     handleCopy,
     handleResendActivationEmail,
     handleDeleteUser,
@@ -84,8 +82,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             isUpdating={isUpdating}
             isDeleting={isDeleting}
             isUpdatingSubscription={isUpdatingSubscription}
-            isBanning={isBanning}
-            isUserBanned={isUserBanned}
             onSendActivationEmail={handleActivationEmail}
             onDeleteUser={handleDeleteUser}
             onUpdateSubscriptionPlan={handleSubscriptionUpdate}
@@ -119,8 +115,6 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
             isUpdating={isUpdating}
             isDeleting={isDeleting}
             isUpdatingSubscription={isUpdatingSubscription}
-            isBanning={isBanning}
-            isUserBanned={isUserBanned}
             onSendActivationEmail={handleActivationEmail}
             onDeleteUser={handleDeleteUser}
             onUpdateSubscriptionPlan={handleSubscriptionUpdate}

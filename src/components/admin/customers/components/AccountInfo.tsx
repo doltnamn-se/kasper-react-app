@@ -1,8 +1,7 @@
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerWithProfile } from "@/types/customer";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
@@ -12,148 +11,56 @@ interface AccountInfoProps {
   isOnline: boolean;
   userLastSeen: string | null;
   onCopy: (text: string, label: string) => void;
-  isSuperAdmin: boolean;
-  isUpdatingSubscription: boolean;
-  onUpdateSubscriptionPlan: (plan: string) => void;
-  isUserBanned?: boolean;
+  isSuperAdmin?: boolean;
+  isUpdatingSubscription?: boolean;
+  onUpdateSubscriptionPlan?: (plan: string) => void;
 }
 
-export const AccountInfo = ({
-  customer,
-  isOnline,
-  userLastSeen,
-  onCopy,
-  isSuperAdmin,
-  isUpdatingSubscription,
-  onUpdateSubscriptionPlan,
-  isUserBanned = false
+export const AccountInfo = ({ 
+  customer, 
+  isOnline, 
+  userLastSeen, 
+  onCopy, 
+  isSuperAdmin = false,
+  isUpdatingSubscription = false,
+  onUpdateSubscriptionPlan
 }: AccountInfoProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
-  const getBadgeClass = (isOnline: boolean) => {
-    return isOnline 
-      ? 'bg-green-500 hover:bg-green-600 dark:bg-green-500 dark:hover:bg-green-600 text-white hover:text-white'
-      : 'bg-red-500 hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600 text-white hover:text-white';
-  };
-
-  const getLastSeenTime = (lastSeen: string | null) => {
-    if (!lastSeen) return '';
-    return format(new Date(lastSeen), 'MMM d, HH:mm');
+  // Helper function to get the appropriate subscription label
+  const getSubscriptionLabel = (plan: string | null) => {
+    switch(plan) {
+      case '1_month':
+        return t('subscription.1month');
+      case '3_months':
+        return t('subscription.3months');
+      case '6_months':
+        return t('subscription.6months');
+      case '12_months':
+        return t('subscription.12months');
+      case '24_months':
+        return t('subscription.24months');
+      default:
+        return t('subscription.none');
+    }
   };
 
   return (
-    <div className="space-y-6 w-full md:w-1/2">
-      <div className="space-y-4">
-        <div className="mb-2">
-          <h3 className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('account')}
-          </h3>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('status')}:
-          </span>
-          <div className="flex items-center gap-2">
-            <Badge className={getBadgeClass(isOnline)}>
-              {isOnline ? t('online') : t('offline')}
-            </Badge>
-          </div>
-        </div>
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <p className="text-xs font-normal text-[#000000] dark:text-[#FFFFFF]">{t('subscription')}</p>
         
-        {!isOnline && userLastSeen && (
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {t('last.seen')}:
-            </span>
-            <span className="text-xs text-black dark:text-white">
-              {getLastSeenTime(userLastSeen)}
-            </span>
-          </div>
+        {isSuperAdmin && onUpdateSubscriptionPlan ? (
+          <SubscriptionPlanSelect 
+            currentPlan={customer.subscription_plan}
+            isUpdating={isUpdatingSubscription}
+            onUpdatePlan={onUpdateSubscriptionPlan}
+          />
+        ) : (
+          <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+            {getSubscriptionLabel(customer.subscription_plan)}
+          </span>
         )}
-
-        {isUserBanned && (
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {t('account.status')}:
-            </span>
-            <Badge className="bg-red-500 hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600 text-white hover:text-white">
-              {t('banned')}
-            </Badge>
-          </div>
-        )}
-        
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('created')}:
-          </span>
-          <span className="text-xs text-black dark:text-white">
-            {customer?.profile?.created_at ? format(new Date(customer.profile.created_at), 'MMM d, yyyy') : '-'}
-          </span>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('onboarding')}:
-          </span>
-          <div className="flex items-center">
-            <Badge className={
-              customer?.onboarding_completed
-              ? 'bg-green-500 hover:bg-green-600 dark:bg-green-500 dark:hover:bg-green-600 text-white hover:text-white'
-              : 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-500 dark:hover:bg-amber-600 text-white hover:text-white'
-            }>
-              {customer?.onboarding_completed ? t('onboarding.completed') : t('onboarding.incomplete')}
-            </Badge>
-          </div>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            {t('checklist')}:
-          </span>
-          <div className="flex items-center">
-            <Badge className={
-              customer?.checklist_completed
-              ? 'bg-green-500 hover:bg-green-600 dark:bg-green-500 dark:hover:bg-green-600 text-white hover:text-white'
-              : 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-500 dark:hover:bg-amber-600 text-white hover:text-white'
-            }>
-              {customer?.checklist_completed ? t('checklist.completed') : t('checklist.incomplete')}
-            </Badge>
-          </div>
-        </div>
-        
-        {isSuperAdmin && (
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {t('plan')}:
-            </span>
-            <div className="w-[120px]">
-              <SubscriptionPlanSelect 
-                currentPlan={customer?.subscription_plan || null}
-                onChange={onUpdateSubscriptionPlan}
-                isUpdating={isUpdatingSubscription}
-              />
-            </div>
-          </div>
-        )}
-        
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-            ID:
-          </span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-black dark:text-white font-mono">
-              {customer?.id.slice(0, 6)}...{customer?.id.slice(-4)}
-            </span>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="h-5 w-5 bg-transparent hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-              onClick={() => onCopy(customer?.id, 'ID')}
-            >
-              <Copy className="h-3 w-3" />
-            </Button>
-          </div>
-        </div>
       </div>
     </div>
   );

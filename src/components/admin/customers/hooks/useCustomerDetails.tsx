@@ -10,7 +10,6 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
   const { onlineUsers, lastSeen } = useCustomerPresence();
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isUserBanned, setIsUserBanned] = useState(false);
   
   const { data: customerData, isLoading, refetch: refetchData } = useCustomerData(customerId);
 
@@ -19,11 +18,9 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isSendingEmail,
     isDeleting,
     isUpdatingSubscription,
-    isBanning,
     handleResendActivationEmail,
     handleDeleteUser,
-    handleUpdateSubscriptionPlan,
-    handleToggleBan
+    handleUpdateSubscriptionPlan
   } = useCustomerActions(customerId, () => onOpenChange(false));
 
   useEffect(() => {
@@ -35,27 +32,6 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     };
     checkSuperAdmin();
   }, []);
-
-  // Check if user is banned when customer data changes
-  useEffect(() => {
-    const checkUserStatus = async () => {
-      if (customerId && isSuperAdmin) {
-        try {
-          const { data, error } = await supabase.auth.admin.getUserById(customerId);
-          if (error) {
-            console.error("Error checking user ban status:", error);
-            return;
-          }
-          // User is banned if banned_until is not null
-          setIsUserBanned(!!data?.user?.banned_until);
-        } catch (error) {
-          console.error("Error checking user ban status:", error);
-        }
-      }
-    };
-    
-    checkUserStatus();
-  }, [customerId, isSuperAdmin, customerData]);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -97,14 +73,10 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     }
   };
   
-  const handleBanUser = async () => {
-    if (!customerId) return;
-    
-    const result = await handleToggleBan(isUserBanned);
-    if (result.success) {
-      setIsUserBanned(result.banned || false);
-      await refetchData();
-    }
+  const handleBanUser = () => {
+    toast.info('Ban functionality', {
+      description: 'Ban user functionality will be implemented soon'
+    });
   };
 
   const isOnline = onlineUsers.has(customerId);
@@ -125,8 +97,6 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     isDeleting,
     isRefreshing,
     isUpdatingSubscription,
-    isBanning,
-    isUserBanned,
     handleCopy,
     handleResendActivationEmail,
     handleDeleteUser,

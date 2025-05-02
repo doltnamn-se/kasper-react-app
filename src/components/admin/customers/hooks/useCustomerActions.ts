@@ -12,7 +12,6 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdatingSubscription, setIsUpdatingSubscription] = useState(false);
-  const [isBanning, setIsBanning] = useState(false);
 
   const handleResendActivationEmail = async (email?: string, displayName?: string) => {
     if (!email || !displayName) {
@@ -69,46 +68,6 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     }
   };
 
-  const handleToggleBan = async (currentlyBanned: boolean) => {
-    if (!customerId) return false;
-    
-    setIsBanning(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('toggle-user-ban', {
-        body: { 
-          userId: customerId,
-          ban: !currentlyBanned
-        }
-      });
-
-      if (error) throw error;
-
-      toast.success(!currentlyBanned ? t('success.user_banned') : t('success.user_unbanned'), {
-        description: !currentlyBanned 
-          ? t('success.user_banned_description') 
-          : t('success.user_unbanned_description')
-      });
-
-      return {
-        success: true,
-        banned: data?.banned
-      };
-    } catch (error) {
-      console.error('Error toggling user ban status:', error);
-      toast.error(t('errors.ban_failed'), {
-        description: !currentlyBanned 
-          ? t('errors.ban_failed_description') 
-          : t('errors.unban_failed_description')
-      });
-      return {
-        success: false,
-        banned: currentlyBanned
-      };
-    } finally {
-      setIsBanning(false);
-    }
-  };
-
   const handleDeleteUser = async () => {
     setIsDeleting(true);
     try {
@@ -138,10 +97,8 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
     isSendingEmail,
     isDeleting,
     isUpdatingSubscription,
-    isBanning,
     handleResendActivationEmail,
     handleUpdateSubscriptionPlan,
-    handleDeleteUser,
-    handleToggleBan
+    handleDeleteUser
   };
 };
