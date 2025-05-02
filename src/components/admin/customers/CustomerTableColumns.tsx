@@ -8,12 +8,14 @@ import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const getColumns = (
   onlineUsers: Set<string>,
   lastSeen: Record<string, string>
 ): ColumnDef<CustomerWithProfile>[] => {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
 
   const getSubscriptionLabel = (plan: string | null) => {
     switch(plan) {
@@ -38,11 +40,13 @@ export const getColumns = (
       header: "",
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-2">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-          />
+          {!isMobile && (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              aria-label="Select row"
+            />
+          )}
           <Avatar className="h-6 w-6">
             <AvatarImage 
               src={row.original.profile?.avatar_url ?? undefined}
