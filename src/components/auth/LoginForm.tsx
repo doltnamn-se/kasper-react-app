@@ -37,8 +37,8 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         if (error.message === 'Invalid login credentials') {
           toast({
             variant: "destructive",
-            title: t('error.invalid.credentials'),
-            description: t('error.signin'),
+            title: t('errors.invalid.credentials'),
+            description: t('errors.invalid.email.password'),
           });
         } else {
           toast({

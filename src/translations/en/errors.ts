@@ -16,7 +16,7 @@ export const errors = {
   'errors.invalid.credentials': 'Invalid credentials',
   'errors.email.not.confirmed': 'Email not confirmed',
   'errors.user.not.found': 'User not found',
-  'errors.invalid.email.password': 'Invalid email or password',
+  'errors.invalid.email.password': 'The email or password you entered is incorrect',
   'errors.missing.email.phone': 'Email or phone number is required',
   'errors.missing.password': 'Password is required',
   'errors.password.too.short': 'Password is too short',
