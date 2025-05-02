@@ -8,7 +8,7 @@ import {
   ToastTitle,
   ToastViewport,
 } from "@/components/ui/toast"
-import { CircleCheck } from "lucide-react"
+import { Check } from "lucide-react"
 
 export function Toaster() {
   const { toasts } = useToast()
@@ -20,7 +20,7 @@ export function Toaster() {
           <Toast key={id} {...props} variant={variant} className="w-auto max-w-[350px]">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-green-500">
-                <CircleCheck 
+                <Check 
                   className="h-3.5 w-3.5 text-white" 
                 />
               </div>
