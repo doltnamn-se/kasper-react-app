@@ -74,7 +74,14 @@ export const AdminUrlSubmission = ({
   const buttonText = language === 'sv' ? 'Lägg till' : 'Add';
   return <form onSubmit={handleSubmit} className="mt-4 space-y-2">
       <div className="flex gap-2">
-        <Input type="url" value={url} onChange={e => setUrl(e.target.value)} placeholder={placeholderText} className="flex-1 bg-[#ffffff] dark:bg-[#121212]" required />
+        <Input 
+          type="url" 
+          value={url} 
+          onChange={e => setUrl(e.target.value)} 
+          placeholder={placeholderText} 
+          className="flex-1 bg-[#f5f5f5] dark:bg-[#121212]" 
+          required 
+        />
         <Button type="submit" disabled={isSubmitting} className="bg-[#e0e0e0] text-[#000000] hover:bg-[#d0d0d0] dark:bg-[#2a2a2b] dark:text-white dark:hover:bg-[#3a3a3b]">
           {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <>
               {buttonText}
