@@ -87,8 +87,8 @@ export const useNotifications = () => {
         (payload) => {
           console.log('New notification received:', payload);
           toast({
-            title: 'New Notification',
-            description: payload.new.title,
+            title: payload.new.title,
+            description: payload.new.message,
           });
           refetch();
         }

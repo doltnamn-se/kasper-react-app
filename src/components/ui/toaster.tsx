@@ -1,4 +1,6 @@
+
 import { useToast } from "@/hooks/use-toast"
+import { CircleCheck } from "lucide-react"
 import {
   Toast,
   ToastClose,
@@ -13,14 +15,23 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {toasts.map(function ({ id, title, description, action, variant, ...props }) {
         return (
-          <Toast key={id} {...props} className="w-auto max-w-[350px]">
-            <div className="grid gap-1">
-              {title && <ToastTitle className="text-sm">{title}</ToastTitle>}
-              {description && (
-                <ToastDescription className="text-xs">{description}</ToastDescription>
-              )}
+          <Toast key={id} {...props} variant={variant} className="w-auto max-w-[350px]">
+            <div className="flex items-start gap-3">
+              <CircleCheck 
+                className={
+                  variant === "destructive" 
+                    ? "h-4 w-4 text-white" 
+                    : "h-4 w-4 text-[#1EAEDB] dark:text-[#1EAEDB]"
+                } 
+              />
+              <div className="grid gap-1">
+                {title && <ToastTitle className="text-sm">{title}</ToastTitle>}
+                {description && (
+                  <ToastDescription className="text-xs">{description}</ToastDescription>
+                )}
+              </div>
             </div>
             {action}
             <ToastClose className="h-4 w-4" />
