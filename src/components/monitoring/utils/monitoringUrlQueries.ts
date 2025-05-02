@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { MonitoringUrl, MonitoringUrlStatus } from "@/types/monitoring-urls";
 
@@ -5,14 +6,10 @@ import { MonitoringUrl, MonitoringUrlStatus } from "@/types/monitoring-urls";
 export async function fetchAllMonitoringUrls(): Promise<MonitoringUrl[]> {
   console.log('Fetching all monitoring URLs');
   
+  // First, fetch all monitoring URLs without trying to join with customers
   const { data, error } = await supabase
     .from('monitoring_urls')
-    .select(`
-      *,
-      customer:customers(
-        profiles:profiles(display_name, email)
-      )
-    `)
+    .select('*')
     .order('created_at', { ascending: false });
   
   if (error) {
@@ -20,15 +17,41 @@ export async function fetchAllMonitoringUrls(): Promise<MonitoringUrl[]> {
     throw new Error(`Error fetching monitoring URLs: ${error.message}`);
   }
   
-  // Transform the data to match the MonitoringUrl type
-  const transformedData = data?.map(item => ({
-    ...item,
-    customer: {
-      profiles: item.customer?.profiles || null
+  // If we have monitoring URLs, fetch customer profile data separately
+  if (data && data.length > 0) {
+    const monitoringUrlsWithCustomers: MonitoringUrl[] = [];
+    
+    // Process each URL and fetch its customer data
+    for (const url of data) {
+      // Fetch the customer profile data
+      const { data: customerData, error: customerError } = await supabase
+        .from('profiles')
+        .select('display_name, email')
+        .eq('id', url.customer_id)
+        .single();
+      
+      if (customerError) {
+        console.warn(`Could not fetch customer data for URL ${url.id}:`, customerError);
+        // Add the URL without customer data
+        monitoringUrlsWithCustomers.push({
+          ...url,
+          customer: undefined
+        });
+      } else {
+        // Add the URL with customer data
+        monitoringUrlsWithCustomers.push({
+          ...url,
+          customer: {
+            profiles: customerData
+          }
+        });
+      }
     }
-  })) || [];
+    
+    return monitoringUrlsWithCustomers;
+  }
   
-  return transformedData;
+  return data || [];
 }
 
 // Fetch monitoring URLs for a specific customer
