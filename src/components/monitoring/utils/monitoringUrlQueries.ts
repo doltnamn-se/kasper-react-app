@@ -110,6 +110,7 @@ export async function updateMonitoringUrlStatus(
 ): Promise<MonitoringUrl> {
   console.log(`Updating monitoring URL status: ${urlId} to ${status}`);
   
+  // First, update the status in the monitoring_urls table
   const updateData: { status: MonitoringUrlStatus; reason?: string } = { status };
   
   if (reason) {
@@ -126,6 +127,36 @@ export async function updateMonitoringUrlStatus(
   if (error) {
     console.error('Error updating monitoring URL status:', error);
     throw new Error(`Error updating monitoring URL status: ${error.message}`);
+  }
+  
+  // For approved status, we need to notify the admin and create an entry in removal_urls
+  // This is now handled by the edge function
+  if (status === 'approved' || status === 'rejected') {
+    try {
+      const { data: currentUser } = await supabase.auth.getUser();
+      
+      if (!currentUser?.user) {
+        throw new Error('User not authenticated');
+      }
+      
+      console.log('Calling edge function to handle status change notification');
+      
+      // Get the URL details
+      const url = data.url;
+      
+      await supabase.functions.invoke('notify-status-change', {
+        body: {
+          siteName: url,
+          newStatus: status,
+          language: document.documentElement.lang || 'en',
+          userId: currentUser.user.id,
+          monitoringUrlId: urlId
+        }
+      });
+    } catch (notifyError: any) {
+      console.error('Error notifying admin:', notifyError);
+      // We don't want to fail the entire operation if notification fails
+    }
   }
   
   return data;

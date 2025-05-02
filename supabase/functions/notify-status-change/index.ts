@@ -44,7 +44,7 @@ serve(async (req) => {
     });
 
     // Get the request data
-    const { siteName, newStatus, language, userId } = await req.json();
+    const { siteName, newStatus, language, userId, monitoringUrlId } = await req.json();
 
     if (!siteName || !newStatus || !userId) {
       console.error("Missing required data:", { siteName, newStatus, userId });
@@ -75,10 +75,6 @@ serve(async (req) => {
       );
     }
 
-    // Log the request details
-    console.log(`Notification request received for site ${siteName} with status ${newStatus}`);
-    console.log(`Request from user ID: ${userId}, authenticated as ${user.id}`);
-
     // Ensure the authenticated user matches the claimed user ID
     if (user.id !== userId) {
       console.error(`User ID mismatch: ${user.id} vs ${userId}`);
@@ -87,6 +83,54 @@ serve(async (req) => {
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    // If the status is 'approved', move the URL to removal_urls table
+    let monitoringUrl;
+    if (newStatus === 'approved' && monitoringUrlId) {
+      // First fetch the monitoring URL to get its details
+      const { data: urlData, error: urlError } = await supabaseAdmin
+        .from('monitoring_urls')
+        .select('*')
+        .eq('id', monitoringUrlId)
+        .single();
+        
+      if (urlError) {
+        console.error("Error fetching monitoring URL:", urlError);
+        return new Response(
+          JSON.stringify({ error: "Failed to fetch URL details", details: urlError }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      
+      monitoringUrl = urlData;
+      
+      // Create entry in removal_urls table
+      const { data: removalUrl, error: removalError } = await supabaseAdmin
+        .from('removal_urls')
+        .insert({
+          customer_id: monitoringUrl.customer_id,
+          url: monitoringUrl.url,
+          status: 'received',
+          current_status: 'received',
+          display_in_incoming: true
+        })
+        .select()
+        .single();
+      
+      if (removalError) {
+        console.error("Error creating removal URL:", removalError);
+        return new Response(
+          JSON.stringify({ error: "Failed to create removal URL", details: removalError }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      
+      console.log("Successfully moved monitoring URL to removal_urls:", removalUrl);
+    }
+
+    // Log the request details
+    console.log(`Notification request received for site ${siteName} with status ${newStatus}`);
+    console.log(`Request from user ID: ${userId}, authenticated as ${user.id}`);
 
     // Prepare notification content
     const notificationTitle = language === 'sv' 
@@ -136,7 +180,11 @@ serve(async (req) => {
     console.log("Notification created successfully:", notification);
 
     return new Response(
-      JSON.stringify({ success: true, notification }),
+      JSON.stringify({ 
+        success: true, 
+        notification,
+        removalUrlCreated: newStatus === 'approved'
+      }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
