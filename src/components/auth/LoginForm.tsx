@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -35,12 +35,16 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
       if (error) {
         console.error("Sign in error:", error);
         if (error.message === 'Invalid login credentials') {
-          toast.error(t('error.invalid.credentials'), {
-            duration: 3000,
+          toast({
+            variant: "destructive",
+            title: t('error.invalid.credentials'),
+            description: t('error.signin'),
           });
         } else {
-          toast.error(t('error.signin'), {
-            duration: 3000,
+          toast({
+            variant: "destructive", 
+            title: t('error.generic'),
+            description: error.message,
           });
         }
         setIsLoading(false);
@@ -54,8 +58,9 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         const userData = data.session.user as any;
         if (userData.banned_until && new Date(userData.banned_until) > new Date()) {
           console.log("User is banned until:", userData.banned_until);
-          toast.error(t('errors.user_banned'), {
-            duration: 5000,
+          toast({
+            variant: "destructive",
+            title: t('errors.user_banned'),
           });
           // Sign out the banned user immediately
           await supabase.auth.signOut();
@@ -81,7 +86,10 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
 
         if (customerError) {
           console.error("Error fetching customer data:", customerError);
-          toast.error(t('error.generic'));
+          toast({
+            variant: "destructive",
+            title: t('error.generic'),
+          });
           setIsLoading(false);
           return;
         }
@@ -99,7 +107,10 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
       }
     } catch (err) {
       console.error("Unexpected error:", err);
-      toast.error(t('error.generic'));
+      toast({
+        variant: "destructive",
+        title: t('error.generic'),
+      });
       setIsLoading(false);
     }
   };
