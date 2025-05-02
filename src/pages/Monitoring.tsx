@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import MainLayout from "@/components/layout/MainLayout";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
