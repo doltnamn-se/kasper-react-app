@@ -19,7 +19,7 @@ export function Toaster() {
         const isDestructive = variant === "destructive";
         
         return (
-          <Toast key={id} {...props} variant={variant} className="w-auto max-w-[350px] transition-all duration-500">
+          <Toast key={id} {...props} variant={variant} className="w-auto max-w-[350px] transition-all duration-1000">
             <div className="flex items-center gap-3">
               <div className={`flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full ${
                 isDestructive ? "bg-[#ea384c]" : "bg-green-500"
