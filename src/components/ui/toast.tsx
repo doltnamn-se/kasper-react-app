@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -46,19 +47,9 @@ const Toast = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant }), "overflow-hidden p-0", className)}
+      className={cn(toastVariants({ variant }), "overflow-hidden p-4", className)}
       {...props}
-    >
-      <div className="flex-1 p-4">{props.children}</div>
-      <div className="absolute bottom-0 left-0 right-0 h-1 overflow-hidden">
-        <div className={cn(
-          "h-full w-full animate-progress-line",
-          variant === "destructive" 
-            ? "bg-white" // White for destructive variant (both modes)
-            : "bg-black dark:bg-white" // Black in light mode, white in dark mode for default variant
-        )} />
-      </div>
-    </ToastPrimitives.Root>
+    />
   )
 })
 Toast.displayName = ToastPrimitives.Root.displayName
@@ -102,7 +93,7 @@ const ToastTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn("text-sm font-semibold", className)}
+    className={cn("text-sm font-medium", className)}
     {...props}
   />
 ))

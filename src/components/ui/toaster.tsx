@@ -21,11 +21,11 @@ export function Toaster() {
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-green-500">
                 <Check 
-                  className="h-3.5 w-3.5 text-white" 
+                  className="h-3.5 w-3.5 text-white stroke-[3]" 
                 />
               </div>
               <div className="grid gap-1">
-                {title && <ToastTitle className="text-sm">{title}</ToastTitle>}
+                {title && <ToastTitle className="text-sm font-medium">{title}</ToastTitle>}
                 {description && (
                   <ToastDescription className="text-xs">{description}</ToastDescription>
                 )}
