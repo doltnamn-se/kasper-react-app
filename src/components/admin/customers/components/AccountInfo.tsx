@@ -8,7 +8,8 @@ import { Check } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
-import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
@@ -32,12 +33,12 @@ export const AccountInfo = ({
   const { language, t } = useLanguage();
   const [isUpdatingMrkoll, setIsUpdatingMrkoll] = useState(false);
   
-  const handleMrkollRemovalChange = async (checked: boolean) => {
+  const handleMrkollRemovalChange = async (value: string) => {
     if (!customer.id) return;
     
     setIsUpdatingMrkoll(true);
     try {
-      const timestamp = checked ? new Date().toISOString() : null;
+      const timestamp = value === "checked" ? new Date().toISOString() : null;
       
       const { error } = await supabase
         .from('profiles')
@@ -86,25 +87,31 @@ export const AccountInfo = ({
             <p className="text-xs text-[#000000] dark:text-[#FFFFFF]">
               {language === 'sv' ? 'Borttagning Mrkoll' : 'Removal Mrkoll'}
             </p>
-            <div className="flex items-center gap-2">
-              <Checkbox 
-                id="mrkoll-removal"
-                disabled={isUpdatingMrkoll}
-                checked={!!customer.profile?.mrkoll_removal_checked_at}
-                onCheckedChange={handleMrkollRemovalChange}
-              />
-              <div className="text-xs">
-                {customer.profile?.mrkoll_removal_checked_at ? (
-                  <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-                    {format(new Date(customer.profile.mrkoll_removal_checked_at), 'yyyy-MM-dd HH:mm')}
-                  </span>
-                ) : (
-                  <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-                    {language === 'sv' ? 'Inte än' : 'Not yet'}
-                  </span>
-                )}
+            <RadioGroup 
+              disabled={isUpdatingMrkoll}
+              value={customer.profile?.mrkoll_removal_checked_at ? "checked" : "unchecked"}
+              onValueChange={handleMrkollRemovalChange}
+              className="flex items-center gap-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem 
+                  value="checked" 
+                  id="mrkoll-checked"
+                  className="bg-[#f5f5f5] dark:bg-[#121212] border-[#c7c7c7] dark:border-[#393939]"
+                />
+                <div className="text-xs">
+                  {customer.profile?.mrkoll_removal_checked_at ? (
+                    <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
+                      {format(new Date(customer.profile.mrkoll_removal_checked_at), 'yyyy-MM-dd HH:mm')}
+                    </span>
+                  ) : (
+                    <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
+                      {t('mrkoll.not.checked')}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
+            </RadioGroup>
           </div>
         )}
       </div>
