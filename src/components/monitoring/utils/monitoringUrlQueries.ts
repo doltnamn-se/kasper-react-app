@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { MonitoringUrl, MonitoringUrlStatus } from "@/types/monitoring-urls";
 
@@ -8,7 +7,12 @@ export async function fetchAllMonitoringUrls(): Promise<MonitoringUrl[]> {
   
   const { data, error } = await supabase
     .from('monitoring_urls')
-    .select('*, customer:customers!inner(profiles(display_name, email))')
+    .select(`
+      *,
+      customer:customers(
+        profiles:profiles(display_name, email)
+      )
+    `)
     .order('created_at', { ascending: false });
   
   if (error) {
@@ -16,7 +20,15 @@ export async function fetchAllMonitoringUrls(): Promise<MonitoringUrl[]> {
     throw new Error(`Error fetching monitoring URLs: ${error.message}`);
   }
   
-  return data || [];
+  // Transform the data to match the MonitoringUrl type
+  const transformedData = data?.map(item => ({
+    ...item,
+    customer: {
+      profiles: item.customer?.profiles || null
+    }
+  })) || [];
+  
+  return transformedData;
 }
 
 // Fetch monitoring URLs for a specific customer
