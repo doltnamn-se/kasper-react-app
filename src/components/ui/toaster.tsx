@@ -35,9 +35,9 @@ export function Toaster() {
                 )}
               </div>
               <div className="grid gap-1">
-                {title && <ToastTitle className="text-sm font-medium text-black dark:text-white">{title}</ToastTitle>}
+                {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (
-                  <ToastDescription className="text-xs font-medium text-black dark:text-white">{description}</ToastDescription>
+                  <ToastDescription>{description}</ToastDescription>
                 )}
               </div>
             </div>
