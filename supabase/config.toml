@@ -15,3 +15,6 @@ verify_jwt = false
 
 [functions.notify-status-change]
 verify_jwt = true
+
+[functions.toggle-user-ban]
+verify_jwt = true

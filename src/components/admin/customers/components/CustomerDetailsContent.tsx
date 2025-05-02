@@ -26,6 +26,8 @@ interface CustomerDetailsContentProps {
   isUpdating: boolean;
   isDeleting: boolean;
   isUpdatingSubscription: boolean;
+  isBanning?: boolean;
+  isUserBanned?: boolean;
   onSendActivationEmail: () => void;
   onDeleteUser: () => void;
   onUpdateSubscriptionPlan: (plan: string) => void;
@@ -45,6 +47,8 @@ export const CustomerDetailsContent = ({
   isUpdating,
   isDeleting,
   isUpdatingSubscription,
+  isBanning = false,
+  isUserBanned = false,
   onSendActivationEmail,
   onDeleteUser,
   onUpdateSubscriptionPlan,
@@ -96,6 +100,8 @@ export const CustomerDetailsContent = ({
         onRefreshData={onRefresh} 
         isRefreshing={isRefreshing} 
         onBanUser={onBanUser}
+        isBanning={isBanning}
+        isUserBanned={isUserBanned}
         onDeleteUser={onDeleteUser}
       />}
       
@@ -114,7 +120,16 @@ export const CustomerDetailsContent = ({
           </div>
           <div className="flex flex-col sm:flex-row gap-8">
             <CustomerDetails customer={customer} onCopy={onCopy} />
-            <AccountInfo customer={customer} isOnline={isOnline} userLastSeen={userLastSeen} onCopy={onCopy} isSuperAdmin={isSuperAdmin} isUpdatingSubscription={isUpdatingSubscription} onUpdateSubscriptionPlan={onUpdateSubscriptionPlan} />
+            <AccountInfo 
+              customer={customer} 
+              isOnline={isOnline} 
+              userLastSeen={userLastSeen} 
+              onCopy={onCopy} 
+              isSuperAdmin={isSuperAdmin} 
+              isUpdatingSubscription={isUpdatingSubscription} 
+              onUpdateSubscriptionPlan={onUpdateSubscriptionPlan}
+              isUserBanned={isUserBanned}  
+            />
           </div>
         </div>
 
