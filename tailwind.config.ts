@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -111,8 +110,8 @@ export default {
         'fade-out': 'fade-out 0.2s ease-out',
         'icon-fill': 'icon-fill 2s linear infinite',
         'draw-check': 'draw-check 0.3s ease-in-out forwards',
-        'fade-in-top': 'fade-in-top 0.4s ease-out forwards',
-        'fade-out-top': 'fade-out-top 0.4s ease-out forwards'
+        'fade-in-top': 'fade-in-top 0.6s cubic-bezier(0.2, 0, 0.2, 1) forwards',
+        'fade-out-top': 'fade-out-top 0.6s cubic-bezier(0.2, 0, 0.2, 1) forwards'
       },
       colors: {
         border: 'hsl(var(--border))',
