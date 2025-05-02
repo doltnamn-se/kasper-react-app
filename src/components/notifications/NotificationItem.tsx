@@ -43,6 +43,9 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
     if (type === 'removal') {
       return t('deindexing.status.notification.title');
     }
+    if (type === 'monitoring_approval') {
+      return language === 'sv' ? 'URL godkänd av användare' : 'URL approved by user';
+    }
     return notification.title;
   };
 
@@ -54,6 +57,11 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
     }
     if (type === 'removal') {
       return t('deindexing.status.notification.message');
+    }
+    if (type === 'monitoring_approval') {
+      return language === 'sv' 
+        ? 'En bevaknings-URL godkändes av en användare och flyttades till länkhantering'
+        : 'A monitoring URL was approved by a user and moved to link management';
     }
     return notification.message;
   };
@@ -69,6 +77,8 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
       navigate('/address-alerts');
     } else if (notification.type === 'removal') {
       navigate('/deindexing');
+    } else if (notification.type === 'monitoring_approval') {
+      navigate('/admin/deindexing');
     }
   };
 

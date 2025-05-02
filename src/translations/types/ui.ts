@@ -1,4 +1,3 @@
-
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -163,4 +162,9 @@ export interface UITranslations {
   '12.months': string;
   '24.months': string;
   'mrkoll.not.checked': string;
+  'monitoring.url.added': string;
+  'monitoring.url.updated': string;
+  'monitoring.url.approved': string;
+  'monitoring.url.rejected': string;
+  'error': string;
 }

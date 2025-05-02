@@ -9,6 +9,9 @@ import { sv, enUS } from "date-fns/locale";
 import { Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { UserMonitoringUrlList } from "@/components/monitoring/UserMonitoringUrlList";
+import { useMonitoringUrls } from "@/components/monitoring/hooks/useMonitoringUrls";
+import { supabase } from "@/integrations/supabase/client";
 
 const Monitoring = () => {
   const { t, language } = useLanguage();
@@ -16,6 +19,33 @@ const Monitoring = () => {
   const [lastChecked, setLastChecked] = useState(new Date());
   const [isScanning, setIsScanning] = useState(false);
   const [dots, setDots] = useState('');
+
+  // Get user ID for monitoring URLs
+  const [userId, setUserId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUserId(data.user.id);
+      }
+    };
+    fetchUserId();
+  }, []);
+  
+  // Get monitoring URLs for the user
+  const { 
+    monitoringUrls, 
+    handleUpdateStatus 
+  } = useMonitoringUrls(userId || undefined);
+
+  const handleApproveUrl = async (urlId: string) => {
+    await handleUpdateStatus(urlId, 'approved');
+  };
+
+  const handleRejectUrl = async (urlId: string) => {
+    await handleUpdateStatus(urlId, 'rejected');
+  };
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -148,6 +178,15 @@ const Monitoring = () => {
               </Badge>
             </div>
           </div>
+          
+          {/* User Monitoring URLs */}
+          {userId && (
+            <UserMonitoringUrlList 
+              monitoringUrls={monitoringUrls.filter(url => url.status === 'pending')}
+              onApprove={handleApproveUrl}
+              onReject={handleRejectUrl}
+            />
+          )}
         </div>
       </div>
     </MainLayout>

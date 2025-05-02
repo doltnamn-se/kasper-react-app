@@ -6,7 +6,8 @@ import {
   UsersRound, 
   ChartNoAxesGantt,
   EyeOff,
-  History
+  History,
+  UserRoundSearch
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -55,6 +56,11 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
       {renderNavLink("/admin/customers", 
         <UsersRound className="w-[18px] h-[18px]" />, 
         t('nav.admin.customers')
+      )}
+
+      {renderNavLink("/admin/monitoring", 
+        <UserRoundSearch className="w-[18px] h-[18px]" />, 
+        t('nav.monitoring')
       )}
 
       {renderNavLink("/admin/deindexing", 

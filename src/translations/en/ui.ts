@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -165,4 +164,9 @@ export const ui: UITranslations = {
   '12.months': '12 Months',
   '24.months': '24 Months',
   'mrkoll.not.checked': 'Not yet',
+  'monitoring.url.added': 'URL added for monitoring successfully',
+  'monitoring.url.updated': 'Monitoring URL status updated',
+  'monitoring.url.approved': 'URL approved and moved to link management',
+  'monitoring.url.rejected': 'URL rejected',
+  'error': 'Error',
 };

@@ -301,6 +301,39 @@ export type Database = {
           },
         ]
       }
+      monitoring_urls: {
+        Row: {
+          admin_user_id: string | null
+          created_at: string
+          customer_id: string
+          id: string
+          reason: string | null
+          status: Database["public"]["Enums"]["monitoring_url_status"]
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          admin_user_id?: string | null
+          created_at?: string
+          customer_id: string
+          id?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["monitoring_url_status"]
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          admin_user_id?: string | null
+          created_at?: string
+          customer_id?: string
+          id?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["monitoring_url_status"]
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       notification_preferences: {
         Row: {
           created_at: string
@@ -564,6 +597,7 @@ export type Database = {
         | "merinfo"
         | "mrkoll"
         | "upplysning"
+      monitoring_url_status: "pending" | "approved" | "rejected"
       presence_status: "online" | "offline" | "device_type"
       subscription_plan:
         | "1_month"
@@ -702,6 +736,7 @@ export const Constants = {
         "mrkoll",
         "upplysning",
       ],
+      monitoring_url_status: ["pending", "approved", "rejected"],
       presence_status: ["online", "offline", "device_type"],
       subscription_plan: [
         "1_month",

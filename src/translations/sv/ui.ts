@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -165,4 +164,9 @@ export const ui: UITranslations = {
   '12.months': '12 Månader',
   '24.months': '24 Månader',
   'mrkoll.not.checked': 'Inte än',
+  'monitoring.url.added': 'URL tillagd för bevakning',
+  'monitoring.url.updated': 'Bevaknings-URL status uppdaterad',
+  'monitoring.url.approved': 'URL godkänd och flyttad till länkhantering',
+  'monitoring.url.rejected': 'URL avvisad',
+  'error': 'Fel',
 };
