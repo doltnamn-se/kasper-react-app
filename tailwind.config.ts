@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -78,6 +79,26 @@ export default {
           '100%': {
             'stroke-dashoffset': '0'
           }
+        },
+        'fade-in-top': {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(-15px)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'fade-out-top': {
+          '0%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+          '100%': { 
+            opacity: '0',
+            transform: 'translateY(-15px)'
+          }
         }
       },
       animation: {
@@ -89,7 +110,9 @@ export default {
         'fade-in': 'fade-in 0.3s ease-out',
         'fade-out': 'fade-out 0.2s ease-out',
         'icon-fill': 'icon-fill 2s linear infinite',
-        'draw-check': 'draw-check 0.3s ease-in-out forwards'
+        'draw-check': 'draw-check 0.3s ease-in-out forwards',
+        'fade-in-top': 'fade-in-top 0.4s ease-out forwards',
+        'fade-out-top': 'fade-out-top 0.4s ease-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',
