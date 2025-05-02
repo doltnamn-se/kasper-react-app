@@ -48,7 +48,7 @@ export const CustomerTableToolbar = ({
       <div className="relative">
         <Search className="absolute left-2 top-1/2 -translate-y-1/2 [&.lucide]:h-3.5 [&.lucide]:w-3.5 text-[#777777] dark:text-[#898989]" />
         <Input
-          placeholder={t('search.customers.placeholder')}
+          placeholder={isMobile ? (language === 'sv' ? 'Sök' : 'Search') : t('search.customers.placeholder')}
           value={globalFilter}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className={`
