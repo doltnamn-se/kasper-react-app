@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 interface AuthRouteProps {
   children: React.ReactNode;
@@ -115,5 +116,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return <Navigate to="/" replace />;
   }
 
-  return <>{children}</>;
+  // Wrap children with LanguageProvider to ensure useLanguage is available
+  return <LanguageProvider>{children}</LanguageProvider>;
 };
