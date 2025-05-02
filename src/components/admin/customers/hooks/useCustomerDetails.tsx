@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCustomerData } from "./useCustomerData";
@@ -47,8 +46,10 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
           return;
         }
         
-        // Check if the user is banned
-        setIsBanned(data?.user && data.user.banned_until !== null);
+        // Check if the user is banned by safely accessing the banned_until property
+        // Use type assertion to access the property that exists at runtime but not in TypeScript definitions
+        const userData = data?.user as any;
+        setIsBanned(userData && userData.banned_until !== null);
       } catch (err) {
         console.error("Error checking ban status:", err);
       }
