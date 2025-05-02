@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -147,5 +146,21 @@ export const ui: UITranslations = {
   'success.url_limits_updated': 'URL limits updated successfully',
   'success.subscription_updated': 'Subscription updated successfully',
   'success.deleted': 'Deleted',
-  'success.user_deleted': 'User has been deleted successfully'
+  'success.user_deleted': 'User has been deleted successfully',
+  'create.customer': 'Create Customer',
+  'create.customer.description': 'Add a new customer to the platform. Fill in their details below.',
+  'create.with.email': 'Create & Send Welcome Email',
+  'create.without.email': 'Create Without Email',
+  'creating': 'Creating...',
+  'address.alert': 'Address Alert',
+  'private.customer': 'Private Customer',
+  'business.client': 'Business Client',
+  'select.address.alert': 'Select address alert',
+  'select.customer.type': 'Select customer type',
+  'select.subscription.plan': 'Select subscription plan',
+  '1.month': '1 Month',
+  '3.months': '3 Months',
+  '6.months': '6 Months',
+  '12.months': '12 Months',
+  '24.months': '24 Months'
 };

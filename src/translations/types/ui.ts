@@ -146,4 +146,21 @@ export interface UITranslations {
   'success.subscription_updated': string;
   'success.deleted': string;
   'success.user_deleted': string;
+  // Add the missing translation keys
+  'create.customer': string;
+  'create.customer.description': string;
+  'create.with.email': string;
+  'create.without.email': string;
+  'creating': string;
+  'address.alert': string;
+  'private.customer': string;
+  'business.client': string;
+  'select.address.alert': string;
+  'select.customer.type': string;
+  'select.subscription.plan': string;
+  '1.month': string;
+  '3.months': string;
+  '6.months': string;
+  '12.months': string;
+  '24.months': string;
 }
