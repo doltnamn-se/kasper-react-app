@@ -53,4 +53,5 @@ export interface ErrorTranslations {
   'errors.subscription_update_failed': string;
   'errors.delete_failed': string;
   'errors.user_delete_failed': string;
+  'errors.user_banned': string;
 }
