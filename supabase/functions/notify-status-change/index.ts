@@ -44,7 +44,7 @@ serve(async (req) => {
     });
 
     // Get the request data
-    const { siteName, newStatus, language, userId, monitoringUrlId } = await req.json();
+    const { siteName, newStatus, language, userId, monitoringUrlId, customerId } = await req.json();
 
     if (!siteName || !newStatus || !userId) {
       console.error("Missing required data:", { siteName, newStatus, userId });
@@ -86,6 +86,7 @@ serve(async (req) => {
 
     // If the status is 'approved', move the URL to removal_urls table
     let monitoringUrl;
+    let removalUrl;
     if (newStatus === 'approved' && monitoringUrlId) {
       // First fetch the monitoring URL to get its details
       const { data: urlData, error: urlError } = await supabaseAdmin
@@ -105,10 +106,10 @@ serve(async (req) => {
       monitoringUrl = urlData;
       
       // Create entry in removal_urls table
-      const { data: removalUrl, error: removalError } = await supabaseAdmin
+      const { data: newRemovalUrl, error: removalError } = await supabaseAdmin
         .from('removal_urls')
         .insert({
-          customer_id: monitoringUrl.customer_id,
+          customer_id: customerId || monitoringUrl.customer_id, // Use passed customerId or fallback
           url: monitoringUrl.url,
           status: 'received',
           current_status: 'received',
@@ -125,6 +126,7 @@ serve(async (req) => {
         );
       }
       
+      removalUrl = newRemovalUrl;
       console.log("Successfully moved monitoring URL to removal_urls:", removalUrl);
     }
 
@@ -177,13 +179,43 @@ serve(async (req) => {
       );
     }
 
+    // Create notification for monitoring approval if applicable
+    let monitoringApprovalNotification = null;
+    if (newStatus === 'approved' && monitoringUrlId) {
+      const monitoringTitle = language === 'sv' ? 'URL godkänd av användare' : 'URL approved by user';
+      const monitoringMessage = language === 'sv' 
+        ? 'En bevaknings-URL godkändes av en användare och flyttades till länkhantering'
+        : 'A monitoring URL was approved by a user and moved to link management';
+      
+      const { data: adminNotification, error: adminNotifyError } = await supabaseAdmin
+        .from('notifications')
+        .insert({
+          user_id: SUPER_ADMIN_ID,
+          title: monitoringTitle,
+          message: monitoringMessage,
+          type: 'monitoring_approval',
+          read: false
+        })
+        .select()
+        .single();
+      
+      if (adminNotifyError) {
+        console.error("Error creating monitoring approval notification:", adminNotifyError);
+      } else {
+        monitoringApprovalNotification = adminNotification;
+        console.log("Created monitoring approval notification:", adminNotification);
+      }
+    }
+
     console.log("Notification created successfully:", notification);
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         notification,
-        removalUrlCreated: newStatus === 'approved'
+        monitoringApprovalNotification,
+        removalUrl,
+        removalUrlCreated: newStatus === 'approved' && !!removalUrl
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

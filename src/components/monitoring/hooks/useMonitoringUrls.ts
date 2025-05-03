@@ -73,6 +73,10 @@ export const useMonitoringUrls = (customerId?: string) => {
       });
       await queryClient.invalidateQueries({ queryKey: ['admin-monitoring-urls'] });
       await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
+      
+      // If this was an approval, also refresh the deindexing URLs
+      await queryClient.invalidateQueries({ queryKey: ['incoming-urls'] });
+      await queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
     },
     onError: (error: Error) => {
       toast({

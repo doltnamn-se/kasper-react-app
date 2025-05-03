@@ -111,7 +111,19 @@ export async function updateMonitoringUrlStatus(
   console.log(`Updating monitoring URL status: ${urlId} to ${status}`);
   
   try {
-    // First, update the status in the monitoring_urls table
+    // First, get the current data of the URL
+    const { data: currentUrlData, error: fetchError } = await supabase
+      .from('monitoring_urls')
+      .select('customer_id, url')
+      .eq('id', urlId)
+      .single();
+    
+    if (fetchError) {
+      console.error('Error fetching monitoring URL data:', fetchError);
+      throw new Error(`Error fetching monitoring URL data: ${fetchError.message}`);
+    }
+
+    // Update the status in the monitoring_urls table
     const { data, error } = await supabase
       .from('monitoring_urls')
       .update({ status, ...(reason ? { reason } : {}) })
@@ -142,13 +154,15 @@ export async function updateMonitoringUrlStatus(
             newStatus: status,
             language: document.documentElement.lang || 'en',
             userId: currentUser.user.id,
-            monitoringUrlId: urlId
+            monitoringUrlId: urlId,
+            customerId: currentUrlData.customer_id // Pass the customer ID for proper URL creation
           }
         });
         
         if (functionError) {
           console.error('Error from edge function:', functionError);
-          // Don't throw here - we want to continue regardless
+          // Log but don't throw - we still want to return the updated URL
+          console.log('Edge function error but URL was updated successfully');
         } else {
           console.log('Edge function response:', functionResult);
         }
@@ -156,6 +170,7 @@ export async function updateMonitoringUrlStatus(
         console.error('Error calling edge function:', notifyError);
         // We don't want to fail the entire operation if the edge function call fails
         // The status update was successful, so we still proceed
+        console.log('Edge function error but URL was updated successfully');
       }
     }
     
