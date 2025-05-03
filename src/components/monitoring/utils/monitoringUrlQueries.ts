@@ -103,6 +103,8 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
   // Create notification for the customer about the new monitoring URL
   if (data) {
     try {
+      // When we insert a notification, the database trigger `handle_notification_email` 
+      // should automatically send an email if the user has email notifications enabled
       const { error: notificationError } = await supabase
         .from('notifications')
         .insert({
