@@ -6,7 +6,8 @@ import {
   fetchAllMonitoringUrls, 
   fetchCustomerMonitoringUrls,
   addMonitoringUrl, 
-  updateMonitoringUrlStatus 
+  updateMonitoringUrlStatus,
+  setQueryClientReference
 } from '../utils/monitoringUrlQueries';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -16,6 +17,9 @@ export const useMonitoringUrls = (customerId?: string) => {
   const { toast } = useToast();
   const [isAddingUrl, setIsAddingUrl] = useState(false);
   const queryClient = useQueryClient();
+  
+  // Set the queryClient reference for the monitoringUrlQueries module
+  setQueryClientReference(queryClient);
   
   // Query for fetching monitoring URLs
   const { 
@@ -79,10 +83,6 @@ export const useMonitoringUrls = (customerId?: string) => {
       if (customerId) {
         await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
       }
-      
-      // If this was an approval, also refresh the deindexing URLs
-      await queryClient.invalidateQueries({ queryKey: ['incoming-urls'] });
-      await queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
     },
     onError: (error: Error) => {
       console.error("Error in updateStatusMutation:", error);

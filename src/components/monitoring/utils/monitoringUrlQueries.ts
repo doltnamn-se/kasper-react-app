@@ -151,9 +151,27 @@ export async function updateMonitoringUrlStatus(
       throw new Error(functionResult.error || 'Unknown error from edge function');
     }
     
+    // Don't attempt to update the URL status directly here
+    // The edge function has already done that with admin privileges
+    
+    // For approved URLs, invalidate queries related to incoming URLs to refresh the UI
+    if (status === 'approved') {
+      await queryClient?.invalidateQueries({ queryKey: ['incoming-urls'] });
+      await queryClient?.invalidateQueries({ queryKey: ['admin-urls'] });
+    }
+    
     return functionResult.updatedUrl;
   } catch (error: any) {
     console.error('Error in updateMonitoringUrlStatus:', error);
     throw error; // Re-throw for the caller to handle
   }
+}
+
+// Temporary variable to reference the queryClient
+// This will be set by useMonitoringUrls hook
+let queryClient: any = null;
+
+// Function to set the queryClient reference for use in updateMonitoringUrlStatus
+export function setQueryClientReference(client: any) {
+  queryClient = client;
 }

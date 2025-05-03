@@ -69,35 +69,53 @@ serve(async (req) => {
     
     console.log("Successfully updated monitoring URL status:", updatedUrl);
 
-    // 2. Create a removal URL entry if status is 'approved'
+    // 2. Create a removal URL entry if status is 'approved' and it doesn't already exist
     let removalUrl = null;
     if (newStatus === 'approved') {
-      const { data: newRemovalUrl, error: removalError } = await supabaseAdmin
+      // Check if a removal URL already exists for this URL and customer
+      const { data: existingUrl, error: checkError } = await supabaseAdmin
         .from('removal_urls')
-        .insert({
-          customer_id: customerId,
-          url: siteName,
-          status: 'received',
-          current_status: 'received',
-          display_in_incoming: true
-        })
-        .select()
-        .single();
+        .select('id')
+        .eq('customer_id', customerId)
+        .eq('url', siteName)
+        .maybeSingle();
 
-      if (removalError) {
-        console.error("Error creating removal URL:", removalError);
-        return new Response(
-          JSON.stringify({ 
-            success: false, 
-            error: `Error creating removal URL: ${removalError.message}`,
-            updatedUrl 
-          }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+      if (checkError) {
+        console.error("Error checking for existing removal URL:", checkError);
       }
-      
-      removalUrl = newRemovalUrl;
-      console.log("Successfully created removal URL:", removalUrl);
+
+      // Only create a new removal URL if one doesn't exist
+      if (!existingUrl) {
+        const { data: newRemovalUrl, error: removalError } = await supabaseAdmin
+          .from('removal_urls')
+          .insert({
+            customer_id: customerId,
+            url: siteName,
+            status: 'received',
+            current_status: 'received',
+            display_in_incoming: true
+          })
+          .select()
+          .single();
+
+        if (removalError) {
+          console.error("Error creating removal URL:", removalError);
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              error: `Error creating removal URL: ${removalError.message}`,
+              updatedUrl 
+            }),
+            { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+        
+        removalUrl = newRemovalUrl;
+        console.log("Successfully created removal URL:", removalUrl);
+      } else {
+        console.log("Removal URL already exists for this URL, skipping creation");
+        removalUrl = existingUrl;
+      }
     }
 
     // 3. Get user display name for notification
