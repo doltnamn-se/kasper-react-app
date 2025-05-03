@@ -103,14 +103,16 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
   // Create notification for the customer about the new monitoring URL
   if (data) {
     try {
-      // When we insert a notification, the database trigger `handle_notification_email` 
-      // should automatically send an email if the user has email notifications enabled
+      const notificationTitle = 'Bevakningsalarm';
+      const notificationMessage = 'Vår bevakningstjänst har hittat en ny länk';
+      
+      // Create in-app notification
       const { error: notificationError } = await supabase
         .from('notifications')
         .insert({
           user_id: customerId,
-          title: 'Bevakningsalarm',
-          message: 'Vår bevakningstjänst har hittat en ny länk',
+          title: notificationTitle,
+          message: notificationMessage,
           type: 'monitoring',
           read: false
         });
@@ -119,6 +121,39 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
         console.error('Error creating notification:', notificationError);
       } else {
         console.log('Notification created successfully for monitoring URL');
+        
+        // Get user email and notification preferences
+        const { data: userData, error: userError } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('id', customerId)
+          .single();
+          
+        const { data: preferences, error: prefError } = await supabase
+          .from('notification_preferences')
+          .select('email_notifications')
+          .eq('user_id', customerId)
+          .single();
+          
+        if (!userError && !prefError && userData?.email && preferences?.email_notifications) {
+          // Send email notification directly
+          console.log('Sending email notification to:', userData.email);
+          
+          const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
+            body: {
+              email: userData.email,
+              title: notificationTitle,
+              message: notificationMessage,
+              type: 'monitoring'
+            }
+          });
+          
+          if (emailError) {
+            console.error('Error sending email notification:', emailError);
+          } else {
+            console.log('Email notification sent successfully');
+          }
+        }
       }
     } catch (notifError) {
       console.error('Error creating notification:', notifError);

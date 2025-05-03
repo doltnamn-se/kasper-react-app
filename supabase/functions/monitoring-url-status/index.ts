@@ -118,7 +118,7 @@ serve(async (req) => {
       }
     }
 
-    // 3. Get user display name for notification
+    // 3. Get user display name and email for notification
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('display_name, email')
@@ -130,7 +130,79 @@ serve(async (req) => {
       // Continue despite this error
     }
 
-    // 4. Create admin notification
+    // 4. Create user notification with explicit notification type for status change
+    if (newStatus === 'approved' || newStatus === 'rejected') {
+      // Generate notification message based on status
+      const notificationTitle = newStatus === 'approved' 
+        ? (language === 'sv' ? 'Länk tillagd i länkar' : 'Link added to removal system')
+        : (language === 'sv' ? 'Länk avvisad' : 'Link rejected');
+        
+      const notificationMessage = newStatus === 'approved'
+        ? (language === 'sv' ? 'Länken är mottagen och kommer behandlas inom kort' : 'The link has been received and will be processed shortly')
+        : (language === 'sv' ? 'Länken har avvisats från systemet' : 'The link has been rejected from the system');
+
+      // Create notification for the user
+      const { error: userNotificationError } = await supabaseAdmin
+        .from('notifications')
+        .insert({
+          user_id: customerId,
+          title: notificationTitle,
+          message: notificationMessage,
+          type: 'monitoring',
+          read: false
+        });
+
+      if (userNotificationError) {
+        console.error("Error creating user notification:", userNotificationError);
+      } else {
+        console.log("Successfully created user notification for status change");
+        
+        // Check if user has email notifications enabled
+        const { data: preferences, error: prefsError } = await supabaseAdmin
+          .from('notification_preferences')
+          .select('email_notifications')
+          .eq('user_id', customerId)
+          .single();
+          
+        if (prefsError) {
+          console.error("Error fetching notification preferences:", prefsError);
+        } else if (preferences?.email_notifications && profile?.email) {
+          // User has email notifications enabled, send email manually
+          console.log("Sending email notification to:", profile.email);
+          
+          try {
+            const emailResult = await fetch(
+              "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-notification-email",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
+                },
+                body: JSON.stringify({
+                  email: profile.email,
+                  title: notificationTitle,
+                  message: notificationMessage,
+                  type: 'monitoring'
+                })
+              }
+            );
+            
+            if (!emailResult.ok) {
+              const errorText = await emailResult.text();
+              console.error("Error response from email function:", errorText);
+            } else {
+              const emailData = await emailResult.json();
+              console.log("Email sent successfully:", emailData);
+            }
+          } catch (emailError) {
+            console.error("Error sending email notification:", emailError);
+          }
+        }
+      }
+    }
+
+    // 5. Create admin notification
     const userIdentifier = profile?.display_name || profile?.email || customerId;
     const notificationTitle = language === 'sv' 
       ? 'Status uppdaterad av användare' 
@@ -162,7 +234,7 @@ serve(async (req) => {
       console.log("Successfully created notification:", notification);
     }
 
-    // 5. Create additional notification for monitoring approval
+    // 6. Create additional notification for monitoring approval
     let monitoringApprovalNotification = null;
     if (newStatus === 'approved') {
       const approvalTitle = language === 'sv' ? 'URL godkänd av användare' : 'URL approved by user';
