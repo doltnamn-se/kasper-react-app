@@ -83,6 +83,7 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
     throw new Error('User not authenticated');
   }
   
+  // Insert the monitoring URL
   const { data, error } = await supabase
     .from('monitoring_urls')
     .insert({
@@ -97,6 +98,30 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
   if (error) {
     console.error('Error adding monitoring URL:', error);
     throw new Error(`Error adding monitoring URL: ${error.message}`);
+  }
+  
+  // Create notification for the customer about the new monitoring URL
+  if (data) {
+    try {
+      const { error: notificationError } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: customerId,
+          title: 'Ny bevaknings-URL tillagd',
+          message: `En administratör har lagt till ${url} för bevakning.`,
+          type: 'monitoring',
+          read: false
+        });
+      
+      if (notificationError) {
+        console.error('Error creating notification:', notificationError);
+      } else {
+        console.log('Notification created successfully for monitoring URL');
+      }
+    } catch (notifError) {
+      console.error('Error creating notification:', notifError);
+      // Don't throw error here, we still want to return the monitoring URL
+    }
   }
   
   return data;
