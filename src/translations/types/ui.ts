@@ -1,3 +1,4 @@
+
 export interface UITranslations {
   'cancel': string;
   'loading': string;
@@ -166,5 +167,7 @@ export interface UITranslations {
   'monitoring.url.updated': string;
   'monitoring.url.approved': string;
   'monitoring.url.rejected': string;
+  'monitoring.url.error.approve': string;
+  'monitoring.url.error.reject': string;
   'error': string;
 }
