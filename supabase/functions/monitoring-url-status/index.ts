@@ -31,10 +31,12 @@ serve(async (req) => {
       newStatus, 
       reason, 
       customerId, 
-      language 
+      language,
+      forceEmail
     } = await req.json();
 
     console.log(`Processing URL status update: ${monitoringUrlId} to ${newStatus} for customer ${customerId}`);
+    console.log(`Request details:`, { monitoringUrlId, siteName, newStatus, reason, customerId, language, forceEmail });
     
     if (!monitoringUrlId || !newStatus || !customerId) {
       console.error("Missing required data:", { monitoringUrlId, newStatus, customerId });
@@ -128,13 +130,15 @@ serve(async (req) => {
     if (profileError) {
       console.error("Error fetching user profile:", profileError);
       // Continue despite this error
+    } else {
+      console.log("Found user profile:", profile);
     }
 
     // 4. Create user notification with explicit notification type for status change
     if (newStatus === 'approved' || newStatus === 'rejected') {
       // Generate notification message based on status
       const notificationTitle = newStatus === 'approved' 
-        ? (language === 'sv' ? 'Länk tillagd i länkar' : 'Link added to removal system')
+        ? (language === 'sv' ? 'Tillagd i länkar' : 'Added to links')
         : (language === 'sv' ? 'Länk avvisad' : 'Link rejected');
         
       const notificationMessage = newStatus === 'approved'
@@ -166,13 +170,19 @@ serve(async (req) => {
           
         if (prefsError) {
           console.error("Error fetching notification preferences:", prefsError);
-        } else if (preferences?.email_notifications && profile?.email) {
+        } else {
+          console.log("User notification preferences:", preferences);
+        }
+        
+        // Send email if user has email notifications enabled or if forceEmail flag is set
+        if ((preferences?.email_notifications || forceEmail) && profile?.email) {
           // User has email notifications enabled, send email manually
-          console.log("Sending email notification to:", profile.email);
+          console.log("Attempting to send email notification to:", profile.email);
           
           try {
-            const emailResult = await fetch(
-              "https://upfapfohwnkiugvebujh.supabase.co/functions/v1/send-notification-email",
+            // Call the send-notification-email function directly
+            const emailResponse = await fetch(
+              `${SUPABASE_URL}/functions/v1/send-notification-email`,
               {
                 method: "POST",
                 headers: {
@@ -188,16 +198,28 @@ serve(async (req) => {
               }
             );
             
-            if (!emailResult.ok) {
-              const errorText = await emailResult.text();
-              console.error("Error response from email function:", errorText);
+            // Log the full response for debugging
+            const emailResponseText = await emailResponse.text();
+            
+            if (!emailResponse.ok) {
+              console.error("Error response from email function:", emailResponseText);
             } else {
-              const emailData = await emailResult.json();
-              console.log("Email sent successfully:", emailData);
+              try {
+                const emailData = JSON.parse(emailResponseText);
+                console.log("Email sent successfully:", emailData);
+              } catch (e) {
+                console.log("Email sent successfully. Response text:", emailResponseText);
+              }
             }
           } catch (emailError) {
             console.error("Error sending email notification:", emailError);
           }
+        } else {
+          console.log("Email notification skipped:", {
+            hasEmail: !!profile?.email,
+            emailNotificationsEnabled: preferences?.email_notifications,
+            forceEmailFlag: !!forceEmail
+          });
         }
       }
     }
@@ -232,6 +254,50 @@ serve(async (req) => {
       // Continue despite this error
     } else {
       console.log("Successfully created notification:", notification);
+      
+      // Get admin email
+      const { data: adminProfile, error: adminProfileError } = await supabaseAdmin
+        .from('profiles')
+        .select('email')
+        .eq('id', SUPER_ADMIN_ID)
+        .single();
+        
+      if (adminProfileError) {
+        console.error("Error fetching admin profile:", adminProfileError);
+      } else if (adminProfile?.email) {
+        console.log("Attempting to send email notification to admin:", adminProfile.email);
+        
+        // Send admin email notification
+        try {
+          // Call the send-notification-email function directly
+          const emailResponse = await fetch(
+            `${SUPABASE_URL}/functions/v1/send-notification-email`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
+              },
+              body: JSON.stringify({
+                email: adminProfile.email,
+                title: notificationTitle,
+                message: notificationMessage,
+                type: 'monitoring_admin'
+              })
+            }
+          );
+          
+          if (!emailResponse.ok) {
+            const errorText = await emailResponse.text();
+            console.error("Error response from email function for admin:", errorText);
+          } else {
+            const emailData = await emailResponse.json();
+            console.log("Admin email sent successfully:", emailData);
+          }
+        } catch (emailError) {
+          console.error("Error sending admin email notification:", emailError);
+        }
+      }
     }
 
     // 6. Create additional notification for monitoring approval
@@ -279,7 +345,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Unexpected error:", error);
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: error.message, stack: error.stack }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

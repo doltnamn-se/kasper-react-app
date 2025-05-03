@@ -12,14 +12,24 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request) => {
+  console.log("Send notification email function called");
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { email, title, message, type } = await req.json();
-    console.log("Preparing to send notification email:", { email, title, message, type });
+    const requestData = await req.json();
+    const { email, title, message, type } = requestData;
+    
+    console.log("Email notification request details:", { 
+      email, 
+      title, 
+      message, 
+      type,
+      hasResendKey: !!Deno.env.get("RESEND_API_KEY")
+    });
     
     if (!email) {
       console.error("No email address provided");
@@ -41,16 +51,25 @@ const handler = async (req: Request) => {
       throw error;
     }
 
-    console.log("Email sent successfully:", data);
+    console.log("Email sent successfully to:", email);
+    console.log("Email response data:", data);
 
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify({ 
+      success: true, 
+      data,
+      message: `Email sent successfully to ${email}`
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {
     console.error("Error in send-notification-email function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        success: false,
+        stack: error.stack 
+      }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 500,

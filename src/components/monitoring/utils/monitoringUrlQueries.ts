@@ -136,23 +136,41 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
           .single();
           
         if (!userError && !prefError && userData?.email && preferences?.email_notifications) {
-          // Send email notification directly
-          console.log('Sending email notification to:', userData.email);
-          
-          const { error: emailError } = await supabase.functions.invoke('send-notification-email', {
-            body: {
-              email: userData.email,
-              title: notificationTitle,
-              message: notificationMessage,
-              type: 'monitoring'
-            }
+          // Log details before sending email
+          console.log('Email notification eligible:', {
+            email: userData.email,
+            emailNotificationsEnabled: preferences.email_notifications
           });
           
-          if (emailError) {
-            console.error('Error sending email notification:', emailError);
-          } else {
-            console.log('Email notification sent successfully');
+          // Send email notification directly with extra logging
+          console.log('Attempting to send email notification to:', userData.email);
+          
+          try {
+            const emailResponse = await supabase.functions.invoke('send-notification-email', {
+              body: {
+                email: userData.email,
+                title: notificationTitle,
+                message: notificationMessage,
+                type: 'monitoring'
+              }
+            });
+            
+            console.log('Email function response:', emailResponse);
+            
+            if (emailResponse.error) {
+              console.error('Error from email function:', emailResponse.error);
+            } else {
+              console.log('Email notification sent successfully');
+            }
+          } catch (emailErr) {
+            console.error('Exception sending email notification:', emailErr);
           }
+        } else {
+          console.log('Email notification skipped:', {
+            hasUserData: !!userData,
+            hasEmail: !!userData?.email,
+            emailNotificationsEnabled: preferences?.email_notifications
+          });
         }
       }
     } catch (notifError) {
@@ -197,7 +215,8 @@ export async function updateMonitoringUrlStatus(
         newStatus: status,
         reason: reason || null,
         customerId: urlData.customer_id,
-        language: document.documentElement.lang || 'en'
+        language: document.documentElement.lang || 'en',
+        forceEmail: true // Add a flag to force email sending for debugging
       }
     });
     
