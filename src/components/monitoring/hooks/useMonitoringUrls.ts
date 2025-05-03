@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MonitoringUrl, MonitoringUrlStatus } from '@/types/monitoring-urls';
+import { MonitoringUrlStatus } from '@/types/monitoring-urls';
 import { 
   fetchAllMonitoringUrls, 
   fetchCustomerMonitoringUrls,
