@@ -111,7 +111,7 @@ export async function updateMonitoringUrlStatus(
   console.log(`Updating monitoring URL status: ${urlId} to ${status}`);
   
   try {
-    // First, get the URL data before update
+    // First, get the current monitoring URL data to pass to the edge function
     const { data: urlData, error: fetchError } = await supabase
       .from('monitoring_urls')
       .select('*')
@@ -122,48 +122,36 @@ export async function updateMonitoringUrlStatus(
       console.error('Error fetching monitoring URL details:', fetchError);
       throw new Error(`Error fetching monitoring URL details: ${fetchError.message}`);
     }
+
+    console.log('Found monitoring URL data:', urlData);
     
-    // Directly update the status in the local database
-    const { data: updatedUrl, error: updateError } = await supabase
-      .from('monitoring_urls')
-      .update({ 
-        status, 
-        ...(reason ? { reason } : {}),
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', urlId)
-      .select()
-      .single();
-    
-    if (updateError) {
-      console.error('Error updating monitoring URL status:', updateError);
-      throw new Error(`Error updating monitoring URL status: ${updateError.message}`);
-    }
-    
-    // Now use the edge function to handle additional operations like notifications
-    // and moving the URL to removal_urls if approved - this uses service role key
-    console.log('Calling edge function to handle notifications and additional processing');
-    
-    const { data: functionResult, error: functionError } = await supabase.functions.invoke('notify-status-change', {
+    // Call the edge function directly to handle all the update operations 
+    // with service role privileges
+    console.log('Calling edge function to update monitoring URL status');
+    const { data: functionResult, error: functionError } = await supabase.functions.invoke('monitoring-url-status', {
       body: {
         monitoringUrlId: urlId,
         siteName: urlData.url,
         newStatus: status,
         reason: reason || null,
-        language: document.documentElement.lang || 'en',
-        customerId: urlData.customer_id
+        customerId: urlData.customer_id,
+        language: document.documentElement.lang || 'en'
       }
     });
     
     if (functionError) {
       console.error('Error from edge function:', functionError);
-      // We still return the updated URL since the status was updated successfully
-      console.log('Edge function error but URL was updated successfully');
-    } else {
-      console.log('Edge function response:', functionResult);
+      throw new Error(`Error from edge function: ${functionError.message}`);
     }
     
-    return updatedUrl;
+    console.log('Edge function response:', functionResult);
+    
+    // Check if the function reports success
+    if (!functionResult.success) {
+      throw new Error(functionResult.error || 'Unknown error from edge function');
+    }
+    
+    return functionResult.updatedUrl;
   } catch (error: any) {
     console.error('Error in updateMonitoringUrlStatus:', error);
     throw error; // Re-throw for the caller to handle

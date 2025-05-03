@@ -41,7 +41,9 @@ export const useMonitoringUrls = (customerId?: string) => {
         description: t('monitoring.url.added'),
       });
       await queryClient.invalidateQueries({ queryKey: ['admin-monitoring-urls'] });
-      await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
+      if (customerId) {
+        await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
+      }
     },
     onError: (error: Error) => {
       setIsAddingUrl(false);
@@ -71,9 +73,12 @@ export const useMonitoringUrls = (customerId?: string) => {
         title: t('success'),
         description: t('monitoring.url.updated'),
       });
-      // Invalidate and refetch data to update UI
+      
+      // Invalidate and refetch all relevant queries
       await queryClient.invalidateQueries({ queryKey: ['admin-monitoring-urls'] });
-      await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
+      if (customerId) {
+        await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
+      }
       
       // If this was an approval, also refresh the deindexing URLs
       await queryClient.invalidateQueries({ queryKey: ['incoming-urls'] });
