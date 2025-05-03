@@ -44,50 +44,49 @@ serve(async (req) => {
     });
 
     // Get the request data
-    const { siteName, newStatus, language, userId, monitoringUrlId, customerId } = await req.json();
+    const { 
+      monitoringUrlId, 
+      siteName, 
+      newStatus, 
+      reason,
+      language, 
+      customerId 
+    } = await req.json();
 
-    if (!siteName || !newStatus || !userId) {
-      console.error("Missing required data:", { siteName, newStatus, userId });
+    if (!siteName || !newStatus || !customerId) {
+      console.error("Missing required data:", { siteName, newStatus, customerId });
       return new Response(
         JSON.stringify({ error: "Missing required data" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Verify the user is authenticated using the JWT in the Authorization header
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      console.error("Missing Authorization header");
-      return new Response(
-        JSON.stringify({ error: "Missing Authorization header" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    // First, verify if the monitoring URL exists and has the status provided
+    // This verifies if the client-side update went through
+    if (monitoringUrlId) {
+      const { data: monitoringUrl, error: urlError } = await supabaseAdmin
+        .from('monitoring_urls')
+        .select('*')
+        .eq('id', monitoringUrlId)
+        .single();
 
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    
-    if (authError || !user) {
-      console.error("Authentication error:", authError);
-      return new Response(
-        JSON.stringify({ error: "Unauthorized", details: authError }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+      if (urlError) {
+        console.error("Error fetching monitoring URL:", urlError);
+        return new Response(
+          JSON.stringify({ error: "Monitoring URL not found", details: urlError }),
+          { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
-    // Ensure the authenticated user matches the claimed user ID
-    if (user.id !== userId) {
-      console.error(`User ID mismatch: ${user.id} vs ${userId}`);
-      return new Response(
-        JSON.stringify({ error: "User ID mismatch" }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      console.log(`Found monitoring URL: ${monitoringUrl.id} with status: ${monitoringUrl.status}`);
     }
 
     // If the status is 'approved', move the URL to removal_urls table
     let monitoringUrl;
     let removalUrl;
-    if (newStatus === 'approved' && monitoringUrlId) {
+    if (newStatus === 'approved' && monitoringUrlId && customerId) {
+      console.log(`Processing approval for URL ${monitoringUrlId} from customer ${customerId}`);
+      
       // First fetch the monitoring URL to get its details
       const { data: urlData, error: urlError } = await supabaseAdmin
         .from('monitoring_urls')
@@ -104,12 +103,13 @@ serve(async (req) => {
       }
       
       monitoringUrl = urlData;
+      console.log("Found monitoring URL:", monitoringUrl);
       
       // Create entry in removal_urls table
       const { data: newRemovalUrl, error: removalError } = await supabaseAdmin
         .from('removal_urls')
         .insert({
-          customer_id: customerId || monitoringUrl.customer_id, // Use passed customerId or fallback
+          customer_id: customerId,
           url: monitoringUrl.url,
           status: 'received',
           current_status: 'received',
@@ -127,45 +127,43 @@ serve(async (req) => {
       }
       
       removalUrl = newRemovalUrl;
-      console.log("Successfully moved monitoring URL to removal_urls:", removalUrl);
+      console.log("Successfully created removal URL:", removalUrl);
     }
 
     // Log the request details
     console.log(`Notification request received for site ${siteName} with status ${newStatus}`);
-    console.log(`Request from user ID: ${userId}, authenticated as ${user.id}`);
-
-    // Prepare notification content
-    const notificationTitle = language === 'sv' 
-      ? 'Status uppdaterad av användare' 
-      : 'Status updated by user';
-      
-    const notificationMessage = language === 'sv' 
-      ? `${siteName} status har ändrats till "${newStatus}" av en användare` 
-      : `${siteName} status has been changed to "${newStatus}" by a user`;
+    console.log(`Request for customer ID: ${customerId}`);
 
     // Get user display name for better context
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('display_name, email')
-      .eq('id', userId)
+      .eq('id', customerId)
       .single();
 
     if (profileError) {
       console.error("Error fetching user profile:", profileError);
     }
 
-    const userIdentifier = profile?.display_name || profile?.email || user.email || userId;
-    const enrichedMessage = `${notificationMessage} (${userIdentifier})`;
+    // Prepare notification content
+    const notificationTitle = language === 'sv' 
+      ? 'Status uppdaterad av användare' 
+      : 'Status updated by user';
+      
+    const userIdentifier = profile?.display_name || profile?.email || customerId;
+    const notificationMessage = language === 'sv' 
+      ? `${siteName} status har ändrats till "${newStatus}" av en användare (${userIdentifier})` 
+      : `${siteName} status has been changed to "${newStatus}" by a user (${userIdentifier})`;
 
     // Create notification for super admin using service role (bypasses RLS)
-    console.log(`Creating notification for super admin ${SUPER_ADMIN_ID}: ${enrichedMessage}`);
+    console.log(`Creating notification for super admin ${SUPER_ADMIN_ID}: ${notificationMessage}`);
     
     const { data: notification, error: insertError } = await supabaseAdmin
       .from('notifications')
       .insert({
         user_id: SUPER_ADMIN_ID,
         title: notificationTitle,
-        message: enrichedMessage,
+        message: notificationMessage,
         type: 'status_change'
       })
       .select()

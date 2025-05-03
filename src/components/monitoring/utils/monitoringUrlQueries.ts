@@ -111,70 +111,59 @@ export async function updateMonitoringUrlStatus(
   console.log(`Updating monitoring URL status: ${urlId} to ${status}`);
   
   try {
-    // First, get the current data of the URL
-    const { data: currentUrlData, error: fetchError } = await supabase
+    // First, get the URL data before update
+    const { data: urlData, error: fetchError } = await supabase
       .from('monitoring_urls')
-      .select('customer_id, url')
+      .select('*')
       .eq('id', urlId)
       .single();
-    
+      
     if (fetchError) {
-      console.error('Error fetching monitoring URL data:', fetchError);
-      throw new Error(`Error fetching monitoring URL data: ${fetchError.message}`);
+      console.error('Error fetching monitoring URL details:', fetchError);
+      throw new Error(`Error fetching monitoring URL details: ${fetchError.message}`);
     }
-
-    // Update the status in the monitoring_urls table
-    const { data, error } = await supabase
+    
+    // Directly update the status in the local database
+    const { data: updatedUrl, error: updateError } = await supabase
       .from('monitoring_urls')
-      .update({ status, ...(reason ? { reason } : {}) })
+      .update({ 
+        status, 
+        ...(reason ? { reason } : {}),
+        updated_at: new Date().toISOString()
+      })
       .eq('id', urlId)
       .select()
       .single();
     
-    if (error) {
-      console.error('Error updating monitoring URL status:', error);
-      throw new Error(`Error updating monitoring URL status: ${error.message}`);
+    if (updateError) {
+      console.error('Error updating monitoring URL status:', updateError);
+      throw new Error(`Error updating monitoring URL status: ${updateError.message}`);
     }
     
-    // Only invoke the edge function for approved or rejected status
-    if (status === 'approved' || status === 'rejected') {
-      try {
-        const { data: currentUser } = await supabase.auth.getUser();
-        
-        if (!currentUser?.user) {
-          throw new Error('User not authenticated');
-        }
-        
-        console.log('Calling edge function to handle status change notification');
-        
-        // Call the edge function to handle notifications and removal_url creation
-        const { data: functionResult, error: functionError } = await supabase.functions.invoke('notify-status-change', {
-          body: {
-            siteName: data.url,
-            newStatus: status,
-            language: document.documentElement.lang || 'en',
-            userId: currentUser.user.id,
-            monitoringUrlId: urlId,
-            customerId: currentUrlData.customer_id // Pass the customer ID for proper URL creation
-          }
-        });
-        
-        if (functionError) {
-          console.error('Error from edge function:', functionError);
-          // Log but don't throw - we still want to return the updated URL
-          console.log('Edge function error but URL was updated successfully');
-        } else {
-          console.log('Edge function response:', functionResult);
-        }
-      } catch (notifyError) {
-        console.error('Error calling edge function:', notifyError);
-        // We don't want to fail the entire operation if the edge function call fails
-        // The status update was successful, so we still proceed
-        console.log('Edge function error but URL was updated successfully');
+    // Now use the edge function to handle additional operations like notifications
+    // and moving the URL to removal_urls if approved - this uses service role key
+    console.log('Calling edge function to handle notifications and additional processing');
+    
+    const { data: functionResult, error: functionError } = await supabase.functions.invoke('notify-status-change', {
+      body: {
+        monitoringUrlId: urlId,
+        siteName: urlData.url,
+        newStatus: status,
+        reason: reason || null,
+        language: document.documentElement.lang || 'en',
+        customerId: urlData.customer_id
       }
+    });
+    
+    if (functionError) {
+      console.error('Error from edge function:', functionError);
+      // We still return the updated URL since the status was updated successfully
+      console.log('Edge function error but URL was updated successfully');
+    } else {
+      console.log('Edge function response:', functionResult);
     }
     
-    return data;
+    return updatedUrl;
   } catch (error: any) {
     console.error('Error in updateMonitoringUrlStatus:', error);
     throw error; // Re-throw for the caller to handle

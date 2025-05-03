@@ -71,6 +71,7 @@ export const useMonitoringUrls = (customerId?: string) => {
         title: t('success'),
         description: t('monitoring.url.updated'),
       });
+      // Invalidate and refetch data to update UI
       await queryClient.invalidateQueries({ queryKey: ['admin-monitoring-urls'] });
       await queryClient.invalidateQueries({ queryKey: ['customer-monitoring-urls', customerId] });
       
@@ -79,6 +80,7 @@ export const useMonitoringUrls = (customerId?: string) => {
       await queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
     },
     onError: (error: Error) => {
+      console.error("Error in updateStatusMutation:", error);
       toast({
         title: t('error'),
         description: error.message,
@@ -92,7 +94,13 @@ export const useMonitoringUrls = (customerId?: string) => {
   };
 
   const handleUpdateStatus = async (urlId: string, status: MonitoringUrlStatus, reason?: string) => {
-    await updateStatusMutation.mutateAsync({ urlId, status, reason });
+    try {
+      console.log(`handleUpdateStatus called for URL ${urlId} with status ${status}`);
+      await updateStatusMutation.mutateAsync({ urlId, status, reason });
+    } catch (error) {
+      console.error("Error in handleUpdateStatus:", error);
+      // Error is already handled in the mutation's onError callback
+    }
   };
 
   return {

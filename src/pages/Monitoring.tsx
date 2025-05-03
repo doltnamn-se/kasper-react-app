@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
@@ -45,6 +44,7 @@ const Monitoring = () => {
   const handleApproveUrl = async (urlId: string) => {
     try {
       setIsProcessing(true);
+      console.log(`Approving URL ${urlId}`);
       await handleUpdateStatus(urlId, 'approved');
     } catch (error) {
       console.error("Error approving URL:", error);
@@ -61,6 +61,7 @@ const Monitoring = () => {
   const handleRejectUrl = async (urlId: string) => {
     try {
       setIsProcessing(true);
+      console.log(`Rejecting URL ${urlId}`);
       await handleUpdateStatus(urlId, 'rejected');
     } catch (error) {
       console.error("Error rejecting URL:", error);
