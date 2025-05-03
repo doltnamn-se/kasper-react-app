@@ -47,7 +47,7 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
       return language === 'sv' ? 'URL godkänd av användare' : 'URL approved by user';
     }
     if (type === 'monitoring') {
-      return language === 'sv' ? 'Ny bevaknings-URL tillagd' : 'New monitoring URL added';
+      return language === 'sv' ? 'Bevakningsalarm' : 'Monitoring alarm';
     }
     return notification.title;
   };
@@ -67,7 +67,9 @@ export const NotificationItem = ({ notification, language, onMarkAsRead }: Notif
         : 'A monitoring URL was approved by a user and moved to link management';
     }
     if (type === 'monitoring') {
-      return notification.message;
+      return language === 'sv' 
+        ? 'Vår bevakningstjänst har hittat en ny länk'
+        : 'Our monitoring service has found a new link';
     }
     return notification.message;
   };

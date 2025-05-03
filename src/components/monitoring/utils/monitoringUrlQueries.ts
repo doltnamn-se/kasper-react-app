@@ -107,8 +107,8 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
         .from('notifications')
         .insert({
           user_id: customerId,
-          title: 'Ny bevaknings-URL tillagd',
-          message: `En administratör har lagt till ${url} för bevakning.`,
+          title: 'Bevakningsalarm',
+          message: 'Vår bevakningstjänst har hittat en ny länk',
           type: 'monitoring',
           read: false
         });
