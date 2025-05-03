@@ -53,5 +53,7 @@ export const errors = {
   'errors.subscription_update_failed': 'Failed to update subscription',
   'errors.delete_failed': 'Delete operation failed',
   'errors.user_delete_failed': 'Failed to delete user',
-  'errors.user_banned': 'This user account has been suspended'
+  'errors.user_banned': 'This user account has been suspended',
+  'monitoring.url.error.approve': 'Failed to approve URL',
+  'monitoring.url.error.reject': 'Failed to reject URL'
 };

@@ -45,8 +45,8 @@ export const UserMonitoringUrlList = ({
     } catch (error) {
       console.error("Error approving URL:", error);
       toast({
-        title: language === 'sv' ? 'Ett fel inträffade' : 'An error occurred',
-        description: language === 'sv' ? 'Kunde inte slutföra åtgärden' : 'Could not complete the action',
+        title: t('error'),
+        description: t('monitoring.url.error.approve'),
         variant: "destructive"
       });
     } finally {
@@ -65,8 +65,8 @@ export const UserMonitoringUrlList = ({
     } catch (error) {
       console.error("Error rejecting URL:", error);
       toast({
-        title: language === 'sv' ? 'Ett fel inträffade' : 'An error occurred',
-        description: language === 'sv' ? 'Kunde inte slutföra åtgärden' : 'Could not complete the action',
+        title: t('error'),
+        description: t('monitoring.url.error.reject'),
         variant: "destructive"
       });
     } finally {

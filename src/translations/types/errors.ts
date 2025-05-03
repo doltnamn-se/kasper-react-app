@@ -54,4 +54,6 @@ export interface ErrorTranslations {
   'errors.delete_failed': string;
   'errors.user_delete_failed': string;
   'errors.user_banned': string;
+  'monitoring.url.error.approve': string;
+  'monitoring.url.error.reject': string;
 }

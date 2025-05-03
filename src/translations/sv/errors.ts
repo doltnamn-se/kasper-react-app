@@ -53,5 +53,7 @@ export const errors = {
   'errors.subscription_update_failed': 'Det gick inte att uppdatera prenumerationen',
   'errors.delete_failed': 'Borttagningen misslyckades',
   'errors.user_delete_failed': 'Det gick inte att ta bort användaren',
-  'errors.user_banned': 'Detta användarkonto har stängts av'
+  'errors.user_banned': 'Detta användarkonto har stängts av',
+  'monitoring.url.error.approve': 'Det gick inte att godkänna URL:en',
+  'monitoring.url.error.reject': 'Det gick inte att avvisa URL:en'
 };
