@@ -55,13 +55,24 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           setIsLoading(false);
           return;
         }
-        
-        if (currentSession) {
-          console.log("AuthRoute: Active session found");
-          setSession(true);
-        } else {
-          console.log("AuthRoute: No session found, allowing auth page access");
-          setSession(false);
+
+        // Check if user is banned
+        if (currentSession?.user) {
+          const userData = currentSession.user as any;
+          if (userData.banned_until && new Date(userData.banned_until) > new Date()) {
+            console.log("AuthRoute: User is banned, signing out");
+            await supabase.auth.signOut();
+            if (mounted) {
+              setSession(false);
+              setIsLoading(false);
+            }
+            return;
+          }
+        }
+
+        if (mounted) {
+          setSession(!!currentSession);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("AuthRoute: Error checking auth:", error);
@@ -73,37 +84,33 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
       }
     };
 
+    let mounted = true;
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("AuthRoute: Auth state changed:", event);
-      
-      // Get URL parameters
-      const params = new URLSearchParams(location.search);
-      const type = params.get('type');
-      
-      if (event === 'SIGNED_IN') {
-        // If we're in recovery flow, don't redirect
-        if (type === 'recovery') {
-          console.log("AuthRoute: Signed in during recovery flow, maintaining access");
-          setSession(false);
-        } else {
-          console.log("AuthRoute: User signed in");
-          setSession(true);
+      if (mounted) {
+        // Check if user is banned on auth state change
+        if (session?.user) {
+          const userData = session.user as any;
+          if (userData.banned_until && new Date(userData.banned_until) > new Date()) {
+            console.log("AuthRoute: User is banned, preventing authentication");
+            supabase.auth.signOut().then(() => {
+              if (mounted) {
+                setSession(false);
+                setIsLoading(false);
+              }
+            });
+            return;
+          }
         }
-        setIsLoading(false);
-      } else if (event === 'SIGNED_OUT') {
-        console.log("AuthRoute: User signed out");
-        setSession(false);
-        setIsLoading(false);
-      } else if (event === 'TOKEN_REFRESHED') {
-        console.log("AuthRoute: Token refreshed");
+        
         setSession(!!session);
         setIsLoading(false);
       }
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, [location.pathname, location.search]);
@@ -116,6 +123,6 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return <Navigate to="/" replace />;
   }
 
-  // Wrap children with LanguageProvider to ensure useLanguage is available
-  return <LanguageProvider>{children}</LanguageProvider>;
+  // Return the children directly - LanguageProvider is now handled in App.tsx globally
+  return <>{children}</>;
 };

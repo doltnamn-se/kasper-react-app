@@ -97,7 +97,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-        <LanguageProvider>
+        <LanguageProvider> {/* Wrap entire app with LanguageProvider */}
           <SidebarProvider>
             <Router>
               <Routes>

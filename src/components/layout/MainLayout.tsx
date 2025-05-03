@@ -6,7 +6,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { MainNavigation } from "@/components/nav/MainNavigation";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
-import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
@@ -15,7 +15,7 @@ interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-const LayoutContent = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ children }: MainLayoutProps) => {
   const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const { userProfile } = useUserProfile();
   const { t } = useLanguage();
@@ -83,13 +83,5 @@ const LayoutContent = ({ children }: MainLayoutProps) => {
       {/* Bottom Navigation - Mobile Only */}
       {isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
     </div>
-  );
-};
-
-export const MainLayout = ({ children }: MainLayoutProps) => {
-  return (
-    <LanguageProvider>
-      <LayoutContent>{children}</LayoutContent>
-    </LanguageProvider>
   );
 };
