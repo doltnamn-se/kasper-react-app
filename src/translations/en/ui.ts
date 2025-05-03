@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -168,5 +169,7 @@ export const ui: UITranslations = {
   'monitoring.url.updated': 'URL status has been updated successfully',
   'monitoring.url.approved': 'URL approved and moved to link management',
   'monitoring.url.rejected': 'URL rejected',
+  'monitoring.url.error.approve': 'Failed to approve URL',
+  'monitoring.url.error.reject': 'Failed to reject URL',
   'error': 'Error',
 };

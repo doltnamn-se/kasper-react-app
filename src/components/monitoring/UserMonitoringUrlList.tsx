@@ -1,4 +1,3 @@
-
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -39,8 +38,8 @@ export const UserMonitoringUrlList = ({
       setProcessingUrls(prev => ({ ...prev, [urlId]: true }));
       await onApprove(urlId);
       toast({
-        title: language === 'sv' ? 'Åtgärd slutförd' : 'Action completed',
-        description: language === 'sv' ? 'Din förfrågan har skickats' : 'Your request has been submitted',
+        title: language === 'sv' ? 'Tillagd i länkar' : 'Added to links',
+        description: language === 'sv' ? 'Länken är mottagen och kommer behandlas inom kort' : 'The link is received and will be processed shortly',
       });
     } catch (error) {
       console.error("Error approving URL:", error);
