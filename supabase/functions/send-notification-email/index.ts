@@ -21,7 +21,7 @@ const handler = async (req: Request) => {
 
   try {
     const requestData = await req.json();
-    const { email, title, message, type, isAdminAddedLink } = requestData;
+    const { email, title, message, type, isAdminAddedLink, forceEmail } = requestData;
     
     console.log("Email notification request details:", { 
       email, 
@@ -29,6 +29,7 @@ const handler = async (req: Request) => {
       message, 
       type,
       isAdminAddedLink,
+      forceEmail,
       hasResendKey: !!Deno.env.get("RESEND_API_KEY")
     });
     

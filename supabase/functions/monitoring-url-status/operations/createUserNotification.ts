@@ -103,7 +103,11 @@ async function sendEmailNotificationIfRequired(
     
     // Only send email if not skipping user email AND (user has email notifications enabled OR forceEmail is set)
     if (!skipUserEmail && (preferences?.email_notifications || forceEmail) && profile?.email) {
-      console.log("Attempting to send email notification to:", profile.email);
+      console.log("Attempting to send email notification to:", profile.email, {
+        emailNotificationsEnabled: preferences?.email_notifications,
+        forceEmailFlag: !!forceEmail,
+        skipUserEmail: skipUserEmail
+      });
       
       try {
         // Call the send-notification-email function
@@ -119,7 +123,8 @@ async function sendEmailNotificationIfRequired(
               email: profile.email,
               title: notificationTitle,
               message: notificationMessage,
-              type: 'monitoring'
+              type: 'monitoring',
+              forceEmail: forceEmail
             })
           }
         );

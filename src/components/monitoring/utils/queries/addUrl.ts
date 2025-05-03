@@ -54,8 +54,8 @@ export async function addUrl(url: string, customerId: string): Promise<Monitorin
       } else {
         console.log('Notification created successfully for monitoring URL');
         
-        // Send email notification if enabled
-        await sendEmailNotificationIfEnabled(
+        // Always send email notification for admin-added monitoring URLs with forceEmail=true
+        await sendEmailNotificationForAdminAddedUrl(
           customerId, 
           notificationTitle, 
           notificationMessage
@@ -71,62 +71,50 @@ export async function addUrl(url: string, customerId: string): Promise<Monitorin
 }
 
 /**
- * Send email notification if user has enabled email notifications
+ * Send email notification for admin-added monitoring URLs
+ * This is separate from the regular notification flow and should always send an email
  */
-async function sendEmailNotificationIfEnabled(
+async function sendEmailNotificationForAdminAddedUrl(
   customerId: string, 
   notificationTitle: string, 
   notificationMessage: string
 ) {
-  // Get user email and notification preferences
+  // Get user email (don't need to check preferences - always send for admin-added URLs)
   const { data: userData, error: userError } = await supabase
     .from('profiles')
     .select('email')
     .eq('id', customerId)
     .single();
     
-  const { data: preferences, error: prefError } = await supabase
-    .from('notification_preferences')
-    .select('email_notifications')
-    .eq('user_id', customerId)
-    .single();
+  if (userError || !userData?.email) {
+    console.error('Error fetching user email:', userError);
+    return;
+  }
     
-  if (!userError && !prefError && userData?.email && preferences?.email_notifications) {
-    // Log details before sending email
-    console.log('Email notification eligible:', {
-      email: userData.email,
-      emailNotificationsEnabled: preferences.email_notifications
-    });
-    
-    // Send email notification directly with extra logging
-    console.log('Attempting to send email notification to:', userData.email);
-    
-    try {
-      const emailResponse = await supabase.functions.invoke('send-notification-email', {
-        body: {
-          email: userData.email,
-          title: notificationTitle,
-          message: notificationMessage,
-          type: 'monitoring',
-          isAdminAddedLink: true // Add a flag to indicate this is an admin-added link
-        }
-      });
-      
-      console.log('Email function response:', emailResponse);
-      
-      if (emailResponse.error) {
-        console.error('Error from email function:', emailResponse.error);
-      } else {
-        console.log('Email notification sent successfully');
+  // Log details before sending email
+  console.log('Sending admin-added monitoring URL email notification to:', userData.email);
+  
+  try {
+    // Call edge function to send email with forceEmail=true to ensure delivery
+    const emailResponse = await supabase.functions.invoke('send-notification-email', {
+      body: {
+        email: userData.email,
+        title: notificationTitle,
+        message: notificationMessage,
+        type: 'monitoring',
+        isAdminAddedLink: true,
+        forceEmail: true
       }
-    } catch (emailErr) {
-      console.error('Exception sending email notification:', emailErr);
-    }
-  } else {
-    console.log('Email notification skipped:', {
-      hasUserData: !!userData,
-      hasEmail: !!userData?.email,
-      emailNotificationsEnabled: preferences?.email_notifications
     });
+    
+    console.log('Email function response:', emailResponse);
+    
+    if (emailResponse.error) {
+      console.error('Error from email function:', emailResponse.error);
+    } else {
+      console.log('Email notification sent successfully for admin-added URL');
+    }
+  } catch (emailErr) {
+    console.error('Exception sending email notification for admin-added URL:', emailErr);
   }
 }
