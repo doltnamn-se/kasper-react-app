@@ -32,11 +32,21 @@ serve(async (req) => {
       reason, 
       customerId, 
       language,
-      forceEmail
+      forceEmail,
+      skipUserEmail
     } = await req.json();
 
     console.log(`Processing URL status update: ${monitoringUrlId} to ${newStatus} for customer ${customerId}`);
-    console.log(`Request details:`, { monitoringUrlId, siteName, newStatus, reason, customerId, language, forceEmail });
+    console.log(`Request details:`, { 
+      monitoringUrlId, 
+      siteName, 
+      newStatus, 
+      reason, 
+      customerId, 
+      language, 
+      forceEmail,
+      skipUserEmail
+    });
     
     if (!monitoringUrlId || !newStatus || !customerId) {
       console.error("Missing required data:", { monitoringUrlId, newStatus, customerId });
@@ -174,8 +184,9 @@ serve(async (req) => {
           console.log("User notification preferences:", preferences);
         }
         
-        // Send email if user has email notifications enabled or if forceEmail flag is set
-        if ((preferences?.email_notifications || forceEmail) && profile?.email) {
+        // Only send email if we're not skipping user email (admin updates status) 
+        // AND (user has email notifications enabled OR forceEmail flag is set)
+        if (!skipUserEmail && (preferences?.email_notifications || forceEmail) && profile?.email) {
           // User has email notifications enabled, send email manually
           console.log("Attempting to send email notification to:", profile.email);
           
@@ -218,7 +229,8 @@ serve(async (req) => {
           console.log("Email notification skipped:", {
             hasEmail: !!profile?.email,
             emailNotificationsEnabled: preferences?.email_notifications,
-            forceEmailFlag: !!forceEmail
+            forceEmailFlag: !!forceEmail,
+            skipUserEmail: !!skipUserEmail
           });
         }
       }

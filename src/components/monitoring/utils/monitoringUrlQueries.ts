@@ -100,6 +100,7 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
     throw new Error(`Error adding monitoring URL: ${error.message}`);
   }
   
+  // This is the case where an admin adds a monitoring URL for a customer
   // Create notification for the customer about the new monitoring URL
   if (data) {
     try {
@@ -151,7 +152,8 @@ export async function addMonitoringUrl(url: string, customerId: string): Promise
                 email: userData.email,
                 title: notificationTitle,
                 message: notificationMessage,
-                type: 'monitoring'
+                type: 'monitoring',
+                isAdminAddedLink: true // Add a flag to indicate this is an admin-added link
               }
             });
             
@@ -216,7 +218,8 @@ export async function updateMonitoringUrlStatus(
         reason: reason || null,
         customerId: urlData.customer_id,
         language: document.documentElement.lang || 'en',
-        forceEmail: true // Add a flag to force email sending for debugging
+        forceEmail: true,  // Keep this flag to force email sending for debugging
+        skipUserEmail: true // Add this new flag to skip user email notifications
       }
     });
     
@@ -231,9 +234,6 @@ export async function updateMonitoringUrlStatus(
     if (!functionResult.success) {
       throw new Error(functionResult.error || 'Unknown error from edge function');
     }
-    
-    // Don't attempt to update the URL status directly here
-    // The edge function has already done that with admin privileges
     
     // For approved URLs, invalidate queries related to incoming URLs to refresh the UI
     if (status === 'approved') {

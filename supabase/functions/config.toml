@@ -3,3 +3,6 @@ project_id = "upfapfohwnkiugvebujh"
 
 [send-notification-email]
 verify_jwt = false
+
+[monitoring-url-status]
+verify_jwt = false
