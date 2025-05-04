@@ -1,11 +1,10 @@
 
-import { useState, FormEvent, useMemo } from "react";
+import { useState, FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, CornerDownLeft, Check, ChevronsUpDown } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, CornerDownLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 interface AdminMonitoringUrlFormProps {
   customers: { id: string; profile: { display_name: string | null; email: string | null; } | null }[];
@@ -20,26 +19,7 @@ export const AdminMonitoringUrlForm = ({
 }: AdminMonitoringUrlFormProps) => {
   const [url, setUrl] = useState("");
   const [selectedCustomerId, setSelectedCustomerId] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [open, setOpen] = useState(false);
   const { t, language } = useLanguage();
-
-  // Ensure we're working with a valid array even if customers is undefined
-  const safeCustomers = Array.isArray(customers) ? customers : [];
-
-  // Filter customers based on search query
-  const filteredCustomers = useMemo(() => {
-    if (!searchQuery || searchQuery === '') return safeCustomers;
-    
-    const searchLower = searchQuery.toLowerCase();
-    return safeCustomers.filter((customer) => {
-      const displayName = customer.profile?.display_name || '';
-      const email = customer.profile?.email || '';
-      
-      return displayName.toLowerCase().includes(searchLower) || 
-             email.toLowerCase().includes(searchLower);
-    });
-  }, [safeCustomers, searchQuery]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -52,64 +32,26 @@ export const AdminMonitoringUrlForm = ({
   const placeholderText = language === 'sv' ? 'Ange länk' : 'Enter link';
   const buttonText = language === 'sv' ? 'Lägg till' : 'Add';
   const selectCustomerText = language === 'sv' ? 'Välj kund' : 'Select customer';
-  const searchCustomerText = language === 'sv' ? 'Sök kund...' : 'Search customer...';
-  const noResultsText = language === 'sv' ? 'Inga resultat' : 'No results';
-
-  const getCustomerDisplayText = (customer: { profile: { display_name: string | null; email: string | null; } | null }) => {
-    return customer.profile?.display_name || customer.profile?.email || t('no.name');
-  };
-
-  const selectedCustomer = safeCustomers.find(customer => customer.id === selectedCustomerId);
-  const selectedCustomerText = selectedCustomer 
-    ? getCustomerDisplayText(selectedCustomer)
-    : selectCustomerText;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="justify-between bg-[#f5f5f5] dark:bg-[#121212] w-full text-left font-normal"
-            >
-              {selectedCustomerText}
-              <ChevronsUpDown className="h-4 w-4 ml-2 opacity-50 shrink-0" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
-            <Command>
-              <CommandInput 
-                placeholder={searchCustomerText} 
-                value={searchQuery}
-                onValueChange={setSearchQuery}
-                className="h-9"
-              />
-              <CommandEmpty>{noResultsText}</CommandEmpty>
-              <CommandGroup className="max-h-64 overflow-y-auto">
-                {filteredCustomers.map((customer) => (
-                  <CommandItem
-                    key={customer.id}
-                    value={customer.id}
-                    onSelect={(value) => {
-                      setSelectedCustomerId(value);
-                      setSearchQuery("");
-                      setOpen(false);
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <Check
-                      className={`h-4 w-4 mr-2 ${selectedCustomerId === customer.id ? "opacity-100" : "opacity-0"}`}
-                    />
-                    {getCustomerDisplayText(customer)}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <Select value={selectedCustomerId} onValueChange={setSelectedCustomerId}>
+          <SelectTrigger className="bg-[#f5f5f5] dark:bg-[#121212]">
+            <SelectValue placeholder={selectCustomerText} />
+          </SelectTrigger>
+          <SelectContent>
+            {customers.map(customer => (
+              <SelectItem 
+                key={customer.id} 
+                value={customer.id}
+                className="cursor-pointer"
+              >
+                {customer.profile?.display_name || customer.profile?.email || t('no.name')}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         
         <div className="flex gap-2">
           <Input 
