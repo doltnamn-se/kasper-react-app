@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { ExternalLink } from "lucide-react";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 
 interface AdminMonitoringUrlListProps {
   monitoringUrls: MonitoringUrl[];
@@ -38,6 +39,7 @@ export const AdminMonitoringUrlList = ({
   const [selectedUrl, setSelectedUrl] = useState<MonitoringUrl | null>(null);
   const [action, setAction] = useState<'approved' | 'rejected' | null>(null);
   const [reason, setReason] = useState('');
+  const isMobile = useBreakpoint('(max-width: 767px)');
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -113,30 +115,32 @@ export const AdminMonitoringUrlList = ({
         <Table>
           <TableHeader>
             <TableRow className="bg-[#f5f5f5] dark:bg-[#1c1c1e]">
-              <TableHead>URL</TableHead>
+              {!isMobile && <TableHead>URL</TableHead>}
               <TableHead>Kund</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Tillagd</TableHead>
-              <TableHead>Åtgärder</TableHead>
+              {!isMobile && <TableHead>Tillagd</TableHead>}
+              {!isMobile && <TableHead>Åtgärder</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
             {monitoringUrls.length > 0 ? (
               monitoringUrls.map((url) => (
                 <TableRow key={url.id} className="border-b border-[#dfdfdf] dark:border-[#2e2e2e]">
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      <a 
-                        href={url.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 dark:text-blue-400 hover:underline max-w-[200px] truncate inline-flex items-center gap-1"
-                      >
-                        {url.url}
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    </div>
-                  </TableCell>
+                  {!isMobile && (
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        <a 
+                          href={url.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 dark:text-blue-400 hover:underline max-w-[200px] truncate inline-flex items-center gap-1"
+                        >
+                          {url.url}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
+                    </TableCell>
+                  )}
                   <TableCell>
                     {url.customer?.profiles?.display_name || url.customer?.profiles?.email || 'Unknown'}
                   </TableCell>
@@ -144,16 +148,15 @@ export const AdminMonitoringUrlList = ({
                     <Badge className={getStatusColor(url.status)}>
                       {getStatusText(url.status)}
                     </Badge>
-                  </TableCell>
-                  <TableCell>{formatTime(url.created_at)}</TableCell>
-                  <TableCell>
-                    {url.status === 'pending' && (
-                      <div className="flex space-x-2">
+                    
+                    {/* Mobile-only action buttons */}
+                    {isMobile && url.status === 'pending' && (
+                      <div className="flex space-x-2 mt-2">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleActionClick(url, 'approved')}
-                          className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:hover:bg-green-900/40 dark:text-green-400 dark:border-green-800"
+                          className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:hover:bg-green-900/40 dark:text-green-400 dark:border-green-800 text-xs py-1 h-7"
                         >
                           {approveButtonText}
                         </Button>
@@ -161,18 +164,43 @@ export const AdminMonitoringUrlList = ({
                           size="sm"
                           variant="outline"
                           onClick={() => handleActionClick(url, 'rejected')}
-                          className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 dark:border-red-800"
+                          className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 dark:border-red-800 text-xs py-1 h-7"
                         >
                           {rejectButtonText}
                         </Button>
                       </div>
                     )}
                   </TableCell>
+                  {!isMobile && <TableCell>{formatTime(url.created_at)}</TableCell>}
+                  {!isMobile && (
+                    <TableCell>
+                      {url.status === 'pending' && (
+                        <div className="flex space-x-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleActionClick(url, 'approved')}
+                            className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:hover:bg-green-900/40 dark:text-green-400 dark:border-green-800"
+                          >
+                            {approveButtonText}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleActionClick(url, 'rejected')}
+                            className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 dark:border-red-800"
+                          >
+                            {rejectButtonText}
+                          </Button>
+                        </div>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-4 text-gray-500 dark:text-gray-400">
+                <TableCell colSpan={isMobile ? 2 : 5} className="text-center py-4 text-gray-500 dark:text-gray-400">
                   {language === 'sv' ? 'Inga bevaknings-URLs hittades' : 'No monitoring URLs found'}
                 </TableCell>
               </TableRow>
