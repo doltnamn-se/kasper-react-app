@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Table,
@@ -39,18 +40,6 @@ export const AdminMonitoringUrlList = ({
   const [action, setAction] = useState<'approved' | 'rejected' | null>(null);
   const [reason, setReason] = useState('');
   const isMobile = useBreakpoint('(max-width: 767px)');
-
-  const formatUrl = (url: string): string => {
-    try {
-      const urlObj = new URL(url);
-      const domain = urlObj.hostname + urlObj.pathname.split('/')[1];
-      const lastThreeChars = url.slice(-3);
-      return `${urlObj.protocol}//${domain}/...${lastThreeChars}`;
-    } catch (error) {
-      // If URL parsing fails, return the original URL
-      return url;
-    }
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -145,9 +134,8 @@ export const AdminMonitoringUrlList = ({
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-blue-600 dark:text-blue-400 hover:underline max-w-[200px] truncate inline-flex items-center gap-1"
-                          title={url.url}
                         >
-                          {formatUrl(url.url)}
+                          {url.url}
                           <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
