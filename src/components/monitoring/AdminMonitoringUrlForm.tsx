@@ -2,8 +2,7 @@
 import { useState, FormEvent, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, CornerDownLeft, Search } from "lucide-react";
+import { Loader2, CornerDownLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -25,10 +24,14 @@ export const AdminMonitoringUrlForm = ({
   const [open, setOpen] = useState(false);
   const { t, language } = useLanguage();
 
+  // Ensure we're working with a valid array even if customers is undefined
+  const safeCustomers = Array.isArray(customers) ? customers : [];
+
+  // Filter customers based on search query
   const filteredCustomers = useMemo(() => {
-    if (!searchQuery.trim()) return customers;
+    if (!searchQuery.trim()) return safeCustomers;
     
-    return customers.filter((customer) => {
+    return safeCustomers.filter((customer) => {
       const displayName = customer.profile?.display_name || '';
       const email = customer.profile?.email || '';
       const searchLower = searchQuery.toLowerCase();
@@ -36,7 +39,7 @@ export const AdminMonitoringUrlForm = ({
       return displayName.toLowerCase().includes(searchLower) || 
              email.toLowerCase().includes(searchLower);
     });
-  }, [customers, searchQuery]);
+  }, [safeCustomers, searchQuery]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -56,7 +59,7 @@ export const AdminMonitoringUrlForm = ({
     return customer.profile?.display_name || customer.profile?.email || t('no.name');
   };
 
-  const selectedCustomer = customers.find(customer => customer.id === selectedCustomerId);
+  const selectedCustomer = safeCustomers.find(customer => customer.id === selectedCustomerId);
   const selectedCustomerText = selectedCustomer 
     ? getCustomerDisplayText(selectedCustomer)
     : selectCustomerText;
@@ -84,21 +87,23 @@ export const AdminMonitoringUrlForm = ({
                 className="h-9"
               />
               <CommandEmpty>{noResultsText}</CommandEmpty>
-              <CommandGroup className="max-h-64 overflow-y-auto">
-                {filteredCustomers.map(customer => (
-                  <CommandItem
-                    key={customer.id}
-                    value={customer.id}
-                    onSelect={() => {
-                      setSelectedCustomerId(customer.id);
-                      setOpen(false);
-                    }}
-                    className="cursor-pointer"
-                  >
-                    {getCustomerDisplayText(customer)}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              {filteredCustomers.length > 0 && (
+                <CommandGroup className="max-h-64 overflow-y-auto">
+                  {filteredCustomers.map(customer => (
+                    <CommandItem
+                      key={customer.id}
+                      value={customer.id}
+                      onSelect={() => {
+                        setSelectedCustomerId(customer.id);
+                        setOpen(false);
+                      }}
+                      className="cursor-pointer"
+                    >
+                      {getCustomerDisplayText(customer)}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
             </Command>
           </PopoverContent>
         </Popover>
