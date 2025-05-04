@@ -2,7 +2,7 @@
 import { useState, FormEvent, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, CornerDownLeft } from "lucide-react";
+import { Loader2, CornerDownLeft, Check, ChevronsUpDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -29,12 +29,12 @@ export const AdminMonitoringUrlForm = ({
 
   // Filter customers based on search query
   const filteredCustomers = useMemo(() => {
-    if (!searchQuery || !searchQuery.trim()) return safeCustomers;
+    if (!searchQuery || searchQuery === '') return safeCustomers;
     
+    const searchLower = searchQuery.toLowerCase();
     return safeCustomers.filter((customer) => {
       const displayName = customer.profile?.display_name || '';
       const email = customer.profile?.email || '';
-      const searchLower = searchQuery.toLowerCase();
       
       return displayName.toLowerCase().includes(searchLower) || 
              email.toLowerCase().includes(searchLower);
@@ -76,6 +76,7 @@ export const AdminMonitoringUrlForm = ({
               className="justify-between bg-[#f5f5f5] dark:bg-[#121212] w-full text-left font-normal"
             >
               {selectedCustomerText}
+              <ChevronsUpDown className="h-4 w-4 ml-2 opacity-50 shrink-0" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-full p-0" align="start">
@@ -83,28 +84,29 @@ export const AdminMonitoringUrlForm = ({
               <CommandInput 
                 placeholder={searchCustomerText} 
                 value={searchQuery}
-                onValueChange={(value) => setSearchQuery(value)}
+                onValueChange={setSearchQuery}
                 className="h-9"
               />
               <CommandEmpty>{noResultsText}</CommandEmpty>
-              {filteredCustomers && filteredCustomers.length > 0 && (
-                <CommandGroup className="max-h-64 overflow-y-auto">
-                  {filteredCustomers.map((customer) => (
-                    <CommandItem
-                      key={customer.id}
-                      value={customer.id}
-                      onSelect={(value) => {
-                        setSelectedCustomerId(value);
-                        setSearchQuery("");
-                        setOpen(false);
-                      }}
-                      className="cursor-pointer"
-                    >
-                      {getCustomerDisplayText(customer)}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              )}
+              <CommandGroup className="max-h-64 overflow-y-auto">
+                {filteredCustomers.map((customer) => (
+                  <CommandItem
+                    key={customer.id}
+                    value={customer.id}
+                    onSelect={(value) => {
+                      setSelectedCustomerId(value);
+                      setSearchQuery("");
+                      setOpen(false);
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <Check
+                      className={`h-4 w-4 mr-2 ${selectedCustomerId === customer.id ? "opacity-100" : "opacity-0"}`}
+                    />
+                    {getCustomerDisplayText(customer)}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
             </Command>
           </PopoverContent>
         </Popover>
