@@ -173,4 +173,6 @@ export const ui: UITranslations = {
   'monitoring.url.error.reject': 'Misslyckades med att avvisa URL',
   'error': 'Fel',
   'url.input.placeholder': 'Ange länk',
+  'monitoring.add.new': 'Lägg till ny',
+  'monitoring.links': 'Länkar',
 };

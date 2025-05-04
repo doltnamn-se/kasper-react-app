@@ -173,4 +173,6 @@ export const ui: UITranslations = {
   'monitoring.url.error.reject': 'Failed to reject URL',
   'error': 'Error',
   'url.input.placeholder': 'Enter link',
+  'monitoring.add.new': 'Add new',
+  'monitoring.links': 'Links',
 };
