@@ -170,4 +170,5 @@ export interface UITranslations {
   'monitoring.url.error.approve': string;
   'monitoring.url.error.reject': string;
   'error': string;
+  'url.input.placeholder': string;
 }
