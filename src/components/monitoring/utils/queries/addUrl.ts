@@ -35,8 +35,8 @@ export async function addUrl(url: string, customerId: string): Promise<Monitorin
   // Create notification for the customer about the new monitoring URL
   if (data) {
     try {
-      const notificationTitle = 'Bevakningsalarm';
-      const notificationMessage = 'Vår bevakningstjänst har hittat en ny länk';
+      const notificationTitle = 'Bevakningsnotis';
+      const notificationMessage = 'Vår bevakningstjänst har upptäckt en ny länk kopplat till ditt namn. Logga in på ditt konto för att se mer.';
       
       // Create in-app notification
       const { error: notificationError } = await supabase
