@@ -29,7 +29,7 @@ export const AdminMonitoringUrlForm = ({
 
   // Filter customers based on search query
   const filteredCustomers = useMemo(() => {
-    if (!searchQuery.trim()) return safeCustomers;
+    if (!searchQuery || !searchQuery.trim()) return safeCustomers;
     
     return safeCustomers.filter((customer) => {
       const displayName = customer.profile?.display_name || '';
@@ -83,18 +83,19 @@ export const AdminMonitoringUrlForm = ({
               <CommandInput 
                 placeholder={searchCustomerText} 
                 value={searchQuery}
-                onValueChange={setSearchQuery}
+                onValueChange={(value) => setSearchQuery(value)}
                 className="h-9"
               />
               <CommandEmpty>{noResultsText}</CommandEmpty>
-              {filteredCustomers.length > 0 && (
+              {filteredCustomers && filteredCustomers.length > 0 && (
                 <CommandGroup className="max-h-64 overflow-y-auto">
-                  {filteredCustomers.map(customer => (
+                  {filteredCustomers.map((customer) => (
                     <CommandItem
                       key={customer.id}
                       value={customer.id}
-                      onSelect={() => {
-                        setSelectedCustomerId(customer.id);
+                      onSelect={(value) => {
+                        setSelectedCustomerId(value);
+                        setSearchQuery("");
                         setOpen(false);
                       }}
                       className="cursor-pointer"
