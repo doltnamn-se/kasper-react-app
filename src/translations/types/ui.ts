@@ -171,4 +171,6 @@ export interface UITranslations {
   'monitoring.url.error.reject': string;
   'error': string;
   'url.input.placeholder': string;
+  'monitoring.add.new': string;
+  'monitoring.links': string;
 }

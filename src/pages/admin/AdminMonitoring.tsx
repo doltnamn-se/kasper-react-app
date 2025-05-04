@@ -74,7 +74,7 @@ const AdminMonitoring = () => {
       <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]">
         <div className="space-y-6">
           <h2 className="text-lg font-semibold">
-            {language === 'sv' ? 'Lägg till ny' : 'Add new'}
+            {t('monitoring.add.new')}
           </h2>
           
           {isLoadingCustomers ? (
@@ -94,7 +94,7 @@ const AdminMonitoring = () => {
       <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]">
         <div className="space-y-6">
           <h2 className="text-lg font-semibold">
-            {language === 'sv' ? 'Länkar' : 'Links'}
+            {t('monitoring.links')}
           </h2>
           
           {isLoading ? (
