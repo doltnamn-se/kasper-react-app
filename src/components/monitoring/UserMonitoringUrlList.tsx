@@ -1,4 +1,3 @@
-
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -101,7 +100,7 @@ export const UserMonitoringUrlList = ({
                   {url.url}
                   <ExternalLink className="h-3 w-3" />
                 </a>
-                <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mt-1">
+                <p className="text-sm text-[#000000] dark:text-[#FFFFFFA6] mt-1">
                   {language === 'sv' ? 'Hittades för ' : 'Found '}
                   {formatTime(url.created_at)}
                 </p>
