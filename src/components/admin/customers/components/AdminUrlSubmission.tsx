@@ -69,7 +69,7 @@ export const AdminUrlSubmission = ({
   };
 
   // Set placeholder text based on the current language
-  const placeholderText = language === 'sv' ? 'Ange URL' : 'Enter URL';
+  const placeholderText = language === 'sv' ? 'Ange länk' : 'Enter link';
   // Set button text based on current language
   const buttonText = language === 'sv' ? 'Lägg till' : 'Add';
   return <form onSubmit={handleSubmit} className="mt-4 space-y-2">

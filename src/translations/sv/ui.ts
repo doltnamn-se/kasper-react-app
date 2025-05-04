@@ -172,4 +172,5 @@ export const ui: UITranslations = {
   'monitoring.url.error.approve': 'Misslyckades med att godkänna URL',
   'monitoring.url.error.reject': 'Misslyckades med att avvisa URL',
   'error': 'Fel',
+  'url.input.placeholder': 'Ange länk',
 };

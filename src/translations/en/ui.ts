@@ -172,4 +172,5 @@ export const ui: UITranslations = {
   'monitoring.url.error.approve': 'Failed to approve URL',
   'monitoring.url.error.reject': 'Failed to reject URL',
   'error': 'Error',
+  'url.input.placeholder': 'Enter link',
 };

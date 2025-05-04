@@ -29,7 +29,7 @@ export const AdminMonitoringUrlForm = ({
     setUrl("");
   };
 
-  const placeholderText = language === 'sv' ? 'Ange URL' : 'Enter URL';
+  const placeholderText = language === 'sv' ? 'Ange länk' : 'Enter link';
   const buttonText = language === 'sv' ? 'Lägg till' : 'Add';
   const selectCustomerText = language === 'sv' ? 'Välj kund' : 'Select customer';
 

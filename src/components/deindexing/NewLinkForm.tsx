@@ -93,7 +93,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
         type="url"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        placeholder={language === 'sv' ? 'Ange URL' : 'Enter URL'}
+        placeholder={language === 'sv' ? 'Ange länk' : 'Enter link'}
         className="flex-1"
         required
         autoFocus
@@ -136,7 +136,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder={language === 'sv' ? 'Ange URL' : 'Enter URL'}
+            placeholder={language === 'sv' ? 'Ange länk' : 'Enter link'}
             className="flex-1"
             required
           />
