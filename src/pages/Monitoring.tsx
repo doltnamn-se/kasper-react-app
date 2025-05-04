@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
@@ -148,6 +149,19 @@ const Monitoring = () => {
   };
 
   const pendingUrls = monitoringUrls.filter(url => url.status === 'pending');
+  
+  // New function to get the status text based on pending URLs count
+  const getStatusText = () => {
+    if (pendingUrls.length === 0) {
+      return language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google';
+    }
+    if (pendingUrls.length === 1) {
+      return language === 'sv' ? '1 ny träff på Google' : '1 new hit on Google';
+    }
+    return language === 'sv' 
+      ? `${pendingUrls.length} nya träffar på Google` 
+      : `${pendingUrls.length} new hits on Google`;
+  };
 
   return (
     <MainLayout>
@@ -188,7 +202,7 @@ const Monitoring = () => {
             <div className="flex items-center">
               <Badge 
                 variant="outline" 
-                className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-500 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
+                className={`flex items-center gap-2 mt-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 transition-all duration-300 ease-in-out ${isScanning ? 'w-[120px]' : 'w-[200px]'}`}
               >
                 <div className="relative w-[0.9rem] h-[0.9rem]">
                   <Activity className="w-full h-full absolute inset-0 text-transparent" />
@@ -202,7 +216,7 @@ const Monitoring = () => {
                       <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
                       <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
                     ) :
-                    (language === 'sv' ? 'Inga nya träffar på Google' : 'No new hits on Google')
+                    getStatusText()
                   }
                 </span>
               </Badge>
