@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { MonitoringPanel } from "@/components/monitoring/MonitoringPanel";
 import { useScanningStatus } from "@/components/monitoring/hooks/useScanningStatus";
 import { useUserMonitoring } from "@/components/monitoring/hooks/useUserMonitoring";
+import { supabase } from "@/integrations/supabase/client";
 
 const Monitoring = () => {
   const { language } = useLanguage();
@@ -22,6 +23,33 @@ const Monitoring = () => {
       "Bevakning | Digitaltskydd.se" : 
       "Monitoring | Digitaltskydd.se";
   }, [language]);
+
+  // Add effect to mark monitoring notifications as read when the page is visited
+  useEffect(() => {
+    const markMonitoringNotificationsAsRead = async () => {
+      if (!userId) return;
+      
+      try {
+        console.log('Marking monitoring notifications as read');
+        const { error } = await supabase
+          .from('notifications')
+          .update({ read: true })
+          .eq('user_id', userId)
+          .eq('type', 'monitoring')
+          .eq('read', false);
+
+        if (error) {
+          console.error('Error marking monitoring notifications as read:', error);
+        } else {
+          console.log('Successfully marked monitoring notifications as read');
+        }
+      } catch (err) {
+        console.error('Exception when marking notifications as read:', err);
+      }
+    };
+
+    markMonitoringNotificationsAsRead();
+  }, [userId]);
 
   return (
     <MainLayout>
