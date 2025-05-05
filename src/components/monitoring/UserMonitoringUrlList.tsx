@@ -96,10 +96,11 @@ export const UserMonitoringUrlList = ({
                   href={url.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 text-md"
+                  className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 text-md overflow-hidden text-ellipsis break-all max-w-full"
+                  title={url.url}
                 >
                   {url.url}
-                  <ExternalLink className="h-3 w-3" />
+                  <ExternalLink className="h-3 w-3 flex-shrink-0" />
                 </a>
                 <p className="text-sm text-[#000000] dark:text-[#FFFFFFA6] mt-1">
                   {language === 'sv' ? 'Hittades för ' : 'Found '}
@@ -142,3 +143,4 @@ export const UserMonitoringUrlList = ({
     </div>
   );
 };
+
