@@ -1,4 +1,3 @@
-
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -119,7 +118,7 @@ export const UserMonitoringUrlList = ({
                 <div className={`flex ${isMobile ? 'flex-col' : 'gap-3'}`}>
                   <Button
                     onClick={() => handleApprove(url.id)}
-                    className={`bg-[#000000] hover:bg-[#333333] text-white dark:bg-green-600 dark:hover:bg-green-700 ${isMobile ? 'w-full mb-2' : ''}`}
+                    className={`bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] ${isMobile ? 'w-full mb-2' : ''}`}
                     disabled={processingUrls[url.id]}
                   >
                     {processingUrls[url.id] ? 
@@ -129,7 +128,7 @@ export const UserMonitoringUrlList = ({
                   <Button
                     onClick={() => handleReject(url.id)}
                     variant="outline"
-                    className={`bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFFA6] dark:border-transparent ${isMobile ? 'w-full' : ''}`}
+                    className={`bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] dark:border-transparent ${isMobile ? 'w-full' : ''}`}
                     disabled={processingUrls[url.id]}
                   >
                     {processingUrls[url.id] ? 
