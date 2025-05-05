@@ -1,4 +1,3 @@
-
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface UserMonitoringUrlListProps {
   monitoringUrls: MonitoringUrl[];
@@ -22,6 +22,7 @@ export const UserMonitoringUrlList = ({
   const { language, t } = useLanguage();
   const { toast } = useToast();
   const [processingUrls, setProcessingUrls] = useState<Record<string, boolean>>({});
+  const isMobile = useIsMobile();
   
   const formatTime = (dateString: string) => {
     try {
@@ -114,10 +115,10 @@ export const UserMonitoringUrlList = ({
                     ? 'Vill du att vi tar bort länken?' 
                     : 'Do you want us to remove this link?'}
                 </p>
-                <div className="flex gap-3">
+                <div className={`flex ${isMobile ? 'flex-col' : 'gap-3'}`}>
                   <Button
                     onClick={() => handleApprove(url.id)}
-                    className="bg-green-600 hover:bg-green-700 text-white"
+                    className={`bg-green-600 hover:bg-green-700 text-white ${isMobile ? 'w-full mb-2' : ''}`}
                     disabled={processingUrls[url.id]}
                   >
                     {processingUrls[url.id] ? 
@@ -127,7 +128,7 @@ export const UserMonitoringUrlList = ({
                   <Button
                     onClick={() => handleReject(url.id)}
                     variant="outline"
-                    className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20"
+                    className={`border-red-300 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20 ${isMobile ? 'w-full' : ''}`}
                     disabled={processingUrls[url.id]}
                   >
                     {processingUrls[url.id] ? 
@@ -143,4 +144,3 @@ export const UserMonitoringUrlList = ({
     </div>
   );
 };
-
