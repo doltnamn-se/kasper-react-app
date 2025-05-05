@@ -89,7 +89,7 @@ export const UserMonitoringUrlList = ({
         {monitoringUrls.map((url) => (
           <div 
             key={url.id} 
-            className="bg-[#f5f5f5] dark:bg-[#121212] p-4 rounded-md border border-[#e2e8f0] dark:border-[#232325]"
+            className="bg-[#f5f5f5] dark:bg-[#242424] p-4 rounded-md border border-[#e2e8f0] dark:border-[#232325]"
           >
             <div className="space-y-4">
               <div>
