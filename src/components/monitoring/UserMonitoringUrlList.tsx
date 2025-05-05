@@ -1,3 +1,4 @@
+
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -87,7 +88,7 @@ export const UserMonitoringUrlList = ({
         {monitoringUrls.map((url) => (
           <div 
             key={url.id} 
-            className="bg-white dark:bg-[#232325] p-4 rounded-md border border-[#e5e7eb] dark:border-[#363638]"
+            className="bg-[#f5f5f5] dark:bg-[#121212] p-4 rounded-md border border-[#e2e8f0] dark:border-[#232325]"
           >
             <div className="space-y-4">
               <div>
@@ -106,7 +107,7 @@ export const UserMonitoringUrlList = ({
                 </p>
               </div>
               
-              <div className="border-t border-[#e5e7eb] dark:border-[#363638] pt-4">
+              <div className="border-t border-[#e2e8f0] dark:border-[#232325] pt-4">
                 <p className="text-sm font-medium mb-3">
                   {language === 'sv' 
                     ? 'Vill du att vi tar bort länken?' 
