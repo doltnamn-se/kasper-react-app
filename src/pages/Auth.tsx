@@ -149,40 +149,9 @@ const Auth = () => {
         </div>
       </div>
 
-      {/* Right side - App promotion background */}
-      <div className="hidden md:block md:w-1/2 bg-[#FFFFFF] dark:bg-[#1a1a1a] relative overflow-hidden">
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-800/30 rounded-3xl p-8 w-full max-w-md shadow-xl backdrop-blur-sm">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-blue-800 dark:text-blue-300 mb-3">
-                {language === 'sv' ? 'Digitaltskydd.se' : 'Digitaltskydd.se'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                {language === 'sv' ? 'Ladda ner vår app för att skydda din digitala integritet' : 'Download our app to protect your digital privacy'}
-              </p>
-              <a 
-                href="https://play.google.com/store/apps/details?id=se.digitaltskydd.app" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 mr-2" fill="currentColor">
-                  <path d="M17.9,5.1c0.9,0.3,1.6,1.1,1.9,2l-7.9,7.8L7.7,10.7C9.8,8.8,14.2,5,17.9,5.1 M4.9,3.2 C5.4,3.6,6,4.2,6,5v14.1c0,0.8,0.7,1.4,1.2,1.7l-5.1-5.1L4.9,3.2 M6,19.1C6,19.3,6,19.4,6,19.5c0,0-0.1,0.1-0.1,0.1 c-0.1,0-0.1-0.1-0.1-0.1C5.9,19.4,6,19.2,6,19.1 M17.4,21.5c-0.9,0.1-1.9-0.2-3-0.8c-0.8-0.4-1.6-0.9-2.4-1.4c-0.5-0.3-1-0.7-1.5-1 c-0.6,0.4-1.1,0.7-1.7,1.1c-1,0.6-1.9,1.2-2.8,1.7c-0.6,0.3-1.2,0.6-1.8,0.6c-0.6,0.1-1.2-0.1-1.7-0.4l13.6-7.6l2.5,2.5 C19.7,20.6,18.8,21.3,17.4,21.5 M22,9.5c0,0.4-0.1,0.8-0.3,1.2l-1,1.6l-2.1-2.1L20.5,8c0.2,0.2,0.5,0.5,0.7,0.7 C21.6,9,22,9.2,22,9.5"/>
-                </svg>
-                Google Play
-              </a>
-            </div>
-            <div className="mt-8 flex justify-center">
-              <div className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-md transform rotate-3 hover:rotate-0 transition-transform">
-                <img 
-                  src="/lovable-uploads/digitaltskydd-favicon-blue.png" 
-                  alt="App Screenshot" 
-                  className="w-24 h-24 object-contain"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Right side - Space for image */}
+      <div className="hidden md:block md:w-1/2 bg-[#FFFFFF] dark:bg-[#1a1a1a]">
+        {/* Image will be added here later */}
       </div>
     </div>
   );
