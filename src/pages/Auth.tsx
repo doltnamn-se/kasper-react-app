@@ -150,10 +150,10 @@ const Auth = () => {
       </div>
 
       {/* Right side - Image background */}
-      <div className="hidden md:block md:w-1/2 bg-[#f3f3f3] dark:bg-[#1a1a1a]">
+      <div className="hidden md:block md:w-1/2 bg-[#eef2f7] dark:bg-[#1a1a1a]">
         <div className="h-full w-full flex items-end justify-start">
           <img 
-            src="/lovable-uploads/digitaltskydd-app-auth-frame-android-min.png" 
+            src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait.jpg" 
             alt="Digitaltskydd App" 
             className="h-auto max-h-full w-auto object-contain"
           />
