@@ -104,12 +104,14 @@ const ResetPassword = () => {
 
       {/* Right side - Image background */}
       <div className="hidden md:block md:w-1/2 bg-[#eef2f7] dark:bg-[#1a1a1a] h-screen overflow-hidden">
-        <div className="h-full w-full flex items-end justify-start">
-          <img 
-            src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait-33.jpg" 
-            alt="Digitaltskydd App" 
-            className="max-h-screen w-auto object-contain object-bottom"
-          />
+        <div className="h-full w-full flex items-end justify-start p-10 pb-10 pr-10 pt-10">
+          <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
+            <img 
+              src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait-33.jpg" 
+              alt="Digitaltskydd App" 
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -117,3 +119,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
