@@ -130,7 +130,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen auth-page flex">
       {/* Left side - Authentication content */}
-      <div className="w-full md:w-1/2 flex flex-col min-h-screen">
+      <div className="w-full md:w-1/2 flex flex-col min-h-screen bg-[#f5f5f5] dark:bg-[#121212]">
         <div className="pt-16 px-6 md:px-16">
           <AuthHeader />
         </div>
@@ -150,7 +150,7 @@ const Auth = () => {
       </div>
 
       {/* Right side - Space for image */}
-      <div className="hidden md:block md:w-1/2 bg-[#f5f5f5] dark:bg-[#121212]">
+      <div className="hidden md:block md:w-1/2 bg-white dark:bg-[#1a1a1a]">
         {/* Image will be added here later */}
       </div>
     </div>

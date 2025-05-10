@@ -69,7 +69,7 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen auth-page flex">
       {/* Left side - Authentication content */}
-      <div className="w-full md:w-1/2 flex flex-col min-h-screen p-4 md:p-8">
+      <div className="w-full md:w-1/2 flex flex-col min-h-screen p-4 md:p-8 bg-[#f5f5f5] dark:bg-[#121212]">
         <AuthHeader />
         
         <div className="flex-1 flex items-center justify-center w-full">
@@ -103,7 +103,7 @@ const ResetPassword = () => {
       </div>
 
       {/* Right side - Space for image */}
-      <div className="hidden md:block md:w-1/2 bg-[#f5f5f5] dark:bg-[#121212]">
+      <div className="hidden md:block md:w-1/2 bg-white dark:bg-[#1a1a1a]">
         {/* Image will be added here later */}
       </div>
     </div>
