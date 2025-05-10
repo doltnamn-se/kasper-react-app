@@ -128,22 +128,30 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode]);
 
   return (
-    <div className="min-h-screen auth-page flex flex-col items-center">
-      <div className="w-full max-w-md pt-16">
-        <AuthHeader />
-      </div>
-      <div className="flex-1 flex items-center w-full max-w-md">
-        <div className="w-full space-y-8">
-          <AuthForm 
-            errorMessage={errorMessage} 
-            isDarkMode={isDarkMode} 
-            isResetPasswordMode={isResetPasswordMode} 
-          />
-          <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
+    <div className="min-h-screen auth-page flex">
+      {/* Left side - Authentication content */}
+      <div className="w-full md:w-1/2 flex flex-col min-h-screen">
+        <div className="pt-16 px-6 md:px-16">
+          <AuthHeader />
+        </div>
+        <div className="flex-1 flex items-center justify-center w-full px-6 md:px-16">
+          <div className="w-full space-y-8 max-w-md">
+            <AuthForm 
+              errorMessage={errorMessage} 
+              isDarkMode={isDarkMode} 
+              isResetPasswordMode={isResetPasswordMode} 
+            />
+            <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
+          </div>
+        </div>
+        <div className="pb-5 px-6 md:px-16">
+          <AuthFooter />
         </div>
       </div>
-      <div className="pb-5">
-        <AuthFooter />
+
+      {/* Right side - Space for image */}
+      <div className="hidden md:block md:w-1/2 bg-[#f5f5f5] dark:bg-[#121212]">
+        {/* Image will be added here later */}
       </div>
     </div>
   );

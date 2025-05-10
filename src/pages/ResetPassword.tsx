@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -66,35 +67,45 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen auth-page flex flex-col items-center justify-between p-4">
-      <div className="w-full max-w-md space-y-8 mt-8">
+    <div className="min-h-screen auth-page flex">
+      {/* Left side - Authentication content */}
+      <div className="w-full md:w-1/2 flex flex-col min-h-screen p-4 md:p-8">
         <AuthHeader />
         
-        <div className="flex justify-center w-full">
-          <div className="bg-white/30 dark:bg-[#232325]/30 backdrop-blur-xl backdrop-saturate-150 p-8 border border-white/20 dark:border-[#303032]/20 w-full max-w-sm fade-in rounded-[7px] font-system-ui shadow-lg">
-            <h2 className="text-xl font-bold mb-10 text-center dark:text-white font-system-ui font-[700]">
-              {t('reset.password')}
-            </h2>
+        <div className="flex-1 flex items-center justify-center w-full">
+          <div className="w-full max-w-md space-y-8">
+            <div className="bg-white/30 dark:bg-[#232325]/30 backdrop-blur-xl backdrop-saturate-150 p-8 border border-white/20 dark:border-[#303032]/20 w-full max-w-sm fade-in rounded-[7px] font-system-ui shadow-lg">
+              <h2 className="text-xl font-bold mb-10 text-center dark:text-white font-system-ui font-[700]">
+                {t('reset.password')}
+              </h2>
 
-            {error && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+              {error && (
+                <Alert variant="destructive" className="mb-4">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            {!error && (
-              <PasswordUpdateForm
-                onComplete={handleComplete}
-                showSuccessToast={true}
-                showSuccessAnimation={true}
-              />
-            )}
+              {!error && (
+                <PasswordUpdateForm
+                  onComplete={handleComplete}
+                  showSuccessToast={true}
+                  showSuccessAnimation={true}
+                />
+              )}
+            </div>
           </div>
         </div>
 
-        <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
+        <div className="mt-auto">
+          <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
+          <AuthFooter />
+        </div>
       </div>
-      <AuthFooter />
+
+      {/* Right side - Space for image */}
+      <div className="hidden md:block md:w-1/2 bg-[#f5f5f5] dark:bg-[#121212]">
+        {/* Image will be added here later */}
+      </div>
     </div>
   );
 };
