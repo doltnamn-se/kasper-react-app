@@ -128,14 +128,13 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode]);
 
   return (
-    <div className="min-h-screen auth-page flex">
+    <div className="h-screen overflow-hidden auth-page flex">
       {/* Left side - Authentication content */}
-      <div className="w-full md:w-1/2 flex flex-col min-h-screen bg-[#FFFFFF] dark:bg-[#121212]">
-        <div className="pt-16 px-6 md:px-16">
-          <AuthHeader />
-        </div>
-        <div className="flex-1 flex items-center justify-center w-full px-6 md:px-16">
-          <div className="w-full space-y-8 max-w-md">
+      <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#121212]">
+        <AuthHeader />
+        
+        <div className="flex-1 flex items-center justify-center w-full">
+          <div className="w-full max-w-md space-y-8">
             <AuthForm 
               errorMessage={errorMessage} 
               isDarkMode={isDarkMode} 
@@ -144,18 +143,19 @@ const Auth = () => {
             <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
           </div>
         </div>
-        <div className="pb-5 px-6 md:px-16">
+        
+        <div className="mt-auto">
           <AuthFooter />
         </div>
       </div>
 
       {/* Right side - Image background */}
-      <div className="hidden md:block md:w-1/2 bg-[#eef2f7] dark:bg-[#1a1a1a]">
+      <div className="hidden md:block md:w-1/2 bg-[#eef2f7] dark:bg-[#1a1a1a] h-screen overflow-hidden">
         <div className="h-full w-full flex items-end justify-start">
           <img 
             src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait.jpg" 
             alt="Digitaltskydd App" 
-            className="h-auto max-h-full w-auto object-contain"
+            className="max-h-screen w-auto object-contain object-bottom"
           />
         </div>
       </div>

@@ -67,9 +67,9 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen auth-page flex">
+    <div className="h-screen overflow-hidden auth-page flex">
       {/* Left side - Authentication content */}
-      <div className="w-full md:w-1/2 flex flex-col min-h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#121212]">
+      <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#121212]">
         <AuthHeader />
         
         <div className="flex-1 flex items-center justify-center w-full">
@@ -103,12 +103,12 @@ const ResetPassword = () => {
       </div>
 
       {/* Right side - Image background */}
-      <div className="hidden md:block md:w-1/2 bg-[#eef2f7] dark:bg-[#1a1a1a]">
+      <div className="hidden md:block md:w-1/2 bg-[#eef2f7] dark:bg-[#1a1a1a] h-screen overflow-hidden">
         <div className="h-full w-full flex items-end justify-start">
           <img 
             src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait.jpg" 
             alt="Digitaltskydd App" 
-            className="h-auto max-h-full w-auto object-contain"
+            className="max-h-screen w-auto object-contain object-bottom"
           />
         </div>
       </div>
