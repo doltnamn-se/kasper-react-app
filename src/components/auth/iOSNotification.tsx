@@ -1,6 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import gsap from 'gsap';
 
 interface NotificationProps {
   isDarkMode?: boolean;
@@ -8,11 +9,9 @@ interface NotificationProps {
 
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const { language } = useLanguage();
+  const textRef = useRef<HTMLSpanElement>(null);
   
-  // Typing animation states
-  const [displayText, setDisplayText] = useState('');
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
-  const [showTitle, setShowTitle] = useState(true); // Show title immediately
+  // States
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   
@@ -24,55 +23,60 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
 
-  // Removed the delayed title show effect - title is visible immediately
-
-  // Typing animation effect
+  // GSAP typing animation effect
   useEffect(() => {
-    // Reset the typing animation when language changes
-    setDisplayText('');
-    setIsTypingComplete(false);
+    // Clear any existing text first
+    if (textRef.current) {
+      textRef.current.textContent = '';
+    }
     
-    // Start typing animation immediately since showTitle is true from the beginning
-    let i = 0;
-    let animationText = '';
+    // Create GSAP timeline for typing animation
+    const tl = gsap.timeline();
     
-    // Start typing animation immediately
-    const typingInterval = setInterval(() => {
-      if (i < fullText.length) {
-        animationText = fullText.substring(0, i + 1);
-        setDisplayText(animationText);
-        i++;
-      } else {
-        clearInterval(typingInterval);
-        setIsTypingComplete(true);
+    // Type each character with GSAP
+    let chars = fullText.split('');
+    
+    // Add each character one by one with GSAP
+    chars.forEach((char, index) => {
+      tl.add(() => {
+        if (textRef.current) {
+          textRef.current.textContent += char;
+        }
+      }, index * 0.05); // Slight delay between each character
+    });
+    
+    // After typing completes, show badges
+    tl.call(() => {
+      // Show Google Play badge with delay
+      setTimeout(() => {
+        setShowGooglePlayBadge(true);
         
-        // Show Google Play badge with 2 sec delay after typing completes
+        // Show Apple Store badge with additional delay
         setTimeout(() => {
-          setShowGooglePlayBadge(true);
-          
-          // Show Apple Store badge with 500ms delay after Google Play
-          setTimeout(() => {
-            setShowAppleStoreBadge(true);
-          }, 500);
-        }, 2000);
-      }
-    }, 30);
+          setShowAppleStoreBadge(true);
+        }, 500);
+      }, 500);
+    });
     
-    return () => clearInterval(typingInterval);
-  }, [fullText]); // Removed showTitle dependency as it's now always true
+    // Play the timeline
+    tl.play();
+    
+    // Cleanup
+    return () => {
+      tl.kill();
+    };
+  }, [fullText]); // Re-run when language changes
 
   return (
-    <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
-      {/* App download text with typing animation - Centered vertically and horizontally */}
+    <div className="ios-notification-container absolute inset-0 flex items-start justify-center pointer-events-none pt-16">
+      {/* App download text with GSAP typing animation - Now aligned to top with padding */}
       <div className="text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
-        <p className={`text-xl font-[500] ${
-          isDarkMode ? "text-white" : "text-black"
-        } typing-animation`}>
-          {displayText}
-          {!isTypingComplete && <span className="cursor-blink">|</span>}
+        <p className={`text-xl font-[500] ${isDarkMode ? "text-white" : "text-black"}`}>
+          <span ref={textRef}></span>
+          <span className="cursor-blink">|</span>
         </p>
         
-        {/* Store badges container - Centered */}
+        {/* Store badges container */}
         <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store - Now with link that opens in new tab */}
           <a 
