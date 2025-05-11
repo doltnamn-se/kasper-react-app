@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeClosed, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
@@ -147,9 +147,9 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           disabled={isLoading}
         >
           {showPassword ? (
-            <EyeOff className="h-5 w-5" />
-          ) : (
             <Eye className="h-5 w-5" />
+          ) : (
+            <EyeClosed className="h-5 w-5" />
           )}
         </button>
       </div>

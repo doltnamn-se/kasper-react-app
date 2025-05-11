@@ -1,4 +1,5 @@
-import { Eye, EyeOff } from "lucide-react";
+
+import { Eye, EyeClosed } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface PasswordInputProps {
@@ -33,9 +34,9 @@ export const PasswordInput = ({
         className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] focus:outline-none"
       >
         {showPassword ? (
-          <EyeOff className="h-5 w-5" />
-        ) : (
           <Eye className="h-5 w-5" />
+        ) : (
+          <EyeClosed className="h-5 w-5" />
         )}
       </button>
     </div>
