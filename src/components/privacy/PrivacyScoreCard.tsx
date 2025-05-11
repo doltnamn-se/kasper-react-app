@@ -54,7 +54,8 @@ export const PrivacyScoreCard = () => {
         
         <ScoreDisplay 
           score={score.total} 
-          language={language} 
+          language={language}
+          isAuthLoop={isAuthPage}
         />
       </div>
 
