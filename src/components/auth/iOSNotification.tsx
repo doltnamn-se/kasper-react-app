@@ -25,8 +25,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  // Fixed typo: changed "hålla" to "håll"
   const fullText = language === 'sv' 
-    ? "Ladda ner appen och hålla koll när du är på språng" 
+    ? "Ladda ner appen och håll koll när du är på språng" 
     : "Download the app and stay connected on the go";
 
   // Localized notifications data with two new notifications added
@@ -156,8 +157,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      {/* App download text with typing animation */}
-      <div className="mb-6 text-center px-4">
+      {/* App download text with typing animation - Added overflow-visible to ensure text is not cut off */}
+      <div className="mb-6 text-center px-4 overflow-visible">
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
