@@ -14,6 +14,7 @@ interface NotificationMessage {
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const [activeNotification, setActiveNotification] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [animationDirection, setAnimationDirection] = useState<'up' | 'down'>('up');
 
   // Sample notifications - these can be replaced later
   const notifications: NotificationMessage[] = [
@@ -45,6 +46,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       // First hide the current notification
       setIsVisible(false);
       
+      // Alternate animation direction for more visual interest
+      setAnimationDirection(prev => prev === 'up' ? 'down' : 'up');
+      
       // Wait for fade out, then change to next notification and fade in
       setTimeout(() => {
         setActiveNotification((prev) => (prev + 1) % notifications.length);
@@ -64,8 +68,11 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
       <div
         className={`ios-notification ${
-          isVisible ? "animate-fadeInUp" : "opacity-0 -translate-y-4"
-        } transition-all duration-500 ease-in-out transform w-[300px] max-w-[85%]`}
+          isVisible 
+            ? `animate-${animationDirection === 'up' ? 'fadeInUp' : 'fadeInDown'}` 
+            : "opacity-0 transform " + 
+              (animationDirection === 'up' ? "-translate-y-4" : "translate-y-4")
+        } transition-all duration-500 ease-in-out w-[300px] max-w-[85%]`}
       >
         <div 
           className={`rounded-2xl shadow-lg backdrop-blur-lg ${
@@ -75,24 +82,14 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           } p-3`}
         >
           <div className="flex items-start">
-            {/* App icon */}
+            {/* App icon using Digitaltskydd logo */}
             <div className="mr-3 mt-0.5">
-              <div className={`w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center ${
-                isDarkMode ? "bg-[#33C3F0]" : "bg-[#1EAEDB]"
-              }`}>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  className="w-6 h-6 text-white"
-                >
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden`}>
+                <img 
+                  src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
+                  alt="Digitaltskydd" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
             
