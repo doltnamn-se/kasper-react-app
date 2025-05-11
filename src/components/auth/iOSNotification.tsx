@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -198,7 +197,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </p>
         
         {/* Store badges container with fade-in-up animation - Increased spacing */}
-        <div className={`flex justify-center items-center mt-8 space-x-4 transition-all duration-500 ease-in-out`}>
+        <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store */}
           <a 
             href="#" 
