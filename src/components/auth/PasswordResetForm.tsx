@@ -56,7 +56,7 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
         <h2 className="text-xl font-bold mb-3 text-left dark:text-white font-system-ui">
           {t('reset.your.password')}
         </h2>
-        <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mb-6 font-system-ui">
+        <p className="text-sm text-black dark:text-white mb-6 font-system-ui">
           {t('reset.password.subtitle')}
         </p>
         {initialError && (
