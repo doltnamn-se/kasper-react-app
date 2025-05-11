@@ -22,6 +22,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const notificationIndexRef = useRef(0);
   
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
@@ -161,11 +162,13 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     };
   }, [fullText, showTitle, language]);
 
+  // Fixed notification cycling logic
   useEffect(() => {
     // Initial delay before showing the notification
     const initialTimeout = setTimeout(() => {
       setCurrentNotification(notificationData[0]);
       setShowNotification(true);
+      notificationIndexRef.current = 0;
       
       // Initial height measurement after render
       setTimeout(() => {
@@ -173,48 +176,38 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setNotificationHeight(contentRef.current.offsetHeight);
         }
       }, 100);
-    }, 200); // Changed from 1000 to 200 milliseconds
+    }, 200);
 
-    let currentIndex = 0;
-    let intervalId: number | null = null;
-    
     // Set up interval to change notification content
-    intervalId = window.setInterval(() => {
+    const intervalId = setInterval(() => {
       // Begin transition - fade out text first
       setIsChangingText(true);
       
       // Add a slight delay to allow the fade-out effect before changing the content
-      const textChangeTimeout = setTimeout(() => {
+      setTimeout(() => {
         // Move to next notification in the array
-        currentIndex = (currentIndex + 1) % notificationData.length;
-        setCurrentNotification(notificationData[currentIndex]);
+        const nextIndex = (notificationIndexRef.current + 1) % notificationData.length;
+        notificationIndexRef.current = nextIndex;
+        setCurrentNotification(notificationData[nextIndex]);
         
         // Small delay before starting the fade in
-        const measureTimeout = setTimeout(() => {
+        setTimeout(() => {
           // Measure new height after content change
           if (contentRef.current) {
             setNotificationHeight(contentRef.current.offsetHeight);
           }
           
           // Then fade in the text
-          const fadeInTimeout = setTimeout(() => {
+          setTimeout(() => {
             setIsChangingText(false);
           }, 50);
-
-          return () => clearTimeout(fadeInTimeout);
         }, 100);
-
-        return () => clearTimeout(measureTimeout);
       }, 300);
-
-      return () => clearTimeout(textChangeTimeout);
     }, 4000); // Change notification content every 4 seconds
 
     return () => {
       clearTimeout(initialTimeout);
-      if (intervalId !== null) {
-        clearInterval(intervalId);
-      }
+      clearInterval(intervalId);
     };
   }, [language, notificationData]);
 
