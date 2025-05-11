@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/auth/AuthForm";
-import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
@@ -137,7 +136,6 @@ const Auth = () => {
               isDarkMode={isDarkMode} 
               isResetPasswordMode={isResetPasswordMode} 
             />
-            <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
           </div>
         </div>
         

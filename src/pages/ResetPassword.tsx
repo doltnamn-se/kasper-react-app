@@ -1,7 +1,7 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { PasswordUpdateForm } from "@/components/checklist/PasswordUpdateForm";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -48,18 +48,6 @@ const ResetPassword = () => {
     verifyToken();
   }, [language, searchParams, t]);
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', String(newDarkMode));
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-
   const handleComplete = async () => {
     await supabase.auth.signOut();
     window.location.href = '/auth?reset_success=true';
@@ -95,7 +83,6 @@ const ResetPassword = () => {
         </div>
 
         <div className="mt-auto">
-          <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
           <AuthFooter />
         </div>
       </div>
