@@ -150,8 +150,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     </span>
                   </div>
                   
-                  {/* New heading above the notification body */}
-                  <h3 className="font-semibold text-sm mt-1 text-[#9b87f5]">
+                  {/* Updated heading to match the font-weight and color of the title */}
+                  <h3 className="font-semibold text-sm mt-1">
                     {currentNotification.heading}
                   </h3>
                   
