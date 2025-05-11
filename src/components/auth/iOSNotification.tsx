@@ -123,7 +123,18 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   if (!currentNotification) return null;
 
   return (
-    <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+      {/* Added app download text */}
+      <div className="mb-6 text-center px-4">
+        <p className={`text-lg font-[500] ${
+          isDarkMode ? "text-white" : "text-black"
+        }`}>
+          {language === 'sv' 
+            ? "Ladda ner appen och hålla koll när du är på språng" 
+            : "Download the app and stay connected on the go"}
+        </p>
+      </div>
+      
       <div className="relative w-[300px] max-w-[85%]">
         {showNotification && (
           <div
