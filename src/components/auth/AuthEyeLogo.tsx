@@ -7,7 +7,9 @@ export const AuthEyeLogo: React.FC = () => {
       <img
         src="/lovable-uploads/digitaltskydd-admin-logo.svg"
         alt="Logo"
-        className="h-12 w-auto mx-auto"
+        className="h-12 w-auto mx-auto pointer-events-none"
+        draggable="false"
+        onContextMenu={(e) => e.preventDefault()}
       />
     </a>
   );
