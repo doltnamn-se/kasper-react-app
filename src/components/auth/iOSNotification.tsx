@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import gsap from 'gsap';
 
 interface NotificationProps {
   isDarkMode?: boolean;
@@ -22,7 +21,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const notificationIndexRef = useRef(0);
   
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
@@ -30,9 +28,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [showTitle, setShowTitle] = useState(false);
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const cursorRef = useRef<HTMLSpanElement>(null);
-  const gsapContextRef = useRef<gsap.Context | null>(null);
   
   const fullText = language === 'sv' 
     ? "Ladda ner appen och håll koll när du är på språng" 
@@ -96,79 +91,55 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     return () => clearTimeout(titleDelay);
   }, []);
 
-  // GSAP typing animation effect - Fixed implementation
+  // Typing animation effect - Improved to ensure the first letter displays correctly
   useEffect(() => {
-    // Reset states when language changes
+    // Reset the typing animation when language changes
     setDisplayText('');
     setIsTypingComplete(false);
     
     if (!showTitle) return;
     
-    // Kill any existing animations to prevent conflicts
-    if (gsapContextRef.current) {
-      gsapContextRef.current.kill();
-    }
-
-    // Create a GSAP context for better cleanup
-    gsapContextRef.current = gsap.context(() => {
-      // Create typing timeline with GSAP
-      const typingTimeline = gsap.timeline({
-        onComplete: () => {
+    let i = 0;
+    let animationText = '';
+    
+    // Start typing animation with a slight delay
+    const typingDelay = setTimeout(() => {
+      // Force render the first character immediately
+      setDisplayText(fullText.charAt(0));
+      i = 1; // Start from second character
+      
+      const typingInterval = setInterval(() => {
+        if (i < fullText.length) {
+          animationText = fullText.substring(0, i + 1);
+          setDisplayText(animationText);
+          i++;
+        } else {
+          clearInterval(typingInterval);
           setIsTypingComplete(true);
           
-          // Show Google Play badge with 2 sec delay after typing completes
-          const googlePlayDelay = gsap.delayedCall(2, () => {
+          // Updated: Show Google Play badge with 2 sec delay after typing completes
+          setTimeout(() => {
             setShowGooglePlayBadge(true);
             
-            // Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
-            const appleStoreDelay = gsap.delayedCall(0.5, () => {
+            // Updated: Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
+            setTimeout(() => {
               setShowAppleStoreBadge(true);
-            });
-          });
+            }, 500); // 500ms additional delay after Google Play (total 2.5 sec from typing completion)
+          }, 2000); // 2 sec delay for Google Play badge
         }
-      });
+      }, 30); // Speed of typing (lower = faster)
       
-      // Small initial delay
-      typingTimeline.delay(0.2);
-      
-      // Add each character with a staggered effect for more natural typing
-      let chars = fullText.split('');
-      chars.forEach((char, index) => {
-        typingTimeline.add(() => {
-          setDisplayText(prevText => prevText + char);
-        }, index * 0.03); // Slightly randomized typing speed for natural effect
-      });
-
-      // Start the animation
-      typingTimeline.play();
-      
-      // Setup blinking cursor animation
-      if (cursorRef.current) {
-        gsap.to(cursorRef.current, {
-          opacity: 0,
-          duration: 0.5,
-          repeat: -1,
-          yoyo: true,
-          ease: "power1.inOut"
-        });
-      }
-    });
+      return () => clearInterval(typingInterval);
+    }, 200); // Delay before typing starts
     
-    // Cleanup function to prevent memory leaks and animation conflicts
-    return () => {
-      if (gsapContextRef.current) {
-        gsapContextRef.current.revert(); // This will kill all animations created in this context
-      }
-    };
-  }, [fullText, showTitle, language]);
+    return () => clearTimeout(typingDelay);
+  }, [fullText, showTitle]);
 
-  // Fixed notification cycling logic
   useEffect(() => {
     // Initial delay before showing the notification
     const initialTimeout = setTimeout(() => {
       setCurrentNotification(notificationData[0]);
       setShowNotification(true);
-      notificationIndexRef.current = 0;
       
       // Initial height measurement after render
       setTimeout(() => {
@@ -176,19 +147,20 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setNotificationHeight(contentRef.current.offsetHeight);
         }
       }, 100);
-    }, 200);
+    }, 200); // Changed from 1000 to 200 milliseconds
 
+    let currentIndex = 0;
+    
     // Set up interval to change notification content
-    const intervalId = setInterval(() => {
+    const interval = setInterval(() => {
       // Begin transition - fade out text first
       setIsChangingText(true);
       
       // Add a slight delay to allow the fade-out effect before changing the content
       setTimeout(() => {
         // Move to next notification in the array
-        const nextIndex = (notificationIndexRef.current + 1) % notificationData.length;
-        notificationIndexRef.current = nextIndex;
-        setCurrentNotification(notificationData[nextIndex]);
+        currentIndex = (currentIndex + 1) % notificationData.length;
+        setCurrentNotification(notificationData[currentIndex]);
         
         // Small delay before starting the fade in
         setTimeout(() => {
@@ -207,9 +179,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
     return () => {
       clearTimeout(initialTimeout);
-      clearInterval(intervalId);
+      clearInterval(interval);
     };
-  }, [language, notificationData]);
+  }, [language]);
 
   // If no notification is set yet, render nothing
   if (!currentNotification) return null;
@@ -218,24 +190,20 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
       {/* App download text with typing animation - Moved further down with more padding */}
       <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
-        <p 
-          ref={textRef}
-          className={`text-xl font-[500] ${
-            isDarkMode ? "text-white" : "text-black"
-          } typing-animation`}
-        >
+        <p className={`text-xl font-[500] ${
+          isDarkMode ? "text-white" : "text-black"
+        } typing-animation`}>
           {displayText}
-          <span 
-            ref={cursorRef} 
-            className={isTypingComplete ? 'opacity-0' : 'inline'}
-          >|</span>
+          {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
         {/* Store badges container with fade-in-up animation - Increased spacing */}
         <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store */}
-          <div 
+          <a 
+            href="#" 
             className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showGooglePlayBadge ? 'opacity-100' : 'opacity-0'}`}
+            onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '100ms' }}
           >
             <img 
@@ -243,11 +211,13 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               alt="Get it on Google Play" 
               className="w-full h-full"
             />
-          </div>
+          </a>
           
           {/* App Store */}
-          <div 
+          <a 
+            href="#" 
             className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showAppleStoreBadge ? 'opacity-100' : 'opacity-0'}`}
+            onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '300ms' }}
           >
             <img 
@@ -255,7 +225,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               alt="Download on App Store" 
               className="w-full h-full"
             />
-          </div>
+          </a>
         </div>
       </div>
       
