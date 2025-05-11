@@ -19,22 +19,41 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
     setDisplayScore(0);
 
     if (isAuthLoop) {
-      // For auth pages - continuous animation loop
-      let direction = 1; // 1 for increasing, -1 for decreasing
-      let currentValue = 20; // Start from a lower value
+      // For auth pages - specific sequence animation (100, 23, 71, 46, 100)
+      const scoreSequence = [100, 23, 71, 46];
+      let currentIndex = 0;
+      let isAnimating = false;
       
       const interval = setInterval(() => {
-        // Change direction when reaching limits
-        if (currentValue >= 95) direction = -1;
-        if (currentValue <= 20) direction = 1;
+        if (isAnimating) return;
         
-        // Update the score with small random increments to make it feel more natural
-        const increment = (Math.random() * 1.5 + 0.5) * direction;
-        currentValue = Math.max(20, Math.min(95, currentValue + increment));
+        const targetScore = scoreSequence[currentIndex];
+        isAnimating = true;
         
-        setDisplayScore(Math.round(currentValue));
-        setAnimatedScore(Math.round(currentValue));
-      }, 300); // Update every 300ms
+        // Animate to the next score
+        let startScore = displayScore;
+        const difference = targetScore - startScore;
+        const steps = 20; // Number of steps in the animation
+        let currentStep = 0;
+        
+        const animationInterval = setInterval(() => {
+          currentStep++;
+          const progress = currentStep / steps;
+          const newScore = Math.round(startScore + difference * progress);
+          
+          setDisplayScore(newScore);
+          setAnimatedScore(newScore);
+          
+          if (currentStep >= steps) {
+            clearInterval(animationInterval);
+            isAnimating = false;
+            
+            // Move to next index in sequence
+            currentIndex = (currentIndex + 1) % scoreSequence.length;
+          }
+        }, 50); // 50ms per step = ~1 second transition
+        
+      }, 3000); // Wait 3 seconds between each sequence change
       
       return () => clearInterval(interval);
     } else {
@@ -59,7 +78,7 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
         clearInterval(interval);
       };
     }
-  }, [score, isAuthLoop]);
+  }, [score, isAuthLoop, displayScore]);
 
   const getProtectionLevel = (score: number) => {
     if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
