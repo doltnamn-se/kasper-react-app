@@ -82,7 +82,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
             className="ios-notification absolute left-0 right-0 animate-fadeInUp"
           >
             <div 
-              className={`rounded-xl shadow-lg backdrop-blur-lg transition-all duration-500 ${
+              className={`notification-card rounded-xl shadow-lg backdrop-blur-lg transition-all duration-500 ${
                 isDarkMode 
                   ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
                   : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
