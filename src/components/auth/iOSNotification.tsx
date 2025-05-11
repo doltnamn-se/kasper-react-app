@@ -26,7 +26,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-  const [showStoreBadges, setShowStoreBadges] = useState(false);
+  const [showGooglePlay, setShowGooglePlay] = useState(false);
+  const [showAppStore, setShowAppStore] = useState(false);
   
   const fullText = language === 'sv' 
     ? "Ladda ner appen och håll koll när du är på språng" 
@@ -116,10 +117,15 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           clearInterval(typingInterval);
           setIsTypingComplete(true);
           
-          // Show store badges after typing animation completes
+          // Show Google Play badge first
           setTimeout(() => {
-            setShowStoreBadges(true);
-          }, 300);
+            setShowGooglePlay(true);
+            
+            // Then show App Store badge with delay
+            setTimeout(() => {
+              setShowAppStore(true);
+            }, 300); // 300ms after Google Play appears
+          }, 300); // 300ms after typing completes
         }
       }, 30); // Speed of typing (lower = faster)
       
@@ -182,8 +188,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* App download text with typing animation - Moved to top with more padding */}
-      <div className={`mt-12 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+      {/* App download text with typing animation - Moved further down with more padding */}
+      <div className={`mt-20 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -191,33 +197,45 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container with fade-in animation */}
-        <div className={`flex justify-center items-center mt-4 space-x-4 transition-opacity duration-500 ease-in-out ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}>
-          {/* Google Play Store */}
-          <a 
-            href="#" 
-            className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
-            onClick={(e) => e.preventDefault()}
-          >
-            <img 
-              src={isDarkMode ? "/lovable-uploads/ds-googleplay-white.svg" : "/lovable-uploads/ds-googleplay-black.svg"} 
-              alt="Get it on Google Play" 
-              className="w-full h-full"
-            />
-          </a>
+        {/* Store badges container with increased spacing */}
+        <div className="flex justify-center items-center mt-8 space-x-8">
+          {/* Google Play Store with fade-in-up animation */}
+          <div className={`transition-all duration-500 transform ${
+            showGooglePlay 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-4'
+          }`}>
+            <a 
+              href="#" 
+              className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+              onClick={(e) => e.preventDefault()}
+            >
+              <img 
+                src={isDarkMode ? "/lovable-uploads/ds-googleplay-white.svg" : "/lovable-uploads/ds-googleplay-black.svg"} 
+                alt="Get it on Google Play" 
+                className="w-full h-full"
+              />
+            </a>
+          </div>
           
-          {/* App Store */}
-          <a 
-            href="#" 
-            className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
-            onClick={(e) => e.preventDefault()}
-          >
-            <img 
-              src={isDarkMode ? "/lovable-uploads/ds-appstore-comingsoon-white.svg" : "/lovable-uploads/ds-appstore-comingsoon-black.svg"} 
-              alt="Download on App Store" 
-              className="w-full h-full"
-            />
-          </a>
+          {/* App Store with delayed fade-in-up animation */}
+          <div className={`transition-all duration-500 transform ${
+            showAppStore 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-4'
+          }`}>
+            <a 
+              href="#" 
+              className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+              onClick={(e) => e.preventDefault()}
+            >
+              <img 
+                src={isDarkMode ? "/lovable-uploads/ds-appstore-comingsoon-white.svg" : "/lovable-uploads/ds-appstore-comingsoon-black.svg"} 
+                alt="Download on App Store" 
+                className="w-full h-full"
+              />
+            </a>
+          </div>
         </div>
       </div>
       
