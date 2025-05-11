@@ -21,6 +21,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const notificationIndexRef = useRef(0);
   
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
@@ -149,47 +150,51 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       }, 100);
     }, 200); // Changed from 1000 to 200 milliseconds
 
-    let currentIndex = 0;
-    
     // Set up interval to change notification content
     const interval = setInterval(() => {
       // Begin transition - fade out text first
       setIsChangingText(true);
       
       // Add a slight delay to allow the fade-out effect before changing the content
-      setTimeout(() => {
+      const contentChangeTimeout = setTimeout(() => {
         // Move to next notification in the array
-        currentIndex = (currentIndex + 1) % notificationData.length;
-        setCurrentNotification(notificationData[currentIndex]);
+        notificationIndexRef.current = (notificationIndexRef.current + 1) % notificationData.length;
+        setCurrentNotification(notificationData[notificationIndexRef.current]);
         
         // Small delay before starting the fade in
-        setTimeout(() => {
+        const heightMeasureTimeout = setTimeout(() => {
           // Measure new height after content change
           if (contentRef.current) {
             setNotificationHeight(contentRef.current.offsetHeight);
           }
           
           // Then fade in the text
-          setTimeout(() => {
+          const fadeInTimeout = setTimeout(() => {
             setIsChangingText(false);
           }, 50);
+          
+          return () => clearTimeout(fadeInTimeout);
         }, 100);
+        
+        return () => clearTimeout(heightMeasureTimeout);
       }, 300);
+      
+      return () => clearTimeout(contentChangeTimeout);
     }, 4000); // Change notification content every 4 seconds
 
     return () => {
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, [language]);
+  }, [language, notificationData]);
 
   // If no notification is set yet, render nothing
   if (!currentNotification) return null;
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* App download text with typing animation - Moved further down with more padding */}
-      <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+      {/* App download text with typing animation - Fixed position further up */}
+      <div className={`mt-10 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -229,8 +234,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </div>
       </div>
       
-      {/* Notification in the center */}
-      <div className="flex-grow flex items-center justify-center">
+      {/* Notification in the center - Now properly centered */}
+      <div className="flex-1 flex items-center justify-center">
         <div className="relative w-[300px] max-w-[85%]">
           {showNotification && (
             <div
