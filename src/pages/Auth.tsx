@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +20,11 @@ const Auth = () => {
   const [isResetPasswordMode, setIsResetPasswordMode] = useState(false);
   const setVersion = useVersionStore((state) => state.setVersion);
   const [versionInitialized, setVersionInitialized] = useState(false);
+
+  // Use the appropriate background image based on theme
+  const bgImage = isDarkMode 
+    ? "/lovable-uploads/ds-auth-bg-dark.png"
+    : "/lovable-uploads/ds-auth-bg-light.png";
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -132,9 +136,9 @@ const Auth = () => {
       <div className="hidden md:block md:w-1/2 bg-[#FFFFFF] dark:bg-[#1a1a1a] h-screen p-[15px]">
         <div className="h-full w-full flex items-center justify-center p-0 rounded-lg overflow-hidden">
           <img 
-            src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait-color.jpg" 
+            src={bgImage}
             alt="Digitaltskydd App" 
-            className="w-full h-auto object-contain"
+            className="w-full h-full object-cover rounded-lg"
           />
         </div>
       </div>
