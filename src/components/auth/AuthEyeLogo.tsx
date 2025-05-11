@@ -3,7 +3,7 @@ import React from "react";
 
 export const AuthEyeLogo: React.FC = () => {
   return (
-    <a href="https://digitaltskydd.se/" className="inline-block mb-8">
+    <a href="https://digitaltskydd.se/" className="inline-block">
       <img
         src="/lovable-uploads/digitaltskydd-admin-logo.svg"
         alt="Logo"
