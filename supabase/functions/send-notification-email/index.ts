@@ -11,6 +11,15 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+interface EmailRequest {
+  email: string;
+  title: string;
+  message: string;
+  type: string;
+  isAdminAddedLink?: boolean;
+  forceEmail?: boolean;
+}
+
 const handler = async (req: Request) => {
   console.log("Send notification email function called");
   
@@ -20,7 +29,7 @@ const handler = async (req: Request) => {
   }
 
   try {
-    const requestData = await req.json();
+    const requestData: EmailRequest = await req.json();
     const { email, title, message, type, isAdminAddedLink, forceEmail } = requestData;
     
     console.log("Email notification request details:", { 

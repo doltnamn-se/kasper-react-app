@@ -3,7 +3,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLStatusStep } from "@/types/url-management";
 import { getStatusText } from "./utils/statusUtils";
-import { useUrlNotifications } from "./hooks/useUrlNotifications";
 
 interface URLStatusSelectProps {
   currentStatus: string;
@@ -14,7 +13,6 @@ interface URLStatusSelectProps {
 
 export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChange }: URLStatusSelectProps) => {
   const { t } = useLanguage();
-  const { createStatusNotification, showErrorToast } = useUrlNotifications();
 
   const handleStatusChange = async (newStatus: URLStatusStep) => {
     try {
@@ -31,29 +29,12 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
         return;
       }
 
-      // First update the status
+      // Call onStatusChange which will handle notification creation with the removal type
       console.log('URLStatusSelect - Calling onStatusChange');
       await onStatusChange(newStatus);
       
-      console.log('URLStatusSelect - Creating notification');
-      
-      // Create the notification in the database with explicit removal type
-      // This matches what the database trigger is expecting for email notifications
-      const { error: notificationError } = await createStatusNotification(
-        customerId,
-        t('notification.status.update.title'),
-        t('notification.status.update.message'),
-        'removal' // Explicitly set type to 'removal'
-      );
-
-      if (notificationError) {
-        console.error('Error creating notification:', notificationError);
-        throw notificationError;
-      }
-      
     } catch (error) {
       console.error('URLStatusSelect - Error in handleStatusChange:', error);
-      showErrorToast();
     }
   };
 

@@ -1,10 +1,11 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export const useUrlNotifications = () => {
   const { t, language } = useLanguage();
+  const { toast } = useToast();
 
   const createStatusNotification = async (customerId: string, title: string, message: string, type: string = 'removal') => {
     console.log('useUrlNotifications - Creating status notification:', { 

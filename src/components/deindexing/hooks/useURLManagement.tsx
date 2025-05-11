@@ -81,6 +81,7 @@ export const useURLManagement = () => {
         
         // Create notification for the user when status is updated by admin
         try {
+          console.log('useURLManagement - Creating notification with explicit removal type');
           const { error: notificationError } = await createStatusNotification(
             url.customer.id,
             t('notification.status.update.title'),
