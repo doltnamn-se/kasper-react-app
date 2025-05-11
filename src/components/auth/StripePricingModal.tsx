@@ -32,7 +32,6 @@ export const StripePricingModal: React.FC<StripePricingModalProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         {loaded && (
-          // @ts-ignore - The stripe-pricing-table is a custom element provided by Stripe's script
           <stripe-pricing-table
             pricing-table-id="prctbl_1RNL4UIZ35LgEgXXDVnqnfev"
             publishable-key="pk_live_51QctIzIZ35LgEgXXQpIJbrbrFFyZiofeG7LcfUBRkVVEbLATz2XivpAVWnb0M8QVrj5fkXYOBQZavXbzzxoOdSpC008DG85HjM"
