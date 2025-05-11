@@ -82,9 +82,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           } p-3`}
         >
           <div className="flex items-start">
-            {/* App icon using Digitaltskydd logo */}
+            {/* App icon using Digitaltskydd logo with blue background */}
             <div className="mr-3 mt-0.5">
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden`}>
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden bg-[#20a5fb]`}>
                 <img 
                   src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
                   alt="Digitaltskydd" 
