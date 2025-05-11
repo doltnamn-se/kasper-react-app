@@ -42,10 +42,11 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   const isAdminRoute = location.pathname.startsWith('/admin');
   const logoHeight = isMobile ? 'h-8' : 'h-12';
 
+  // Add Link wrapper only for auth routes
   if (isAuthRoute) {
     return (
       <div className="flex justify-center w-full">
-        <div className="relative h-16 w-64">
+        <a href="https://digitaltskydd.se/" className="relative h-16 w-64">
           <img 
             src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
             alt="Logo" 
@@ -56,7 +57,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
             alt="Logo" 
             className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
           />
-        </div>
+        </a>
       </div>
     );
   }
