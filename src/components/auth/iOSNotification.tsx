@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 interface NotificationProps {
   isDarkMode?: boolean;
@@ -16,7 +16,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [isChangingText, setIsChangingText] = useState(false);
-  const [animateHeight, setAnimateHeight] = useState(false);
+  const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Sample notifications data - all use Digitaltskydd
   const notificationData: NotificationMessage[] = [
@@ -45,12 +46,20 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     const initialTimeout = setTimeout(() => {
       setCurrentNotification(notificationData[0]);
       setShowNotification(true);
+      
+      // Initial height measurement after render
+      setTimeout(() => {
+        if (contentRef.current) {
+          setNotificationHeight(contentRef.current.offsetHeight);
+        }
+      }, 100);
     }, 1000);
 
     let currentIndex = 0;
     
     // Set up interval to change notification content
     const interval = setInterval(() => {
+      // Begin transition - fade out text first
       setIsChangingText(true);
       
       // Add a slight delay to allow the fade-out effect before changing the content
@@ -58,17 +67,19 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         // Move to next notification in the array
         currentIndex = (currentIndex + 1) % notificationData.length;
         setCurrentNotification(notificationData[currentIndex]);
-        setAnimateHeight(true);
         
         // Small delay before starting the fade in
         setTimeout(() => {
-          setIsChangingText(false);
+          // Measure new height after content change
+          if (contentRef.current) {
+            setNotificationHeight(contentRef.current.offsetHeight);
+          }
           
-          // Reset height animation flag after animation completes
+          // Then fade in the text
           setTimeout(() => {
-            setAnimateHeight(false);
-          }, 800); // Match transition duration
-        }, 50);
+            setIsChangingText(false);
+          }, 50);
+        }, 100);
       }, 300);
     }, 4000); // Change notification content every 4 seconds
 
@@ -95,11 +106,10 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                   : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
               } p-3`}
               style={{
-                transitionProperty: 'height, padding, background-color, border-color',
-                transitionDuration: '0.8s',
-                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-                height: 'auto', // Allow height to adjust naturally
-                willChange: 'height'
+                height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
+                transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                willChange: 'height, transform',
+                overflow: 'hidden'
               }}
             >
               <div className="flex items-start">
@@ -116,14 +126,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                 
                 {/* Notification content with animation only for the body text */}
                 <div 
+                  ref={contentRef}
                   className="flex-1 notification-content"
-                  style={{
-                    transitionProperty: 'height',
-                    transitionDuration: '0.8s',
-                    transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
-                    willChange: 'height',
-                    height: 'auto' // Allow height to adjust naturally
-                  }}
                 >
                   <div className="flex justify-between items-start">
                     <span className="font-semibold text-sm">
