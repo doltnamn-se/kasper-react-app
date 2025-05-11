@@ -24,38 +24,60 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
       let currentIndex = 0;
       let isAnimating = false;
       
-      const interval = setInterval(() => {
-        if (isAnimating) return;
-        
-        const targetScore = scoreSequence[currentIndex];
-        isAnimating = true;
-        
-        // Animate to the next score
-        let startScore = displayScore;
-        const difference = targetScore - startScore;
-        const steps = 20; // Number of steps in the animation
-        let currentStep = 0;
-        
-        const animationInterval = setInterval(() => {
-          currentStep++;
-          const progress = currentStep / steps;
-          const newScore = Math.round(startScore + difference * progress);
-          
-          setDisplayScore(newScore);
-          setAnimatedScore(newScore);
-          
-          if (currentStep >= steps) {
-            clearInterval(animationInterval);
-            isAnimating = false;
-            
-            // Move to next index in sequence
-            currentIndex = (currentIndex + 1) % scoreSequence.length;
-          }
-        }, 50); // 50ms per step = ~1 second transition
-        
-      }, 3000); // Wait 3 seconds between each sequence change
+      // Initial animation to first value in sequence
+      const initialTarget = scoreSequence[0];
+      const initialSteps = 20;
+      let initialStep = 0;
       
-      return () => clearInterval(interval);
+      const initialAnimation = setInterval(() => {
+        initialStep++;
+        const progress = initialStep / initialSteps;
+        const newScore = Math.round(initialTarget * progress);
+        
+        setDisplayScore(newScore);
+        setAnimatedScore(newScore);
+        
+        if (initialStep >= initialSteps) {
+          clearInterval(initialAnimation);
+          currentIndex = 1; // Start with the second value in the next animation
+          
+          // Start the main animation loop
+          const interval = setInterval(() => {
+            if (isAnimating) return;
+            
+            const targetScore = scoreSequence[currentIndex];
+            isAnimating = true;
+            
+            // Animate to the next score
+            let startScore = displayScore;
+            const difference = targetScore - startScore;
+            const steps = 20; // Number of steps in the animation
+            let currentStep = 0;
+            
+            const animationInterval = setInterval(() => {
+              currentStep++;
+              const progress = currentStep / steps;
+              const newScore = Math.round(startScore + difference * progress);
+              
+              setDisplayScore(newScore);
+              setAnimatedScore(newScore);
+              
+              if (currentStep >= steps) {
+                clearInterval(animationInterval);
+                isAnimating = false;
+                
+                // Move to next index in sequence
+                currentIndex = (currentIndex + 1) % scoreSequence.length;
+              }
+            }, 50); // 50ms per step = ~1 second transition
+            
+          }, 3000); // Wait 3 seconds between each sequence change
+          
+          return () => clearInterval(interval);
+        }
+      }, 50);
+      
+      return () => clearInterval(initialAnimation);
     } else {
       // Standard animation for non-auth pages
       const duration = 1000; // 1 second
@@ -78,7 +100,7 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
         clearInterval(interval);
       };
     }
-  }, [score, isAuthLoop, displayScore]);
+  }, [score, isAuthLoop]);
 
   const getProtectionLevel = (score: number) => {
     if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
