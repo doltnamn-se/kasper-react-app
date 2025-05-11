@@ -3,12 +3,12 @@ import React from "react";
 
 export const AuthEyeLogo: React.FC = () => {
   return (
-    <div className="flex justify-start mb-5">
-      <img 
-        src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
-        alt="Digitaltskydd Eye Logo" 
-        className="h-12 w-12"
+    <a href="https://digitaltskydd.se/" className="inline-block mb-8">
+      <img
+        src="/lovable-uploads/digitaltskydd-admin-logo.svg"
+        alt="Logo"
+        className="h-12 w-auto mx-auto"
       />
-    </div>
+    </a>
   );
 };
