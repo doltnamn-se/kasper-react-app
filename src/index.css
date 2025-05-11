@@ -122,6 +122,15 @@
   z-index: 20;
 }
 
+.notification-body {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  min-height: 1.5rem; /* Ensures consistent height */
+}
+
+.notification-content {
+  transition: height 0.3s ease-out;
+}
+
 .first-notification {
   position: relative;
   transition: transform 0.4s ease-out;

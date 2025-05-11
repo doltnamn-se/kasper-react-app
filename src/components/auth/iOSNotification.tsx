@@ -100,17 +100,17 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                   </div>
                 </div>
                 
-                {/* Notification content with smooth transition for text changes */}
-                <div className="flex-1 transition-all duration-500">
+                {/* Notification content with animation only for the body text */}
+                <div className="flex-1 notification-content">
                   <div className="flex justify-between items-start">
-                    <span className={`font-semibold text-sm ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-all duration-300`}>
+                    <span className="font-semibold text-sm">
                       {currentNotification.title}
                     </span>
-                    <span className={`text-xs opacity-60 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-all duration-300`}>
+                    <span className="text-xs opacity-60">
                       {currentNotification.time}
                     </span>
                   </div>
-                  <p className={`text-sm mt-0.5 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-all duration-300`}>
+                  <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
                     {currentNotification.body}
                   </p>
                 </div>
