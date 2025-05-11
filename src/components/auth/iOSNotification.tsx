@@ -22,7 +22,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Localized notifications data
+  // Localized notifications data with two new notifications added
   const notificationData: NotificationMessage[] = [
     {
       id: 1,
@@ -49,6 +49,24 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       body: language === 'sv' 
         ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
         : "You have a new hit on Google. Do you want us to remove it?",
+      time: "now",
+    },
+    {
+      id: 4,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Upplysningssidor" : "Search sites",
+      body: language === 'sv' 
+        ? "Du är nu borttagen på Mrkoll"
+        : "You are now removed from Mrkoll",
+      time: "now",
+    },
+    {
+      id: 5,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Länkar" : "Links",
+      body: language === 'sv' 
+        ? "Statusen för en eller flera av dina länkar har uppdaterats"
+        : "The status for one or more of your links has been updated",
       time: "now",
     },
   ];
