@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -191,8 +190,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container with fade-in-up animation */}
-        <div className={`flex justify-center items-center mt-4 space-x-4 transition-all duration-500 ease-in-out ${
+        {/* Store badges container with fade-in-up animation - Increased spacing */}
+        <div className={`flex justify-center items-center mt-8 space-x-4 transition-all duration-500 ease-in-out ${
           showStoreBadges ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'
         }`}>
           {/* Google Play Store */}
@@ -295,4 +294,3 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     </div>
   );
 };
-
