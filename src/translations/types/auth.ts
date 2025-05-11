@@ -16,6 +16,7 @@ export interface AuthTranslations {
   'token.placeholder': string;
   'forgot.password': string;
   'reset.your.password': string;
+  'reset.password.subtitle': string;
   'send.recovery.link': string;
   'sending.recovery.link': string;
   'update.password': string;

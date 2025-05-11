@@ -53,9 +53,12 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
   return (
     <div className="flex justify-center w-full">
       <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
-        <h2 className="text-xl font-bold mb-10 text-left dark:text-white font-system-ui">
+        <h2 className="text-xl font-bold mb-3 text-left dark:text-white font-system-ui">
           {t('reset.your.password')}
         </h2>
+        <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mb-6 font-system-ui">
+          {t('reset.password.subtitle')}
+        </p>
         {initialError && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>{initialError}</AlertDescription>

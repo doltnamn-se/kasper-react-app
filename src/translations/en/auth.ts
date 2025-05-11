@@ -18,6 +18,7 @@ export const auth: AuthTranslations = {
   'token.placeholder': 'Enter verification code',
   'forgot.password': 'Forgot your password?',
   'reset.your.password': 'Reset your password',
+  'reset.password.subtitle': 'Enter your email address and we\'ll send you a link to reset your password.',
   'send.recovery.link': 'Send recovery link',
   'sending.recovery.link': 'Sending recovery link...',
   'update.password': 'Save new password',
