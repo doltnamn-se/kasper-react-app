@@ -75,6 +75,12 @@ async function sendEmailNotificationIfRequired(
   forceEmail?: boolean
 ) {
   try {
+    console.log("Checking if email notification should be sent:", {
+      customerId,
+      skipUserEmail,
+      forceEmail
+    });
+    
     // Check if user has email notifications enabled
     const { data: preferences, error: prefsError } = await supabaseAdmin
       .from('notification_preferences')
