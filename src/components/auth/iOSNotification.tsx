@@ -231,7 +231,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       
       {/* Notification in the center */}
       <div className="flex-grow flex items-center justify-center">
-        <div className="relative w-[300px] max-w-[85%]">
+        <div className="relative w-[350px] max-w-[90%]">
           {showNotification && (
             <div
               className="ios-notification absolute left-0 right-0 animate-fadeInUp"
@@ -250,11 +250,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                 }}
               >
                 <div className="flex items-start">
-                  {/* App icon container with vertical centering */}
-                  <div className="mr-3 flex items-center h-full" style={{
-                    minHeight: notificationHeight ? `${notificationHeight}px` : 'auto',
-                    transition: 'min-height 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
-                  }}>
+                  {/* App icon container - Changed from vertical centering to top alignment */}
+                  <div className="mr-3 flex-shrink-0 pt-0.5">
                     <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
                       <img 
                         src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
