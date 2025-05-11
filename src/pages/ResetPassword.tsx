@@ -8,10 +8,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { AuthEyeLogo } from "@/components/auth/AuthEyeLogo";
+import { useTheme } from "next-themes";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { resolvedTheme } = useTheme();
   const [error, setError] = useState<string | null>(null);
   const { t, language } = useLanguage();
 
@@ -20,12 +21,6 @@ const ResetPassword = () => {
       "Återställ lösenord | Digitaltskydd.se" : 
       "Reset Password | Digitaltskydd.se";
     
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    setIsDarkMode(isDark);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    }
-
     const verifyToken = async () => {
       const accessToken = searchParams.get('access_token');
       if (!accessToken) {

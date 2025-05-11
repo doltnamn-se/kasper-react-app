@@ -8,13 +8,15 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 import { initializeVersionTracking, useVersionStore } from "@/config/version";
 import { getLatestVersion } from "@/utils/versionUtils";
+import { useTheme } from "next-themes";
 
 const Auth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === 'dark';
   const { t, language } = useLanguage();
   const [isResetPasswordMode, setIsResetPasswordMode] = useState(false);
   const setVersion = useVersionStore((state) => state.setVersion);
@@ -29,12 +31,6 @@ const Auth = () => {
     const darkLogo = new Image();
     lightLogo.src = "/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png";
     darkLogo.src = "/lovable-uploads/868b20a1-c3f1-404c-b8da-9d33fe738d9d.png";
-
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    setIsDarkMode(isDark);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    }
 
     // Initialize version tracking
     initializeVersionTracking();
@@ -88,18 +84,6 @@ const Auth = () => {
 
     handleRecoveryFlow();
   }, [language, searchParams, t, setVersion]);
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', String(newDarkMode));
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(

@@ -1,28 +1,18 @@
-import { useState, useEffect } from "react";
+
+import { useEffect } from "react";
 import { Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "next-themes";
 
 export const ThemeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const { t } = useLanguage();
-
-  useEffect(() => {
-    const isDark = document.documentElement.classList.contains('dark');
-    setIsDarkMode(isDark);
-  }, []);
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDarkMode = resolvedTheme === 'dark';
 
   const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', String(newDarkMode));
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    setTheme(isDarkMode ? 'light' : 'dark');
   };
 
   return (
