@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { PasswordUpdateForm } from "@/components/checklist/PasswordUpdateForm";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { AuthEyeLogo } from "@/components/auth/AuthEyeLogo";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -70,11 +70,10 @@ const ResetPassword = () => {
     <div className="h-screen overflow-hidden auth-page flex">
       {/* Left side - Authentication content */}
       <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#121212]">
-        <AuthHeader />
-        
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
             <div className="bg-white/30 dark:bg-[#232325]/30 backdrop-blur-xl backdrop-saturate-150 p-8 border border-white/20 dark:border-[#303032]/20 w-full max-w-sm fade-in rounded-[7px] font-system-ui shadow-lg">
+              <AuthEyeLogo />
               <h2 className="text-xl font-bold mb-10 text-center dark:text-white font-system-ui font-[700]">
                 {t('reset.password')}
               </h2>
