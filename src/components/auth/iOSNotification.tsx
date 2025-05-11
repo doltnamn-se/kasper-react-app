@@ -11,7 +11,7 @@ interface NotificationMessage {
   time: string;
 }
 
-export const iOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
+export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const [activeNotification, setActiveNotification] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 

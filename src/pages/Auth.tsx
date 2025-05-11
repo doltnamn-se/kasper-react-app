@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -153,7 +154,7 @@ const Auth = () => {
             draggable="false"
             onContextMenu={(e) => e.preventDefault()}
           />
-          <iOSNotification isDarkMode={isDarkMode} />
+          <IOSNotification isDarkMode={isDarkMode} />
         </div>
       </div>
     </div>
