@@ -21,7 +21,7 @@ interface EmailRequest {
 }
 
 const handler = async (req: Request) => {
-  console.log("Send notification email function called");
+  console.log("Send notification email function CALLED");
   
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -32,7 +32,8 @@ const handler = async (req: Request) => {
     const requestData: EmailRequest = await req.json();
     const { email, title, message, type, isAdminAddedLink, forceEmail } = requestData;
     
-    console.log("Email notification request details:", { 
+    console.log("======== EMAIL NOTIFICATION REQUEST ========");
+    console.log("Email notification details:", { 
       email, 
       title, 
       message, 
@@ -47,9 +48,15 @@ const handler = async (req: Request) => {
       throw new Error("No email address provided");
     }
     
+    // Always log the RESEND API key length for debugging
+    const resendKeyLength = Deno.env.get("RESEND_API_KEY")?.length || 0;
+    console.log(`RESEND_API_KEY is ${resendKeyLength > 0 ? 'present' : 'missing'} (length: ${resendKeyLength})`);
+    
     // Generate email HTML using our template
     const htmlContent = getNotificationEmailTemplate(title, message);
 
+    console.log("Attempting to send email with Resend...");
+    
     const { data, error } = await resend.emails.send({
       from: "Digitaltskydd.se <app@digitaltskydd.se>",
       to: email,
