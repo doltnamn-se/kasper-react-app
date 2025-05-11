@@ -189,7 +189,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
       {/* App download text with typing animation - Moved further down with more padding */}
-      <div className={`mt-20 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`mt-40 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -198,7 +198,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </p>
         
         {/* Store badges container with increased spacing */}
-        <div className="flex justify-center items-center mt-8 space-x-8">
+        <div className="flex justify-center items-center mt-10 space-x-10">
           {/* Google Play Store with fade-in-up animation */}
           <div className={`transition-all duration-500 transform ${
             showGooglePlay 
@@ -207,7 +207,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           }`}>
             <a 
               href="#" 
-              className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+              className="store-badge w-24 h-auto transition-opacity hover:opacity-80"
               onClick={(e) => e.preventDefault()}
             >
               <img 
@@ -226,7 +226,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           }`}>
             <a 
               href="#" 
-              className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+              className="store-badge w-24 h-auto transition-opacity hover:opacity-80"
               onClick={(e) => e.preventDefault()}
             >
               <img 
