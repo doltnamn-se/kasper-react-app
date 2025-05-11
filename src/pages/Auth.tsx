@@ -112,7 +112,7 @@ const Auth = () => {
   return (
     <div className="h-screen overflow-hidden auth-page flex">
       {/* Left side - Authentication content */}
-      <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#121212]">
+      <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#1a1a1a]">
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
             <AuthForm 

@@ -211,7 +211,7 @@ input::placeholder {
 
 .dark .auth-page::before,
 .dark .checklist-page::before {
-  background: radial-gradient(circle at 0% 0%, #161618 0%, #1a1a1c 25%, #1d1d1f 50%, #1a1a1c 75%, #161618 100%);
+  background: radial-gradient(circle at 0% 0%, #1a1a1a 0%, #1a1a1a 25%, #1a1a1a 50%, #1a1a1a 75%, #1a1a1a 100%);
 }
 
 .checklist-page {
