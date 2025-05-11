@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -25,7 +26,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const fullText = language === 'sv' 
-    ? "Ladda ner appen för när du är språng" 
+    ? "Ladda ner appen för när du är på språng" 
     : "Download the app for when you're on-the-go";
 
   // Localized notifications data with two new notifications added
