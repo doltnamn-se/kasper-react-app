@@ -1,3 +1,4 @@
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { URL, URLStatus } from "@/types/url-management";
 import { fetchAdminUrls, updateUrlStatus, deleteUrl } from "./utils/urlQueries";
@@ -77,6 +78,24 @@ export const useURLManagement = () => {
       
       if (result) {
         console.log('useURLManagement - Status updated successfully, refreshing data');
+        
+        // Create notification for the user when status is updated by admin
+        try {
+          const { error: notificationError } = await createStatusNotification(
+            url.customer.id,
+            t('notification.status.update.title'),
+            t('notification.status.update.message')
+          );
+
+          if (notificationError) {
+            console.error('Error creating notification:', notificationError);
+          } else {
+            console.log('Successfully created notification for the user');
+          }
+        } catch (notifError) {
+          console.error('Error creating user notification:', notifError);
+        }
+        
         await refetch();
         toast({
           title: t('success'),

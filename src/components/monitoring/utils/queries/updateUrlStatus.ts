@@ -40,7 +40,7 @@ export async function updateUrlStatus(
         customerId: urlData.customer_id,
         language: document.documentElement.lang || 'en',
         forceEmail: true,  // Keep this flag to force email sending for debugging
-        skipUserEmail: true // Add this new flag to skip user email notifications
+        skipUserEmail: false // Changed from true to false to allow email notifications
       }
     });
     
