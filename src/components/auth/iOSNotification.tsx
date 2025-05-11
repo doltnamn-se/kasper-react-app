@@ -16,10 +16,10 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   
-  // Updated title text with new messages
+  // Updated title text with new longer messages
   const fullText = language === 'sv' 
-    ? "Ladda ner appen" 
-    : "Download the app";
+    ? "Håll koll med appen när du är på språng" 
+    : "Keep track with the app when you're on-the-go";
 
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
