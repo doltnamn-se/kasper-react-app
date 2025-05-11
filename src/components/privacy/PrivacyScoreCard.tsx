@@ -26,11 +26,11 @@ export const PrivacyScoreCard = () => {
   const completedGuides = score.individual.guides;
   const completedGuidesCount = Math.round((completedGuides / 100) * allGuides.length);
 
-  // Check if we're on the auth page to hide the items list
+  // Check if we're on the auth page to hide the items list and adjust styling
   const isAuthPage = location.pathname.includes('/auth');
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className={`bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm ${isAuthPage ? '' : 'border border-[#e5e7eb] dark:border-[#232325]'} transition-colors duration-200`}>
       <div className="space-y-4 mb-6">
         {!isAuthPage && (
           <div>
