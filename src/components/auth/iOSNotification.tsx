@@ -23,39 +23,46 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
 
-  // GSAP typing animation effect
+  // Enhanced GSAP typing animation effect
   useEffect(() => {
     // Clear any existing text first
     if (textRef.current) {
       textRef.current.textContent = '';
     }
     
-    // Create GSAP timeline for typing animation
-    const tl = gsap.timeline();
+    // Create GSAP timeline with smoother easing
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power2.out"
+      }
+    });
     
     // Type each character with GSAP
     let chars = fullText.split('');
     
-    // Add each character one by one with GSAP
+    // Improved character-by-character typing with variable speed
     chars.forEach((char, index) => {
+      // Slightly slower at punctuation or spaces for more natural rhythm
+      const delay = char === ' ' || char === ',' || char === '.' || char === '-' ? 0.08 : 0.04;
+      
       tl.add(() => {
         if (textRef.current) {
           textRef.current.textContent += char;
         }
-      }, index * 0.05); // Slight delay between each character
+      }, index * delay);
     });
     
-    // After typing completes, show badges
+    // After typing completes, show badges with smoother transitions
     tl.call(() => {
-      // Show Google Play badge with delay
-      setTimeout(() => {
+      // Show Google Play badge with smoother delay
+      gsap.delayedCall(0.6, () => {
         setShowGooglePlayBadge(true);
         
-        // Show Apple Store badge with additional delay
-        setTimeout(() => {
+        // Show Apple Store badge with smoother delay
+        gsap.delayedCall(0.4, () => {
           setShowAppleStoreBadge(true);
-        }, 500);
-      }, 500);
+        });
+      });
     });
     
     // Play the timeline
@@ -69,19 +76,19 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex items-start justify-center pointer-events-none pt-16">
-      {/* App download text with GSAP typing animation - Now aligned to top with padding */}
+      {/* App download text with enhanced GSAP typing animation */}
       <div className="text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
         <p className={`text-xl font-[500] ${isDarkMode ? "text-white" : "text-black"}`}>
           <span ref={textRef}></span>
           <span className="cursor-blink">|</span>
         </p>
         
-        {/* Store badges container */}
+        {/* Store badges container with improved animations */}
         <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store - Now with link that opens in new tab */}
           <a 
             href={googlePlayStoreURL}
-            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showGooglePlayBadge ? 'opacity-100' : 'opacity-0'}`}
+            className={`store-badge w-32 h-auto transition-all duration-500 ease-out hover:opacity-80 animate-fadeInUp ${showGooglePlayBadge ? 'opacity-100' : 'opacity-0'}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ animationDelay: '100ms' }}
@@ -96,10 +103,10 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
             />
           </a>
           
-          {/* App Store */}
+          {/* App Store with improved animation */}
           <a 
             href="#" 
-            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showAppleStoreBadge ? 'opacity-100' : 'opacity-0'}`}
+            className={`store-badge w-32 h-auto transition-all duration-500 ease-out hover:opacity-80 animate-fadeInUp ${showAppleStoreBadge ? 'opacity-100' : 'opacity-0'}`}
             onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '300ms' }}
           >
