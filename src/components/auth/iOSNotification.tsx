@@ -25,7 +25,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-  // Fixed typo: changed "hålla" to "håll"
   const fullText = language === 'sv' 
     ? "Ladda ner appen och håll koll när du är på språng" 
     : "Download the app and stay connected on the go";
@@ -79,18 +78,25 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     },
   ];
 
-  // Typing animation effect
+  // Typing animation effect - Improved to ensure the first letter displays correctly
   useEffect(() => {
     // Reset the typing animation when language changes
     setDisplayText('');
     setIsTypingComplete(false);
     
     let i = 0;
+    let animationText = '';
+    
     // Start typing animation with a slight delay
     const typingDelay = setTimeout(() => {
+      // Force render the first character immediately
+      setDisplayText(fullText.charAt(0));
+      i = 1; // Start from second character
+      
       const typingInterval = setInterval(() => {
         if (i < fullText.length) {
-          setDisplayText(prev => prev + fullText.charAt(i));
+          animationText = fullText.substring(0, i + 1);
+          setDisplayText(animationText);
           i++;
         } else {
           clearInterval(typingInterval);
@@ -157,8 +163,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      {/* App download text with typing animation - Added overflow-visible to ensure text is not cut off */}
-      <div className="mb-6 text-center px-4 overflow-visible">
+      {/* App download text with typing animation - Added overflow-visible and increased padding to ensure text is fully visible */}
+      <div className="mb-6 text-center px-6 overflow-visible">
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
