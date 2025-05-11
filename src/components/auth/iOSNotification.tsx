@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -116,15 +117,15 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           clearInterval(typingInterval);
           setIsTypingComplete(true);
           
-          // Show Google Play badge with 1.75 sec delay after typing completes
+          // Updated: Show Google Play badge with 2 sec delay after typing completes
           setTimeout(() => {
             setShowGooglePlayBadge(true);
             
-            // Show Apple Store badge with 2 sec delay after typing completes (250ms after Google Play)
+            // Updated: Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
             setTimeout(() => {
               setShowAppleStoreBadge(true);
-            }, 250); // 250ms additional delay after Google Play (total 2 sec from typing completion)
-          }, 1750); // 1.75 sec delay for Google Play badge
+            }, 500); // 500ms additional delay after Google Play (total 2.5 sec from typing completion)
+          }, 2000); // 2 sec delay for Google Play badge
         }
       }, 30); // Speed of typing (lower = faster)
       
