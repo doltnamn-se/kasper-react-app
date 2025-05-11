@@ -31,7 +31,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       body: language === 'sv' 
         ? "Borttagning på Google är godkänd för en eller flera av dina länkar"
         : "Removal from Google is approved for one or several of your links",
-      time: "now",
+      time: language === 'sv' ? "nu" : "now",
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       body: language === 'sv' 
         ? "Grattis! Du är nu fyllt skyddad🥳"
         : "Congratulations! You are now fully protected🥳",
-      time: "now",
+      time: language === 'sv' ? "nu" : "now",
     },
     {
       id: 3,
@@ -49,7 +49,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       body: language === 'sv' 
         ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
         : "You have a new hit on Google. Do you want us to remove it?",
-      time: "now",
+      time: language === 'sv' ? "nu" : "now",
     },
     {
       id: 4,
@@ -58,7 +58,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       body: language === 'sv' 
         ? "Du är nu borttagen på Mrkoll"
         : "You are now removed from Mrkoll",
-      time: "now",
+      time: language === 'sv' ? "nu" : "now",
     },
     {
       id: 5,
@@ -67,7 +67,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       body: language === 'sv' 
         ? "Statusen för en eller flera av dina länkar har uppdaterats"
         : "The status for one or more of your links has been updated",
-      time: "now",
+      time: language === 'sv' ? "nu" : "now",
     },
   ];
 
