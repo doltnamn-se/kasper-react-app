@@ -139,7 +139,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                   </div>
                 </div>
                 
-                {/* Notification content with animation only for the body text */}
+                {/* Notification content with animation for both heading and body text */}
                 <div 
                   ref={contentRef}
                   className="flex-1 notification-content"
@@ -153,8 +153,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     </span>
                   </div>
                   
-                  {/* Updated heading to match the font-weight and color of the title */}
-                  <h3 className="font-semibold text-sm mt-1">
+                  {/* Updated heading with the same animation as body text */}
+                  <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
                     {currentNotification.heading}
                   </h3>
                   
