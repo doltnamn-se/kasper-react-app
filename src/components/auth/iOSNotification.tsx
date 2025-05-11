@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -24,6 +25,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showStoreBadges, setShowStoreBadges] = useState(false);
+  
   const fullText = language === 'sv' 
     ? "Ladda ner appen och håll koll när du är på språng" 
     : "Download the app and stay connected on the go";
@@ -77,11 +81,22 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     },
   ];
 
+  // Show title with delay
+  useEffect(() => {
+    const titleDelay = setTimeout(() => {
+      setShowTitle(true);
+    }, 1500); // 1.5 seconds delay
+    
+    return () => clearTimeout(titleDelay);
+  }, []);
+
   // Typing animation effect - Improved to ensure the first letter displays correctly
   useEffect(() => {
     // Reset the typing animation when language changes
     setDisplayText('');
     setIsTypingComplete(false);
+    
+    if (!showTitle) return;
     
     let i = 0;
     let animationText = '';
@@ -100,14 +115,19 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         } else {
           clearInterval(typingInterval);
           setIsTypingComplete(true);
+          
+          // Show store badges after typing animation completes
+          setTimeout(() => {
+            setShowStoreBadges(true);
+          }, 300);
         }
       }, 30); // Speed of typing (lower = faster)
       
       return () => clearInterval(typingInterval);
-    }, 500); // Delay before typing starts
+    }, 200); // Delay before typing starts
     
     return () => clearTimeout(typingDelay);
-  }, [fullText]);
+  }, [fullText, showTitle]);
 
   useEffect(() => {
     // Initial delay before showing the notification
@@ -162,8 +182,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* App download text with typing animation - Moved to top */}
-      <div className="mt-6 text-center px-6 overflow-visible">
+      {/* App download text with typing animation - Moved to top with more padding */}
+      <div className={`mt-12 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -171,8 +191,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container */}
-        <div className="flex justify-center items-center mt-4 space-x-4">
+        {/* Store badges container with fade-in animation */}
+        <div className={`flex justify-center items-center mt-4 space-x-4 transition-opacity duration-500 ease-in-out ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}>
           {/* Google Play Store */}
           <a 
             href="#" 
