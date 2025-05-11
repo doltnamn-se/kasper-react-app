@@ -42,10 +42,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         // Small delay before starting the fade in
         setTimeout(() => {
           // Then fade in the text
-          setTimeout(() => {
-            setIsChangingText(false);
-          }, 50);
-        }, 100);
+          setIsChangingText(false);
+        }, 50);
       }, 300);
     }, 4000); // Change notification content every 4 seconds
 

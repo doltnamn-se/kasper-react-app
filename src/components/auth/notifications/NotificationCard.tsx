@@ -71,7 +71,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             {notification.heading}
           </h3>
           
-          <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
+          <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
             {notification.body}
           </p>
         </div>
