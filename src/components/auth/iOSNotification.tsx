@@ -21,6 +21,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const notificationIndexRef = useRef(0);
+  const timeoutsRef = useRef<Array<NodeJS.Timeout>>([]);
   
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
@@ -82,13 +84,26 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     },
   ];
 
+  // Clean up all timeouts to prevent memory leaks
+  const clearAllTimeouts = () => {
+    timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+    timeoutsRef.current = [];
+  };
+
+  // Add timeout to ref for cleanup
+  const addTimeout = (callback: () => void, delay: number) => {
+    const timeoutId = setTimeout(callback, delay);
+    timeoutsRef.current.push(timeoutId);
+    return timeoutId;
+  };
+
   // Show title with delay
   useEffect(() => {
-    const titleDelay = setTimeout(() => {
+    const titleDelay = addTimeout(() => {
       setShowTitle(true);
     }, 1500); // 1.5 seconds delay
     
-    return () => clearTimeout(titleDelay);
+    return () => clearAllTimeouts();
   }, []);
 
   // Typing animation effect - Improved to ensure the first letter displays correctly
@@ -103,7 +118,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     let animationText = '';
     
     // Start typing animation with a slight delay
-    const typingDelay = setTimeout(() => {
+    const typingDelay = addTimeout(() => {
       // Force render the first character immediately
       setDisplayText(fullText.charAt(0));
       i = 1; // Start from second character
@@ -118,11 +133,11 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setIsTypingComplete(true);
           
           // Updated: Show Google Play badge with 2 sec delay after typing completes
-          setTimeout(() => {
+          addTimeout(() => {
             setShowGooglePlayBadge(true);
             
             // Updated: Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
-            setTimeout(() => {
+            addTimeout(() => {
               setShowAppleStoreBadge(true);
             }, 500); // 500ms additional delay after Google Play (total 2.5 sec from typing completion)
           }, 2000); // 2 sec delay for Google Play badge
@@ -132,35 +147,38 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       return () => clearInterval(typingInterval);
     }, 200); // Delay before typing starts
     
-    return () => clearTimeout(typingDelay);
+    return () => clearAllTimeouts();
   }, [fullText, showTitle]);
 
   useEffect(() => {
+    clearAllTimeouts(); // Clear any existing timeouts first
+    
+    // Reset notification index
+    notificationIndexRef.current = 0;
+    
     // Initial delay before showing the notification
-    const initialTimeout = setTimeout(() => {
+    const initialTimeout = addTimeout(() => {
       setCurrentNotification(notificationData[0]);
       setShowNotification(true);
       
       // Initial height measurement after render
-      setTimeout(() => {
+      addTimeout(() => {
         if (contentRef.current) {
           setNotificationHeight(contentRef.current.offsetHeight);
         }
       }, 100);
     }, 200); // Changed from 1000 to 200 milliseconds
 
-    let currentIndex = 0;
-    
     // Set up interval to change notification content
     const interval = setInterval(() => {
       // Begin transition - fade out text first
       setIsChangingText(true);
       
       // Add a slight delay to allow the fade-out effect before changing the content
-      setTimeout(() => {
+      const changeTimeout = setTimeout(() => {
         // Move to next notification in the array
-        currentIndex = (currentIndex + 1) % notificationData.length;
-        setCurrentNotification(notificationData[currentIndex]);
+        notificationIndexRef.current = (notificationIndexRef.current + 1) % notificationData.length;
+        setCurrentNotification(notificationData[notificationIndexRef.current]);
         
         // Small delay before starting the fade in
         setTimeout(() => {
@@ -175,13 +193,15 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           }, 50);
         }, 100);
       }, 300);
+
+      return () => clearTimeout(changeTimeout);
     }, 4000); // Change notification content every 4 seconds
 
     return () => {
-      clearTimeout(initialTimeout);
+      clearAllTimeouts();
       clearInterval(interval);
     };
-  }, [language]);
+  }, [language, notificationData]);
 
   // If no notification is set yet, render nothing
   if (!currentNotification) return null;
@@ -229,8 +249,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </div>
       </div>
       
-      {/* Notification in the center */}
-      <div className="flex-grow flex items-center justify-center">
+      {/* Notification in the center - Adjusted to be truly center vertically */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="relative w-[300px] max-w-[85%]">
           {showNotification && (
             <div
