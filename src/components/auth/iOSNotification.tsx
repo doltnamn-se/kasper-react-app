@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -188,7 +187,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* App download text with typing animation - Moved further down with more padding */}
+      {/* App download text with typing animation - Position maintained at the top */}
       <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
@@ -197,7 +196,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container with fade-in-up animation - Increased spacing */}
+        {/* Store badges container - Position maintained */}
         <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store */}
           <a 
@@ -229,8 +228,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </div>
       </div>
       
-      {/* Notification in the center */}
-      <div className="flex-grow flex items-center justify-center">
+      {/* Notification positioned absolutely in center - Updated for better vertical centering */}
+      <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center pointer-events-none">
         <div className="relative w-[350px] max-w-[90%]">
           {showNotification && (
             <div
@@ -250,7 +249,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                 }}
               >
                 <div className="flex items-start">
-                  {/* App icon container - Changed from vertical centering to top alignment */}
+                  {/* App icon container - Top alignment preserved */}
                   <div className="mr-3 flex-shrink-0 pt-0.5">
                     <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
                       <img 
@@ -261,7 +260,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     </div>
                   </div>
                   
-                  {/* Notification content with animation for both heading and body text */}
+                  {/* Notification content with animation */}
                   <div 
                     ref={contentRef}
                     className="flex-1 notification-content"
@@ -275,7 +274,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                       </span>
                     </div>
                     
-                    {/* Updated heading with the same animation as body text */}
+                    {/* Heading with animation */}
                     <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
                       {currentNotification.heading}
                     </h3>
@@ -290,9 +289,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           )}
         </div>
       </div>
-      
-      {/* Empty div to maintain spacing in flex container */}
-      <div className="mb-6"></div>
     </div>
   );
 };
