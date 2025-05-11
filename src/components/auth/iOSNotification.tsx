@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -11,7 +12,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-  const [showTitle, setShowTitle] = useState(false);
+  const [showTitle, setShowTitle] = useState(true); // Show title immediately
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   
@@ -23,14 +24,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
 
-  // Show title with delay
-  useEffect(() => {
-    const titleDelay = setTimeout(() => {
-      setShowTitle(true);
-    }, 1500); // 1.5 seconds delay
-    
-    return () => clearTimeout(titleDelay);
-  }, []);
+  // Removed the delayed title show effect - title is visible immediately
 
   // Typing animation effect
   useEffect(() => {
@@ -38,48 +32,39 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     setDisplayText('');
     setIsTypingComplete(false);
     
-    if (!showTitle) return;
-    
+    // Start typing animation immediately since showTitle is true from the beginning
     let i = 0;
     let animationText = '';
     
-    // Start typing animation with a slight delay
-    const typingDelay = setTimeout(() => {
-      // Force render the first character immediately
-      setDisplayText(fullText.charAt(0));
-      i = 1; // Start from second character
-      
-      const typingInterval = setInterval(() => {
-        if (i < fullText.length) {
-          animationText = fullText.substring(0, i + 1);
-          setDisplayText(animationText);
-          i++;
-        } else {
-          clearInterval(typingInterval);
-          setIsTypingComplete(true);
+    // Start typing animation immediately
+    const typingInterval = setInterval(() => {
+      if (i < fullText.length) {
+        animationText = fullText.substring(0, i + 1);
+        setDisplayText(animationText);
+        i++;
+      } else {
+        clearInterval(typingInterval);
+        setIsTypingComplete(true);
+        
+        // Show Google Play badge with 2 sec delay after typing completes
+        setTimeout(() => {
+          setShowGooglePlayBadge(true);
           
-          // Show Google Play badge with 2 sec delay after typing completes
+          // Show Apple Store badge with 500ms delay after Google Play
           setTimeout(() => {
-            setShowGooglePlayBadge(true);
-            
-            // Show Apple Store badge with 500ms delay after Google Play
-            setTimeout(() => {
-              setShowAppleStoreBadge(true);
-            }, 500);
-          }, 2000);
-        }
-      }, 30);
-      
-      return () => clearInterval(typingInterval);
-    }, 200);
+            setShowAppleStoreBadge(true);
+          }, 500);
+        }, 2000);
+      }
+    }, 30);
     
-    return () => clearTimeout(typingDelay);
-  }, [fullText, showTitle]);
+    return () => clearInterval(typingInterval);
+  }, [fullText]); // Removed showTitle dependency as it's now always true
 
   return (
     <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
       {/* App download text with typing animation - Centered vertically and horizontally */}
-      <div className={`text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+      <div className="text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
