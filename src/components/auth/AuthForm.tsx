@@ -13,12 +13,14 @@ interface AuthFormProps {
   errorMessage?: string;
   isDarkMode?: boolean;
   isResetPasswordMode?: boolean;
+  onShowPricingTable: () => void;
 }
 
 export const AuthForm = ({ 
   errorMessage, 
   isDarkMode, 
-  isResetPasswordMode: propIsResetPasswordMode 
+  isResetPasswordMode: propIsResetPasswordMode,
+  onShowPricingTable
 }: AuthFormProps) => {
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
@@ -74,7 +76,7 @@ export const AuthForm = ({
               isLoading={isLoading}
               setIsLoading={setIsLoading}
             />
-            {!isResetPasswordMode && !showResetForm && <SignUpPrompt />}
+            {!isResetPasswordMode && !showResetForm && <SignUpPrompt onGetStarted={onShowPricingTable} />}
           </>
         )}
       </div>

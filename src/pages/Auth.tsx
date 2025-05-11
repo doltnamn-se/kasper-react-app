@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { initializeVersionTracking, useVersionStore } from "@/config/version";
 import { getLatestVersion } from "@/utils/versionUtils";
 import { useTheme } from "next-themes";
+import { StripePricingTable } from "@/components/auth/StripePricingTable";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Auth = () => {
   const [isResetPasswordMode, setIsResetPasswordMode] = useState(false);
   const setVersion = useVersionStore((state) => state.setVersion);
   const [versionInitialized, setVersionInitialized] = useState(false);
+  const [showPricingTable, setShowPricingTable] = useState(false);
 
   // Use the appropriate background image based on theme
   const bgImage = isDarkMode 
@@ -116,15 +118,20 @@ const Auth = () => {
 
   return (
     <div className="h-screen overflow-hidden auth-page flex">
-      {/* Left side - Authentication content */}
+      {/* Left side - Authentication content or Pricing Table */}
       <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#1a1a1a]">
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
-            <AuthForm 
-              errorMessage={errorMessage} 
-              isDarkMode={isDarkMode} 
-              isResetPasswordMode={isResetPasswordMode} 
-            />
+            {showPricingTable ? (
+              <StripePricingTable onBack={() => setShowPricingTable(false)} />
+            ) : (
+              <AuthForm 
+                errorMessage={errorMessage} 
+                isDarkMode={isDarkMode} 
+                isResetPasswordMode={isResetPasswordMode}
+                onShowPricingTable={() => setShowPricingTable(true)}
+              />
+            )}
           </div>
         </div>
         

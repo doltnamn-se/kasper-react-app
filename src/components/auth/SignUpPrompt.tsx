@@ -1,11 +1,12 @@
 
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
-import { StripePricingModal } from "./StripePricingModal";
 
-export const SignUpPrompt = () => {
+interface SignUpPromptProps {
+  onGetStarted: () => void;
+}
+
+export const SignUpPrompt = ({ onGetStarted }: SignUpPromptProps) => {
   const { language } = useLanguage();
-  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
   
   return (
     <div className="mt-6 text-center text-sm text-[#000000A6] dark:text-[#FFFFFFA6] font-medium font-system-ui">
@@ -14,17 +15,12 @@ export const SignUpPrompt = () => {
         href="#"
         onClick={(e) => {
           e.preventDefault();
-          setIsPricingModalOpen(true);
+          onGetStarted();
         }} 
         className="font-[700] underline text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] font-system-ui"
       >
         {language === 'sv' ? "Kom igång" : "Get started"}
       </a>
-
-      <StripePricingModal 
-        isOpen={isPricingModalOpen} 
-        onClose={() => setIsPricingModalOpen(false)}
-      />
     </div>
   );
 };
