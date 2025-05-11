@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NotificationProps {
   isDarkMode?: boolean;
@@ -10,33 +11,44 @@ interface NotificationMessage {
   body: string;
   time: string;
   id: number;
+  heading: string;
 }
 
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
+  const { language } = useLanguage();
   const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Sample notifications data - all use Digitaltskydd
+  // Localized notifications data
   const notificationData: NotificationMessage[] = [
     {
       id: 1,
       title: "Digitaltskydd",
-      body: "I'll see you bright and early tomorrow.",
+      heading: language === 'sv' ? "Länkar" : "Links",
+      body: language === 'sv' 
+        ? "Borttagning på Google är godkänd för en eller flera av dina länkar"
+        : "Removal from Google is approved for one or several of your links",
       time: "now",
     },
     {
       id: 2,
       title: "Digitaltskydd",
-      body: "4 more messages from Michael",
+      heading: language === 'sv' ? "Status" : "Status",
+      body: language === 'sv' 
+        ? "Grattis! Du är nu fyllt skyddad🥳"
+        : "Congratulations! You are now fully protected🥳",
       time: "now",
     },
     {
       id: 3,
       title: "Digitaltskydd",
-      body: "Your privacy score has improved by 15%",
+      heading: language === 'sv' ? "Bevakning" : "Monitoring",
+      body: language === 'sv' 
+        ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
+        : "You have a new hit on Google. Do you want us to remove it?",
       time: "now",
     },
   ];
@@ -87,7 +99,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, []);
+  }, [language]);
 
   // If no notification is set yet, render nothing
   if (!currentNotification) return null;
@@ -137,6 +149,12 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                       {currentNotification.time}
                     </span>
                   </div>
+                  
+                  {/* New heading above the notification body */}
+                  <h3 className="font-semibold text-sm mt-1 text-[#9b87f5]">
+                    {currentNotification.heading}
+                  </h3>
+                  
                   <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
                     {currentNotification.body}
                   </p>
