@@ -17,7 +17,7 @@ export const useUrlNotifications = () => {
     });
     
     try {
-      // Create in-app notification - the database trigger will handle email sending with rate limiting
+      // Create in-app notification - the database trigger will handle email sending without rate limiting
       const { data, error } = await supabase
         .from('notifications')
         .insert({
