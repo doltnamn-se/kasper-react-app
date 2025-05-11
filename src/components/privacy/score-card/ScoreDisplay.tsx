@@ -22,11 +22,10 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
       // For auth pages - specific sequence animation (100, 23, 71, 46, 100)
       const scoreSequence = [100, 23, 71, 46];
       let currentIndex = 0;
-      let isAnimating = false;
       
       // Initial animation to first value in sequence
       const initialTarget = scoreSequence[0];
-      const initialSteps = 20;
+      const initialSteps = 15;
       let initialStep = 0;
       
       const initialAnimation = setInterval(() => {
@@ -41,41 +40,44 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
           clearInterval(initialAnimation);
           currentIndex = 1; // Start with the second value in the next animation
           
-          // Start the main animation loop
-          const interval = setInterval(() => {
-            if (isAnimating) return;
-            
-            const targetScore = scoreSequence[currentIndex];
-            isAnimating = true;
-            
-            // Get the current score as starting point
-            let startScore = displayScore;
-            const difference = targetScore - startScore;
-            const steps = 20; // Number of steps in the animation
-            let currentStep = 0;
-            
-            const animationInterval = setInterval(() => {
-              currentStep++;
-              const progress = currentStep / steps;
-              const newScore = Math.round(startScore + difference * progress);
+          // Start the main animation loop with a timeout
+          setTimeout(() => {
+            const animateToNextScore = () => {
+              const targetScore = scoreSequence[currentIndex];
+              const startScore = displayScore;
+              const difference = targetScore - startScore;
+              const steps = 15; // Reduced steps for smoother animation
+              let currentStep = 0;
               
-              setDisplayScore(newScore);
-              setAnimatedScore(newScore);
+              const stepAnimation = () => {
+                if (currentStep <= steps) {
+                  currentStep++;
+                  const progress = currentStep / steps;
+                  const newScore = Math.round(startScore + difference * progress);
+                  
+                  setDisplayScore(newScore);
+                  setAnimatedScore(newScore);
+                  
+                  // Continue animation
+                  requestAnimationFrame(stepAnimation);
+                } else {
+                  // Animation complete, move to next index after delay
+                  currentIndex = (currentIndex + 1) % scoreSequence.length;
+                  
+                  // Add a pause between animations
+                  setTimeout(animateToNextScore, 3000);
+                }
+              };
               
-              if (currentStep >= steps) {
-                clearInterval(animationInterval);
-                isAnimating = false;
-                
-                // Move to next index in sequence
-                currentIndex = (currentIndex + 1) % scoreSequence.length;
-              }
-            }, 50); // 50ms per step = ~1 second transition
+              // Start the step animation using requestAnimationFrame for smoother animation
+              requestAnimationFrame(stepAnimation);
+            };
             
-          }, 3000); // Wait 3 seconds between each sequence change
-          
-          return () => clearInterval(interval);
+            // Start the animation loop
+            animateToNextScore();
+          }, 1000);
         }
-      }, 50);
+      }, 25); // Faster initial animation (25ms per step)
       
       return () => clearInterval(initialAnimation);
     } else {
