@@ -26,7 +26,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-  const [showStoreBadges, setShowStoreBadges] = useState(false);
+  const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
+  const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   
   const fullText = language === 'sv' 
     ? "Ladda ner appen och håll koll när du är på språng" 
@@ -116,10 +117,15 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           clearInterval(typingInterval);
           setIsTypingComplete(true);
           
-          // Show store badges after typing animation completes with delay
+          // Show Google Play badge with 1.75 sec delay after typing completes
           setTimeout(() => {
-            setShowStoreBadges(true);
-          }, 300);
+            setShowGooglePlayBadge(true);
+            
+            // Show Apple Store badge with 2 sec delay after typing completes (250ms after Google Play)
+            setTimeout(() => {
+              setShowAppleStoreBadge(true);
+            }, 250); // 250ms additional delay after Google Play (total 2 sec from typing completion)
+          }, 1750); // 1.75 sec delay for Google Play badge
         }
       }, 30); // Speed of typing (lower = faster)
       
@@ -196,7 +202,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {/* Google Play Store */}
           <a 
             href="#" 
-            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}
+            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showGooglePlayBadge ? 'opacity-100' : 'opacity-0'}`}
             onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '100ms' }}
           >
@@ -210,7 +216,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {/* App Store */}
           <a 
             href="#" 
-            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}
+            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showAppleStoreBadge ? 'opacity-100' : 'opacity-0'}`}
             onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '300ms' }}
           >
