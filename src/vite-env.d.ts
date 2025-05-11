@@ -13,8 +13,6 @@ declare namespace JSX {
       React.HTMLAttributes<HTMLElement> & {
         'pricing-table-id'?: string;
         'publishable-key'?: string;
-        'client-reference-id'?: string;
-        'theme'?: string;
       },
       HTMLElement
     >;

@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @font-face {
@@ -254,38 +255,4 @@ input[type="search"]::-webkit-search-results-decoration {
 
 input[type="search"]:focus {
   outline: none;
-}
-
-/* Stripe Pricing Table Dark Mode Overrides */
-.dark stripe-pricing-table {
-  --pricing-table-bg: #1a1a1a !important;
-  --pricing-table-border-color: #333333 !important;
-  --pricing-table-text-color: #ffffff !important;
-  --pricing-table-header-bg: #1a1a1a !important;
-  --pricing-table-header-text: #ffffff !important;
-  --pricing-table-price-text: #ffffff !important;
-  --pricing-table-button-bg: #6E59A5 !important;
-  --pricing-table-button-text: #ffffff !important;
-}
-
-/* Force Stripe iframe to inherit background color in dark mode */
-.dark stripe-pricing-table,
-.dark stripe-pricing-table iframe,
-.dark iframe[name^="pricing-table-"] {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-}
-
-.dark div[data-stripe-pricing-table],
-.dark div[data-stripe-pricing-table] > div,
-.dark div[data-stripe-pricing-table] > div > iframe {
-  background-color: #1a1a1a !important;
-}
-
-/* Ensure the iframe content background is also dark */
-.dark iframe[name^="pricing-table-"] html,
-.dark iframe[name^="pricing-table-"] body,
-.dark iframe[name^="pricing-table-"] div {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
 }
