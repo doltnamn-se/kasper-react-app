@@ -7,7 +7,7 @@ export const AuthEyeLogo: React.FC = () => {
       <img 
         src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
         alt="Digitaltskydd Eye Logo" 
-        className="h-14 w-14"
+        className="h-12 w-12"
       />
     </div>
   );

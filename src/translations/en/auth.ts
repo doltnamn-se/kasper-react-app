@@ -1,8 +1,9 @@
+
 import { AuthTranslations } from '../types/auth';
 
 export const auth: AuthTranslations = {
   'welcome.back': 'Welcome back',
-  'sign.in': 'Sign in to your account',
+  'sign.in': 'Sign in',
   'sign.in.button': 'Login',
   'signing.in': 'Signing in...',
   'no.account': "Don't have an account?",
