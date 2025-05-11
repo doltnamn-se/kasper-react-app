@@ -2,24 +2,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import gsap from 'gsap';
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 interface NotificationProps {
   isDarkMode?: boolean;
 }
 
-interface NotificationMessage {
-  title: string;
-  body: string;
-  time: string;
-  id: number;
-  heading: string;
-}
-
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const { language } = useLanguage();
-  const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
   const [showNotification, setShowNotification] = useState(false);
-  const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   
@@ -37,55 +29,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     ? "Ladda ner appen och håll koll när du är på språng" 
     : "Download the app and stay connected on the go";
 
-  // Localized notifications data with two new notifications added
-  const notificationData: NotificationMessage[] = [
-    {
-      id: 1,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Länkar" : "Links",
-      body: language === 'sv' 
-        ? "Borttagning på Google är godkänd för en eller flera av dina länkar"
-        : "Removal from Google is approved for one or several of your links",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 2,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Status" : "Status",
-      body: language === 'sv' 
-        ? "Grattis! Du är nu fyllt skyddad🥳"
-        : "Congratulations! You are now fully protected🥳",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 3,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Bevakning" : "Monitoring",
-      body: language === 'sv' 
-        ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
-        : "You have a new hit on Google. Do you want us to remove it?",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 4,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Upplysningssidor" : "Search sites",
-      body: language === 'sv' 
-        ? "Du är nu borttagen på Mrkoll"
-        : "You are now removed from Mrkoll",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 5,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Länkar" : "Links",
-      body: language === 'sv' 
-        ? "Statusen för en eller flera av dina länkar har uppdaterats"
-        : "The status for one or more of your links has been updated",
-      time: language === 'sv' ? "nu" : "now",
-    },
-  ];
-
   // Show title with delay
   useEffect(() => {
     const titleDelay = setTimeout(() => {
@@ -95,7 +38,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     return () => clearTimeout(titleDelay);
   }, []);
 
-  // GSAP typing animation effect - Fixed implementation
+  // GSAP typing animation effect with proper cleanup
   useEffect(() => {
     // Reset states when language changes
     setDisplayText('');
@@ -103,11 +46,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     
     if (!showTitle) return;
     
-    // Kill any existing animations to prevent conflicts
-    if (gsapContextRef.current) {
-      gsapContextRef.current.kill();
-    }
-
     // Create a GSAP context for better cleanup
     gsapContextRef.current = gsap.context(() => {
       // Create typing timeline with GSAP
@@ -116,11 +54,11 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setIsTypingComplete(true);
           
           // Show Google Play badge with 2 sec delay after typing completes
-          const googlePlayDelay = gsap.delayedCall(2, () => {
+          gsap.delayedCall(2, () => {
             setShowGooglePlayBadge(true);
             
-            // Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
-            const appleStoreDelay = gsap.delayedCall(0.5, () => {
+            // Show Apple Store badge with 500ms after Google Play
+            gsap.delayedCall(0.5, () => {
               setShowAppleStoreBadge(true);
             });
           });
@@ -138,9 +76,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         }, index * 0.03); // Slightly randomized typing speed for natural effect
       });
 
-      // Start the animation
-      typingTimeline.play();
-      
       // Setup blinking cursor animation
       if (cursorRef.current) {
         gsap.to(cursorRef.current, {
@@ -164,7 +99,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   useEffect(() => {
     // Initial delay before showing the notification
     const initialTimeout = setTimeout(() => {
-      setCurrentNotification(notificationData[0]);
       setShowNotification(true);
       
       // Initial height measurement after render
@@ -173,53 +107,29 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setNotificationHeight(contentRef.current.offsetHeight);
         }
       }, 100);
-    }, 200); // Changed from 1000 to 200 milliseconds
-
-    let currentIndex = 0;
-    let intervalId: number | null = null;
+    }, 200); 
     
-    // Set up interval to change notification content
-    intervalId = window.setInterval(() => {
-      // Begin transition - fade out text first
-      setIsChangingText(true);
-      
-      // Add a slight delay to allow the fade-out effect before changing the content
-      const textChangeTimeout = setTimeout(() => {
-        // Move to next notification in the array
-        currentIndex = (currentIndex + 1) % notificationData.length;
-        setCurrentNotification(notificationData[currentIndex]);
-        
-        // Small delay before starting the fade in
-        const measureTimeout = setTimeout(() => {
-          // Measure new height after content change
-          if (contentRef.current) {
-            setNotificationHeight(contentRef.current.offsetHeight);
-          }
-          
-          // Then fade in the text
-          const fadeInTimeout = setTimeout(() => {
-            setIsChangingText(false);
-          }, 50);
-
-          return () => clearTimeout(fadeInTimeout);
-        }, 100);
-
-        return () => clearTimeout(measureTimeout);
-      }, 300);
-
-      return () => clearTimeout(textChangeTimeout);
-    }, 4000); // Change notification content every 4 seconds
-
     return () => {
       clearTimeout(initialTimeout);
-      if (intervalId !== null) {
-        clearInterval(intervalId);
-      }
     };
-  }, [language, notificationData]);
+  }, [language]);
 
-  // If no notification is set yet, render nothing
-  if (!currentNotification) return null;
+  // Privacy Score data - mocked values similar to the real component
+  const mockScore = {
+    total: 75,
+    individual: {
+      guides: 80,
+      urls: 60,
+      monitoring: 100,
+      address: 60
+    }
+  };
+
+  // Mock data for the score card
+  const mockCompletedUrls = 3;
+  const mockTotalUrls = 5;
+  const mockCompletedGuidesCount = 4;
+  const mockTotalGuidesCount = 5;
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
@@ -266,13 +176,11 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </div>
       </div>
       
-      {/* Notification in the center */}
+      {/* Privacy Score Card in the center - using the same styling as the notification */}
       <div className="flex-grow flex items-center justify-center">
         <div className="relative w-[300px] max-w-[85%]">
           {showNotification && (
-            <div
-              className="ios-notification absolute left-0 right-0 animate-fadeInUp"
-            >
+            <div className="ios-notification absolute left-0 right-0 animate-fadeInUp">
               <div 
                 className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
                   isDarkMode 
@@ -280,7 +188,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
                 } p-3`}
                 style={{
-                  height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
+                  height: notificationHeight ? `${notificationHeight + 24}px` : 'auto',
                   transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                   willChange: 'height, transform',
                   overflow: 'hidden'
@@ -301,28 +209,55 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     </div>
                   </div>
                   
-                  {/* Notification content with animation for both heading and body text */}
+                  {/* Privacy Score Card Content */}
                   <div 
                     ref={contentRef}
                     className="flex-1 notification-content"
                   >
                     <div className="flex justify-between items-start">
                       <span className="font-semibold text-sm">
-                        {currentNotification.title}
+                        Digitaltskydd
                       </span>
                       <span className="text-xs opacity-60">
-                        {currentNotification.time}
+                        {language === 'sv' ? 'nu' : 'now'}
                       </span>
                     </div>
                     
-                    {/* Updated heading with the same animation as body text */}
-                    <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
-                      {currentNotification.heading}
+                    {/* Privacy Score content */}
+                    <h3 className="font-semibold text-sm mt-1">
+                      {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
                     </h3>
                     
-                    <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
-                      {currentNotification.body}
-                    </p>
+                    {/* Score Display */}
+                    <div className="mt-2 mb-2">
+                      <div className="flex justify-between items-center">
+                        <div className="text-xl font-bold">
+                          {mockScore.total}%
+                        </div>
+                        <div className="w-3/4 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                          <div 
+                            className="bg-[#20a5fb] h-2.5 rounded-full" 
+                            style={{ width: `${mockScore.total}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Score Details */}
+                    <div className="text-xs space-y-1.5">
+                      <div className="flex justify-between">
+                        <span>{language === 'sv' ? 'Upplysningssidor' : 'Search sites'}</span>
+                        <span>{mockScore.individual.guides}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{language === 'sv' ? 'Länkar' : 'Links'}</span>
+                        <span>{mockScore.individual.urls}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{language === 'sv' ? 'Bevakning' : 'Monitoring'}</span>
+                        <span>{mockScore.individual.monitoring}%</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
