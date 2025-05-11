@@ -1,0 +1,10 @@
+
+/* Import base styles and Tailwind */
+@import './base.css';
+
+/* Import component-specific styles */
+@import './animations.css';
+@import './notifications.css';
+@import './forms.css';
+@import './pages.css';
+@import './charts.css';

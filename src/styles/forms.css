@@ -1,0 +1,46 @@
+
+/* Remove autofill background color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  background-color: transparent !important;
+}
+
+/* Dark mode autofill text color */
+.dark input:-webkit-autofill {
+  -webkit-text-fill-color: white !important;
+}
+
+/* Light mode autofill text color */
+input:-webkit-autofill {
+  -webkit-text-fill-color: black !important;
+}
+
+/* Input text colors */
+input {
+  color: #000000 !important;
+}
+
+.dark input {
+  color: #FFFFFF !important;
+}
+
+/* Keep existing placeholder styles */
+input::placeholder {
+  @apply text-[#000000A6] dark:text-[#FFFFFFA6];
+}
+
+/* Remove search input styling */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+input[type="search"]:focus {
+  outline: none;
+}
