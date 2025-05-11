@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +10,6 @@ import { getLatestVersion } from "@/utils/versionUtils";
 import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
 import { IOSNotification } from "@/components/auth/iOSNotification";
-import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -155,16 +153,7 @@ const Auth = () => {
             draggable="false"
             onContextMenu={(e) => e.preventDefault()}
           />
-          
-          {/* Add the app download notification at the top */}
-          <div className="absolute inset-0 flex flex-col items-center">
-            <IOSNotification isDarkMode={isDarkMode} />
-            
-            {/* Add Privacy Score Card in the center */}
-            <div className="mt-auto mb-auto w-[90%] max-w-[450px]">
-              <PrivacyScoreCard />
-            </div>
-          </div>
+          <IOSNotification isDarkMode={isDarkMode} />
         </div>
       </div>
     </div>

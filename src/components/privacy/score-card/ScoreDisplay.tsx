@@ -6,10 +6,9 @@ import { ProgressBar } from './ProgressBar';
 interface ScoreDisplayProps {
   score: number;
   language: string;
-  isAuthLoop?: boolean;
 }
 
-export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDisplayProps) => {
+export const ScoreDisplay = ({ score, language }: ScoreDisplayProps) => {
   const [animatedScore, setAnimatedScore] = useState(0);
   const [displayScore, setDisplayScore] = useState(0);
 
@@ -18,91 +17,27 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
     setAnimatedScore(0);
     setDisplayScore(0);
 
-    if (isAuthLoop) {
-      // For auth pages - specific sequence animation (100, 23, 71, 46, 100)
-      const scoreSequence = [100, 23, 71, 46];
-      let currentIndex = 0;
-      
-      // Initial animation to first value in sequence
-      const initialTarget = scoreSequence[0];
-      const initialSteps = 15;
-      let initialStep = 0;
-      
-      const initialAnimation = setInterval(() => {
-        initialStep++;
-        const progress = initialStep / initialSteps;
-        const newScore = Math.round(initialTarget * progress);
-        
-        setDisplayScore(newScore);
-        setAnimatedScore(newScore);
-        
-        if (initialStep >= initialSteps) {
-          clearInterval(initialAnimation);
-          currentIndex = 1; // Start with the second value in the next animation
-          
-          // Start the main animation loop with a timeout
-          setTimeout(() => {
-            const animateToNextScore = () => {
-              const targetScore = scoreSequence[currentIndex];
-              const startScore = displayScore;
-              const difference = targetScore - startScore;
-              const steps = 15; // Reduced steps for smoother animation
-              let currentStep = 0;
-              
-              const stepAnimation = () => {
-                if (currentStep <= steps) {
-                  currentStep++;
-                  const progress = currentStep / steps;
-                  const newScore = Math.round(startScore + difference * progress);
-                  
-                  setDisplayScore(newScore);
-                  setAnimatedScore(newScore);
-                  
-                  // Continue animation
-                  requestAnimationFrame(stepAnimation);
-                } else {
-                  // Animation complete, move to next index after delay
-                  currentIndex = (currentIndex + 1) % scoreSequence.length;
-                  
-                  // Add a pause between animations
-                  setTimeout(animateToNextScore, 3000);
-                }
-              };
-              
-              // Start the step animation using requestAnimationFrame for smoother animation
-              requestAnimationFrame(stepAnimation);
-            };
-            
-            // Start the animation loop
-            animateToNextScore();
-          }, 1000);
-        }
-      }, 25); // Faster initial animation (25ms per step)
-      
-      return () => clearInterval(initialAnimation);
-    } else {
-      // Standard animation for non-auth pages
-      const duration = 1000; // 1 second
-      const steps = 60; // 60 steps for smooth animation
-      const increment = score / steps;
-      let currentStep = 0;
+    // Start both animations immediately
+    const duration = 1000; // 1 second
+    const steps = 60; // 60 steps for smooth animation
+    const increment = score / steps;
+    let currentStep = 0;
 
-      const interval = setInterval(() => {
-        currentStep++;
-        const newScore = Math.min(Math.round(increment * currentStep), score);
-        setDisplayScore(newScore);
-        setAnimatedScore(newScore);
-        
-        if (currentStep >= steps) {
-          clearInterval(interval);
-        }
-      }, duration / steps);
-
-      return () => {
+    const interval = setInterval(() => {
+      currentStep++;
+      const newScore = Math.min(Math.round(increment * currentStep), score);
+      setDisplayScore(newScore);
+      setAnimatedScore(newScore);
+      
+      if (currentStep >= steps) {
         clearInterval(interval);
-      };
-    }
-  }, [score, isAuthLoop]);
+      }
+    }, duration / steps);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [score]);
 
   const getProtectionLevel = (score: number) => {
     if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
@@ -119,9 +54,9 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
         {displayScore}
       </span>
       <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium" style={{ marginBottom: '50px', marginTop: '5px' }}>
-        {getProtectionLevel(isAuthLoop ? displayScore : score)}
+        {getProtectionLevel(score)}
       </p>
-      <ProgressBar animatedScore={animatedScore} score={isAuthLoop ? 100 : score} />
+      <ProgressBar animatedScore={animatedScore} score={score} />
     </div>
   );
 };
