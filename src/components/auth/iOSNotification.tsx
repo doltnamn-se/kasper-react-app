@@ -68,8 +68,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   }, [fullText]); // Re-run when language changes
 
   return (
-    <div className="ios-notification-container absolute inset-0 flex items-start justify-center pointer-events-none pt-16">
-      {/* App download text with GSAP typing animation - Now aligned to top with padding */}
+    <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
+      {/* App download text with GSAP typing animation - Now center aligned */}
       <div className="text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
         <p className={`text-xl font-[500] ${isDarkMode ? "text-white" : "text-black"}`}>
           <span ref={textRef}></span>
