@@ -115,6 +115,7 @@
   max-width: 400px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
   z-index: 30;
+  transition: all 0.3s ease-out;
 }
 
 .ios-notification-container {
@@ -143,16 +144,22 @@
 
 /* Add smooth text transition for notification content changes */
 .notification-text-transition {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   animation: textChange 0.6s ease;
+  overflow: hidden;
 }
 
 @keyframes textChange {
   0% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  20% {
     opacity: 0.3;
   }
   100% {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 

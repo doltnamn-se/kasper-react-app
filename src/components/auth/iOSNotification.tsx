@@ -53,7 +53,10 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       currentIndex = (currentIndex + 1) % notificationData.length;
       
       // Update the notification content without hiding/showing again
-      setCurrentNotification(notificationData[currentIndex]);
+      setCurrentNotification(prevState => {
+        // Use a transition that will fade out the old content and fade in the new
+        return notificationData[currentIndex];
+      });
     }, 4000); // Change notification content every 4 seconds
 
     return () => {
@@ -73,7 +76,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
             className={`ios-notification absolute left-0 right-0 animate-fadeInUp`}
           >
             <div 
-              className={`rounded-xl shadow-lg backdrop-blur-lg ${
+              className={`rounded-xl shadow-lg backdrop-blur-lg transition-all duration-300 ${
                 isDarkMode 
                   ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
                   : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
@@ -92,7 +95,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                 </div>
                 
                 {/* Notification content with smooth transition for text changes */}
-                <div className="flex-1">
+                <div className="flex-1 transition-all duration-300">
                   <div className="flex justify-between items-start">
                     <span className="font-semibold text-sm notification-text-transition">{currentNotification.title}</span>
                     <span className="text-xs opacity-60 notification-text-transition">{currentNotification.time}</span>
