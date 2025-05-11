@@ -7,6 +7,6 @@ export interface NotificationMessage {
   title: string;
   body: string;
   time: string;
-  id: number;
+  id: string | number;
   heading: string;
 }
