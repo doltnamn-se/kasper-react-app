@@ -123,7 +123,10 @@ const Auth = () => {
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
             {showPricingTable ? (
-              <StripePricingTable onBack={() => setShowPricingTable(false)} />
+              <StripePricingTable 
+                onBack={() => setShowPricingTable(false)} 
+                isDarkMode={isDarkMode}
+              />
             ) : (
               <AuthForm 
                 errorMessage={errorMessage} 

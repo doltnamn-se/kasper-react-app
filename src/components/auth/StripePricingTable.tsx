@@ -5,11 +5,20 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StripePricingTableProps {
   onBack: () => void;
+  isDarkMode?: boolean;
 }
 
-export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }) => {
+export const StripePricingTable: React.FC<StripePricingTableProps> = ({ 
+  onBack, 
+  isDarkMode = false 
+}) => {
   const [loaded, setLoaded] = useState(false);
   const { t } = useLanguage();
+
+  // Use different pricing table IDs based on theme
+  const pricingTableId = isDarkMode 
+    ? "prctbl_1RNXj4IZ35LgEgXX3I9Detpg" 
+    : "prctbl_1RNL4UIZ35LgEgXXDVnqnfev";
 
   useEffect(() => {
     // Load Stripe pricing table script
@@ -39,7 +48,7 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
           <>
             <div className="w-full overflow-y-auto mb-8">
               <stripe-pricing-table
-                pricing-table-id="prctbl_1RNL4UIZ35LgEgXXDVnqnfev"
+                pricing-table-id={pricingTableId}
                 publishable-key="pk_live_51QctIzIZ35LgEgXXQpIJbrbrFFyZiofeG7LcfUBRkVVEbLATz2XivpAVWnb0M8QVrj5fkXYOBQZavXbzzxoOdSpC008DG85HjM"
               >
               </stripe-pricing-table>
