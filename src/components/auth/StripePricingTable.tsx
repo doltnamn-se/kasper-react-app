@@ -37,7 +37,7 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
       <div className="bg-transparent p-8 w-full max-w-md">
         {loaded ? (
           <>
-            <div className="w-full overflow-y-auto mb-8">
+            <div className="w-full overflow-y-auto mb-8 stripe-pricing-container">
               <stripe-pricing-table
                 pricing-table-id="prctbl_1RNL4UIZ35LgEgXXDVnqnfev"
                 publishable-key="pk_live_51QctIzIZ35LgEgXXQpIJbrbrFFyZiofeG7LcfUBRkVVEbLATz2XivpAVWnb0M8QVrj5fkXYOBQZavXbzzxoOdSpC008DG85HjM"

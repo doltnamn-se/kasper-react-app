@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @font-face {
@@ -44,8 +43,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -255,4 +252,46 @@ input[type="search"]::-webkit-search-results-decoration {
 
 input[type="search"]:focus {
   outline: none;
+}
+
+/* Stripe pricing table dark mode customization */
+.dark stripe-pricing-table,
+.dark stripe-pricing-table::part(root),
+.dark stripe-pricing-table::shadow-dom(body),
+.dark stripe-pricing-table::part(content) {
+  background-color: #1a1a1a !important; /* Match dark theme background */
+  color-scheme: dark !important;
+}
+
+.dark stripe-pricing-table div,
+.dark stripe-pricing-table section,
+.dark stripe-pricing-table span {
+  background-color: #1a1a1a !important;
+}
+
+/* Ensure text is visible on dark background */
+.dark stripe-pricing-table p,
+.dark stripe-pricing-table h1,
+.dark stripe-pricing-table h2,
+.dark stripe-pricing-table h3,
+.dark stripe-pricing-table span {
+  color: #ffffff !important;
+}
+
+/* Style pricing table container */
+stripe-pricing-table {
+  --stripe-pricing-table-spacing: 0 !important;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Add padding to Stripe component */
+.stripe-pricing-container {
+  padding: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dark .stripe-pricing-container {
+  background-color: #1a1a1a;
 }
