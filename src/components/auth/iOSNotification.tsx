@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -122,7 +121,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setNotificationHeight(contentRef.current.offsetHeight);
         }
       }, 100);
-    }, 1000);
+    }, 200); // Changed from 1000 to 200 milliseconds
 
     let currentIndex = 0;
     
@@ -272,4 +271,3 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     </div>
   );
 };
-
