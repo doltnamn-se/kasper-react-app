@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -138,7 +139,9 @@ const Auth = () => {
           <img 
             src={bgImage}
             alt="Digitaltskydd App" 
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-lg pointer-events-none"
+            draggable="false"
+            onContextMenu={(e) => e.preventDefault()}
           />
         </div>
       </div>
