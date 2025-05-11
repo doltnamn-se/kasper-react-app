@@ -37,12 +37,13 @@ export const URLStatusSelect = ({ currentStatus, urlId, customerId, onStatusChan
       
       console.log('URLStatusSelect - Creating notification');
       
-      // Create the notification in the database - this will trigger the database function
-      // to send the email (with rate limiting)
+      // Create the notification in the database with explicit removal type
+      // This matches what the database trigger is expecting for email notifications
       const { error: notificationError } = await createStatusNotification(
         customerId,
         t('notification.status.update.title'),
-        t('notification.status.update.message')
+        t('notification.status.update.message'),
+        'removal' // Explicitly set type to 'removal'
       );
 
       if (notificationError) {

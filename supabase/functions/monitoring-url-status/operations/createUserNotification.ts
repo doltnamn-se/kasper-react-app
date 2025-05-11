@@ -27,6 +27,9 @@ export async function createUserNotification(
     ? (language === 'sv' ? 'Länken är mottagen och kommer behandlas inom kort' : 'The link has been received and will be processed shortly')
     : (language === 'sv' ? 'Länken har avvisats från systemet' : 'The link has been rejected from the system');
 
+  console.log(`Creating user notification for customer ${customerId} with status ${newStatus}, language: ${language}`);
+  console.log(`Skip email: ${skipUserEmail}, Force email: ${forceEmail}`);
+
   try {
     // Create notification for the user
     const { error: userNotificationError, data: notification } = await supabaseAdmin
@@ -107,16 +110,19 @@ async function sendEmailNotificationIfRequired(
       return;
     }
     
+    // ALWAYS send email for admin link status changes - overriding skipUserEmail
+    const shouldSkipEmail = skipUserEmail && !forceEmail;
+    
     // Only send email if not skipping user email AND (user has email notifications enabled OR forceEmail is set)
-    if (!skipUserEmail && (preferences?.email_notifications || forceEmail) && profile?.email) {
+    if (!shouldSkipEmail && (preferences?.email_notifications || forceEmail) && profile?.email) {
       console.log("Attempting to send email notification to:", profile.email, {
         emailNotificationsEnabled: preferences?.email_notifications,
         forceEmailFlag: !!forceEmail,
-        skipUserEmail: skipUserEmail
+        skipUserEmail: shouldSkipEmail
       });
       
       try {
-        // Call the send-notification-email function
+        // Call the send-notification-email function with explicit project URL
         const emailResponse = await fetch(
           `${SUPABASE_URL}/functions/v1/send-notification-email`,
           {
@@ -130,7 +136,7 @@ async function sendEmailNotificationIfRequired(
               title: notificationTitle,
               message: notificationMessage,
               type: 'monitoring',
-              forceEmail: forceEmail
+              forceEmail: true // Always force email for admin link status changes
             })
           }
         );
@@ -156,7 +162,7 @@ async function sendEmailNotificationIfRequired(
         hasEmail: !!profile?.email,
         emailNotificationsEnabled: preferences?.email_notifications,
         forceEmailFlag: !!forceEmail,
-        skipUserEmail: !!skipUserEmail
+        skipUserEmail: shouldSkipEmail
       });
     }
   } catch (error) {

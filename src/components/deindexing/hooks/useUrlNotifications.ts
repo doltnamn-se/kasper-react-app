@@ -6,13 +6,13 @@ import { toast } from "@/hooks/use-toast";
 export const useUrlNotifications = () => {
   const { t, language } = useLanguage();
 
-  const createStatusNotification = async (customerId: string, title: string, message: string) => {
+  const createStatusNotification = async (customerId: string, title: string, message: string, type: string = 'removal') => {
     console.log('useUrlNotifications - Creating status notification:', { 
       customerId,
       currentLanguage: language,
       translatedTitle: title,
       translatedMessage: message,
-      type: 'removal' // Explicitly log the type
+      type: type // Log the notification type
     });
     
     try {
@@ -23,7 +23,7 @@ export const useUrlNotifications = () => {
           user_id: customerId,
           title: title,
           message: message,
-          type: 'removal',
+          type: type, // Use the provided type parameter
           read: false
         })
         .select()
