@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { AuthEyeLogo } from "./AuthEyeLogo";
 
 interface StripePricingTableProps {
   onBack: () => void;
@@ -34,31 +33,28 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
   }, []);
 
   return (
-    <div className="flex justify-center w-full fade-in">
+    <div className="flex flex-col justify-center w-full fade-in">
       <div className="bg-transparent p-8 w-full max-w-md">
-        <AuthEyeLogo />
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl font-bold text-left dark:text-white font-system-ui font-[700]">
-            {t('subscription')}
-          </h2>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onBack}
-            className="text-sm"
-          >
-            {t('cancel')}
-          </Button>
-        </div>
-        
         {loaded ? (
-          <div className="w-full overflow-y-auto">
-            <stripe-pricing-table
-              pricing-table-id="prctbl_1RNL4UIZ35LgEgXXDVnqnfev"
-              publishable-key="pk_live_51QctIzIZ35LgEgXXQpIJbrbrFFyZiofeG7LcfUBRkVVEbLATz2XivpAVWnb0M8QVrj5fkXYOBQZavXbzzxoOdSpC008DG85HjM"
-            >
-            </stripe-pricing-table>
-          </div>
+          <>
+            <div className="w-full overflow-y-auto mb-8">
+              <stripe-pricing-table
+                pricing-table-id="prctbl_1RNL4UIZ35LgEgXXDVnqnfev"
+                publishable-key="pk_live_51QctIzIZ35LgEgXXQpIJbrbrFFyZiofeG7LcfUBRkVVEbLATz2XivpAVWnb0M8QVrj5fkXYOBQZavXbzzxoOdSpC008DG85HjM"
+              >
+              </stripe-pricing-table>
+            </div>
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onBack}
+                className="text-sm"
+              >
+                {t('cancel')}
+              </Button>
+            </div>
+          </>
         ) : (
           <div className="w-full flex justify-center py-20">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
