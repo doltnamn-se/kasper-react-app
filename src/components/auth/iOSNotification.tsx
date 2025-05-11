@@ -182,8 +182,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* App download text with typing animation - Moved to top with more padding */}
-      <div className={`mt-12 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+      {/* App download text with typing animation - Moved further down with more padding */}
+      <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
