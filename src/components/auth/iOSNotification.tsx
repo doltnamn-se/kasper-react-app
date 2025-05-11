@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -16,10 +15,10 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   
-  // Updated title text
+  // Updated title text with new messages
   const fullText = language === 'sv' 
-    ? "Få notiser direkt i fickan" 
-    : "Notifications right in your pocket";
+    ? "Ladda ner appen" 
+    : "Download the app";
 
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
