@@ -84,7 +84,8 @@ export const useURLManagement = () => {
           const { error: notificationError } = await createStatusNotification(
             url.customer.id,
             t('notification.status.update.title'),
-            t('notification.status.update.message')
+            t('notification.status.update.message'),
+            'removal' // Explicitly set type to 'removal' to ensure email notifications work
           );
 
           if (notificationError) {
