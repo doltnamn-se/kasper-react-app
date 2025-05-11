@@ -48,7 +48,7 @@ export const ScoreDisplay = ({ score, language, isAuthLoop = false }: ScoreDispl
             const targetScore = scoreSequence[currentIndex];
             isAnimating = true;
             
-            // Animate to the next score
+            // Get the current score as starting point
             let startScore = displayScore;
             const difference = targetScore - startScore;
             const steps = 20; // Number of steps in the animation
