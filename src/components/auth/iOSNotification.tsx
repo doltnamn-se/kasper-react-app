@@ -21,6 +21,13 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Typing animation states
+  const [displayText, setDisplayText] = useState('');
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const fullText = language === 'sv' 
+    ? "Ladda ner appen och hålla koll när du är på språng" 
+    : "Download the app and stay connected on the go";
 
   // Localized notifications data with two new notifications added
   const notificationData: NotificationMessage[] = [
@@ -70,6 +77,31 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       time: language === 'sv' ? "nu" : "now",
     },
   ];
+
+  // Typing animation effect
+  useEffect(() => {
+    // Reset the typing animation when language changes
+    setDisplayText('');
+    setIsTypingComplete(false);
+    
+    let i = 0;
+    // Start typing animation with a slight delay
+    const typingDelay = setTimeout(() => {
+      const typingInterval = setInterval(() => {
+        if (i < fullText.length) {
+          setDisplayText(prev => prev + fullText.charAt(i));
+          i++;
+        } else {
+          clearInterval(typingInterval);
+          setIsTypingComplete(true);
+        }
+      }, 30); // Speed of typing (lower = faster)
+      
+      return () => clearInterval(typingInterval);
+    }, 500); // Delay before typing starts
+    
+    return () => clearTimeout(typingDelay);
+  }, [fullText]);
 
   useEffect(() => {
     // Initial delay before showing the notification
@@ -124,14 +156,13 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      {/* Added app download text */}
+      {/* App download text with typing animation */}
       <div className="mb-6 text-center px-4">
-        <p className={`text-lg font-[500] ${
+        <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
-        }`}>
-          {language === 'sv' 
-            ? "Ladda ner appen och hålla koll när du är på språng" 
-            : "Download the app and stay connected on the go"}
+        } typing-animation`}>
+          {displayText}
+          {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
       </div>
       

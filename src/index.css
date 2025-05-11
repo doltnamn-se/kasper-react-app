@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @font-face {
@@ -147,6 +148,24 @@
 
 .stacked-notification {
   animation: stackNotification 0.3s forwards ease-out;
+}
+
+/* Typing animation cursor blink */
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-animation {
+  display: inline-block;
+  min-height: 1.5em;
 }
 
 @keyframes stackNotification {
