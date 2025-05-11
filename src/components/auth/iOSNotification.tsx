@@ -1,26 +1,13 @@
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NotificationProps {
   isDarkMode?: boolean;
 }
 
-interface NotificationMessage {
-  title: string;
-  body: string;
-  time: string;
-  id: number;
-  heading: string;
-}
-
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const { language } = useLanguage();
-  const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
-  const [showNotification, setShowNotification] = useState(false);
-  const [isChangingText, setIsChangingText] = useState(false);
-  const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   
   // Typing animation states
   const [displayText, setDisplayText] = useState('');
@@ -37,55 +24,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
 
-  // Localized notifications data with two new notifications added
-  const notificationData: NotificationMessage[] = [
-    {
-      id: 1,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Länkar" : "Links",
-      body: language === 'sv' 
-        ? "Borttagning på Google är godkänd för en eller flera av dina länkar"
-        : "Removal from Google is approved for one or several of your links",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 2,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Status" : "Status",
-      body: language === 'sv' 
-        ? "Grattis! Du är nu fyllt skyddad🥳"
-        : "Congratulations! You are now fully protected🥳",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 3,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Bevakning" : "Monitoring",
-      body: language === 'sv' 
-        ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
-        : "You have a new hit on Google. Do you want us to remove it?",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 4,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Upplysningssidor" : "Search sites",
-      body: language === 'sv' 
-        ? "Du är nu borttagen på Mrkoll"
-        : "You are now removed from Mrkoll",
-      time: language === 'sv' ? "nu" : "now",
-    },
-    {
-      id: 5,
-      title: "Digitaltskydd",
-      heading: language === 'sv' ? "Länkar" : "Links",
-      body: language === 'sv' 
-        ? "Statusen för en eller flera av dina länkar har uppdaterats"
-        : "The status for one or more of your links has been updated",
-      time: language === 'sv' ? "nu" : "now",
-    },
-  ];
-
   // Show title with delay
   useEffect(() => {
     const titleDelay = setTimeout(() => {
@@ -95,7 +33,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     return () => clearTimeout(titleDelay);
   }, []);
 
-  // Typing animation effect - Improved to ensure the first letter displays correctly
+  // Typing animation effect
   useEffect(() => {
     // Reset the typing animation when language changes
     setDisplayText('');
@@ -121,79 +59,28 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           clearInterval(typingInterval);
           setIsTypingComplete(true);
           
-          // Updated: Show Google Play badge with 2 sec delay after typing completes
+          // Show Google Play badge with 2 sec delay after typing completes
           setTimeout(() => {
             setShowGooglePlayBadge(true);
             
-            // Updated: Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
+            // Show Apple Store badge with 500ms delay after Google Play
             setTimeout(() => {
               setShowAppleStoreBadge(true);
-            }, 500); // 500ms additional delay after Google Play (total 2.5 sec from typing completion)
-          }, 2000); // 2 sec delay for Google Play badge
+            }, 500);
+          }, 2000);
         }
-      }, 30); // Speed of typing (lower = faster)
+      }, 30);
       
       return () => clearInterval(typingInterval);
-    }, 200); // Delay before typing starts
+    }, 200);
     
     return () => clearTimeout(typingDelay);
   }, [fullText, showTitle]);
 
-  useEffect(() => {
-    // Initial delay before showing the notification
-    const initialTimeout = setTimeout(() => {
-      setCurrentNotification(notificationData[0]);
-      setShowNotification(true);
-      
-      // Initial height measurement after render
-      setTimeout(() => {
-        if (contentRef.current) {
-          setNotificationHeight(contentRef.current.offsetHeight);
-        }
-      }, 100);
-    }, 200); // Changed from 1000 to 200 milliseconds
-
-    let currentIndex = 0;
-    
-    // Set up interval to change notification content
-    const interval = setInterval(() => {
-      // Begin transition - fade out text first
-      setIsChangingText(true);
-      
-      // Add a slight delay to allow the fade-out effect before changing the content
-      setTimeout(() => {
-        // Move to next notification in the array
-        currentIndex = (currentIndex + 1) % notificationData.length;
-        setCurrentNotification(notificationData[currentIndex]);
-        
-        // Small delay before starting the fade in
-        setTimeout(() => {
-          // Measure new height after content change
-          if (contentRef.current) {
-            setNotificationHeight(contentRef.current.offsetHeight);
-          }
-          
-          // Then fade in the text
-          setTimeout(() => {
-            setIsChangingText(false);
-          }, 50);
-        }, 100);
-      }, 300);
-    }, 4000); // Change notification content every 4 seconds
-
-    return () => {
-      clearTimeout(initialTimeout);
-      clearInterval(interval);
-    };
-  }, [language]);
-
-  // If no notification is set yet, render nothing
-  if (!currentNotification) return null;
-
   return (
-    <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* App download text with typing animation - Position maintained at the top */}
-      <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
+      {/* App download text with typing animation - Centered vertically and horizontally */}
+      <div className={`text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -201,7 +88,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container - Position maintained */}
+        {/* Store badges container - Centered */}
         <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store - Now with link that opens in new tab */}
           <a 
@@ -234,68 +121,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               className="w-full h-full"
             />
           </a>
-        </div>
-      </div>
-      
-      {/* Notification positioned absolutely in center - Updated for better vertical centering */}
-      <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-[350px] max-w-[90%]">
-          {showNotification && (
-            <div
-              className="ios-notification absolute left-0 right-0 animate-fadeInUp"
-            >
-              <div 
-                className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
-                  isDarkMode 
-                    ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
-                    : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
-                } p-3`}
-                style={{
-                  height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
-                  transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                  willChange: 'height, transform',
-                  overflow: 'hidden'
-                }}
-              >
-                <div className="flex items-start">
-                  {/* App icon container - Top alignment preserved */}
-                  <div className="mr-3 flex-shrink-0 pt-0.5">
-                    <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
-                      <img 
-                        src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
-                        alt="Digitaltskydd" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* Notification content with animation */}
-                  <div 
-                    ref={contentRef}
-                    className="flex-1 notification-content"
-                  >
-                    <div className="flex justify-between items-start">
-                      <span className="font-semibold text-sm">
-                        {currentNotification.title}
-                      </span>
-                      <span className="text-xs opacity-60">
-                        {currentNotification.time}
-                      </span>
-                    </div>
-                    
-                    {/* Heading with animation */}
-                    <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
-                      {currentNotification.heading}
-                    </h3>
-                    
-                    <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
-                      {currentNotification.body}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
