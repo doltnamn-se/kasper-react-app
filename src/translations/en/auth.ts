@@ -17,6 +17,7 @@ export const auth: AuthTranslations = {
   'phone.placeholder': 'Enter phone number',
   'token.placeholder': 'Enter verification code',
   'forgot.password': 'Forgot your password?',
+  'reset.your.password': 'Reset your password',
   'send.recovery.link': 'Send recovery link',
   'sending.recovery.link': 'Sending recovery link...',
   'update.password': 'Save new password',

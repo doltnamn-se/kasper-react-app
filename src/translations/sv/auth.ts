@@ -17,6 +17,7 @@ export const auth: AuthTranslations = {
   'phone.placeholder': 'Ange telefonnummer',
   'token.placeholder': 'Ange verifieringskod',
   'forgot.password': 'Glömt ditt lösenord?',
+  'reset.your.password': 'Återställ ditt lösenord',
   'send.recovery.link': 'Skicka återställningslänk',
   'sending.recovery.link': 'Skickar återställningslänk...',
   'update.password': 'Spara nytt lösenord',
