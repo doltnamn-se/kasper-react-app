@@ -39,7 +39,7 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
         <AuthEyeLogo />
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl font-bold text-left dark:text-white font-system-ui font-[700]">
-            {t('subscription.plans')}
+            {t('subscription')}
           </h2>
           <Button
             variant="outline"
@@ -47,7 +47,7 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
             onClick={onBack}
             className="text-sm"
           >
-            {t('back')}
+            {t('cancel')}
           </Button>
         </div>
         
