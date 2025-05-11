@@ -2,16 +2,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import gsap from 'gsap';
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 interface NotificationProps {
   isDarkMode?: boolean;
 }
 
+interface NotificationMessage {
+  title: string;
+  body: string;
+  time: string;
+  id: number;
+  heading: string;
+}
+
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const { language } = useLanguage();
-  const [showPrivacyScore, setShowPrivacyScore] = useState(false);
+  const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [isChangingText, setIsChangingText] = useState(false);
   const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   
@@ -19,24 +27,75 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
+  const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
+  const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const gsapContextRef = useRef<gsap.Context | null>(null);
   
   const fullText = language === 'sv' 
-    ? "Håll koll på ditt digitala skydd" 
-    : "Track your digital protection";
+    ? "Ladda ner appen och håll koll när du är på språng" 
+    : "Download the app and stay connected on the go";
+
+  // Localized notifications data with two new notifications added
+  const notificationData: NotificationMessage[] = [
+    {
+      id: 1,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Länkar" : "Links",
+      body: language === 'sv' 
+        ? "Borttagning på Google är godkänd för en eller flera av dina länkar"
+        : "Removal from Google is approved for one or several of your links",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 2,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Status" : "Status",
+      body: language === 'sv' 
+        ? "Grattis! Du är nu fyllt skyddad🥳"
+        : "Congratulations! You are now fully protected🥳",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 3,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Bevakning" : "Monitoring",
+      body: language === 'sv' 
+        ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
+        : "You have a new hit on Google. Do you want us to remove it?",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 4,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Upplysningssidor" : "Search sites",
+      body: language === 'sv' 
+        ? "Du är nu borttagen på Mrkoll"
+        : "You are now removed from Mrkoll",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 5,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Länkar" : "Links",
+      body: language === 'sv' 
+        ? "Statusen för en eller flera av dina länkar har uppdaterats"
+        : "The status for one or more of your links has been updated",
+      time: language === 'sv' ? "nu" : "now",
+    },
+  ];
 
   // Show title with delay
   useEffect(() => {
     const titleDelay = setTimeout(() => {
       setShowTitle(true);
-    }, 500);
+    }, 1500); // 1.5 seconds delay
     
     return () => clearTimeout(titleDelay);
   }, []);
 
-  // GSAP typing animation effect with proper cleanup
+  // GSAP typing animation effect - Fixed implementation
   useEffect(() => {
     // Reset states when language changes
     setDisplayText('');
@@ -44,12 +103,27 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     
     if (!showTitle) return;
     
+    // Kill any existing animations to prevent conflicts
+    if (gsapContextRef.current) {
+      gsapContextRef.current.kill();
+    }
+
     // Create a GSAP context for better cleanup
     gsapContextRef.current = gsap.context(() => {
       // Create typing timeline with GSAP
       const typingTimeline = gsap.timeline({
         onComplete: () => {
           setIsTypingComplete(true);
+          
+          // Show Google Play badge with 2 sec delay after typing completes
+          const googlePlayDelay = gsap.delayedCall(2, () => {
+            setShowGooglePlayBadge(true);
+            
+            // Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
+            const appleStoreDelay = gsap.delayedCall(0.5, () => {
+              setShowAppleStoreBadge(true);
+            });
+          });
         }
       });
       
@@ -64,6 +138,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         }, index * 0.03); // Slightly randomized typing speed for natural effect
       });
 
+      // Start the animation
+      typingTimeline.play();
+      
       // Setup blinking cursor animation
       if (cursorRef.current) {
         gsap.to(cursorRef.current, {
@@ -87,7 +164,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   useEffect(() => {
     // Initial delay before showing the notification
     const initialTimeout = setTimeout(() => {
-      setShowPrivacyScore(true);
+      setCurrentNotification(notificationData[0]);
+      setShowNotification(true);
       
       // Initial height measurement after render
       setTimeout(() => {
@@ -95,62 +173,57 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           setNotificationHeight(contentRef.current.offsetHeight);
         }
       }, 100);
-    }, 200); 
+    }, 200); // Changed from 1000 to 200 milliseconds
+
+    let currentIndex = 0;
+    let intervalId: number | null = null;
     
+    // Set up interval to change notification content
+    intervalId = window.setInterval(() => {
+      // Begin transition - fade out text first
+      setIsChangingText(true);
+      
+      // Add a slight delay to allow the fade-out effect before changing the content
+      const textChangeTimeout = setTimeout(() => {
+        // Move to next notification in the array
+        currentIndex = (currentIndex + 1) % notificationData.length;
+        setCurrentNotification(notificationData[currentIndex]);
+        
+        // Small delay before starting the fade in
+        const measureTimeout = setTimeout(() => {
+          // Measure new height after content change
+          if (contentRef.current) {
+            setNotificationHeight(contentRef.current.offsetHeight);
+          }
+          
+          // Then fade in the text
+          const fadeInTimeout = setTimeout(() => {
+            setIsChangingText(false);
+          }, 50);
+
+          return () => clearTimeout(fadeInTimeout);
+        }, 100);
+
+        return () => clearTimeout(measureTimeout);
+      }, 300);
+
+      return () => clearTimeout(textChangeTimeout);
+    }, 4000); // Change notification content every 4 seconds
+
     return () => {
       clearTimeout(initialTimeout);
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
     };
-  }, [language]);
+  }, [language, notificationData]);
 
-  // Privacy Score data
-  const score = {
-    total: 75,
-    individual: {
-      guides: 80,
-      urls: 60,
-      monitoring: 100,
-      address: 60
-    }
-  };
-
-  // Animation for the score
-  const [animatedScore, setAnimatedScore] = useState(0);
-  const [displayScore, setDisplayScore] = useState(0);
-
-  useEffect(() => {
-    if (!showPrivacyScore) return;
-    
-    const animationContext = gsap.context(() => {
-      gsap.to({}, {
-        duration: 1.5,
-        onUpdate: () => {
-          const progress = gsap.getProperty({}, "progress");
-          if (progress !== undefined) {
-            const newScore = Math.min(Math.round(score.total * Number(progress)), score.total);
-            setDisplayScore(newScore);
-            setAnimatedScore(newScore);
-          }
-        }
-      });
-    });
-    
-    return () => {
-      animationContext.revert();
-    };
-  }, [score.total, showPrivacyScore]);
-
-  const getProtectionLevel = (score: number) => {
-    if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
-    if (score >= 90) return language === 'sv' ? "Säkert skydd" : "Safe protection";
-    if (score >= 75) return language === 'sv' ? "Bra skydd" : "Good protection";
-    if (score >= 50) return language === 'sv' ? "Hyfsat skydd" : "Decent protection";
-    if (score >= 25) return language === 'sv' ? "Dåligt skydd" : "Poor protection";
-    return language === 'sv' ? "Inget skydd" : "No protection";
-  };
+  // If no notification is set yet, render nothing
+  if (!currentNotification) return null;
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
-      {/* Privacy Score heading with typing animation */}
+      {/* App download text with typing animation - Moved further down with more padding */}
       <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <p 
           ref={textRef}
@@ -164,86 +237,95 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
             className={isTypingComplete ? 'opacity-0' : 'inline'}
           >|</span>
         </p>
+        
+        {/* Store badges container with fade-in-up animation - Increased spacing */}
+        <div className={`flex justify-center items-center mt-8 space-x-8`}>
+          {/* Google Play Store */}
+          <div 
+            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showGooglePlayBadge ? 'opacity-100' : 'opacity-0'}`}
+            style={{ animationDelay: '100ms' }}
+          >
+            <img 
+              src={isDarkMode ? "/lovable-uploads/ds-googleplay-white.svg" : "/lovable-uploads/ds-googleplay-black.svg"} 
+              alt="Get it on Google Play" 
+              className="w-full h-full"
+            />
+          </div>
+          
+          {/* App Store */}
+          <div 
+            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showAppleStoreBadge ? 'opacity-100' : 'opacity-0'}`}
+            style={{ animationDelay: '300ms' }}
+          >
+            <img 
+              src={isDarkMode ? "/lovable-uploads/ds-appstore-comingsoon-white.svg" : "/lovable-uploads/ds-appstore-comingsoon-black.svg"} 
+              alt="Download on App Store" 
+              className="w-full h-full"
+            />
+          </div>
+        </div>
       </div>
       
-      {/* Privacy Score Card in the center */}
+      {/* Notification in the center */}
       <div className="flex-grow flex items-center justify-center">
         <div className="relative w-[300px] max-w-[85%]">
-          {showPrivacyScore && (
-            <div className="privacy-score-card animate-fadeInUp">
-              <Card className={`p-5 shadow-lg ${
-                isDarkMode 
-                  ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
-                  : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
-              } backdrop-blur-lg`}>
-                <div className="space-y-4">
-                  <div>
-                    <h2 className="text-lg font-semibold">
-                      {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
-                    </h2>
-                    <p className={`${isDarkMode ? "text-[#FFFFFFA6]" : "text-[#000000A6]"} font-medium text-sm mb-4`}>
-                      {language === 'sv' ? 'Din aktuella skyddsnivå' : 'Your current protection level'}
-                    </p>
+          {showNotification && (
+            <div
+              className="ios-notification absolute left-0 right-0 animate-fadeInUp"
+            >
+              <div 
+                className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
+                  isDarkMode 
+                    ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
+                    : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
+                } p-3`}
+                style={{
+                  height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
+                  transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  willChange: 'height, transform',
+                  overflow: 'hidden'
+                }}
+              >
+                <div className="flex items-start">
+                  {/* App icon container with vertical centering */}
+                  <div className="mr-3 flex items-center h-full" style={{
+                    minHeight: notificationHeight ? `${notificationHeight}px` : 'auto',
+                    transition: 'min-height 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+                  }}>
+                    <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
+                      <img 
+                        src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
+                        alt="Digitaltskydd" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
                   
-                  <div className="space-y-0">
-                    <span className={`text-5xl font-medium ${isDarkMode ? "text-white" : "text-[#000000]"}`}>
-                      {displayScore}
-                    </span>
-                    <p className={`${isDarkMode ? "text-[#FFFFFFA6]" : "text-[#000000A6]"} text-sm font-medium mt-1 mb-4`}>
-                      {getProtectionLevel(score.total)}
-                    </p>
+                  {/* Notification content with animation for both heading and body text */}
+                  <div 
+                    ref={contentRef}
+                    className="flex-1 notification-content"
+                  >
+                    <div className="flex justify-between items-start">
+                      <span className="font-semibold text-sm">
+                        {currentNotification.title}
+                      </span>
+                      <span className="text-xs opacity-60">
+                        {currentNotification.time}
+                      </span>
+                    </div>
                     
-                    {/* Progress bar */}
-                    <div className="w-full">
-                      <div className="relative w-full h-3 rounded-lg overflow-hidden">
-                        <div className={`absolute inset-0 ${isDarkMode ? "bg-[#2f2e31]" : "bg-[#e8e8e5]"}`} />
-                        <div 
-                          className="absolute top-0 left-0 h-full transition-all rounded-r-lg"
-                          style={{ 
-                            width: `${animatedScore}%`,
-                            background: `linear-gradient(90deg, 
-                              rgba(234, 56, 76, 1) 0%,
-                              rgb(249, 115, 22) 35%,
-                              rgba(251, 209, 4, 255) 70%,
-                              rgba(17, 84, 242, 255) 88%,
-                              rgba(25, 208, 91, 255) 100%
-                            )`,
-                            backgroundSize: `${100 / (score.total / 100)}% 100%`,
-                            transition: 'width 1000ms ease-out'
-                          }} 
-                        />
-                      </div>
-                      <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        <span>0</span>
-                        <span>100</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Separator className="my-4" />
-                  
-                  {/* Score Details */}
-                  <div className="text-sm space-y-2.5" ref={contentRef}>
-                    <div className="flex justify-between items-center">
-                      <span>{language === 'sv' ? 'Upplysningssidor' : 'Search sites'}</span>
-                      <span className="font-medium">{score.individual.guides}%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>{language === 'sv' ? 'Länkar' : 'Links'}</span>
-                      <span className="font-medium">{score.individual.urls}%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>{language === 'sv' ? 'Bevakning' : 'Monitoring'}</span>
-                      <span className="font-medium">{score.individual.monitoring}%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>{language === 'sv' ? 'Adresslarm' : 'Address Alerts'}</span>
-                      <span className="font-medium">{score.individual.address}%</span>
-                    </div>
+                    {/* Updated heading with the same animation as body text */}
+                    <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
+                      {currentNotification.heading}
+                    </h3>
+                    
+                    <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
+                      {currentNotification.body}
+                    </p>
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           )}
         </div>
