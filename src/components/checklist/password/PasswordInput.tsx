@@ -1,5 +1,5 @@
 
-import { Eye, SquareAsterisk } from "lucide-react";
+import { Eye, EyeClosed } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface PasswordInputProps {
@@ -36,7 +36,7 @@ export const PasswordInput = ({
         {showPassword ? (
           <Eye className="h-5 w-5" />
         ) : (
-          <SquareAsterisk className="h-5 w-5" />
+          <EyeClosed className="h-5 w-5" />
         )}
       </button>
     </div>
