@@ -42,14 +42,10 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   const isAdminRoute = location.pathname.startsWith('/admin');
   const logoHeight = isMobile ? 'h-8' : 'h-12';
 
-  // Add Link wrapper only for auth routes with proper pointer cursor
   if (isAuthRoute) {
     return (
       <div className="flex justify-center w-full">
-        <a 
-          href="https://digitaltskydd.se/" 
-          className="relative h-16 w-64 cursor-pointer"
-        >
+        <a href="https://digitaltskydd.se/" className="relative h-16 w-64 block">
           <img 
             src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
             alt="Logo" 
