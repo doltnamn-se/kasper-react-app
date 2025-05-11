@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "next-themes";
 
 interface StripePricingTableProps {
   onBack: () => void;
@@ -10,6 +11,8 @@ interface StripePricingTableProps {
 export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }) => {
   const [loaded, setLoaded] = useState(false);
   const { t } = useLanguage();
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === 'dark';
 
   useEffect(() => {
     // Load Stripe pricing table script
@@ -32,6 +35,18 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
     };
   }, []);
 
+  // Define the Stripe theme color scheme based on current theme
+  const themeColors = isDarkMode ? {
+    "tableBackgroundColor": "#1a1a1a",
+    "tableBorderColor": "#333333", 
+    "tableColor": "#ffffff",
+    "headerBackgroundColor": "#1a1a1a",
+    "headerColor": "#ffffff",
+    "priceColor": "#ffffff",
+    "buttonBackgroundColor": "#6E59A5",
+    "buttonColor": "#ffffff"
+  } : {};
+
   return (
     <div className="flex flex-col justify-center w-full fade-in">
       <div className="bg-transparent p-8 w-full max-w-md">
@@ -41,6 +56,8 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
               <stripe-pricing-table
                 pricing-table-id="prctbl_1RNL4UIZ35LgEgXXDVnqnfev"
                 publishable-key="pk_live_51QctIzIZ35LgEgXXQpIJbrbrFFyZiofeG7LcfUBRkVVEbLATz2XivpAVWnb0M8QVrj5fkXYOBQZavXbzzxoOdSpC008DG85HjM"
+                client-reference-id={isDarkMode ? "dark-mode-user" : "light-mode-user"}
+                theme={JSON.stringify(themeColors)}
               >
               </stripe-pricing-table>
             </div>
