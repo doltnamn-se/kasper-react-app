@@ -125,8 +125,11 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               }}
             >
               <div className="flex items-start">
-                {/* App icon - always using Digitaltskydd */}
-                <div className="mr-3 mt-0.5">
+                {/* App icon container with vertical centering */}
+                <div className="mr-3 flex items-center h-full" style={{
+                  minHeight: notificationHeight ? `${notificationHeight}px` : 'auto',
+                  transition: 'min-height 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}>
                   <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
                     <img 
                       src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
