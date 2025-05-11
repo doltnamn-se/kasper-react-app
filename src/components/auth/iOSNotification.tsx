@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -28,9 +29,10 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
   
+  // Updated title text
   const fullText = language === 'sv' 
-    ? "Ladda ner appen och håll koll när du är på språng" 
-    : "Download the app and stay connected on the go";
+    ? "Få notiser direkt i fickan" 
+    : "Notifications right in your pocket";
 
   // Localized notifications data with two new notifications added
   const notificationData: NotificationMessage[] = [
