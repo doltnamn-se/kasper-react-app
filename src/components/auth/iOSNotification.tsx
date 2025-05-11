@@ -82,11 +82,16 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
             className="ios-notification absolute left-0 right-0 animate-fadeInUp"
           >
             <div 
-              className={`notification-card rounded-xl shadow-lg backdrop-blur-lg transition-all duration-500 ${
+              className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
                 isDarkMode 
                   ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
                   : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
               } p-3`}
+              style={{
+                transitionProperty: 'height, padding, background-color, border-color',
+                transitionDuration: '0.8s',
+                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
             >
               <div className="flex items-start">
                 {/* App icon - always using Digitaltskydd */}
@@ -101,7 +106,14 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                 </div>
                 
                 {/* Notification content with animation only for the body text */}
-                <div className="flex-1 notification-content">
+                <div 
+                  className="flex-1 notification-content"
+                  style={{
+                    transitionProperty: 'height',
+                    transitionDuration: '0.8s',
+                    transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
+                  }}
+                >
                   <div className="flex justify-between items-start">
                     <span className="font-semibold text-sm">
                       {currentNotification.title}
