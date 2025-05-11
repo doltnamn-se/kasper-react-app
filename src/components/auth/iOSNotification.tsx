@@ -116,7 +116,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           clearInterval(typingInterval);
           setIsTypingComplete(true);
           
-          // Show store badges after typing animation completes
+          // Show store badges after typing animation completes with delay
           setTimeout(() => {
             setShowStoreBadges(true);
           }, 300);
@@ -191,13 +191,16 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container with fade-in animation */}
-        <div className={`flex justify-center items-center mt-4 space-x-4 transition-opacity duration-500 ease-in-out ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}>
+        {/* Store badges container with fade-in-up animation */}
+        <div className={`flex justify-center items-center mt-4 space-x-4 transition-all duration-500 ease-in-out ${
+          showStoreBadges ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'
+        }`}>
           {/* Google Play Store */}
           <a 
             href="#" 
-            className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+            className="store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp"
             onClick={(e) => e.preventDefault()}
+            style={{ animationDelay: '100ms' }}
           >
             <img 
               src={isDarkMode ? "/lovable-uploads/ds-googleplay-white.svg" : "/lovable-uploads/ds-googleplay-black.svg"} 
@@ -209,8 +212,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {/* App Store */}
           <a 
             href="#" 
-            className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+            className="store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp"
             onClick={(e) => e.preventDefault()}
+            style={{ animationDelay: '300ms' }}
           >
             <img 
               src={isDarkMode ? "/lovable-uploads/ds-appstore-comingsoon-white.svg" : "/lovable-uploads/ds-appstore-comingsoon-black.svg"} 
@@ -291,3 +295,4 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     </div>
   );
 };
+
