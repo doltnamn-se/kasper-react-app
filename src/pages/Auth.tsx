@@ -1,7 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { AuthSettings } from "@/components/auth/AuthSettings";
 import { AuthFooter } from "@/components/auth/AuthFooter";
@@ -9,7 +9,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 import { initializeVersionTracking, useVersionStore } from "@/config/version";
 import { getLatestVersion } from "@/utils/versionUtils";
-import { AuthEyeLogo } from "@/components/auth/AuthEyeLogo";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -131,13 +130,14 @@ const Auth = () => {
     <div className="h-screen overflow-hidden auth-page flex">
       {/* Left side - Authentication content */}
       <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#121212]">
+        <AuthHeader />
+        
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
             <AuthForm 
               errorMessage={errorMessage} 
               isDarkMode={isDarkMode} 
-              isResetPasswordMode={isResetPasswordMode}
-              showEyeLogo={true} 
+              isResetPasswordMode={isResetPasswordMode} 
             />
             <AuthSettings isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
           </div>
