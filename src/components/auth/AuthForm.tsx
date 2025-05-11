@@ -42,7 +42,7 @@ export const AuthForm = ({
 
   return (
     <div className="flex justify-center w-full">
-      <div className="bg-white/30 dark:bg-[#232325]/30 backdrop-blur-xl backdrop-saturate-150 p-8 border border-white/20 dark:border-[#303032]/20 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
+      <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
         <AuthEyeLogo />
         <h2 className="text-xl font-bold mb-10 text-left dark:text-white font-system-ui font-[700]">
           {isResetPasswordMode ? t('reset.password') : t('sign.in')}
