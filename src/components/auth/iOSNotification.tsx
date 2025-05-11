@@ -1,29 +1,120 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { NotificationProps, NotificationMessage } from './notifications/NotificationTypes';
-import { getNotificationData } from './notifications/notificationData';
-import { TypingAnimation } from './notifications/TypingAnimation';
-import { NotificationCard } from './notifications/NotificationCard';
+
+interface NotificationProps {
+  isDarkMode?: boolean;
+}
+
+interface NotificationMessage {
+  title: string;
+  body: string;
+  time: string;
+  id: number;
+  heading: string;
+}
 
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const { language } = useLanguage();
   const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [isChangingText, setIsChangingText] = useState(false);
+  const [notificationHeight, setNotificationHeight] = useState<number | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   
+  // Typing animation states
+  const [displayText, setDisplayText] = useState('');
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
   const fullText = language === 'sv' 
-    ? "Ladda ner appen för när du är på språng" 
-    : "Download the app for when you're on-the-go";
+    ? "Ladda ner appen och hålla koll när du är på språng" 
+    : "Download the app and stay connected on the go";
 
-  // Get notification data based on current language
-  const notificationData = getNotificationData(language);
+  // Localized notifications data with two new notifications added
+  const notificationData: NotificationMessage[] = [
+    {
+      id: 1,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Länkar" : "Links",
+      body: language === 'sv' 
+        ? "Borttagning på Google är godkänd för en eller flera av dina länkar"
+        : "Removal from Google is approved for one or several of your links",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 2,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Status" : "Status",
+      body: language === 'sv' 
+        ? "Grattis! Du är nu fyllt skyddad🥳"
+        : "Congratulations! You are now fully protected🥳",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 3,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Bevakning" : "Monitoring",
+      body: language === 'sv' 
+        ? "Du har en ny träff på Google. Vill du att vi tar bort den?"
+        : "You have a new hit on Google. Do you want us to remove it?",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 4,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Upplysningssidor" : "Search sites",
+      body: language === 'sv' 
+        ? "Du är nu borttagen på Mrkoll"
+        : "You are now removed from Mrkoll",
+      time: language === 'sv' ? "nu" : "now",
+    },
+    {
+      id: 5,
+      title: "Digitaltskydd",
+      heading: language === 'sv' ? "Länkar" : "Links",
+      body: language === 'sv' 
+        ? "Statusen för en eller flera av dina länkar har uppdaterats"
+        : "The status for one or more of your links has been updated",
+      time: language === 'sv' ? "nu" : "now",
+    },
+  ];
+
+  // Typing animation effect
+  useEffect(() => {
+    // Reset the typing animation when language changes
+    setDisplayText('');
+    setIsTypingComplete(false);
+    
+    let i = 0;
+    // Start typing animation with a slight delay
+    const typingDelay = setTimeout(() => {
+      const typingInterval = setInterval(() => {
+        if (i < fullText.length) {
+          setDisplayText(prev => prev + fullText.charAt(i));
+          i++;
+        } else {
+          clearInterval(typingInterval);
+          setIsTypingComplete(true);
+        }
+      }, 30); // Speed of typing (lower = faster)
+      
+      return () => clearInterval(typingInterval);
+    }, 500); // Delay before typing starts
+    
+    return () => clearTimeout(typingDelay);
+  }, [fullText]);
 
   useEffect(() => {
     // Initial delay before showing the notification
     const initialTimeout = setTimeout(() => {
       setCurrentNotification(notificationData[0]);
       setShowNotification(true);
+      
+      // Initial height measurement after render
+      setTimeout(() => {
+        if (contentRef.current) {
+          setNotificationHeight(contentRef.current.offsetHeight);
+        }
+      }, 100);
     }, 1000);
 
     let currentIndex = 0;
@@ -41,9 +132,16 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         
         // Small delay before starting the fade in
         setTimeout(() => {
+          // Measure new height after content change
+          if (contentRef.current) {
+            setNotificationHeight(contentRef.current.offsetHeight);
+          }
+          
           // Then fade in the text
-          setIsChangingText(false);
-        }, 50);
+          setTimeout(() => {
+            setIsChangingText(false);
+          }, 50);
+        }, 100);
       }, 300);
     }, 4000); // Change notification content every 4 seconds
 
@@ -51,7 +149,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, [language, notificationData]);
+  }, [language]);
 
   // If no notification is set yet, render nothing
   if (!currentNotification) return null;
@@ -59,16 +157,73 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
       {/* App download text with typing animation */}
-      <TypingAnimation fullText={fullText} isDarkMode={isDarkMode} />
+      <div className="mb-6 text-center px-4">
+        <p className={`text-xl font-[500] ${
+          isDarkMode ? "text-white" : "text-black"
+        } typing-animation`}>
+          {displayText}
+          {!isTypingComplete && <span className="cursor-blink">|</span>}
+        </p>
+      </div>
       
       <div className="relative w-[300px] max-w-[85%]">
         {showNotification && (
-          <div className="ios-notification absolute left-0 right-0 animate-fadeInUp">
-            <NotificationCard
-              notification={currentNotification}
-              isDarkMode={isDarkMode}
-              isChangingText={isChangingText}
-            />
+          <div
+            className="ios-notification absolute left-0 right-0 animate-fadeInUp"
+          >
+            <div 
+              className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
+                isDarkMode 
+                  ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
+                  : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
+              } p-3`}
+              style={{
+                height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
+                transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                willChange: 'height, transform',
+                overflow: 'hidden'
+              }}
+            >
+              <div className="flex items-start">
+                {/* App icon container with vertical centering */}
+                <div className="mr-3 flex items-center h-full" style={{
+                  minHeight: notificationHeight ? `${notificationHeight}px` : 'auto',
+                  transition: 'min-height 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}>
+                  <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
+                    <img 
+                      src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
+                      alt="Digitaltskydd" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                
+                {/* Notification content with animation for both heading and body text */}
+                <div 
+                  ref={contentRef}
+                  className="flex-1 notification-content"
+                >
+                  <div className="flex justify-between items-start">
+                    <span className="font-semibold text-sm">
+                      {currentNotification.title}
+                    </span>
+                    <span className="text-xs opacity-60">
+                      {currentNotification.time}
+                    </span>
+                  </div>
+                  
+                  {/* Updated heading with the same animation as body text */}
+                  <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
+                    {currentNotification.heading}
+                  </h3>
+                  
+                  <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
+                    {currentNotification.body}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
