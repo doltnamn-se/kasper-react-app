@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +9,7 @@ import { initializeVersionTracking, useVersionStore } from "@/config/version";
 import { getLatestVersion } from "@/utils/versionUtils";
 import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
+import { IOSNotification } from "@/components/auth/iOSNotification";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -153,6 +153,7 @@ const Auth = () => {
             draggable="false"
             onContextMenu={(e) => e.preventDefault()}
           />
+          <IOSNotification isDarkMode={isDarkMode} />
         </div>
       </div>
     </div>
