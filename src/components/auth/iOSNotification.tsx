@@ -162,9 +162,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   if (!currentNotification) return null;
 
   return (
-    <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      {/* App download text with typing animation - Added overflow-visible and increased padding to ensure text is fully visible */}
-      <div className="mb-6 text-center px-6 overflow-visible">
+    <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
+      {/* App download text with typing animation - Moved to top */}
+      <div className="mt-6 text-center px-6 overflow-visible">
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -202,67 +202,74 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </div>
       </div>
       
-      <div className="relative w-[300px] max-w-[85%]">
-        {showNotification && (
-          <div
-            className="ios-notification absolute left-0 right-0 animate-fadeInUp"
-          >
-            <div 
-              className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
-                isDarkMode 
-                  ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
-                  : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
-              } p-3`}
-              style={{
-                height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
-                transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                willChange: 'height, transform',
-                overflow: 'hidden'
-              }}
+      {/* Notification in the center */}
+      <div className="flex-grow flex items-center justify-center">
+        <div className="relative w-[300px] max-w-[85%]">
+          {showNotification && (
+            <div
+              className="ios-notification absolute left-0 right-0 animate-fadeInUp"
             >
-              <div className="flex items-start">
-                {/* App icon container with vertical centering */}
-                <div className="mr-3 flex items-center h-full" style={{
-                  minHeight: notificationHeight ? `${notificationHeight}px` : 'auto',
-                  transition: 'min-height 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}>
-                  <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
-                    <img 
-                      src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
-                      alt="Digitaltskydd" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                
-                {/* Notification content with animation for both heading and body text */}
-                <div 
-                  ref={contentRef}
-                  className="flex-1 notification-content"
-                >
-                  <div className="flex justify-between items-start">
-                    <span className="font-semibold text-sm">
-                      {currentNotification.title}
-                    </span>
-                    <span className="text-xs opacity-60">
-                      {currentNotification.time}
-                    </span>
+              <div 
+                className={`notification-card rounded-xl shadow-lg backdrop-blur-lg ${
+                  isDarkMode 
+                    ? "bg-[#1A1F2C]/80 text-white border border-[#ffffff20]" 
+                    : "bg-[#ffffff]/80 text-[#333333] border border-[#00000010]"
+                } p-3`}
+                style={{
+                  height: notificationHeight ? `${notificationHeight + 24}px` : 'auto', // 24px accounts for padding
+                  transition: 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  willChange: 'height, transform',
+                  overflow: 'hidden'
+                }}
+              >
+                <div className="flex items-start">
+                  {/* App icon container with vertical centering */}
+                  <div className="mr-3 flex items-center h-full" style={{
+                    minHeight: notificationHeight ? `${notificationHeight}px` : 'auto',
+                    transition: 'min-height 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+                  }}>
+                    <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden bg-[#20a5fb]">
+                      <img 
+                        src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
+                        alt="Digitaltskydd" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
                   
-                  {/* Updated heading with the same animation as body text */}
-                  <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
-                    {currentNotification.heading}
-                  </h3>
-                  
-                  <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
-                    {currentNotification.body}
-                  </p>
+                  {/* Notification content with animation for both heading and body text */}
+                  <div 
+                    ref={contentRef}
+                    className="flex-1 notification-content"
+                  >
+                    <div className="flex justify-between items-start">
+                      <span className="font-semibold text-sm">
+                        {currentNotification.title}
+                      </span>
+                      <span className="text-xs opacity-60">
+                        {currentNotification.time}
+                      </span>
+                    </div>
+                    
+                    {/* Updated heading with the same animation as body text */}
+                    <h3 className={`font-semibold text-sm mt-1 ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'} transition-opacity transition-transform duration-300 ease-in-out`}>
+                      {currentNotification.heading}
+                    </h3>
+                    
+                    <p className={`text-sm mt-0.5 notification-body ${isChangingText ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}`}>
+                      {currentNotification.body}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+      
+      {/* Empty div to maintain spacing in flex container */}
+      <div className="mb-6"></div>
     </div>
   );
 };
+
