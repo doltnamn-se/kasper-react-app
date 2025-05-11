@@ -16,6 +16,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [currentNotification, setCurrentNotification] = useState<NotificationMessage | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [isChangingText, setIsChangingText] = useState(false);
+  const [animateHeight, setAnimateHeight] = useState(false);
 
   // Sample notifications data - all use Digitaltskydd
   const notificationData: NotificationMessage[] = [
@@ -57,10 +58,16 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         // Move to next notification in the array
         currentIndex = (currentIndex + 1) % notificationData.length;
         setCurrentNotification(notificationData[currentIndex]);
+        setAnimateHeight(true);
         
         // Small delay before starting the fade in
         setTimeout(() => {
           setIsChangingText(false);
+          
+          // Reset height animation flag after animation completes
+          setTimeout(() => {
+            setAnimateHeight(false);
+          }, 800); // Match transition duration
         }, 50);
       }, 300);
     }, 4000); // Change notification content every 4 seconds
@@ -90,7 +97,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               style={{
                 transitionProperty: 'height, padding, background-color, border-color',
                 transitionDuration: '0.8s',
-                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
+                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                height: 'auto', // Allow height to adjust naturally
+                willChange: 'height'
               }}
             >
               <div className="flex items-start">
@@ -111,7 +120,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                   style={{
                     transitionProperty: 'height',
                     transitionDuration: '0.8s',
-                    transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
+                    transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                    willChange: 'height',
+                    height: 'auto' // Allow height to adjust naturally
                   }}
                 >
                   <div className="flex justify-between items-start">

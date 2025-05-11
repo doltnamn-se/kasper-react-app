@@ -125,16 +125,20 @@
 .notification-card {
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: height, padding;
+  overflow: hidden;
 }
 
 .notification-body {
   transition: opacity 0.3s ease, transform 0.3s ease;
   min-height: 1.5rem; /* Ensures consistent height */
+  display: block;
 }
 
 .notification-content {
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: height;
+  display: flex;
+  flex-direction: column;
 }
 
 .first-notification {
