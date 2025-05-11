@@ -30,7 +30,16 @@ export const PrivacyScoreCard = () => {
   const isAuthPage = location.pathname.includes('/auth');
 
   return (
-    <div className={`bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm ${isAuthPage ? '' : 'border border-[#e5e7eb] dark:border-[#232325]'} transition-colors duration-200`}>
+    <div className={`
+      p-4 md:p-6 
+      rounded-[4px] 
+      shadow-sm 
+      transition-colors 
+      duration-200
+      ${isAuthPage 
+        ? 'bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-md' 
+        : 'bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325]'}
+    `}>
       <div className="space-y-4 mb-6">
         {!isAuthPage && (
           <div>
