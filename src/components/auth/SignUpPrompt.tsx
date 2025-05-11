@@ -9,7 +9,7 @@ export const SignUpPrompt = () => {
       {language === 'sv' ? "Har du inget konto? " : "Don't have an account? "}
       <a 
         href="https://digitaltskydd.se/#planer" 
-        className="font-[700] underline text-black hover:text-black dark:text-white dark:hover:text-white font-system-ui"
+        className="font-[700] text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] font-system-ui"
       >
         {language === 'sv' ? "Kom igång" : "Get started"}
       </a>
