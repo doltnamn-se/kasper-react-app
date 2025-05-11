@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +9,7 @@ import { initializeVersionTracking, useVersionStore } from "@/config/version";
 import { getLatestVersion } from "@/utils/versionUtils";
 import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
+import { iOSNotification } from "@/components/auth/iOSNotification";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -145,7 +145,7 @@ const Auth = () => {
 
       {/* Right side - Image background */}
       <div className="hidden md:block md:w-1/2 bg-[#FFFFFF] dark:bg-[#1a1a1a] h-screen p-[15px]">
-        <div className="h-full w-full flex items-center justify-center p-0 rounded-lg overflow-hidden">
+        <div className="h-full w-full flex items-center justify-center p-0 rounded-lg overflow-hidden relative">
           <img 
             src={bgImage}
             alt="Digitaltskydd App" 
@@ -153,6 +153,7 @@ const Auth = () => {
             draggable="false"
             onContextMenu={(e) => e.preventDefault()}
           />
+          <iOSNotification isDarkMode={isDarkMode} />
         </div>
       </div>
     </div>
