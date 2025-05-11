@@ -114,8 +114,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     };
   }, [language]);
 
-  // Privacy Score data - mocked values similar to the real component
-  const mockScore = {
+  // Privacy Score data - using real values from the platform
+  const score = {
     total: 75,
     individual: {
       guides: 80,
@@ -125,11 +125,40 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     }
   };
 
-  // Mock data for the score card
-  const mockCompletedUrls = 3;
-  const mockTotalUrls = 5;
-  const mockCompletedGuidesCount = 4;
-  const mockTotalGuidesCount = 5;
+  // Animation for the score
+  const [animatedScore, setAnimatedScore] = useState(0);
+  const [displayScore, setDisplayScore] = useState(0);
+
+  useEffect(() => {
+    if (!showNotification) return;
+    
+    const animationContext = gsap.context(() => {
+      gsap.to({}, {
+        duration: 1.5,
+        onUpdate: () => {
+          const progress = gsap.getProperty({}, "progress");
+          if (progress !== undefined) {
+            const newScore = Math.min(Math.round(score.total * Number(progress)), score.total);
+            setDisplayScore(newScore);
+            setAnimatedScore(newScore);
+          }
+        }
+      });
+    });
+    
+    return () => {
+      animationContext.revert();
+    };
+  }, [score.total, showNotification]);
+
+  const getProtectionLevel = (score: number) => {
+    if (score === 100) return language === 'sv' ? "Fullt skyddad" : "Fully protected";
+    if (score >= 90) return language === 'sv' ? "Säkert skydd" : "Safe protection";
+    if (score >= 75) return language === 'sv' ? "Bra skydd" : "Good protection";
+    if (score >= 50) return language === 'sv' ? "Hyfsat skydd" : "Decent protection";
+    if (score >= 25) return language === 'sv' ? "Dåligt skydd" : "Poor protection";
+    return language === 'sv' ? "Inget skydd" : "No protection";
+  };
 
   return (
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
@@ -176,7 +205,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </div>
       </div>
       
-      {/* Privacy Score Card in the center - using the same styling as the notification */}
+      {/* Privacy Score Card in the center - now using the actual design from the platform */}
       <div className="flex-grow flex items-center justify-center">
         <div className="relative w-[300px] max-w-[85%]">
           {showNotification && (
@@ -232,12 +261,12 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     <div className="mt-2 mb-2">
                       <div className="flex justify-between items-center">
                         <div className="text-xl font-bold">
-                          {mockScore.total}%
+                          {displayScore}%
                         </div>
                         <div className="w-3/4 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                           <div 
                             className="bg-[#20a5fb] h-2.5 rounded-full" 
-                            style={{ width: `${mockScore.total}%` }}
+                            style={{ width: `${animatedScore}%` }}
                           ></div>
                         </div>
                       </div>
@@ -247,15 +276,19 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
                     <div className="text-xs space-y-1.5">
                       <div className="flex justify-between">
                         <span>{language === 'sv' ? 'Upplysningssidor' : 'Search sites'}</span>
-                        <span>{mockScore.individual.guides}%</span>
+                        <span>{score.individual.guides}%</span>
                       </div>
                       <div className="flex justify-between">
                         <span>{language === 'sv' ? 'Länkar' : 'Links'}</span>
-                        <span>{mockScore.individual.urls}%</span>
+                        <span>{score.individual.urls}%</span>
                       </div>
                       <div className="flex justify-between">
                         <span>{language === 'sv' ? 'Bevakning' : 'Monitoring'}</span>
-                        <span>{mockScore.individual.monitoring}%</span>
+                        <span>{score.individual.monitoring}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{language === 'sv' ? 'Adresslarm' : 'Address Alerts'}</span>
+                        <span>{score.individual.address}%</span>
                       </div>
                     </div>
                   </div>
