@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -7,6 +8,7 @@ import { useAddressData } from "@/components/address/hooks/useAddressData";
 import { Separator } from "@/components/ui/separator";
 import { ScoreDisplay } from './score-card/ScoreDisplay';
 import { ScoreItemsList } from './score-card/ScoreItemsList';
+import { useLocation } from 'react-router-dom';
 
 export const PrivacyScoreCard = () => {
   const { calculateScore } = usePrivacyScore();
@@ -16,12 +18,16 @@ export const PrivacyScoreCard = () => {
   const { getGuides } = useGuideData();
   const { addressData } = useAddressData();
   const allGuides = getGuides();
+  const location = useLocation();
 
   const completedUrls = incomingUrls?.filter(url => url.status === 'removal_approved')?.length || 0;
   const totalUrls = incomingUrls?.length || 0;
 
   const completedGuides = score.individual.guides;
   const completedGuidesCount = Math.round((completedGuides / 100) * allGuides.length);
+
+  // Check if we're on the auth page to hide the items list
+  const isAuthPage = location.pathname.includes('/auth');
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
@@ -41,18 +47,22 @@ export const PrivacyScoreCard = () => {
         />
       </div>
 
-      <Separator className="my-6" />
+      {!isAuthPage && (
+        <>
+          <Separator className="my-6" />
 
-      <ScoreItemsList 
-        language={language}
-        scores={score.individual}
-        completedUrls={completedUrls}
-        totalUrls={totalUrls}
-        completedGuidesCount={completedGuidesCount}
-        totalGuidesCount={allGuides.length}
-        hasAddress={Boolean(addressData?.street_address)}
-        incomingUrls={incomingUrls}
-      />
+          <ScoreItemsList 
+            language={language}
+            scores={score.individual}
+            completedUrls={completedUrls}
+            totalUrls={totalUrls}
+            completedGuidesCount={completedGuidesCount}
+            totalGuidesCount={allGuides.length}
+            hasAddress={Boolean(addressData?.street_address)}
+            incomingUrls={incomingUrls}
+          />
+        </>
+      )}
     </div>
   );
 };
