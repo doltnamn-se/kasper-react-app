@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import gsap from 'gsap';
 
 interface NotificationProps {
   isDarkMode?: boolean;
@@ -28,6 +29,8 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   const [showTitle, setShowTitle] = useState(false);
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
   const [showAppleStoreBadge, setShowAppleStoreBadge] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
   
   const fullText = language === 'sv' 
     ? "Ladda ner appen och håll koll när du är på språng" 
@@ -91,49 +94,66 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     return () => clearTimeout(titleDelay);
   }, []);
 
-  // Typing animation effect - Improved to ensure the first letter displays correctly
+  // GSAP typing animation effect
   useEffect(() => {
-    // Reset the typing animation when language changes
+    // Reset states when language changes
     setDisplayText('');
     setIsTypingComplete(false);
     
     if (!showTitle) return;
     
-    let i = 0;
-    let animationText = '';
-    
-    // Start typing animation with a slight delay
-    const typingDelay = setTimeout(() => {
-      // Force render the first character immediately
-      setDisplayText(fullText.charAt(0));
-      i = 1; // Start from second character
-      
-      const typingInterval = setInterval(() => {
-        if (i < fullText.length) {
-          animationText = fullText.substring(0, i + 1);
-          setDisplayText(animationText);
-          i++;
-        } else {
-          clearInterval(typingInterval);
-          setIsTypingComplete(true);
+    // Clear any existing text
+    if (textRef.current) {
+      textRef.current.textContent = '';
+    }
+
+    // Create typing timeline with GSAP
+    const typingTimeline = gsap.timeline({
+      onComplete: () => {
+        setIsTypingComplete(true);
+        
+        // Show Google Play badge with 2 sec delay after typing completes
+        gsap.delayedCall(2, () => {
+          setShowGooglePlayBadge(true);
           
-          // Updated: Show Google Play badge with 2 sec delay after typing completes
-          setTimeout(() => {
-            setShowGooglePlayBadge(true);
-            
-            // Updated: Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
-            setTimeout(() => {
-              setShowAppleStoreBadge(true);
-            }, 500); // 500ms additional delay after Google Play (total 2.5 sec from typing completion)
-          }, 2000); // 2 sec delay for Google Play badge
-        }
-      }, 30); // Speed of typing (lower = faster)
-      
-      return () => clearInterval(typingInterval);
-    }, 200); // Delay before typing starts
+          // Show Apple Store badge with 2.5 sec delay after typing completes (500ms after Google Play)
+          gsap.delayedCall(0.5, () => {
+            setShowAppleStoreBadge(true);
+          });
+        });
+      }
+    });
     
-    return () => clearTimeout(typingDelay);
-  }, [fullText, showTitle]);
+    // Small initial delay
+    typingTimeline.delay(0.2);
+    
+    // Add each character with a staggered effect for more natural typing
+    let chars = fullText.split('');
+    chars.forEach((char, index) => {
+      typingTimeline.add(() => {
+        setDisplayText(prevText => prevText + char);
+      }, index * 0.03); // Slightly randomized typing speed for natural effect
+    });
+
+    // Start the animation
+    typingTimeline.play();
+    
+    // Setup blinking cursor animation
+    if (cursorRef.current) {
+      gsap.to(cursorRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut"
+      });
+    }
+    
+    return () => {
+      typingTimeline.kill();
+      gsap.killTweensOf(cursorRef.current);
+    };
+  }, [fullText, showTitle, language]);
 
   useEffect(() => {
     // Initial delay before showing the notification
@@ -190,11 +210,17 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
     <div className="ios-notification-container absolute inset-0 flex flex-col items-center justify-between pointer-events-none">
       {/* App download text with typing animation - Moved further down with more padding */}
       <div className={`mt-24 text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
-        <p className={`text-xl font-[500] ${
-          isDarkMode ? "text-white" : "text-black"
-        } typing-animation`}>
+        <p 
+          ref={textRef}
+          className={`text-xl font-[500] ${
+            isDarkMode ? "text-white" : "text-black"
+          } typing-animation`}
+        >
           {displayText}
-          {!isTypingComplete && <span className="cursor-blink">|</span>}
+          <span 
+            ref={cursorRef} 
+            className={isTypingComplete ? 'opacity-0' : 'inline'}
+          >|</span>
         </p>
         
         {/* Store badges container with fade-in-up animation - Increased spacing */}
