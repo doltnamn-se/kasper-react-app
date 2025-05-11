@@ -62,9 +62,9 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   }, [fullText]); // Removed showTitle dependency as it's now always true
 
   return (
-    <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
-      {/* App download text with typing animation - Centered vertically and horizontally */}
-      <div className="text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
+    <div className="ios-notification-container absolute inset-0 flex items-start justify-center pointer-events-none">
+      {/* App download text with typing animation - Positioned at the top with padding */}
+      <div className="text-center px-6 pt-16 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
         <p className={`text-xl font-[500] ${
           isDarkMode ? "text-white" : "text-black"
         } typing-animation`}>
@@ -72,7 +72,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
         
-        {/* Store badges container - Centered */}
+        {/* Store badges container */}
         <div className={`flex justify-center items-center mt-8 space-x-8`}>
           {/* Google Play Store - Now with link that opens in new tab */}
           <a 
