@@ -171,6 +171,35 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {displayText}
           {!isTypingComplete && <span className="cursor-blink">|</span>}
         </p>
+        
+        {/* Store badges container */}
+        <div className="flex justify-center items-center mt-4 space-x-4">
+          {/* Google Play Store */}
+          <a 
+            href="#" 
+            className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+            onClick={(e) => e.preventDefault()}
+          >
+            <img 
+              src={isDarkMode ? "/lovable-uploads/ds-googleplay-white.svg" : "/lovable-uploads/ds-googleplay-black.svg"} 
+              alt="Get it on Google Play" 
+              className="w-full h-full"
+            />
+          </a>
+          
+          {/* App Store */}
+          <a 
+            href="#" 
+            className="store-badge w-32 h-auto transition-opacity hover:opacity-80"
+            onClick={(e) => e.preventDefault()}
+          >
+            <img 
+              src={isDarkMode ? "/lovable-uploads/ds-appstore-comingsoon-white.svg" : "/lovable-uploads/ds-appstore-comingsoon-black.svg"} 
+              alt="Download on App Store" 
+              className="w-full h-full"
+            />
+          </a>
+        </div>
       </div>
       
       <div className="relative w-[300px] max-w-[85%]">
