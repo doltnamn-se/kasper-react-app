@@ -49,7 +49,7 @@ export const StripePricingTable: React.FC<StripePricingTableProps> = ({ onBack }
 
   return (
     <div className="flex flex-col justify-center w-full fade-in">
-      <div className="bg-transparent p-8 w-full max-w-md">
+      <div className={`bg-transparent p-8 w-full max-w-md stripe-pricing-wrapper ${isDarkMode ? 'stripe-dark-theme' : ''}`}>
         {loaded ? (
           <>
             <div className="w-full overflow-y-auto mb-8">
