@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -151,7 +150,7 @@ const Auth = () => {
 
       {/* Right side - Image background */}
       <div className="hidden md:block md:w-1/2 bg-[#FFFFFF] dark:bg-[#1a1a1a] h-screen">
-        <div className="h-full w-full flex items-center justify-center p-0 m-[10px] rounded-lg overflow-hidden">
+        <div className="h-full w-full flex items-center justify-center p-0 mx-[15px] my-[10px] rounded-lg overflow-hidden">
           <img 
             src="/lovable-uploads/digitaltskydd-app-auth-frame-android-portrait-color.jpg" 
             alt="Digitaltskydd App" 
