@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -191,13 +192,11 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
         </p>
         
         {/* Store badges container with fade-in-up animation - Increased spacing */}
-        <div className={`flex justify-center items-center mt-8 space-x-4 transition-all duration-500 ease-in-out ${
-          showStoreBadges ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'
-        }`}>
+        <div className={`flex justify-center items-center mt-8 space-x-4 transition-all duration-500 ease-in-out`}>
           {/* Google Play Store */}
           <a 
             href="#" 
-            className="store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp"
+            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}
             onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '100ms' }}
           >
@@ -211,7 +210,7 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
           {/* App Store */}
           <a 
             href="#" 
-            className="store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp"
+            className={`store-badge w-32 h-auto transition-opacity hover:opacity-80 animate-fadeInUp ${showStoreBadges ? 'opacity-100' : 'opacity-0'}`}
             onClick={(e) => e.preventDefault()}
             style={{ animationDelay: '300ms' }}
           >
