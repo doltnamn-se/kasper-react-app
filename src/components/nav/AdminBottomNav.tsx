@@ -8,7 +8,6 @@ export const AdminBottomNav = () => {
   const location = useLocation();
   const { t } = useLanguage();
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
-  const [prevIndicatorStyle, setPrevIndicatorStyle] = useState({ left: 0, width: 0 });
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   
   const navItems = [
@@ -27,17 +26,14 @@ export const AdminBottomNav = () => {
       if (activeIndex !== -1 && navRefs.current[activeIndex]) {
         const activeItem = navRefs.current[activeIndex];
         if (activeItem) {
-          // Save previous position for animation
-          setPrevIndicatorStyle({ ...indicatorStyle });
-          
-          // Set new position
+          // Set new position with smooth transition
           const { offsetLeft, offsetWidth } = activeItem;
           setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
         }
       }
     };
 
-    // Initialize indicator position when component mounts or route changes
+    // Initialize indicator position when component mounts
     updateIndicator();
     
     // Re-calculate when window resizes
@@ -50,7 +46,7 @@ export const AdminBottomNav = () => {
       <div className="relative">
         {/* Active indicator - positioned absolutely and will slide with transitions */}
         <div 
-          className="absolute top-0 h-0.5 bg-black dark:bg-white transition-all duration-300 ease-in-out"
+          className="absolute top-0 h-1 bg-black dark:bg-white transition-all duration-300 ease-in-out"
           style={{ left: `${indicatorStyle.left}px`, width: `${indicatorStyle.width}px` }}
         />
       </div>
