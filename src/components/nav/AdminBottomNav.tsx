@@ -32,7 +32,9 @@ export const AdminBottomNav = () => {
       }
     };
 
+    // Initialize indicator position when component mounts or route changes
     updateIndicator();
+    
     // Re-calculate when window resizes
     window.addEventListener('resize', updateIndicator);
     return () => window.removeEventListener('resize', updateIndicator);
@@ -41,7 +43,7 @@ export const AdminBottomNav = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
       <div className="relative">
-        {/* Active indicator */}
+        {/* Active indicator - positioned absolutely and will slide with transitions */}
         <div 
           className="absolute top-0 h-0.5 bg-black dark:bg-white transition-all duration-300 ease-in-out"
           style={{ left: `${indicatorStyle.left}px`, width: `${indicatorStyle.width}px` }}
