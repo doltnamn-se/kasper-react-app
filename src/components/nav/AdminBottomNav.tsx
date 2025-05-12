@@ -8,6 +8,7 @@ export const AdminBottomNav = () => {
   const location = useLocation();
   const { t } = useLanguage();
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const [prevIndicatorStyle, setPrevIndicatorStyle] = useState({ left: 0, width: 0 });
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   
   const navItems = [
@@ -26,6 +27,10 @@ export const AdminBottomNav = () => {
       if (activeIndex !== -1 && navRefs.current[activeIndex]) {
         const activeItem = navRefs.current[activeIndex];
         if (activeItem) {
+          // Save previous position for animation
+          setPrevIndicatorStyle({ ...indicatorStyle });
+          
+          // Set new position
           const { offsetLeft, offsetWidth } = activeItem;
           setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
         }
