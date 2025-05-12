@@ -77,11 +77,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         {/* Only show TopNav on desktop, on mobile it comes from MobilePersistentLayout */}
         {!isMobile && <TopNav />}
         
-        {/* Modified the main container to conditionally apply padding based on mobile or desktop */}
-        <main className={`${
-          isMobile ? 'bg-white dark:bg-[#161618] md:pb-12 relative' : 
-          'px-4 md:px-12 pt-12 pb-20 md:pb-12 relative bg-[#f4f4f4] dark:bg-[#161618]'
-        }`}>
+        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative">
           {children}
         </main>
       </div>

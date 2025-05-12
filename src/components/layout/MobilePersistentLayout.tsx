@@ -25,12 +25,12 @@ export const MobilePersistentLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#161618] pb-16">
+    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] pb-16">
       {/* Fixed Top Navigation */}
       <TopNav />
       
       {/* Main Content Area (scrollable) */}
-      <main className="px-4 pt-12 pb-20 bg-white dark:bg-[#161618]">
+      <main className="px-4 pt-12 pb-20">
         <Outlet />
       </main>
       

@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -42,7 +43,7 @@ export const TopNav = () => {
     <div className={cn(
       "sticky top-0 right-0 h-16 z-[40] transition-[left] duration-200",
       isMobile ? (
-        "left-0 px-4 bg-white dark:bg-[#161618] w-full" // Updated to white background on mobile
+        "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full" // Removed the border and updated background colors
       ) : (
         cn(
           "bg-[#f4f4f4] dark:bg-[#161618]",
