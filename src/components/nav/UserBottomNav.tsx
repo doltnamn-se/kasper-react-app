@@ -8,75 +8,68 @@ import {
   MousePointerClick
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useEffect, useRef, useState } from "react";
 
 export const UserBottomNav = () => {
   const location = useLocation();
   const { t } = useLanguage();
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  const navItems = [
+    { path: '/', icon: <House className="h-5 w-5" />, label: t('nav.home') },
+    { path: '/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.monitoring') },
+    { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
+    { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts') },
+    { path: '/guides', icon: <MousePointerClick className="h-5 w-5" />, label: t('nav.guides') }
+  ];
 
   const isActive = (path: string) => location.pathname === path;
 
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeIndex = navItems.findIndex(item => isActive(item.path));
+      if (activeIndex !== -1 && navRefs.current[activeIndex]) {
+        const activeItem = navRefs.current[activeIndex];
+        if (activeItem) {
+          const { offsetLeft, offsetWidth } = activeItem;
+          setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
+        }
+      }
+    };
+
+    updateIndicator();
+    // Re-calculate when window resizes
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [location.pathname]);
+
   return (
     <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
+      <div className="relative">
+        {/* Active indicator */}
+        <div 
+          className="absolute top-0 h-0.5 bg-black dark:bg-white transition-all duration-300 ease-in-out"
+          style={{ left: `${indicatorStyle.left}px`, width: `${indicatorStyle.width}px` }}
+        />
+      </div>
+      
       <div className="grid grid-cols-5 h-full">
-        <Link 
-          to="/" 
-          className={`flex flex-col items-center justify-center relative ${
-            isActive('/') 
-              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
-          }`}
-        >
-          <House className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.home')}</span>
-        </Link>
-
-        <Link 
-          to="/monitoring" 
-          className={`flex flex-col items-center justify-center relative ${
-            isActive('/monitoring') 
-              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
-          }`}
-        >
-          <UserRoundSearch className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.monitoring')}</span>
-        </Link>
-
-        <Link 
-          to="/deindexing" 
-          className={`flex flex-col items-center justify-center relative ${
-            isActive('/deindexing') 
-              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
-          }`}
-        >
-          <EyeOff className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.my.links')}</span>
-        </Link>
-
-        <Link 
-          to="/address-alerts" 
-          className={`flex flex-col items-center justify-center relative ${
-            isActive('/address-alerts') 
-              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
-          }`}
-        >
-          <MapPinHouse className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.address.alerts')}</span>
-        </Link>
-
-        <Link 
-          to="/guides" 
-          className={`flex flex-col items-center justify-center relative ${
-            isActive('/guides') 
-              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
-              : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
-          }`}
-        >
-          <MousePointerClick className="h-5 w-5" />
-          <span className="text-xs mt-1">{t('nav.guides')}</span>
-        </Link>
+        {navItems.map((item, index) => (
+          <Link 
+            key={item.path}
+            to={item.path} 
+            ref={el => navRefs.current[index] = el}
+            className={`flex flex-col items-center justify-center ${
+              isActive(item.path) 
+                ? 'text-black dark:text-white font-medium' 
+                : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
+            }`}
+          >
+            {item.icon}
+            <span className="text-xs mt-1">{item.label}</span>
+          </Link>
+        ))}
       </div>
     </div>
   );
