@@ -10,6 +10,7 @@ interface NotificationProps {
 export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = false }) => {
   const { language } = useLanguage();
   const textRef = useRef<HTMLSpanElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
   
   // States
   const [showGooglePlayBadge, setShowGooglePlayBadge] = useState(false);
@@ -23,53 +24,55 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
   // Google Play Store URL
   const googlePlayStoreURL = "https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc";
 
-  // GSAP typing animation effect
+  // GSAP reveal animation effect
   useEffect(() => {
-    // Clear any existing text first
+    // Make sure text is visible first
     if (textRef.current) {
-      textRef.current.textContent = '';
-    }
-    
-    // Create GSAP timeline for typing animation
-    const tl = gsap.timeline();
-    
-    // Type each character with GSAP
-    let chars = fullText.split('');
-    
-    // Add each character one by one with GSAP
-    chars.forEach((char, index) => {
-      tl.add(() => {
-        if (textRef.current) {
-          textRef.current.textContent += char;
-        }
-      }, index * 0.05); // Slight delay between each character
-    });
-    
-    // After typing completes, show badges
-    tl.call(() => {
-      // Show Google Play badge with delay
-      setTimeout(() => {
-        setShowGooglePlayBadge(true);
-        
-        // Show Apple Store badge with additional delay
+      textRef.current.textContent = fullText;
+      
+      // Create GSAP timeline for reveal animation
+      const tl = gsap.timeline();
+      
+      // Set initial state (hidden with mask)
+      gsap.set(textRef.current, {
+        clipPath: "inset(0 100% 0 0)",
+        opacity: 0
+      });
+      
+      // Reveal animation from left to right
+      tl.to(textRef.current, {
+        clipPath: "inset(0 0% 0 0)",
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.out"
+      });
+      
+      // After reveal completes, show badges
+      tl.call(() => {
+        // Show Google Play badge with delay
         setTimeout(() => {
-          setShowAppleStoreBadge(true);
+          setShowGooglePlayBadge(true);
+          
+          // Show Apple Store badge with additional delay
+          setTimeout(() => {
+            setShowAppleStoreBadge(true);
+          }, 500);
         }, 500);
-      }, 500);
-    });
-    
-    // Play the timeline
-    tl.play();
+      });
+      
+      // Play the timeline
+      tl.play();
+    }
     
     // Cleanup
     return () => {
-      tl.kill();
+      // No cleanup needed for this animation
     };
   }, [fullText]); // Re-run when language changes
 
   return (
     <div className="ios-notification-container absolute inset-0 flex items-center justify-center pointer-events-none">
-      {/* App download text with GSAP typing animation - Now center aligned */}
+      {/* App download text with reveal animation - Center aligned */}
       <div className="text-center px-6 overflow-visible transition-opacity duration-500 ease-in-out opacity-100">
         <p className={`text-xl font-[500] ${isDarkMode ? "text-white" : "text-black"}`}>
           <span ref={textRef}></span>
