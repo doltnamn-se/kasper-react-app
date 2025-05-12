@@ -13,6 +13,10 @@ export interface NavigationTranslations {
   'nav.admin.customers': string;
   'nav.admin.links': string;
   'nav.admin.version.log': string;
+  'nav.dashboard': string;
+  'nav.customers': string;
+  'nav.links': string;
+  'nav.version.log': string;
   'dark.mode': string;
   'light.mode': string;
   'status': string;

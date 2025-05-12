@@ -1,3 +1,4 @@
+
 import { NavigationTranslations } from '../types/navigation';
 
 export const navigation: NavigationTranslations = {
@@ -14,6 +15,10 @@ export const navigation: NavigationTranslations = {
   'nav.admin.customers': 'Customers',
   'nav.admin.links': 'Link Management',
   'nav.admin.version.log': 'Version log',
+  'nav.dashboard': 'Dashboard',
+  'nav.customers': 'Customers',
+  'nav.links': 'Links',
+  'nav.version.log': 'Version log',
   'dark.mode': 'Dark mode',
   'light.mode': 'Light mode',
   'status': 'Status',
