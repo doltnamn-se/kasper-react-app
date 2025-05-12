@@ -6,6 +6,7 @@ import { MonitoringPanel } from "@/components/monitoring/MonitoringPanel";
 import { useScanningStatus } from "@/components/monitoring/hooks/useScanningStatus";
 import { useUserMonitoring } from "@/components/monitoring/hooks/useUserMonitoring";
 import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Monitoring = () => {
   const { language } = useLanguage();
@@ -17,6 +18,7 @@ const Monitoring = () => {
     handleRejectUrl, 
     displayName 
   } = useUserMonitoring();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -53,7 +55,7 @@ const Monitoring = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-8">
+      <div className={`space-y-8 ${isMobile ? 'px-4 pt-12 pb-20' : ''}`}>
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
           {language === 'sv' ? 'Bevakning' : 'Monitoring'}
         </h1>
