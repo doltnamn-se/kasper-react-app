@@ -10,6 +10,7 @@ import { initializeVersionTracking, cleanupVersionTracking } from "@/config/vers
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
+import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -97,7 +98,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
-        <LanguageProvider> {/* Wrap entire app with LanguageProvider */}
+        <LanguageProvider>
           <SidebarProvider>
             <Router>
               <Routes>
@@ -114,14 +115,18 @@ function App() {
                   <Route path="version-log" element={<AdminVersionLog />} />
                 </Route>
 
-                {/* Customer routes */}
-                <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
-                <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
-                <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
-                <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
-                <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
-                <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
-                <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
+                {/* Customer routes wrapped with MobilePersistentLayout for mobile persistence */}
+                <Route element={<MobilePersistentLayout />}>
+                  <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
+                  <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
+                  <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
+                  <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
+                  <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
+                  <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
+                  <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
+                </Route>
+                
+                {/* Non-wrapped routes */}
                 <Route path="/password-test" element={<PasswordTest />} />
               </Routes>
               <Toaster />

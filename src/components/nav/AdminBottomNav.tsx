@@ -8,7 +8,6 @@ export const AdminBottomNav = () => {
   const location = useLocation();
   const { t } = useLanguage();
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
-  const [prevIndicatorStyle, setPrevIndicatorStyle] = useState({ left: 0, width: 0 });
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   
   const navItems = [
@@ -27,12 +26,11 @@ export const AdminBottomNav = () => {
       if (activeIndex !== -1 && navRefs.current[activeIndex]) {
         const activeItem = navRefs.current[activeIndex];
         if (activeItem) {
-          // Save previous position for animation
-          setPrevIndicatorStyle({ ...indicatorStyle });
-          
-          // Set new position
           const { offsetLeft, offsetWidth } = activeItem;
-          setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
+          // Use requestAnimationFrame for smooth animation
+          requestAnimationFrame(() => {
+            setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
+          });
         }
       }
     };
@@ -42,8 +40,15 @@ export const AdminBottomNav = () => {
     
     // Re-calculate when window resizes
     window.addEventListener('resize', updateIndicator);
-    return () => window.removeEventListener('resize', updateIndicator);
-  }, [location.pathname]);
+    
+    // Set a short timeout to ensure DOM is fully rendered
+    const timeoutId = setTimeout(updateIndicator, 50);
+    
+    return () => {
+      window.removeEventListener('resize', updateIndicator);
+      clearTimeout(timeoutId);
+    };
+  }, [location.pathname, navItems]);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
@@ -51,7 +56,11 @@ export const AdminBottomNav = () => {
         {/* Active indicator - positioned absolutely and will slide with transitions */}
         <div 
           className="absolute top-0 h-0.5 bg-black dark:bg-white transition-all duration-300 ease-in-out"
-          style={{ left: `${indicatorStyle.left}px`, width: `${indicatorStyle.width}px` }}
+          style={{ 
+            left: `${indicatorStyle.left}px`, 
+            width: `${indicatorStyle.width}px`,
+            transform: 'translateZ(0)' // Force GPU acceleration
+          }}
         />
       </div>
       
