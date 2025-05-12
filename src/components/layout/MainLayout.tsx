@@ -1,4 +1,3 @@
-
 import { TopNav } from "@/components/TopNav";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -10,29 +9,31 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
-
 interface MainLayoutProps {
   children: React.ReactNode;
 }
-
-export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { isMobileMenuOpen, toggleMobileMenu } = useSidebar();
-  const { userProfile } = useUserProfile();
-  const { t } = useLanguage();
+export const MainLayout = ({
+  children
+}: MainLayoutProps) => {
+  const {
+    isMobileMenuOpen,
+    toggleMobileMenu
+  } = useSidebar();
+  const {
+    userProfile
+  } = useUserProfile();
+  const {
+    t
+  } = useLanguage();
   const isAdmin = userProfile?.role === 'super_admin';
   const isMobile = useIsMobile();
-
   const Navigation = () => {
-    return (
-      <nav>
+    return <nav>
         {isAdmin && <AdminNavigation toggleMobileMenu={toggleMobileMenu} />}
         <MainNavigation toggleMobileMenu={toggleMobileMenu} />
-      </nav>
-    );
+      </nav>;
   };
-
-  return (
-    <div className="relative">
+  return <div className="relative">
       {/* Sidebar - Desktop */}
       <div className="hidden md:block bg-white dark:bg-[#1c1c1e] border-r border-[#e5e7eb] dark:border-[#232325] w-72 h-screen fixed left-0 z-[1000]">
         <div className="px-8 py-6">
@@ -49,15 +50,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </div>
 
       {/* Sidebar - Mobile */}
-      <div className={`fixed inset-0 bg-black bg-opacity-50 z-[1000] transition-opacity duration-200 md:hidden ${
-        isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`} onClick={toggleMobileMenu}>
-        <div 
-          className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-[#1c1c1e] transform transition-transform duration-200 ${
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-          onClick={e => e.stopPropagation()}
-        >
+      <div className={`fixed inset-0 bg-black bg-opacity-50 z-[1000] transition-opacity duration-200 md:hidden ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleMobileMenu}>
+        <div className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-[#1c1c1e] transform transition-transform duration-200 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`} onClick={e => e.stopPropagation()}>
           <div className="px-8 py-6">
             <AuthLogo className="relative h-8" />
           </div>
@@ -77,13 +71,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         {/* Only show TopNav on desktop, on mobile it comes from MobilePersistentLayout */}
         {!isMobile && <TopNav />}
         
-        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative">
+        <main className="px-0 md:px-12 pt-0 pb-0 md:pb-12 relative">
           {children}
         </main>
       </div>
 
       {/* Only show BottomNav on desktop view. On mobile, it comes from MobilePersistentLayout */}
       {!isMobile && isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
-    </div>
-  );
+    </div>;
 };
