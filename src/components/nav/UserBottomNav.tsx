@@ -20,9 +20,9 @@ export const UserBottomNav = () => {
       <div className="grid grid-cols-5 h-full">
         <Link 
           to="/" 
-          className={`flex flex-col items-center justify-center ${
+          className={`flex flex-col items-center justify-center relative ${
             isActive('/') 
-              ? 'text-black dark:text-white font-medium' 
+              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
@@ -32,9 +32,9 @@ export const UserBottomNav = () => {
 
         <Link 
           to="/monitoring" 
-          className={`flex flex-col items-center justify-center ${
+          className={`flex flex-col items-center justify-center relative ${
             isActive('/monitoring') 
-              ? 'text-black dark:text-white font-medium' 
+              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
@@ -44,9 +44,9 @@ export const UserBottomNav = () => {
 
         <Link 
           to="/deindexing" 
-          className={`flex flex-col items-center justify-center ${
+          className={`flex flex-col items-center justify-center relative ${
             isActive('/deindexing') 
-              ? 'text-black dark:text-white font-medium' 
+              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
@@ -56,9 +56,9 @@ export const UserBottomNav = () => {
 
         <Link 
           to="/address-alerts" 
-          className={`flex flex-col items-center justify-center ${
+          className={`flex flex-col items-center justify-center relative ${
             isActive('/address-alerts') 
-              ? 'text-black dark:text-white font-medium' 
+              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
@@ -68,9 +68,9 @@ export const UserBottomNav = () => {
 
         <Link 
           to="/guides" 
-          className={`flex flex-col items-center justify-center ${
+          className={`flex flex-col items-center justify-center relative ${
             isActive('/guides') 
-              ? 'text-black dark:text-white font-medium' 
+              ? 'text-black dark:text-white font-medium before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-black dark:before:bg-white' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
           }`}
         >
