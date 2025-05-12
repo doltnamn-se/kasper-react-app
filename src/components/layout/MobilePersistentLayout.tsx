@@ -29,8 +29,8 @@ export const MobilePersistentLayout = () => {
       {/* Fixed Top Navigation */}
       <TopNav />
       
-      {/* Main Content Area (scrollable) - removed padding */}
-      <main className="pb-20 bg-white dark:bg-[#161618]">
+      {/* Main Content Area (scrollable) */}
+      <main className="px-4 pt-12 pb-20 bg-white dark:bg-[#161618]">
         <Outlet />
       </main>
       
