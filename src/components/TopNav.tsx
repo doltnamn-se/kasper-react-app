@@ -43,7 +43,7 @@ export const TopNav = () => {
     <div className={cn(
       "sticky top-0 right-0 h-16 z-[40] transition-[left] duration-200",
       isMobile ? (
-        "left-0 px-4 bg-gradient-to-b from-white to-[#f4f4f4] dark:from-[#1c1c1e] dark:to-[#161618] w-full"
+        "left-0 px-4 border-b border-[#e5e7eb] dark:border-[#232325] bg-white dark:bg-[#1c1c1e] w-full"
       ) : (
         cn(
           "bg-[#f4f4f4] dark:bg-[#161618]",
