@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,11 +10,6 @@ import { initializeVersionTracking, cleanupVersionTracking } from "@/config/vers
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
-import { UserBottomNav } from "@/components/nav/UserBottomNav";
-import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
-import { TopNav } from "@/components/TopNav";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useUserProfile } from "@/hooks/useUserProfile";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -40,26 +35,6 @@ import { AuthRoute } from "@/components/auth/AuthRoute";
 
 const queryClient = new QueryClient();
 
-// Create a PersistentLayout component that wraps content with persistent navigation
-const PersistentLayout = () => {
-  const isMobile = useIsMobile();
-  const { userProfile } = useUserProfile();
-  const isAdmin = userProfile?.role === 'super_admin';
-  const location = useLocation();
-  
-  return (
-    <div className="relative">
-      <TopNav />
-      <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200 pb-16 md:pb-0">
-        <main className="px-4 md:px-12 pt-12 relative">
-          <Outlet />
-        </main>
-      </div>
-      {isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
-    </div>
-  );
-};
-
 function App() {
   useEffect(() => {
     initializeVersionTracking();
@@ -74,6 +49,7 @@ function App() {
           console.log('Initializing push notifications...');
           await pushNotificationService.register();
         } catch (err) {
+          // Silently handle errors to prevent app crashes
           console.error('Error initializing push notifications (handled):', err);
         }
       }
@@ -88,6 +64,7 @@ function App() {
   // Hide the splash screen after the app is fully loaded and rendered
   useEffect(() => {
     const hideSplashScreen = async () => {
+      // Wait for DOM to be fully ready
       if (document.readyState === 'complete') {
         console.log('Document ready, hiding splash screen');
         setTimeout(async () => {
@@ -99,6 +76,7 @@ function App() {
           }
         }, 500);
       } else {
+        // If document not ready yet, wait for load event
         window.addEventListener('load', () => {
           console.log('Window loaded, hiding splash screen');
           setTimeout(async () => {
@@ -119,7 +97,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
-        <LanguageProvider>
+        <LanguageProvider> {/* Wrap entire app with LanguageProvider */}
           <SidebarProvider>
             <Router>
               <Routes>
@@ -136,18 +114,14 @@ function App() {
                   <Route path="version-log" element={<AdminVersionLog />} />
                 </Route>
 
-                {/* Customer routes with persistent layout */}
-                <Route element={<ProtectedRoute customerOnly><PersistentLayout /></ProtectedRoute>}>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/checklist" element={<Checklist />} />
-                  <Route path="/monitoring" element={<Monitoring />} />
-                  <Route path="/deindexing" element={<Deindexing />} />
-                  <Route path="/address-alerts" element={<AddressAlerts />} />
-                  <Route path="/guides" element={<Guides />} />
-                  <Route path="/settings" element={<Settings />} />
-                </Route>
-                
-                {/* Password test page */}
+                {/* Customer routes */}
+                <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
+                <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
+                <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
+                <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
+                <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
+                <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
                 <Route path="/password-test" element={<PasswordTest />} />
               </Routes>
               <Toaster />
