@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { SearchBar } from "./nav/SearchBar";
@@ -20,7 +20,10 @@ export const TopNav = () => {
   const { t } = useLanguage();
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
+  // Effect for search keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -39,11 +42,45 @@ export const TopNav = () => {
     };
   }, []);
 
+  // Effect for scroll behavior on mobile
+  useEffect(() => {
+    if (!isMobile) {
+      setIsVisible(true);
+      return;
+    }
+
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY <= 10) {
+        // Always show navbar at the top of the page
+        setIsVisible(true);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show navbar
+        setIsVisible(true);
+      } else {
+        // Scrolling down - hide navbar
+        setIsVisible(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+    
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY, isMobile]);
+
   return (
     <div className={cn(
-      "sticky top-0 right-0 h-16 z-[40] transition-[left] duration-200",
+      "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
       isMobile ? (
-        "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full" // Removed the border and updated background colors
+        cn(
+          "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full",
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        )
       ) : (
         cn(
           "bg-[#f4f4f4] dark:bg-[#161618]",
@@ -91,3 +128,4 @@ export const TopNav = () => {
     </div>
   );
 };
+
