@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -97,7 +98,7 @@ export const UserProfileMenu = () => {
         style={isMobile ? { 
           width: 'calc(100vw - 32px)', 
           right: '16px',
-          left: 'auto'
+          left: '16px'  // Adding left alignment to match the main content padding
         } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
