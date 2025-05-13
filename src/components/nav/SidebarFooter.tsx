@@ -38,7 +38,7 @@ export const SidebarFooter = () => {
             <span className="text-black dark:text-gray-300 font-medium">
               {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
             </span>
-            <span className="text-xs text-green-600 dark:text-green-500 -mt-0.2">
+            <span className="text-xs text-green-600 dark:text-green-500 -mt-0.5">
               {language === 'sv' ? 'Spara upp till 1 584 kr' : 'Save up to 1 584 kr'}
             </span>
           </div>
