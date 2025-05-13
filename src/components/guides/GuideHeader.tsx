@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Avatar } from "@/components/ui/avatar";
 import { useGuideData } from "@/hooks/useGuideData";
 
 interface GuideHeaderProps {
@@ -25,9 +24,11 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
   return (
     <div className="px-6 py-6">
       <div className="flex items-center gap-3 mb-4">
-        <Avatar className="h-8 w-8">
-          <img src={logoSrc} alt={`${title} logo`} className="object-cover" />
-        </Avatar>
+        <img 
+          src={logoSrc} 
+          alt={`${title} logo`} 
+          className="h-6 w-6 object-contain"
+        />
         <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{title}</h3>
       </div>
       <Button 
