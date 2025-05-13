@@ -93,10 +93,12 @@ export const UserProfileMenu = () => {
         align="end" 
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
         style={isMobile ? { 
-          width: 'calc(100vw - 24px)', 
-          marginLeft: '-50px',  // This makes the dropdown extend 50px to the left
-          right: '12px',        // Adjusting position to account for the left extension
-          left: 'auto'
+          width: '100%', 
+          maxWidth: '100%',
+          left: '0',
+          right: '0',
+          margin: '0 auto',
+          padding: '0 16px' // px-4 equivalent
         } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
