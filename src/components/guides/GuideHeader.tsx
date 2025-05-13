@@ -14,7 +14,16 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
   const { getGuideId } = useGuideData();
   
   const guideId = getGuideId(title);
-  const logoSrc = `/lovable-uploads/logo-icon-${guideId}.webp`;
+  
+  // Map guide ID to correct logo file name
+  let logoFileName = guideId;
+  if (guideId === 'hitta') {
+    logoFileName = 'hittase';
+  } else if (guideId === 'birthday') {
+    logoFileName = 'birthdayse';
+  }
+  
+  const logoSrc = `/lovable-uploads/logo-icon-${logoFileName}.webp`;
 
   const handleButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
