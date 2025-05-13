@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell } from "lucide-react";
@@ -29,7 +28,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   // Get the display name from userProfile or fall back to email
   const displayName = userProfile?.display_name || userEmail || t('profile.manage');
   
-  // Check if user is on 24-month plan
+  // Check if user is on 24-month plan - safely access the property
   const isOn24MonthPlan = userProfile?.subscription_plan === '24_months';
 
   return (
