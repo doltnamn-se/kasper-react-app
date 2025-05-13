@@ -1,6 +1,7 @@
+
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import {
@@ -48,6 +49,14 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         </DropdownMenuItem>
         
         <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
+        
+        <DropdownMenuItem 
+          onClick={() => navigate("/settings", { state: { defaultTab: "notifications" } })}
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        >
+          <Bell className="mr-3 h-4 w-4" />
+          <span className="text-black dark:text-gray-300 font-medium">{t('notifications')}</span>
+        </DropdownMenuItem>
         
         <DropdownMenuItem 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
@@ -158,3 +167,4 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
     </>
   );
 };
+
