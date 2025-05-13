@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Check } from "lucide-react";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -16,11 +16,6 @@ interface ProfileMenuItemsProps {
 export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsProps) => {
   const navigate = useNavigate();
   const { t, language, setLanguage } = useLanguage();
-
-  const toggleLanguage = () => {
-    const newLanguage = language === 'en' ? 'sv' : 'en';
-    setLanguage(newLanguage);
-  };
 
   const languages = {
     sv: { flag: '🇸🇪', label: 'Svenska' },
@@ -58,15 +53,32 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           </p>
         </div>
         <DropdownMenuItem 
-          onClick={toggleLanguage} 
+          onClick={() => setLanguage('sv')} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <span className="mr-3 h-4 w-4 flex items-center justify-center">
-            {languages[language === 'en' ? 'sv' : 'en'].flag}
+            {languages.sv.flag}
           </span>
-          <span className="text-black dark:text-gray-300 font-medium">
-            {language === 'en' ? 'Svenska' : 'English'}
+          <span className="text-black dark:text-gray-300 font-medium flex-1">
+            {languages.sv.label}
           </span>
+          {language === 'sv' && (
+            <Check className="h-4 w-4 text-green-500" />
+          )}
+        </DropdownMenuItem>
+        <DropdownMenuItem 
+          onClick={() => setLanguage('en')} 
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        >
+          <span className="mr-3 h-4 w-4 flex items-center justify-center">
+            {languages.en.flag}
+          </span>
+          <span className="text-black dark:text-gray-300 font-medium flex-1">
+            {languages.en.label}
+          </span>
+          {language === 'en' && (
+            <Check className="h-4 w-4 text-green-500" />
+          )}
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
