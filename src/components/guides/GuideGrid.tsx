@@ -92,18 +92,12 @@ export const GuideGrid = ({
     <div className="space-y-8">
       {pendingGuides.length > 0 && (
         <div>
-          <h2 className="text-xl font-bold mb-4 text-[#4c4c49] dark:text-white">
-            {language === 'sv' ? 'Att genomföra' : 'Awaiting completion'}
-          </h2>
           {renderGuideSection(pendingGuides)}
         </div>
       )}
       
       {completedGuidesList.length > 0 && (
         <div>
-          <h2 className="text-xl font-bold mb-4 text-[#4c4c49] dark:text-white">
-            {language === 'sv' ? 'Avslutade' : 'Completed'}
-          </h2>
           {renderGuideSection(completedGuidesList)}
         </div>
       )}
