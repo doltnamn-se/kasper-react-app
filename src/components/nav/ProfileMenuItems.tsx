@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon } from "lucide-react";
@@ -40,7 +39,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <div className="flex flex-col">
             <span className="text-black dark:text-gray-300 font-medium">{displayName}</span>
             {userEmail && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">{userEmail}</span>
+              <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{userEmail}</span>
             )}
           </div>
         </DropdownMenuItem>
