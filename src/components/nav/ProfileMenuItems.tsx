@@ -37,7 +37,12 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <UserCircle className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{displayName}</span>
+          <div className="flex flex-col">
+            <span className="text-black dark:text-gray-300 font-medium">{displayName}</span>
+            {userEmail && (
+              <span className="text-xs text-gray-500 dark:text-gray-400">{userEmail}</span>
+            )}
+          </div>
         </DropdownMenuItem>
         <DropdownMenuItem 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
