@@ -11,3 +11,11 @@ export function disableTextDecoration(element: HTMLElement | null) {
   if (!element) return;
   element.style.textDecoration = 'none';
 }
+
+// Prevent tap highlight on mobile elements
+export function preventTapHighlight() {
+  return {
+    WebkitTapHighlightColor: 'transparent',
+    WebkitTouchCallout: 'none'
+  };
+}

@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell, CircleFadingArrowUp } from "lucide-react";
@@ -40,6 +39,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         <DropdownMenuItem 
           onClick={() => navigate("/settings", { state: { defaultTab: "profile" } })} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <UserCircle className="mr-3 h-4 w-4 mt-1 self-start" />
           <div className="flex flex-col">
@@ -47,7 +47,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {userEmail && (
               <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{userEmail}</span>
             )}
-            <span className="text-xs mt-1 no-underline">
+            <span className="text-xs mt-1 no-underline" style={{ textDecoration: 'none', WebkitTouchCallout: 'none' }}>
               {language === 'sv' ? 'Hantera profil' : 'Manage profile'}
             </span>
           </div>
@@ -60,6 +60,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <DropdownMenuItem 
             className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d] flex flex-col items-start"
             onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <div className="flex items-center w-full">
               <CircleFadingArrowUp className="mr-3 h-4 w-4" />
