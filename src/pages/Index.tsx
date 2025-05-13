@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
@@ -15,9 +15,26 @@ const Index = () => {
   const { lastChecked } = useLastChecked();
   const { siteStatuses, isLoading } = useSiteStatuses(userProfile?.id);
   const isMobile = useIsMobile();
+  const [greetingFontSize, setGreetingFontSize] = useState("text-2xl");
 
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
+
+  // Adjust font size based on name length for mobile
+  useEffect(() => {
+    if (isMobile) {
+      const greeting = `${getTimeBasedGreeting()} ${firstNameOnly}`;
+      if (greeting.length > 20) {
+        setGreetingFontSize("text-xl");
+      } else if (greeting.length > 25) {
+        setGreetingFontSize("text-lg");
+      } else {
+        setGreetingFontSize("text-2xl");
+      }
+    } else {
+      setGreetingFontSize("text-2xl");
+    }
+  }, [firstNameOnly, isMobile, language]);
 
   // Function to get time-based greeting
   const getTimeBasedGreeting = () => {
@@ -57,7 +74,7 @@ const Index = () => {
   // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+      <h1 className={`${greetingFontSize} font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
         {`${getTimeBasedGreeting()} ${firstNameOnly} ${getGreetingEmoji()}`}
       </h1>
 
