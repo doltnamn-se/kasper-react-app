@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { URLTableRow } from "./URLTableRow";
 import { URLTableToolbar } from "./URLTableToolbar";
 import { useState } from "react";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
   ColumnFiltersState,
   SortingState,
@@ -34,6 +35,7 @@ interface URLTableProps {
 
 export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
   const { t } = useLanguage();
+  const isMobile = useBreakpoint('(max-width: 767px)');
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -98,11 +100,11 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
                 </TableHead>
               </TableRow>
               <TableRow className="border-b border-[#dfdfdf] dark:border-[#2e2e2e] h-[2.5rem]">
-                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>
-                <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>
+                {!isMobile && <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.url')}</TableHead>}
+                {!isMobile && <TableHead className="w-[20%] !px-4 h-[2.5rem] py-0">{t('deindexing.customer')}</TableHead>}
                 <TableHead className="w-[35%] !px-4 h-[2.5rem] py-0">{t('deindexing.status')}</TableHead>
                 <TableHead className="w-[15%] !px-4 h-[2.5rem] py-0">Change Status</TableHead>
-                <TableHead className="w-[10%] !px-4 h-[2.5rem] py-0">Actions</TableHead>
+                {!isMobile && <TableHead className="w-[10%] !px-4 h-[2.5rem] py-0">Actions</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -112,6 +114,7 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
                   url={row.original}
                   onStatusChange={onStatusChange}
                   onDelete={onDelete}
+                  isMobile={isMobile}
                 />
               ))}
             </TableBody>
