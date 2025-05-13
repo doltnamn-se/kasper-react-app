@@ -70,12 +70,17 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         
         {!isOn24MonthPlan && (
           <DropdownMenuItem 
-            className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+            className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d] flex flex-col items-start"
             onClick={() => window.location.href = 'https://digitaltskydd.se/paket/'}
           >
-            <CreditCard className="mr-3 h-4 w-4" />
-            <span className="text-black dark:text-gray-300 font-medium">
-              {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
+            <div className="flex items-center w-full">
+              <CreditCard className="mr-3 h-4 w-4" />
+              <span className="text-black dark:text-gray-300 font-medium">
+                {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
+              </span>
+            </div>
+            <span className="text-xs text-green-600 dark:text-green-500 ml-7 mt-0.5">
+              {language === 'sv' ? 'Spara upp till 1 584 kr' : 'Save up to 1 584 kr'}
             </span>
           </DropdownMenuItem>
         )}
