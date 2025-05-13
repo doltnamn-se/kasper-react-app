@@ -9,6 +9,7 @@ export const navigation: NavigationTranslations = {
   'nav.my.links': 'Links',
   'nav.deindexing': 'Links',
   'nav.address.alerts': 'Address Alerts',
+  'nav.address.alerts.mobile': 'Address',
   'nav.guides': 'Guides',
   'nav.settings': 'Settings',
   'nav.admin.dashboard': 'Dashboard',
