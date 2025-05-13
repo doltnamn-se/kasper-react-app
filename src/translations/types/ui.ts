@@ -176,4 +176,5 @@ export interface UITranslations {
   'appearance': string;
   'light.mode': string;
   'dark.mode': string;
+  'notification.preferences': string;
 }
