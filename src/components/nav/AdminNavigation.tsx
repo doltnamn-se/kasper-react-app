@@ -60,12 +60,12 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
 
       {renderNavLink("/admin/monitoring", 
         <UserRoundSearch className="w-[18px] h-[18px]" />, 
-        t('nav.monitoring')
+        t('nav.admin.monitoring')
       )}
 
       {renderNavLink("/admin/deindexing", 
         <EyeOff className="w-[18px] h-[18px]" />, 
-        t('nav.admin.links')
+        t('nav.admin.deindexing')
       )}
       
       <div className="py-1">

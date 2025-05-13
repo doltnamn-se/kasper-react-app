@@ -13,6 +13,8 @@ export interface NavigationTranslations {
   'nav.admin.dashboard': string;
   'nav.admin.customers': string;
   'nav.admin.links': string;
+  'nav.admin.deindexing': string; // Added this key
+  'nav.admin.monitoring': string; // Added this key
   'nav.admin.version.log': string;
   'nav.dashboard': string;
   'nav.customers': string;

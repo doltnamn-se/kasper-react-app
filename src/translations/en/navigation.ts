@@ -15,6 +15,8 @@ export const navigation: NavigationTranslations = {
   'nav.admin.dashboard': 'Dashboard',
   'nav.admin.customers': 'Customers',
   'nav.admin.links': 'Link Management',
+  'nav.admin.deindexing': 'Link Management', // Added this key
+  'nav.admin.monitoring': 'Monitoring', // Added this key
   'nav.admin.version.log': 'Version log',
   'nav.dashboard': 'Dashboard',
   'nav.customers': 'Customers',
