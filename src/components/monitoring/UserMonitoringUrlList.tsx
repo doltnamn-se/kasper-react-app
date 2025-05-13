@@ -6,7 +6,7 @@ import { ExternalLink } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface UserMonitoringUrlListProps {
