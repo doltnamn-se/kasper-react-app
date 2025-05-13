@@ -10,9 +10,7 @@ import { initializeVersionTracking, cleanupVersionTracking } from "@/config/vers
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
-import { MainLayout } from "@/components/layout/MainLayout";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -37,19 +35,6 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
 
 const queryClient = new QueryClient();
-
-// Wrapper component to choose the right layout based on device type
-const AppLayoutWrapper = ({ children }) => {
-  const isMobile = useIsMobile();
-  console.log("AppLayoutWrapper rendering, isMobile:", isMobile);
-  
-  // Always render content, but with the appropriate layout
-  return isMobile ? (
-    <MobilePersistentLayout>{children}</MobilePersistentLayout>
-  ) : (
-    <MainLayout>{children}</MainLayout>
-  );
-};
 
 function App() {
   useEffect(() => {
@@ -130,56 +115,16 @@ function App() {
                   <Route path="version-log" element={<AdminVersionLog />} />
                 </Route>
 
-                {/* User routes with responsive layout */}
-                <Route path="/" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <Index />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
-                <Route path="/checklist" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <Checklist />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
-                <Route path="/monitoring" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <Monitoring />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
-                <Route path="/deindexing" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <Deindexing />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
-                <Route path="/address-alerts" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <AddressAlerts />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
-                <Route path="/guides" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <Guides />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
-                <Route path="/settings" element={
-                  <ProtectedRoute customerOnly>
-                    <AppLayoutWrapper>
-                      <Settings />
-                    </AppLayoutWrapper>
-                  </ProtectedRoute>
-                } />
+                {/* Customer routes wrapped with MobilePersistentLayout for mobile persistence */}
+                <Route element={<MobilePersistentLayout />}>
+                  <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
+                  <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
+                  <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
+                  <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
+                  <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
+                  <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
+                  <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
+                </Route>
                 
                 {/* Non-wrapped routes */}
                 <Route path="/password-test" element={<PasswordTest />} />

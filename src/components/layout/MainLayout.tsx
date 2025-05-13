@@ -7,6 +7,9 @@ import { AdminNavigation } from "@/components/nav/AdminNavigation";
 import { MainNavigation } from "@/components/nav/MainNavigation";
 import { SidebarFooter } from "@/components/nav/SidebarFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { UserBottomNav } from "@/components/nav/UserBottomNav";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -17,8 +20,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const { userProfile } = useUserProfile();
   const { t } = useLanguage();
   const isAdmin = userProfile?.role === 'super_admin';
-
-  console.log("MainLayout rendering with userProfile:", userProfile);
+  const isMobile = useIsMobile();
 
   const Navigation = () => {
     return (
@@ -70,14 +72,18 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content with conditional navigation for desktop vs mobile */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
-        <TopNav />
+        {/* Only show TopNav on desktop, on mobile it comes from MobilePersistentLayout */}
+        {!isMobile && <TopNav />}
         
-        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative">
+        <main className={`${isMobile ? '' : 'px-4 md:px-12 pt-12 pb-20 md:pb-12'} relative`}>
           {children}
         </main>
       </div>
+
+      {/* Only show BottomNav on desktop view. On mobile, it comes from MobilePersistentLayout */}
+      {!isMobile && isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
     </div>
   );
 };

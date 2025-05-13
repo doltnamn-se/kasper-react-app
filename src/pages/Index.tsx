@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -15,8 +16,6 @@ const Index = () => {
   const { siteStatuses, isLoading } = useSiteStatuses(userProfile?.id);
   const isMobile = useIsMobile();
   const [greetingFontSize, setGreetingFontSize] = useState("text-2xl");
-
-  console.log("Index rendering with userProfile:", userProfile, "isMobile:", isMobile);
 
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
@@ -72,9 +71,9 @@ const Index = () => {
     return (hour >= 23 || hour < 5) ? "🦉" : "👋";
   };
 
-  // Create content to render
-  return (
-    <div className="space-y-6 pb-20 md:pb-0">
+  // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
+  const content = (
+    <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
       <h1 className={`${greetingFontSize} font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
         {`${getTimeBasedGreeting()} ${firstNameOnly} ${getGreetingEmoji()}`}
       </h1>
@@ -88,6 +87,10 @@ const Index = () => {
       </div>
     </div>
   );
+
+  // On mobile, render the content directly (MobilePersistentLayout will add navigation)
+  // On desktop, wrap it in MainLayout
+  return isMobile ? content : <MainLayout>{content}</MainLayout>;
 };
 
 export default Index;

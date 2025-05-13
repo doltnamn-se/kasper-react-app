@@ -5,36 +5,14 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { CircleFadingArrowUp } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 
 export const SidebarFooter = () => {
   const version = useVersionStore((state) => state.version);
   const { userProfile } = useUserProfile();
   const { language } = useLanguage();
   
-  // Fetch customer data to get the subscription plan
-  const { data: customerData } = useQuery({
-    queryKey: ['customer-subscription', userProfile?.id],
-    queryFn: async () => {
-      if (!userProfile?.id) return null;
-      const { data, error } = await supabase
-        .from('customers')
-        .select('subscription_plan')
-        .eq('id', userProfile.id)
-        .single();
-      
-      if (error) {
-        console.error('Error fetching customer:', error);
-        return null;
-      }
-      return data;
-    },
-    enabled: !!userProfile?.id
-  });
-
   // Check if user is on 24-month plan
-  const isOn24MonthPlan = customerData?.subscription_plan === '24_months';
+  const isOn24MonthPlan = userProfile?.subscription_plan === '24_months';
 
   // If the user is on the 24-month plan, show the original footer
   if (isOn24MonthPlan) {

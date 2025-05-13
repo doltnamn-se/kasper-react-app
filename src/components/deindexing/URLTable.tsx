@@ -3,7 +3,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import { useLanguage } from "@/contexts/LanguageContext";
 import { URLTableRow } from "./URLTableRow";
 import { URLTableToolbar } from "./URLTableToolbar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
   ColumnFiltersState,
@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { TablePagination } from "@/components/ui/table-pagination";
 
 interface URLTableProps {
   urls: Array<{
@@ -41,20 +40,6 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
-  
-  // Add pagination state
-  const [{ pageIndex, pageSize }, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: isMobile ? 5 : 10,
-  });
-  
-  // Update pageSize when screen size changes
-  useEffect(() => {
-    setPagination(prev => ({
-      pageIndex: prev.pageIndex,
-      pageSize: isMobile ? 5 : 10
-    }));
-  }, [isMobile]);
 
   const columns = [
     {
@@ -89,14 +74,8 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
       columnFilters,
       columnVisibility,
       globalFilter,
-      pagination: {
-        pageIndex,
-        pageSize,
-      },
     },
-    onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
-    pageCount: Math.ceil(urls.length / pageSize),
   });
 
   const handleRefresh = () => {
@@ -129,7 +108,7 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows.map((row) => (
+              {table.getFilteredRowModel().rows.map((row) => (
                 <URLTableRow
                   key={row.original.id}
                   url={row.original}
@@ -142,9 +121,6 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
           </Table>
         </div>
       </div>
-
-      {/* Add table pagination component */}
-      <TablePagination table={table} />
     </div>
   );
 };

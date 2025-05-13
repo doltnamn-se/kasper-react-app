@@ -1,34 +1,19 @@
-
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean>(false)
-  const [initialized, setInitialized] = React.useState<boolean>(false)
+  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
 
   React.useEffect(() => {
-    // Initial check function
-    const checkIsMobile = () => {
-      const width = window.innerWidth;
-      const mobileStatus = width < MOBILE_BREAKPOINT;
-      setIsMobile(mobileStatus);
-      if (!initialized) {
-        setInitialized(true);
-      }
-      console.log(`useIsMobile: width=${width}, isMobile=${mobileStatus}`);
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+    const onChange = () => {
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     }
-    
-    // Initial check (run immediately)
-    checkIsMobile();
-    
-    // Set up resize listener
-    window.addEventListener("resize", checkIsMobile);
-    
-    // Clean up
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, [initialized]);
-  
-  // Ensure we always have a value, defaulting to false for SSR
-  return typeof window !== 'undefined' ? isMobile : false;
+    mql.addEventListener("change", onChange)
+    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
+
+  return !!isMobile
 }
