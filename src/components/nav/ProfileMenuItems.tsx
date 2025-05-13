@@ -1,7 +1,8 @@
 
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -16,6 +17,7 @@ interface ProfileMenuItemsProps {
 export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsProps) => {
   const navigate = useNavigate();
   const { t, language, setLanguage } = useLanguage();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const languages = {
     sv: { flag: '🇸🇪', label: 'Svenska' },
@@ -46,7 +48,49 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <Settings className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300 font-medium">{t('profile.settings')}</span>
         </DropdownMenuItem>
+        
         <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
+        
+        <div className="px-2 py-1.5">
+          <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {t('appearance')}
+          </p>
+        </div>
+        <DropdownMenuItem 
+          onClick={() => setTheme('light')} 
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        >
+          <span className="mr-3 h-4 w-4 flex items-center justify-center">
+            <Sun className="h-4 w-4" />
+          </span>
+          <span className="text-black dark:text-gray-300 font-medium flex-1">
+            {language === 'sv' ? 'Ljust' : 'Light'}
+          </span>
+          {resolvedTheme === 'light' && (
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-normal">
+              {language === 'sv' ? 'aktiv' : 'active'}
+            </span>
+          )}
+        </DropdownMenuItem>
+        <DropdownMenuItem 
+          onClick={() => setTheme('dark')} 
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        >
+          <span className="mr-3 h-4 w-4 flex items-center justify-center">
+            <Moon className="h-4 w-4" />
+          </span>
+          <span className="text-black dark:text-gray-300 font-medium flex-1">
+            {language === 'sv' ? 'Mörkt' : 'Dark'}
+          </span>
+          {resolvedTheme === 'dark' && (
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-normal">
+              {language === 'sv' ? 'aktiv' : 'active'}
+            </span>
+          )}
+        </DropdownMenuItem>
+        
+        <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
+        
         <div className="px-2 py-1.5">
           <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'en' ? 'Language' : 'Språk'}

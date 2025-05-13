@@ -175,4 +175,7 @@ export const ui: UITranslations = {
   'url.input.placeholder': 'Enter link',
   'monitoring.add.new': 'Add new',
   'monitoring.links': 'Links',
+  'appearance': 'Appearance',
+  'light.mode': 'Light mode',
+  'dark.mode': 'Dark mode',
 };
