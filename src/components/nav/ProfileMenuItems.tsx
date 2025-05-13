@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut, Globe } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -56,9 +56,10 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           onClick={toggleLanguage} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
-          <Globe className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium flex items-center gap-2">
-            <span>{languages[language === 'en' ? 'sv' : 'en'].flag}</span>
+          <span className="mr-3 h-4 w-4 flex items-center justify-center">
+            {languages[language === 'en' ? 'sv' : 'en'].flag}
+          </span>
+          <span className="text-black dark:text-gray-300 font-medium">
             {language === 'en' ? 'Svenska' : 'English'}
           </span>
         </DropdownMenuItem>
