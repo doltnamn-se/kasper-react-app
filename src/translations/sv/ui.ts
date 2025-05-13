@@ -50,7 +50,7 @@ export const ui: UITranslations = {
   'settings.inapp.notifications.description': 'Ta emot notiser i appen',
   'settings.change.password': 'Ändra Lösenord',
   'settings.password.updated': 'Lösenord uppdaterat',
-  'settings.notification.preferences': 'Notiserinställningar',
+  'settings.notification.preferences': 'Notispreferenser',
   'settings.email.monitoring': 'Bevakning',
   'settings.email.deindexing': 'Avindexering',
   'settings.email.address.alerts': 'Adresslarm',
