@@ -80,7 +80,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           </span>
           {language === 'en' && (
             <span className="text-xs text-green-500 font-medium">
-              {language === 'sv' ? 'aktiv' : 'active'}
+              {language === 'en' ? 'active' : 'aktiv'}
             </span>
           )}
         </DropdownMenuItem>
