@@ -75,7 +75,9 @@ export const URLTableRow = ({ url, onStatusChange, onDelete, isMobile = false }:
       <TableCell className="!px-4 py-2">
         <URLStatusSelect
           currentStatus={url.status}
-          onChange={(newStatus: string) => onStatusChange(url.id, newStatus)}
+          urlId={url.id}
+          customerId={url.customer.id}
+          onStatusChange={(newStatus: string) => onStatusChange(url.id, newStatus)}
         />
       </TableCell>
       
