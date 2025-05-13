@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
@@ -24,7 +25,7 @@ export const AddressHistory = ({ history }: AddressHistoryProps) => {
 
   return (
     <div className="mt-8">
-      <h3 className="text-lg font-medium mb-4 dark:text-white">
+      <h3 className="text-[18px] font-semibold mb-4 text-[#000000] dark:text-[#FFFFFF]">
         {language === 'sv' ? 'Tidigare adresser' : 'Previous addresses'}
       </h3>
       <div className="space-y-4">

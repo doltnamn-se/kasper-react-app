@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -56,7 +57,7 @@ export const AlertsDisplay = () => {
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-      <h2 className="text-xl font-semibold mb-6 dark:text-white">
+      <h2 className="text-[18px] font-semibold mb-6 text-[#000000] dark:text-[#FFFFFF]">
         {language === 'sv' ? 'Larm' : 'Alarm'}
       </h2>
       <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium">
