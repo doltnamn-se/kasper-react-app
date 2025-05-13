@@ -1,9 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { SearchBar } from "./nav/SearchBar";
-import { ThemeToggle } from "./nav/ThemeToggle";
 import { NotificationButtons } from "./nav/NotificationButtons";
 import { UserProfileMenu } from "./nav/UserProfileMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -104,7 +102,6 @@ export const TopNav = () => {
         
         <div className="flex items-center gap-1 ml-auto">
           <TooltipProvider delayDuration={300}>
-            <ThemeToggle />
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -128,4 +125,3 @@ export const TopNav = () => {
     </div>
   );
 };
-
