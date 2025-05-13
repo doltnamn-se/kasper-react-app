@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -6,6 +7,7 @@ import { siteConfig } from "./SiteConfig";
 import { useGuideOpener } from "@/hooks/useGuideOpener";
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SiteStatus {
   site_name: string;
@@ -23,6 +25,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 }) => {
   const { language } = useLanguage();
   const { handleRemoveSite } = useGuideOpener();
+  const isMobile = useIsMobile();
 
   return (
     <Card 
@@ -33,7 +36,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       )}
     >
       <div>
-        <h2 className="text-lg font-semibold">
+        <h2 className={`text-[${isMobile ? '18px' : '20px'}] font-semibold text-[#000000] dark:text-[#FFFFFF]`}>
           {language === 'sv' ? 'Status' : 'Status'}
         </h2>
         <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-6 md:mb-10">

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePrivacyScore } from "@/hooks/usePrivacyScore";
@@ -7,10 +8,12 @@ import { useAddressData } from "@/components/address/hooks/useAddressData";
 import { Separator } from "@/components/ui/separator";
 import { ScoreDisplay } from './score-card/ScoreDisplay';
 import { ScoreItemsList } from './score-card/ScoreItemsList';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const PrivacyScoreCard = () => {
   const { calculateScore } = usePrivacyScore();
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
   const score = calculateScore();
   const { incomingUrls } = useIncomingUrls();
   const { getGuides } = useGuideData();
@@ -27,7 +30,7 @@ export const PrivacyScoreCard = () => {
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <div className="space-y-4 mb-6">
         <div>
-          <h2 className="text-lg font-semibold">
+          <h2 className={`text-[${isMobile ? '18px' : '20px'}] font-semibold text-[#000000] dark:text-[#FFFFFF]`}>
             {language === 'sv' ? 'Hur skyddad är du?' : 'How protected are you?'}
           </h2>
           <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-10">
