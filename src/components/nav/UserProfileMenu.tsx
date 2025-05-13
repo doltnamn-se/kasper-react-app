@@ -89,7 +89,18 @@ export const UserProfileMenu = () => {
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]">
+      <DropdownMenuContent 
+        align="end" 
+        className={`p-2 dark:bg-[#1c1c1e] dark:border-[#232325] ${isMobile ? 'w-[calc(100vw-2rem)] mx-4 right-0 left-0 fixed' : 'w-56'}`}
+        style={{ 
+          ...(isMobile && { 
+            position: 'fixed', 
+            top: 'calc(4rem - 1px)', // position below header with small adjustment 
+            transform: 'none',
+            maxWidth: 'none'
+          })
+        }}
+      >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
       </DropdownMenuContent>
     </DropdownMenu>
