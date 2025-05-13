@@ -22,6 +22,5 @@ export const navigation: NavigationTranslations = {
   'dark.mode': 'Dark mode',
   'light.mode': 'Light mode',
   'status': 'Status',
-  'last.seen': 'Last seen',
-  'navigation.messages': 'Messages'
+  'last.seen': 'Last seen'
 };

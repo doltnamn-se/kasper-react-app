@@ -58,7 +58,6 @@ export const ui: UITranslations = {
   'success.avatarUpdated': 'Profilbild uppdaterad',
   'success.avatarDeleted': 'Profilbild borttagen',
   'error.avatarDelete': 'Kunde inte ta bort profilbild',
-  'error.signout': 'Det gick inte att logga ut',
   'toast.copied.title': 'Kopierat',
   'toast.copied.description': 'Text kopierad till urklipp',
   'overview.welcome': 'Välkommen till din översikt',
@@ -179,5 +178,4 @@ export const ui: UITranslations = {
   'appearance': 'Utseende',
   'light.mode': 'Ljust läge',
   'dark.mode': 'Mörkt läge',
-  'back': 'Tillbaka',
 };

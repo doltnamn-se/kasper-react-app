@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -21,22 +20,11 @@ export const UserProfileMenu = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const getDisplayName = () => {
     if (!userProfile?.display_name) return userEmail;
     return userProfile.display_name;
-  };
-
-  const handleProfileClick = () => {
-    if (isMobile) {
-      // On mobile, navigate to the profile page
-      navigate('/profile');
-    } else {
-      // On desktop, toggle the dropdown
-      setIsOpen(!isOpen);
-    }
   };
 
   const handleSignOut = async () => {
@@ -72,29 +60,6 @@ export const UserProfileMenu = () => {
   const initials = getUserInitials(userProfile);
   const displayName = getDisplayName();
 
-  // For mobile, render a simple button that navigates to the profile page
-  if (isMobile) {
-    return (
-      <Button 
-        variant="ghost" 
-        className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group p-2"
-        onClick={handleProfileClick}
-      >
-        <Avatar className="h-8 w-8 shrink-0">
-          <AvatarImage 
-            src={userProfile?.avatar_url} 
-            alt={displayName}
-            className="aspect-square object-cover"
-          />
-          <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
-      </Button>
-    );
-  }
-
-  // For desktop, render the dropdown menu
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
@@ -112,9 +77,11 @@ export const UserProfileMenu = () => {
               {initials}
             </AvatarFallback>
           </Avatar>
-          <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-            {displayName}
-          </span>
+          {!isMobile && (
+            <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+              {displayName}
+            </span>
+          )}
           <ChevronDown 
             className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
               isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''

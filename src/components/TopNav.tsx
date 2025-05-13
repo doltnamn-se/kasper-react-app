@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -116,7 +117,7 @@ export const TopNav = () => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{t('navigation.messages')}</p>
+                <p>{t('messages')}</p>
               </TooltipContent>
             </Tooltip>
             <NotificationButtons />
@@ -127,3 +128,4 @@ export const TopNav = () => {
     </div>
   );
 };
+

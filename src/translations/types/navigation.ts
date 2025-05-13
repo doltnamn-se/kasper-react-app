@@ -21,5 +21,4 @@ export interface NavigationTranslations {
   'light.mode': string;
   'status': string;
   'last.seen': string;
-  'navigation.messages': string;
 }

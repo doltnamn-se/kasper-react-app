@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { TopNav } from "@/components/TopNav";
 import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
@@ -7,11 +7,7 @@ import { UserBottomNav } from "@/components/nav/UserBottomNav";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-interface MobilePersistentLayoutProps {
-  children: ReactNode; // Properly typing the children prop
-}
-
-export const MobilePersistentLayout = ({ children }: MobilePersistentLayoutProps) => {
+export const MobilePersistentLayout = () => {
   const { userProfile } = useUserProfile();
   const isAdmin = userProfile?.role === 'super_admin';
   const isMobile = useIsMobile();
@@ -25,7 +21,7 @@ export const MobilePersistentLayout = ({ children }: MobilePersistentLayoutProps
 
   // Only render persistent elements on mobile
   if (!isMobile) {
-    return <>{children}</>;
+    return <Outlet />;
   }
 
   return (
@@ -35,7 +31,7 @@ export const MobilePersistentLayout = ({ children }: MobilePersistentLayoutProps
       
       {/* Main Content Area (scrollable) */}
       <main className="px-4 pt-12 pb-20">
-        {children}
+        <Outlet />
       </main>
       
       {/* Fixed Bottom Navigation */}

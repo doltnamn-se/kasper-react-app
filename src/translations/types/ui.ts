@@ -176,6 +176,4 @@ export interface UITranslations {
   'appearance': string;
   'light.mode': string;
   'dark.mode': string;
-  'back': string;
-  'error.signout': string;
 }
