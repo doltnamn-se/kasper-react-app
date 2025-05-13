@@ -9,8 +9,11 @@ interface GuideAccordionFooterProps {
 export const GuideAccordionFooter = ({ isOpen, onAccordionChange }: GuideAccordionFooterProps) => {
   return (
     <div 
-      className="py-2 flex justify-center items-center gap-2 cursor-pointer transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-[#232325] rounded-b-[4px]"
-      onClick={onAccordionChange}
+      className="py-2 flex justify-center items-center gap-2 cursor-pointer rounded-b-[4px] z-10"
+      onClick={(e) => {
+        e.stopPropagation();
+        onAccordionChange();
+      }}
     >
       <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
       <ChevronDown 

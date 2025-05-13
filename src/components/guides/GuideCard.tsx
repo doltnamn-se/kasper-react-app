@@ -33,8 +33,9 @@ export const GuideCard = ({
   const { shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
-  // Get first step after the URL step
+  // Get steps
   const firstStep = guide.steps.length > 1 ? guide.steps[1] : null;
+  const secondStep = guide.steps.length > 2 ? guide.steps[2] : null;
 
   if (variant === 'checklist') {
     return (
@@ -56,22 +57,39 @@ export const GuideCard = ({
         <AccordionItem value={accordionId} className="border-none">
           <GuideHeader title={guide.title} url={url} />
           
-          {/* First step always shown, opacity changes based on isOpen */}
-          {firstStep && (
-            <div className="px-6 pb-3 relative">
-              <div className={`flex items-center gap-4 transition-opacity duration-200 ${
-                isOpen ? 'opacity-100' : 'opacity-50'
-              }`}>
+          {/* Preview area with gradient overlay */}
+          <div className="px-6 pb-3 relative">
+            {/* First step always shown */}
+            {firstStep && (
+              <div className="flex items-center gap-4">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
                   <span className="text-xs font-medium">1</span>
                 </div>
-                <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white truncate">
+                <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white">
                   {firstStep.text}
                 </span>
               </div>
-              
-              {/* Overlay toggle button for closed state */}
-              {!isOpen && (
+            )}
+            
+            {/* Second step with gradient overlay when closed */}
+            {secondStep && !isOpen && (
+              <div className="mt-4 relative">
+                <div className="flex items-center gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
+                    <span className="text-xs font-medium">2</span>
+                  </div>
+                  <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white truncate">
+                    {secondStep.text}
+                  </span>
+                </div>
+                
+                {/* Gradient overlay */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white dark:via-[#1c1c1e]/60 dark:to-[#1c1c1e] pointer-events-none"
+                  aria-hidden="true"
+                />
+                
+                {/* Toggle button over the second step */}
                 <div 
                   className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer"
                   onClick={() => onAccordionChange(accordionId)}
@@ -81,12 +99,12 @@ export const GuideCard = ({
                     onAccordionChange={() => onAccordionChange(accordionId)} 
                   />
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
           
           <AccordionContent>
-            {/* Show all steps except the first one (which is always visible) */}
+            {/* Show all steps except the first one when open */}
             <div className="space-y-4 px-6 pb-6">
               {guide.steps.slice(2).map((step, index) => (
                 <div key={index + 2} className="flex items-center gap-4">
