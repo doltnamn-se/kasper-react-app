@@ -92,13 +92,21 @@ export const UserProfileMenu = () => {
       <DropdownMenuContent 
         align="end" 
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
-        style={isMobile ? { 
-          width: '100%', 
-          maxWidth: '100%',
+        sideOffset={8}
+        style={isMobile ? {
+          position: 'fixed',
+          top: '64px', /* Height of the TopNav */
           left: '0',
           right: '0',
-          margin: '0 auto',
-          padding: '0 16px' // px-4 equivalent
+          width: '100vw',
+          maxWidth: '100vw',
+          transform: 'none',
+          margin: '0',
+          padding: '16px', /* px-4 equivalent */
+          borderRadius: '0',
+          borderTop: '1px solid var(--border-color, #e5e7eb)',
+          borderLeft: 'none',
+          borderRight: 'none',
         } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
