@@ -63,7 +63,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {languages.sv.label}
           </span>
           {language === 'sv' && (
-            <span className="text-xs text-green-500 font-medium">
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
               {language === 'sv' ? 'aktiv' : 'active'}
             </span>
           )}
@@ -79,7 +79,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {languages.en.label}
           </span>
           {language === 'en' && (
-            <span className="text-xs text-green-500 font-medium">
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
               {language === 'en' ? 'active' : 'aktiv'}
             </span>
           )}

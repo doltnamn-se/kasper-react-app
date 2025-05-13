@@ -45,13 +45,25 @@ export const LanguageSwitch = () => {
           onClick={() => handleLanguageChange('sv')} 
           className="flex items-center gap-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         >
-          <span>🇸🇪</span> Svenska
+          <span>🇸🇪</span> 
+          <span className="flex-1">Svenska</span>
+          {language === 'sv' && (
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+              aktiv
+            </span>
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => handleLanguageChange('en')} 
           className="flex items-center gap-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-[#2d2d2d]"
         >
-          <span>🇬🇧</span> English
+          <span>🇬🇧</span> 
+          <span className="flex-1">English</span>
+          {language === 'en' && (
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+              active
+            </span>
+          )}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
