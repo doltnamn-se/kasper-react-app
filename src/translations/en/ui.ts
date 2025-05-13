@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui = {
@@ -57,6 +58,7 @@ export const ui = {
   'success.avatarUpdated': 'Profile photo updated',
   'success.avatarDeleted': 'Profile photo deleted',
   'error.avatarDelete': 'Failed to delete profile photo',
+  'error.signout': 'Failed to sign out',
   'toast.copied.title': 'Copied',
   'toast.copied.description': 'Text copied to clipboard',
   'overview.welcome': 'Welcome to your dashboard',

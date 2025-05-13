@@ -1,182 +1,181 @@
 
-import { UITranslations } from '../types/ui';
-
-export const ui = {
-  'cancel': 'Cancel',
-  'loading': 'Loading...',
-  'success': 'Success',
-  'completed': 'Completed',
-  'pending.completion': 'Pending completion',
-  'messages': 'Messages',
-  'copy': 'Copy',
-  'display.name': 'Display Name',
-  'profile.upload.photo': 'Upload Photo',
-  'link.to.removal': 'Link to removal page',
-  'subscription.active': 'Active',
-  'subscription.1month': '1 Mo',
-  'subscription.3months': '3 Mo',
-  'subscription.6months': '6 Mo',
-  'subscription.12months': '12 Mo',
-  'subscription.24months': '24 Mo',
-  'subscription.none': 'No Plan',
-  'subscription.select': 'Select Plan',
-  'subscription.tooltip.1month': 'Monthly subscription',
-  'subscription.tooltip.3months': 'Three-month subscription',
-  'subscription.tooltip.6months': 'Six-month subscription',
-  'subscription.tooltip.12months': 'Annual subscription',
-  'subscription.tooltip.24months': 'Two-year subscription',
-  'privacy': 'Privacy Policy',
-  'license': 'License Terms',
-  'terms': 'Terms of Use',
-  'notifications': 'Notifications',
-  'notifications.title': 'Notifications',
-  'notifications.mark.all.read': 'Mark all as read',
-  'notifications.empty': 'No notifications',
-  'profile.manage': 'Manage Profile',
-  'profile.billing': 'Billing',
-  'profile.settings': 'Settings',
-  'profile.signing.out': 'Signing out...',
-  'profile.sign.out': 'Sign out',
-  'search.placeholder': 'Search...',
-  'search.customers.placeholder': 'Search name, email or UID',
-  'search.no.results': 'No results found',
-  'search.category.pages': 'Pages',
-  'search.category.settings': 'Settings',
-  'settings.success': 'Success',
-  'settings.notifications.updated': 'Notification settings updated',
-  'settings.email.notifications': 'Email Notifications',
-  'settings.email.notifications.description': 'Receive notifications via email',
-  'settings.inapp.notifications': 'App Notifications',
-  'settings.inapp.notifications.description': 'Receive notifications in the app',
-  'settings.change.password': 'Change Password',
-  'settings.password.updated': 'Password updated',
-  'settings.notification.preferences': 'Notification preferences',
-  'settings.email.monitoring': 'Monitoring',
-  'settings.email.deindexing': 'Deindexing',
-  'settings.email.address.alerts': 'Address Alerts',
-  'settings.email.news': 'News',
-  'success.avatarUpdated': 'Profile photo updated',
-  'success.avatarDeleted': 'Profile photo deleted',
-  'error.avatarDelete': 'Failed to delete profile photo',
-  'toast.copied.title': 'Copied',
-  'toast.copied.description': 'Text copied to clipboard',
-  'overview.welcome': 'Welcome to your dashboard',
-  'current.password': 'Current Password',
-  'set.password.description': 'Set a secure password for your account',
-  'profile': 'Profile',
-  'delete': 'Delete',
-  'save': 'Save',
-  'upload': 'Upload',
-  'password.updated.successfully': 'Password updated successfully',
-  'password.update.error': 'Failed to update password',
-  'total.customers': 'Customers',
-  'view.all.columns': 'All columns',
-  'toggle.columns': 'Select columns to show',
-  'add.customer': 'Add Customer',
-  'no.customers': 'No customers online',
-  'name': 'Name',
-  'email': 'Email',
-  'address': 'Address',
-  'checklist': 'Checklist',
-  'last.online': 'Last Online',
-  'plan': 'Plan',
-  'in.progress': 'In Progress',
-  'online': 'Online',
-  'offline': 'Offline',
-  'last.seen': 'Last seen: ',
-  'no.name': 'No name',
-  'no.email': 'No email',
-  'no.plan': 'No plan',
-  'search.global': 'Search...',
-  'sort.descending': 'Sort descending',
-  'sort.ascending': 'Sort ascending',
-  'account.details': 'Account Details',
-  'customer.id': 'Customer ID',
-  'created': 'Created',
-  'status': 'Status',
-  'url.submissions': 'URL Submissions',
-  'total.urls': 'Total URLs',
-  'url.count': 'Count',
-  'url.limit': 'Limit',
-  'onboarding.status': 'Onboarding Status',
-  'current.step': 'Current Step',
-  'not.available': 'N/A',
-  'urls.available': 'URLs Available',
-  'progress': 'Progress',
-  'steps': 'steps',
-  'pagination.of': 'of',
-  'pagination.pages': 'pages',
-  'pagination.next': 'Next',
-  'pagination.previous': 'Previous',
-  'pagination.page': 'Page',
-  'pagination.items.per.page': 'Items per page',
-  'pagination.total.items': 'Total items',
-  'private.customers': 'Private Customers',
-  'business.customers': 'Business Customers',
-  'subscription.period.1month': '1 month:',
-  'subscription.period.6months': '6 months:',
-  'subscription.period.12months': '12 months:',
-  'subscription.period.24months': '24 months:',
-  'online.users': 'Customers Online',
-  'link.management': 'Link Management',
-  'total.links': 'Total Links',
-  'pending.links': 'Pending Links',
-  'subscription.distribution': 'Subscription Distribution',
-  'customers': 'Customers',
-  'timerange.alltime': 'All Time',
-  'timerange.ytd': 'Year to Date',
-  'timerange.mtd': 'Month to Date',
-  'timerange.1year': '1 Year',
-  'timerange.4weeks': '4 Weeks',
-  'timerange.1week': '1 Week',
-  'version.log.title': 'Version Log',
-  'warning': 'Warning',
-  'warning.admin.notification': 'Could not notify admin about this change',
-  'notification.status.update.title': 'Link status updated',
-  'notification.status.update.message': 'The process has progressed for one or more of your links. Log in to your account to see more.',
-  'deindexing.title': 'Links',
-  'deindexing.need.more': 'Need more URLs?',
-  'unlimited': 'Unlimited',
-  'customer.type': 'Customer Type',
-  'subscription': 'Subscription',
-  'updating': 'Updating...',
-  'update': 'Update',
-  'success.email_sent': 'Email Sent',
-  'success.activation_email_sent': 'Activation email has been sent',
-  'success.updated': 'Updated',
-  'success.url_limits_updated': 'URL limits updated successfully',
-  'success.subscription_updated': 'Subscription updated successfully',
-  'success.deleted': 'Deleted',
-  'success.user_deleted': 'User has been deleted successfully',
-  'create.customer': 'Create Customer',
-  'create.customer.description': 'Add a new customer to the platform. Fill in their details below.',
-  'create.with.email': 'Create & Send Welcome Email',
-  'create.without.email': 'Create Without Email',
-  'creating': 'Creating...',
-  'address.alert': 'Address Alert',
-  'private.customer': 'Private Customer',
-  'business.client': 'Business Client',
-  'select.address.alert': 'Select address alert',
-  'select.customer.type': 'Select customer type',
-  'select.subscription.plan': 'Select subscription plan',
-  '1.month': '1 Month',
-  '3.months': '3 Months',
-  '6.months': '6 Months',
-  '12.months': '12 Months',
-  '24.months': '24 Months',
-  'mrkoll.not.checked': 'Not yet',
-  'monitoring.url.added': 'URL has been added for monitoring',
-  'monitoring.url.updated': 'URL status has been updated successfully',
-  'monitoring.url.approved': 'URL approved and moved to link management',
-  'monitoring.url.rejected': 'URL rejected',
-  'monitoring.url.error.approve': 'Failed to approve URL',
-  'monitoring.url.error.reject': 'Failed to reject URL',
-  'error': 'Error',
-  'url.input.placeholder': 'Enter link',
-  'monitoring.add.new': 'Add new',
-  'monitoring.links': 'Links',
-  'appearance': 'Appearance',
-  'light.mode': 'Light mode',
-  'dark.mode': 'Dark mode',
-  'back': 'Back',
-} as const;
+export interface UITranslations {
+  'cancel': string;
+  'loading': string;
+  'success': string;
+  'completed': string;
+  'pending.completion': string;
+  'messages': string;
+  'copy': string;
+  'display.name': string;
+  'profile.upload.photo': string;
+  'link.to.removal': string;
+  'subscription.active': string;
+  'subscription.1month': string;
+  'subscription.3months': string;
+  'subscription.6months': string;
+  'subscription.12months': string;
+  'subscription.24months': string;
+  'subscription.none': string;
+  'subscription.select': string;
+  'subscription.tooltip.1month': string;
+  'subscription.tooltip.3months': string;
+  'subscription.tooltip.6months': string;
+  'subscription.tooltip.12months': string;
+  'subscription.tooltip.24months': string;
+  'privacy': string;
+  'license': string;
+  'terms': string;
+  'notifications': string;
+  'notifications.title': string;
+  'notifications.mark.all.read': string;
+  'notifications.empty': string;
+  'profile.manage': string;
+  'profile.billing': string;
+  'profile.settings': string;
+  'profile.signing.out': string;
+  'profile.sign.out': string;
+  'search.placeholder': string;
+  'search.customers.placeholder': string;
+  'search.no.results': string;
+  'search.category.pages': string;
+  'search.category.settings': string;
+  'settings.success': string;
+  'settings.notifications.updated': string;
+  'settings.email.notifications': string;
+  'settings.email.notifications.description': string;
+  'settings.inapp.notifications': string;
+  'settings.inapp.notifications.description': string;
+  'settings.change.password': string;
+  'settings.password.updated': string;
+  'settings.notification.preferences': string;
+  'settings.email.monitoring': string;
+  'settings.email.deindexing': string;
+  'settings.email.address.alerts': string;
+  'settings.email.news': string;
+  'success.avatarUpdated': string;
+  'success.avatarDeleted': string;
+  'error.avatarDelete': string;
+  'toast.copied.title': string;
+  'toast.copied.description': string;
+  'overview.welcome': string;
+  'current.password': string;
+  'set.password.description': string;
+  'profile': string;
+  'delete': string;
+  'save': string;
+  'upload': string;
+  'password.updated.successfully': string;
+  'password.update.error': string;
+  'total.customers': string;
+  'view.all.columns': string;
+  'toggle.columns': string;
+  'add.customer': string;
+  'no.customers': string;
+  'name': string;
+  'email': string;
+  'address': string;
+  'checklist': string;
+  'last.online': string;
+  'plan': string;
+  'in.progress': string;
+  'online': string;
+  'offline': string;
+  'last.seen': string;
+  'no.name': string;
+  'no.email': string;
+  'no.plan': string;
+  'search.global': string;
+  'sort.descending': string;
+  'sort.ascending': string;
+  'account.details': string;
+  'customer.id': string;
+  'created': string;
+  'status': string;
+  'url.submissions': string;
+  'total.urls': string;
+  'url.count': string;
+  'url.limit': string;
+  'onboarding.status': string;
+  'current.step': string;
+  'not.available': string;
+  'urls.available': string;
+  'progress': string;
+  'steps': string;
+  'pagination.of': string;
+  'pagination.pages': string;
+  'pagination.next': string;
+  'pagination.previous': string;
+  'pagination.page': string;
+  'pagination.items.per.page': string;
+  'pagination.total.items': string;
+  'private.customers': string;
+  'business.customers': string;
+  'subscription.period.1month': string;
+  'subscription.period.6months': string;
+  'subscription.period.12months': string;
+  'subscription.period.24months': string;
+  'online.users': string;
+  'link.management': string;
+  'total.links': string;
+  'pending.links': string;
+  'subscription.distribution': string;
+  'customers': string;
+  'timerange.alltime': string;
+  'timerange.ytd': string;
+  'timerange.mtd': string;
+  'timerange.1year': string;
+  'timerange.4weeks': string;
+  'timerange.1week': string;
+  'version.log.title': string;
+  'warning': string;
+  'warning.admin.notification': string;
+  'notification.status.update.title': string;
+  'notification.status.update.message': string;
+  'deindexing.title': string;
+  'deindexing.need.more': string;
+  'unlimited': string;
+  'customer.type': string;
+  'subscription': string;
+  'updating': string;
+  'update': string;
+  'success.email_sent': string;
+  'success.activation_email_sent': string;
+  'success.updated': string;
+  'success.url_limits_updated': string;
+  'success.subscription_updated': string;
+  'success.deleted': string;
+  'success.user_deleted': string;
+  'create.customer': string;
+  'create.customer.description': string;
+  'create.with.email': string;
+  'create.without.email': string;
+  'creating': string;
+  'address.alert': string;
+  'private.customer': string;
+  'business.client': string;
+  'select.address.alert': string;
+  'select.customer.type': string;
+  'select.subscription.plan': string;
+  '1.month': string;
+  '3.months': string;
+  '6.months': string;
+  '12.months': string;
+  '24.months': string;
+  'mrkoll.not.checked': string;
+  'monitoring.url.added': string;
+  'monitoring.url.updated': string;
+  'monitoring.url.approved': string;
+  'monitoring.url.rejected': string;
+  'monitoring.url.error.approve': string;
+  'monitoring.url.error.reject': string;
+  'error': string;
+  'url.input.placeholder': string;
+  'monitoring.add.new': string;
+  'monitoring.links': string;
+  'appearance': string;
+  'light.mode': string;
+  'dark.mode': string;
+  'back': string;
+  'error.signout': string;
+}

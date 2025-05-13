@@ -1,22 +1,21 @@
 
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ArrowLeft } from "lucide-react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { getUserInitials } from "@/utils/profileUtils";
-import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { ProfileMenuItems } from "@/components/nav/ProfileMenuItems";
-import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-const ProfilePage = () => {
-  const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
-  const { t } = useLanguage();
+export default function ProfilePage() {
   const navigate = useNavigate();
-  
+  const { t } = useLanguage();
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const { userProfile, userEmail } = useUserProfile();
+
   const getDisplayName = () => {
     if (!userProfile?.display_name) return userEmail;
     return userProfile.display_name;
@@ -56,40 +55,48 @@ const ProfilePage = () => {
   const displayName = getDisplayName();
 
   return (
-    <MainLayout>
-      <div className="p-4">
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate(-1)} 
-          className="mb-6 pl-0 hover:bg-transparent"
-        >
-          <ArrowLeft className="h-5 w-5 mr-2" />
-          {t('back')}
-        </Button>
-        
-        <div className="flex items-center mb-6">
-          <Avatar className="h-12 w-12 mr-4">
-            <AvatarImage 
-              src={userProfile?.avatar_url} 
-              alt={displayName}
-              className="aspect-square object-cover"
-            />
-            <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <h1 className="text-xl font-bold">{displayName}</h1>
-            <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">{userEmail}</p>
-          </div>
-        </div>
-        
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-lg p-4 shadow-sm border border-[#e5e7eb] dark:border-[#232325]">
-          <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
-        </div>
+    <div className="px-4 py-6">
+      {/* Back button */}
+      <Button 
+        variant="ghost" 
+        className="mb-6 pl-0 flex items-center gap-2 text-muted-foreground hover:text-foreground"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowLeft className="h-4 w-4" />
+        {t('back')}
+      </Button>
+      
+      <div className="text-center mb-8">
+        <Avatar className="h-24 w-24 mx-auto mb-4">
+          <AvatarImage 
+            src={userProfile?.avatar_url ?? undefined} 
+            alt={displayName}
+          />
+          <AvatarFallback className="text-2xl">
+            {initials}
+          </AvatarFallback>
+        </Avatar>
+        <h1 className="text-2xl font-medium">{displayName}</h1>
+        {userEmail && <p className="text-muted-foreground">{userEmail}</p>}
       </div>
-    </MainLayout>
+      
+      <div className="space-y-4">
+        <Button 
+          variant="outline" 
+          className="w-full justify-start text-left"
+          onClick={() => navigate('/settings')}
+        >
+          {t('profile.settings')}
+        </Button>
+        <Button 
+          variant="destructive" 
+          className="w-full"
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+        >
+          {isSigningOut ? t('profile.signing.out') : t('profile.sign.out')}
+        </Button>
+      </div>
+    </div>
   );
-};
-
-export default ProfilePage;
+}

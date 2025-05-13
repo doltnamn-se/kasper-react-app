@@ -117,7 +117,7 @@ export const TopNav = () => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{t('messages')}</p>
+                <p>{t('navigation.messages')}</p>
               </TooltipContent>
             </Tooltip>
             <NotificationButtons />
@@ -128,4 +128,3 @@ export const TopNav = () => {
     </div>
   );
 };
-
