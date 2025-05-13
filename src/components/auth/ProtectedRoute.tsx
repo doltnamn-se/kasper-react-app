@@ -1,4 +1,5 @@
 
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -7,7 +8,7 @@ import { useChecklistStatus } from "@/hooks/useChecklistStatus";
 import { useCustomerPresence } from "@/components/admin/customers/useCustomerPresence";
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
   adminOnly?: boolean;
   customerOnly?: boolean;
 }

@@ -1,12 +1,12 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 interface AuthRouteProps {
-  children: React.ReactNode;
+  children: ReactNode; // Properly typing the children prop
 }
 
 export const AuthRoute = ({ children }: AuthRouteProps) => {

@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { AuthLogo } from '../auth/AuthLogo';
 
 interface AuthLayoutProps {
-  children: ReactNode;
+  children: ReactNode; // Properly typing the children prop
 }
 
 export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {

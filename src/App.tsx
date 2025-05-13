@@ -13,7 +13,7 @@ import AddressAlerts from "./pages/AddressAlerts";
 import Guides from "./pages/Guides";
 import Settings from "./pages/Settings";
 import Auth from "./pages/Auth";
-import Admin from "./pages/admin/AdminLayout"; // Fixed import
+import Admin from "./pages/admin/AdminLayout"; 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { SidebarProvider } from "./contexts/SidebarContext";
@@ -28,7 +28,7 @@ import { Privacy } from './pages/Privacy';
 import { Pricing } from './pages/Pricing'; 
 import { Support } from './pages/Support'; 
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute'; 
-import { Toaster } from 'sonner'; // Fixed import
+import { Toaster } from 'sonner';
 import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();

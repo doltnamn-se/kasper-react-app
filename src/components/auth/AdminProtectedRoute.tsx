@@ -2,17 +2,18 @@
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface AdminProtectedRouteProps {
-  children: ReactNode;
+  children: ReactNode; // Properly typing the children prop
 }
 
 export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   const { userProfile, isInitializing } = useUserProfile();
   
-  // If still loading, show nothing or a loading indicator
+  // If still loading, show loading indicator
   if (isInitializing) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return <LoadingSpinner />;
   }
   
   // If not admin, redirect to home page
