@@ -8,7 +8,7 @@ import { StatusCard } from "@/components/status/StatusCard";
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 import { useLastChecked } from "@/hooks/useLastChecked";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Owl } from "lucide-react";
+import { Moon } from "lucide-react";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -52,9 +52,14 @@ const Index = () => {
   // Function to determine which emoji to display based on time
   const getGreetingEmoji = () => {
     const hour = new Date().getHours();
-    // Use owl emoji during night hours (23:00 - 4:59)
+    // Use owl icon during night hours (23:00 - 4:59)
     if (hour >= 23 || hour < 5) {
-      return <Owl className="inline-block ml-1" size={20} />;
+      return (
+        <>
+          <span className="ml-1">🦉</span>
+          <Moon className="inline-block ml-1" size={18} />
+        </>
+      );
     } else {
       return "👋";
     }
