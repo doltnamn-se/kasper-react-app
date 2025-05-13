@@ -87,30 +87,29 @@ export const GuideCard = ({
                 </div>
               )}
               
-              {/* Stronger gradient overlay that covers both steps when closed */}
+              {/* Stronger gradient overlay that covers both steps when closed - now with improved transitions */}
               {!isOpen && (
                 <>
                   <div 
-                    className="absolute inset-0 bg-gradient-to-b from-transparent via-white/70 to-white dark:via-[#1c1c1e]/70 dark:to-[#1c1c1e] pointer-events-none"
+                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-in-out"
                     style={{ 
-                      background: 'linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1) 90%)',
-                      backgroundImage: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.9) 70%, rgba(255,255,255,1) 100%)'
+                      background: 'linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 100%)',
                     }}
                     aria-hidden="true"
                   />
                   
-                  {/* Dark mode gradient */}
+                  {/* Dark mode gradient with improved transitions */}
                   <div 
-                    className="absolute inset-0 bg-gradient-to-b pointer-events-none hidden dark:block"
+                    className="absolute inset-0 pointer-events-none hidden dark:block transition-opacity duration-300 ease-in-out"
                     style={{ 
-                      backgroundImage: 'linear-gradient(to bottom, rgba(28,28,30,0) 0%, rgba(28,28,30,0.7) 40%, rgba(28,28,30,0.9) 70%, rgba(28,28,30,1) 100%)'
+                      backgroundImage: 'linear-gradient(to bottom, rgba(28,28,30,0.4) 0%, rgba(28,28,30,0.8) 40%, rgba(28,28,30,0.95) 70%, rgba(28,28,30,1) 100%)',
                     }}
                     aria-hidden="true"
                   />
                   
                   {/* Toggle button over the gradient */}
                   <div 
-                    className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer"
+                    className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out"
                     onClick={() => onAccordionChange(accordionId)}
                   >
                     <GuideAccordionFooter 
@@ -123,7 +122,7 @@ export const GuideCard = ({
             </div>
           </div>
           
-          <AccordionContent>
+          <AccordionContent className="transition-all duration-300 ease-in-out">
             {/* Show all steps except the first one when open */}
             <div className="space-y-4 px-6 pb-6">
               {guide.steps.slice(2).map((step, index) => (
