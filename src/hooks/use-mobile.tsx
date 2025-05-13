@@ -22,5 +22,8 @@ export function useIsMobile() {
     return () => window.removeEventListener("resize", checkIsMobile)
   }, [])
 
+  // Add console log to debug
+  console.log("isMobile:", isMobile, "width:", window.innerWidth);
+  
   return isMobile
 }

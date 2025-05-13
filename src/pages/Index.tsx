@@ -17,6 +17,8 @@ const Index = () => {
   const isMobile = useIsMobile();
   const [greetingFontSize, setGreetingFontSize] = useState("text-2xl");
 
+  console.log("Index rendering with userProfile:", userProfile, "isMobile:", isMobile);
+
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
 
