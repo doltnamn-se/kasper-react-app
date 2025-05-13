@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "react-router-dom";
 import { 
   UsersRound, 
-  ChartNoAxesGantt,
+  ChartSpline,
   EyeOff,
   History,
   UserRoundSearch
@@ -49,7 +49,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
   return (
     <nav className="space-y-2">
       {renderNavLink("/admin", 
-        <ChartNoAxesGantt className="w-[18px] h-[18px]" />, 
+        <ChartSpline className="w-[18px] h-[18px]" />, 
         t('nav.admin.dashboard')
       )}
       
