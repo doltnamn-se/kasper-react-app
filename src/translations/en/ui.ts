@@ -50,7 +50,7 @@ export const ui: UITranslations = {
   'settings.inapp.notifications.description': 'Receive notifications in the app',
   'settings.change.password': 'Change Password',
   'settings.password.updated': 'Password updated',
-  'settings.notification.preferences': 'Notification Preferences',
+  'settings.notification.preferences': 'Notification preferences',
   'settings.email.monitoring': 'Monitoring',
   'settings.email.deindexing': 'Deindexing',
   'settings.email.address.alerts': 'Address Alerts',
