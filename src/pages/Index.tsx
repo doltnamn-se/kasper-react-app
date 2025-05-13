@@ -48,11 +48,17 @@ const Index = () => {
     }
   };
 
+  // Function to determine which emoji to show based on time
+  const getGreetingEmoji = () => {
+    const hour = new Date().getHours();
+    return (hour >= 23 || hour < 5) ? "🦉" : "👋";
+  };
+
   // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
       <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {`${getTimeBasedGreeting()} ${firstNameOnly} 👋`}
+        {`${getTimeBasedGreeting()} ${firstNameOnly} ${getGreetingEmoji()}`}
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
