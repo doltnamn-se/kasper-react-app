@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Home, Users, LinkIcon, UserRoundSearch } from "lucide-react";
+import { Home, UsersRound, EyeOff, UserRoundSearch } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,8 +12,8 @@ export const AdminBottomNav = () => {
 
   const navItems = [
     { path: '/admin', icon: <Home className="h-5 w-5" />, label: t('nav.admin.dashboard') },
-    { path: '/admin/customers', icon: <Users className="h-5 w-5" />, label: t('nav.admin.customers') },
-    { path: '/admin/deindexing', icon: <LinkIcon className="h-5 w-5" />, label: t('nav.admin.deindexing') },
+    { path: '/admin/customers', icon: <UsersRound className="h-5 w-5" />, label: t('nav.admin.customers') },
+    { path: '/admin/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.admin.deindexing') },
     { path: '/admin/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.admin.monitoring') }
   ];
 
