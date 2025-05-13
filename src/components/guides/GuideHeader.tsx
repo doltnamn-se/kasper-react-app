@@ -41,7 +41,7 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
         <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{title}</h3>
       </div>
       <Button 
-        className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2 rounded-full py-2 h-8"
+        className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2 rounded-full py-2 h-9"
         onClick={handleButtonClick}
       >
         {t('link.remove')}
