@@ -30,7 +30,6 @@ export const LanguageSwitch = () => {
           size="sm"
           className="flex items-center gap-2 px-2"
         >
-          <span>{languages[language].flag}</span>
           <span className="text-sm text-black dark:text-gray-300">
             {languages[language].label}
           </span>
