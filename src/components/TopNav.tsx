@@ -102,7 +102,7 @@ export const TopNav = () => {
           <SearchBar />
         </div>
         
-        <div className="flex items-center gap-1 ml-auto pr-4">
+        <div className="flex items-center gap-1 ml-auto">
           <TooltipProvider delayDuration={300}>
             <ThemeToggle />
             <Tooltip>
