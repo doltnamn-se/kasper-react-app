@@ -59,48 +59,68 @@ export const GuideCard = ({
           
           {/* Preview area with gradient overlay */}
           <div className="px-6 pb-3 relative">
-            {/* First step always shown */}
-            {firstStep && (
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
-                  <span className="text-xs font-medium">1</span>
-                </div>
-                <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white">
-                  {firstStep.text}
-                </span>
-              </div>
-            )}
-            
-            {/* Second step with gradient overlay when closed */}
-            {secondStep && !isOpen && (
-              <div className="mt-4 relative">
+            {/* First step and second step container with shared gradient */}
+            <div className="relative">
+              {/* First step */}
+              {firstStep && (
                 <div className="flex items-center gap-4">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
-                    <span className="text-xs font-medium">2</span>
+                    <span className="text-xs font-medium">1</span>
                   </div>
-                  <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white truncate">
-                    {secondStep.text}
+                  <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white">
+                    {firstStep.text}
                   </span>
                 </div>
-                
-                {/* Gradient overlay */}
-                <div 
-                  className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white dark:via-[#1c1c1e]/60 dark:to-[#1c1c1e] pointer-events-none"
-                  aria-hidden="true"
-                />
-                
-                {/* Toggle button over the second step */}
-                <div 
-                  className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer"
-                  onClick={() => onAccordionChange(accordionId)}
-                >
-                  <GuideAccordionFooter 
-                    isOpen={isOpen} 
-                    onAccordionChange={() => onAccordionChange(accordionId)} 
-                  />
+              )}
+              
+              {/* Second step */}
+              {secondStep && !isOpen && (
+                <div className="mt-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
+                      <span className="text-xs font-medium">2</span>
+                    </div>
+                    <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white truncate">
+                      {secondStep.text}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              
+              {/* Stronger gradient overlay that covers both steps when closed */}
+              {!isOpen && (
+                <>
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-b from-transparent via-white/70 to-white dark:via-[#1c1c1e]/70 dark:to-[#1c1c1e] pointer-events-none"
+                    style={{ 
+                      background: 'linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1) 90%)',
+                      backgroundImage: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.9) 70%, rgba(255,255,255,1) 100%)'
+                    }}
+                    aria-hidden="true"
+                  />
+                  
+                  {/* Dark mode gradient */}
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-b pointer-events-none hidden dark:block"
+                    style={{ 
+                      backgroundImage: 'linear-gradient(to bottom, rgba(28,28,30,0) 0%, rgba(28,28,30,0.7) 40%, rgba(28,28,30,0.9) 70%, rgba(28,28,30,1) 100%)'
+                    }}
+                    aria-hidden="true"
+                  />
+                  
+                  {/* Toggle button over the gradient */}
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer"
+                    onClick={() => onAccordionChange(accordionId)}
+                  >
+                    <GuideAccordionFooter 
+                      isOpen={isOpen} 
+                      onAccordionChange={() => onAccordionChange(accordionId)} 
+                    />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
           
           <AccordionContent>
