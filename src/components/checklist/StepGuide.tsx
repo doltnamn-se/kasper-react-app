@@ -1,9 +1,8 @@
+
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { GuideCard } from "@/components/guides/GuideCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 
 interface StepGuideProps {
   currentStep: number;
@@ -21,8 +20,6 @@ export const StepGuide = ({
   onGuideComplete
 }: StepGuideProps) => {
   const { t, language } = useLanguage();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set());
 
   const handleAccordionChange = (accordionId: string) => {
@@ -35,26 +32,6 @@ export const StepGuide = ({
       }
       return newSet;
     });
-  };
-
-  const handleComplete = async () => {
-    setIsLoading(true);
-    try {
-      await onGuideComplete(siteId);
-      toast({
-        title: t('success'),
-        description: t('guide.completed'),
-      });
-    } catch (error) {
-      console.error('Error completing guide:', error);
-      toast({
-        variant: "destructive",
-        title: t('error'),
-        description: t('guide.completion.error'),
-      });
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   if (!guide) return null;
@@ -73,16 +50,7 @@ export const StepGuide = ({
         isOpen={openAccordions.has(accordionId)}
         onAccordionChange={handleAccordionChange}
       />
-      <Button
-        onClick={handleComplete}
-        disabled={isGuideCompleted || isLoading}
-        className="w-full xl:w-1/4 lg:w-1/2"
-      >
-        {isLoading ? t('saving') :
-          isGuideCompleted ? 
-            (language === 'sv' ? 'Klart' : 'Completed') : 
-            (language === 'sv' ? 'Markera som klar' : 'Mark as completed')}
-      </Button>
+      {/* Removed "Mark as completed" button */}
     </div>
   );
 };

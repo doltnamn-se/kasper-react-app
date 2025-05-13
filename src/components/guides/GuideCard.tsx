@@ -1,8 +1,8 @@
+
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion";
 import { GuideHeader } from "./GuideHeader";
 import { GuideSteps } from "./GuideSteps";
-import { GuideToggle } from "./GuideToggle";
 import { GuideAccordionFooter } from "./GuideAccordionFooter";
 
 interface GuideStep {
@@ -34,7 +34,7 @@ export const GuideCard = ({
   if (variant === 'checklist') {
     return (
       <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] relative">
-        <GuideToggle guideTitle={guide.title} isCompleted={isCompleted} />
+        {/* GuideToggle removed */}
         <GuideHeader title={guide.title} url={url} />
         <GuideSteps steps={guide.steps} guideTitle={guide.title} />
       </div>
@@ -43,7 +43,7 @@ export const GuideCard = ({
 
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
-      <GuideToggle guideTitle={guide.title} isCompleted={isCompleted} />
+      {/* GuideToggle removed */}
       <Accordion 
         type="single" 
         collapsible
