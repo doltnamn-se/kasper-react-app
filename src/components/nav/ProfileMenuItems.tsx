@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell, CircleFadingArrowUp } from "lucide-react";
@@ -71,7 +72,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         {!isOn24MonthPlan && (
           <DropdownMenuItem 
             className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d] flex flex-col items-start"
-            onClick={() => window.location.href = 'https://digitaltskydd.se/paket/'}
+            onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
           >
             <div className="flex items-center w-full">
               <CircleFadingArrowUp className="mr-3 h-4 w-4" />
