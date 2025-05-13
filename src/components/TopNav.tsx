@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -6,7 +5,7 @@ import { SearchBar } from "./nav/SearchBar";
 import { NotificationButtons } from "./nav/NotificationButtons";
 import { UserProfileMenu } from "./nav/UserProfileMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MessageSquare } from "lucide-react";
+import { MessageSquareText } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -112,7 +111,7 @@ export const TopNav = () => {
                   className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
                   onClick={() => window.open("https://digitaltskydd.se/support/", "_blank")}
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquareText className="w-4 h-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -127,4 +126,3 @@ export const TopNav = () => {
     </div>
   );
 };
-
