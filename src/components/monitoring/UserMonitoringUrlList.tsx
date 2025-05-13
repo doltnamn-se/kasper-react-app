@@ -82,7 +82,7 @@ export const UserMonitoringUrlList = ({
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-      <h2 className="text-lg font-medium mb-6">
+      <h2 className="text-lg font-semibold font-weight-600 text-[#000000] dark:text-[#FFFFFF] mb-6">
         {language === 'sv' ? 'Nya länkar att granska' : 'New links to review'}
       </h2>
       
