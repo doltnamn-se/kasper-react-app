@@ -63,7 +63,7 @@ export const GuideGrid = ({
         <div className="flex flex-col gap-4">
           {leftColumnGuides.map((guide, index) => (
             <GuideCard
-              key={`${guide.title}-${currentCompletedGuides.includes(getGuideId(guide.title))}`}
+              key={`${guide.title}-${index}`}
               guide={guide}
               accordionId={`left-${index}`}
               isOpen={openAccordions.has(`left-${index}`)}
@@ -75,7 +75,7 @@ export const GuideGrid = ({
         <div className="flex flex-col gap-4">
           {rightColumnGuides.map((guide, index) => (
             <GuideCard
-              key={`${guide.title}-${currentCompletedGuides.includes(getGuideId(guide.title))}`}
+              key={`${guide.title}-${index}`}
               guide={guide}
               accordionId={`right-${index}`}
               isOpen={openAccordions.has(`right-${index}`)}
@@ -90,17 +90,9 @@ export const GuideGrid = ({
 
   return (
     <div className="space-y-8">
-      {pendingGuides.length > 0 && (
-        <div>
-          {renderGuideSection(pendingGuides)}
-        </div>
-      )}
-      
-      {completedGuidesList.length > 0 && (
-        <div>
-          {renderGuideSection(completedGuidesList)}
-        </div>
-      )}
+      <div>
+        {renderGuideSection(guides)}
+      </div>
     </div>
   );
 };
