@@ -32,21 +32,23 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
 
   return (
     <div className="px-6 py-6">
-      <div className="flex items-center gap-3 mb-4">
-        <img 
-          src={logoSrc} 
-          alt={`${title} logo`} 
-          className="h-6 w-6 object-contain"
-        />
-        <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <img 
+            src={logoSrc} 
+            alt={`${title} logo`} 
+            className="h-6 w-6 object-contain"
+          />
+          <h3 className="text-lg font-semibold text-[#000000] dark:text-white">{title}</h3>
+        </div>
+        <Button 
+          className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2 rounded-full py-2 h-9"
+          onClick={handleButtonClick}
+        >
+          {t('link.remove')}
+          <ArrowRight className="h-2 w-2 -rotate-45" />
+        </Button>
       </div>
-      <Button 
-        className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2 rounded-full py-2 h-9"
-        onClick={handleButtonClick}
-      >
-        {t('link.remove')}
-        <ArrowRight className="h-2 w-2 -rotate-45" />
-      </Button>
     </div>
   );
 };
