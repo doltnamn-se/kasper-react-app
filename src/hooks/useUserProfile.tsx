@@ -34,8 +34,11 @@ export const useUserProfile = () => {
       setIsInitializing(false);
       return data;
     },
-    onSettled: () => {
-      setIsInitializing(false);
+    // Replace onSettled with meta.onSettled, which is the correct property
+    meta: {
+      onSettled: () => {
+        setIsInitializing(false);
+      }
     }
   });
 

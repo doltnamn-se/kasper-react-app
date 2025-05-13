@@ -9,6 +9,8 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileMenuItemsProps {
   onSignOut: () => void;
@@ -22,6 +24,26 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   const { userProfile, userEmail } = useUserProfile();
   const isMobile = useIsMobile();
 
+  // Fetch customer data separately to get subscription_plan
+  const { data: customerData } = useQuery({
+    queryKey: ['customer', userProfile?.id],
+    queryFn: async () => {
+      if (!userProfile?.id) return null;
+      const { data, error } = await supabase
+        .from('customers')
+        .select('subscription_plan')
+        .eq('id', userProfile.id)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching customer:', error);
+        return null;
+      }
+      return data;
+    },
+    enabled: !!userProfile?.id
+  });
+  
   const languages = {
     sv: { flag: '🇸🇪', label: 'Svenska' },
     en: { flag: '🇬🇧', label: 'English' }
@@ -30,8 +52,8 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   // Get the display name from userProfile or fall back to email
   const displayName = userProfile?.display_name || userEmail || t('profile.manage');
   
-  // Check if user is on 24-month plan - safely access the property
-  const isOn24MonthPlan = userProfile?.subscription_plan === '24_months';
+  // Check if user is on 24-month plan - safely access the property from customerData
+  const isOn24MonthPlan = customerData?.subscription_plan === '24_months';
 
   return (
     <>
