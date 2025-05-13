@@ -1,7 +1,6 @@
-
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell, CircleFadingArrowUp } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell, CircleFadingArrowUp, MessageSquareText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import {
@@ -75,16 +74,16 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           </DropdownMenuItem>
         )}
         
-        {/* SWAPPED: Notifications now comes before Billing */}
+        {/* REPLACED: Notifications replaced with Support */}
         <DropdownMenuItem 
-          onClick={() => navigate("/settings", { state: { defaultTab: "notifications" } })}
+          onClick={() => window.open("https://digitaltskydd.se/support/", "_blank")}
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
-          <Bell className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('notifications')}</span>
+          <MessageSquareText className="mr-3 h-4 w-4" />
+          <span className="text-black dark:text-gray-300 font-medium">{language === 'sv' ? 'Support' : 'Support'}</span>
         </DropdownMenuItem>
         
-        {/* SWAPPED: Billing now comes after Notifications */}
+        {/* SWAPPED: Billing now comes after Support */}
         <DropdownMenuItem 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
           onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}

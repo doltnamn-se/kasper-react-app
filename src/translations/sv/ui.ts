@@ -8,6 +8,7 @@ export const ui: UITranslations = {
   'completed': 'Slutförd',
   'pending.completion': 'Väntar på slutförande',
   'messages': 'Meddelanden',
+  'support': 'Support',
   'copy': 'Kopiera',
   'display.name': 'Namn',
   'profile.upload.photo': 'Ladda upp foto',

@@ -6,6 +6,7 @@ export interface UITranslations {
   'completed': string;
   'pending.completion': string;
   'messages': string;
+  'support': string;
   'copy': string;
   'display.name': string;
   'profile.upload.photo': string;

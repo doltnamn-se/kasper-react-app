@@ -8,6 +8,7 @@ export const ui: UITranslations = {
   'completed': 'Completed',
   'pending.completion': 'Pending completion',
   'messages': 'Messages',
+  'support': 'Support',
   'copy': 'Copy',
   'display.name': 'Display Name',
   'profile.upload.photo': 'Upload Photo',
