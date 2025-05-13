@@ -8,7 +8,6 @@ import { StatusCard } from "@/components/status/StatusCard";
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 import { useLastChecked } from "@/hooks/useLastChecked";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Moon } from "lucide-react";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -49,27 +48,11 @@ const Index = () => {
     }
   };
 
-  // Function to determine which emoji to display based on time
-  const getGreetingEmoji = () => {
-    const hour = new Date().getHours();
-    // Use owl icon during night hours (23:00 - 4:59)
-    if (hour >= 23 || hour < 5) {
-      return (
-        <>
-          <span className="ml-1">🦉</span>
-          <Moon className="inline-block ml-1" size={18} />
-        </>
-      );
-    } else {
-      return "👋";
-    }
-  };
-
   // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
       <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-        {`${getTimeBasedGreeting()} ${firstNameOnly} `}{getGreetingEmoji()}
+        {`${getTimeBasedGreeting()} ${firstNameOnly} 👋`}
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
