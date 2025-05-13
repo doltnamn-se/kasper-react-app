@@ -73,9 +73,9 @@ const Index = () => {
     return (hour >= 23 || hour < 5) ? "🦉" : "👋";
   };
 
-  // Create content that both mobile and desktop will render
-  const content = (
-    <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
+  // Create content to render
+  return (
+    <div className="space-y-6 pb-20 md:pb-0">
       <h1 className={`${greetingFontSize} font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
         {`${getTimeBasedGreeting()} ${firstNameOnly} ${getGreetingEmoji()}`}
       </h1>
@@ -89,10 +89,6 @@ const Index = () => {
       </div>
     </div>
   );
-
-  // On mobile, the MobilePersistentLayout wraps this component
-  // On desktop, we need to wrap with MainLayout
-  return isMobile ? content : <MainLayout>{content}</MainLayout>;
 };
 
 export default Index;

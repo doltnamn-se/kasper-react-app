@@ -11,6 +11,7 @@ import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -33,6 +34,7 @@ import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const queryClient = new QueryClient();
 
@@ -115,7 +117,7 @@ function App() {
                   <Route path="version-log" element={<AdminVersionLog />} />
                 </Route>
 
-                {/* Customer routes wrapped with MobilePersistentLayout for mobile persistence */}
+                {/* Mobile routes with persistent layout */}
                 <Route element={<MobilePersistentLayout />}>
                   <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
                   <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
