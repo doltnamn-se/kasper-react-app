@@ -19,9 +19,12 @@ export const MobilePersistentLayout = () => {
     setPathChanged(prev => prev + 1);
   }, [location.pathname]);
 
-  // Remove this conditional that prevents content from rendering on mobile
-  // We still want the mobile layout even if isMobile is true
+  // On desktop, just render the children directly without the mobile chrome
+  if (!isMobile) {
+    return <Outlet />;
+  }
 
+  // On mobile, render with mobile-specific navigation
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] pb-16">
       {/* Fixed Top Navigation */}

@@ -74,16 +74,15 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
       {/* Main Content with conditional navigation for desktop vs mobile */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
-        {/* Only show TopNav on desktop, on mobile it comes from MobilePersistentLayout */}
+        {/* Only show TopNav on desktop */}
         {!isMobile && <TopNav />}
         
-        <main className={`${isMobile ? '' : 'px-4 md:px-12 pt-12 pb-20 md:pb-12'} relative`}>
+        <main className="px-4 md:px-12 pt-12 pb-20 md:pb-12 relative">
           {children}
         </main>
       </div>
 
-      {/* Only show BottomNav on desktop view. On mobile, it comes from MobilePersistentLayout */}
-      {!isMobile && isMobile && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
+      {/* Bottom Nav should NOT appear here - it's in MobilePersistentLayout for mobile */}
     </div>
   );
 };

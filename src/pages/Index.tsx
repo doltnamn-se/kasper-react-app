@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -70,7 +71,7 @@ const Index = () => {
     return (hour >= 23 || hour < 5) ? "🦉" : "👋";
   };
 
-  // Create content that will be rendered regardless of mobile/desktop
+  // Create content that both mobile and desktop will render
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
       <h1 className={`${greetingFontSize} font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
@@ -87,8 +88,8 @@ const Index = () => {
     </div>
   );
 
-  // On mobile, render the content directly (MobilePersistentLayout will add navigation)
-  // On desktop, wrap it in MainLayout
+  // On mobile, the MobilePersistentLayout wraps this component
+  // On desktop, we need to wrap with MainLayout
   return isMobile ? content : <MainLayout>{content}</MainLayout>;
 };
 
