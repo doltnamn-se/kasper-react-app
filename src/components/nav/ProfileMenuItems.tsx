@@ -1,6 +1,7 @@
+
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Globe } from "lucide-react";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -14,7 +15,12 @@ interface ProfileMenuItemsProps {
 
 export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsProps) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
+
+  const toggleLanguage = () => {
+    const newLanguage = language === 'en' ? 'sv' : 'en';
+    setLanguage(newLanguage);
+  };
 
   return (
     <>
@@ -39,6 +45,15 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         >
           <Settings className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300 font-medium">{t('profile.settings')}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem 
+          onClick={toggleLanguage} 
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        >
+          <Globe className="mr-3 h-4 w-4" />
+          <span className="text-black dark:text-gray-300 font-medium">
+            {language === 'en' ? 'Svenska' : 'English'}
+          </span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
