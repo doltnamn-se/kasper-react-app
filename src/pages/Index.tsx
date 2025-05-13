@@ -24,8 +24,8 @@ const Index = () => {
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
       <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
         {language === 'sv' ? 
-          `Välkommen, ${firstNameOnly} 👋` : 
-          `Welcome, ${firstNameOnly} 👋`
+          `Hej ${firstNameOnly} 👋` : 
+          `Hi ${firstNameOnly} 👋`
         }
       </h1>
 
