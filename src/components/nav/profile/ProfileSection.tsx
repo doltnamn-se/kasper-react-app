@@ -1,8 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
-import { getUserInitials } from "@/utils/profileUtils";
 import {
   Tooltip,
   TooltipContent,
@@ -57,26 +56,15 @@ export const ProfileSection = () => {
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-12 w-12">
-            <AvatarImage 
-              src={userProfile?.avatar_url} 
-              className="aspect-square object-cover"
-            />
-            <AvatarFallback className="bg-[#e8e8e8] dark:bg-[#303032] text-[#5e5e5e] dark:text-[#FFFFFFA6]">
-              {getUserInitials(userProfile)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
+        <div className="flex flex-col">
+          <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
+            {firstName}
+          </span>
+          {lastName && (
             <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-              {firstName}
+              {lastName}
             </span>
-            {lastName && (
-              <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-                {lastName}
-              </span>
-            )}
-          </div>
+          )}
         </div>
         <TooltipProvider delayDuration={300}>
           <Tooltip>
