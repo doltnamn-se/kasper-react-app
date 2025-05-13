@@ -19,10 +19,8 @@ export const MobilePersistentLayout = () => {
     setPathChanged(prev => prev + 1);
   }, [location.pathname]);
 
-  // Only render persistent elements on mobile
-  if (!isMobile) {
-    return <Outlet />;
-  }
+  // Remove this conditional that prevents content from rendering on mobile
+  // We still want the mobile layout even if isMobile is true
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] pb-16">

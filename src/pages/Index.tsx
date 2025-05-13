@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -71,7 +70,7 @@ const Index = () => {
     return (hour >= 23 || hour < 5) ? "🦉" : "👋";
   };
 
-  // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
+  // Create content that will be rendered regardless of mobile/desktop
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
       <h1 className={`${greetingFontSize} font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
