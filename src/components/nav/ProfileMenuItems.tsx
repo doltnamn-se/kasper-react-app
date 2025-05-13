@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -18,11 +19,15 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   const navigate = useNavigate();
   const { t, language, setLanguage } = useLanguage();
   const { setTheme, resolvedTheme } = useTheme();
+  const { userProfile, userEmail } = useUserProfile();
 
   const languages = {
     sv: { flag: '🇸🇪', label: 'Svenska' },
     en: { flag: '🇬🇧', label: 'English' }
   };
+  
+  // Get the display name from userProfile or fall back to email
+  const displayName = userProfile?.display_name || userEmail || t('profile.manage');
 
   return (
     <>
@@ -32,7 +37,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <UserCircle className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.manage')}</span>
+          <span className="text-black dark:text-gray-300 font-medium">{displayName}</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
