@@ -67,18 +67,16 @@ export const UserProfileMenu = () => {
           variant="ghost" 
           className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent ml-2 group p-2"
         >
-          {isMobile && (
-            <Avatar className="h-8 w-8 shrink-0">
-              <AvatarImage 
-                src={userProfile?.avatar_url} 
-                alt={displayName}
-                className="aspect-square object-cover"
-              />
-              <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-          )}
+          <Avatar className="h-8 w-8 shrink-0">
+            <AvatarImage 
+              src={userProfile?.avatar_url} 
+              alt={displayName}
+              className="aspect-square object-cover"
+            />
+            <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
           {!isMobile && (
             <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
               {displayName}
