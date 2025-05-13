@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -93,9 +94,8 @@ export const UserProfileMenu = () => {
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
         style={isMobile ? { 
           width: 'calc(100vw - 24px)', 
-          marginLeft: '-10px',  
           right: '12px',        
-          left: '12px'  // Changed from 'auto' to '12px'
+          left: '12px'  
         } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
