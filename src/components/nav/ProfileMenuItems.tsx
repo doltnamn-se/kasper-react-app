@@ -53,22 +53,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         
         <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
         
-        <DropdownMenuItem 
-          onClick={() => navigate("/settings", { state: { defaultTab: "notifications" } })}
-          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
-        >
-          <Bell className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('notifications')}</span>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem 
-          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
-          onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
-        >
-          <CreditCard className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
-        </DropdownMenuItem>
-        
+        {/* SWAPPED POSITIONS: Plan change button first */}
         {!isOn24MonthPlan && (
           <DropdownMenuItem 
             className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d] flex flex-col items-start"
@@ -85,6 +70,23 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             </span>
           </DropdownMenuItem>
         )}
+        
+        {/* SWAPPED POSITIONS: Notifications button second */}
+        <DropdownMenuItem 
+          onClick={() => navigate("/settings", { state: { defaultTab: "notifications" } })}
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+        >
+          <Bell className="mr-3 h-4 w-4" />
+          <span className="text-black dark:text-gray-300 font-medium">{t('notifications')}</span>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem 
+          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+          onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
+        >
+          <CreditCard className="mr-3 h-4 w-4" />
+          <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
+        </DropdownMenuItem>
         
         <DropdownMenuItem 
           onClick={() => navigate("/settings")} 
