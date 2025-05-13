@@ -9,7 +9,7 @@ export const navigation: NavigationTranslations = {
   'nav.my.links': 'Länkar',
   'nav.deindexing': 'Länkar',
   'nav.address.alerts': 'Adresslarm',
-  'nav.address.alerts.mobile': 'Adresser',
+  'nav.address.alerts.mobile': 'Adresslarm',
   'nav.guides': 'Guider',
   'nav.settings': 'Inställningar',
   'nav.admin.dashboard': 'Översikt',
