@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProfileMenuItemsProps {
   onSignOut: () => void;
@@ -20,6 +21,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   const { t, language, setLanguage } = useLanguage();
   const { setTheme, resolvedTheme } = useTheme();
   const { userProfile, userEmail } = useUserProfile();
+  const isMobile = useIsMobile();
 
   const languages = {
     sv: { flag: '🇸🇪', label: 'Svenska' },
@@ -45,7 +47,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {userEmail && (
               <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{userEmail}</span>
             )}
-            <span className="text-xs underline mt-1">
+            <span className="text-xs mt-1 no-underline">
               {language === 'sv' ? 'Hantera profil' : 'Manage profile'}
             </span>
           </div>
