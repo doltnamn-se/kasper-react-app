@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell, CircleFadingArrowUp } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import {
@@ -74,7 +74,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             onClick={() => window.location.href = 'https://digitaltskydd.se/paket/'}
           >
             <div className="flex items-center w-full">
-              <CreditCard className="mr-3 h-4 w-4" />
+              <CircleFadingArrowUp className="mr-3 h-4 w-4" />
               <span className="text-black dark:text-gray-300 font-medium">
                 {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
               </span>
