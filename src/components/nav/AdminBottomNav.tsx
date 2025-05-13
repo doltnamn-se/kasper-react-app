@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, EyeOff, History, MonitorSmartphone } from "lucide-react";
+import { Home, Users, LinkIcon, UserRoundSearch } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,16 +9,20 @@ export const AdminBottomNav = () => {
   const { t } = useLanguage();
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  
+
   const navItems = [
-    { path: '/admin', icon: <LayoutDashboard className="h-5 w-5" />, label: t('nav.dashboard') },
-    { path: '/admin/customers', icon: <Users className="h-5 w-5" />, label: t('nav.customers') },
-    { path: '/admin/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.links') },
-    { path: '/admin/monitoring', icon: <MonitorSmartphone className="h-5 w-5" />, label: t('nav.monitoring') },
-    { path: '/admin/version-log', icon: <History className="h-5 w-5" />, label: t('nav.version.log') }
+    { path: '/admin', icon: <Home className="h-5 w-5" />, label: t('nav.admin.dashboard') },
+    { path: '/admin/customers', icon: <Users className="h-5 w-5" />, label: t('nav.admin.customers') },
+    { path: '/admin/deindexing', icon: <LinkIcon className="h-5 w-5" />, label: t('nav.admin.deindexing') },
+    { path: '/admin/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.admin.monitoring') }
   ];
-  
-  const isActive = (path: string) => location.pathname === path;
+
+  const isActive = (path: string) => {
+    if (path === '/admin') {
+      return location.pathname === '/admin';
+    }
+    return location.pathname.startsWith(path);
+  };
 
   useEffect(() => {
     const updateIndicator = () => {
@@ -51,7 +55,7 @@ export const AdminBottomNav = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
+    <div className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
       <div className="relative">
         {/* Active indicator - positioned absolutely and will slide with transitions */}
         <div 
@@ -64,13 +68,13 @@ export const AdminBottomNav = () => {
         />
       </div>
       
-      <div className="grid grid-cols-5 h-full">
+      <div className="grid grid-cols-4 h-full">
         {navItems.map((item, index) => (
           <Link 
             key={item.path}
             to={item.path} 
             ref={el => navRefs.current[index] = el}
-            className={`flex flex-col items-center justify-center ${
+            className={`flex flex-col items-center justify-center pb-3 ${
               isActive(item.path) 
                 ? 'text-black dark:text-white font-medium' 
                 : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
