@@ -28,6 +28,9 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   
   // Get the display name from userProfile or fall back to email
   const displayName = userProfile?.display_name || userEmail || t('profile.manage');
+  
+  // Check if user is on 24-month plan
+  const isOn24MonthPlan = userProfile?.subscription_plan === '24_months';
 
   return (
     <>
@@ -65,6 +68,19 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <CreditCard className="mr-3 h-4 w-4" />
           <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
         </DropdownMenuItem>
+        
+        {!isOn24MonthPlan && (
+          <DropdownMenuItem 
+            className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+            onClick={() => window.location.href = 'https://digitaltskydd.se/paket/'}
+          >
+            <CreditCard className="mr-3 h-4 w-4" />
+            <span className="text-black dark:text-gray-300 font-medium">
+              {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
+            </span>
+          </DropdownMenuItem>
+        )}
+        
         <DropdownMenuItem 
           onClick={() => navigate("/settings")} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
@@ -167,4 +183,3 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
     </>
   );
 };
-
