@@ -94,8 +94,8 @@ export const UserProfileMenu = () => {
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
         style={isMobile ? { 
           width: 'calc(100vw - 24px)', 
-          paddingRight: '12px',        
-          paddingLeft: '12px'  
+          right: '12px',        
+          left: '12px'  
         } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
