@@ -60,7 +60,7 @@ const Index = () => {
       } else if (hour >= 18 && hour < 23) {
         return "Good evening";
       } else {
-        return "Night owl";
+        return "The night owl";
       }
     }
   };
