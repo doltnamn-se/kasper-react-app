@@ -52,6 +52,11 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <span className="text-black dark:text-gray-300 font-medium">{t('profile.settings')}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
+        <div className="px-2 py-1.5">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            {language === 'en' ? 'Language' : 'Språk'}
+          </p>
+        </div>
         <DropdownMenuItem 
           onClick={toggleLanguage} 
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
