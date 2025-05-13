@@ -11,6 +11,7 @@ export interface UITranslations {
   'display.name': string;
   'profile.upload.photo': string;
   'link.to.removal': string;
+  'link.remove': string;
   'subscription.active': string;
   'subscription.1month': string;
   'subscription.3months': string;
