@@ -1,7 +1,6 @@
-
 import { UITranslations } from '../types/ui';
 
-export const ui: UITranslations = {
+export const ui = {
   'cancel': 'Cancel',
   'loading': 'Loading...',
   'success': 'Success',
@@ -178,4 +177,5 @@ export const ui: UITranslations = {
   'appearance': 'Appearance',
   'light.mode': 'Light mode',
   'dark.mode': 'Dark mode',
-};
+  'back': 'Back',
+} as const;
