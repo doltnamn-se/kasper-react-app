@@ -41,6 +41,9 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {userEmail && (
               <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">{userEmail}</span>
             )}
+            <span className="text-xs underline mt-1">
+              {language === 'sv' ? 'Hantera profil' : 'Manage profile'}
+            </span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem 
