@@ -22,6 +22,11 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
     setLanguage(newLanguage);
   };
 
+  const languages = {
+    sv: { flag: '🇸🇪', label: 'Svenska' },
+    en: { flag: '🇬🇧', label: 'English' }
+  };
+
   return (
     <>
       <DropdownMenuGroup>
@@ -51,7 +56,8 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <Globe className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">
+          <span className="text-black dark:text-gray-300 font-medium flex items-center gap-2">
+            <span>{languages[language === 'en' ? 'sv' : 'en'].flag}</span>
             {language === 'en' ? 'Svenska' : 'English'}
           </span>
         </DropdownMenuItem>
