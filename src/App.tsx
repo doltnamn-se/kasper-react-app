@@ -28,7 +28,7 @@ import { Privacy } from './pages/Privacy';
 import { Pricing } from './pages/Pricing';
 import { Support } from './pages/Support';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
-import { ToastContainer } from 'sonner';
+import { Toaster } from 'sonner';
 import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();
@@ -42,7 +42,7 @@ function App() {
         <LanguageProvider>
           <SidebarProvider>
             <MobileProvider>
-              <ToastContainer />
+              <Toaster />
               <ScrollToTop />
               <Routes>
                 <Route path="/auth" element={

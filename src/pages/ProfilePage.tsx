@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ProfileMenuItems } from "@/components/nav/ProfileMenuItems";
 import { ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const ProfilePage = () => {
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
