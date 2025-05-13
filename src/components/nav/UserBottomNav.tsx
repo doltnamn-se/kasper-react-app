@@ -20,7 +20,7 @@ export const UserBottomNav = () => {
     { path: '/', icon: <House className="h-5 w-5" />, label: t('nav.home') },
     { path: '/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.monitoring') },
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
-    { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts.mobile') },
+    { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts') },
     { path: '/guides', icon: <MousePointerClick className="h-5 w-5" />, label: t('nav.guides') }
   ];
 

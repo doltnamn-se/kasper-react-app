@@ -7,7 +7,6 @@ export interface NavigationTranslations {
   'nav.my.links': string;
   'nav.deindexing': string;
   'nav.address.alerts': string;
-  'nav.address.alerts.mobile': string;
   'nav.guides': string;
   'nav.settings': string;
   'nav.admin.dashboard': string;
