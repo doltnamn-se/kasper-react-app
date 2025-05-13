@@ -48,7 +48,7 @@ export const LanguageSwitch = () => {
           <span>🇸🇪</span> 
           <span className="flex-1">Svenska</span>
           {language === 'sv' && (
-            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-normal">
               aktiv
             </span>
           )}
@@ -60,7 +60,7 @@ export const LanguageSwitch = () => {
           <span>🇬🇧</span> 
           <span className="flex-1">English</span>
           {language === 'en' && (
-            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+            <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-normal">
               active
             </span>
           )}
