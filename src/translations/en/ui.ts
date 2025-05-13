@@ -178,6 +178,4 @@ export const ui: UITranslations = {
   'appearance': 'Appearance',
   'light.mode': 'Light mode',
   'dark.mode': 'Dark mode',
-  'notification.preferences': 'Notification preferences',
 };
-

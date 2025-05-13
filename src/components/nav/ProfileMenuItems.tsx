@@ -80,15 +80,13 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
         </DropdownMenuItem>
         
-        {/* Changed Notifications title to "Notispreferenser"/"Notification preferences" */}
+        {/* SWAPPED: Notifications now comes after Billing */}
         <DropdownMenuItem 
           onClick={() => navigate("/settings", { state: { defaultTab: "notifications" } })}
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <Bell className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">
-            {language === 'sv' ? 'Notispreferenser' : 'Notification preferences'}
-          </span>
+          <span className="text-black dark:text-gray-300 font-medium">{t('notifications')}</span>
         </DropdownMenuItem>
         
         <DropdownMenuItem 
@@ -193,4 +191,3 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
     </>
   );
 };
-
