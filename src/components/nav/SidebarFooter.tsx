@@ -1,3 +1,4 @@
+
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { useVersionStore } from "@/config/version";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -33,13 +34,15 @@ export const SidebarFooter = () => {
       >
         <div className="flex items-center w-full">
           <CircleFadingArrowUp className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">
-            {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
-          </span>
+          <div className="flex flex-col">
+            <span className="text-black dark:text-gray-300 font-medium">
+              {language === 'sv' ? 'Byt plan till 24 mån' : 'Change plan to 24 mo'}
+            </span>
+            <span className="text-xs text-green-600 dark:text-green-500 -mt-0.5">
+              {language === 'sv' ? 'Spara upp till 1 584 kr' : 'Save up to 1 584 kr'}
+            </span>
+          </div>
         </div>
-        <span className="text-xs text-green-600 dark:text-green-500 ml-7 mt-0.5">
-          {language === 'sv' ? 'Spara upp till 1 584 kr' : 'Save up to 1 584 kr'}
-        </span>
       </Button>
     </div>
   );
