@@ -1,3 +1,4 @@
+
 import { ChevronDown } from "lucide-react";
 
 interface GuideAccordionFooterProps {
@@ -8,7 +9,7 @@ interface GuideAccordionFooterProps {
 export const GuideAccordionFooter = ({ isOpen, onAccordionChange }: GuideAccordionFooterProps) => {
   return (
     <div 
-      className="px-6 py-4 border-t border-[#e5e7eb] dark:border-[#232325] flex justify-center items-center gap-2 cursor-pointer"
+      className="py-2 flex justify-center items-center gap-2 cursor-pointer transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-[#232325] rounded-b-[4px]"
       onClick={onAccordionChange}
     >
       <span className="text-sm font-medium text-[#000000] dark:text-white">Guide</span>
