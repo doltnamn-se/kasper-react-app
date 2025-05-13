@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const useGuideUtils = () => {
@@ -10,17 +11,16 @@ export const useGuideUtils = () => {
       [t('guide.hitta.title')]: 'hitta',
       [t('guide.merinfo.title')]: 'merinfo',
       [t('guide.ratsit.title')]: 'ratsit',
-      [t('guide.birthday.title')]: 'birthday',
-      [t('guide.upplysning.title')]: 'upplysning'
+      [t('guide.birthday.title')]: 'birthday'
+      // Removed upplysning entry
     };
     return titleToId[title] || '';
   };
 
   const shouldShowCopyButton = (guideTitle: string, stepText: string): boolean => {
-    const isBirthdayOrUpplysning = 
-      guideTitle === t('guide.birthday.title') || 
-      guideTitle === t('guide.upplysning.title');
-    return isBirthdayOrUpplysning && stepText.includes('\"');
+    // Only Birthday guide should have copy button now that upplysning is removed
+    const isBirthday = guideTitle === t('guide.birthday.title');
+    return isBirthday && stepText.includes('\"');
   };
 
   return {

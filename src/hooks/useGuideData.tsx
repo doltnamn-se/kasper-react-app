@@ -11,8 +11,8 @@ export const useGuideData = () => {
       [t('guide.hitta.title')]: 'hitta',
       [t('guide.merinfo.title')]: 'merinfo',
       [t('guide.ratsit.title')]: 'ratsit',
-      [t('guide.birthday.title')]: 'birthday',
-      [t('guide.upplysning.title')]: 'upplysning'
+      [t('guide.birthday.title')]: 'birthday'
+      // Removed upplysning entry
     };
     return titleToId[title] || '';
   };
@@ -66,15 +66,8 @@ export const useGuideData = () => {
           { text: t('guide.birthday.step1') },
           { text: t('guide.birthday.step2') }
         ]
-      },
-      {
-        title: t('guide.upplysning.title'),
-        steps: [
-          { text: 'https://www.upplysning.se/kontakta-oss' },
-          { text: t('guide.upplysning.step1') },
-          { text: t('guide.upplysning.step2') }
-        ]
       }
+      // Removed upplysning guide
     ];
   };
 

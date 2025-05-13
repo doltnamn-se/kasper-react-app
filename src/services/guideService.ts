@@ -1,5 +1,4 @@
 
-
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const useGuideService = () => {
@@ -54,15 +53,8 @@ export const useGuideService = () => {
           { text: t('guide.birthday.step1') },
           { text: t('guide.birthday.step2') }
         ]
-      },
-      'upplysning': {
-        title: t('guide.upplysning.title'),
-        steps: [
-          { text: 'https://www.upplysning.se/kontakta-oss' },
-          { text: t('guide.upplysning.step1') },
-          { text: t('guide.upplysning.step2') }
-        ]
       }
+      // Removed the upplysning guide
     };
 
     console.log('GuideService - Getting guide for site:', siteId);

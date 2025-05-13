@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ interface HidingSitesSelectionProps {
   onComplete: () => void;
 }
 
-type HidingSite = "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo" | "mrkoll" | "upplysning";
+type HidingSite = "eniro" | "hitta" | "birthday" | "ratsit" | "merinfo" | "mrkoll";
 
 const HIDING_SITES: { id: HidingSite; name: string }[] = [
   { id: 'eniro', name: 'Eniro.se' },
@@ -17,8 +18,8 @@ const HIDING_SITES: { id: HidingSite; name: string }[] = [
   { id: 'mrkoll', name: 'Mrkoll.se' },
   { id: 'merinfo', name: 'Merinfo.se' },
   { id: 'ratsit', name: 'Ratsit.se' },
-  { id: 'birthday', name: 'Birthday.se' },
-  { id: 'upplysning', name: 'Upplysning.se' }
+  { id: 'birthday', name: 'Birthday.se' }
+  // Removed upplysning.se
 ];
 
 export const HidingSitesSelection = ({ onComplete }: HidingSitesSelectionProps) => {
