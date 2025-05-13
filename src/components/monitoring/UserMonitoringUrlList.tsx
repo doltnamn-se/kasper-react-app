@@ -1,3 +1,4 @@
+
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -80,8 +81,8 @@ export const UserMonitoringUrlList = ({
   }
 
   return (
-    <div className="space-y-6 mt-8">
-      <h2 className="text-lg font-medium">
+    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+      <h2 className="text-lg font-medium mb-6">
         {language === 'sv' ? 'Nya länkar att granska' : 'New links to review'}
       </h2>
       

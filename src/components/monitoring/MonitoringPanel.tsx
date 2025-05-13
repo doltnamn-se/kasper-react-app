@@ -7,7 +7,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ScanningStatusBadge } from "./ScanningStatusBadge";
 import { MonitoringUrl } from "@/types/monitoring-urls";
-import { UserMonitoringUrlList } from "./UserMonitoringUrlList";
 
 interface MonitoringPanelProps {
   lastChecked: Date;
@@ -76,15 +75,6 @@ export const MonitoringPanel = ({
           />
         </div>
       </div>
-      
-      {/* User Monitoring URLs */}
-      {userId && (
-        <UserMonitoringUrlList 
-          monitoringUrls={pendingUrls}
-          onApprove={onApprove}
-          onReject={onReject}
-        />
-      )}
     </div>
   );
 };

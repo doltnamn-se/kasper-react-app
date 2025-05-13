@@ -7,6 +7,7 @@ import { useScanningStatus } from "@/components/monitoring/hooks/useScanningStat
 import { useUserMonitoring } from "@/components/monitoring/hooks/useUserMonitoring";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { UserMonitoringUrlList } from "@/components/monitoring/UserMonitoringUrlList";
 
 const Monitoring = () => {
   const { language } = useLanguage();
@@ -70,6 +71,15 @@ const Monitoring = () => {
           onReject={handleRejectUrl}
           userId={userId}
         />
+        
+        {/* Render the links to review in a separate card */}
+        {userId && pendingUrls.length > 0 && (
+          <UserMonitoringUrlList
+            monitoringUrls={pendingUrls}
+            onApprove={handleApproveUrl}
+            onReject={handleRejectUrl}
+          />
+        )}
       </div>
     </MainLayout>
   );
