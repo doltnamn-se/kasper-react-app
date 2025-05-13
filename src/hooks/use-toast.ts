@@ -1,6 +1,5 @@
 
 import { ToastActionElement, type ToastProps } from "@/components/ui/toast";
-import { useToast as useToastFromUI } from "@radix-ui/react-toast";
 import * as React from "react";
 
 // Define the toast context and provider
