@@ -1,3 +1,4 @@
+
 import { GuideCard } from "./GuideCard";
 import { useGuideData } from "@/hooks/useGuideData";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -55,30 +56,45 @@ export const GuideGrid = ({
   );
 
   const renderGuideSection = (sectionGuides: typeof guides) => {
-    const leftColumnGuides = sectionGuides.filter((_, index) => index % 2 === 0);
-    const rightColumnGuides = sectionGuides.filter((_, index) => index % 2 === 1);
+    // Modified grid layout to display three columns on desktop
+    // Create three column arrays instead of two
+    const firstColumnGuides = sectionGuides.filter((_, index) => index % 3 === 0);
+    const secondColumnGuides = sectionGuides.filter((_, index) => index % 3 === 1);
+    const thirdColumnGuides = sectionGuides.filter((_, index) => index % 3 === 2);
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="flex flex-col gap-4">
-          {leftColumnGuides.map((guide, index) => (
+          {firstColumnGuides.map((guide, index) => (
             <GuideCard
               key={`${guide.title}-${index}`}
               guide={guide}
-              accordionId={`left-${index}`}
-              isOpen={openAccordions.has(`left-${index}`)}
+              accordionId={`col1-${index}`}
+              isOpen={openAccordions.has(`col1-${index}`)}
               onAccordionChange={onAccordionChange}
               isCompleted={currentCompletedGuides.includes(getGuideId(guide.title))}
             />
           ))}
         </div>
         <div className="flex flex-col gap-4">
-          {rightColumnGuides.map((guide, index) => (
+          {secondColumnGuides.map((guide, index) => (
             <GuideCard
               key={`${guide.title}-${index}`}
               guide={guide}
-              accordionId={`right-${index}`}
-              isOpen={openAccordions.has(`right-${index}`)}
+              accordionId={`col2-${index}`}
+              isOpen={openAccordions.has(`col2-${index}`)}
+              onAccordionChange={onAccordionChange}
+              isCompleted={currentCompletedGuides.includes(getGuideId(guide.title))}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col gap-4">
+          {thirdColumnGuides.map((guide, index) => (
+            <GuideCard
+              key={`${guide.title}-${index}`}
+              guide={guide}
+              accordionId={`col3-${index}`}
+              isOpen={openAccordions.has(`col3-${index}`)}
               onAccordionChange={onAccordionChange}
               isCompleted={currentCompletedGuides.includes(getGuideId(guide.title))}
             />
