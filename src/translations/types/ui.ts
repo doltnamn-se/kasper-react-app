@@ -173,4 +173,7 @@ export interface UITranslations {
   'url.input.placeholder': string;
   'monitoring.add.new': string;
   'monitoring.links': string;
+  'light.mode': string;
+  'dark.mode': string;
+  'appearance': string;
 }

@@ -175,4 +175,7 @@ export const ui: UITranslations = {
   'url.input.placeholder': 'Ange länk',
   'monitoring.add.new': 'Lägg till ny',
   'monitoring.links': 'Länkar',
+  'light.mode': 'Ljust läge',
+  'dark.mode': 'Mörkt läge',
+  'appearance': 'Utseende',
 };
