@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Switch } from "@/components/ui/switch";
 
 interface ProfileMenuItemsProps {
   onSignOut: () => void;
@@ -52,14 +51,9 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <Globe className="mr-3 h-4 w-4" />
-          <div className="flex justify-between items-center w-full">
-            <span className="text-black dark:text-gray-300 font-medium">{language === 'en' ? 'English' : 'Svenska'}</span>
-            <Switch 
-              checked={language === 'en'} 
-              onCheckedChange={toggleLanguage}
-              className="ml-2"
-            />
-          </div>
+          <span className="text-black dark:text-gray-300 font-medium">
+            {language === 'en' ? 'Svenska' : 'English'}
+          </span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
