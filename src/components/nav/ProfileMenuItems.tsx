@@ -53,7 +53,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         </DropdownMenuItem>
         <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
         <div className="px-2 py-1.5">
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+          <p className="text-xs font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'en' ? 'Language' : 'Språk'}
           </p>
         </div>
