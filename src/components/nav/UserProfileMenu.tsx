@@ -94,8 +94,8 @@ export const UserProfileMenu = () => {
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
         style={isMobile ? { 
           width: 'calc(100vw - 24px)', 
-          marginLeft: '-50px',  // This makes the dropdown extend 50px to the left
-          right: '12px',        // Adjusting position to account for the left extension
+          marginLeft: '-10px',  // Changed from -40px to -10px
+          right: '12px',        
           left: 'auto'
         } : undefined}
       >
