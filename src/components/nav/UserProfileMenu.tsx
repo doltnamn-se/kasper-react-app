@@ -82,23 +82,21 @@ export const UserProfileMenu = () => {
               {displayName}
             </span>
           )}
-          {/* Only show the ChevronDown icon on desktop */}
-          {!isMobile && (
-            <ChevronDown 
-              className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
-                isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
-              }`}
-            />
-          )}
+          <ChevronDown 
+            className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
+              isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
+            }`}
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
         style={isMobile ? { 
-          width: 'calc(100vw - 32px)', 
-          right: '16px',
-          left: '16px'  // Adding left alignment to match the main content padding
+          width: 'calc(100vw - 24px)', 
+          marginLeft: '-50px',  // This makes the dropdown extend 50px to the left
+          right: '12px',        // Adjusting position to account for the left extension
+          left: 'auto'
         } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
