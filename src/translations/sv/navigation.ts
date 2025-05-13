@@ -15,7 +15,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.dashboard': 'Översikt',
   'nav.admin.customers': 'Kunder',
   'nav.admin.links': 'Länkhantering',
-  'nav.admin.deindexing': 'Länkhantering', // Added this key
+  'nav.admin.deindexing': 'Länkar', // Changed from "Länkhantering" to "Länkar"
   'nav.admin.monitoring': 'Bevakning', // Added this key
   'nav.admin.version.log': 'Versionslogg',
   'nav.dashboard': 'Översikt',
