@@ -42,6 +42,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   const isAdminRoute = location.pathname.startsWith('/admin');
   const logoHeight = isMobile ? 'h-8' : 'h-12';
 
+  // For auth routes, show the auth-specific logo
   if (isAuthRoute) {
     return (
       <div className="flex justify-center w-full">
@@ -61,6 +62,28 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
     );
   }
 
+  // For non-auth routes (desktop sidebar logo)
+  if (!isMobile && !isAdminRoute) {
+    return (
+      <div 
+        className={`relative ${logoHeight} w-auto ${centered ? 'mx-auto' : ''}`} 
+        {...props}
+      >
+        <img 
+          src="/lovable-uploads/digitaltskydd-logo-primary.svg" 
+          alt="Logo" 
+          className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
+        />
+        <img 
+          src="/lovable-uploads/digitaltskydd-logo-primary-white.svg" 
+          alt="Logo" 
+          className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
+        />
+      </div>
+    );
+  }
+
+  // For admin routes or mobile
   return (
     <div 
       className={`relative ${isAdminRoute ? 'h-auto w-auto' : `${logoHeight} w-48`} ${centered ? 'mx-auto' : ''}`} 
