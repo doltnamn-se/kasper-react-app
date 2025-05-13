@@ -44,7 +44,7 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
         className="bg-[#e0e0e0] hover:bg-[#d0d0d0] text-[#000000] dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] gap-2"
         onClick={handleButtonClick}
       >
-        {t('link.to.removal')}
+        {t('link.remove')}
         <ArrowRight className="h-2 w-2 -rotate-45" />
       </Button>
     </div>

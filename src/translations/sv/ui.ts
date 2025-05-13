@@ -13,6 +13,7 @@ export const ui: UITranslations = {
   'display.name': 'Namn',
   'profile.upload.photo': 'Ladda upp foto',
   'link.to.removal': 'Länk till borttagningssida',
+  'link.remove': 'Ta bort',
   'subscription.active': 'Aktiv',
   'subscription.1month': '1 Mån',
   'subscription.3months': '3 Mån',

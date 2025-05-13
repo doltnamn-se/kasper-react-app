@@ -1,4 +1,3 @@
-
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -13,6 +12,7 @@ export const ui: UITranslations = {
   'display.name': 'Display Name',
   'profile.upload.photo': 'Upload Photo',
   'link.to.removal': 'Link to removal page',
+  'link.remove': 'Remove',
   'subscription.active': 'Active',
   'subscription.1month': '1 Mo',
   'subscription.3months': '3 Mo',
