@@ -1,12 +1,15 @@
 
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import { TopNav } from "@/components/TopNav";
 import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-export const MobilePersistentLayout = () => {
+interface MobilePersistentLayoutProps {
+  children: React.ReactNode;
+}
+
+export const MobilePersistentLayout = ({ children }: MobilePersistentLayoutProps) => {
   const { userProfile } = useUserProfile();
   const isAdmin = userProfile?.role === 'super_admin';
   
@@ -19,7 +22,7 @@ export const MobilePersistentLayout = () => {
       
       {/* Main Content Area (scrollable) */}
       <main className="px-4 pt-14 pb-20">
-        <Outlet />
+        {children}
       </main>
       
       {/* Fixed Bottom Navigation */}

@@ -5,6 +5,7 @@ const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean>(false)
+  const [initialized, setInitialized] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     // Initial check function
@@ -12,6 +13,9 @@ export function useIsMobile() {
       const width = window.innerWidth;
       const mobileStatus = width < MOBILE_BREAKPOINT;
       setIsMobile(mobileStatus);
+      if (!initialized) {
+        setInitialized(true);
+      }
       console.log(`useIsMobile: width=${width}, isMobile=${mobileStatus}`);
     }
     
@@ -23,7 +27,8 @@ export function useIsMobile() {
     
     // Clean up
     return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
+  }, [initialized]);
   
-  return isMobile;
+  // Ensure we always have a value, defaulting to false for SSR
+  return typeof window !== 'undefined' ? isMobile : false;
 }

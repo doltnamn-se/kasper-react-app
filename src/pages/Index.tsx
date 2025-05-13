@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from "react";
-import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
