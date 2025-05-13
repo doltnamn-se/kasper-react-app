@@ -177,7 +177,7 @@ const Deindexing = () => {
 
           <TabsContent value="incoming" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+              <h2 className="text-[18px] font-semibold mb-6 text-[#000000] dark:text-[#FFFFFF]">
                 {t('deindexing.incoming.links')}
               </h2>
               <IncomingLinks />
@@ -186,7 +186,7 @@ const Deindexing = () => {
 
           <TabsContent value="deindexed" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="text-xl font-semibold mb-6 dark:text-white">
+              <h2 className="text-[18px] font-semibold mb-6 text-[#000000] dark:text-[#FFFFFF]">
                 {t('deindexing.deindexed.links')}
               </h2>
               <DeindexedLinks />
