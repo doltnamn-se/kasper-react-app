@@ -1,3 +1,4 @@
+
 import React, { Suspense, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -22,9 +23,9 @@ import { MobilePersistentLayout } from "./components/layout/MobilePersistentLayo
 import { useIsMobile } from './hooks/use-mobile';
 import { ScrollToTop } from './components/ScrollToTop';
 import { AuthLayout } from './components/layout/AuthLayout';
-import { Terms } from './pages/Terms";
+import { Terms } from './pages/Terms';
 import { Privacy } from './pages/Privacy';
-import { Pricing } from './pages/Pricing";
+import { Pricing } from './pages/Pricing';
 import { Support } from './pages/Support';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 import { ToastContainer } from 'sonner';
