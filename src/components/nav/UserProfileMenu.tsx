@@ -82,11 +82,14 @@ export const UserProfileMenu = () => {
               {displayName}
             </span>
           )}
-          <ChevronDown 
-            className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
-              isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
-            }`}
-          />
+          {/* Only show the ChevronDown icon on desktop */}
+          {!isMobile && (
+            <ChevronDown 
+              className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
+                isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
+              }`}
+            />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
