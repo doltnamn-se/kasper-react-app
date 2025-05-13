@@ -8,10 +8,10 @@ interface AdminProtectedRouteProps {
 }
 
 export const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
-  const { userProfile, isLoading } = useUserProfile();
+  const { userProfile, isInitializing } = useUserProfile();
   
   // If still loading, show nothing or a loading indicator
-  if (isLoading) {
+  if (isInitializing) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
   

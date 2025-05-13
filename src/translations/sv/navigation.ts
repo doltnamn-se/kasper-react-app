@@ -15,12 +15,13 @@ export const navigation: NavigationTranslations = {
   'nav.admin.customers': 'Kunder',
   'nav.admin.links': 'Länkhantering',
   'nav.admin.version.log': 'Versionslogg',
-  'nav.dashboard': 'Översikt', // Added missing translation
-  'nav.customers': 'Kunder', // Added missing translation
-  'nav.links': 'Länkar', // Added missing translation
-  'nav.version.log': 'Versionslogg', // Added missing translation
+  'nav.dashboard': 'Översikt',
+  'nav.customers': 'Kunder',
+  'nav.links': 'Länkar',
+  'nav.version.log': 'Versionslogg',
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
   'status': 'Status',
-  'last.seen': 'Senast sedd'
+  'last.seen': 'Senast sedd',
+  'navigation.messages': 'Meddelanden'
 };

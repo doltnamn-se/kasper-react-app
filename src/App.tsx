@@ -17,17 +17,17 @@ import Admin from "./pages/admin/AdminLayout"; // Fixed import
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { SidebarProvider } from "./contexts/SidebarContext";
-import { MobileProvider } from "./contexts/MobileContext"; // This context needs to be created
+import { MobileProvider } from "./contexts/MobileContext"; 
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { MobilePersistentLayout } from "./components/layout/MobilePersistentLayout";
 import { useIsMobile } from './hooks/use-mobile';
-import { ScrollToTop } from './components/ScrollToTop'; // Will need to be created
-import { AuthLayout } from './components/layout/AuthLayout'; // Will need to be created
-import { Terms } from './pages/Terms'; // Will need to be created
-import { Privacy } from './pages/Privacy'; // Will need to be created
-import { Pricing } from './pages/Pricing'; // Will need to be created
-import { Support } from './pages/Support'; // Will need to be created
-import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute'; // Will need to be created
+import { ScrollToTop } from './components/ScrollToTop'; 
+import { AuthLayout } from './components/layout/AuthLayout'; 
+import { Terms } from './pages/Terms'; 
+import { Privacy } from './pages/Privacy'; 
+import { Pricing } from './pages/Pricing'; 
+import { Support } from './pages/Support'; 
+import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute'; 
 import { Toaster } from 'sonner'; // Fixed import
 import ProfilePage from "./pages/ProfilePage";
 
