@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut, Check } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -63,7 +63,9 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {languages.sv.label}
           </span>
           {language === 'sv' && (
-            <Check className="h-4 w-4 text-green-500" />
+            <span className="text-xs text-green-500 font-medium">
+              {language === 'sv' ? 'aktiv' : 'active'}
+            </span>
           )}
         </DropdownMenuItem>
         <DropdownMenuItem 
@@ -77,7 +79,9 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
             {languages.en.label}
           </span>
           {language === 'en' && (
-            <Check className="h-4 w-4 text-green-500" />
+            <span className="text-xs text-green-500 font-medium">
+              {language === 'sv' ? 'aktiv' : 'active'}
+            </span>
           )}
         </DropdownMenuItem>
       </DropdownMenuGroup>
