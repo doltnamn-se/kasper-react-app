@@ -95,9 +95,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               src={isDarkMode ? "/lovable-uploads/ds-googleplay-white.svg" : "/lovable-uploads/ds-googleplay-black.svg"} 
               alt="Get it on Google Play" 
               className="w-full h-full pointer-events-auto"
-              draggable="false"
-              onContextMenu={(e) => e.preventDefault()}
-              style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
             />
           </a>
           
@@ -112,9 +109,6 @@ export const IOSNotification: React.FC<NotificationProps> = ({ isDarkMode = fals
               src={isDarkMode ? "/lovable-uploads/ds-appstore-comingsoon-white.svg" : "/lovable-uploads/ds-appstore-comingsoon-black.svg"} 
               alt="Download on App Store" 
               className="w-full h-full"
-              draggable="false"
-              onContextMenu={(e) => e.preventDefault()}
-              style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
             />
           </a>
         </div>
