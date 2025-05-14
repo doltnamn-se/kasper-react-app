@@ -135,7 +135,7 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
           toast({
             title: t('warning'),
             description: t('warning.admin.notification'),
-            variant: "destructive",
+            variant: "warning",
           });
           // Continue despite notification error - status update was successful
         } else {
@@ -148,7 +148,7 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
         toast({
           title: t('warning'),
           description: t('warning.admin.notification'),
-          variant: "destructive",
+          variant: "warning",
         });
         // Still return true since the status update was successful
         return true;

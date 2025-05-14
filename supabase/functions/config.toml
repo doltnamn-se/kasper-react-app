@@ -6,3 +6,6 @@ verify_jwt = false
 
 [monitoring-url-status]
 verify_jwt = false
+
+[notify-status-change]
+verify_jwt = false

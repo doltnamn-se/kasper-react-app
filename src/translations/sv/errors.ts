@@ -55,5 +55,6 @@ export const errors = {
   'errors.user_delete_failed': 'Det gick inte att ta bort användaren',
   'errors.user_banned': 'Detta användarkonto har stängts av',
   'monitoring.url.error.approve': 'Det gick inte att godkänna URL:en',
-  'monitoring.url.error.reject': 'Det gick inte att avvisa URL:en'
+  'monitoring.url.error.reject': 'Det gick inte att avvisa URL:en',
+  'warning.admin.notification': 'Kunde inte meddela administratören om denna ändring'
 };
