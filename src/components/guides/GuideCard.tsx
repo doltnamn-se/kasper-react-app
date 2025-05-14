@@ -87,18 +87,19 @@ export const GuideCard = ({
                 </div>
               )}
               
-              {/* Stronger gradient overlay that covers both steps when closed - now with improved transitions */}
+              {/* Improved gradient overlays for both light and dark modes with improved transitions */}
               {!isOpen && (
                 <>
+                  {/* Light mode gradient overlay */}
                   <div 
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-in-out"
+                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-in-out dark:hidden"
                     style={{ 
                       background: 'linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 100%)',
                     }}
                     aria-hidden="true"
                   />
                   
-                  {/* Dark mode gradient with improved transitions */}
+                  {/* Dark mode gradient with improved colors */}
                   <div 
                     className="absolute inset-0 pointer-events-none hidden dark:block transition-opacity duration-300 ease-in-out"
                     style={{ 
