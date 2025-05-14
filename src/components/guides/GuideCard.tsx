@@ -145,16 +145,11 @@ export const GuideCard = ({
             </div>
           </AccordionContent>
           
-          {/* Footer button that properly handles toggle */}
-          <div 
-            className="py-2 flex justify-center items-center gap-2 cursor-pointer rounded-b-[4px] z-10 transition-all duration-300 ease-in-out"
-            onClick={handleToggle}
-          >
-            <GuideAccordionFooter 
-              isOpen={isOpen} 
-              onAccordionChange={handleToggle} 
-            />
-          </div>
+          {/* Fix: Remove the wrapping div and use GuideAccordionFooter directly */}
+          <GuideAccordionFooter 
+            isOpen={isOpen} 
+            onAccordionChange={handleToggle} 
+          />
         </AccordionItem>
       </Accordion>
     </Card>
