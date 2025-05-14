@@ -40,7 +40,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
 
   const isAuthRoute = location.pathname.startsWith('/auth');
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const logoHeight = isMobile ? 'h-8' : 'h-8';  // Height for logos
+  const logoHeight = isMobile ? 'h-8' : 'h-6';  // Changed from h-8 to h-6 for desktop version
 
   // For auth routes, show the auth-specific logo
   if (isAuthRoute) {
