@@ -106,9 +106,9 @@ export const GuideCard = ({
                 aria-hidden="true"
               />
               
-              {/* Toggle button over the gradient */}
+              {/* Toggle button over the gradient - ONLY SHOW WHEN CLOSED */}
               <div 
-                className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out"
+                className={`absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 onClick={() => onAccordionChange(accordionId)}
               >
                 <GuideAccordionFooter 
@@ -161,3 +161,4 @@ export const GuideCard = ({
     </Card>
   );
 };
+
