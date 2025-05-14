@@ -42,7 +42,6 @@ export interface FeaturesTranslations {
   'current.password': string;
   'guide.completion.needed': string;
   'guide.completion.message': string;
-  'guide.remove.button.step': string; // Added this line for the new translation key
   'guide.eniro.title': string;
   'guide.eniro.step1': string;
   'guide.eniro.step2': string;

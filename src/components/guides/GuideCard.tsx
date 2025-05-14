@@ -5,7 +5,6 @@ import { GuideHeader } from "./GuideHeader";
 import { GuideSteps } from "./GuideSteps";
 import { GuideAccordionFooter } from "./GuideAccordionFooter";
 import { useGuideUtils } from "@/utils/guideUtils";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 interface GuideStep {
   text: string;
@@ -32,18 +31,7 @@ export const GuideCard = ({
   isCompleted = false
 }: GuideCardProps) => {
   const { shouldShowCopyButton } = useGuideUtils();
-  const { language } = useLanguage();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
-
-  // Process step text to replace translation key with actual text
-  const getStepText = (text: string) => {
-    if (text === "guide.remove.button.step") {
-      return language === "sv" 
-        ? "Klicka på knappen 'Ta bort'" 
-        : "Click the 'Remove' button";
-    }
-    return text;
-  };
 
   // Get steps
   const firstStep = guide.steps.length > 1 ? guide.steps[1] : null;
@@ -80,7 +68,7 @@ export const GuideCard = ({
                     <span className="text-xs font-medium">1</span>
                   </div>
                   <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white">
-                    {getStepText(firstStep.text)}
+                    {firstStep.text}
                   </span>
                 </div>
               )}
@@ -93,7 +81,7 @@ export const GuideCard = ({
                       <span className="text-xs font-medium">2</span>
                     </div>
                     <span className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white truncate">
-                      {getStepText(secondStep.text)}
+                      {secondStep.text}
                     </span>
                   </div>
                 </div>
@@ -148,7 +136,7 @@ export const GuideCard = ({
                       className="text-sm leading-relaxed font-medium text-[#000000] dark:text-white"
                       style={{ whiteSpace: 'pre-line' }}
                     >
-                      {getStepText(step.text)}
+                      {step.text}
                     </span>
                     {shouldShowCopyButton(guide.title, step.text) && (
                       <button
