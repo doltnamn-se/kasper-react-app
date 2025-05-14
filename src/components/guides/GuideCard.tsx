@@ -105,17 +105,6 @@ export const GuideCard = ({
                 }}
                 aria-hidden="true"
               />
-              
-              {/* Toggle button over the gradient - ONLY SHOW WHEN CLOSED */}
-              <div 
-                className={`absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-                onClick={() => onAccordionChange(accordionId)}
-              >
-                <GuideAccordionFooter 
-                  isOpen={isOpen} 
-                  onAccordionChange={() => onAccordionChange(accordionId)} 
-                />
-              </div>
             </div>
           </div>
           
@@ -149,16 +138,22 @@ export const GuideCard = ({
                 </div>
               ))}
             </div>
-            
-            {/* Footer toggle button for open state */}
+          </AccordionContent>
+          
+          {/* Single toggle button that follows the content */}
+          <div className="py-2 flex justify-center items-center gap-2 cursor-pointer rounded-b-[4px] z-10 transition-all duration-300 ease-in-out"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAccordionChange(isOpen ? "" : accordionId);
+              }}
+          >
             <GuideAccordionFooter 
               isOpen={isOpen} 
-              onAccordionChange={() => onAccordionChange(accordionId)} 
+              onAccordionChange={() => onAccordionChange(isOpen ? "" : accordionId)} 
             />
-          </AccordionContent>
+          </div>
         </AccordionItem>
       </Accordion>
     </Card>
   );
 };
-
