@@ -1,6 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { GuideHeader } from "./GuideHeader";
 import { GuideSteps } from "./GuideSteps";
 import { GuideAccordionFooter } from "./GuideAccordionFooter";
@@ -74,7 +75,7 @@ export const GuideCard = ({
               )}
               
               {/* Second step */}
-              {secondStep && !isOpen && (
+              {secondStep && (
                 <div className="mt-4">
                   <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
@@ -87,43 +88,38 @@ export const GuideCard = ({
                 </div>
               )}
               
-              {/* Improved gradient overlays for both light and dark modes with improved transitions */}
-              {!isOpen && (
-                <>
-                  {/* Light mode gradient overlay */}
-                  <div 
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-in-out dark:hidden"
-                    style={{ 
-                      background: 'linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 100%)',
-                    }}
-                    aria-hidden="true"
-                  />
-                  
-                  {/* Dark mode gradient with improved colors */}
-                  <div 
-                    className="absolute inset-0 pointer-events-none hidden dark:block transition-opacity duration-300 ease-in-out"
-                    style={{ 
-                      backgroundImage: 'linear-gradient(to bottom, rgba(28,28,30,0.4) 0%, rgba(28,28,30,0.8) 40%, rgba(28,28,30,0.95) 70%, rgba(28,28,30,1) 100%)',
-                    }}
-                    aria-hidden="true"
-                  />
-                  
-                  {/* Toggle button over the gradient */}
-                  <div 
-                    className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out"
-                    onClick={() => onAccordionChange(accordionId)}
-                  >
-                    <GuideAccordionFooter 
-                      isOpen={isOpen} 
-                      onAccordionChange={() => onAccordionChange(accordionId)} 
-                    />
-                  </div>
-                </>
-              )}
+              {/* Improved gradient overlays for both light and dark modes with smooth transitions */}
+              <div 
+                className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ease-in-out dark:hidden ${isOpen ? 'opacity-0' : 'opacity-100'}`}
+                style={{ 
+                  background: 'linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 100%)',
+                }}
+                aria-hidden="true"
+              />
+              
+              {/* Dark mode gradient with improved colors and smooth transitions */}
+              <div 
+                className={`absolute inset-0 pointer-events-none hidden dark:block transition-opacity duration-500 ease-in-out ${isOpen ? 'opacity-0' : 'opacity-100'}`}
+                style={{ 
+                  backgroundImage: 'linear-gradient(to bottom, rgba(28,28,30,0.4) 0%, rgba(28,28,30,0.8) 40%, rgba(28,28,30,0.95) 70%, rgba(28,28,30,1) 100%)',
+                }}
+                aria-hidden="true"
+              />
+              
+              {/* Toggle button over the gradient */}
+              <div 
+                className="absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out"
+                onClick={() => onAccordionChange(accordionId)}
+              >
+                <GuideAccordionFooter 
+                  isOpen={isOpen} 
+                  onAccordionChange={() => onAccordionChange(accordionId)} 
+                />
+              </div>
             </div>
           </div>
           
-          <AccordionContent className="transition-all duration-300 ease-in-out">
+          <AccordionContent className="transition-all duration-500 ease-in-out">
             {/* Show all steps except the first one when open */}
             <div className="space-y-4 px-6 pb-6">
               {guide.steps.slice(2).map((step, index) => (
@@ -155,12 +151,10 @@ export const GuideCard = ({
             </div>
             
             {/* Footer toggle button for open state */}
-            {isOpen && (
-              <GuideAccordionFooter 
-                isOpen={isOpen} 
-                onAccordionChange={() => onAccordionChange(accordionId)} 
-              />
-            )}
+            <GuideAccordionFooter 
+              isOpen={isOpen} 
+              onAccordionChange={() => onAccordionChange(accordionId)} 
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
