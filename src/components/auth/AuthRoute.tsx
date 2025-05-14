@@ -70,6 +70,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
           }
         }
 
+        // Set session, but don't immediately redirect - we'll check if we're on /auth route
         if (mounted) {
           setSession(!!currentSession);
           setIsLoading(false);
@@ -119,7 +120,9 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     return <LoadingSpinner />;
   }
 
-  if (session) {
+  // Don't redirect to home if we're already at the /auth route
+  // This prevents the redirect loop
+  if (session && !location.pathname.startsWith('/auth')) {
     return <Navigate to="/" replace />;
   }
 
