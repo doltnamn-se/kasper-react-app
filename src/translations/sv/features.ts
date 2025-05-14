@@ -1,4 +1,3 @@
-
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -86,6 +85,7 @@ const features: FeaturesTranslations = {
   'user.details': 'Användaruppgifter',
   'success.delete.url': 'URL borttagen',
   'deindexing.title': 'Länkar',
+  'guide.remove.button.step': 'Klicka på knappen \'Ta bort\'',
 };
 
 export default features;

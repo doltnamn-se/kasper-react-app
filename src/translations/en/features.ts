@@ -1,4 +1,3 @@
-
 import { FeaturesTranslations } from '../types/features';
 
 const features: FeaturesTranslations = {
@@ -44,6 +43,7 @@ const features: FeaturesTranslations = {
   'current.password': 'Current Password',
   'guide.completion.needed': 'Guide completion needed',
   'guide.completion.message': 'Please complete the guide to continue',
+  'guide.remove.button.step': 'Click the \'Remove\' button',
   'guide.eniro.title': 'Eniro',
   'guide.eniro.step1': 'Enter your name in the search box',
   'guide.eniro.step2': 'Identify yourself with Mobile BankID',
