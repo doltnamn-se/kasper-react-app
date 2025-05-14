@@ -68,7 +68,7 @@ const features: FeaturesTranslations = {
   'guide.birthday.title': 'Birthday',
   'guide.birthday.step1': 'Click on "Remove"',
   'guide.birthday.step2': 'Identify yourself with Mobile BankID',
-  'guide.birthday.step3': 'Write this in the message field:\n" I request that my personal information be removed from Birthday.se and that my information be hidden from public search results. My personal number is YYYYMMDD-NNNN. "',
+  'guide.birthday.step3': 'Delete your information',
   'guide.upplysning.title': 'Upplysning',
   'guide.upplysning.step1': 'Fill in the form.',
   'guide.upplysning.step2': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is YYYYMMDD-NNNN. "',

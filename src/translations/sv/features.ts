@@ -68,7 +68,7 @@ const features: FeaturesTranslations = {
   'guide.birthday.title': 'Birthday',
   'guide.birthday.step1': 'Klicka på "Ta bort"',
   'guide.birthday.step2': 'Identifiera dig med Mobilt BankID',
-  'guide.birthday.step3': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Birthday.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN. "',
+  'guide.birthday.step3': 'Ta bort dina uppgifter',
   'guide.upplysning.title': 'Upplysning',
   'guide.upplysning.step1': 'Fyll i formuläret.',
   'guide.upplysning.step2': 'Skriv detta i meddelandefältet:\n" Jag önskar att mina personuppgifter tas bort från Upplysning.se och att min information döljs från de publika sökresultaten. Mitt personnummer är ÅÅÅÅMMDD-NNNN. "',
