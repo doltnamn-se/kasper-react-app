@@ -3,7 +3,7 @@ import React from "react";
 
 export const AuthEyeLogo: React.FC = () => {
   return (
-    <a href="https://digitaltskydd.se/" className="inline-block mb-6">
+    <div className="inline-block mb-6">
       <img
         src="/lovable-uploads/icon-192.png"
         alt="Logo"
@@ -11,6 +11,6 @@ export const AuthEyeLogo: React.FC = () => {
         draggable="false"
         onContextMenu={(e) => e.preventDefault()}
       />
-    </a>
+    </div>
   );
 };
