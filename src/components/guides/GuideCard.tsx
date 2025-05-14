@@ -47,6 +47,11 @@ export const GuideCard = ({
     );
   }
 
+  // This is the key handler that fixes the toggle functionality
+  const handleToggle = () => {
+    onAccordionChange(isOpen ? "" : accordionId);
+  };
+
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
       <Accordion 
@@ -140,16 +145,14 @@ export const GuideCard = ({
             </div>
           </AccordionContent>
           
-          {/* Single toggle button that follows the content */}
-          <div className="py-2 flex justify-center items-center gap-2 cursor-pointer rounded-b-[4px] z-10 transition-all duration-300 ease-in-out"
-              onClick={(e) => {
-                e.stopPropagation();
-                onAccordionChange(isOpen ? "" : accordionId);
-              }}
+          {/* Footer button that properly handles toggle */}
+          <div 
+            className="py-2 flex justify-center items-center gap-2 cursor-pointer rounded-b-[4px] z-10 transition-all duration-300 ease-in-out"
+            onClick={handleToggle}
           >
             <GuideAccordionFooter 
               isOpen={isOpen} 
-              onAccordionChange={() => onAccordionChange(isOpen ? "" : accordionId)} 
+              onAccordionChange={handleToggle} 
             />
           </div>
         </AccordionItem>
