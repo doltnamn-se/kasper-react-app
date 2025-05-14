@@ -40,7 +40,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
 
   const isAuthRoute = location.pathname.startsWith('/auth');
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const logoHeight = isMobile ? 'h-8' : 'h-8';  // Changed from h-12 to h-8 for desktop
+  const logoHeight = isMobile ? 'h-8' : 'h-8';  // Height for logos
 
   // For auth routes, show the auth-specific logo
   if (isAuthRoute) {
@@ -70,12 +70,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
         {...props}
       >
         <img 
-          src="/lovable-uploads/digitaltskydd-logo-primary.svg" 
+          src="/lovable-uploads/digitaltskydd-se-logo-dark.svg" 
           alt="Logo" 
           className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
         />
         <img 
-          src="/lovable-uploads/digitaltskydd-logo-primary-white.svg" 
+          src="/lovable-uploads/digitaltskydd-se-logo-light.svg" 
           alt="Logo" 
           className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
         />
