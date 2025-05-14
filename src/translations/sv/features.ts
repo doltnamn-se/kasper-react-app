@@ -64,7 +64,7 @@ const features: FeaturesTranslations = {
   'guide.ratsit.title': 'Ratsit',
   'guide.ratsit.step1': 'Klicka på "Ta bort"',
   'guide.ratsit.step2': 'Identifiera dig med Mobilt BankID.',
-  'guide.ratsit.step3': 'Klicka på att dölja dina uppgifter.',
+  'guide.ratsit.step3': 'Klicka på att dölja dina uppgifter',
   'guide.birthday.title': 'Birthday',
   'guide.birthday.step1': 'Klicka på "Ta bort"',
   'guide.birthday.step2': 'Identifiera dig med Mobilt BankID',

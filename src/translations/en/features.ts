@@ -64,7 +64,7 @@ const features: FeaturesTranslations = {
   'guide.ratsit.title': 'Ratsit',
   'guide.ratsit.step1': 'Click on "Remove"',
   'guide.ratsit.step2': 'Identify yourself with Mobile BankID.',
-  'guide.ratsit.step3': 'Click to hide your information.',
+  'guide.ratsit.step3': 'Click to hide your information',
   'guide.birthday.title': 'Birthday',
   'guide.birthday.step1': 'Click on "Remove"',
   'guide.birthday.step2': 'Identify yourself with Mobile BankID',
