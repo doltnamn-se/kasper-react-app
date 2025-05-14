@@ -47,11 +47,6 @@ export const GuideCard = ({
     );
   }
 
-  // This is the key handler that fixes the toggle functionality
-  const handleToggle = () => {
-    onAccordionChange(isOpen ? "" : accordionId);
-  };
-
   return (
     <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
       <Accordion 
@@ -110,6 +105,17 @@ export const GuideCard = ({
                 }}
                 aria-hidden="true"
               />
+              
+              {/* Toggle button over the gradient - ONLY SHOW WHEN CLOSED */}
+              <div 
+                className={`absolute bottom-0 left-0 right-0 flex justify-center items-center py-2 cursor-pointer transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                onClick={() => onAccordionChange(accordionId)}
+              >
+                <GuideAccordionFooter 
+                  isOpen={isOpen} 
+                  onAccordionChange={() => onAccordionChange(accordionId)} 
+                />
+              </div>
             </div>
           </div>
           
@@ -143,15 +149,16 @@ export const GuideCard = ({
                 </div>
               ))}
             </div>
+            
+            {/* Footer toggle button for open state */}
+            <GuideAccordionFooter 
+              isOpen={isOpen} 
+              onAccordionChange={() => onAccordionChange(accordionId)} 
+            />
           </AccordionContent>
-          
-          {/* Fix: Remove the wrapping div and use GuideAccordionFooter directly */}
-          <GuideAccordionFooter 
-            isOpen={isOpen} 
-            onAccordionChange={handleToggle} 
-          />
         </AccordionItem>
       </Accordion>
     </Card>
   );
 };
+
