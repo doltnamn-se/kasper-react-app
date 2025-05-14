@@ -34,7 +34,7 @@ export const GuideCard = ({
   const { shouldShowCopyButton } = useGuideUtils();
   const url = guide.steps[0].text.match(/https?:\/\/[^\s]+/)?.[0];
 
-  // Get steps
+  // Get steps for preview area
   const firstStep = guide.steps.length > 1 ? guide.steps[1] : null;
   const secondStep = guide.steps.length > 2 ? guide.steps[2] : null;
 
@@ -120,12 +120,12 @@ export const GuideCard = ({
           </div>
           
           <AccordionContent className="transition-all duration-500 ease-in-out">
-            {/* Show all steps except the first one when open */}
+            {/* Show all steps except the first two when open - FIX: Start from step 3 instead of 2 */}
             <div className="space-y-4 px-6 pb-6">
-              {guide.steps.slice(2).map((step, index) => (
-                <div key={index + 2} className="flex items-center gap-4">
+              {guide.steps.slice(3).map((step, index) => (
+                <div key={index + 3} className="flex items-center gap-4">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0e0e0] dark:bg-[#3A3A3B] flex items-center justify-center">
-                    <span className="text-xs font-medium">{index + 2}</span>
+                    <span className="text-xs font-medium">{index + 3}</span>
                   </div>
                   <div className="flex-grow flex items-center gap-2">
                     <span 
@@ -161,4 +161,3 @@ export const GuideCard = ({
     </Card>
   );
 };
-
