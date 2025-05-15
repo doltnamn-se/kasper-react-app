@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -21,7 +20,6 @@ export const TopNav = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   // Effect for search keyboard shortcut
   useEffect(() => {
@@ -46,19 +44,11 @@ export const TopNav = () => {
   useEffect(() => {
     if (!isMobile) {
       setIsVisible(true);
-      setIsScrolled(false);
       return;
     }
 
     const controlNavbar = () => {
       const currentScrollY = window.scrollY;
-      
-      // Check if page is scrolled
-      if (currentScrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
       
       if (currentScrollY <= 10) {
         // Always show navbar at the top of the page
@@ -86,12 +76,8 @@ export const TopNav = () => {
       "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
       isMobile ? (
         cn(
-          "left-0 px-4 w-full",
-          isVisible ? "translate-y-0" : "-translate-y-full",
-          "transition-colors duration-300", // Add smooth transition for background color
-          isScrolled 
-            ? "bg-white dark:bg-[#1c1c1e]" 
-            : "bg-gradient-to-b from-[#FFFFFF] to-[#f4f4f4] dark:from-[#1c1c1e] dark:to-[#161618]"
+          "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full",
+          isVisible ? "translate-y-0" : "-translate-y-full"
         )
       ) : (
         cn(
