@@ -142,11 +142,11 @@ const Deindexing = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col-reverse md:flex-row justify-between md:items-end w-full gap-4 md:gap-0">
-              <TabsList className="h-10 w-full md:w-auto">
-                <TabsTrigger value="incoming" className="flex-1">
+              <TabsList className="h-10 w-full md:w-auto rounded-full">
+                <TabsTrigger value="incoming" className="flex-1 rounded-full data-[state=active]:rounded-full">
                   {t('deindexing.incoming.links')}
                 </TabsTrigger>
-                <TabsTrigger value="deindexed" className="flex-1">
+                <TabsTrigger value="deindexed" className="flex-1 rounded-full data-[state=active]:rounded-full">
                   {t('deindexing.deindexed.links')}
                 </TabsTrigger>
               </TabsList>
@@ -154,7 +154,7 @@ const Deindexing = () => {
               <div className="flex flex-col items-end">
                 <Button 
                   variant={hasReachedLimit ? "outline" : "default"}
-                  className={`h-10 flex items-center gap-2 ${
+                  className={`h-10 flex items-center gap-2 rounded-full ${
                     hasReachedLimit 
                       ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed" 
                       : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
