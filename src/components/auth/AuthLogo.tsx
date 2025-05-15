@@ -91,7 +91,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
     >
       {isAdminRoute ? (
         <img 
-          src="/lovable-uploads/digitaltskydd-admin-logo.svg" 
+          src="/lovable-uploads/ds-app-logo-auth-admin.png" 
           alt="Admin Logo" 
           className="h-[2rem] w-auto object-contain" 
         />
