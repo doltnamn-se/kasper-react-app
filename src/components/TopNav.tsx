@@ -76,8 +76,9 @@ export const TopNav = () => {
       "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
       isMobile ? (
         cn(
-          "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full",
-          isVisible ? "translate-y-0" : "-translate-y-full"
+          "left-0 px-4 w-full",
+          isVisible ? "translate-y-0" : "-translate-y-full",
+          "bg-gradient-to-b from-[#FFFFFF] to-[#f4f4f4] dark:from-[#1c1c1e] dark:to-[#161618]"
         )
       ) : (
         cn(
