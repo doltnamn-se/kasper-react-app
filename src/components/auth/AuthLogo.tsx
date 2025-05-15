@@ -70,12 +70,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
         {...props}
       >
         <img 
-          src="/lovable-uploads/digitaltskydd-se-logo-dark.svg" 
+          src="/lovable-uploads/digitaltskydd.se-logo-free-dark.svg" 
           alt="Logo" 
           className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
         />
         <img 
-          src="/lovable-uploads/digitaltskydd-se-logo-light.svg" 
+          src="/lovable-uploads/digitaltskydd.se-logo-free-light.svg" 
           alt="Logo" 
           className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
         />
