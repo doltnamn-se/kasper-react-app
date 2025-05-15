@@ -42,16 +42,13 @@ export const ProfileSection = () => {
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
 
-  // Fix: Use correct tooltip key based on actual plan
+  // Fix: Create proper tooltip keys based on subscription plan
   const getSubscriptionTooltipKey = (plan: string | null | undefined) => {
     if (!plan) return 'subscription.tooltip.1month';
     
-    // Convert plan format (e.g., "1_month" to "subscription.tooltip.1month")
+    // Convert plan format (e.g., "1_month" to "1month")
     const planKey = plan.replace('_', '');
-    const tooltipKey = `subscription.tooltip.${planKey}` as keyof typeof t;
-    
-    // Check if the key exists, otherwise fallback to default
-    return tooltipKey in t ? tooltipKey : 'subscription.tooltip.1month';
+    return `subscription.tooltip.${planKey}` as keyof typeof t;
   };
 
   return (
@@ -81,7 +78,7 @@ export const ProfileSection = () => {
               side="right" 
               className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm z-[2000]"
             >
-              <p>{t(getSubscriptionTooltipKey(customerData?.subscription_plan) as any)}</p>
+              <p>{t(getSubscriptionTooltipKey(customerData?.subscription_plan))}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

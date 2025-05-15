@@ -47,22 +47,11 @@ export const SubscriptionBadge = ({ plan }: SubscriptionBadgeProps) => {
   const tooltipContent = getTooltipContent(plan);
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Badge 
-            variant="static"
-            className="bg-[#e8e8e8] dark:bg-[#303032] text-[#000000] dark:text-[#ffffff] py-1.5 font-medium" 
-          >
-            {getSubscriptionLabel(plan)}
-          </Badge>
-        </TooltipTrigger>
-        {tooltipContent && (
-          <TooltipContent>
-            <p>{tooltipContent}</p>
-          </TooltipContent>
-        )}
-      </Tooltip>
-    </TooltipProvider>
+    <Badge 
+      variant="static"
+      className="bg-[#e8e8e8] dark:bg-[#303032] text-[#000000] dark:text-[#ffffff] py-1.5 font-medium" 
+    >
+      {getSubscriptionLabel(plan)}
+    </Badge>
   );
 };
