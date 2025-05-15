@@ -12,6 +12,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Translations } from "@/translations/types";
 
 export const ProfileSection = () => {
   const { userProfile, userEmail } = useUserProfile();
@@ -43,12 +44,26 @@ export const ProfileSection = () => {
   const lastName = nameParts.slice(1).join(' ');
 
   // Fix: Create proper tooltip keys based on subscription plan
-  const getSubscriptionTooltipKey = (plan: string | null | undefined) => {
+  const getSubscriptionTooltipKey = (plan: string | null | undefined): keyof Translations => {
     if (!plan) return 'subscription.tooltip.1month';
     
     // Convert plan format (e.g., "1_month" to "1month")
     const planKey = plan.replace('_', '');
-    return `subscription.tooltip.${planKey}` as keyof typeof t;
+    const tooltipKey = `subscription.tooltip.${planKey}`;
+    
+    // Use type assertion with a check for common plans
+    if (
+      tooltipKey === 'subscription.tooltip.1month' || 
+      tooltipKey === 'subscription.tooltip.3months' || 
+      tooltipKey === 'subscription.tooltip.6months' || 
+      tooltipKey === 'subscription.tooltip.12months' || 
+      tooltipKey === 'subscription.tooltip.24months'
+    ) {
+      return tooltipKey as keyof Translations;
+    }
+    
+    // Fallback to default for any unknown plans
+    return 'subscription.tooltip.1month';
   };
 
   return (
