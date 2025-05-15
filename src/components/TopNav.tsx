@@ -88,6 +88,7 @@ export const TopNav = () => {
         cn(
           "left-0 px-4 w-full",
           isVisible ? "translate-y-0" : "-translate-y-full",
+          "transition-colors duration-300", // Add smooth transition for background color
           isScrolled 
             ? "bg-white dark:bg-[#1c1c1e]" 
             : "bg-gradient-to-b from-[#FFFFFF] to-[#f4f4f4] dark:from-[#1c1c1e] dark:to-[#161618]"
