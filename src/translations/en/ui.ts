@@ -1,3 +1,4 @@
+
 import { UITranslations } from '../types/ui';
 
 export const ui: UITranslations = {
@@ -21,11 +22,11 @@ export const ui: UITranslations = {
   'subscription.24months': '24 Mo',
   'subscription.none': 'No Plan',
   'subscription.select': 'Select Plan',
-  'subscription.tooltip.1month': 'Monthly subscription',
-  'subscription.tooltip.3months': 'Three-month subscription',
-  'subscription.tooltip.6months': 'Six-month subscription',
-  'subscription.tooltip.12months': 'Annual subscription',
-  'subscription.tooltip.24months': 'Two-year subscription',
+  'subscription.tooltip.1month': 'Monthly plan',
+  'subscription.tooltip.3months': 'Quarterly plan',
+  'subscription.tooltip.6months': 'Six month plan',
+  'subscription.tooltip.12months': 'Annual plan',
+  'subscription.tooltip.24months': 'Bi-annual plan',
   'privacy': 'Privacy Policy',
   'license': 'License Terms',
   'terms': 'Terms of Use',
