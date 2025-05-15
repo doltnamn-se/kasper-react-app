@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -77,9 +76,8 @@ export const TopNav = () => {
       "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
       isMobile ? (
         cn(
-          "left-0 px-4 w-full",
-          isVisible ? "translate-y-0" : "-translate-y-full",
-          "bg-gradient-to-b from-[#F3F3F3] to-[#f4f4f4] dark:from-[#403E43] dark:to-[#161618]"
+          "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full",
+          isVisible ? "translate-y-0" : "-translate-y-full"
         )
       ) : (
         cn(
