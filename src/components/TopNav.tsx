@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -78,7 +79,7 @@ export const TopNav = () => {
         cn(
           "left-0 px-4 w-full",
           isVisible ? "translate-y-0" : "-translate-y-full",
-          "bg-gradient-to-b from-[#FFFFFF] to-[#f4f4f4] dark:from-[#1c1c1e] dark:to-[#161618]"
+          "bg-gradient-to-b from-[#F3F3F3] to-[#f4f4f4] dark:from-[#403E43] dark:to-[#161618]"
         )
       ) : (
         cn(
