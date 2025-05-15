@@ -42,15 +42,10 @@ export const ProfileSection = () => {
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
 
+  // Fix: Use correct tooltip key based on actual plan
   const getSubscriptionTooltipKey = (plan: string | null | undefined) => {
-    switch (plan) {
-      case '6_months':
-        return t('subscription.tooltip.6months');
-      case '12_months':
-        return t('subscription.tooltip.12months');
-      default:
-        return t('subscription.tooltip.1month');
-    }
+    if (!plan) return t('subscription.tooltip.1month');
+    return t(`subscription.tooltip.${plan}`);
   };
 
   return (
