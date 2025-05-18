@@ -156,11 +156,11 @@ const Deindexing = () => {
               <div className="flex flex-col items-end">
                 <Button 
                   variant={hasReachedLimit ? "outline" : "default"}
-                  className={`px-4 py-0 flex items-center gap-2 ${
+                  className={`px-4 py-0 flex items-center gap-2 h-10 ${
                     hasReachedLimit 
-                      ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed" 
-                      : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                  } ${isMobile ? "rounded-full" : ""}`}
+                      ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed h-10" 
+                      : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7] h-10"
+                  } ${isMobile ? "rounded-full" : ""} h-[2.5rem]`}
                   disabled={hasReachedLimit}
                   onClick={handleNewLinkClick}
                 >
