@@ -63,7 +63,7 @@ export const useAuthStatus = () => {
 
     // Set up the auth state change listener BEFORE checking the session
     // to prevent race conditions
-    authSubscription = supabase.auth.onAuthStateChange((event, session) => {
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("useAuthStatus: Auth state changed:", event);
       
       if (!mounted) return;
@@ -89,7 +89,10 @@ export const useAuthStatus = () => {
       setIsAuthenticated(!!session);
       setUserId(session?.user?.id);
       setIsLoading(false);
-    }).subscription;
+    });
+    
+    // Store the subscription for cleanup
+    authSubscription = data.subscription;
 
     // Now check for existing session
     checkSession();

@@ -95,7 +95,7 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
     };
 
     // Set up auth state change listener first
-    authSubscription = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("AuthRoute: Auth state changed:", event);
       if (!mounted) return;
       
@@ -127,7 +127,10 @@ export const AuthRoute = ({ children }: AuthRouteProps) => {
       
       setSession(!!session);
       setIsLoading(false);
-    }).subscription;
+    });
+
+    // Store the subscription for cleanup
+    authSubscription = data.subscription;
 
     // Check initial auth status
     checkAuth();
