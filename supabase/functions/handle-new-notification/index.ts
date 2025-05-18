@@ -54,30 +54,55 @@ async function sendPushNotification(notification: Notification) {
     console.log(`Found ${tokenList.length} device tokens for user:`, notification.user_id);
     console.log("Token samples:", tokenList.map(t => t.substring(0, 10) + "..."));
     
-    // Invoke the send-push-notification function
+    // Invoke the send-push-notification function with explicit project URL
     console.log("Invoking send-push-notification function with tokens");
-    const { data: response, error: functionError } = await supabase.functions.invoke(
-      "send-push-notification",
-      {
-        body: {
-          tokens: tokenList,
-          title: notification.title,
-          body: notification.message,
-          data: {
-            type: notification.type,
-            notificationId: notification.id
-          }
+    
+    // Get the current project URL to explicitly call the function
+    const projectUrl = supabaseUrl;
+    
+    try {
+      // Direct fetch call to ensure we reach the function
+      const response = await fetch(
+        `${projectUrl}/functions/v1/send-push-notification`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${supabaseKey}`
+          },
+          body: JSON.stringify({
+            tokens: tokenList,
+            title: notification.title,
+            body: notification.message,
+            data: {
+              type: notification.type,
+              notificationId: notification.id
+            }
+          })
         }
+      );
+      
+      // Log the full response for debugging
+      const responseText = await response.text();
+      console.log(`Push notification response [${response.status}]: ${responseText}`);
+      
+      if (!response.ok) {
+        console.error("Error response from send-push-notification:", responseText);
+        return { success: false, error: responseText };
       }
-    );
-    
-    if (functionError) {
-      console.error("Error from send-push-notification:", functionError);
-      return { success: false, error: functionError };
+      
+      try {
+        const responseData = JSON.parse(responseText);
+        console.log("Push notification sent successfully:", responseData);
+        return { success: true, data: responseData };
+      } catch (e) {
+        console.log("Push notification result (non-JSON):", responseText);
+        return { success: true, data: { message: "Notification sent" } };
+      }
+    } catch (fetchError) {
+      console.error("Error calling send-push-notification:", fetchError);
+      return { success: false, error: fetchError.message };
     }
-    
-    console.log("Push notification sent successfully:", response);
-    return { success: true, data: response };
   } catch (error) {
     console.error("Error in sendPushNotification:", error);
     return { success: false, error };

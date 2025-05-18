@@ -81,11 +81,21 @@ class PushNotificationService {
             last_updated: new Date().toISOString()
           };
 
+          // Try to delete any existing tokens first to avoid conflicts
+          try {
+            await supabase
+              .from('device_tokens')
+              .delete()
+              .eq('user_id', session.user.id)
+              .eq('token', token.value);
+          } catch (deleteErr) {
+            console.log('Error deleting existing token (may not exist):', deleteErr);
+          }
+
+          // Insert the new token
           const { error } = await supabase
             .from('device_tokens')
-            .upsert(deviceToken, {
-              onConflict: 'user_id, token'
-            });
+            .insert(deviceToken);
 
           if (error) {
             console.error('Error saving push token:', error);
@@ -131,7 +141,8 @@ class PushNotificationService {
       // Error handling
       PushNotifications.addListener('registrationError', (error) => {
         console.error('Error on push notification registration:', error);
-        // Don't show error to user to prevent bad experience
+        // Log the error details
+        console.error('Registration error details:', JSON.stringify(error));
       });
     } catch (error) {
       console.error('Error setting up notification listeners:', error);
