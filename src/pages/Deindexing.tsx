@@ -137,9 +137,28 @@ const Deindexing = () => {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
-          {t('nav.my.links')} {isAdmin ? '- Admin View' : ''}
-        </h1>
+        {/* Modified header section with flex layout for mobile */}
+        <div className="flex flex-row justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+            {t('nav.my.links')} {isAdmin ? '- Admin View' : ''}
+          </h1>
+          
+          {isMobile && (
+            <Button 
+              variant={hasReachedLimit ? "outline" : "default"}
+              className={`px-4 py-0 flex items-center gap-2 ${
+                hasReachedLimit 
+                  ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed h-10" 
+                  : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7] h-10"
+              } rounded-full h-[2.5rem]`}
+              disabled={hasReachedLimit}
+              onClick={handleNewLinkClick}
+            >
+              {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {language === 'sv' ? 'Ny länk' : 'New link'}
+            </Button>
+          )}
+        </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex flex-col space-y-4">
@@ -153,21 +172,24 @@ const Deindexing = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="flex flex-col items-end">
-                <Button 
-                  variant={hasReachedLimit ? "outline" : "default"}
-                  className={`px-4 py-0 flex items-center gap-2 h-10 ${
-                    hasReachedLimit 
-                      ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed h-10" 
-                      : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7] h-10"
-                  } ${isMobile ? "rounded-full" : ""} h-[2.5rem]`}
-                  disabled={hasReachedLimit}
-                  onClick={handleNewLinkClick}
-                >
-                  {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                  {language === 'sv' ? 'Ny länk' : 'New link'}
-                </Button>
-              </div>
+              {/* Show button in this position only on desktop */}
+              {!isMobile && (
+                <div className="flex flex-col items-end">
+                  <Button 
+                    variant={hasReachedLimit ? "outline" : "default"}
+                    className={`px-4 py-0 flex items-center gap-2 h-10 ${
+                      hasReachedLimit 
+                        ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed h-10" 
+                        : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7] h-10"
+                    } h-[2.5rem]`}
+                    disabled={hasReachedLimit}
+                    onClick={handleNewLinkClick}
+                  >
+                    {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                    {language === 'sv' ? 'Ny länk' : 'New link'}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
