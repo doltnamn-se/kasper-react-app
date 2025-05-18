@@ -38,7 +38,7 @@ export const IncomingLinks = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
             <div className="space-y-2">
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                {language === 'sv' ? 'Länk' : 'Link'}
+                {t('deindexing.url')}
               </p>
               <a 
                 href={url.url} 
