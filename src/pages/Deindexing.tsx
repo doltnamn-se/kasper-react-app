@@ -1,4 +1,3 @@
-
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -154,7 +153,7 @@ const Deindexing = () => {
               <div className="flex flex-col items-end">
                 <Button 
                   variant={hasReachedLimit ? "outline" : "default"}
-                  className={`px-4 py-1.5 flex items-center gap-2 ${
+                  className={`px-4 py-0.5 flex items-center gap-2 ${
                     hasReachedLimit 
                       ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed" 
                       : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
