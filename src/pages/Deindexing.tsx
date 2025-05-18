@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -141,11 +142,11 @@ const Deindexing = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col-reverse md:flex-row justify-between md:items-end w-full gap-4 md:gap-0">
-              <TabsList className="h-auto w-full md:w-auto rounded-full p-1 py-1 shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)]">
-                <TabsTrigger value="incoming" className="flex-1 rounded-full data-[state=active]:rounded-full py-2 data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+              <TabsList className="w-full md:w-auto">
+                <TabsTrigger value="incoming" className="flex-1">
                   {t('deindexing.incoming.links')}
                 </TabsTrigger>
-                <TabsTrigger value="deindexed" className="flex-1 rounded-full data-[state=active]:rounded-full py-2 data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+                <TabsTrigger value="deindexed" className="flex-1">
                   {t('deindexing.deindexed.links')}
                 </TabsTrigger>
               </TabsList>
