@@ -56,7 +56,7 @@ async function sendPushNotification(notification: Notification) {
     
     // Invoke the send-push-notification function
     console.log("Invoking send-push-notification function with tokens");
-    const response = await supabase.functions.invoke(
+    const { data: response, error: functionError } = await supabase.functions.invoke(
       "send-push-notification",
       {
         body: {
@@ -71,13 +71,13 @@ async function sendPushNotification(notification: Notification) {
       }
     );
     
-    if (response.error) {
-      console.error("Error response from send-push-notification:", response.error);
-      return { success: false, error: response.error };
+    if (functionError) {
+      console.error("Error from send-push-notification:", functionError);
+      return { success: false, error: functionError };
     }
     
-    console.log("Push notification sent successfully:", response.data);
-    return { success: true, data: response.data };
+    console.log("Push notification sent successfully:", response);
+    return { success: true, data: response };
   } catch (error) {
     console.error("Error in sendPushNotification:", error);
     return { success: false, error };

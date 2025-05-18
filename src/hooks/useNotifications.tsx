@@ -25,6 +25,7 @@ export const useNotifications = () => {
     const initPushNotifications = async () => {
       if (isNativePlatform()) {
         try {
+          console.log('Initializing push notifications from useNotifications hook');
           await pushNotificationService.register();
         } catch (err) {
           // Silently handle errors to prevent app crashes

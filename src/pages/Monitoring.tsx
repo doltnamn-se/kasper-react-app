@@ -8,6 +8,8 @@ import { useUserMonitoring } from "@/components/monitoring/hooks/useUserMonitori
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { UserMonitoringUrlList } from "@/components/monitoring/UserMonitoringUrlList";
+import { pushNotificationService } from "@/services/pushNotificationService";
+import { isNativePlatform } from "@/capacitor";
 
 const Monitoring = () => {
   const { language } = useLanguage();
@@ -26,6 +28,18 @@ const Monitoring = () => {
       "Bevakning | Digitaltskydd.se" : 
       "Monitoring | Digitaltskydd.se";
   }, [language]);
+
+  // Initialize push notifications if on a native platform
+  useEffect(() => {
+    const initPushNotifications = async () => {
+      if (isNativePlatform()) {
+        console.log('Initializing push notifications from Monitoring page');
+        await pushNotificationService.register();
+      }
+    };
+
+    initPushNotifications();
+  }, []);
 
   // Add effect to mark monitoring notifications as read when the page is visited
   useEffect(() => {
