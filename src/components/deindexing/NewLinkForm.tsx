@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Input } from "@/components/ui/input";
@@ -112,7 +111,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleClose}>
-        <DrawerContent className="px-4 pb-4 pt-6 h-[90vh] z-[10000]">
+        <DrawerContent className="px-4 pb-4 pt-6 h-[50vh] z-[10000]">
           <div className="mx-auto w-full max-w-sm">
             <h3 className="text-lg font-semibold mb-4">
               {language === 'sv' ? 'Lägg till ny länk' : 'Add new link'}
