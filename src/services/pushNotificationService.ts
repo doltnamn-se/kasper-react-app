@@ -8,6 +8,7 @@ import { DeviceToken } from '@/types/device-token';
 // Service for handling push notifications
 class PushNotificationService {
   private initialized = false;
+  private currentToken: string | null = null;
 
   // Register device for push notifications and handle events
   async register() {
@@ -60,6 +61,7 @@ class PushNotificationService {
       // On registration success, save the token to the database
       PushNotifications.addListener('registration', async (token) => {
         console.log('🔔 Push registration success! Token:', token.value);
+        this.currentToken = token.value;
         
         try {
           // Get current user
@@ -69,61 +71,93 @@ class PushNotificationService {
             return;
           }
 
-          console.log('Saving push token to database for user:', session.user.id);
+          console.log('Managing push token for user:', session.user.id);
           
-          // Save token to database
-          const deviceToken: DeviceToken = {
-            user_id: session.user.id,
-            token: token.value,
-            device_type: isNativePlatform() ? (navigator.userAgent.includes('Android') ? 'android' : 'ios') : 'web',
-            last_updated: new Date().toISOString()
-          };
-
-          // Try to delete any existing tokens with this value first
-          const { error: deleteError } = await supabase
+          // Determine device type
+          const deviceType = isNativePlatform() 
+            ? (navigator.userAgent.includes('Android') ? 'android' : 'ios') 
+            : 'web';
+          
+          // Get existing tokens for this user
+          const { data: existingTokens } = await supabase
             .from('device_tokens')
-            .delete()
-            .eq('token', token.value);
+            .select('*')
+            .eq('user_id', session.user.id);
             
-          if (deleteError) {
-            console.log('Error deleting existing token (may not exist):', deleteError);
-          } else {
-            console.log('Deleted any existing token with same value');
-          }
-
-          // Insert the new token
-          const { data, error } = await supabase
-            .from('device_tokens')
-            .insert(deviceToken);
-
-          if (error) {
-            console.error('Error saving push token:', error);
-            // Try upsert as a fallback
-            const { error: upsertError } = await supabase
+          console.log('Existing tokens for user:', existingTokens?.length || 0);
+          
+          // Check if this exact token already exists
+          const tokenExists = existingTokens?.some(t => t.token === token.value);
+          
+          if (tokenExists) {
+            console.log('Token already exists for this user, updating last_updated');
+            // Update the last_updated timestamp
+            const { error: updateError } = await supabase
               .from('device_tokens')
-              .upsert(deviceToken, { onConflict: 'user_id,token' });
+              .update({ last_updated: new Date().toISOString() })
+              .eq('user_id', session.user.id)
+              .eq('token', token.value);
               
-            if (upsertError) {
-              console.error('Error upserting token:', upsertError);
+            if (updateError) {
+              console.error('Error updating token timestamp:', updateError);
             } else {
-              console.log('Push token upserted successfully');
+              console.log('Token timestamp updated successfully');
             }
           } else {
-            console.log('Push token saved successfully:', data);
+            // Check if we should replace an existing token for the same device type
+            const sameDeviceToken = existingTokens?.find(t => t.device_type === deviceType);
             
-            // Verify token was saved
-            const { data: savedTokens } = await supabase
-              .from('device_tokens')
-              .select('*')
-              .eq('user_id', session.user.id);
-            
-            console.log('Token verification result:', savedTokens);
+            if (sameDeviceToken) {
+              console.log('Replacing existing token for same device type');
+              
+              // Update the existing record instead of creating a new one
+              const { error: updateError } = await supabase
+                .from('device_tokens')
+                .update({ 
+                  token: token.value,
+                  last_updated: new Date().toISOString() 
+                })
+                .eq('id', sameDeviceToken.id);
+                
+              if (updateError) {
+                console.error('Error updating device token:', updateError);
+              } else {
+                console.log('Device token updated successfully');
+              }
+            } else {
+              console.log('Creating new token record for user');
+              
+              // Create new device token record
+              const deviceToken: DeviceToken = {
+                user_id: session.user.id,
+                token: token.value,
+                device_type: deviceType,
+                last_updated: new Date().toISOString()
+              };
+
+              const { error } = await supabase
+                .from('device_tokens')
+                .insert(deviceToken);
+
+              if (error) {
+                console.error('Error saving push token:', error);
+              } else {
+                console.log('Push token saved successfully');
+              }
+            }
           }
           
-          // Log the token for debugging
+          // Verify token was saved/updated
+          const { data: savedTokens } = await supabase
+            .from('device_tokens')
+            .select('*')
+            .eq('user_id', session.user.id);
+          
+          console.log('Current device tokens for user:', savedTokens);
           toast.success('Push notifications enabled');
+          
         } catch (err) {
-          console.error('Error saving push token to database:', err);
+          console.error('Error managing push token:', err);
         }
       });
 
@@ -152,6 +186,32 @@ class PushNotificationService {
       });
     } catch (error) {
       console.error('Error setting up notification listeners:', error);
+    }
+  }
+
+  // Clean up tokens when user logs out
+  async clearTokens() {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        console.log('No active session, nothing to clear');
+        return;
+      }
+      
+      // Delete all tokens associated with this user
+      const { error } = await supabase
+        .from('device_tokens')
+        .delete()
+        .eq('user_id', session.user.id);
+        
+      if (error) {
+        console.error('Error clearing device tokens:', error);
+      } else {
+        console.log('Device tokens cleared successfully');
+        this.currentToken = null;
+      }
+    } catch (error) {
+      console.error('Error clearing tokens:', error);
     }
   }
 

@@ -11,6 +11,7 @@ import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
+import { supabase } from "@/integrations/supabase/client";
 
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
@@ -60,6 +61,18 @@ function App() {
     setTimeout(() => {
       initializePushNotifications();
     }, 1000);
+  }, []);
+
+  // Listen for auth state changes to manage push notification tokens
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') {
+        console.log('User signed out, clearing device tokens');
+        pushNotificationService.clearTokens();
+      }
+    });
+    
+    return () => subscription.unsubscribe();
   }, []);
 
   // Hide the splash screen after the app is fully loaded and rendered
