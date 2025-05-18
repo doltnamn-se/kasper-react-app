@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, Bell, CircleFadingArrowUp, MessageSquareText } from "lucide-react";
@@ -31,8 +30,8 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   // Get the display name from userProfile or fall back to email
   const displayName = userProfile?.display_name || userEmail || t('profile.manage');
   
-  // Check if user is on 24-month plan - safely access the property
-  const isOn24MonthPlan = userProfile?.subscription_plan === '24_months';
+  // Updated condition: Show button only if user is not on 24-month plan AND has a subscription plan
+  const shouldShowPlanButton = userProfile?.subscription_plan !== '24_months' && userProfile?.subscription_plan !== null;
 
   return (
     <>
@@ -56,8 +55,8 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         
         <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
         
-        {/* SWAPPED POSITIONS: Plan change button first */}
-        {!isOn24MonthPlan && (
+        {/* Updated condition: Only show if not on 24-month plan AND has a subscription plan */}
+        {shouldShowPlanButton && (
           <>
             <DropdownMenuItem 
               className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d] flex flex-col items-start"
