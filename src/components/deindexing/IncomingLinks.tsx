@@ -61,7 +61,7 @@ export const IncomingLinks = () => {
             </div>
           </div>
           {index < sortedUrls.length - 1 && (
-            <div className="pb-4">
+            <div className="pt-2">
               <Separator className="bg-[#ededed] dark:bg-[#242424]" />
             </div>
           )}
