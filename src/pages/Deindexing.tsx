@@ -1,3 +1,4 @@
+
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,7 +7,7 @@ import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
 import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 import { Button } from "@/components/ui/button";
-import { Link2, Link2Off } from "lucide-react";
+import { Link2Off, Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
@@ -161,7 +162,7 @@ const Deindexing = () => {
                   disabled={hasReachedLimit}
                   onClick={handleNewLinkClick}
                 >
-                  {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+                  {hasReachedLimit ? <Link2Off className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                   {language === 'sv' ? 'Ny länk' : 'New link'}
                 </Button>
               </div>
