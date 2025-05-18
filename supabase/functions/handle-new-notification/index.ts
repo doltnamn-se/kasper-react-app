@@ -17,6 +17,8 @@ interface Notification {
 }
 
 async function sendPushNotification(notification: Notification) {
+  console.log("=============================================");
+  console.log("HANDLE-NEW-NOTIFICATION: Starting push notification process");
   console.log("sendPushNotification called with notification:", notification);
   
   // Create Supabase client using service role key
@@ -54,16 +56,13 @@ async function sendPushNotification(notification: Notification) {
     console.log(`Found ${tokenList.length} device tokens for user:`, notification.user_id);
     console.log("Token samples:", tokenList.map(t => t.substring(0, 10) + "..."));
     
-    // Invoke the send-push-notification function with explicit project URL
+    // Call the send-push-notification function explicitly 
     console.log("Invoking send-push-notification function with tokens");
     
-    // Get the current project URL to explicitly call the function
-    const projectUrl = supabaseUrl;
-    
     try {
-      // Direct fetch call to ensure we reach the function
+      // Direct fetch call to the edge function with full URL
       const response = await fetch(
-        `${projectUrl}/functions/v1/send-push-notification`,
+        `${supabaseUrl}/functions/v1/send-push-notification`,
         {
           method: "POST",
           headers: {
@@ -110,7 +109,8 @@ async function sendPushNotification(notification: Notification) {
 }
 
 const handler = async (req: Request) => {
-  console.log("Received request to handle-new-notification function");
+  console.log("=============================================");
+  console.log("HANDLE-NEW-NOTIFICATION: Function invoked");
   
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -119,6 +119,7 @@ const handler = async (req: Request) => {
   }
 
   try {
+    console.log("Parsing notification from request body");
     const notification: Notification = await req.json();
     console.log("Processing notification:", notification);
     

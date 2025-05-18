@@ -20,16 +20,21 @@ export const useNotifications = () => {
   const { toast } = useToast();
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // Initialize push notifications on mobile devices with error handling
+  // Initialize push notifications on mobile devices with better error handling
   useEffect(() => {
     const initPushNotifications = async () => {
       if (isNativePlatform()) {
         try {
           console.log('Initializing push notifications from useNotifications hook');
           await pushNotificationService.register();
+          
+          // Debug: Check if tokens are registered
+          setTimeout(async () => {
+            const tokens = await pushNotificationService.debugTokens();
+            console.log('Debug - Available push tokens:', tokens);
+          }, 3000);
         } catch (err) {
-          // Silently handle errors to prevent app crashes
-          console.error('Error registering for push notifications (handled):', err);
+          console.error('Error registering for push notifications:', err);
         }
       }
     };
@@ -73,7 +78,7 @@ export const useNotifications = () => {
     }
   }, [notifications]);
 
-  // Subscribe to real-time notifications
+  // Subscribe to real-time notifications with improved debugging
   useEffect(() => {
     console.log('Setting up notifications subscription...');
     const channel = supabase
@@ -86,12 +91,18 @@ export const useNotifications = () => {
           table: 'notifications',
         },
         (payload) => {
-          console.log('New notification received:', payload);
+          console.log('New notification received via realtime:', payload);
           toast({
             title: payload.new.title,
             description: payload.new.message,
           });
           refetch();
+          
+          // If on mobile, we manually trigger push notification service check
+          if (isNativePlatform()) {
+            console.log('On mobile device - checking push notification setup');
+            pushNotificationService.debugTokens();
+          }
         }
       )
       .subscribe();
