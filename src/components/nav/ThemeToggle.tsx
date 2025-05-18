@@ -11,6 +11,16 @@ export const ThemeToggle = () => {
   const { resolvedTheme, setTheme } = useTheme();
   const isDarkMode = resolvedTheme === 'dark';
 
+  // Update theme-color meta tag when theme changes
+  useEffect(() => {
+    const themeColor = isDarkMode ? '#161618' : '#f4f4f4';
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', themeColor);
+    }
+  }, [isDarkMode]);
+
   const toggleDarkMode = () => {
     setTheme(isDarkMode ? 'light' : 'dark');
   };
