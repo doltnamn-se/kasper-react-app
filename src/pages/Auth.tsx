@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +24,7 @@ const Auth = () => {
   const setVersion = useVersionStore((state) => state.setVersion);
   const [versionInitialized, setVersionInitialized] = useState(false);
   const [showPricingTable, setShowPricingTable] = useState(false);
+  const [processingAuthChange, setProcessingAuthChange] = useState(false);
 
   // Use the appropriate background image based on theme
   const bgImage = isDarkMode 
@@ -93,28 +95,53 @@ const Auth = () => {
   }, [language, searchParams, t, setVersion]);
 
   useEffect(() => {
+    console.log("Auth page: Setting up auth state change listener");
+    let mounted = true;
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log("Auth page: Auth state changed:", event, session);
+        console.log("Auth page: Auth state changed:", event, "Session:", !!session);
         
-        if (event === "PASSWORD_RECOVERY") {
-          console.log("Auth page: Password recovery event detected");
-          setIsResetPasswordMode(true);
-          return;
-        }
+        if (!mounted || processingAuthChange) return;
         
-        if (event === "SIGNED_IN" && session && !isResetPasswordMode) {
-          console.log("Auth page: User signed in, navigating to home");
-          navigate("/");
-        } else if (event === "SIGNED_OUT") {
-          console.log("Auth page: User signed out");
-          setErrorMessage("");
+        try {
+          setProcessingAuthChange(true);
+          
+          if (event === "PASSWORD_RECOVERY") {
+            console.log("Auth page: Password recovery event detected");
+            setIsResetPasswordMode(true);
+            setProcessingAuthChange(false);
+            return;
+          }
+          
+          if (event === "SIGNED_IN" && session && !isResetPasswordMode) {
+            console.log("Auth page: User signed in, navigating to home");
+            // Use a timeout to avoid potential race conditions
+            setTimeout(() => {
+              if (mounted) {
+                navigate("/");
+              }
+              setProcessingAuthChange(false);
+            }, 100);
+          } else if (event === "SIGNED_OUT") {
+            console.log("Auth page: User signed out");
+            setErrorMessage("");
+            setProcessingAuthChange(false);
+          } else {
+            setProcessingAuthChange(false);
+          }
+        } catch (error) {
+          console.error("Auth page: Error handling auth state change", error);
+          setProcessingAuthChange(false);
         }
       }
     );
 
-    return () => subscription.unsubscribe();
-  }, [navigate, isResetPasswordMode]);
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [navigate, isResetPasswordMode, processingAuthChange]);
 
   return (
     <div className="h-screen overflow-hidden auth-page flex">

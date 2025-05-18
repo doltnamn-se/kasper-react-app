@@ -47,23 +47,8 @@ export const supabase = createClient<Database>(
     console.log('Supabase client initialized successfully with URL:', SUPABASE_URL);
     
     if (session) {
-      console.log('Active session found:', session.user.id);
-      try {
-        // Test the user_presence table access
-        const { data: presenceData, error: presenceError } = await supabase
-          .from('user_presence')
-          .select('*')
-          .limit(1)
-          .maybeSingle();
-        
-        if (presenceError) {
-          console.error('Error testing user_presence access:', presenceError);
-        } else {
-          console.log('Successfully tested user_presence access:', presenceData);
-        }
-      } catch (err) {
-        console.error('Error testing database access:', err);
-      }
+      console.log('Active session found. User:', session.user.id);
+      // Don't make additional calls here to prevent auth loops
     } else {
       console.log('No active session');
     }
