@@ -65,10 +65,16 @@ function App() {
 
   // Listen for auth state changes to manage push notification tokens
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
         console.log('User signed out, clearing device tokens');
         pushNotificationService.clearTokens();
+      } else if (event === 'SIGNED_IN' && session) {
+        console.log('User signed in, checking/fixing device tokens');
+        // Fix any token mismatches on login
+        setTimeout(() => {
+          pushNotificationService.fixTokenMismatch();
+        }, 2000); // Wait a bit to ensure the token is registered first
       }
     });
     
