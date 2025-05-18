@@ -40,7 +40,7 @@ export const StepGuide = ({
 
   return (
     <div className="space-y-4">
-      <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium">
+      <Badge variant="outline" className="w-fit bg-black dark:bg-white text-white dark:text-black border-none font-medium rounded-full">
         {t('step.number', { number: currentStep })}
       </Badge>
       <GuideCard
