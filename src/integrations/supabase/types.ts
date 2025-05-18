@@ -583,6 +583,15 @@ export type Database = {
         Args: Record<PropertyKey, never> | { user_id: string }
         Returns: boolean
       }
+      test_push_notification: {
+        Args: {
+          user_id: string
+          title: string
+          message: string
+          notification_type?: string
+        }
+        Returns: Json
+      }
       update_user_password: {
         Args: { user_id: string; new_password: string }
         Returns: undefined
