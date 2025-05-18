@@ -56,7 +56,7 @@ async function sendPushNotification(notification: Notification) {
     console.log(`Found ${tokenList.length} device tokens for user:`, notification.user_id);
     console.log("Token samples:", tokenList.map(t => t.substring(0, 10) + "..."));
     
-    // Call the send-push-notification function explicitly 
+    // Call the send-push-notification function directly with full URL 
     console.log("Invoking send-push-notification function with tokens");
     
     try {

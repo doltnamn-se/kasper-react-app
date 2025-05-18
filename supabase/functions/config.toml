@@ -9,3 +9,4 @@ verify_jwt = false
 
 [notify-status-change]
 verify_jwt = false
+
