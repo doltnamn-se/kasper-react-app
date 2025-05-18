@@ -10,11 +10,13 @@ import { Link2Off, Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Deindexing = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
   const [showNewLinkForm, setShowNewLinkForm] = useState(false);
+  const isMobile = useIsMobile();
 
   // Add useEffect to mark deindexing notifications as read
   useEffect(() => {
@@ -157,7 +159,7 @@ const Deindexing = () => {
                     hasReachedLimit 
                       ? "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-not-allowed" 
                       : "bg-black text-white hover:bg-[#333333] dark:bg-white dark:text-black dark:hover:bg-[#c7c7c7]"
-                  }`}
+                  } ${isMobile ? "rounded-full" : ""}`}
                   disabled={hasReachedLimit}
                   onClick={handleNewLinkClick}
                 >
