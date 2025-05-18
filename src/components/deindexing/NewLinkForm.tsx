@@ -97,6 +97,8 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
         className="flex-1"
         required
         autoFocus
+        // Prevent iOS/mobile browsers from zooming in and shifting the layout
+        style={{ fontSize: '16px' }}
       />
       <Button 
         type="submit" 
@@ -112,7 +114,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleClose}>
-        <DrawerContent className="px-4 pb-4 pt-6 h-[50vh] z-[10000]">
+        <DrawerContent className="px-4 pb-4 pt-6 h-[50vh] z-[10000] focus-within:h-[50vh]">
           <div className="mx-auto w-full max-w-sm">
             <h3 className="text-lg font-semibold mb-4">
               {language === 'sv' ? 'Lägg till ny länk' : 'Add new link'}
