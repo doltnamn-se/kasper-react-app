@@ -7,7 +7,6 @@ import { format } from "date-fns";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
-import { useCustomerPrivacyScore } from "@/hooks/useCustomerPrivacyScore";
 
 interface AccountInfoProps {
   customer: CustomerWithProfile;
@@ -27,7 +26,6 @@ export const AccountInfo = ({
 }: AccountInfoProps) => {
   const { language, t } = useLanguage();
   const [isUpdatingMrkoll, setIsUpdatingMrkoll] = useState(false);
-  const { calculateScore } = useCustomerPrivacyScore(customer.id || '');
   
   const handleMrkollRemovalChange = async (value: string) => {
     if (!customer.id) return;
@@ -52,8 +50,6 @@ export const AccountInfo = ({
       setIsUpdatingMrkoll(false);
     }
   };
-
-  const privacyScore = calculateScore();
 
   return (
     <div className="w-full md:max-w-[220px]">
@@ -99,17 +95,6 @@ export const AccountInfo = ({
                 </div>
               </div>
             </RadioGroup>
-          </div>
-        )}
-
-        {isSuperAdmin && (
-          <div className="space-y-2">
-            <p className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-              Privacy Score
-            </p>
-            <div className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF]">
-              {privacyScore}%
-            </div>
           </div>
         )}
       </div>
