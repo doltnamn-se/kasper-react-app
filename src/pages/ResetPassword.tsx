@@ -14,6 +14,7 @@ const ResetPassword = () => {
   const { resolvedTheme } = useTheme();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
   const { t, language } = useLanguage();
   
   // Use the appropriate background image based on theme
@@ -30,39 +31,41 @@ const ResetPassword = () => {
     console.log("URL:", window.location.href);
     console.log("Search params:", Object.fromEntries(searchParams.entries()));
     
-    const verifyRecoveryFlow = async () => {
-      const accessToken = searchParams.get('access_token');
+    const checkRecoverySession = async () => {
       const type = searchParams.get('type');
       
-      console.log("Verifying recovery flow - Access token:", accessToken ? "present" : "missing");
-      console.log("Type:", type);
+      console.log("Checking recovery session - Type:", type);
 
       if (type === 'recovery') {
-        if (!accessToken) {
-          console.error("Recovery type but no access token");
-          setError(t('error.invalid.recovery.link'));
-          return;
-        }
-
         try {
-          // Try to verify the session is valid
+          // Check if we have a valid session after the recovery link was processed
           const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-          console.log("Current session check:", session ? "exists" : "none");
+          console.log("Recovery session check:", session ? "exists" : "none");
           
           if (sessionError) {
             console.error("Session error:", sessionError);
+            setError(t('error.invalid.recovery.link'));
+            return;
           }
           
-          // Don't set error here - let the form handle the token setting
-          console.log("Recovery flow verified, proceeding to form");
+          if (session) {
+            console.log("Valid recovery session found, user can reset password");
+            setSessionReady(true);
+          } else {
+            console.error("No valid session found for recovery");
+            setError(t('error.invalid.recovery.link'));
+          }
         } catch (err) {
-          console.error("Error in recovery verification:", err);
+          console.error("Error checking recovery session:", err);
           setError(t('error.invalid.recovery.link'));
         }
+      } else {
+        console.log("Not a recovery flow, showing error");
+        setError(t('error.invalid.recovery.link'));
       }
     };
 
-    verifyRecoveryFlow();
+    checkRecoverySession();
   }, [language, searchParams, t]);
 
   return (
@@ -83,11 +86,19 @@ const ResetPassword = () => {
                 </Alert>
               )}
 
-              {!error && (
+              {!error && sessionReady && (
                 <ResetPasswordForm
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                 />
+              )}
+
+              {!error && !sessionReady && (
+                <div className="text-center">
+                  <p className="text-sm text-black dark:text-white">
+                    {t('loading')}
+                  </p>
+                </div>
               )}
             </div>
           </div>
