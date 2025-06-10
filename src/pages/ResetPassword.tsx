@@ -1,11 +1,11 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthFooter } from "@/components/auth/AuthFooter";
-import { PasswordUpdateForm } from "@/components/checklist/PasswordUpdateForm";
+import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import { AuthEyeLogo } from "@/components/auth/AuthEyeLogo";
 import { useTheme } from "next-themes";
 
@@ -13,6 +13,7 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const { resolvedTheme } = useTheme();
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { t, language } = useLanguage();
   
   // Use the appropriate background image based on theme
@@ -25,32 +26,44 @@ const ResetPassword = () => {
       "Återställ lösenord | Digitaltskydd.se" : 
       "Reset Password | Digitaltskydd.se";
     
-    const verifyToken = async () => {
+    console.log("ResetPassword page loaded");
+    console.log("URL:", window.location.href);
+    console.log("Search params:", Object.fromEntries(searchParams.entries()));
+    
+    const verifyRecoveryFlow = async () => {
       const accessToken = searchParams.get('access_token');
-      if (!accessToken) {
-        setError(t('error.invalid.recovery.link'));
-        return;
-      }
+      const type = searchParams.get('type');
+      
+      console.log("Verifying recovery flow - Access token:", accessToken ? "present" : "missing");
+      console.log("Type:", type);
 
-      try {
-        const { error: verifyError } = await supabase.auth.getSession();
-        if (verifyError) {
-          console.error("Error verifying recovery token:", verifyError);
+      if (type === 'recovery') {
+        if (!accessToken) {
+          console.error("Recovery type but no access token");
+          setError(t('error.invalid.recovery.link'));
+          return;
+        }
+
+        try {
+          // Try to verify the session is valid
+          const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+          console.log("Current session check:", session ? "exists" : "none");
+          
+          if (sessionError) {
+            console.error("Session error:", sessionError);
+          }
+          
+          // Don't set error here - let the form handle the token setting
+          console.log("Recovery flow verified, proceeding to form");
+        } catch (err) {
+          console.error("Error in recovery verification:", err);
           setError(t('error.invalid.recovery.link'));
         }
-      } catch (err) {
-        console.error("Error in recovery verification:", err);
-        setError(t('error.invalid.recovery.link'));
       }
     };
 
-    verifyToken();
+    verifyRecoveryFlow();
   }, [language, searchParams, t]);
-
-  const handleComplete = async () => {
-    await supabase.auth.signOut();
-    window.location.href = '/auth?reset_success=true';
-  };
 
   return (
     <div className="h-screen overflow-hidden auth-page flex">
@@ -71,10 +84,9 @@ const ResetPassword = () => {
               )}
 
               {!error && (
-                <PasswordUpdateForm
-                  onComplete={handleComplete}
-                  showSuccessToast={true}
-                  showSuccessAnimation={true}
+                <ResetPasswordForm
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                 />
               )}
             </div>
