@@ -48,12 +48,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       <div className="flex justify-center w-full">
         <a href="https://digitaltskydd.se/" className="relative h-16 w-64 block">
           <img 
-            src="/lovable-uploads/digitaltskydd.se-logo-dark-auth.svg" 
+            src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Logo" 
             className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
           />
           <img 
-            src="/lovable-uploads/digitaltskydd.se-logo-white-auth.svg" 
+            src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Logo" 
             className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
           />
