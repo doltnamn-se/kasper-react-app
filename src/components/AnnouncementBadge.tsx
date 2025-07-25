@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { PartyPopper } from 'lucide-react';
 
 export const AnnouncementBadge = () => {
   const { language } = useLanguage();
@@ -9,8 +10,14 @@ export const AnnouncementBadge = () => {
     : "Digitaltskydd has changed name to Kasper";
 
   return (
-    <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-6">
-      {message}
+    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-6" 
+         style={{ 
+           backgroundColor: '#d4f5bc',
+           borderColor: '#d4f5bc',
+           border: '1px solid'
+         }}>
+      <PartyPopper size={14} className="text-[#121212] dark:text-white" />
+      <span className="text-[#121212] dark:text-white">{message}</span>
     </div>
   );
 };
