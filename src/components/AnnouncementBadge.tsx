@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Megaphone } from 'lucide-react';
+import { BellRing } from 'lucide-react';
 
 export const AnnouncementBadge = () => {
   const { language } = useLanguage();
@@ -14,7 +14,7 @@ export const AnnouncementBadge = () => {
          style={{ 
            backgroundColor: '#d4f5bc'
          }}>
-      <Megaphone size={14} className="text-[#121212]" />
+      <BellRing size={14} className="text-[#121212]" />
       <span className="text-[#121212]">{message}</span>
     </div>
   );
