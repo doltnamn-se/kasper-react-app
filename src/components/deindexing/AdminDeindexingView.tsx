@@ -1,11 +1,11 @@
 
-import { useURLManagement } from "./hooks/useURLManagement";
+import { useAdminURLManagement } from "./hooks/useAdminURLManagement";
 import { URLTable } from "./URLTable";
 import { useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const AdminDeindexingView = () => {
-  const { urls, handleStatusChange, handleDeleteUrl } = useURLManagement();
+  const { urls, handleStatusChange, handleDeleteUrl } = useAdminURLManagement();
   const { t } = useLanguage();
 
   // Log the number of URLs received for debugging

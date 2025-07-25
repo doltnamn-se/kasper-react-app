@@ -1,30 +1,31 @@
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { URL, URLStatus } from "@/types/url-management";
 import { fetchAdminUrls, updateUrlStatus, deleteUrl } from "./utils/urlQueries";
-import { useUrlSubscription } from "./useUrlSubscription";
 import { useUrlNotifications } from "./useUrlNotifications";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export const useURLManagement = () => {
+export const useAdminURLManagement = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
+  // Simple query without any automatic refetching or subscriptions
   const { 
     data: urls = [], 
     refetch 
   } = useQuery({
-    queryKey: ['admin-urls'],
+    queryKey: ['admin-urls-static'],
     queryFn: async () => {
       const data = await fetchAdminUrls();
-      console.log('useURLManagement - Received URLs:', data);
+      console.log('useAdminURLManagement - Received URLs:', data);
       return data;
     },
-    staleTime: Infinity, // Never consider data stale
-    gcTime: Infinity, // Keep in cache indefinitely
-    // Remove refetchInterval completely - no automatic polling
+    staleTime: Infinity, // Never refetch automatically
+    gcTime: Infinity, // Keep in cache
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnMount: false, // Don't refetch on component mount
+    refetchOnReconnect: false, // Don't refetch on network reconnect
   });
 
   const { 
@@ -32,85 +33,78 @@ export const useURLManagement = () => {
     showErrorToast 
   } = useUrlNotifications();
 
-  // Remove real-time subscription for admin view to prevent pagination resets
-  // useUrlSubscription(handleRealtimeUpdate);
-
   const handleDeleteUrl = async (urlId: string) => {
     try {
-      console.log('useURLManagement - Deleting URL:', urlId);
+      console.log('useAdminURLManagement - Deleting URL:', urlId);
       await deleteUrl(urlId);
       
-      // Invalidate and refetch to update UI
-      await queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+      // Only update cache optimistically, no refetch
+      queryClient.setQueryData(['admin-urls-static'], (oldData: any[]) => {
+        if (!oldData) return oldData;
+        return oldData.filter(item => item.id !== urlId);
+      });
+      
       toast({
         title: t('success'),
         description: t('success.delete.url'),
       });
     } catch (error) {
-      console.error('useURLManagement - Error deleting URL:', error);
+      console.error('useAdminURLManagement - Error deleting URL:', error);
       showErrorToast();
     }
   };
 
   const handleStatusChange = async (urlId: string, newStatus: URLStatus) => {
     try {
-      console.log('useURLManagement - handleStatusChange called with:', { 
+      console.log('useAdminURLManagement - handleStatusChange called with:', { 
         urlId, 
         newStatus 
       });
 
       const url = urls.find(u => u.id === urlId);
       if (!url?.customer?.id) {
-        console.log('useURLManagement - No customer ID found for URL:', urlId);
+        console.log('useAdminURLManagement - No customer ID found for URL:', urlId);
         return;
       }
-
-      console.log('useURLManagement - Current URL data:', url);
 
       // Skip if status hasn't changed
       if (url.status === newStatus) {
-        console.log('useURLManagement - Status unchanged, skipping update');
+        console.log('useAdminURLManagement - Status unchanged, skipping update');
         return;
       }
 
-      console.log('DEBUG: About to apply optimistic update, current pageIndex should be preserved');
+      console.log('DEBUG: About to apply optimistic update, pagination should stay the same');
       
-      // Optimistically update the cache immediately
-      queryClient.setQueryData(['admin-urls'], (oldData: any[]) => {
+      // Apply optimistic update immediately
+      queryClient.setQueryData(['admin-urls-static'], (oldData: any[]) => {
         if (!oldData) return oldData;
-        console.log('DEBUG: Applying optimistic update - preserving pagination');
+        console.log('DEBUG: Applying optimistic update - preserving pagination state');
         return oldData.map(item => 
           item.id === urlId ? { ...item, status: newStatus } : item
         );
       });
 
-      console.log('useURLManagement - Updating URL status');
+      console.log('useAdminURLManagement - Updating URL status via API');
       const result = await updateUrlStatus(urlId, newStatus, url.customer.id);
       
       if (result) {
-        console.log('useURLManagement - Status updated successfully');
+        console.log('useAdminURLManagement - Status updated successfully');
         
-        // Create notification for the user when status is updated by admin
+        // Create notification for the user
         try {
-          console.log('useURLManagement - Creating notification with explicit removal type');
           const { error: notificationError } = await createStatusNotification(
             url.customer.id,
             t('notification.status.update.title'),
             t('notification.status.update.message'),
-            'removal' // Explicitly set type to 'removal' to ensure email notifications work
+            'removal'
           );
 
           if (notificationError) {
             console.error('Error creating notification:', notificationError);
-          } else {
-            console.log('Successfully created notification for the user');
           }
         } catch (notifError) {
           console.error('Error creating user notification:', notifError);
         }
-        
-        // Don't invalidate queries immediately to preserve pagination
-        // The real-time subscription will handle updates from other users
         
         toast({
           title: t('success'),
@@ -118,13 +112,13 @@ export const useURLManagement = () => {
         });
       }
     } catch (error) {
-      console.error('useURLManagement - Error in handleStatusChange:', error);
+      console.error('useAdminURLManagement - Error in handleStatusChange:', error);
       
-      // Revert optimistic update on error
-      queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+      // Revert optimistic update on error by refreshing data
+      refetch();
       showErrorToast();
     }
   };
 
-  return { urls, handleStatusChange, handleDeleteUrl };
+  return { urls, handleStatusChange, handleDeleteUrl, refetch };
 };
