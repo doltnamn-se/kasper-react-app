@@ -40,7 +40,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
 
   const isAuthRoute = location.pathname.startsWith('/auth');
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const logoHeight = isMobile ? 'h-8' : 'h-10';  // Changed from h-6 to h-10 for desktop version
+  const logoHeight = isMobile ? 'h-6' : 'h-6';  // Reduced desktop size from h-10 to h-6
 
   // For auth routes, show the auth-specific logo
   if (isAuthRoute) {
@@ -90,29 +90,29 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       {...props}
     >
       {isAdminRoute ? (
-        <div className="relative h-[2.5rem] w-auto">
+        <div className="relative h-[1.5rem] w-auto">
           <img 
             src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Admin Logo" 
-            className={`h-[2.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+            className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
           />
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Admin Logo" 
-            className={`h-[2.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+            className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
       ) : isMobile ? (
-        <div className="relative h-[2.5rem] w-auto">
+        <div className="relative h-[1.5rem] w-auto">
           <img 
             src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Mobile Logo" 
-            className={`h-[2.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+            className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
           />
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Mobile Logo" 
-            className={`h-[2.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+            className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
       ) : (
