@@ -6,6 +6,7 @@ import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
 
 export const MobilePersistentLayout = () => {
   const { userProfile } = useUserProfile();
@@ -26,11 +27,14 @@ export const MobilePersistentLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] pb-16">
+      {/* Announcement Bar */}
+      {!isAdmin && <AnnouncementBar />}
+      
       {/* Fixed Top Navigation */}
       <TopNav />
       
       {/* Main Content Area (scrollable) */}
-      <main className="px-4 pt-12 pb-20">
+      <main className={`px-4 pb-20 ${!isAdmin ? 'pt-[88px]' : 'pt-12'}`}>
         <Outlet />
       </main>
       

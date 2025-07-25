@@ -11,6 +11,7 @@ import { getLatestVersion } from "@/utils/versionUtils";
 import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
 import { IOSNotification } from "@/components/auth/iOSNotification";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -144,8 +145,10 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode, processingAuthChange]);
 
   return (
-    <div className="h-screen overflow-hidden auth-page flex">
-      {/* Left side - Authentication content or Pricing Table */}
+    <div className="h-screen overflow-hidden auth-page">
+      <AnnouncementBar />
+      <div className="flex h-[calc(100vh-48px)]">
+        {/* Left side - Authentication content or Pricing Table */}
       <div className="w-full md:w-1/2 flex flex-col h-screen p-4 md:p-8 bg-[#FFFFFF] dark:bg-[#1a1a1a]">
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
@@ -182,6 +185,7 @@ const Auth = () => {
           />
           <IOSNotification isDarkMode={isDarkMode} />
         </div>
+      </div>
       </div>
     </div>
   );
