@@ -14,7 +14,7 @@ export const AnnouncementBadge = () => {
          style={{ 
            backgroundColor: '#d4f5bc'
          }}>
-      <Megaphone size={14} className="text-[#121212]" />
+      <Megaphone size={16} className="text-[#121212]" />
       <span className="text-[#121212]">{message}</span>
     </div>
   );
