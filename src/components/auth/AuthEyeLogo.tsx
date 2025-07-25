@@ -29,11 +29,11 @@ export const AuthEyeLogo: React.FC = () => {
 
   return (
     <a href="https://joinkasper.com/" className="inline-block mb-6">
-      <div className="relative h-10 w-auto mx-auto min-w-[120px]">
+      <div className="relative h-8 w-auto mx-auto min-w-[120px]">
         <img
           src="/lovable-uploads/kasper-logo-app-light.svg"
           alt="Logo"
-          className={`h-10 w-auto transition-opacity duration-200 pointer-events-none ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+          className={`h-8 w-auto transition-opacity duration-200 pointer-events-none ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
           style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)' }}
           draggable="false"
           onContextMenu={(e) => e.preventDefault()}
@@ -43,7 +43,7 @@ export const AuthEyeLogo: React.FC = () => {
         <img
           src="/lovable-uploads/kasper-logo-app-dark.svg"
           alt="Logo"
-          className={`h-10 w-auto transition-opacity duration-200 pointer-events-none ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+          className={`h-8 w-auto transition-opacity duration-200 pointer-events-none ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
           style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)' }}
           draggable="false"
           onContextMenu={(e) => e.preventDefault()}
