@@ -90,16 +90,18 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       {...props}
     >
       {isAdminRoute ? (
-        <div className="relative h-[1.5rem] w-auto">
+        <div className="relative h-[1.5rem] w-auto min-w-[60px]">
           <img 
             src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Admin Logo" 
-            className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+            className={`h-[1.5rem] w-auto transition-opacity duration-200 object-contain ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+            style={{ position: 'absolute', top: 0, left: 0 }}
           />
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Admin Logo" 
-            className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+            className={`h-[1.5rem] w-auto transition-opacity duration-200 object-contain ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+            style={{ position: 'absolute', top: 0, left: 0 }}
           />
         </div>
       ) : isMobile ? (
