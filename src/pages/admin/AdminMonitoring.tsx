@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMonitoringUrls } from "@/components/monitoring/hooks/useMonitoringUrls";
 import { AdminMonitoringUrlForm } from "@/components/monitoring/AdminMonitoringUrlForm";
 import { AdminMonitoringUrlList } from "@/components/monitoring/AdminMonitoringUrlList";
@@ -12,6 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 const AdminMonitoring = () => {
   const { t, language } = useLanguage();
+  
+  useEffect(() => {
+    document.title = "Admin | Kasper";
+  }, []);
   const [isRefreshing, setIsRefreshing] = useState(false);
   
   const { data: customersData = [], isLoading: isLoadingCustomers } = useQuery({

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdminDashboardData } from "@/hooks/useAdminDashboardData";
 import { OnlineUsersCard } from "@/components/admin/dashboard/OnlineUsersCard";
@@ -7,7 +8,6 @@ import { SubscriptionDistributionCard } from "@/components/admin/dashboard/Subsc
 import { ClientsOverTimeChart } from "@/components/admin/dashboard/ClientsOverTimeChart";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,10 @@ type TimeRange = 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week';
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
+  
+  useEffect(() => {
+    document.title = "Admin | Kasper";
+  }, []);
   const [customersTimeRange, setCustomersTimeRange] = useState<TimeRange>('alltime');
   const [subscriptionTimeRange, setSubscriptionTimeRange] = useState<TimeRange>('alltime');
   

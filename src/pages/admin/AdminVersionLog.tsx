@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useVersionLogs, VersionChange } from "@/hooks/useVersionLogs";
@@ -10,6 +10,11 @@ import { Badge } from "@/components/ui/badge";
 
 const AdminVersionLog = () => {
   const { t } = useLanguage();
+  
+  useEffect(() => {
+    document.title = "Admin | Kasper";
+  }, []);
+  
   const { data: versionLogs, isLoading, error } = useVersionLogs();
   const currentVersion = useVersionStore((state) => state.version);
 

@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerTable } from "@/components/admin/customers/CustomerTable";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
@@ -9,6 +10,10 @@ import { UserRoundPlus } from "lucide-react";
 
 const AdminCustomers = () => {
   const { t } = useLanguage();
+  
+  useEffect(() => {
+    document.title = "Admin | Kasper";
+  }, []);
   const { customers, isLoading, fetchCustomers } = useCustomers();
   const { onlineUsers, lastSeen } = useCustomerPresence();
 
