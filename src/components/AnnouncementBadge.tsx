@@ -16,8 +16,8 @@ export const AnnouncementBadge = () => {
            borderColor: '#d4f5bc',
            border: '1px solid'
          }}>
-      <PartyPopper size={14} className="text-[#121212] dark:text-white" />
-      <span className="text-[#121212] dark:text-white">{message}</span>
+      <PartyPopper size={14} className="text-[#121212]" />
+      <span className="text-[#121212]">{message}</span>
     </div>
   );
 };
