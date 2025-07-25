@@ -1,5 +1,5 @@
 
-import { useState, ReactNode, useCallback } from "react";
+import { useState, ReactNode, useCallback, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,8 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
     setFormData(prev => ({ ...prev, hasAddressAlert }));
   }, [setFormData]);
   
-  const FormContent = () => (
+  // Memoize FormContent to prevent unnecessary re-renders
+  const FormContent = useMemo(() => (
     <div className="space-y-4 py-4">
       <CustomerFormFields
         email={formData.email}
@@ -61,7 +62,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         onHasAddressAlertChange={handleAddressAlertChange}
       />
     </div>
-  );
+  ), [formData, handleEmailChange, handleDisplayNameChange, handleSubscriptionPlanChange, handleCustomerTypeChange, handleAddressAlertChange]);
   
   const FormActions = () => (
     <div className="flex flex-col gap-2">
@@ -99,7 +100,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
             </DrawerTitle>
           </DrawerHeader>
           <div className="px-4">
-            <FormContent />
+            {FormContent}
           </div>
           <DrawerFooter>
             <FormActions />
@@ -122,7 +123,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
             {t('create.customer')}
           </DialogTitle>
         </DialogHeader>
-        <FormContent />
+        {FormContent}
         <FormActions />
       </DialogContent>
     </Dialog>
