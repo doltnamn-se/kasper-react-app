@@ -22,9 +22,9 @@ export const useURLManagement = () => {
       console.log('useURLManagement - Received URLs:', data);
       return data;
     },
-    refetchInterval: 1000,
-    staleTime: 0,
-    gcTime: 0
+    refetchInterval: 30000, // Reduced from 1000ms to 30 seconds
+    staleTime: 10000, // Cache for 10 seconds
+    gcTime: 300000 // Keep in cache for 5 minutes
   });
 
   const { 
@@ -32,8 +32,28 @@ export const useURLManagement = () => {
     showErrorToast 
   } = useUrlNotifications();
 
-  // Set up real-time subscription
-  useUrlSubscription(refetch);
+  // Create a callback that uses optimistic updates instead of full refetch
+  const handleRealtimeUpdate = (payload: any) => {
+    console.log('Real-time update received:', payload);
+    
+    // Only update if the change is from another user (not our optimistic update)
+    if (payload.eventType === 'UPDATE') {
+      queryClient.setQueryData(['admin-urls'], (oldData: any[]) => {
+        if (!oldData) return oldData;
+        return oldData.map(item => 
+          item.id === payload.new?.id ? { ...item, ...payload.new } : item
+        );
+      });
+    } else {
+      // For INSERT/DELETE operations, do a full refetch but less frequently
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+      }, 1000);
+    }
+  };
+
+  // Set up real-time subscription with optimistic updates
+  useUrlSubscription(handleRealtimeUpdate);
 
   const handleDeleteUrl = async (urlId: string) => {
     try {
@@ -106,8 +126,8 @@ export const useURLManagement = () => {
           console.error('Error creating user notification:', notifError);
         }
         
-        // Invalidate queries to ensure consistency in the background
-        queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+        // Don't invalidate queries immediately to preserve pagination
+        // The real-time subscription will handle updates from other users
         
         toast({
           title: t('success'),

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 
-export const useUrlSubscription = (onUpdate: () => void) => {
+export const useUrlSubscription = (onUpdate: (payload: any) => void) => {
   useEffect(() => {
     console.log('Setting up real-time subscription for URLs');
     const channel = supabase
@@ -15,7 +15,7 @@ export const useUrlSubscription = (onUpdate: () => void) => {
         },
         (payload) => {
           console.log('URL change detected:', payload);
-          onUpdate();
+          onUpdate(payload);
         }
       )
       .subscribe((status) => {
