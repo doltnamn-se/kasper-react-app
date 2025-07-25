@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-export const AnnouncementBar = () => {
+export const AnnouncementBadge = () => {
   const { language } = useLanguage();
   
   const message = language === 'sv' 
@@ -9,7 +9,7 @@ export const AnnouncementBar = () => {
     : "Digitaltskydd has changed name to Kasper";
 
   return (
-    <div className="bg-primary text-primary-foreground text-center py-2 px-4 text-sm font-medium">
+    <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-6">
       {message}
     </div>
   );
