@@ -27,6 +27,7 @@ interface URLTableRowProps {
 
 export const URLTableRow = ({ url, onStatusChange, onDelete, isMobile = false }: URLTableRowProps) => {
   const { t, language } = useLanguage();
+  // Status badge rendering with admin dashboard color scheme
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
