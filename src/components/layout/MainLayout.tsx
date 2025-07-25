@@ -10,7 +10,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
-import { AnnouncementBar } from "@/components/AnnouncementBar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -75,13 +74,10 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
       {/* Main Content with conditional navigation for desktop vs mobile */}
       <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
-        {/* Announcement Bar for non-admin users on desktop */}
-        {!isMobile && !isAdmin && <AnnouncementBar />}
-        
         {/* Only show TopNav on desktop, on mobile it comes from MobilePersistentLayout */}
         {!isMobile && <TopNav />}
         
-        <main className={`${isMobile ? '' : `px-4 md:px-12 pb-20 md:pb-12 ${!isAdmin ? 'pt-[88px]' : 'pt-12'}`} relative`}>
+        <main className={`${isMobile ? '' : 'px-4 md:px-12 pt-12 pb-20 md:pb-12'} relative`}>
           {children}
         </main>
       </div>
