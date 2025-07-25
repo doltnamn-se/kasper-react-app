@@ -10,21 +10,21 @@ export const AuthFooter = () => {
       <Button 
         variant="link" 
         className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-        onClick={() => window.open('https://digitaltskydd.se/integritetspolicy/', '_blank')}
+        onClick={() => window.open('https://joinkasper.com/integritetspolicy/', '_blank')}
       >
         {t('privacy')}
       </Button>
       <Button 
         variant="link" 
         className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-        onClick={() => window.open('https://digitaltskydd.se/licensvillkor/', '_blank')}
+        onClick={() => window.open('https://joinkasper.com/licensvillkor/', '_blank')}
       >
         {t('license')}
       </Button>
       <Button 
         variant="link" 
         className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-        onClick={() => window.open('https://digitaltskydd.se/anvandarvillkor/', '_blank')}
+        onClick={() => window.open('https://joinkasper.com/anvandarvillkor/', '_blank')}
       >
         {t('terms')}
       </Button>
