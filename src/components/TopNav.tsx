@@ -89,11 +89,18 @@ export const TopNav = () => {
       <div className="flex items-center justify-between h-full w-full">
         {isMobile && (
           <div className="flex-none mr-auto w-[10rem] flex items-center justify-left">
-            <img 
-              src="/lovable-uploads/ds-app-logo-auth-admin.png" 
-              alt="Logo" 
-              className="h-8 w-auto" 
-            />
+            <div className="relative h-8 w-auto">
+              <img 
+                src="/lovable-uploads/kasper-logo-app-dark.svg" 
+                alt="Logo" 
+                className={`h-8 w-auto absolute inset-0 object-contain transition-opacity duration-200 ${document.documentElement.classList.contains('dark') ? 'opacity-0' : 'opacity-100'}`}
+              />
+              <img 
+                src="/lovable-uploads/kasper-logo-app-light.svg" 
+                alt="Logo" 
+                className={`h-8 w-auto absolute inset-0 object-contain transition-opacity duration-200 ${document.documentElement.classList.contains('dark') ? 'opacity-100' : 'opacity-0'}`}
+              />
+            </div>
           </div>
         )}
         
