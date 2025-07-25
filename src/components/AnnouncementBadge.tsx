@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { PartyPopper } from 'lucide-react';
+import { Megaphone } from 'lucide-react';
 
 export const AnnouncementBadge = () => {
   const { language } = useLanguage();
@@ -12,11 +12,9 @@ export const AnnouncementBadge = () => {
   return (
     <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-6" 
          style={{ 
-           backgroundColor: '#d4f5bc',
-           borderColor: '#d4f5bc',
-           border: '1px solid'
+           backgroundColor: '#d4f5bc'
          }}>
-      <PartyPopper size={14} className="text-[#121212]" />
+      <Megaphone size={14} className="text-[#121212]" />
       <span className="text-[#121212]">{message}</span>
     </div>
   );
