@@ -1,5 +1,5 @@
 
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,27 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
 
   const isFormValid = formData.email && formData.displayName;
   
+  // Memoize onChange handlers to prevent unnecessary re-renders
+  const handleEmailChange = useCallback((email: string) => {
+    setFormData(prev => ({ ...prev, email }));
+  }, [setFormData]);
+
+  const handleDisplayNameChange = useCallback((displayName: string) => {
+    setFormData(prev => ({ ...prev, displayName }));
+  }, [setFormData]);
+
+  const handleSubscriptionPlanChange = useCallback((subscriptionPlan: any) => {
+    setFormData(prev => ({ ...prev, subscriptionPlan }));
+  }, [setFormData]);
+
+  const handleCustomerTypeChange = useCallback((customerType: any) => {
+    setFormData(prev => ({ ...prev, customerType }));
+  }, [setFormData]);
+
+  const handleAddressAlertChange = useCallback((hasAddressAlert: boolean) => {
+    setFormData(prev => ({ ...prev, hasAddressAlert }));
+  }, [setFormData]);
+  
   const FormContent = () => (
     <div className="space-y-4 py-4">
       <CustomerFormFields
@@ -33,11 +54,11 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         subscriptionPlan={formData.subscriptionPlan}
         customerType={formData.customerType}
         hasAddressAlert={formData.hasAddressAlert}
-        onEmailChange={(email) => setFormData(prev => ({ ...prev, email }))}
-        onDisplayNameChange={(displayName) => setFormData(prev => ({ ...prev, displayName }))}
-        onSubscriptionPlanChange={(subscriptionPlan) => setFormData(prev => ({ ...prev, subscriptionPlan }))}
-        onCustomerTypeChange={(customerType) => setFormData(prev => ({ ...prev, customerType }))}
-        onHasAddressAlertChange={(hasAddressAlert) => setFormData(prev => ({ ...prev, hasAddressAlert }))}
+        onEmailChange={handleEmailChange}
+        onDisplayNameChange={handleDisplayNameChange}
+        onSubscriptionPlanChange={handleSubscriptionPlanChange}
+        onCustomerTypeChange={handleCustomerTypeChange}
+        onHasAddressAlertChange={handleAddressAlertChange}
       />
     </div>
   );
