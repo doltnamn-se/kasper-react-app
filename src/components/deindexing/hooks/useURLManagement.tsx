@@ -73,11 +73,19 @@ export const useURLManagement = () => {
         return;
       }
 
+      // Optimistically update the cache immediately
+      queryClient.setQueryData(['admin-urls'], (oldData: any[]) => {
+        if (!oldData) return oldData;
+        return oldData.map(item => 
+          item.id === urlId ? { ...item, status: newStatus } : item
+        );
+      });
+
       console.log('useURLManagement - Updating URL status');
       const result = await updateUrlStatus(urlId, newStatus, url.customer.id);
       
       if (result) {
-        console.log('useURLManagement - Status updated successfully, refreshing data');
+        console.log('useURLManagement - Status updated successfully');
         
         // Create notification for the user when status is updated by admin
         try {
@@ -98,7 +106,9 @@ export const useURLManagement = () => {
           console.error('Error creating user notification:', notifError);
         }
         
-        await refetch();
+        // Invalidate queries to ensure consistency in the background
+        queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
+        
         toast({
           title: t('success'),
           description: t('success.update.status'),
@@ -106,6 +116,9 @@ export const useURLManagement = () => {
       }
     } catch (error) {
       console.error('useURLManagement - Error in handleStatusChange:', error);
+      
+      // Revert optimistic update on error
+      queryClient.invalidateQueries({ queryKey: ['admin-urls'] });
       showErrorToast();
     }
   };
