@@ -33,8 +33,8 @@ const Auth = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Logga in | Digitaltskydd.se" : 
-      "Log in | Digitaltskydd.se";
+      "Logga in | Kasper" : 
+      "Log in | Kasper";
 
     const lightLogo = new Image();
     const darkLogo = new Image();

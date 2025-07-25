@@ -25,8 +25,8 @@ const Monitoring = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Bevakning | Digitaltskydd.se" : 
-      "Monitoring | Digitaltskydd.se";
+      "Bevakning | Kasper" : 
+      "Monitoring | Kasper";
   }, [language]);
 
   // Initialize push notifications if on a native platform

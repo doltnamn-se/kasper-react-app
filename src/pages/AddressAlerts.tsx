@@ -40,8 +40,8 @@ const AddressAlerts = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Adresslarm | Digitaltskydd.se" : 
-      "Address Alerts | Digitaltskydd.se";
+      "Adresslarm | Kasper" : 
+      "Address Alerts | Kasper";
   }, [language]);
 
   useEffect(() => {

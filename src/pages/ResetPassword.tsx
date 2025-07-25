@@ -24,8 +24,8 @@ const ResetPassword = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Återställ lösenord | Digitaltskydd.se" : 
-      "Reset Password | Digitaltskydd.se";
+      "Återställ lösenord | Kasper" : 
+      "Reset Password | Kasper";
     
     console.log("ResetPassword page loaded");
     console.log("URL:", window.location.href);

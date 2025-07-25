@@ -15,8 +15,8 @@ const Settings = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Inställningar | Digitaltskydd.se" : 
-      "Settings | Digitaltskydd.se";
+      "Inställningar | Kasper" : 
+      "Settings | Kasper";
   }, [language]);
 
   useEffect(() => {

@@ -8,8 +8,8 @@ export const useLastChecked = () => {
 
   useEffect(() => {
     document.title = language === 'sv' ? 
-      "Översikt | Digitaltskydd.se" : 
-      "Overview | Digitaltskydd.se";
+      "Översikt | Kasper" : 
+      "Overview | Kasper";
       
     const now = new Date();
     const minutes = now.getMinutes();
