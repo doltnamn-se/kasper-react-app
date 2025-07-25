@@ -7,7 +7,7 @@ import { FirecrawlService } from '@/utils/FirecrawlService';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Globe, Key, Zap } from "lucide-react";
+import { Eye, Globe, Zap } from "lucide-react";
 
 interface ScrapeResult {
   success: boolean;
@@ -31,46 +31,9 @@ interface ScrapeResult {
 export const WebsiteReferenceChecker = () => {
   const { toast } = useToast();
   const [url, setUrl] = useState('');
-  const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [scrapeResult, setScrapeResult] = useState<ScrapeResult | null>(null);
-  const [hasApiKey, setHasApiKey] = useState(!!FirecrawlService.getApiKey());
-
-  const handleApiKeySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      const isValid = await FirecrawlService.testApiKey(apiKey);
-      if (isValid) {
-        FirecrawlService.saveApiKey(apiKey);
-        setHasApiKey(true);
-        setApiKey('');
-        toast({
-          title: "Success",
-          description: "API key saved successfully",
-          duration: 3000,
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid API key. Please check and try again.",
-          variant: "destructive",
-          duration: 3000,
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to validate API key",
-        variant: "destructive",
-        duration: 3000,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleScrapeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +52,7 @@ export const WebsiteReferenceChecker = () => {
           description: "Website scraped successfully! Now I can analyze it for you.",
           duration: 3000,
         });
-        setScrapeResult(result.data);
+        setScrapeResult(result);
       } else {
         toast({
           title: "Error",
@@ -111,44 +74,6 @@ export const WebsiteReferenceChecker = () => {
       setProgress(100);
     }
   };
-
-  if (!hasApiKey) {
-    return (
-      <div className="w-full max-w-md mx-auto p-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Key className="h-5 w-5" />
-              Setup Firecrawl API Key
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleApiKeySubmit} className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="apiKey" className="text-sm font-medium">
-                  Firecrawl API Key
-                </label>
-                <Input
-                  id="apiKey"
-                  type="password"
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  placeholder="fc-xxxxxxxxxxxxxxxx"
-                  required
-                />
-                <p className="text-xs text-muted-foreground">
-                  Get your API key from <a href="https://firecrawl.dev" target="_blank" rel="noopener noreferrer" className="underline">firecrawl.dev</a>
-                </p>
-              </div>
-              <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading ? "Validating..." : "Save API Key"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">

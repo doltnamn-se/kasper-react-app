@@ -1,86 +1,60 @@
-import FirecrawlApp from '@mendable/firecrawl-js';
+import { supabase } from '@/integrations/supabase/client';
 
-interface ErrorResponse {
-  success: false;
-  error: string;
+interface ScrapeResponse {
+  success: boolean;
+  error?: string;
+  data?: {
+    markdown: string;
+    html: string;
+    metadata: {
+      title: string;
+      description: string;
+      keywords: string;
+      robots: string;
+      ogTitle: string;
+      ogDescription: string;
+      ogImage: string;
+      ogUrl: string;
+      statusCode: number;
+    };
+  };
 }
-
-interface CrawlStatusResponse {
-  success: true;
-  status: string;
-  completed: number;
-  total: number;
-  creditsUsed: number;
-  expiresAt: string;
-  data: any[];
-}
-
-type CrawlResponse = CrawlStatusResponse | ErrorResponse;
 
 export class FirecrawlService {
-  private static API_KEY_STORAGE_KEY = 'firecrawl_api_key';
-  private static firecrawlApp: FirecrawlApp | null = null;
-
-  static saveApiKey(apiKey: string): void {
-    localStorage.setItem(this.API_KEY_STORAGE_KEY, apiKey);
-    this.firecrawlApp = new FirecrawlApp({ apiKey });
-    console.log('API key saved successfully');
-  }
-
-  static getApiKey(): string | null {
-    return localStorage.getItem(this.API_KEY_STORAGE_KEY);
-  }
-
-  static async testApiKey(apiKey: string): Promise<boolean> {
+  static async scrapeWebsite(url: string): Promise<ScrapeResponse> {
     try {
-      console.log('Testing API key with Firecrawl API');
-      this.firecrawlApp = new FirecrawlApp({ apiKey });
-      // A simple test scrape to verify the API key
-      const testResponse = await this.firecrawlApp.scrapeUrl('https://example.com');
-      return testResponse.success;
-    } catch (error) {
-      console.error('Error testing API key:', error);
-      return false;
-    }
-  }
-
-  static async scrapeWebsite(url: string): Promise<{ success: boolean; error?: string; data?: any }> {
-    const apiKey = this.getApiKey();
-    if (!apiKey) {
-      return { success: false, error: 'API key not found' };
-    }
-
-    try {
-      console.log('Making scrape request to Firecrawl API');
-      if (!this.firecrawlApp) {
-        this.firecrawlApp = new FirecrawlApp({ apiKey });
-      }
-
-      const scrapeResponse = await this.firecrawlApp.scrapeUrl(url, {
-        formats: ['markdown', 'html'],
-        includeTags: ['title', 'meta', 'h1', 'h2', 'h3', 'p', 'div', 'nav', 'header', 'footer', 'section'],
-        excludeTags: ['script', 'style'],
-        onlyMainContent: true
+      console.log('Making scrape request via Supabase Edge Function');
+      
+      const { data, error } = await supabase.functions.invoke('firecrawl-scrape', {
+        body: { url }
       });
 
-      if (!scrapeResponse.success) {
-        console.error('Scrape failed:', scrapeResponse.error);
+      if (error) {
+        console.error('Edge function error:', error);
         return { 
           success: false, 
-          error: scrapeResponse.error || 'Failed to scrape website' 
+          error: error.message || 'Failed to scrape website' 
         };
       }
 
-      console.log('Scrape successful:', scrapeResponse);
+      if (!data.success) {
+        console.error('Scrape failed:', data.error);
+        return { 
+          success: false, 
+          error: data.error || 'Failed to scrape website' 
+        };
+      }
+
+      console.log('Scrape successful');
       return { 
         success: true,
-        data: scrapeResponse 
+        data: data.data
       };
     } catch (error) {
       console.error('Error during scrape:', error);
       return { 
         success: false, 
-        error: error instanceof Error ? error.message : 'Failed to connect to Firecrawl API' 
+        error: error instanceof Error ? error.message : 'Failed to connect to scraping service' 
       };
     }
   }
