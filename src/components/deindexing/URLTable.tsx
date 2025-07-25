@@ -97,6 +97,8 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
     pageCount: Math.ceil(urls.length / pageSize),
+    autoResetPageIndex: false, // This is the key - prevent auto reset of page index
+    enableRowSelection: false, // Disable row selection to prevent state conflicts
   });
 
   const handleRefresh = () => {
