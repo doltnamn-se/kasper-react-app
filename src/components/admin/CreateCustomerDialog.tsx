@@ -16,7 +16,7 @@ interface CreateCustomerDialogProps {
 
 export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCustomerDialogProps) => {
   const [open, setOpen] = useState(false);
-  const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(async () => {
+  const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(() => {
     onCustomerCreated();
     setOpen(false);
   });
