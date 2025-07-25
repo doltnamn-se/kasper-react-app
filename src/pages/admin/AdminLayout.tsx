@@ -25,12 +25,6 @@ const AdminLayout = () => {
         )}>
           <div className="px-8 py-6 flex items-center gap-3">
             <AuthLogo className="relative h-8" />
-            <Badge 
-              variant="static" 
-              className="bg-[#e8e8e8] text-[#3f3f3f] border border-[#aeaeae] dark:bg-[#333333] dark:text-[#c3c3c3] dark:border dark:border-[#8c8c8c]"
-            >
-              Admin
-            </Badge>
           </div>
 
           <div className="h-px bg-[#e5e7eb] dark:bg-[#2d2d2d] mx-6 mb-8 transition-colors duration-200" />
