@@ -1,6 +1,7 @@
 
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Trash2 } from "lucide-react";
 import { URLStatusSelect } from "./URLStatusSelect";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -25,21 +26,49 @@ interface URLTableRowProps {
 }
 
 export const URLTableRow = ({ url, onStatusChange, onDelete, isMobile = false }: URLTableRowProps) => {
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'received':
-        return language === 'sv' ? 'Mottagen' : 'Received';
-      case 'in_progress':
-        return language === 'sv' ? 'Påbörjad' : 'In Progress';
-      case 'completed':
-        return language === 'sv' ? 'Slutförd' : 'Completed';
-      case 'failed':
-        return language === 'sv' ? 'Misslyckad' : 'Failed';
-      default:
-        return status;
-    }
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      'received': {
+        text: t('deindexing.status.received'),
+        className: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+      },
+      'case_started': {
+        text: t('deindexing.status.case.started'),
+        className: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+      },
+      'in_progress': {
+        text: t('deindexing.status.case.started'),
+        className: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+      },
+      'request_submitted': {
+        text: t('deindexing.status.request.submitted'),
+        className: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400"
+      },
+      'removal_approved': {
+        text: t('deindexing.status.removal.approved'),
+        className: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+      },
+      'completed': {
+        text: t('deindexing.status.removal.approved'),
+        className: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+      }
+    };
+
+    const config = statusConfig[status as keyof typeof statusConfig] || {
+      text: status,
+      className: "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400"
+    };
+
+    return (
+      <Badge 
+        variant="static" 
+        className={`${config.className} text-xs px-2 py-1`}
+      >
+        {config.text}
+      </Badge>
+    );
   };
 
   return (
@@ -67,9 +96,7 @@ export const URLTableRow = ({ url, onStatusChange, onDelete, isMobile = false }:
       )}
       
       <TableCell className="!px-4 py-2">
-        <span className="text-black dark:text-white">
-          {getStatusText(url.status)}
-        </span>
+        {getStatusBadge(url.status)}
       </TableCell>
       
       <TableCell className="!px-4 py-2">
