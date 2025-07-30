@@ -8,14 +8,18 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const [formData, setFormData] = useState({
     email: "",
     displayName: "",
-    subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months"
+    subscriptionPlan: "1_month" as "1_month" | "6_months" | "12_months",
+    customerType: "private" as "private" | "business",
+    hasAddressAlert: false
   });
 
   const resetForm = () => {
     setFormData({
       email: "",
       displayName: "",
-      subscriptionPlan: "1_month"
+      subscriptionPlan: "1_month",
+      customerType: "private",
+      hasAddressAlert: false
     });
   };
 
@@ -41,6 +45,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           email: formData.email,
           displayName: formData.displayName,
           subscriptionPlan: formData.subscriptionPlan,
+          customerType: formData.customerType,
+          hasAddressAlert: formData.hasAddressAlert,
           createdBy: user.id,
           password: generatedPassword
         }
