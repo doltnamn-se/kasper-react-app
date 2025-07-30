@@ -9,7 +9,7 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  console.log("=== CREATE-CUSTOMER FUNCTION START ===");
+  console.log("=== CREATE-CUSTOMER FUNCTION START v2 ===");
   console.log("Received request to create-customer function");
   
   // Handle CORS preflight requests
