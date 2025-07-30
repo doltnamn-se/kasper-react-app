@@ -264,5 +264,8 @@ port = 54321
 [functions.create-customer]
 verify_jwt = false
 
+[functions.test-stripe-coupon]
+verify_jwt = false
+
 [functions.monitoring-url-status]
 verify_jwt = true
