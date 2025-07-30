@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+import Stripe from "https://esm.sh/stripe@14.21.0"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -87,6 +88,34 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", user.id);
 
+    // Generate coupon code and create Stripe coupon
+    console.log("Generating coupon code...");
+    const couponCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    console.log("Generated coupon code:", couponCode);
+
+    let stripeCouponId = null;
+    try {
+      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+        apiVersion: '2023-10-16',
+      });
+
+      console.log("Creating Stripe coupon...");
+      const stripeCoupon = await stripe.coupons.create({
+        id: couponCode,
+        amount_off: 5000, // 50 SEK in öre (100 öre = 1 SEK)
+        currency: 'sek',
+        duration: 'forever',
+        max_redemptions: 100,
+        name: `Discount coupon ${couponCode}`,
+      });
+
+      stripeCouponId = stripeCoupon.id;
+      console.log("Stripe coupon created successfully:", stripeCouponId);
+    } catch (stripeError) {
+      console.error("Error creating Stripe coupon:", stripeError);
+      // Continue with customer creation even if coupon creation fails
+    }
+
     console.log("Updating customer subscription plan and type...");
     const { error: updateError } = await supabase
       .from('customers')
@@ -94,7 +123,8 @@ serve(async (req) => {
         subscription_plan: subscriptionPlan,
         created_by: createdBy,
         customer_type: customerType,
-        has_address_alert: hasAddressAlert
+        has_address_alert: hasAddressAlert,
+        coupon_code: stripeCouponId ? couponCode : null
       })
       .eq('id', user.id);
 
