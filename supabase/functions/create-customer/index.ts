@@ -99,11 +99,20 @@ serve(async (req) => {
     let stripeCouponId = null;
     try {
       const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
-      console.log("Stripe secret key available:", !!stripeKey, stripeKey ? `Length: ${stripeKey.length}` : 'None');
+      console.log("=== STRIPE KEY DEBUG ===");
+      console.log("Stripe secret key available:", !!stripeKey);
+      console.log("Stripe key length:", stripeKey ? stripeKey.length : 0);
+      console.log("Stripe key starts with sk_:", stripeKey ? stripeKey.startsWith('sk_') : false);
+      console.log("========================");
       
       if (!stripeKey) {
-        console.error("STRIPE_SECRET_KEY not found in environment variables");
+        console.error("CRITICAL: STRIPE_SECRET_KEY not found in environment variables");
         throw new Error("Stripe secret key not configured");
+      }
+      
+      if (!stripeKey.startsWith('sk_')) {
+        console.error("CRITICAL: STRIPE_SECRET_KEY does not appear to be valid (should start with sk_)");
+        throw new Error("Invalid Stripe secret key format");
       }
       
       const stripe = new Stripe(stripeKey, {
