@@ -49,6 +49,12 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       console.log("Generated password for new user:", generatedPassword);
 
       console.log("Creating customer...");
+      console.log("Request body:", {
+        ...formData,
+        createdBy: user.id,
+        password: generatedPassword
+      });
+      
       const { data: createData, error: createError } = await supabase.functions.invoke('create-customer', {
         body: {
           ...formData,
@@ -56,6 +62,9 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           password: generatedPassword
         }
       });
+      
+      console.log("Response data:", createData);
+      console.log("Response error:", createError);
 
       if (createError) {
         console.error("Error in customer creation:", createError);
