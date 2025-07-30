@@ -261,5 +261,8 @@ dataset_id = ""
 # Port to use for Functions API
 port = 54321
 
+[functions.create-customer]
+verify_jwt = false
+
 [functions.monitoring-url-status]
 verify_jwt = true
