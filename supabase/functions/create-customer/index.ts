@@ -9,6 +9,7 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  console.log("=== CREATE-CUSTOMER FUNCTION START ===");
   console.log("Received request to create-customer function");
   
   // Handle CORS preflight requests
@@ -95,7 +96,15 @@ serve(async (req) => {
 
     let stripeCouponId = null;
     try {
-      const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+      const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+      console.log("Stripe secret key available:", !!stripeKey, stripeKey ? `Length: ${stripeKey.length}` : 'None');
+      
+      if (!stripeKey) {
+        console.error("STRIPE_SECRET_KEY not found in environment variables");
+        throw new Error("Stripe secret key not configured");
+      }
+      
+      const stripe = new Stripe(stripeKey, {
         apiVersion: '2023-10-16',
       });
 
