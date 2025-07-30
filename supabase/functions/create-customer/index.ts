@@ -9,8 +9,9 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  console.log("=== CREATE-CUSTOMER FUNCTION START v2 ===");
+  console.log("=== CREATE-CUSTOMER FUNCTION START v3 ===");
   console.log("Received request to create-customer function");
+  console.log("Function deployment version check - should be newer than 275");
   
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
