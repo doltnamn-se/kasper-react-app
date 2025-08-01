@@ -38,9 +38,20 @@ const AdminPromotionalCodes = () => {
 
   const fetchData = async () => {
     try {
-      // Use RPC function to get codes with customer information
+      // Fetch promotional codes directly from the table with customer info
       const { data: codesData, error: codesError } = await supabase
-        .rpc('get_promotional_codes_with_customers' as any);
+        .from('promotional_codes' as any)
+        .select(`
+          *,
+          customer:customers!left(
+            id,
+            profile:profiles!left(
+              display_name,
+              email
+            )
+          )
+        `)
+        .order('created_at', { ascending: false });
 
       if (codesError) {
         console.error('Error fetching promotional codes:', codesError);
