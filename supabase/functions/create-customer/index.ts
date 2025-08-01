@@ -95,16 +95,20 @@ serve(async (req) => {
     // Get an available promotional code instead of creating Stripe coupon
     let assignedCode = null;
     try {
-      const { data: availableCode, error: codeError } = await supabase
+      const { data: availableCodes, error: codeError } = await supabase
         .from('promotional_codes')
         .select('*')
         .eq('status', 'available')
-        .limit(1)
-        .single();
+        .limit(1);
 
-      if (!codeError && availableCode) {
+      console.log("Promotional codes query result:", { availableCodes, codeError });
+
+      if (!codeError && availableCodes && availableCodes.length > 0) {
+        const availableCode = availableCodes[0];
+        console.log("Found available promotional code:", availableCode.code);
+        
         // Assign the promotional code
-        await supabase
+        const { error: updateError } = await supabase
           .from('promotional_codes')
           .update({
             assigned_to: user.id,
@@ -113,13 +117,17 @@ serve(async (req) => {
           })
           .eq('id', availableCode.id);
 
-        assignedCode = availableCode.code;
-        console.log('Assigned promotional code:', assignedCode);
+        if (updateError) {
+          console.error('Error updating promotional code:', updateError);
+        } else {
+          assignedCode = availableCode.code;
+          console.log('Successfully assigned promotional code:', assignedCode);
+        }
       } else {
         console.log('No available promotional codes found');
       }
     } catch (error) {
-      console.error('Error assigning promotional code:', error);
+      console.error('Error in promotional code assignment process:', error);
       // Continue without promotional code
     }
 
