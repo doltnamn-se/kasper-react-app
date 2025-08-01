@@ -61,25 +61,32 @@ const AdminDashboard = () => {
         description: "Creating test coupon...",
       });
 
-      const { data, error } = await supabase.functions.invoke('test-stripe-coupon');
+      console.log("Calling test-stripe-coupon function...");
+      
+      const { data, error } = await supabase.functions.invoke('test-stripe-coupon', {
+        body: {}
+      });
+      
+      console.log("Function response:", { data, error });
       
       if (error) {
-        throw error;
+        console.error("Function error:", error);
+        throw new Error(`Function error: ${error.message}`);
       }
 
-      if (data.success) {
+      if (data?.success) {
         toast({
           title: "✅ Stripe Connection Working!",
           description: `Test coupon created: ${data.coupon}`,
         });
       } else {
-        throw new Error(data.error || 'Unknown error');
+        throw new Error(data?.error || 'Function returned no success flag');
       }
     } catch (error) {
       console.error("Stripe test failed:", error);
       toast({
         title: "❌ Stripe Connection Failed",
-        description: error.message || "Unknown error occurred",
+        description: `Error: ${error.message}`,
         variant: "destructive",
       });
     }
