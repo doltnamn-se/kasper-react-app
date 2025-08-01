@@ -53,34 +53,48 @@ const AdminDashboard = () => {
     setSubscriptionTimeRange(range);
   };
 
-  // Test Stripe connection
+  // Test Stripe connection using existing create-customer function
   const testStripeConnection = async () => {
     try {
       toast({
         title: "Testing Stripe Connection",
-        description: "Creating test coupon...",
+        description: "Testing with create-customer function...",
       });
 
-      console.log("Calling test-stripe-coupon function...");
+      console.log("Testing Stripe via create-customer function...");
       
-      const { data, error } = await supabase.functions.invoke('test-stripe-coupon', {
-        body: {}
+      // Call create-customer with test data to verify Stripe integration
+      const { data, error } = await supabase.functions.invoke('create-customer', {
+        body: {
+          email: 'stripe-test@example.com',
+          password: 'tempPassword123!',
+          display_name: 'Stripe Test User',
+          subscription_plan: '1_month',
+          customer_type: 'individual',
+          address_alert: false
+        }
       });
       
-      console.log("Function response:", { data, error });
+      console.log("Create customer response:", { data, error });
       
       if (error) {
         console.error("Function error:", error);
         throw new Error(`Function error: ${error.message}`);
       }
 
-      if (data?.success) {
+      if (data?.user && data?.coupon_code) {
         toast({
           title: "✅ Stripe Connection Working!",
-          description: `Test coupon created: ${data.coupon}`,
+          description: `Customer created with coupon: ${data.coupon_code}`,
         });
+      } else if (data?.error) {
+        throw new Error(data.error);
       } else {
-        throw new Error(data?.error || 'Function returned no success flag');
+        toast({
+          title: "⚠️ Partial Success",
+          description: "Customer created but no coupon code returned - check Stripe key",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Stripe test failed:", error);
