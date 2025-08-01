@@ -7,7 +7,9 @@ import { LinkManagementCard } from "@/components/admin/dashboard/LinkManagementC
 import { SubscriptionDistributionCard } from "@/components/admin/dashboard/SubscriptionDistributionCard";
 import { ClientsOverTimeChart } from "@/components/admin/dashboard/ClientsOverTimeChart";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Zap } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +22,7 @@ type TimeRange = 'alltime' | 'ytd' | 'mtd' | '1year' | '4weeks' | '1week';
 
 const AdminDashboard = () => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   
   useEffect(() => {
     document.title = "Admin | Kasper";
@@ -50,12 +53,52 @@ const AdminDashboard = () => {
     setSubscriptionTimeRange(range);
   };
 
+  // Test Stripe connection
+  const testStripeConnection = async () => {
+    try {
+      toast({
+        title: "Testing Stripe Connection",
+        description: "Creating test coupon...",
+      });
+
+      const { data, error } = await supabase.functions.invoke('test-stripe-coupon');
+      
+      if (error) {
+        throw error;
+      }
+
+      if (data.success) {
+        toast({
+          title: "✅ Stripe Connection Working!",
+          description: `Test coupon created: ${data.coupon}`,
+        });
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error("Stripe test failed:", error);
+      toast({
+        title: "❌ Stripe Connection Failed",
+        description: error.message || "Unknown error occurred",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="w-full overflow-hidden">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
           {t('nav.admin.dashboard')}
         </h1>
+        <Button 
+          onClick={testStripeConnection}
+          className="flex items-center gap-2 h-8 px-3 text-xs"
+          variant="outline"
+        >
+          <Zap className="h-3.5 w-3.5" />
+          Test Stripe
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 overflow-hidden">
