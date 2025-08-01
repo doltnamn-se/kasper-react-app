@@ -38,17 +38,28 @@ const AdminPromotionalCodes = () => {
 
   const fetchData = async () => {
     try {
-      // Use direct SQL query since types aren't updated
+      // Use RPC function to get codes with customer information
       const { data: codesData, error: codesError } = await supabase
-        .from('promotional_codes' as any)
-        .select('*')
-        .order('created_at', { ascending: false });
+        .rpc('get_promotional_codes_with_customers' as any);
 
       if (codesError) {
-        console.log('Expected error - promotional_codes table not in types yet');
+        console.error('Error fetching promotional codes:', codesError);
         setCodes([]);
-      } else if (Array.isArray(codesData)) {
-        setCodes(codesData as unknown as PromotionalCode[]);
+      } else if (codesData && Array.isArray(codesData)) {
+        // Transform the data to match our interface
+        const transformedCodes = codesData.map((item: any) => ({
+          id: item.id,
+          code: item.code,
+          assigned_to: item.assigned_to,
+          assigned_at: item.assigned_at,
+          status: item.status,
+          created_at: item.created_at,
+          updated_at: item.updated_at,
+          notes: item.notes,
+          customer_name: item.customer?.profile?.display_name || null,
+          customer_email: item.customer?.profile?.email || null,
+        }));
+        setCodes(transformedCodes);
       } else {
         setCodes([]);
       }
