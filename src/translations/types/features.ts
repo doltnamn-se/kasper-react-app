@@ -91,4 +91,17 @@ export interface FeaturesTranslations {
   'user.details': string;
   'success.delete.url': string;
   'deindexing.title': string;
+  'kasper.friends.title': string;
+  'kasper.friends.description': string;
+  'kasper.friends.import.title': string;
+  'kasper.friends.import.description': string;
+  'kasper.friends.assign.title': string;
+  'kasper.friends.assign.description': string;
+  'kasper.friends.manage.title': string;
+  'kasper.friends.manage.description': string;
+  'kasper.friends.stats.total': string;
+  'kasper.friends.stats.available': string;
+  'kasper.friends.stats.assigned': string;
+  'kasper.friends.stats.used': string;
+  'kasper.friends.stats.need.codes': string;
 }

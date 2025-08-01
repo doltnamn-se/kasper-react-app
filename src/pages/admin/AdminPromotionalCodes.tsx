@@ -32,9 +32,9 @@ const AdminPromotionalCodes = () => {
   const [isAssigning, setIsAssigning] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin | Promotional Codes";
+    document.title = `Admin | ${t('kasper.friends.title')}`;
     fetchData();
-  }, []);
+  }, [t]);
 
   const fetchData = async () => {
     try {
@@ -220,8 +220,8 @@ const AdminPromotionalCodes = () => {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Promotional Codes</h1>
-          <p className="text-muted-foreground">Manage Stripe promotional codes for customers</p>
+          <h1 className="text-3xl font-bold">{t('kasper.friends.title')}</h1>
+          <p className="text-muted-foreground">{t('kasper.friends.description')}</p>
         </div>
       </div>
 
@@ -232,7 +232,7 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <Gift className="h-4 w-4 text-blue-600" />
               <div>
-                <p className="text-sm font-medium">Total Codes</p>
+                <p className="text-sm font-medium">{t('kasper.friends.stats.total')}</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -244,7 +244,7 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-500 rounded-full" />
               <div>
-                <p className="text-sm font-medium">Available</p>
+                <p className="text-sm font-medium">{t('kasper.friends.stats.available')}</p>
                 <p className="text-2xl font-bold text-green-600">{stats.available}</p>
               </div>
             </div>
@@ -256,7 +256,7 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-blue-500 rounded-full" />
               <div>
-                <p className="text-sm font-medium">Assigned</p>
+                <p className="text-sm font-medium">{t('kasper.friends.stats.assigned')}</p>
                 <p className="text-2xl font-bold text-blue-600">{stats.assigned}</p>
               </div>
             </div>
@@ -268,7 +268,7 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-gray-500 rounded-full" />
               <div>
-                <p className="text-sm font-medium">Used</p>
+                <p className="text-sm font-medium">{t('kasper.friends.stats.used')}</p>
                 <p className="text-2xl font-bold text-gray-600">{stats.used}</p>
               </div>
             </div>
@@ -280,7 +280,7 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <Users className="h-4 w-4 text-orange-600" />
               <div>
-                <p className="text-sm font-medium">Need Codes</p>
+                <p className="text-sm font-medium">{t('kasper.friends.stats.need.codes')}</p>
                 <p className="text-2xl font-bold text-orange-600">{stats.customersWithoutCodes}</p>
               </div>
             </div>
@@ -300,10 +300,10 @@ const AdminPromotionalCodes = () => {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Upload className="h-5 w-5" />
-                <span>Import Promotional Codes</span>
+                <span>{t('kasper.friends.import.title')}</span>
               </CardTitle>
               <CardDescription>
-                Paste your 400 promotional codes here, one per line
+                {t('kasper.friends.import.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -335,10 +335,10 @@ const AdminPromotionalCodes = () => {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Users className="h-5 w-5" />
-                <span>Assign to Existing Customers</span>
+                <span>{t('kasper.friends.assign.title')}</span>
               </CardTitle>
               <CardDescription>
-                Automatically assign promotional codes to customers who don't have one yet
+                {t('kasper.friends.assign.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -374,9 +374,9 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="manage" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>All Promotional Codes</CardTitle>
+              <CardTitle>{t('kasper.friends.manage.title')}</CardTitle>
               <CardDescription>
-                View and manage all promotional codes in the system
+                {t('kasper.friends.manage.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>

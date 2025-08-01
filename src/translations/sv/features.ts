@@ -93,6 +93,19 @@ const features: FeaturesTranslations = {
   'user.details': 'Användaruppgifter',
   'success.delete.url': 'URL borttagen',
   'deindexing.title': 'Länkar',
+  'kasper.friends.title': 'Kasper Friends',
+  'kasper.friends.description': 'Hantera Kasper Friends-koder för kunder',
+  'kasper.friends.import.title': 'Importera Kasper Friends-koder',
+  'kasper.friends.import.description': 'Klistra in dina 400 Kasper Friends-koder här, en per rad',
+  'kasper.friends.assign.title': 'Tilldela till befintliga kunder',
+  'kasper.friends.assign.description': 'Tilldela automatiskt Kasper Friends-koder till kunder som inte har någon än',
+  'kasper.friends.manage.title': 'Alla Kasper Friends-koder',
+  'kasper.friends.manage.description': 'Visa och hantera alla Kasper Friends-koder i systemet',
+  'kasper.friends.stats.total': 'Totalt antal koder',
+  'kasper.friends.stats.available': 'Tillgängliga',
+  'kasper.friends.stats.assigned': 'Tilldelade',
+  'kasper.friends.stats.used': 'Använda',
+  'kasper.friends.stats.need.codes': 'Behöver koder',
 };
 
 export default features;

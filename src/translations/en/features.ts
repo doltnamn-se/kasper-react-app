@@ -93,6 +93,19 @@ const features: FeaturesTranslations = {
   'user.details': 'User Details',
   'success.delete.url': 'URL deleted successfully',
   'deindexing.title': 'Links',
+  'kasper.friends.title': 'Kasper Friends',
+  'kasper.friends.description': 'Manage Kasper Friends codes for customers',
+  'kasper.friends.import.title': 'Import Kasper Friends Codes',
+  'kasper.friends.import.description': 'Paste your 400 Kasper Friends codes here, one per line',
+  'kasper.friends.assign.title': 'Assign to Existing Customers',
+  'kasper.friends.assign.description': 'Automatically assign Kasper Friends codes to customers who don\'t have one yet',
+  'kasper.friends.manage.title': 'All Kasper Friends Codes',
+  'kasper.friends.manage.description': 'View and manage all Kasper Friends codes in the system',
+  'kasper.friends.stats.total': 'Total Codes',
+  'kasper.friends.stats.available': 'Available',
+  'kasper.friends.stats.assigned': 'Assigned',
+  'kasper.friends.stats.used': 'Used',
+  'kasper.friends.stats.need.codes': 'Need Codes',
 };
 
 export default features;

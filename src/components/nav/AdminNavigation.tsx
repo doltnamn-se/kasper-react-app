@@ -71,7 +71,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
 
       {renderNavLink("/admin/promotional-codes", 
         <Gift className="w-[18px] h-[18px]" />, 
-        "Promotional Codes"
+        t('kasper.friends.title')
       )}
       
       <div className="py-1">
