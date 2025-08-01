@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
-import Stripe from "https://esm.sh/stripe@14.21.0"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -91,49 +90,37 @@ serve(async (req) => {
 
     console.log("Auth user created successfully:", user.id);
 
-    // Generate coupon code and create Stripe coupon
-    console.log("Generating coupon code...");
-    const couponCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    console.log("Generated coupon code:", couponCode);
-
-    let stripeCouponId = null;
+    console.log("Looking for available promotional code...");
+    
+    // Get an available promotional code instead of creating Stripe coupon
+    let assignedCode = null;
     try {
-      const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
-      console.log("=== STRIPE KEY DEBUG ===");
-      console.log("Stripe secret key available:", !!stripeKey);
-      console.log("Stripe key length:", stripeKey ? stripeKey.length : 0);
-      console.log("Stripe key starts with sk_:", stripeKey ? stripeKey.startsWith('sk_') : false);
-      console.log("========================");
-      
-      if (!stripeKey) {
-        console.error("CRITICAL: STRIPE_SECRET_KEY not found in environment variables");
-        throw new Error("Stripe secret key not configured");
-      }
-      
-      if (!stripeKey.startsWith('sk_')) {
-        console.error("CRITICAL: STRIPE_SECRET_KEY does not appear to be valid (should start with sk_)");
-        throw new Error("Invalid Stripe secret key format");
-      }
-      
-      const stripe = new Stripe(stripeKey, {
-        apiVersion: '2023-10-16',
-      });
+      const { data: availableCode, error: codeError } = await supabase
+        .from('promotional_codes')
+        .select('*')
+        .eq('status', 'available')
+        .limit(1)
+        .single();
 
-      console.log("Creating Stripe coupon...");
-      const stripeCoupon = await stripe.coupons.create({
-        id: couponCode,
-        amount_off: 5000, // 50 SEK in öre (100 öre = 1 SEK)
-        currency: 'sek',
-        duration: 'forever',
-        max_redemptions: 100,
-        name: `Discount coupon ${couponCode}`,
-      });
+      if (!codeError && availableCode) {
+        // Assign the promotional code
+        await supabase
+          .from('promotional_codes')
+          .update({
+            assigned_to: user.id,
+            assigned_at: new Date().toISOString(),
+            status: 'assigned'
+          })
+          .eq('id', availableCode.id);
 
-      stripeCouponId = stripeCoupon.id;
-      console.log("Stripe coupon created successfully:", stripeCouponId);
-    } catch (stripeError) {
-      console.error("Error creating Stripe coupon:", stripeError);
-      // Continue with customer creation even if coupon creation fails
+        assignedCode = availableCode.code;
+        console.log('Assigned promotional code:', assignedCode);
+      } else {
+        console.log('No available promotional codes found');
+      }
+    } catch (error) {
+      console.error('Error assigning promotional code:', error);
+      // Continue without promotional code
     }
 
     console.log("Updating customer subscription plan and type...");
@@ -144,7 +131,7 @@ serve(async (req) => {
         created_by: createdBy,
         customer_type: customerType,
         has_address_alert: hasAddressAlert,
-        coupon_code: stripeCouponId ? couponCode : null
+        coupon_code: assignedCode
       })
       .eq('id', user.id);
 
@@ -180,7 +167,8 @@ serve(async (req) => {
           id: user.id,
           email: user.email,
           created_at: user.created_at
-        }
+        },
+        coupon_code: assignedCode
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

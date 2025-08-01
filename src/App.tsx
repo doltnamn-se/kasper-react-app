@@ -30,6 +30,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminCustomers from "@/pages/admin/AdminCustomers";
 import AdminVersionLog from "@/pages/admin/AdminVersionLog";
 import AdminMonitoring from "@/pages/admin/AdminMonitoring";
+import AdminPromotionalCodes from "@/pages/admin/AdminPromotionalCodes";
 import { AdminDeindexingView } from "@/components/deindexing/AdminDeindexingView";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -131,6 +132,7 @@ function App() {
                   <Route path="customers" element={<AdminCustomers />} />
                   <Route path="deindexing" element={<AdminDeindexingView />} />
                   <Route path="monitoring" element={<AdminMonitoring />} />
+                  <Route path="promotional-codes" element={<AdminPromotionalCodes />} />
                   <Route path="version-log" element={<AdminVersionLog />} />
                 </Route>
 

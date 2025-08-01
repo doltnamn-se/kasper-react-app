@@ -7,7 +7,8 @@ import {
   ChartSpline,
   EyeOff,
   History,
-  UserRoundSearch
+  UserRoundSearch,
+  Gift
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -66,6 +67,11 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
       {renderNavLink("/admin/deindexing", 
         <EyeOff className="w-[18px] h-[18px]" />, 
         t('nav.admin.deindexing')
+      )}
+
+      {renderNavLink("/admin/promotional-codes", 
+        <Gift className="w-[18px] h-[18px]" />, 
+        "Promotional Codes"
       )}
       
       <div className="py-1">
