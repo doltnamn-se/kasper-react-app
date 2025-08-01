@@ -435,6 +435,47 @@ export type Database = {
         }
         Relationships: []
       }
+      promotional_codes: {
+        Row: {
+          assigned_at: string | null
+          assigned_to: string | null
+          code: string
+          created_at: string
+          id: string
+          notes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_to?: string | null
+          code: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_to?: string | null
+          code?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promotional_codes_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       removal_urls: {
         Row: {
           created_at: string
@@ -583,9 +624,21 @@ export type Database = {
       }
     }
     Functions: {
+      assign_promotional_code: {
+        Args: { code_id: string; customer_id: string; code_value: string }
+        Returns: undefined
+      }
       can_update_site_status: {
         Args: { user_id: string; customer_id: string }
         Returns: boolean
+      }
+      get_promotional_codes_with_customers: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      insert_promotional_codes: {
+        Args: { codes: Json }
+        Returns: undefined
       }
       is_super_admin: {
         Args: Record<PropertyKey, never> | { user_id: string }
