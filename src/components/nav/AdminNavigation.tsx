@@ -8,7 +8,7 @@ import {
   EyeOff,
   History,
   UserRoundSearch,
-  Gift
+  Infinity
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -70,7 +70,7 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
       )}
 
       {renderNavLink("/admin/promotional-codes", 
-        <Gift className="w-[18px] h-[18px]" />, 
+        <Infinity className="w-[18px] h-[18px]" />, 
         t('kasper.friends.title')
       )}
       
