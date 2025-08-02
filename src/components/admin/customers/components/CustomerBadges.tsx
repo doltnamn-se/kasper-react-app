@@ -22,6 +22,18 @@ export const CustomerBadges = ({ customer }: CustomerBadgesProps) => {
         return t('subscription.12months');
       case '24_months':
         return t('subscription.24months');
+      case 'personskydd_1_year':
+        return 'Personskydd - 1 år';
+      case 'parskydd_1_year':
+        return 'Parskydd - 1 år';
+      case 'familjeskydd_1_year':
+        return 'Familjeskydd - 1 år';
+      case 'personskydd_2_years':
+        return 'Personskydd - 2 år';
+      case 'parskydd_2_years':
+        return 'Parskydd - 2 år';
+      case 'familjeskydd_2_years':
+        return 'Familjeskydd - 2 år';
       default:
         return t('subscription.none');
     }

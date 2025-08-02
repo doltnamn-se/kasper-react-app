@@ -675,6 +675,12 @@ export type Database = {
         | "12_months"
         | "24_months"
         | "3_months"
+        | "personskydd_1_year"
+        | "parskydd_1_year"
+        | "familjeskydd_1_year"
+        | "personskydd_2_years"
+        | "parskydd_2_years"
+        | "familjeskydd_2_years"
       url_status_step:
         | "received"
         | "case_started"
@@ -826,6 +832,12 @@ export const Constants = {
         "12_months",
         "24_months",
         "3_months",
+        "personskydd_1_year",
+        "parskydd_1_year",
+        "familjeskydd_1_year",
+        "personskydd_2_years",
+        "parskydd_2_years",
+        "familjeskydd_2_years",
       ],
       url_status_step: [
         "received",

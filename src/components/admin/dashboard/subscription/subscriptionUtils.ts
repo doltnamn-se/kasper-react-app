@@ -13,15 +13,36 @@ const PLAN_ORDER = {
   '6_months': 3,
   '12_months': 4,
   '24_months': 5,
-  'none': 6
+  'personskydd_1_year': 6,
+  'parskydd_1_year': 7,
+  'familjeskydd_1_year': 8,
+  'personskydd_2_years': 9,
+  'parskydd_2_years': 10,
+  'familjeskydd_2_years': 11,
+  'none': 12
 };
 
 export const useSubscriptionFormatter = () => {
   const { t } = useLanguage();
   
   const formatPlanName = (plan: string): string => {
-    const uiPlanKey = plan.replace('_', '');
-    return t(`subscription.${uiPlanKey}` as any);
+    switch(plan) {
+      case 'personskydd_1_year':
+        return 'Personskydd - 1 år';
+      case 'parskydd_1_year':
+        return 'Parskydd - 1 år';
+      case 'familjeskydd_1_year':
+        return 'Familjeskydd - 1 år';
+      case 'personskydd_2_years':
+        return 'Personskydd - 2 år';
+      case 'parskydd_2_years':
+        return 'Parskydd - 2 år';
+      case 'familjeskydd_2_years':
+        return 'Familjeskydd - 2 år';
+      default:
+        const uiPlanKey = plan.replace('_', '');
+        return t(`subscription.${uiPlanKey}` as any);
+    }
   };
   
   const processSubscriptionData = (subscriptionData: SubscriptionData[]) => {
