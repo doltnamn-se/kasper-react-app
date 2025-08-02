@@ -520,6 +520,33 @@ export type Database = {
           },
         ]
       }
+      subscription_pricing: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          plan: string
+          price_sek: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          plan: string
+          price_sek: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          plan?: string
+          price_sek?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_presence: {
         Row: {
           created_at: string | null
