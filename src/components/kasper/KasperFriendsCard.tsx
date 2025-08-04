@@ -63,7 +63,7 @@ export const KasperFriendsCard = () => {
             Kasper Friends
           </h2>
           <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
-            {language === 'sv' ? 'Din rabattkod för vänner' : 'Your discount code for friends'}
+            {language === 'sv' ? 'Sänk ditt pris' : 'Lower your price'}
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export const KasperFriendsCard = () => {
           <div className="space-y-3">
             <div className="bg-[#f8f9fa] dark:bg-[#2d2d2d] p-3 rounded-md border border-[#e5e7eb] dark:border-[#3d3d3d]">
               <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mb-1">
-                {language === 'sv' ? 'Din kupongkod:' : 'Your coupon code:'}
+                {language === 'sv' ? 'Din personliga kod:' : 'Your personal code:'}
               </p>
               <code className="text-lg font-mono font-semibold text-[#000000] dark:text-[#FFFFFF]">
                 {customerData.coupon_code}
