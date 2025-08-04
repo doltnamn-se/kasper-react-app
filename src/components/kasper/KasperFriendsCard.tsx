@@ -67,9 +67,9 @@ export const KasperFriendsCard = () => {
           </p>
         </div>
 
-        <div className="flex flex-col items-center py-4">
+        <div className="flex flex-col items-center py-8">
           <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">-0 kr</p>
-          <div className="w-16 h-16 rounded-full" style={{ backgroundColor: '#24cc5b' }}></div>
+          <div className="w-24 h-24 rounded-full" style={{ backgroundColor: '#24cc5b' }}></div>
         </div>
 
         {customerData?.coupon_code ? (
