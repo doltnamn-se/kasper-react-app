@@ -69,23 +69,27 @@ export const KasperFriendsCard = () => {
 
         {customerData?.coupon_code ? (
           <div className="space-y-3">
-            <div className="bg-[#f4f4f4] dark:bg-[#161618] p-3 rounded-md">
-              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-                {language === 'sv' ? 'Din personliga kod' : 'Your personal code'}
-              </p>
-              <span className="text-base font-semibold text-[#000000] dark:text-[#FFFFFF]">
-                {customerData.coupon_code}
-              </span>
-            </div>
-            
-            <Button 
-              onClick={handleCopyCoupon}
-              variant="outline"
-              className="w-full flex items-center gap-2"
+            <div 
+              className="bg-[#f4f4f4] dark:bg-[#161618] p-3 flex items-center justify-between"
+              style={{ borderRadius: 'calc(var(--radius) - 1px)' }}
             >
-              <Copy className="h-4 w-4" />
-              {language === 'sv' ? 'Kopiera kod' : 'Copy code'}
-            </Button>
+              <div>
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
+                  {language === 'sv' ? 'Din personliga kod' : 'Your personal code'}
+                </p>
+                <span className="text-base font-semibold text-[#000000] dark:text-[#FFFFFF]">
+                  {customerData.coupon_code}
+                </span>
+              </div>
+              <Button 
+                onClick={handleCopyCoupon}
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 flex-shrink-0"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
             
             <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
               {language === 'sv' 
