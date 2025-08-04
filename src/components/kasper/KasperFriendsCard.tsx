@@ -130,13 +130,15 @@ export const KasperFriendsCard = () => {
                 <Copy className="h-5 w-5" />
               </Button>
             </div>
-            <Button 
-              variant="default"
-              className="w-full text-sm md:text-base mb-4"
-              onClick={handleShareCode}
-            >
-              {language === 'sv' ? 'Dela din kod' : 'Share your code'}
-            </Button>
+            {isMobile && (
+              <Button 
+                variant="default"
+                className="w-full text-sm md:text-base mb-4"
+                onClick={handleShareCode}
+              >
+                {language === 'sv' ? 'Dela din kod' : 'Share your code'}
+              </Button>
+            )}
           </div>
         ) : (
           <div className="text-center py-4">
