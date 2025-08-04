@@ -76,13 +76,13 @@
 
 @keyframes expandAnimation {
   0% {
-    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 20deg, #24cc5b 20deg, #24cc5b 360deg);
+    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 0deg, #24cc5b 0deg, #24cc5b 360deg);
   }
   50% {
-    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 120deg, #24cc5b 120deg, #24cc5b 360deg);
+    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 20deg, #24cc5b 20deg, #24cc5b 360deg);
   }
   100% {
-    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 20deg, #24cc5b 20deg, #24cc5b 360deg);
+    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 0deg, #24cc5b 0deg, #24cc5b 360deg);
   }
 }
 
