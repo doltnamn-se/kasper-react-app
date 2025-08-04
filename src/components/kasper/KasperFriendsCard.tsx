@@ -8,11 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const KasperFriendsCard = () => {
   const { language } = useLanguage();
   const { userProfile } = useUserProfile();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const { data: customerData } = useQuery({
     queryKey: ['customer-coupon', userProfile?.id],
@@ -48,6 +50,26 @@ export const KasperFriendsCard = () => {
           variant: "destructive",
         });
       }
+    }
+  };
+
+  const handleShareCode = () => {
+    if (!customerData?.coupon_code) return;
+
+    const shareText = `Skaffa Kasper med min kod '${customerData.coupon_code}' så får vi båda 50 kr rabatt. Följ länken: https://joinkasper.com/#planer`;
+    
+    if (isMobile && navigator.share) {
+      // Mobile: Use native share
+      navigator.share({
+        title: 'Kasper Friends',
+        text: shareText,
+      });
+    } else {
+      // Desktop: Open email client
+      const subject = encodeURIComponent('Kasper Friends - 50 kr rabatt');
+      const body = encodeURIComponent(shareText);
+      const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
+      window.location.href = mailtoLink;
     }
   };
 
@@ -110,27 +132,8 @@ export const KasperFriendsCard = () => {
             </div>
             <Button 
               variant="default"
-              className="w-full text-sm md:text-base"
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: language === 'sv' ? 'Kasper Friends' : 'Kasper Friends',
-                    text: language === 'sv' 
-                      ? `Använd min kod ${customerData.coupon_code} och få 50 kr rabatt på ditt Kasper-abonnemang!`
-                      : `Use my code ${customerData.coupon_code} and get 50 SEK off your Kasper subscription!`,
-                  });
-                } else {
-                  // Fallback for browsers that don't support Web Share API
-                  const text = language === 'sv' 
-                    ? `Använd min kod ${customerData.coupon_code} och få 50 kr rabatt på ditt Kasper-abonnemang!`
-                    : `Use my code ${customerData.coupon_code} and get 50 SEK off your Kasper subscription!`;
-                  navigator.clipboard.writeText(text);
-                  toast({
-                    title: language === 'sv' ? "Kopierat!" : "Copied!",
-                    description: language === 'sv' ? "Delningsmeddelandet har kopierats" : "Share message copied to clipboard",
-                  });
-                }
-              }}
+              className="w-full text-sm md:text-base mb-4"
+              onClick={handleShareCode}
             >
               {language === 'sv' ? 'Dela din kod' : 'Share your code'}
             </Button>
