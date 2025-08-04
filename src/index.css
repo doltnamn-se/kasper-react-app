@@ -74,15 +74,20 @@
     --radius: 0.75rem;
 }
 
-@keyframes expandAnimation {
+.animate-expand-sweep {
+  --sweep-angle: 0deg;
+  animation: expandSweepAnimation 2s ease-in-out infinite;
+}
+
+@keyframes expandSweepAnimation {
   0% {
-    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 0deg, #24cc5b 0deg, #24cc5b 360deg);
+    --sweep-angle: 0deg;
   }
   50% {
-    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 20deg, #24cc5b 20deg, #24cc5b 360deg);
+    --sweep-angle: 20deg;
   }
   100% {
-    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 0deg, #24cc5b 0deg, #24cc5b 360deg);
+    --sweep-angle: 0deg;
   }
 }
 

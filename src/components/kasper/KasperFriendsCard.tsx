@@ -71,10 +71,9 @@ export const KasperFriendsCard = () => {
           <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">-0 kr</p>
           <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
             <div 
-              className="absolute inset-0 rounded-full"
+              className="absolute inset-0 rounded-full animate-expand-sweep"
               style={{
-                background: `conic-gradient(from 0deg, #1e9446 0deg, #1e9446 var(--sweep-angle, 30deg), #24cc5b var(--sweep-angle, 30deg), #24cc5b 360deg)`,
-                animation: 'expandAnimation 2s ease-in-out infinite'
+                background: `conic-gradient(from 0deg, #1e9446 0deg, #1e9446 var(--sweep-angle), #24cc5b var(--sweep-angle), #24cc5b 360deg)`
               }}
             ></div>
           </div>
