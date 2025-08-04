@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { StatusCard } from "@/components/status/StatusCard";
+import { KasperFriendsCard } from "@/components/kasper/KasperFriendsCard";
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 import { useLastChecked } from "@/hooks/useLastChecked";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -48,12 +49,13 @@ const Index = () => {
         {`${getWelcomeMessage()} ${firstNameOnly}`}
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <PrivacyScoreCard />
         <StatusCard 
           siteStatuses={siteStatuses} 
           isLoading={isLoading}
         />
+        <KasperFriendsCard />
       </div>
     </div>
   );
