@@ -70,10 +70,10 @@ export const KasperFriendsCard = () => {
         {customerData?.coupon_code ? (
           <div className="space-y-3">
             <div className="bg-[#f8f9fa] dark:bg-[#2d2d2d] p-3 rounded-md border border-[#e5e7eb] dark:border-[#3d3d3d]">
-              <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6] mb-1">
+              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {language === 'sv' ? 'Din personliga kod' : 'Your personal code'}
               </p>
-              <span className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
+              <span className="text-base font-semibold text-[#000000] dark:text-[#FFFFFF]">
                 {customerData.coupon_code}
               </span>
             </div>
