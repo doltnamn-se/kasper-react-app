@@ -74,24 +74,15 @@
     --radius: 0.75rem;
 }
 
-@keyframes sweepAnimation {
+@keyframes expandAnimation {
   0% {
-    transform: rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
+    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 20deg, #24cc5b 20deg, #24cc5b 360deg);
   }
   50% {
-    transform: rotate(360deg);
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
+    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 120deg, #24cc5b 120deg, #24cc5b 360deg);
   }
   100% {
-    transform: rotate(360deg);
-    opacity: 0;
+    background: conic-gradient(from 0deg, #1e9446 0deg, #1e9446 20deg, #24cc5b 20deg, #24cc5b 360deg);
   }
 }
 
