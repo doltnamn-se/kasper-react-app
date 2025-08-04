@@ -68,7 +68,7 @@ export const KasperFriendsCard = () => {
         </div>
 
         <div className="flex flex-col items-center py-4">
-          <p className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF] mb-2">-0 kr</p>
+          <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">-0 kr</p>
           <div className="w-16 h-16 rounded-full" style={{ backgroundColor: '#24cc5b' }}></div>
         </div>
 
