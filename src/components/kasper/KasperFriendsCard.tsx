@@ -65,13 +65,13 @@ export const KasperFriendsCard = () => {
         text: shareText,
       });
     } else {
-      // Desktop: Open email client using window.open
+      // Desktop: Trigger email client
       const subject = encodeURIComponent('Kasper Friends - 50 kr rabatt');
       const body = encodeURIComponent(shareText);
       const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
       
-      // Use window.open instead of window.location.href
-      window.open(mailtoLink);
+      // Use window.location.href to properly trigger email client
+      window.location.href = mailtoLink;
     }
   };
 
