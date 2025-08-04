@@ -110,7 +110,7 @@ export const KasperFriendsCard = () => {
             </div>
             <Button 
               variant="default"
-              className="w-full"
+              className="w-full text-sm md:text-base"
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({
