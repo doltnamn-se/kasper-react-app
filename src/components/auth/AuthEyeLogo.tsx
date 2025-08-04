@@ -29,7 +29,7 @@ export const AuthEyeLogo: React.FC = () => {
 
   return (
     <a href="https://joinkasper.com/" className="inline-block mb-6">
-      <div className="relative h-6 w-auto mx-auto min-w-[100px]">
+      <div className="relative h-6 w-auto mr-auto -ml-[5px] min-w-[100px]">
         <img
           src="/lovable-uploads/kasper-logo-app-light.svg"
           alt="Logo"
