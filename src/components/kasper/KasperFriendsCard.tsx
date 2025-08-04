@@ -108,6 +108,32 @@ export const KasperFriendsCard = () => {
                 <Copy className="h-5 w-5" />
               </Button>
             </div>
+            <Button 
+              variant="default"
+              className="w-full"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: language === 'sv' ? 'Kasper Friends' : 'Kasper Friends',
+                    text: language === 'sv' 
+                      ? `Använd min kod ${customerData.coupon_code} och få 50 kr rabatt på ditt Kasper-abonnemang!`
+                      : `Use my code ${customerData.coupon_code} and get 50 SEK off your Kasper subscription!`,
+                  });
+                } else {
+                  // Fallback for browsers that don't support Web Share API
+                  const text = language === 'sv' 
+                    ? `Använd min kod ${customerData.coupon_code} och få 50 kr rabatt på ditt Kasper-abonnemang!`
+                    : `Use my code ${customerData.coupon_code} and get 50 SEK off your Kasper subscription!`;
+                  navigator.clipboard.writeText(text);
+                  toast({
+                    title: language === 'sv' ? "Kopierat!" : "Copied!",
+                    description: language === 'sv' ? "Delningsmeddelandet har kopierats" : "Share message copied to clipboard",
+                  });
+                }
+              }}
+            >
+              {language === 'sv' ? 'Dela din kod' : 'Share your code'}
+            </Button>
           </div>
         ) : (
           <div className="text-center py-4">
