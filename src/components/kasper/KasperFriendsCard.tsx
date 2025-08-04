@@ -68,9 +68,9 @@ export const KasperFriendsCard = () => {
         </div>
 
         <div className="flex flex-col items-center py-8">
-          <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">-0 kr</p>
+          <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">-0 kr</p>
           <div className="w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}></div>
-          <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] text-center mt-4 max-w-xs">
+          <p className="text-sm md:text-base text-[#000000A6] dark:text-[#FFFFFFA6] text-center mt-4 max-w-xs">
             {language === 'sv' 
               ? 'När någon skaffar Kasper med din kod får ni båda 50 kr rabatt på ert abonnemang'
               : 'When someone gets Kasper with your code, you both get 50 SEK off your subscription'
