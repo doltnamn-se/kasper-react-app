@@ -45,7 +45,7 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   // For auth routes, show the auth-specific logo
   if (isAuthRoute) {
     return (
-      <div className="flex justify-center w-full">
+      <div className="flex justify-start w-full">
         <a href="https://digitaltskydd.se/" className="relative h-12 w-48 block">
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
