@@ -73,7 +73,7 @@ export const KasperFriendsCard = () => {
             <div 
               className="absolute inset-0 rounded-full"
               style={{
-                animation: 'expandSweepAnimation 3.5s ease-in-out infinite'
+                animation: 'expandSweepAnimation 4s ease-in-out infinite'
               }}
             ></div>
           </div>
