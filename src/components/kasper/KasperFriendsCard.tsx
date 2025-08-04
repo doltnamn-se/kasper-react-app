@@ -65,29 +65,13 @@ export const KasperFriendsCard = () => {
         text: shareText,
       });
     } else {
-      // Desktop: Try email first, fallback to clipboard
-      try {
-        const subject = encodeURIComponent('Kasper Friends - 50 kr rabatt');
-        const body = encodeURIComponent(shareText);
-        const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
-        
-        // Create a temporary link and click it
-        const link = document.createElement('a');
-        link.href = mailtoLink;
-        link.click();
-        
-        toast({
-          title: language === 'sv' ? "E-post öppnad!" : "Email opened!",
-          description: language === 'sv' ? "E-postklienten borde öppnas med ditt meddelande" : "Email client should open with your message",
-        });
-      } catch (err) {
-        // Fallback: Copy to clipboard
-        navigator.clipboard.writeText(shareText);
-        toast({
-          title: language === 'sv' ? "Kopierat!" : "Copied!",
-          description: language === 'sv' ? "Meddelandet har kopierats till urklipp" : "Message copied to clipboard",
-        });
-      }
+      // Desktop: Open email client using window.open
+      const subject = encodeURIComponent('Kasper Friends - 50 kr rabatt');
+      const body = encodeURIComponent(shareText);
+      const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
+      
+      // Use window.open instead of window.location.href
+      window.open(mailtoLink);
     }
   };
 
