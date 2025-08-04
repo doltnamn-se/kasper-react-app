@@ -87,16 +87,9 @@ export const KasperFriendsCard = () => {
                 size="icon"
                 className="h-8 w-8 flex-shrink-0"
               >
-                <Copy className="h-4 w-4" />
+                <Copy className="h-5 w-5" />
               </Button>
             </div>
-            
-            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {language === 'sv' 
-                ? 'Dela denna kod med vänner för att ge dem rabatt på sin prenumeration.'
-                : 'Share this code with friends to give them a discount on their subscription.'
-              }
-            </p>
           </div>
         ) : (
           <div className="text-center py-4">
