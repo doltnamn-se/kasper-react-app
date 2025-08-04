@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Copy, Users } from "lucide-react";
+import { Copy } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useQuery } from "@tanstack/react-query";
@@ -58,16 +58,13 @@ export const KasperFriendsCard = () => {
       )}
     >
       <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <Users className="h-5 w-5 text-[#000000A6] dark:text-[#FFFFFFA6]" />
-          <div>
-            <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
-              Kasper Friends
-            </h2>
-            <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
-              {language === 'sv' ? 'Din rabattkod för vänner' : 'Your discount code for friends'}
-            </p>
-          </div>
+        <div>
+          <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
+            Kasper Friends
+          </h2>
+          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
+            {language === 'sv' ? 'Din rabattkod för vänner' : 'Your discount code for friends'}
+          </p>
         </div>
 
         {customerData?.coupon_code ? (
