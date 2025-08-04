@@ -53,7 +53,7 @@ export const KasperFriendsCard = () => {
     }
   };
 
-  const handleShareCode = () => {
+  const handleShareCode = async () => {
     if (!customerData?.coupon_code) return;
 
     const shareText = `Skaffa Kasper med min kod '${customerData.coupon_code}' så får vi båda 50 kr rabatt. Följ länken: https://joinkasper.com/#planer`;
@@ -65,18 +65,16 @@ export const KasperFriendsCard = () => {
         text: shareText,
       });
     } else {
-      // Desktop: Try email client, fallback to clipboard
-      const subject = encodeURIComponent('Kasper Friends - 50 kr rabatt');
-      const body = encodeURIComponent(shareText);
-      const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
-      
-      // Create invisible link and try to trigger email client
-      const link = document.createElement('a');
-      link.href = mailtoLink;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Desktop: Copy to clipboard as fallback
+      try {
+        await navigator.clipboard.writeText(shareText);
+        toast({
+          title: language === 'sv' ? "Kopierat!" : "Copied!",
+          description: language === 'sv' ? "Meddelandet har kopierats - klistra in det i ett e-postmeddelande" : "Message copied - paste it into an email",
+        });
+      } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+      }
     }
   };
 
