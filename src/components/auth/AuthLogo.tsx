@@ -46,16 +46,16 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   if (isAuthRoute) {
     return (
       <div className="flex justify-center w-full">
-        <a href="https://digitaltskydd.se/" className="relative h-16 w-64 block">
+        <a href="https://digitaltskydd.se/" className="relative h-12 w-48 block">
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Logo" 
-            className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
+            className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
           />
           <img 
             src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Logo" 
-            className={`h-16 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
+            className={`h-12 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
           />
         </a>
       </div>
