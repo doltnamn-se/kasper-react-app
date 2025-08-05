@@ -19,8 +19,16 @@ export const MobilePersistentLayout = () => {
     setPathChanged(prev => prev + 1);
   }, [location.pathname]);
 
+  // Check if we're on the checklist page
+  const isChecklistPage = location.pathname === '/checklist';
+
   // Only render persistent elements on mobile
   if (!isMobile) {
+    return <Outlet />;
+  }
+
+  // If on checklist page, don't render navigation elements
+  if (isChecklistPage) {
     return <Outlet />;
   }
 
