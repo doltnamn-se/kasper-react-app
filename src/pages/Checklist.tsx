@@ -79,7 +79,7 @@ const ChecklistContent = () => {
           </div>
 
           <div className="flex flex-col gap-6">
-            <div className="hidden md:block p-6">
+            <div className="p-6">
               <ChecklistSteps 
                 checklistProgress={checklistProgress}
                 onStepClick={handleStepClick}
