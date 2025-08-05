@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getPasswordResetTemplate } from "@/utils/emailTemplates";
-import { getActivationEmailTemplate } from "@/utils/emailTemplates/activationEmail";
+import { getActivationEmailTemplate } from "@/utils/emailTemplates/activation";
 import { Spinner } from "@/components/ui/spinner";
 
 const PasswordTest = () => {
