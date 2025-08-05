@@ -4,10 +4,10 @@ export const sharedEmailStyles = `
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background-color: #f4f4f4 !important;
+    background-color: #fafafa !important;
   }
   body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Google Sans', 'Segoe UI', 'Helvetica', sans-serif;
     line-height: 1.6;
     color: #121212;
     -webkit-font-smoothing: antialiased;
@@ -17,24 +17,24 @@ export const sharedEmailStyles = `
     max-width: 600px;
     margin: 0 auto;
     padding: 40px 20px 20px;
-    background-color: #f4f4f4 !important;
+    background-color: #fafafa !important;
   }
   .logo {
     text-align: center;
     margin-bottom: 15px;
     width: 100%;
-    background-color: #f4f4f4 !important;
+    background-color: #fafafa !important;
   }
   .logo img {
-    max-width: 150px;
+    max-width: 100px;
     height: auto;
     margin: 0 auto;
     display: block;
   }
   .email-wrapper {
-    background-color: #ffffff;
+    background-color: #fafafa;
     border-radius: 8px;
-    padding: 40px;
+    padding: 5px;
     margin: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
