@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { toast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertCircle, Upload, Users, Gift } from 'lucide-react';
+import { useReactTable, getCoreRowModel, getPaginationRowModel, ColumnDef, flexRender, SortingState, getSortedRowModel } from '@tanstack/react-table';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { TablePagination } from '@/components/ui/table-pagination';
+
+declare module '@tanstack/react-table' {
+  interface ColumnMeta<TData, TValue> {
+    className?: string;
+  }
+}
 
 interface PromotionalCode {
   id: string;
@@ -30,6 +39,98 @@ const AdminPromotionalCodes = () => {
   const [bulkCodes, setBulkCodes] = useState('');
   const [isImporting, setIsImporting] = useState(false);
   const [isAssigning, setIsAssigning] = useState(false);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const isMobile = useBreakpoint('(max-width: 767px)');
+
+  // Define table columns
+  const columns = useMemo<ColumnDef<PromotionalCode>[]>(() => [
+    {
+      accessorKey: 'code',
+      header: () => t('kasper.friends.table.code'),
+      cell: ({ row }) => (
+        <div className={isMobile ? "" : "font-mono text-sm"}>
+          {isMobile ? (
+            <Badge variant="outline" className="text-muted-foreground">
+              {row.getValue('code')}
+            </Badge>
+          ) : (
+            row.getValue('code')
+          )}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'status',
+      header: () => t('kasper.friends.table.status'),
+      cell: ({ row }) => getStatusBadge(row.getValue('status')),
+      meta: {
+        className: 'hidden md:table-cell'
+      }
+    },
+    {
+      accessorKey: 'customer_name',
+      header: () => t('kasper.friends.table.assigned.to'),
+      cell: ({ row }) => {
+        const customerName = row.getValue('customer_name') as string;
+        return customerName ? (
+          <p className="font-medium">{customerName}</p>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        );
+      },
+    },
+    {
+      accessorKey: 'assigned_at',
+      header: () => t('kasper.friends.table.assigned.date'),
+      cell: ({ row }) => {
+        const assignedAt = row.getValue('assigned_at') as string;
+        return assignedAt ? (
+          new Date(assignedAt).toLocaleDateString()
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        );
+      },
+      meta: {
+        className: 'hidden md:table-cell'
+      }
+    },
+    {
+      accessorKey: 'created_at',
+      header: () => t('kasper.friends.table.created'),
+      cell: ({ row }) => new Date(row.getValue('created_at')).toLocaleDateString(),
+      meta: {
+        className: 'hidden md:table-cell'
+      }
+    },
+  ], [t, isMobile]);
+
+  // Initialize table
+  const table = useReactTable({
+    data: codes,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+      pagination: {
+        pageIndex: 0,
+        pageSize: isMobile ? 10 : 50,
+      },
+    },
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: isMobile ? 10 : 50,
+      },
+    },
+  });
+
+  // Update page size when mobile state changes
+  useEffect(() => {
+    table.setPageSize(isMobile ? 10 : 50);
+  }, [isMobile, table]);
 
   useEffect(() => {
     document.title = `Admin | ${t('kasper.friends.title')}`;
@@ -383,43 +484,58 @@ const AdminPromotionalCodes = () => {
                 {t('kasper.friends.manage.description')}
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('kasper.friends.table.code')}</TableHead>
-                    <TableHead className="hidden md:table-cell">{t('kasper.friends.table.status')}</TableHead>
-                    <TableHead>{t('kasper.friends.table.assigned.to')}</TableHead>
-                    <TableHead className="hidden md:table-cell">{t('kasper.friends.table.assigned.date')}</TableHead>
-                    <TableHead className="hidden md:table-cell">{t('kasper.friends.table.created')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {codes.map((code) => (
-                    <TableRow key={code.id}>
-                      <TableCell className="font-mono text-sm">{code.code}</TableCell>
-                      <TableCell className="hidden md:table-cell">{getStatusBadge(code.status)}</TableCell>
-                      <TableCell>
-                        {code.customer_name ? (
-                          <p className="font-medium">{code.customer_name}</p>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        {code.assigned_at ? (
-                          new Date(code.assigned_at).toLocaleDateString()
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        {new Date(code.created_at).toLocaleDateString()}
-                      </TableCell>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead 
+                          key={header.id}
+                          className={header.column.columnDef.meta?.className}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      ))}
                     </TableRow>
                   ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell 
+                            key={cell.id}
+                            className={cell.column.columnDef.meta?.className}
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
+              
+              <TablePagination table={table} />
             </CardContent>
           </Card>
         </TabsContent>
