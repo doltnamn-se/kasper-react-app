@@ -81,7 +81,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         
         {/* REPLACED: Notifications replaced with Support */}
         <DropdownMenuItem 
-          onClick={() => window.open("https://digitaltskydd.se/support/", "_blank")}
+          onClick={() => window.open("https://joinkasper.com/support/#kontakt", "_blank")}
           className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
         >
           <MessageSquareText className="mr-3 h-4 w-4" />
