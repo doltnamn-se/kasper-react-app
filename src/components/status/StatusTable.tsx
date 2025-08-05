@@ -5,6 +5,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { StatusActions } from "./StatusActions";
 import { getSpinnerColor, getStatusText } from "./SiteConfig";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface SiteStatus {
   site_name: string;
@@ -72,6 +74,23 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                       className="md:size-[20px]"
                     />
                     <span className="text-xs md:text-sm">{getStatusText(status, language)}</span>
+                    {status === 'Begäran skickad' && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {language === 'sv' 
+                                ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
+                                : "Legal request has been sent for removal of your profile on MrKoll. Their processing time is approximately 3-4 weeks."
+                              }
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
                   </div>
                   <StatusActions 
                     status={status}
