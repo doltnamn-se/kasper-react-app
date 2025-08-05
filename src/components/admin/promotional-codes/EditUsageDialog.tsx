@@ -90,14 +90,34 @@ export const EditUsageDialog = ({ isOpen, onClose, codeData, onUpdate }: EditUsa
           
           <div className="space-y-2">
             <Label htmlFor="usage-count">Usage Count</Label>
-            <Input
-              id="usage-count"
-              type="number"
-              min="0"
-              value={usageCount}
-              onChange={(e) => setUsageCount(parseInt(e.target.value) || 0)}
-              className="w-full"
-            />
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setUsageCount(Math.max(0, usageCount - 1))}
+                className="h-9 w-9 p-0"
+              >
+                -
+              </Button>
+              <Input
+                id="usage-count"
+                type="number"
+                min="0"
+                value={usageCount}
+                onChange={(e) => setUsageCount(parseInt(e.target.value) || 0)}
+                className="flex-1 text-center"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setUsageCount(usageCount + 1)}
+                className="h-9 w-9 p-0"
+              >
+                +
+              </Button>
+            </div>
             <p className="text-xs text-gray-500">
               Current discount: -{usageCount * 50} kr
             </p>
