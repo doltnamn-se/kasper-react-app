@@ -2,10 +2,8 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export const useAuthStatus = () => {
-  const { t } = useLanguage();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | undefined>(undefined);
@@ -36,7 +34,7 @@ export const useAuthStatus = () => {
             console.log("useAuthStatus: User is banned, signing out");
             await supabase.auth.signOut();
             if (mounted) {
-              toast.error(t('errors.user_banned'));
+              toast.error('User is banned');
               setIsAuthenticated(false);
               setUserId(undefined);
               setIsLoading(false);
@@ -80,7 +78,7 @@ export const useAuthStatus = () => {
             setIsAuthenticated(false);
             setUserId(undefined);
             setIsLoading(false);
-            toast.error(t('errors.user_banned'));
+            toast.error('User is banned');
           }, 0);
           return;
         }
@@ -104,7 +102,7 @@ export const useAuthStatus = () => {
         authSubscription.unsubscribe();
       }
     };
-  }, [t]);
+  }, []);
 
   return { isAuthenticated, isLoading, userId };
 };
