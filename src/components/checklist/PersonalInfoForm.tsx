@@ -67,6 +67,8 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Show completion flow
       setShowCompletion(true);
       
+      console.log('Starting completion flow - step 1: fading out screen');
+      
       // Fade out everything on screen (1 second)
       const checklistPage = document.querySelector('.checklist-page');
       if (checklistPage) {
@@ -75,6 +77,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       
       // Show welcome message after fade out (1 second)
       setTimeout(() => {
+        console.log('Starting completion flow - step 2: showing welcome message');
         setShowWelcome(true);
       }, 1000);
       
@@ -87,6 +90,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       // Hide welcome message after 1 second display and complete (1 second fade out)
       setTimeout(async () => {
+        console.log('Starting completion flow - step 3: hiding welcome message');
         // Add fade out class to welcome message
         const welcomeDiv = document.querySelector('.welcome-message');
         if (welcomeDiv) {
@@ -95,6 +99,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         
         // Wait for fade out animation (1 second)
         setTimeout(async () => {
+          console.log('Starting completion flow - step 4: navigating to account');
           setShowWelcome(false);
           
           // Call onComplete callback
@@ -103,7 +108,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
           // Force a hard navigation to ensure fresh state
           window.location.href = '/';
         }, 1000);
-      }, 1000);
+      }, 2000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
@@ -126,28 +131,14 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       </form>
       
       {/* Completion Flow */}
-      {showCompletion && (
-        <>
-          {/* Finalizing text */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold mb-4 animate-fade-in">
-                {t('checklist.completion.finalizing')}
-              </h1>
-            </div>
+      {showCompletion && showWelcome && (
+        <div className="welcome-message fixed inset-0 z-50 flex items-center justify-center bg-background animate-fade-in">
+          <div className="text-center">
+            <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
+              {t('checklist.completion.welcome')}
+            </h1>
           </div>
-          
-          {/* Welcome message */}
-          {showWelcome && (
-            <div className="welcome-message fixed inset-0 z-50 flex items-center justify-center bg-background animate-fade-in">
-              <div className="text-center">
-                <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
-                  {t('checklist.completion.welcome')}
-                </h1>
-              </div>
-            </div>
-          )}
-        </>
+        </div>
       )}
     </>
   );
