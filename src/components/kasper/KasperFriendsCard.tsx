@@ -58,6 +58,15 @@ export const KasperFriendsCard = () => {
   const discountAmount = (usageData?.usage_count || 0) * 50;
   const circleRotation = (usageData?.usage_count || 0) * 30; // 30 degrees per usage
 
+  // Debug logging
+  console.log('KasperFriendsCard Debug:', {
+    userProfile: userProfile?.id,
+    customerData: customerData?.coupon_code,
+    usageData: usageData?.usage_count,
+    discountAmount,
+    circleRotation
+  });
+
   const handleCopyCoupon = async () => {
     if (customerData?.coupon_code) {
       try {
