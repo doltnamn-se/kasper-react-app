@@ -311,9 +311,9 @@ const AdminPromotionalCodes = () => {
 
       <Tabs defaultValue="manage" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="manage">Manage Codes</TabsTrigger>
-          <TabsTrigger value="import">Import Codes</TabsTrigger>
-          <TabsTrigger value="assign">Assign to Customers</TabsTrigger>
+          <TabsTrigger value="manage">{t('kasper.friends.tabs.manage')}</TabsTrigger>
+          <TabsTrigger value="import">{t('kasper.friends.tabs.import')}</TabsTrigger>
+          <TabsTrigger value="assign">{t('kasper.friends.tabs.assign')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="import" className="space-y-4">

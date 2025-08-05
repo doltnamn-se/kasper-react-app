@@ -104,4 +104,7 @@ export interface FeaturesTranslations {
   'kasper.friends.stats.assigned': string;
   'kasper.friends.stats.used': string;
   'kasper.friends.stats.need.codes': string;
+  'kasper.friends.tabs.manage': string;
+  'kasper.friends.tabs.import': string;
+  'kasper.friends.tabs.assign': string;
 }
