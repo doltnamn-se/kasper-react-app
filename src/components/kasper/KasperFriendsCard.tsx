@@ -138,12 +138,15 @@ export const KasperFriendsCard = () => {
             -{discountAmount} kr
           </p>
           <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
-            <div 
-              className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
-              style={{
-                background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
-              }}
-            ></div>
+            {discountAmount > 0 && (
+              <div 
+                className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
+                style={{
+                  background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`,
+                  boxShadow: 'inset 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(0, 0, 0, 0.1)'
+                }}
+              ></div>
+            )}
           </div>
           <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] text-center mt-4 max-w-xs">
             {language === 'sv' 
