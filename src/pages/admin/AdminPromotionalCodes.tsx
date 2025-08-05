@@ -397,10 +397,7 @@ const AdminPromotionalCodes = () => {
                 <TableBody>
                   {codes.map((code) => (
                     <TableRow key={code.id}>
-                      <TableCell>
-                        <span className="hidden md:inline font-mono text-sm">{code.code}</span>
-                        <Badge variant="outline" className="md:hidden text-gray-600">{code.code}</Badge>
-                      </TableCell>
+                      <TableCell className="font-mono text-sm">{code.code}</TableCell>
                       <TableCell className="hidden md:table-cell">{getStatusBadge(code.status)}</TableCell>
                       <TableCell>
                         {code.customer_name ? (
