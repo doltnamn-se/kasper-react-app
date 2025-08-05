@@ -240,11 +240,10 @@ const AdminPromotionalCodes = () => {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">{t('kasper.friends.title')}</h1>
-          <p className="text-muted-foreground">{t('kasper.friends.description')}</p>
-        </div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+          Kasper friends
+        </h1>
       </div>
 
       {/* Stats Cards */}
