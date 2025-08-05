@@ -78,7 +78,13 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] cursor-help" />
+                            <button 
+                              type="button"
+                              className="inline-flex items-center justify-center"
+                              aria-label={language === 'sv' ? 'Visa information' : 'Show information'}
+                            >
+                              <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] cursor-help hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors" />
+                            </button>
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>
