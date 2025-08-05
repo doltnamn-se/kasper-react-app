@@ -141,7 +141,7 @@ export const KasperFriendsCard = () => {
             <div 
               className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
               style={{
-                background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
+                background: `conic-gradient(from 0deg, #097c4f 0deg, #097c4f ${circleRotation}deg, transparent ${circleRotation}deg)`
               }}
             ></div>
           </div>
