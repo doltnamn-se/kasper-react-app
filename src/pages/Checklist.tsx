@@ -63,9 +63,8 @@ const ChecklistContent = () => {
       <div className="max-w-[1400px] mx-auto">
         <TooltipProvider>
           <div className="flex justify-between items-center mb-6">
-            <AuthLogo />
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
+            <div className="hidden md:block">
+              <AuthLogo />
             </div>
           </div>
 
@@ -107,9 +106,12 @@ const ChecklistContent = () => {
             </div>
           </div>
 
-          {/* Footer with Language Selector */}
-          <div className="fixed bottom-6 left-6 md:block hidden">
+          {/* Footer with Language Selector and Theme Toggle */}
+          <div className="fixed bottom-6 left-6">
             <LanguageSwitch />
+          </div>
+          <div className="fixed bottom-6 right-6">
+            <ThemeToggle />
           </div>
         </TooltipProvider>
       </div>
