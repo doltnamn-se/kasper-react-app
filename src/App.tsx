@@ -22,7 +22,7 @@ import Deindexing from "@/pages/Deindexing";
 import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
 import Settings from "@/pages/Settings";
-import PasswordTest from "@/pages/PasswordTest";
+
 
 // Admin routes
 import AdminLayout from "@/pages/admin/AdminLayout";
@@ -147,8 +147,6 @@ function App() {
                   <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
                 </Route>
                 
-                {/* Non-wrapped routes */}
-                <Route path="/password-test" element={<PasswordTest />} />
               </Routes>
               <Toaster />
             </Router>
