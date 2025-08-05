@@ -132,16 +132,16 @@ export const KasperFriendsCard = () => {
         <div className="flex flex-col items-center py-8">
           <p className={`text-sm md:text-base font-medium mb-2 ${
             discountAmount > 0 
-              ? 'text-[#097c4f]' 
+              ? 'text-[#24cc5b]' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}>
             -{discountAmount} kr
           </p>
-          <div className="relative w-52 h-52 rounded-full shadow-lg" style={{ backgroundColor: '#24cc5b', boxShadow: '0 8px 24px rgba(36, 204, 91, 0.25)' }}>
+          <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
             <div 
               className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
               style={{
-                background: `conic-gradient(from 0deg, #097c4f 0deg, #097c4f ${circleRotation}deg, transparent ${circleRotation}deg)`
+                background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
               }}
             ></div>
           </div>
