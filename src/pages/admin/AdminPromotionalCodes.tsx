@@ -239,7 +239,7 @@ const AdminPromotionalCodes = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto space-y-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
           Kasper friends
