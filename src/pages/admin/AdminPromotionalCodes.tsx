@@ -339,9 +339,8 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="assign" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-lg">
-                <Users className="h-5 w-5" />
-                <span>{t('kasper.friends.assign.title')}</span>
+              <CardTitle className="text-lg">
+                {t('kasper.friends.assign.title')}
               </CardTitle>
               <CardDescription>
                 {t('kasper.friends.assign.description')}
