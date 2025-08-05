@@ -304,9 +304,8 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="import" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-lg">
-                <Upload className="h-4 w-4" />
-                <span>{t('kasper.friends.import.title')}</span>
+              <CardTitle className="text-lg">
+                {t('kasper.friends.import.title')}
               </CardTitle>
               <CardDescription>
                 {t('kasper.friends.import.description')}
