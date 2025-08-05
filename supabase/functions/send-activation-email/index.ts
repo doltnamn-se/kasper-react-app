@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { getActivationEmailTemplate } from "../email-handler/templates.ts";
@@ -12,13 +11,16 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request) => {
-  console.log("Activation email handler called - using latest templates");
+  console.log("🚀 UPDATED activation email handler called - v2.0");
+  
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, displayName, password } = await req.json();
+    console.log("📧 Using NEW template system for:", email);
+    
     const emailHtml = getActivationEmailTemplate(displayName, password);
 
     const { data, error } = await resend.emails.send({
@@ -33,7 +35,7 @@ const handler = async (req: Request) => {
       throw error;
     }
 
-    console.log("Activation email sent successfully:", data);
+    console.log("✅ NEW activation email sent successfully:", data);
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { getPasswordResetTemplate } from "../email-handler/templates.ts";
@@ -12,14 +11,15 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request) => {
-  console.log("Password reset handler called - using latest templates");
+  console.log("🚀 UPDATED password reset handler called - v2.0");
+  
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, resetLink } = await req.json();
-    console.log("Sending password reset email to:", email);
+    console.log("📧 Using NEW template system for password reset:", email);
     
     const emailHtml = getPasswordResetTemplate(resetLink);
 
@@ -35,7 +35,7 @@ const handler = async (req: Request) => {
       throw error;
     }
 
-    console.log("Password reset email sent successfully:", data);
+    console.log("✅ NEW password reset email sent successfully:", data);
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
