@@ -52,6 +52,9 @@ export function SiteStatusManager({
     value: 'Borttagen',
     label: language === 'sv' ? 'Borttagen' : 'Removed'
   }, {
+    value: 'Begäran skickad',
+    label: language === 'sv' ? 'Begäran skickad' : 'Request sent'
+  }, {
     value: 'Synlig',
     label: language === 'sv' ? 'Synlig' : 'Visible'
   }];
