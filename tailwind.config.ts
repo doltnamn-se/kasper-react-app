@@ -22,7 +22,6 @@ export default {
       fontFamily: {
         sans: ['Satoshi', 'system-ui', 'sans-serif'],
         inter: ['Inter', 'system-ui', 'sans-serif'],
-        domaine: ['DomaineDispNrw-Regular', 'serif'],
       },
       keyframes: {
         'accordion-down': {
