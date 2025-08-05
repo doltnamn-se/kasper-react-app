@@ -253,8 +253,8 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <Gift className="h-4 w-4 text-blue-600" />
               <div>
-                <p className="text-sm font-medium">{t('kasper.friends.stats.total')}</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.total')}</p>
+                <p className="text-xl font-bold">{stats.total}</p>
               </div>
             </div>
           </CardContent>
@@ -265,8 +265,8 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-500 rounded-full" />
               <div>
-                <p className="text-sm font-medium">{t('kasper.friends.stats.available')}</p>
-                <p className="text-2xl font-bold text-green-600">{stats.available}</p>
+                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.available')}</p>
+                <p className="text-xl font-bold text-green-600">{stats.available}</p>
               </div>
             </div>
           </CardContent>
@@ -277,8 +277,8 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-blue-500 rounded-full" />
               <div>
-                <p className="text-sm font-medium">{t('kasper.friends.stats.assigned')}</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.assigned}</p>
+                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.assigned')}</p>
+                <p className="text-xl font-bold text-blue-600">{stats.assigned}</p>
               </div>
             </div>
           </CardContent>
@@ -289,8 +289,8 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-gray-500 rounded-full" />
               <div>
-                <p className="text-sm font-medium">{t('kasper.friends.stats.used')}</p>
-                <p className="text-2xl font-bold text-gray-600">{stats.used}</p>
+                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.used')}</p>
+                <p className="text-xl font-bold text-gray-600">{stats.used}</p>
               </div>
             </div>
           </CardContent>
@@ -301,8 +301,8 @@ const AdminPromotionalCodes = () => {
             <div className="flex items-center space-x-2">
               <Users className="h-4 w-4 text-orange-600" />
               <div>
-                <p className="text-sm font-medium">{t('kasper.friends.stats.need.codes')}</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.customersWithoutCodes}</p>
+                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.need.codes')}</p>
+                <p className="text-xl font-bold text-orange-600">{stats.customersWithoutCodes}</p>
               </div>
             </div>
           </CardContent>
