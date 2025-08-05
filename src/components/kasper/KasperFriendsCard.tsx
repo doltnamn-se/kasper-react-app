@@ -64,7 +64,7 @@ export const KasperFriendsCard = () => {
   });
 
   const discountAmount = (usageData?.usage_count || 0) * 50;
-  const circleRotation = (usageData?.usage_count || 0) * 30; // 30 degrees per usage
+  const circleRotation = Math.max((usageData?.usage_count || 0) * 30, 15); // Minimum 15 degrees for animation visibility
 
   // Debug logging
   console.log('KasperFriendsCard Debug:', {
