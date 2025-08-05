@@ -32,7 +32,9 @@ export const StatusTable: React.FC<StatusTableProps> = ({
   const { language } = useLanguage();
 
   const getSiteStatus = (siteName: string): string => {
-    const siteStatus = siteStatuses.find(status => status.site_name === siteName);
+    // Handle name variations between config and database
+    const dbSiteName = siteName === 'MrKoll' ? 'Mrkoll' : siteName;
+    const siteStatus = siteStatuses.find(status => status.site_name === dbSiteName);
     return siteStatus ? siteStatus.status : 'Granskar';
   };
 
