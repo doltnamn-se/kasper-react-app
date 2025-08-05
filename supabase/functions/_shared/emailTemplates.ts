@@ -9,9 +9,9 @@ export const getPasswordResetTemplate = (resetLink: string) => {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Återställ ditt lösenord – Kasper</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    ${passwordResetStyles}
+    ${activationEmailStyles}
   </style>
 </head>
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
@@ -21,14 +21,15 @@ export const getPasswordResetTemplate = (resetLink: string) => {
     </div>
     <div class="email-wrapper">
       <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">Återställ ditt lösenord</h1>
-      <p>
+      <p style="font-size: 16px; color: #333333; margin-bottom: 20px; text-align: left;">
         Klicka på knappen nedan för att återställa ditt lösenord. Om du inte har begärt att återställa ditt lösenord kan du ignorera detta mail.
       </p>
-      <div style="text-align: center; margin-bottom: 40px;">
+      <div style="text-align: center; margin: 40px 0;">
         <a href="${resetLink}" class="button">Återställ lösenord</a>
       </div>
-      <p style="text-align: left;">
-        Om du har några frågor, maila oss på <a href="mailto:support@joinkasper.com" class="email-link">support@joinkasper.com</a>.
+      <p style="text-align: left; font-size: 16px; color: #333333;">
+        Om du har några frågor eller behöver hjälp, maila
+        oss på <a href="mailto:support@joinkasper.com" class="email-link">support@joinkasper.com</a>.
       </p>
     </div>
   </div>
