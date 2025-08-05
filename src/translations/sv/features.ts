@@ -23,6 +23,8 @@ const features: FeaturesTranslations = {
   'step.4.description': 'Fyll i din adress för verifiering, bevakning och adresslarm',
   'step.identification.title': 'Identifiering',
   'step.identification.description': 'Skriv in din adress så att vi kan verifiera att vi tittar på rätt person när vi söker upp dina uppgifter på nätet',
+  'checklist.completion.finalizing': 'Slutför aktivering',
+  'checklist.completion.welcome': 'Välkommen till Kasper',
   'step.deindexing.title': 'Avindexering',
   'step.deindexing.description': 'Ta bort din information från sökresultat',
   'url.input.placeholder': 'Ange URL',

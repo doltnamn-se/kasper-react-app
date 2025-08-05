@@ -115,4 +115,6 @@ export interface FeaturesTranslations {
   'kasper.friends.status.available': string;
   'kasper.friends.status.assigned': string;
   'kasper.friends.status.used': string;
+  'checklist.completion.finalizing': string;
+  'checklist.completion.welcome': string;
 }

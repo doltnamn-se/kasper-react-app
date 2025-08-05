@@ -4,7 +4,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AddressSection } from "./form-sections/AddressSection";
 import { useNavigate } from "react-router-dom";
-import { launchConfetti } from "@/utils/confetti";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -20,10 +19,12 @@ interface PersonalInfoFormProps {
 }
 
 export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>();
 
   const onSubmit = async (data: PersonalInfoFormData) => {
@@ -63,30 +64,40 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
 
       console.log('Successfully updated customer and checklist progress');
       
-      // Launch confetti
-      launchConfetti();
-
-      // Add fade-out animation to checklist page
+      // Show completion flow
+      setShowCompletion(true);
+      
+      // Fade out everything on screen
       const checklistPage = document.querySelector('.checklist-page');
       if (checklistPage) {
         checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-500');
       }
       
-      // Invalidate queries first
+      // Show welcome message after fade out
+      setTimeout(() => {
+        setShowWelcome(true);
+      }, 500);
+      
+      // Invalidate queries
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['checklist-progress'] }),
         queryClient.invalidateQueries({ queryKey: ['customer-data'] }),
         queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
       ]);
 
-      // Wait for the animations and query invalidation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Call onComplete callback
-      await onComplete();
-
-      // Force a hard navigation to ensure fresh state
-      window.location.href = '/';
+      // Hide welcome message after 2 seconds and complete
+      setTimeout(async () => {
+        setShowWelcome(false);
+        
+        // Wait for fade out animation
+        setTimeout(async () => {
+          // Call onComplete callback
+          await onComplete();
+          
+          // Force a hard navigation to ensure fresh state
+          window.location.href = '/';
+        }, 500);
+      }, 2000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
@@ -100,11 +111,38 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-full">
-      <AddressSection register={register} errors={errors} />
-      <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
-        {language === 'sv' ? 'Spara' : 'Save'}
-      </Button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-full">
+        <AddressSection register={register} errors={errors} />
+        <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
+          {language === 'sv' ? 'Spara' : 'Save'}
+        </Button>
+      </form>
+      
+      {/* Completion Flow */}
+      {showCompletion && (
+        <>
+          {/* Finalizing text */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-4 animate-fade-in">
+                {t('checklist.completion.finalizing')}
+              </h1>
+            </div>
+          </div>
+          
+          {/* Welcome message */}
+          {showWelcome && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+              <div className="text-center">
+                <h1 className={`text-2xl font-bold ${showWelcome ? 'animate-fade-in' : 'animate-fade-out'}`}>
+                  {t('checklist.completion.welcome')}
+                </h1>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </>
   );
 };

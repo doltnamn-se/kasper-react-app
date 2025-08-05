@@ -23,6 +23,8 @@ const features: FeaturesTranslations = {
   'step.4.description': 'Enter your address for verification, monitoring and address alerts',
   'step.identification.title': 'Identification',
   'step.identification.description': 'Enter your address so we can verify we\'re looking at the right person when we look up your details online',
+  'checklist.completion.finalizing': 'Slutför aktivering',
+  'checklist.completion.welcome': 'Welcome to Kasper',
   'step.deindexing.title': 'Deindexing',
   'step.deindexing.description': 'Remove your information from search results',
   'url.input.placeholder': 'Enter URL',
