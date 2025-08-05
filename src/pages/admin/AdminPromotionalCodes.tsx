@@ -250,60 +250,45 @@ const AdminPromotionalCodes = () => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <Gift className="h-4 w-4 text-blue-600" />
-              <div>
-                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.total')}</p>
-                <p className="text-xl font-bold">{stats.total}</p>
-              </div>
+            <div>
+              <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.total')}</p>
+              <p className="text-xl font-bold">{stats.total}</p>
             </div>
           </CardContent>
         </Card>
         
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full" />
-              <div>
-                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.available')}</p>
-                <p className="text-xl font-bold text-green-600">{stats.available}</p>
-              </div>
+            <div>
+              <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.available')}</p>
+              <p className="text-xl font-bold text-green-600">{stats.available}</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full" />
-              <div>
-                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.assigned')}</p>
-                <p className="text-xl font-bold text-blue-600">{stats.assigned}</p>
-              </div>
+            <div>
+              <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.assigned')}</p>
+              <p className="text-xl font-bold text-blue-600">{stats.assigned}</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-gray-500 rounded-full" />
-              <div>
-                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.used')}</p>
-                <p className="text-xl font-bold text-gray-600">{stats.used}</p>
-              </div>
+            <div>
+              <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.used')}</p>
+              <p className="text-xl font-bold text-gray-600">{stats.used}</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <Users className="h-4 w-4 text-orange-600" />
-              <div>
-                <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.need.codes')}</p>
-                <p className="text-xl font-bold text-orange-600">{stats.customersWithoutCodes}</p>
-              </div>
+            <div>
+              <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.need.codes')}</p>
+              <p className="text-xl font-bold text-orange-600">{stats.customersWithoutCodes}</p>
             </div>
           </CardContent>
         </Card>
