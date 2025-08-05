@@ -5,7 +5,7 @@ interface SiteInfo {
 }
 
 export const siteConfig: SiteInfo[] = [
-  { name: 'Mrkoll', icon: '/fonts/MrKoll.svg' },
+  { name: 'MrKoll', icon: '/fonts/MrKoll.svg' },
   { name: 'Ratsit', icon: '/fonts/Ratsit.svg' },
   { name: 'Hitta', icon: '/fonts/Hitta.svg' },
   { name: 'Merinfo', icon: '/fonts/Merinfo.svg' },
