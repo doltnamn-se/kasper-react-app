@@ -74,8 +74,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
       console.log("Customer created successfully:", createData);
 
       if (sendEmail) {
-        console.log("Sending activation email...");
-        const { error: emailError } = await supabase.functions.invoke('send-activation-email', {
+        console.log("Sending activation email using V2...");
+        const { error: emailError } = await supabase.functions.invoke('send-activation-email-v2', {
           body: {
             email: formData.email,
             displayName: formData.displayName,
