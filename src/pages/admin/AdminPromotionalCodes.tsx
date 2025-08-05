@@ -388,17 +388,17 @@ const AdminPromotionalCodes = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>{t('kasper.friends.table.code')}</TableHead>
-                    <TableHead>{t('kasper.friends.table.status')}</TableHead>
+                    <TableHead className="hidden md:table-cell">{t('kasper.friends.table.status')}</TableHead>
                     <TableHead>{t('kasper.friends.table.assigned.to')}</TableHead>
-                    <TableHead>{t('kasper.friends.table.assigned.date')}</TableHead>
-                    <TableHead>{t('kasper.friends.table.created')}</TableHead>
+                    <TableHead className="hidden md:table-cell">{t('kasper.friends.table.assigned.date')}</TableHead>
+                    <TableHead className="hidden md:table-cell">{t('kasper.friends.table.created')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {codes.map((code) => (
                     <TableRow key={code.id}>
                       <TableCell className="font-mono text-sm">{code.code}</TableCell>
-                      <TableCell>{getStatusBadge(code.status)}</TableCell>
+                      <TableCell className="hidden md:table-cell">{getStatusBadge(code.status)}</TableCell>
                       <TableCell>
                         {code.customer_name ? (
                           <div>
@@ -409,14 +409,14 @@ const AdminPromotionalCodes = () => {
                           <span className="text-muted-foreground">—</span>
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         {code.assigned_at ? (
                           new Date(code.assigned_at).toLocaleDateString()
                         ) : (
                           <span className="text-muted-foreground">—</span>
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         {new Date(code.created_at).toLocaleDateString()}
                       </TableCell>
                     </TableRow>
