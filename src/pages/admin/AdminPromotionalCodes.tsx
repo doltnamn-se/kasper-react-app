@@ -124,6 +124,24 @@ const AdminPromotionalCodes = () => {
     },
   ], [t, isMobile]);
 
+  // Custom global filter function to search across all relevant fields
+  const globalFilterFn = (row: any, columnId: string, value: string) => {
+    const searchValue = value.toLowerCase();
+    const code = row.original.code?.toLowerCase() || '';
+    const customerName = row.original.customer_name?.toLowerCase() || '';
+    const customerEmail = row.original.customer_email?.toLowerCase() || '';
+    const status = row.original.status?.toLowerCase() || '';
+    const notes = row.original.notes?.toLowerCase() || '';
+    
+    return (
+      code.includes(searchValue) ||
+      customerName.includes(searchValue) ||
+      customerEmail.includes(searchValue) ||
+      status.includes(searchValue) ||
+      notes.includes(searchValue)
+    );
+  };
+
   // Initialize table
   const table = useReactTable({
     data: codes,
@@ -134,7 +152,7 @@ const AdminPromotionalCodes = () => {
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: 'includesString',
+    globalFilterFn: globalFilterFn,
     state: {
       sorting,
       globalFilter,
