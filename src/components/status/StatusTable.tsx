@@ -1,11 +1,11 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Spinner } from "@/components/ui/spinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { StatusActions } from "./StatusActions";
 import { getSpinnerColor, getStatusText } from "./SiteConfig";
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 
 interface SiteStatus {
@@ -30,6 +30,7 @@ export const StatusTable: React.FC<StatusTableProps> = ({
   onRemoveSite
 }) => {
   const { language } = useLanguage();
+  const [openTooltip, setOpenTooltip] = useState<string | null>(null);
 
   const getSiteStatus = (siteName: string): string => {
     // Handle name variations between config and database
@@ -77,35 +78,31 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                     />
                     <span className="text-xs md:text-sm">{getStatusText(status, language)}</span>
                     {status === 'Begäran skickad' && (
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <button 
-                            type="button"
-                            className="inline-flex items-center justify-center touch-manipulation p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                            aria-label={language === 'sv' ? 'Visa information' : 'Show information'}
-                          >
-                            <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors" />
-                          </button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              {language === 'sv' ? 'Information' : 'Information'}
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
+                      <TooltipProvider>
+                        <Tooltip 
+                          open={openTooltip === site.name} 
+                          onOpenChange={(open) => setOpenTooltip(open ? site.name : null)}
+                        >
+                          <TooltipTrigger asChild>
+                            <button 
+                              type="button"
+                              className="inline-flex items-center justify-center touch-manipulation p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                              aria-label={language === 'sv' ? 'Visa information' : 'Show information'}
+                              onClick={() => setOpenTooltip(openTooltip === site.name ? null : site.name)}
+                            >
+                              <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center" className="max-w-xs z-[9999]">
+                            <p className="text-sm">
                               {language === 'sv' 
                                 ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
                                 : "Legal request has been sent for removal of your profile on MrKoll. Their processing time is approximately 3-4 weeks."
                               }
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogAction>
-                              {language === 'sv' ? 'OK' : 'OK'}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     )}
                   </div>
                   <StatusActions 
