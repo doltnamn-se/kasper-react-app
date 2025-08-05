@@ -107,7 +107,7 @@ const features: FeaturesTranslations = {
   'kasper.friends.stats.used': 'Använda',
   'kasper.friends.stats.need.codes': 'Behöver koder',
   'kasper.friends.tabs.manage': 'Hantera koder',
-  'kasper.friends.tabs.import': 'Importera koder',
+  'kasper.friends.tabs.import': 'Importera',
   'kasper.friends.tabs.assign': 'Tilldela till kunder',
 };
 
