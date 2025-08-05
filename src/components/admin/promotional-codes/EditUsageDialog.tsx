@@ -120,7 +120,7 @@ export const EditUsageDialog = ({ isOpen, onClose, codeData, onUpdate }: EditUsa
 
   return isMobile ? (
     <Drawer open={isOpen} onOpenChange={handleClose}>
-      <DrawerContent className="px-4 pb-4 pt-6 z-[100] h-[70vh] min-h-[400px]">
+      <DrawerContent className="px-4 pb-4 pt-6 z-[10000] h-[70vh] min-h-[400px]">
         <DrawerHeader>
           <DrawerTitle>Edit Coupon Usage</DrawerTitle>
         </DrawerHeader>
