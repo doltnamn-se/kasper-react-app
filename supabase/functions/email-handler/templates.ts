@@ -75,11 +75,11 @@ export const getPasswordResetTemplate = (resetLink: string) => `
   <div class="container">
     <div class="email-wrapper">
       <div class="logo">
-        <img src="https://app.doltnamn.se/lovable-uploads/a60e3543-e8d5-4f66-a2eb-97eeedd073ae.png" alt="Doltnamn Logo">
+        <img src="https://app.joinkasper.com/lovable-uploads/kasper-wp-logo.png" alt="Kasper Logo">
       </div>
       <h1>Reset Your Password</h1>
       <p>Hello,</p>
-      <p>We received a request to reset your password for your Doltnamn account. Click the button below to reset it:</p>
+      <p>We received a request to reset your password for your Kasper account. Click the button below to reset it:</p>
       <div style="text-align: center;">
         <a href="${resetLink}" class="button">Reset Password</a>
       </div>
@@ -87,7 +87,7 @@ export const getPasswordResetTemplate = (resetLink: string) => `
       <p>For security reasons, we recommend copying and pasting this link if the button doesn't work:</p>
       <p style="word-break: break-all; font-size: 12px; color: #666666;">${resetLink}</p>
       <div class="footer">
-        <p>&copy; ${new Date().getFullYear()} Doltnamn. All rights reserved.</p>
+        <p>&copy; ${new Date().getFullYear()} Kasper. Alla rättigheter förbehållna.</p>
       </div>
     </div>
   </div>

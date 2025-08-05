@@ -56,17 +56,17 @@ serve(async (req) => {
           throw new Error("Failed to generate reset link");
         }
 
-        subject = "Reset Your Doltnamn Password";
+        subject = "Reset Your Kasper Password";
         emailContent = getPasswordResetTemplate(linkData.properties.action_link);
         break;
 
       case 'welcome':
-        subject = "Welcome to Doltnamn";
+        subject = "Welcome to Kasper";
         emailContent = getWelcomeTemplate(data?.firstName || '', data?.resetLink || '');
         break;
 
       case 'test':
-        subject = "Test Email from Doltnamn";
+        subject = "Test Email from Kasper";
         emailContent = getTestEmailTemplate();
         break;
 
