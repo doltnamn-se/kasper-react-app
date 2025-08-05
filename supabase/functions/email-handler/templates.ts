@@ -120,6 +120,44 @@ export const getPasswordResetTemplate = (resetLink: string) => `
 </html>
 `;
 
+export const getActivationEmailTemplate = (displayName: string, password: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktivera ditt konto</title>
+  <style>
+    ${sharedStyles}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="email-wrapper">
+      <div class="logo">
+        <img src="https://app.joinkasper.com/lovable-uploads/kasper-wp-logo.png" alt="Kasper Logo">
+      </div>
+      <h1>Aktivera ditt konto</h1>
+      <p>Välkommen ${displayName || ''}! 👋</p>
+      <p>Ditt konto har skapats och du kan nu logga in för att aktivera ditt konto. Du loggar in med din e-postadress samt det lösenord vi genererat åt dig nedan.</p>
+      <div class="credentials">
+        <div class="password-label">Ditt lösenord</div>
+        <div class="password-value">${password}</div>
+      </div>
+      <div style="text-align: center;">
+        <a href="https://app.joinkasper.com/auth" class="button">Aktivera ditt konto</a>
+      </div>
+      <p>Om du har några frågor eller behöver hjälp med att komma igång, maila oss på <a href="mailto:support@joinkasper.com" style="color: #333333; text-decoration: underline;">support@joinkasper.com</a>. Vi är glada att ha dig ombord!</p>
+      <div class="footer">
+        <p>Skickat från teamet på <a href="https://joinkasper.com/" style="color: #666666; text-decoration: underline;">Kasper</a></p>
+        <p>&copy; ${new Date().getFullYear()} Kasper. Alla rättigheter förbehållna.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
 export const getWelcomeTemplate = (firstName: string, resetLink: string) => `
 <!DOCTYPE html>
 <html>
