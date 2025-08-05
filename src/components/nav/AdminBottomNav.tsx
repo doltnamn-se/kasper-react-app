@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { ChartSpline, UsersRound, EyeOff, UserRoundSearch, Users } from "lucide-react";
+import { ChartSpline, UsersRound, EyeOff, UserRoundSearch, Infinity } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
 
@@ -15,7 +15,7 @@ export const AdminBottomNav = () => {
     { path: '/admin/customers', icon: <UsersRound className="h-5 w-5" />, label: t('nav.admin.customers') },
     { path: '/admin/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.admin.deindexing') },
     { path: '/admin/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.admin.monitoring') },
-    { path: '/admin/kasper-friends', icon: <Users className="h-5 w-5" />, label: 'Kasper Friends' }
+    { path: '/admin/promotional-codes', icon: <Infinity className="h-5 w-5" />, label: 'Friends' }
   ];
 
   const isActive = (path: string) => {
