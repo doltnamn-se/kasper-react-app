@@ -4,7 +4,7 @@ import { NavigationTranslations } from '../types/navigation';
 export const navigation: NavigationTranslations = {
   'nav.home': 'Home',
   'nav.overview': 'Overview',
-  'nav.checklist': 'Checklist',
+  'nav.checklist': 'Finish setup',
   'nav.monitoring': 'Monitoring',
   'nav.my.links': 'Links',
   'nav.deindexing': 'Links',
