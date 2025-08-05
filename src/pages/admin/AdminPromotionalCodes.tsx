@@ -212,11 +212,11 @@ const AdminPromotionalCodes = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'available':
-        return <Badge variant="outline" className="text-green-600">Available</Badge>;
+        return <Badge variant="outline" className="text-green-600">{t('kasper.friends.status.available')}</Badge>;
       case 'assigned':
-        return <Badge variant="default">Assigned</Badge>;
+        return <Badge variant="default">{t('kasper.friends.status.assigned')}</Badge>;
       case 'used':
-        return <Badge variant="secondary">Used</Badge>;
+        return <Badge variant="secondary">{t('kasper.friends.status.used')}</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }

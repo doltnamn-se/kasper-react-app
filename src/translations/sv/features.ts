@@ -114,6 +114,9 @@ const features: FeaturesTranslations = {
   'kasper.friends.table.assigned.to': 'Tilldelad till',
   'kasper.friends.table.assigned.date': 'Tilldelningsdatum',
   'kasper.friends.table.created': 'Skapad',
+  'kasper.friends.status.available': 'Tillgänglig',
+  'kasper.friends.status.assigned': 'Tilldelad',
+  'kasper.friends.status.used': 'Använd',
 };
 
 export default features;

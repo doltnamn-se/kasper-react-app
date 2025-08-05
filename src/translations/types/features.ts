@@ -112,4 +112,7 @@ export interface FeaturesTranslations {
   'kasper.friends.table.assigned.to': string;
   'kasper.friends.table.assigned.date': string;
   'kasper.friends.table.created': string;
+  'kasper.friends.status.available': string;
+  'kasper.friends.status.assigned': string;
+  'kasper.friends.status.used': string;
 }

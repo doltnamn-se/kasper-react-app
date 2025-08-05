@@ -114,6 +114,9 @@ const features: FeaturesTranslations = {
   'kasper.friends.table.assigned.to': 'Assigned To',
   'kasper.friends.table.assigned.date': 'Assigned Date',
   'kasper.friends.table.created': 'Created',
+  'kasper.friends.status.available': 'Available',
+  'kasper.friends.status.assigned': 'Assigned',
+  'kasper.friends.status.used': 'Used',
 };
 
 export default features;
