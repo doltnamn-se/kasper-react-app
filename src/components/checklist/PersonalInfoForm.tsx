@@ -103,7 +103,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-full">
       <AddressSection register={register} errors={errors} />
       <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
-        {language === 'sv' ? 'Lägg till adress' : 'Add address'}
+        {language === 'sv' ? 'Spara' : 'Save'}
       </Button>
     </form>
   );
