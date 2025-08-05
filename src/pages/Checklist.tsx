@@ -1,5 +1,5 @@
 
-import { useLanguage, LanguageProvider } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ChecklistContainer } from "@/components/checklist/ChecklistContainer";
 import { Card } from "@/components/ui/card";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
@@ -117,11 +117,7 @@ const ChecklistContent = () => {
 };
 
 const Checklist = () => {
-  return (
-    <LanguageProvider>
-      <ChecklistContent />
-    </LanguageProvider>
-  );
+  return <ChecklistContent />;
 };
 
 export default Checklist;
