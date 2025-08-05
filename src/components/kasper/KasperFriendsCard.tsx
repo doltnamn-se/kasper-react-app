@@ -126,12 +126,12 @@ export const KasperFriendsCard = () => {
         <div>
           <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF] flex items-center gap-2">
             <img 
-              src="/lovable-uploads/kasper-logo-app-light.svg" 
+              src="/lovable-uploads/kasper-logo-app-dark.svg" 
               alt="Kasper" 
               className="h-5 w-auto dark:hidden"
             />
             <img 
-              src="/lovable-uploads/kasper-logo-app-dark.svg" 
+              src="/lovable-uploads/kasper-logo-app-light.svg" 
               alt="Kasper" 
               className="h-5 w-auto hidden dark:block"
             />
