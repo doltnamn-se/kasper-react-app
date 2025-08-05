@@ -7,9 +7,9 @@ export const sharedEmailStyles = `
     background-color: #f4f4f4 !important;
   }
   body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     line-height: 1.6;
-    color: #333333;
+    color: #121212;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -39,7 +39,7 @@ export const sharedEmailStyles = `
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   p {
-    color: #333333;
+    color: #121212;
     margin-bottom: 20px;
     font-size: 16px;
   }
@@ -69,13 +69,13 @@ export const sharedEmailStyles = `
   }
   .password-label {
     font-size: 14px;
-    color: #333333;
+    color: #121212;
     margin-bottom: 10px;
     font-weight: 500;
   }
   .password-value {
     font-size: 24px;
-    color: #333333;
+    color: #121212;
     font-weight: 700;
     letter-spacing: 1px;
   }

@@ -9,8 +9,8 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Välkommen till Digitaltskydd.se – Aktivera ditt konto</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Aktivera ditt konto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -19,9 +19,9 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       background-color: #f4f4f4 !important;
     }
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       line-height: 1.6;
-      color: #333333;
+      color: #121212;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -51,7 +51,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     p {
-      color: #333333;
+      color: #121212;
       margin-bottom: 20px;
       font-size: 16px;
     }
@@ -64,13 +64,13 @@ export const getActivationEmailTemplate = (displayName: string, password: string
     }
     .password-label {
       font-size: 14px;
-      color: #333333;
+      color: #121212;
       margin-bottom: 10px;
       font-weight: 500;
     }
     .password-value {
       font-size: 24px;
-      color: #333333;
+      color: #121212;
       font-weight: 700;
       letter-spacing: 1px;
     }
@@ -88,7 +88,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
       background-color: #333333;
     }
     .email-link {
-      color: #333333;
+      color: #121212;
       text-decoration: underline;
     }
   </style>
@@ -96,7 +96,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/digitaltskydd.se-logo-dark.svg" alt="Digitaltskydd Logo" style="margin: 0 auto; display: block;">
+      <img src="https://app.digitaltskydd.se/lovable-uploads/kasper-wp-logo.png" alt="Kasper Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
       <p>
@@ -109,19 +109,19 @@ export const getActivationEmailTemplate = (displayName: string, password: string
         <div class="password-value">${password}</div>
       </div>
       <div style="text-align: center; margin-bottom: 40px;">
-        <a href="https://app.digitaltskydd.se/auth" class="button">Aktivera ditt konto</a>
+        <a href="https://app.joinkasper.com/auth" class="button">Aktivera ditt konto</a>
       </div>
       <p style="text-align: left;">
         Om du har några frågor eller behöver hjälp med att komma igång, maila
-        oss på <a href="mailto:support@digitaltskydd.se" class="email-link">support@digitaltskydd.se</a>. Vi är glada att ha dig ombord!
+        oss på <a href="mailto:support@joinkasper.com" class="email-link">support@joinkasper.com</a>. Vi är glada att ha dig ombord!
       </p>
     </div>
   </div>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 15px; margin-bottom: 10px;">
-    Skickat från teamet på <a href="https://digitaltskydd.se/" style="color: #666666; text-decoration: underline;">Digitaltskydd.se</a>
+    Skickat från teamet på <a href="https://joinkasper.com/" style="color: #666666; text-decoration: underline;">Kasper</a>
   </p>
   <p style="text-align: center; color: #666666; font-size: 11px; margin-top: 0; padding-bottom: 20px;">
-    &copy; ${new Date().getFullYear()} Digitaltskydd. Alla rättigheter förbehållna.
+    &copy; ${new Date().getFullYear()} Kasper. Alla rättigheter förbehållna.
   </p>
 </body>
 </html>
