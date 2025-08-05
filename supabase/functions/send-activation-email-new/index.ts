@@ -110,10 +110,16 @@ function getActivationEmailTemplate(displayName: string, password: string): stri
 }
 
 const handler = async (req: Request) => {
-  console.log("🆕 FRESH NEW activation email handler - COMPLETELY NEW FUNCTION");
+  console.log("🆕 FRESH NEW activation email handler - CORS FIXED");
+  console.log("Request method:", req.method);
+  console.log("Request headers:", Object.fromEntries(req.headers.entries()));
   
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    console.log("Handling OPTIONS request with CORS");
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 200 
+    });
   }
 
   try {
