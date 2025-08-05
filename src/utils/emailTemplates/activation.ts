@@ -19,7 +19,7 @@ export const getActivationEmailTemplate = (displayName: string, password: string
 <body style="background-color: #f4f4f4 !important; margin: 0; padding: 0; min-height: 100%;">
   <div class="container">
     <div class="logo">
-      <img src="https://app.digitaltskydd.se/lovable-uploads/kasper-wp-logo.png" alt="Kasper Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
+      <img src="https://app.joinkasper.com/lovable-uploads/kasper-wp-logo.png" alt="Kasper Logo" style="margin: 0 auto; display: block; max-width: 150px; height: auto;">
     </div>
     <div class="email-wrapper">
       <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">Aktivera ditt konto</h1>
