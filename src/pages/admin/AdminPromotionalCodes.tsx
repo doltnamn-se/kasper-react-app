@@ -12,6 +12,7 @@ import { AlertCircle, Upload, Users, Gift } from 'lucide-react';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, ColumnDef, flexRender, SortingState, getSortedRowModel } from '@tanstack/react-table';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { TablePagination } from '@/components/ui/table-pagination';
+import { EditUsageDialog } from '@/components/admin/promotional-codes/EditUsageDialog';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData, TValue> {
@@ -27,6 +28,7 @@ interface PromotionalCode {
   status: 'available' | 'assigned' | 'used';
   created_at: string;
   notes: string | null;
+  usage_count: number;
   customer_email?: string;
   customer_name?: string;
 }
@@ -40,6 +42,7 @@ const AdminPromotionalCodes = () => {
   const [isImporting, setIsImporting] = useState(false);
   const [isAssigning, setIsAssigning] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [editingCode, setEditingCode] = useState<PromotionalCode | null>(null);
   const isMobile = useBreakpoint('(max-width: 767px)');
 
   // Define table columns
@@ -78,6 +81,21 @@ const AdminPromotionalCodes = () => {
           <span className="text-muted-foreground">—</span>
         );
       },
+    },
+    {
+      accessorKey: 'usage_count',
+      header: () => 'Usage Count',
+      cell: ({ row }) => (
+        <div className="text-center">
+          <span className="font-medium">{row.getValue('usage_count')}</span>
+          <div className="text-xs text-gray-500">
+            -{(row.getValue('usage_count') as number) * 50} kr
+          </div>
+        </div>
+      ),
+      meta: {
+        className: 'hidden md:table-cell'
+      }
     },
     {
       accessorKey: 'assigned_at',
@@ -164,6 +182,7 @@ const AdminPromotionalCodes = () => {
           created_at: item.created_at,
           updated_at: item.updated_at,
           notes: item.notes,
+          usage_count: item.usage_count || 0,
           customer_name: item.customer?.profile?.display_name || null,
           customer_email: item.customer?.profile?.email || null,
         }));
@@ -504,7 +523,11 @@ const AdminPromotionalCodes = () => {
                 <TableBody>
                   {table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id}>
+                      <TableRow 
+                        key={row.id} 
+                        className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        onClick={() => setEditingCode(row.original)}
+                      >
                         {row.getVisibleCells().map((cell) => (
                           <TableCell 
                             key={cell.id}
@@ -536,6 +559,13 @@ const AdminPromotionalCodes = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <EditUsageDialog
+        isOpen={!!editingCode}
+        onClose={() => setEditingCode(null)}
+        codeData={editingCode}
+        onUpdate={fetchData}
+      />
     </div>
   );
 };

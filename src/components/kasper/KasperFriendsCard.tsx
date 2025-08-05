@@ -35,6 +35,29 @@ export const KasperFriendsCard = () => {
     enabled: !!userProfile?.id
   });
 
+  // Fetch usage count from promotional_codes table
+  const { data: usageData } = useQuery({
+    queryKey: ['coupon-usage', customerData?.coupon_code],
+    queryFn: async () => {
+      if (!customerData?.coupon_code) return { usage_count: 0 };
+      const { data, error } = await supabase
+        .from('promotional_codes')
+        .select('usage_count')
+        .eq('code', customerData.coupon_code)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching coupon usage:', error);
+        return { usage_count: 0 };
+      }
+      return data;
+    },
+    enabled: !!customerData?.coupon_code
+  });
+
+  const discountAmount = (usageData?.usage_count || 0) * 50;
+  const circleRotation = (usageData?.usage_count || 0) * 30; // 30 degrees per usage
+
   const handleCopyCoupon = async () => {
     if (customerData?.coupon_code) {
       try {
@@ -90,12 +113,14 @@ export const KasperFriendsCard = () => {
         </div>
 
         <div className="flex flex-col items-center py-8">
-          <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">-0 kr</p>
+          <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
+            -{discountAmount} kr
+          </p>
           <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
             <div 
-              className="absolute inset-0 rounded-full"
+              className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
               style={{
-                animation: 'expandSweepAnimation 5s ease-in-out infinite'
+                background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
               }}
             ></div>
           </div>

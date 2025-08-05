@@ -445,6 +445,7 @@ export type Database = {
           notes: string | null
           status: string
           updated_at: string
+          usage_count: number
         }
         Insert: {
           assigned_at?: string | null
@@ -455,6 +456,7 @@ export type Database = {
           notes?: string | null
           status?: string
           updated_at?: string
+          usage_count?: number
         }
         Update: {
           assigned_at?: string | null
@@ -465,6 +467,7 @@ export type Database = {
           notes?: string | null
           status?: string
           updated_at?: string
+          usage_count?: number
         }
         Relationships: [
           {
