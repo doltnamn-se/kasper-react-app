@@ -108,7 +108,7 @@ const features: FeaturesTranslations = {
   'kasper.friends.stats.need.codes': 'Need Codes',
   'kasper.friends.tabs.manage': 'Manage Codes',
   'kasper.friends.tabs.import': 'Import',
-  'kasper.friends.tabs.assign': 'Assign to Customers',
+  'kasper.friends.tabs.assign': 'Assign',
 };
 
 export default features;
