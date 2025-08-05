@@ -67,16 +67,16 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Show completion flow
       setShowCompletion(true);
       
-      // Fade out everything on screen
+      // Fade out everything on screen (1 second)
       const checklistPage = document.querySelector('.checklist-page');
       if (checklistPage) {
-        checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+        checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
       }
       
-      // Show welcome message after fade out
+      // Show welcome message after fade out (1 second)
       setTimeout(() => {
         setShowWelcome(true);
-      }, 500);
+      }, 1000);
       
       // Invalidate queries
       await Promise.all([
@@ -85,19 +85,25 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
       ]);
 
-      // Hide welcome message after 2 seconds and complete
+      // Hide welcome message after 1 second display and complete (1 second fade out)
       setTimeout(async () => {
-        setShowWelcome(false);
+        // Add fade out class to welcome message
+        const welcomeDiv = document.querySelector('.welcome-message');
+        if (welcomeDiv) {
+          welcomeDiv.classList.add('animate-fade-out');
+        }
         
-        // Wait for fade out animation
+        // Wait for fade out animation (1 second)
         setTimeout(async () => {
+          setShowWelcome(false);
+          
           // Call onComplete callback
           await onComplete();
           
           // Force a hard navigation to ensure fresh state
           window.location.href = '/';
-        }, 500);
-      }, 2000);
+        }, 1000);
+      }, 1000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
@@ -133,9 +139,9 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
           
           {/* Welcome message */}
           {showWelcome && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+            <div className="welcome-message fixed inset-0 z-50 flex items-center justify-center bg-background animate-fade-in">
               <div className="text-center">
-                <h1 className={`text-2xl font-bold ${showWelcome ? 'animate-fade-in' : 'animate-fade-out'}`}>
+                <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
                   {t('checklist.completion.welcome')}
                 </h1>
               </div>
