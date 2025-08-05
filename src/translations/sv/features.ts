@@ -99,7 +99,7 @@ const features: FeaturesTranslations = {
   'kasper.friends.import.description': 'Klistra in dina 400 Kasper Friends-koder här, en per rad',
   'kasper.friends.assign.title': 'Tilldela till befintliga kunder',
   'kasper.friends.assign.description': 'Tilldela automatiskt Kasper Friends-koder till kunder som inte har någon än',
-  'kasper.friends.manage.title': 'Alla Kasper Friends-koder',
+  'kasper.friends.manage.title': 'Hantera alla koder',
   'kasper.friends.manage.description': 'Visa och hantera alla Kasper Friends-koder i systemet',
   'kasper.friends.stats.total': 'Totalt antal koder',
   'kasper.friends.stats.available': 'Tillgängliga',

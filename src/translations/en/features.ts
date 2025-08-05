@@ -99,7 +99,7 @@ const features: FeaturesTranslations = {
   'kasper.friends.import.description': 'Paste your 400 Kasper Friends codes here, one per line',
   'kasper.friends.assign.title': 'Assign to Existing Customers',
   'kasper.friends.assign.description': 'Automatically assign Kasper Friends codes to customers who don\'t have one yet',
-  'kasper.friends.manage.title': 'All Kasper Friends Codes',
+  'kasper.friends.manage.title': 'Manage all codes',
   'kasper.friends.manage.description': 'View and manage all Kasper Friends codes in the system',
   'kasper.friends.stats.total': 'Total Codes',
   'kasper.friends.stats.available': 'Available',
