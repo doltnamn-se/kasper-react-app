@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-// Subscription badge replaced with Kasper images
+import { SubscriptionBadge } from "@/components/settings/profile/SubscriptionBadge";
 import {
   Tooltip,
   TooltipContent,
@@ -43,35 +43,27 @@ export const ProfileSection = () => {
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
 
-  // Get the appropriate Kasper image based on subscription plan
-  const getKasperImage = (plan: string | null | undefined): string => {
-    if (!plan) return '/lovable-uploads/Kasper Personskydd.png';
+  // Fix: Create proper tooltip keys based on subscription plan
+  const getSubscriptionTooltipKey = (plan: string | null | undefined): keyof Translations => {
+    if (!plan) return 'subscription.tooltip.1month';
     
-    if (plan.includes('personskydd')) {
-      return '/lovable-uploads/Kasper Personskydd.png';
-    } else if (plan.includes('parskydd')) {
-      return '/lovable-uploads/Kasper Parskydd.png';
-    } else if (plan.includes('familjeskydd')) {
-      return '/lovable-uploads/Kasper Familjeskydd.png';
+    // Convert plan format (e.g., "1_month" to "1month")
+    const planKey = plan.replace('_', '');
+    const tooltipKey = `subscription.tooltip.${planKey}`;
+    
+    // Use type assertion with a check for common plans
+    if (
+      tooltipKey === 'subscription.tooltip.1month' || 
+      tooltipKey === 'subscription.tooltip.3months' || 
+      tooltipKey === 'subscription.tooltip.6months' || 
+      tooltipKey === 'subscription.tooltip.12months' || 
+      tooltipKey === 'subscription.tooltip.24months'
+    ) {
+      return tooltipKey as keyof Translations;
     }
     
-    // Fallback to Personskydd for all other plans
-    return '/lovable-uploads/Kasper Personskydd.png';
-  };
-
-  // Get plan name for tooltip
-  const getPlanDisplayName = (plan: string | null | undefined): string => {
-    if (!plan) return 'Personskydd';
-    
-    if (plan.includes('personskydd')) {
-      return 'Personskydd';
-    } else if (plan.includes('parskydd')) {
-      return 'Parskydd';
-    } else if (plan.includes('familjeskydd')) {
-      return 'Familjeskydd';
-    }
-    
-    return 'Personskydd';
+    // Fallback to default for any unknown plans
+    return 'subscription.tooltip.1month';
   };
 
   return (
@@ -94,19 +86,14 @@ export const ProfileSection = () => {
                 variant="ghost" 
                 className="p-0 h-auto hover:bg-transparent"
               >
-                <img 
-                  src={getKasperImage(customerData?.subscription_plan)}
-                  alt={`Kasper ${getPlanDisplayName(customerData?.subscription_plan)}`}
-                  className="h-8 w-auto object-contain image-rendering-crisp-edges"
-                  style={{ imageRendering: 'crisp-edges' }}
-                />
+                <SubscriptionBadge plan={customerData?.subscription_plan} />
               </Button>
             </TooltipTrigger>
             <TooltipContent 
               side="right" 
               className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm z-[2000]"
             >
-              <p>Kasper {getPlanDisplayName(customerData?.subscription_plan)}</p>
+              <p>{t(getSubscriptionTooltipKey(customerData?.subscription_plan))}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
