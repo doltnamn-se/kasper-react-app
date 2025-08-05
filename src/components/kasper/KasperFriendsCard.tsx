@@ -137,7 +137,7 @@ export const KasperFriendsCard = () => {
           }`}>
             -{discountAmount} kr
           </p>
-          <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
+          <div className="relative w-52 h-52 rounded-full shadow-lg" style={{ backgroundColor: '#24cc5b', boxShadow: '0 8px 24px rgba(36, 204, 91, 0.25)' }}>
             <div 
               className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
               style={{
