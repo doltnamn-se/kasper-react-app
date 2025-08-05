@@ -92,7 +92,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         <DrawerTrigger asChild>
           {children}
         </DrawerTrigger>
-        <DrawerContent className="bg-white dark:bg-[#161617]">
+        <DrawerContent className="bg-white dark:bg-[#161617] z-[10000]">
           <DrawerHeader>
             <DrawerTitle className="font-medium flex items-center gap-2">
               <UserRoundCheck className="h-5 w-5" />
