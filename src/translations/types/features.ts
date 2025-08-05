@@ -107,4 +107,9 @@ export interface FeaturesTranslations {
   'kasper.friends.tabs.manage': string;
   'kasper.friends.tabs.import': string;
   'kasper.friends.tabs.assign': string;
+  'kasper.friends.table.code': string;
+  'kasper.friends.table.status': string;
+  'kasper.friends.table.assigned.to': string;
+  'kasper.friends.table.assigned.date': string;
+  'kasper.friends.table.created': string;
 }

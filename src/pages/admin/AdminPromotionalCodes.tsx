@@ -387,11 +387,11 @@ const AdminPromotionalCodes = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Code</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Assigned To</TableHead>
-                    <TableHead>Assigned Date</TableHead>
-                    <TableHead>Created</TableHead>
+                    <TableHead>{t('kasper.friends.table.code')}</TableHead>
+                    <TableHead>{t('kasper.friends.table.status')}</TableHead>
+                    <TableHead>{t('kasper.friends.table.assigned.to')}</TableHead>
+                    <TableHead>{t('kasper.friends.table.assigned.date')}</TableHead>
+                    <TableHead>{t('kasper.friends.table.created')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
