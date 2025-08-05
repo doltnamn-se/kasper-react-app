@@ -97,7 +97,8 @@ export const ProfileSection = () => {
                 <img 
                   src={getKasperImage(customerData?.subscription_plan)}
                   alt={`Kasper ${getPlanDisplayName(customerData?.subscription_plan)}`}
-                  className="h-8 w-auto object-contain"
+                  className="h-8 w-auto object-contain image-rendering-crisp-edges"
+                  style={{ imageRendering: 'crisp-edges' }}
                 />
               </Button>
             </TooltipTrigger>
