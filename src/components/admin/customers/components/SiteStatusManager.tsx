@@ -22,22 +22,22 @@ export function SiteStatusManager({
   const [isLoading, setIsLoading] = useState(true);
   const sites = [{
     name: 'Mrkoll',
-    icon: '/lovable-uploads/logo-icon-mrkoll.webp'
+    icon: '/fonts/MrKoll.svg'
   }, {
     name: 'Ratsit',
-    icon: '/lovable-uploads/logo-icon-ratsit.webp'
+    icon: '/fonts/Ratsit.svg'
   }, {
     name: 'Hitta',
-    icon: '/lovable-uploads/logo-icon-hittase.webp'
+    icon: '/fonts/Hitta.svg'
   }, {
     name: 'Merinfo',
-    icon: '/lovable-uploads/logo-icon-merinfo.webp'
+    icon: '/fonts/Merinfo.svg'
   }, {
     name: 'Eniro',
-    icon: '/lovable-uploads/logo-icon-eniro.webp'
+    icon: '/fonts/Eniro.svg'
   }, {
     name: 'Birthday',
-    icon: '/lovable-uploads/logo-icon-birthdayse.webp'
+    icon: '/fonts/Birthday.svg'
   }];
   const statusOptions = [{
     value: 'Granskar',

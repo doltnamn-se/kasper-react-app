@@ -18,12 +18,20 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
   // Map guide ID to correct logo file name
   let logoFileName = guideId;
   if (guideId === 'hitta') {
-    logoFileName = 'hittase';
+    logoFileName = 'Hitta';
   } else if (guideId === 'birthday') {
-    logoFileName = 'birthdayse';
+    logoFileName = 'Birthday';
+  } else if (guideId === 'mrkoll') {
+    logoFileName = 'MrKoll';
+  } else if (guideId === 'merinfo') {
+    logoFileName = 'Merinfo';
+  } else if (guideId === 'eniro') {
+    logoFileName = 'Eniro';
+  } else if (guideId === 'ratsit') {
+    logoFileName = 'Ratsit';
   }
   
-  const logoSrc = `/lovable-uploads/logo-icon-${logoFileName}.webp`;
+  const logoSrc = `/fonts/${logoFileName}.svg`;
 
   const handleButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();

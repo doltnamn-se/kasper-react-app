@@ -5,12 +5,12 @@ interface SiteInfo {
 }
 
 export const siteConfig: SiteInfo[] = [
-  { name: 'Mrkoll', icon: '/lovable-uploads/logo-icon-mrkoll.webp' },
-  { name: 'Ratsit', icon: '/lovable-uploads/logo-icon-ratsit.webp' },
-  { name: 'Hitta', icon: '/lovable-uploads/logo-icon-hittase.webp' },
-  { name: 'Merinfo', icon: '/lovable-uploads/logo-icon-merinfo.webp' },
-  { name: 'Eniro', icon: '/lovable-uploads/logo-icon-eniro.webp' },
-  { name: 'Birthday', icon: '/lovable-uploads/logo-icon-birthdayse.webp' },
+  { name: 'Mrkoll', icon: '/fonts/MrKoll.svg' },
+  { name: 'Ratsit', icon: '/fonts/Ratsit.svg' },
+  { name: 'Hitta', icon: '/fonts/Hitta.svg' },
+  { name: 'Merinfo', icon: '/fonts/Merinfo.svg' },
+  { name: 'Eniro', icon: '/fonts/Eniro.svg' },
+  { name: 'Birthday', icon: '/fonts/Birthday.svg' },
 ];
 
 export const getStatusText = (status: string, language: string): string => {

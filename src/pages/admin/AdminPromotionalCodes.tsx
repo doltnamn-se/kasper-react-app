@@ -114,22 +114,18 @@ const AdminPromotionalCodes = () => {
     onSortingChange: setSorting,
     state: {
       sorting,
-      pagination: {
-        pageIndex: 0,
-        pageSize: isMobile ? 10 : 50,
-      },
     },
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: isMobile ? 10 : 50,
+        pageSize: isMobile ? 10 : 20,
       },
     },
   });
 
   // Update page size when mobile state changes
   useEffect(() => {
-    table.setPageSize(isMobile ? 10 : 50);
+    table.setPageSize(isMobile ? 10 : 20);
   }, [isMobile, table]);
 
   useEffect(() => {
