@@ -12,6 +12,7 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request) => {
+  console.log("Password reset handler called - using latest templates");
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }

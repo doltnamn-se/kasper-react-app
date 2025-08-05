@@ -21,6 +21,7 @@ interface EmailRequest {
 }
 
 const handler = async (req: Request) => {
+  console.log("Notification email handler called - using latest templates");
   console.log("Send notification email function CALLED");
   
   // Handle CORS preflight requests
