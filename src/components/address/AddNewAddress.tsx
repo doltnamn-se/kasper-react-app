@@ -34,7 +34,7 @@ export const AddNewAddress = ({ isOpen, onOpenChange, onSuccess }: AddNewAddress
           onClick={handleButtonClick}
         >
           <HousePlus className="mr-2 h-4 w-4" />
-          {language === 'sv' ? 'Lägg till adress' : 'Add new address'}
+          {language === 'sv' ? 'Spara' : 'Save'}
         </Button>
       ) : (
         <div className="animate-fade-in">
