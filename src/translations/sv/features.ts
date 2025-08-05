@@ -101,7 +101,7 @@ const features: FeaturesTranslations = {
   'kasper.friends.assign.description': 'Tilldela automatiskt Kasper Friends-koder till kunder som inte har någon än',
   'kasper.friends.manage.title': 'Hantera alla koder',
   'kasper.friends.manage.description': 'Visa och hantera alla Kasper Friends-koder i systemet',
-  'kasper.friends.stats.total': 'Totalt antal koder',
+  'kasper.friends.stats.total': 'Koder',
   'kasper.friends.stats.available': 'Tillgängliga',
   'kasper.friends.stats.assigned': 'Tilldelade',
   'kasper.friends.stats.used': 'Använda',

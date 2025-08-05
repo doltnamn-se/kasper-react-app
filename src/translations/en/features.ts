@@ -101,7 +101,7 @@ const features: FeaturesTranslations = {
   'kasper.friends.assign.description': 'Automatically assign Kasper Friends codes to customers who don\'t have one yet',
   'kasper.friends.manage.title': 'Manage all codes',
   'kasper.friends.manage.description': 'View and manage all Kasper Friends codes in the system',
-  'kasper.friends.stats.total': 'Total Codes',
+  'kasper.friends.stats.total': 'Codes',
   'kasper.friends.stats.available': 'Available',
   'kasper.friends.stats.assigned': 'Assigned',
   'kasper.friends.stats.used': 'Used',
