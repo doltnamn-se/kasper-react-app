@@ -40,16 +40,24 @@ export const KasperFriendsCard = () => {
     queryKey: ['coupon-usage', customerData?.coupon_code],
     queryFn: async () => {
       if (!customerData?.coupon_code) return { usage_count: 0 };
+      
       const { data, error } = await supabase
         .from('promotional_codes')
         .select('usage_count')
         .eq('code', customerData.coupon_code)
-        .single();
+        .maybeSingle(); // Use maybeSingle() to handle cases where no record is found
       
       if (error) {
         console.error('Error fetching coupon usage:', error);
         return { usage_count: 0 };
       }
+      
+      // If no promotional code record found, return 0
+      if (!data) {
+        console.log('No promotional code record found for:', customerData.coupon_code);
+        return { usage_count: 0 };
+      }
+      
       return data;
     },
     enabled: !!customerData?.coupon_code
