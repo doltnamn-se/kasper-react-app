@@ -101,12 +101,10 @@ export default {
           }
         },
         'kasper-pulse': {
-          '0%, 100%': { 
-            background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)'
-          },
-          '50%': { 
-            background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 15deg, transparent 15deg)'
-          }
+          '0%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
+          '25%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 15deg, transparent 15deg)' },
+          '25.1%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
+          '100%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
         }
       },
       animation: {
@@ -121,7 +119,7 @@ export default {
         'draw-check': 'draw-check 0.3s ease-in-out forwards',
         'toast-slide-in': 'toast-slide-in 400ms ease-out forwards',
         'toast-slide-out': 'toast-slide-out 300ms ease-out forwards',
-        'kasper-pulse': 'kasper-pulse 3s ease-in-out infinite'
+        'kasper-pulse': 'kasper-pulse 4s ease-in-out infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
