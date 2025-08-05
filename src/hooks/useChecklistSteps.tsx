@@ -51,7 +51,7 @@ export const useChecklistSteps = () => {
   };
 
   const getTotalSteps = () => {
-    return 4; // Fixed number of steps
+    return 2; // Fixed number of steps
   };
 
   return {

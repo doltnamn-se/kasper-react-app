@@ -13,8 +13,8 @@ export const ChecklistContainer = () => {
   const { currentStep, handleStepChange } = useChecklistSteps();
   const { handleStepComplete } = useStepCompletion();
 
-  // Fixed total steps count to 4 main steps
-  const totalStepsCount = 4;
+  // Fixed total steps count to 2 main steps
+  const totalStepsCount = 2;
 
   console.log('ChecklistContainer state:', {
     currentStep,

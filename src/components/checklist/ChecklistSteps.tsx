@@ -16,15 +16,6 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
       case 1:
         return checklistProgress.password_updated;
       case 2:
-        // Consider step 2 complete if removal_urls exists and either has entries or includes 'skipped'
-        return Boolean(checklistProgress.removal_urls) && 
-          (checklistProgress.removal_urls.length > 0 || 
-           checklistProgress.removal_urls.includes('skipped') ||
-           checklistProgress.checklist_step > 2);
-      case 3:
-        // Consider step 3 complete if selected_sites has entries or checklist_step is beyond 3
-        return (checklistProgress.selected_sites?.length > 0) || checklistProgress.checklist_step > 3;
-      case 4:
         return Boolean(
           checklistProgress.street_address && 
           checklistProgress.postal_code && 
@@ -37,9 +28,7 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
 
   const steps = [
     { step: 1, title: t('step.1.title'), completed: isStepCompleted(1) },
-    { step: 2, title: t('step.2.title'), completed: isStepCompleted(2) },
-    { step: 3, title: t('step.3.title'), completed: isStepCompleted(3) },
-    { step: 4, title: t('step.4.title'), completed: isStepCompleted(4) }
+    { step: 2, title: t('step.4.title'), completed: isStepCompleted(2) }
   ];
 
   console.log('ChecklistSteps - Progress state:', {
@@ -50,7 +39,7 @@ export const ChecklistSteps = ({ checklistProgress, onStepClick }: ChecklistStep
   });
 
   return (
-    <div className="relative grid grid-cols-4 gap-2 max-w-3xl mx-auto">
+    <div className="relative grid grid-cols-2 gap-8 max-w-2xl mx-auto">
       {steps.map((item) => (
         <div 
           key={item.step} 

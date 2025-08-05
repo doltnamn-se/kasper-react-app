@@ -77,7 +77,7 @@ export const useChecklistProgress = () => {
     
     console.log('Calculating progress with data:', checklistProgress);
     
-    const totalSteps = 4;
+    const totalSteps = 2;
     let completedSteps = 0;
     
     // Step 1: Password updated
@@ -88,41 +88,18 @@ export const useChecklistProgress = () => {
       console.log('Step 1 not completed: Password not updated');
     }
     
-    // Step 2: URLs submitted or skipped
-    if (checklistProgress.removal_urls && 
-        (checklistProgress.removal_urls.length > 0 || 
-         checklistProgress.removal_urls.includes('skipped') ||
-         checklistProgress.checklist_step > 2)) {
-      console.log('Step 2 completed: URLs submitted or skipped');
-      completedSteps++;
-    } else {
-      console.log('Step 2 not completed: No URLs submitted or skipped', {
-        urls: checklistProgress.removal_urls
-      });
-    }
-    
-    // Step 3: Sites selected - now also considers when no sites are selected (none option)
-    if ((checklistProgress.selected_sites?.length > 0) || 
-        (Array.isArray(checklistProgress.completed_guides) && 
-         checklistProgress.completed_guides.length === HIDING_SITES.length)) {
-      console.log('Step 3 completed: Sites selected:', checklistProgress.selected_sites);
-      completedSteps++;
-    } else {
-      console.log('Step 3 not completed: No sites selected');
-    }
-    
-    // Step 4: Final step (address)
+    // Step 2: Address provided (formerly step 4)
     if (checklistProgress.street_address && 
         checklistProgress.postal_code && 
         checklistProgress.city) {
-      console.log('Step 4 completed: Address provided', {
+      console.log('Step 2 completed: Address provided', {
         street: checklistProgress.street_address,
         postal: checklistProgress.postal_code,
         city: checklistProgress.city
       });
       completedSteps++;
     } else {
-      console.log('Step 4 not completed: Address not provided', {
+      console.log('Step 2 not completed: Address not provided', {
         street: checklistProgress.street_address,
         postal: checklistProgress.postal_code,
         city: checklistProgress.city
