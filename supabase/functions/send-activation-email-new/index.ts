@@ -5,8 +5,8 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 function getActivationEmailTemplate(displayName: string, password: string): string {
@@ -109,22 +109,22 @@ function getActivationEmailTemplate(displayName: string, password: string): stri
   `;
 }
 
-const handler = async (req: Request) => {
-  console.log("🆕 FRESH NEW activation email handler - CORS FIXED");
-  console.log("Request method:", req.method);
-  console.log("Request headers:", Object.fromEntries(req.headers.entries()));
+serve(async (req: Request) => {
+  console.log("🔧 CORS FIXED activation email handler - Final attempt");
+  console.log("Method:", req.method);
   
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    console.log("Handling OPTIONS request with CORS");
-    return new Response(null, { 
+    console.log("✅ Handling OPTIONS request");
+    return new Response(null, {
+      status: 200,
       headers: corsHeaders,
-      status: 200 
     });
   }
 
   try {
     const { email, displayName, password } = await req.json();
-    console.log("✨ Using FRESH NEW template for:", email);
+    console.log("📧 Sending FIXED template activation email to:", email);
     
     const emailHtml = getActivationEmailTemplate(displayName, password);
 
@@ -137,25 +137,29 @@ const handler = async (req: Request) => {
 
     if (error) {
       console.error("Error sending activation email:", error);
-      throw error;
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
-    console.log("🎉 FRESH activation email sent successfully:", data);
+    console.log("🎉 FIXED activation email sent successfully:", data);
 
     return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Error in send-activation-email-new function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   }
-};
-
-serve(handler);
+});
