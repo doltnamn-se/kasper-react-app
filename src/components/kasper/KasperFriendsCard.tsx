@@ -132,7 +132,7 @@ export const KasperFriendsCard = () => {
         <div className="flex flex-col items-center py-8">
           <p className={`text-sm md:text-base font-medium mb-2 ${
             discountAmount > 0 
-              ? 'text-[#24cc5b]' 
+              ? 'text-[#097c4f]' 
               : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
           }`}>
             -{discountAmount} kr
