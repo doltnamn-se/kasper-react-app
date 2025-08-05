@@ -401,10 +401,7 @@ const AdminPromotionalCodes = () => {
                       <TableCell className="hidden md:table-cell">{getStatusBadge(code.status)}</TableCell>
                       <TableCell>
                         {code.customer_name ? (
-                          <div>
-                            <p className="font-medium">{code.customer_name}</p>
-                            <p className="text-sm text-muted-foreground">{code.customer_email}</p>
-                          </div>
+                          <p className="font-medium">{code.customer_name}</p>
                         ) : (
                           <span className="text-muted-foreground">—</span>
                         )}
