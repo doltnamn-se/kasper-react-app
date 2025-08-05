@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertCircle, Upload, Users, Gift } from 'lucide-react';
+import { AlertCircle, CloudUpload, Users, Gift } from 'lucide-react';
 
 interface PromotionalCode {
   id: string;
@@ -305,7 +305,7 @@ const AdminPromotionalCodes = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-lg">
-                <Upload className="h-5 w-5" />
+                <CloudUpload className="h-4 w-4" />
                 <span>{t('kasper.friends.import.title')}</span>
               </CardTitle>
               <CardDescription>
