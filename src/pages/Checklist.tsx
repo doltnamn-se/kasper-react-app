@@ -69,12 +69,9 @@ const ChecklistContent = () => {
           </div>
 
           <div className="flex flex-col items-center mb-6">
-            <div className="flex flex-wrap items-center justify-center gap-8">
-              <h1 className="text-2xl font-black tracking-[-.416px] text-[#000000] dark:text-white">
-                {t('nav.checklist')}
-              </h1>
-              <ChecklistProgress progress={progress} />
-            </div>
+            <h1 className="text-2xl font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
+              {t('nav.checklist')}
+            </h1>
           </div>
 
           <div className="flex flex-col gap-6">
