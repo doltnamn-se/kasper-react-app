@@ -147,12 +147,13 @@ export const KasperFriendsCard = () => {
                     background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
                   }}
                 ></div>
-                {/* Inner shadow overlay for the filled section only */}
+                {/* Thin inner shadow line for depth */}
                 <div 
-                  className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
+                  className="absolute inset-1 rounded-full transition-transform duration-1000 ease-in-out"
                   style={{
-                    background: `conic-gradient(from 0deg, rgba(0, 0, 0, 0.15) 0deg, rgba(0, 0, 0, 0.15) ${circleRotation}deg, transparent ${circleRotation}deg)`,
-                    mixBlendMode: 'multiply'
+                    background: `conic-gradient(from 0deg, rgba(0, 0, 0, 0.2) 0deg, rgba(0, 0, 0, 0.2) ${circleRotation}deg, transparent ${circleRotation}deg)`,
+                    maskImage: 'linear-gradient(white, white)',
+                    WebkitMaskImage: 'linear-gradient(white, white)'
                   }}
                 ></div>
               </>
