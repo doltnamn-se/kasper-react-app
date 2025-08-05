@@ -7,7 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const PasswordTest = () => {
   // Sample data for email templates
-  const sampleResetLink = "https://app.joinkasper.com/auth/reset-password?token=sample";
+  const sampleResetLink = "https://app.doltnamn.se/auth/reset-password?token=sample";
   const samplePassword = "SamplePass123!";
   const sampleDisplayName = "John Doe";
 
