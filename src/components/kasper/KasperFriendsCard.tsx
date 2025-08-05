@@ -124,8 +124,18 @@ export const KasperFriendsCard = () => {
     >
       <div className="space-y-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
-            Kasper <span className="font-domaine font-normal tracking-normal">Friends</span>
+          <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF] flex items-center gap-2">
+            <img 
+              src="/lovable-uploads/kasper-logo-app-light.svg" 
+              alt="Kasper" 
+              className="h-5 w-auto dark:hidden"
+            />
+            <img 
+              src="/lovable-uploads/kasper-logo-app-dark.svg" 
+              alt="Kasper" 
+              className="h-5 w-auto hidden dark:block"
+            />
+            <span className="font-domaine font-normal tracking-normal">Friends</span>
           </h2>
           <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
             {language === 'sv' ? 'Sänk priset på ditt abonnemang' : 'Lower the price of your subscription'}
