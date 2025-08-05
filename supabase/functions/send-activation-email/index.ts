@@ -127,7 +127,7 @@ function getActivationEmailTemplate(displayName: string, password: string): stri
 }
 
 const handler = async (req: Request) => {
-  console.log("🚀 EMBEDDED TEMPLATE activation email handler - v3.0");
+  console.log("🚀 KASPER ACTIVATION EMAIL - Updated template v4.1");
   
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -135,14 +135,14 @@ const handler = async (req: Request) => {
 
   try {
     const { email, displayName, password } = await req.json();
-    console.log("📧 Using EMBEDDED NEW template for:", email);
+    console.log("📧 Sending Kasper activation email to:", email);
     
     const emailHtml = getActivationEmailTemplate(displayName, password);
 
     const { data, error } = await resend.emails.send({
       from: "Kasper <app@joinkasper.com>",
       to: email,
-      subject: "Aktivera ditt konto",
+      subject: "Aktivera ditt konto - Kasper",
       html: emailHtml,
     });
 
@@ -151,7 +151,7 @@ const handler = async (req: Request) => {
       throw error;
     }
 
-    console.log("✅ EMBEDDED template activation email sent successfully:", data);
+    console.log("✅ Kasper activation email sent successfully:", data);
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
