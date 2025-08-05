@@ -58,7 +58,7 @@ const handler = async (req: Request) => {
     console.log("Attempting to send email with Resend...");
     
     const { data, error } = await resend.emails.send({
-      from: "Digitaltskydd.se <app@digitaltskydd.se>",
+      from: "Kasper <app@joinkasper.com>",
       to: email,
       subject: title,
       html: htmlContent,

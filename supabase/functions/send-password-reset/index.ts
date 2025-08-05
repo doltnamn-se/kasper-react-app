@@ -23,9 +23,9 @@ const handler = async (req: Request) => {
     const emailHtml = getPasswordResetTemplate(resetLink);
 
     const { data, error } = await resend.emails.send({
-      from: "Digitaltskydd.se <app@digitaltskydd.se>",
+      from: "Kasper <app@joinkasper.com>",
       to: email,
-      subject: "Återställ ditt lösenord – Digitaltskydd.se",
+      subject: "Återställ ditt lösenord – Kasper",
       html: emailHtml,
     });
 

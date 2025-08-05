@@ -21,7 +21,7 @@ const handler = async (req: Request) => {
     const emailHtml = getActivationEmailTemplate(displayName, password);
 
     const { data, error } = await resend.emails.send({
-      from: "Digitaltskydd.se <app@digitaltskydd.se>",
+      from: "Kasper <app@joinkasper.com>",
       to: email,
       subject: "Aktivera ditt konto",
       html: emailHtml,
