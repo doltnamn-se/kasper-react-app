@@ -304,7 +304,7 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="import" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-lg">
                 <Upload className="h-5 w-5" />
                 <span>{t('kasper.friends.import.title')}</span>
               </CardTitle>
@@ -339,7 +339,7 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="assign" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-lg">
                 <Users className="h-5 w-5" />
                 <span>{t('kasper.friends.assign.title')}</span>
               </CardTitle>
@@ -380,7 +380,7 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="manage" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t('kasper.friends.manage.title')}</CardTitle>
+              <CardTitle className="text-lg">{t('kasper.friends.manage.title')}</CardTitle>
               <CardDescription>
                 {t('kasper.friends.manage.description')}
               </CardDescription>
