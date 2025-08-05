@@ -70,7 +70,9 @@ export const ScoreItemsList = ({
         language={language}
         onClick={handleUplysningClick}
         showTooltip={siteStatusBadge.text === (language === 'sv' ? 'Begäran skickad' : 'Request sent')}
-        tooltipText="Tooltip text will be added here"
+        tooltipText={language === 'sv' 
+          ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
+          : "Legal request has been sent for removal of your profile on MrKoll. Their processing time is approximately 3-4 weeks."}
       />
       <ScoreItem
         icon={EyeOff}
