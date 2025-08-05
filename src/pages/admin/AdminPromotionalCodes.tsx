@@ -8,11 +8,12 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertCircle, Upload, Users, Gift } from 'lucide-react';
-import { useReactTable, getCoreRowModel, getPaginationRowModel, ColumnDef, flexRender, SortingState, getSortedRowModel } from '@tanstack/react-table';
+import { AlertCircle, Upload, Users, Gift, Search } from 'lucide-react';
+import { useReactTable, getCoreRowModel, getPaginationRowModel, ColumnDef, flexRender, SortingState, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { TablePagination } from '@/components/ui/table-pagination';
 import { EditUsageDialog } from '@/components/admin/promotional-codes/EditUsageDialog';
+import { Input } from '@/components/ui/input';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData, TValue> {
@@ -43,6 +44,7 @@ const AdminPromotionalCodes = () => {
   const [isAssigning, setIsAssigning] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [editingCode, setEditingCode] = useState<PromotionalCode | null>(null);
+  const [globalFilter, setGlobalFilter] = useState('');
   const isMobile = useBreakpoint('(max-width: 767px)');
 
   // Define table columns
@@ -129,9 +131,13 @@ const AdminPromotionalCodes = () => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: 'includesString',
     state: {
       sorting,
+      globalFilter,
     },
     initialState: {
       pagination: {
@@ -494,10 +500,24 @@ const AdminPromotionalCodes = () => {
         <TabsContent value="manage" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">{t('kasper.friends.manage.title')}</CardTitle>
-              <CardDescription className="hidden md:block text-[#000000A6] dark:text-[#FFFFFFA6]">
-                {t('kasper.friends.manage.description')}
-              </CardDescription>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <CardTitle className="text-lg">{t('kasper.friends.manage.title')}</CardTitle>
+                  <CardDescription className="hidden md:block text-[#000000A6] dark:text-[#FFFFFFA6]">
+                    {t('kasper.friends.manage.description')}
+                  </CardDescription>
+                </div>
+                
+                <div className="relative w-full md:w-72">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search codes, customers..."
+                    value={globalFilter ?? ''}
+                    onChange={(e) => setGlobalFilter(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <Table>
