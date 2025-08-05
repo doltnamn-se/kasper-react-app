@@ -64,7 +64,8 @@ export const KasperFriendsCard = () => {
   });
 
   const discountAmount = (usageData?.usage_count || 0) * 50;
-  const circleRotation = Math.max((usageData?.usage_count || 0) * 30, 15); // Minimum 15 degrees for animation visibility
+  const usageCount = usageData?.usage_count || 0;
+  const circleRotation = usageCount > 0 ? usageCount * 30 : 15;
 
   // Debug logging
   console.log('KasperFriendsCard Debug:', {
@@ -139,10 +140,13 @@ export const KasperFriendsCard = () => {
           </p>
           <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
             <div 
-              className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
-              style={{
+              className={cn(
+                "absolute inset-0 rounded-full",
+                usageCount === 0 && "animate-kasper-pulse"
+              )}
+              style={usageCount > 0 ? {
                 background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
-              }}
+              } : {}}
             ></div>
           </div>
           <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] text-center mt-4 max-w-xs">

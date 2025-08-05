@@ -99,6 +99,14 @@ export default {
             opacity: '0',
             transform: 'translateY(-16px)'
           }
+        },
+        'kasper-pulse': {
+          '0%, 100%': { 
+            background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)'
+          },
+          '50%': { 
+            background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 15deg, transparent 15deg)'
+          }
         }
       },
       animation: {
@@ -112,7 +120,8 @@ export default {
         'icon-fill': 'icon-fill 2s linear infinite',
         'draw-check': 'draw-check 0.3s ease-in-out forwards',
         'toast-slide-in': 'toast-slide-in 400ms ease-out forwards',
-        'toast-slide-out': 'toast-slide-out 300ms ease-out forwards'
+        'toast-slide-out': 'toast-slide-out 300ms ease-out forwards',
+        'kasper-pulse': 'kasper-pulse 3s ease-in-out infinite'
       },
       colors: {
         border: 'hsl(var(--border))',
