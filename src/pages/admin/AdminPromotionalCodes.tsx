@@ -387,7 +387,7 @@ const AdminPromotionalCodes = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-6">
             <div>
@@ -411,15 +411,6 @@ const AdminPromotionalCodes = () => {
             <div>
               <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.assigned')}</p>
               <p className="text-xl font-bold text-[#121212] dark:text-[#FFFFFF]">{stats.assigned}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div>
-              <p className="text-sm font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">{t('kasper.friends.stats.used')}</p>
-              <p className="text-xl font-bold text-[#121212] dark:text-[#FFFFFF]">{stats.used}</p>
             </div>
           </CardContent>
         </Card>
