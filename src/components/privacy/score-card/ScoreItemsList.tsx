@@ -69,6 +69,8 @@ export const ScoreItemsList = ({
         badgeVariant={siteStatusBadge.variant}
         language={language}
         onClick={handleUplysningClick}
+        showTooltip={siteStatusBadge.text === (language === 'sv' ? 'Begäran skickad' : 'Request sent')}
+        tooltipText="Tooltip text will be added here"
       />
       <ScoreItem
         icon={EyeOff}

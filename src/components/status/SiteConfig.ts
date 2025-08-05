@@ -23,6 +23,8 @@ export const getStatusText = (status: string, language: string): string => {
       return language === 'sv' ? 'Borttagen' : 'Removed';
     case 'Synlig':
       return language === 'sv' ? 'Synlig' : 'Visible';
+    case 'Begäran skickad':
+      return language === 'sv' ? 'Begäran skickad' : 'Request sent';
     case 'Granskar':
     default:
       return language === 'sv' ? 'Granskar' : 'Reviewing';
@@ -36,7 +38,8 @@ export const getSpinnerColor = (status: string): string => {
     case 'Granskar':
       return "#8E9196"; // Grey for reviewing
     case 'Adress dold':
-      return "#FFC107"; // Amber yellow for address hidden
+    case 'Begäran skickad':
+      return "#FFC107"; // Amber yellow for address hidden and request sent
     case 'Dold':
     case 'Borttagen':
     default:

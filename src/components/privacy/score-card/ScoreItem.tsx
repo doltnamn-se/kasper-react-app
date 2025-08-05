@@ -3,6 +3,8 @@ import React from 'react';
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Link } from "react-router-dom";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface ScoreItemProps { 
   icon: React.ElementType; 
@@ -19,6 +21,8 @@ interface ScoreItemProps {
   isLinks?: boolean;
   linkTo?: string;
   onClick?: () => void;
+  showTooltip?: boolean;
+  tooltipText?: string;
 }
 
 export const ScoreItem = ({ 
@@ -35,7 +39,9 @@ export const ScoreItem = ({
   incomingUrls,
   isLinks,
   linkTo,
-  onClick
+  onClick,
+  showTooltip,
+  tooltipText
 }: ScoreItemProps) => {
   const segments = 10;
   const radius = 6;
@@ -112,22 +118,36 @@ export const ScoreItem = ({
       )}
       <div className="flex items-center gap-3 flex-1 justify-end">
         {showBadge ? (
-          <Badge 
-            variant="secondary" 
-            className={cn(
-              "border",
-              isLinks ? getLinksBadgeStyle() :
-              (isAddress && score === 0) 
-                ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
-                : badgeVariant ? getBadgeStyle() : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
+          <div className="flex items-center gap-2">
+            <Badge 
+              variant="secondary" 
+              className={cn(
+                "border",
+                isLinks ? getLinksBadgeStyle() :
+                (isAddress && score === 0) 
+                  ? "text-[#ca3214] dark:text-[#f16a50] bg-[#e54d2e1a] border-[#f3b0a2] dark:border-[#7f2315]"
+                  : badgeVariant ? getBadgeStyle() : "text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border-[#16b674] dark:border-[#006239]"
+              )}
+            >
+              {isLinks ? getLinksBadgeContent() :
+                (isAddress && score === 0) 
+                  ? (language === 'sv' ? 'Inaktiv' : 'Inactive')
+                  : badgeText || (language === 'sv' ? 'Aktiv' : 'Active')
+              }
+            </Badge>
+            {showTooltip && tooltipText && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6] cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{tooltipText}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
-          >
-            {isLinks ? getLinksBadgeContent() :
-              (isAddress && score === 0) 
-                ? (language === 'sv' ? 'Inaktiv' : 'Inactive')
-                : badgeText || (language === 'sv' ? 'Aktiv' : 'Active')
-            }
-          </Badge>
+          </div>
         ) : (
           <div className="flex items-center gap-1">
             <svg width="20" height="20" viewBox="0 0 20 20" className="relative">
