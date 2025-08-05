@@ -307,7 +307,7 @@ const AdminPromotionalCodes = () => {
               <CardTitle className="text-lg">
                 {t('kasper.friends.import.title')}
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="hidden md:block text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {t('kasper.friends.import.description')}
               </CardDescription>
             </CardHeader>
@@ -341,7 +341,7 @@ const AdminPromotionalCodes = () => {
               <CardTitle className="text-lg">
                 {t('kasper.friends.assign.title')}
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="hidden md:block text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {t('kasper.friends.assign.description')}
               </CardDescription>
             </CardHeader>
@@ -379,7 +379,7 @@ const AdminPromotionalCodes = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">{t('kasper.friends.manage.title')}</CardTitle>
-              <CardDescription>
+              <CardDescription className="hidden md:block text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {t('kasper.friends.manage.description')}
               </CardDescription>
             </CardHeader>
