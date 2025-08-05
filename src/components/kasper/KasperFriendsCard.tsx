@@ -138,26 +138,12 @@ export const KasperFriendsCard = () => {
             -{discountAmount} kr
           </p>
           <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
-            {discountAmount > 0 && (
-              <>
-                {/* Filled section with lighter overlay */}
-                <div 
-                  className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
-                  style={{
-                    background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
-                  }}
-                ></div>
-                {/* Thin inner shadow line for depth */}
-                <div 
-                  className="absolute inset-1 rounded-full transition-transform duration-1000 ease-in-out"
-                  style={{
-                    background: `conic-gradient(from 0deg, rgba(0, 0, 0, 0.2) 0deg, rgba(0, 0, 0, 0.2) ${circleRotation}deg, transparent ${circleRotation}deg)`,
-                    maskImage: 'linear-gradient(white, white)',
-                    WebkitMaskImage: 'linear-gradient(white, white)'
-                  }}
-                ></div>
-              </>
-            )}
+            <div 
+              className="absolute inset-0 rounded-full transition-transform duration-1000 ease-in-out"
+              style={{
+                background: `conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) ${circleRotation}deg, transparent ${circleRotation}deg)`
+              }}
+            ></div>
           </div>
           <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] text-center mt-4 max-w-xs">
             {language === 'sv' 
