@@ -46,6 +46,17 @@ export const useSiteStatusBadge = (sites: string[], userId?: string) => {
       };
     }
     
+    // Check if any site has "Begäran skickad" status
+    const hasRequestSent = filteredSiteStatuses.some(status => status === 'Begäran skickad');
+    
+    if (hasRequestSent) {
+      console.log('Found "Begäran skickad" status, returning Request sent/yellow badge');
+      return {
+        text: language === 'sv' ? 'Begäran skickad' : 'Request sent',
+        variant: 'yellow' as BadgeVariant
+      };
+    }
+    
     // 2. If ALL are Dold, Borttagen or Adress dold, it says "Dold" (green)
     const hiddenTypes = ['Dold', 'Borttagen', 'Adress dold'];
     const allAreHiddenTypes = filteredSiteStatuses.length > 0 && 
