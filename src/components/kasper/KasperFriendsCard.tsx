@@ -97,7 +97,9 @@ export const KasperFriendsCard = () => {
   const handleShareCode = () => {
     if (!customerData?.coupon_code) return;
 
-    const shareText = `Skaffa Kasper med min kod '${customerData.coupon_code}' så får vi båda 50 kr rabatt. Följ länken: https://joinkasper.com/#planer`;
+    const shareText = language === 'sv' 
+      ? `Hej! Skaffa Kasper med min kod '${customerData.coupon_code}' så får vi båda 50 kr rabatt. Följ länken: https://joinkasper.com/#planer`
+      : `Hi! Get Kasper with my code '${customerData.coupon_code}' and we both get 50 SEK off. Follow the link: https://joinkasper.com/#planer`;
     
     if (isMobile && navigator.share) {
       // Mobile: Use native share
