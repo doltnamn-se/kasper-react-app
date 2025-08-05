@@ -88,27 +88,17 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
       ]);
 
-      // Hide welcome message after 1 second display and complete (1 second fade out)
+      // Hide welcome message and navigate after 3 seconds total (1s fade + 1s display + 1s fade)
       setTimeout(async () => {
-        console.log('Starting completion flow - step 3: hiding welcome message');
-        // Add fade out class to welcome message
-        const welcomeDiv = document.querySelector('.welcome-message');
-        if (welcomeDiv) {
-          welcomeDiv.classList.add('animate-fade-out');
-        }
+        console.log('Starting completion flow - step 3: hiding welcome and navigating');
+        setShowWelcome(false);
         
-        // Wait for fade out animation (1 second)
-        setTimeout(async () => {
-          console.log('Starting completion flow - step 4: navigating to account');
-          setShowWelcome(false);
-          
-          // Call onComplete callback
-          await onComplete();
-          
-          // Force a hard navigation to ensure fresh state
-          window.location.href = '/';
-        }, 1000);
-      }, 2000);
+        // Call onComplete callback
+        await onComplete();
+        
+        // Force a hard navigation to ensure fresh state
+        window.location.href = '/';
+      }, 3000);
 
     } catch (error) {
       console.error('Error saving personal info:', error);
@@ -131,7 +121,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       </form>
       
       {/* Completion Flow */}
-      {showCompletion && showWelcome && (
+      {showWelcome && (
         <div className="welcome-message fixed inset-0 z-50 flex items-center justify-center bg-background animate-fade-in">
           <div className="text-center">
             <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
