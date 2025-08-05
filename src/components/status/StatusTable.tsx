@@ -77,19 +77,19 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                     />
                     <span className="text-xs md:text-sm">{getStatusText(status, language)}</span>
                     {status === 'Begäran skickad' && (
-                      <TooltipProvider>
+                      <TooltipProvider delayDuration={0}>
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <button 
                               type="button"
-                              className="inline-flex items-center justify-center"
+                              className="inline-flex items-center justify-center touch-manipulation p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                               aria-label={language === 'sv' ? 'Visa information' : 'Show information'}
                             >
-                              <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] cursor-help hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors" />
+                              <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors" />
                             </button>
                           </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
+                          <TooltipContent side="top" align="center" className="max-w-xs z-[9999]">
+                            <p className="text-sm">
                               {language === 'sv' 
                                 ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
                                 : "Legal request has been sent for removal of your profile on MrKoll. Their processing time is approximately 3-4 weeks."
