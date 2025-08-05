@@ -130,7 +130,11 @@ export const KasperFriendsCard = () => {
         </div>
 
         <div className="flex flex-col items-center py-8">
-          <p className="text-sm md:text-base font-medium text-[#000000A6] dark:text-[#FFFFFFA6] mb-2">
+          <p className={`text-sm md:text-base font-medium mb-2 ${
+            discountAmount > 0 
+              ? 'text-[#24cc5b]' 
+              : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
+          }`}>
             -{discountAmount} kr
           </p>
           <div className="relative w-52 h-52 rounded-full" style={{ backgroundColor: '#24cc5b' }}>
