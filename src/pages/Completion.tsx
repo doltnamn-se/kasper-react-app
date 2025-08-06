@@ -42,10 +42,9 @@ export const Completion = () => {
       {showWelcome && (
         <div className="text-center">
           <h1 
-            className={`text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] ${
-              animationPhase === 'reveal' ? 'animate-reveal-text-gradient text-[#000000] dark:text-white' : 
-              animationPhase === 'hide' ? 'animate-hide-text-gradient text-[#000000] dark:text-white' : 
-              'text-[#000000] dark:text-white'
+            className={`text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white ${
+              animationPhase === 'reveal' ? 'animate-reveal-text' : 
+              animationPhase === 'hide' ? 'animate-hide-text' : ''
             }`}
           >
             {t('checklist.completion.welcome')}
