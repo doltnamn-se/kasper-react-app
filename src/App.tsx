@@ -17,6 +17,7 @@ import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
 import Index from "@/pages/Index";
 import Checklist from "@/pages/Checklist";
+import Completion from "@/pages/Completion";
 import Monitoring from "@/pages/Monitoring";
 import Deindexing from "@/pages/Deindexing";
 import AddressAlerts from "@/pages/AddressAlerts";
@@ -125,6 +126,7 @@ function App() {
                 {/* Auth routes */}
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
                 <Route path="/auth/reset-password" element={<ResetPassword />} />
+                <Route path="/completion" element={<ProtectedRoute customerOnly><Completion /></ProtectedRoute>} />
                 
                 {/* Admin routes */}
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>

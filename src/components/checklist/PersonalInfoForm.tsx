@@ -67,29 +67,18 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Show completion flow
       setShowCompletion(true);
       
-      console.log('Starting completion flow - step 1: fading out individual elements');
+      console.log('Starting completion flow - step 1: fading out screen');
       
-      // Fade out individual elements (1 second) while keeping main container visible
-      const elements = [
-        '.max-w-\\[1400px\\] > div > div:first-child', // Header with AuthLogo
-        'h1', // Main title
-        '.py-6', // ChecklistSteps container
-        '.Card', // Main checklist card
-        '.fixed.bottom-6.left-6', // Language switch
-        '.fixed.bottom-6.right-6' // Theme toggle
-      ];
+      // Fade out everything on screen (1 second)
+      const checklistPage = document.querySelector('.checklist-page');
+      if (checklistPage) {
+        checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
+      }
       
-      elements.forEach(selector => {
-        const element = document.querySelector(selector);
-        if (element) {
-          element.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
-        }
-      });
-      
-      // Show welcome message after fade out (1 second)
+      // Navigate to completion page after fade out (1 second)
       setTimeout(() => {
-        console.log('Starting completion flow - step 2: showing welcome message');
-        setShowWelcome(true);
+        console.log('Starting completion flow - step 2: navigating to completion page');
+        navigate('/completion');
       }, 1000);
       
       // Invalidate queries
@@ -99,17 +88,8 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
         queryClient.invalidateQueries({ queryKey: ['checklist-status'] })
       ]);
 
-      // Hide welcome message and navigate after 3 seconds total (1s fade + 1s display + 1s fade)
-      setTimeout(async () => {
-        console.log('Starting completion flow - step 3: hiding welcome and navigating');
-        setShowWelcome(false);
-        
-        // Call onComplete callback
-        await onComplete();
-        
-        // Force a hard navigation to ensure fresh state
-        window.location.href = '/';
-      }, 3000);
+      // Call onComplete callback
+      await onComplete();
 
     } catch (error) {
       console.error('Error saving personal info:', error);
