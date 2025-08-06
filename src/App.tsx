@@ -22,6 +22,7 @@ import Monitoring from "@/pages/Monitoring";
 import Deindexing from "@/pages/Deindexing";
 import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
+import KasperFriends from "@/pages/KasperFriends";
 import Settings from "@/pages/Settings";
 
 
@@ -146,6 +147,7 @@ function App() {
                   <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
                   <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
                   <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
+                  <Route path="/kasper-friends" element={<ProtectedRoute customerOnly><KasperFriends /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
                 </Route>
                 

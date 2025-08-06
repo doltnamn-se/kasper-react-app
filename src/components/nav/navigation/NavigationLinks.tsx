@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { House, UserRoundSearch, EyeOff, MapPinHouse, MousePointerClick } from "lucide-react";
+import { House, UserRoundSearch, EyeOff, MapPinHouse, MousePointerClick, Users } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavigationLinksProps {
@@ -55,6 +55,7 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
       {renderNavLink("/deindexing", <EyeOff className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadCounts.guides)}
+      {renderNavLink("/kasper-friends", <Users className="w-[18px] h-[18px]" />, "Kasper Friends", 0)}
     </>
   );
 };

@@ -27,7 +27,8 @@ export const SearchBar = () => {
       { id: "3", title: t('nav.my.links'), url: "/my-links", category: "Pages" },
       { id: "4", title: t('nav.address.alerts'), url: "/address-alerts", category: "Pages" },
       { id: "5", title: t('nav.guides'), url: "/guides", category: "Pages" },
-      { id: "6", title: t('profile.settings'), url: "/settings", category: "Settings" },
+      { id: "6", title: "Kasper Friends", url: "/kasper-friends", category: "Pages" },
+      { id: "7", title: t('profile.settings'), url: "/settings", category: "Settings" },
     ];
 
     return allResults.filter((item) =>
