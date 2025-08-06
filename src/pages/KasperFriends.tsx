@@ -17,7 +17,7 @@ const KasperFriends = () => {
   const content = (
     <div className="space-y-8">
       <h1>
-        <span className="font-sans">Kasper</span> Friends
+        <span className="font-sans font-semibold">Kasper</span> Friends
       </h1>
       
       <KasperFriendsCard />
