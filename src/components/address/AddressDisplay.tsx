@@ -43,7 +43,7 @@ export const AddressDisplay = ({ onAddressUpdate }: { onAddressUpdate: () => voi
   });
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <h2 className="text-[18px] font-semibold mb-6 text-[#000000] dark:text-[#FFFFFF]">
         {language === 'sv' ? 'Din adress' : 'Your Address'}
       </h2>

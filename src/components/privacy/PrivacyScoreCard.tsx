@@ -25,7 +25,7 @@ export const PrivacyScoreCard = () => {
   const completedGuidesCount = Math.round((completedGuides / 100) * allGuides.length);
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
       <div className="space-y-4 mb-6">
         <div>
           <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">

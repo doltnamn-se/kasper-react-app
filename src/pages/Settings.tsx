@@ -42,7 +42,7 @@ const Settings = () => {
           </TabsList>
 
           <TabsContent value="profile" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
                 {t('profile.manage')}
               </h2>
@@ -51,7 +51,7 @@ const Settings = () => {
           </TabsContent>
 
           <TabsContent value="notifications" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
                 {t('settings.notification.preferences')}
               </h2>
@@ -60,7 +60,7 @@ const Settings = () => {
           </TabsContent>
 
           <TabsContent value="password" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-xl font-semibold mb-6 dark:text-white">
                 {t('settings.change.password')}
               </h2>

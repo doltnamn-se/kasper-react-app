@@ -59,7 +59,7 @@ const AddressAlerts = () => {
 
         {!hasAddressAlert && (
           <div className="absolute inset-0 z-10 backdrop-blur-sm bg-white/30 dark:bg-black/30 flex items-center justify-center">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-lg shadow-lg max-w-sm text-center space-y-4">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-lg shadow-lg border border-[#e5e7eb] dark:border-[#232325] max-w-sm text-center space-y-4">
               <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm">
                 {language === 'sv' 
                   ? "Du prenumererar inte på Adresslarm. Lägg till det nu för att hålla dina adressuppgifter säkra."

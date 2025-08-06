@@ -119,7 +119,7 @@ export const KasperFriendsCard = () => {
   return (
     <Card 
       className={cn(
-        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 pb-8 md:pb-10 rounded-2xl shadow-sm border-0 dark:border dark:border-[#232325] transition-colors duration-200"
+        "bg-white dark:bg-[#1c1c1e] p-4 md:p-6 pb-8 md:pb-10 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200"
       )}
     >
       <div className="space-y-4">
