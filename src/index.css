@@ -246,12 +246,12 @@
   /* Adding h2 styling as requested */
   h2 {
     font-size: 20px;
-    font-weight: 600;
-    color: #000000;
+    font-weight: 500;
+    color: #121212;
   }
   
   .dark h2 {
-    color: #FFFFFF;
+    color: #fafafa;
   }
 }
 
