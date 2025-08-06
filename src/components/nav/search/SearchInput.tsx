@@ -62,7 +62,7 @@ export const SearchInput = ({
           setShowResults(true);
         }}
         className={cn(
-          "pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none",
+          "pl-10 pr-24 bg-white dark:bg-[#1c1c1e] border-none shadow-none rounded-2xl",
           "hover:shadow-sm focus:shadow-md focus-visible:ring-0",
           "text-[#000000] dark:text-[#FFFFFF]",
           "placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6]",
