@@ -5,7 +5,6 @@ import {
   UserRoundSearch, 
   EyeOff,
   MapPinHouse,
-  MousePointerClick,
   Infinity
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -22,7 +21,6 @@ export const UserBottomNav = () => {
     { path: '/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.monitoring') },
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
     { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts.mobile') },
-    { path: '/guides', icon: <MousePointerClick className="h-5 w-5" />, label: t('nav.guides') },
     { path: '/kasper-friends', icon: <Infinity className="h-5 w-5" />, label: "Friends" }
   ];
 
@@ -72,7 +70,7 @@ export const UserBottomNav = () => {
         />
       </div>
       
-      <div className="grid grid-cols-6 h-full">
+      <div className="grid grid-cols-5 h-full">
         {navItems.map((item, index) => (
           <Link 
             key={item.path}
