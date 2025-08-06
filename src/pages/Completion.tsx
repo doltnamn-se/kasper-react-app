@@ -5,7 +5,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { useTheme } from 'next-themes';
 
 export const Completion = () => {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -32,7 +32,7 @@ export const Completion = () => {
           <Player
             autoplay
             loop={false}
-            src={theme === 'dark' ? '/lovable-uploads/welcome-light-text.json' : '/lovable-uploads/welcome-dark-text.json'}
+            src={resolvedTheme === 'dark' ? '/lovable-uploads/welcome-light-text.json' : '/lovable-uploads/welcome-dark-text.json'}
             className="w-72 h-12 sm:w-96 sm:h-16 md:w-[520px] md:h-20 mx-auto"
           />
         </div>
