@@ -34,7 +34,7 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
   },
   style: {
     input: {
-      backgroundColor: isDarkMode ? '#3f3f46' : 'white',
+      backgroundColor: isDarkMode ? '#1a1a1a' : 'white',
       color: isDarkMode ? '#fff' : '#6B7280',
       borderColor: isDarkMode ? '#303032' : '#E5E7EB',
       height: '48px',
