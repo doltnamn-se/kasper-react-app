@@ -6,7 +6,7 @@ import {
   EyeOff,
   MapPinHouse,
   MousePointerClick,
-  Users
+  Infinity
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +23,7 @@ export const UserBottomNav = () => {
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
     { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts.mobile') },
     { path: '/guides', icon: <MousePointerClick className="h-5 w-5" />, label: t('nav.guides') },
-    { path: '/kasper-friends', icon: <Users className="h-5 w-5" />, label: "Friends" }
+    { path: '/kasper-friends', icon: <Infinity className="h-5 w-5" />, label: "Friends" }
   ];
 
   const isActive = (path: string) => location.pathname === path;

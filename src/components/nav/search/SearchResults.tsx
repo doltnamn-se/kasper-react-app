@@ -8,7 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { RefObject } from "react";
-import { House, BadgeCheck, Activity, EyeOff, MapPinHouse, MousePointerClick, Settings, Users } from "lucide-react";
+import { House, BadgeCheck, Activity, EyeOff, MapPinHouse, MousePointerClick, Settings, Infinity } from "lucide-react";
 
 export type SearchResult = {
   id: string;
@@ -41,7 +41,7 @@ const getIconForUrl = (url: string) => {
     case "/guides":
       return <MousePointerClick className="h-4 w-4 mr-2" />;
     case "/kasper-friends":
-      return <Users className="h-4 w-4 mr-2" />;
+      return <Infinity className="h-4 w-4 mr-2" />;
     case "/settings":
       return <Settings className="h-4 w-4 mr-2" />;
     default:
