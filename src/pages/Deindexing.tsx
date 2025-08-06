@@ -126,7 +126,7 @@ const Deindexing = () => {
           <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
             {t('nav.my.links')} - Admin View
           </h1>
-          <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+          <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
             <AdminDeindexingView />
           </div>
         </div>
@@ -200,7 +200,7 @@ const Deindexing = () => {
           )}
 
           <TabsContent value="incoming" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-[18px] font-semibold mb-6 text-[#000000] dark:text-[#FFFFFF]">
                 {t('deindexing.incoming.links')}
               </h2>
@@ -209,7 +209,7 @@ const Deindexing = () => {
           </TabsContent>
 
           <TabsContent value="deindexed" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
               <h2 className="text-[18px] font-semibold mb-6 text-[#000000] dark:text-[#FFFFFF]">
                 {t('deindexing.deindexed.links')}
               </h2>

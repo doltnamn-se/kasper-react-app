@@ -40,7 +40,7 @@ export const GuideCard = ({
 
   if (variant === 'checklist') {
     return (
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] relative">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl relative">
         <GuideHeader title={guide.title} url={url} />
         <GuideSteps steps={guide.steps} guideTitle={guide.title} />
       </div>
@@ -48,7 +48,7 @@ export const GuideCard = ({
   }
 
   return (
-    <Card className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 rounded-[4px] relative">
+    <Card className="bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] transition-colors duration-200 rounded-2xl relative">
       <Accordion 
         type="single" 
         collapsible

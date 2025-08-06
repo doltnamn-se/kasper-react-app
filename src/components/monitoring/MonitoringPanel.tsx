@@ -39,7 +39,7 @@ export const MonitoringPanel = ({
   };
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold font-weight-600 text-[#000000] dark:text-[#FFFFFF]">
           {language === 'sv' ? 'Bevakning' : 'Monitoring'}

@@ -75,7 +75,7 @@ const AdminMonitoring = () => {
         </Button>
       </div>
 
-      <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]">
+      <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325]">
         <div className="space-y-6">
           <h2 className="text-lg font-semibold">
             {t('monitoring.add.new')}
@@ -95,7 +95,7 @@ const AdminMonitoring = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-[4px] shadow-sm border border-[#e5e7eb] dark:border-[#232325]">
+      <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325]">
         <div className="space-y-6">
           <h2 className="text-lg font-semibold">
             {t('monitoring.links')}
