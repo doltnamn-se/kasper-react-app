@@ -20,7 +20,7 @@ const AdminCustomers = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+        <h1>
           {t('nav.admin.customers')}
         </h1>
         

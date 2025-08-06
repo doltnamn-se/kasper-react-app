@@ -224,6 +224,25 @@
     box-shadow: none !important;
   }
   
+  /* Adding h1 styling as requested */
+  h1 {
+    font-family: 'DomaineDispNrw-Regular', serif;
+    font-weight: 400;
+    color: #121212;
+    letter-spacing: 0px;
+    font-size: 1.75rem; /* Mobile and tablet */
+  }
+  
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 2rem; /* Desktop */
+    }
+  }
+  
+  .dark h1 {
+    color: #fafafa;
+  }
+
   /* Adding h2 styling as requested */
   h2 {
     font-size: 20px;

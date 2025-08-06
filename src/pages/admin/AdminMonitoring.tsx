@@ -56,7 +56,7 @@ const AdminMonitoring = () => {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+        <h1>
           {pageTitle}
         </h1>
         <Button

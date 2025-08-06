@@ -71,7 +71,7 @@ const Monitoring = () => {
   return (
     <MainLayout>
       <div className={`space-y-8 ${isMobile ? '' : ''}`}>
-        <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+        <h1 className="mb-6">
           {language === 'sv' ? 'Bevakning' : 'Monitoring'}
         </h1>
 

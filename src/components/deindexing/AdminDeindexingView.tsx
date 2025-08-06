@@ -15,7 +15,7 @@ export const AdminDeindexingView = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+      <h1>
         {t('nav.admin.deindexing')}
       </h1>
       

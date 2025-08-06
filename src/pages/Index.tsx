@@ -45,7 +45,7 @@ const Index = () => {
   // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <h1 className={`${greetingFontSize} font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
+      <h1 className={`${greetingFontSize} mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
         {`${getWelcomeMessage()} ${firstNameOnly}`}
       </h1>
 

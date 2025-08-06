@@ -69,7 +69,7 @@ const ChecklistContent = () => {
           </div>
 
           <div className="flex flex-col items-center mb-6">
-            <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
+            <h1>
               {t('nav.checklist')}
             </h1>
           </div>

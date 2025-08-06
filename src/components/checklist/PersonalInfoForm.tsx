@@ -115,7 +115,7 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       {showWelcome && (
         <div className="welcome-message fixed inset-0 z-[9999] flex items-center justify-center bg-background animate-fade-in">
           <div className="text-center">
-            <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
+            <h1>
               {t('checklist.completion.welcome')}
             </h1>
           </div>

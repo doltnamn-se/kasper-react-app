@@ -123,7 +123,7 @@ const Deindexing = () => {
     return (
       <MainLayout>
         <div className="space-y-8">
-          <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white mb-6">
+          <h1 className="mb-6">
             {t('nav.my.links')} - Admin View
           </h1>
           <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm dark:border dark:border-[#232325] transition-colors duration-200">
@@ -139,7 +139,7 @@ const Deindexing = () => {
       <div className="space-y-8">
         {/* Modified header section with flex layout for mobile */}
         <div className="flex flex-row justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold tracking-[-.416px] text-[#000000] dark:text-white">
+          <h1>
             {t('nav.my.links')} {isAdmin ? '- Admin View' : ''}
           </h1>
           
