@@ -94,13 +94,13 @@ export const SearchInput = ({
           isSearchFocused ? "opacity-0" : "opacity-100"
         )}
       >
-        <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
+        <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#fafafa] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
           {isMac ? '⌘' : 'Ctrl'}
         </div>
         <span className="text-[#5e5e5e] dark:text-gray-400 text-[10px]">
           +
         </span>
-        <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#f4f4f4] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
+        <div className="flex items-center gap-1 text-[#5e5e5e] dark:text-gray-400 bg-[#fafafa] dark:bg-[#232325] px-1.5 py-0.5 rounded text-xs">
           K
         </div>
       </div>

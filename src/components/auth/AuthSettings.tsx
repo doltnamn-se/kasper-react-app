@@ -11,7 +11,7 @@ interface AuthSettingsProps {
 export const AuthSettings = ({ isDarkMode, onToggleDarkMode }: AuthSettingsProps) => {
   // Ensure theme-color is set correctly on initial page load
   useEffect(() => {
-    const themeColor = isDarkMode ? '#161618' : '#f4f4f4';
+    const themeColor = isDarkMode ? '#161618' : '#fafafa';
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     
     if (metaThemeColor) {

@@ -162,7 +162,7 @@ export const KasperFriendsCard = () => {
         {customerData?.coupon_code ? (
           <div className="space-y-3">
             <div 
-              className="bg-[#f4f4f4] dark:bg-[#161618] p-3 flex items-center justify-between"
+              className="bg-[#fafafa] dark:bg-[#161618] p-3 flex items-center justify-between"
               style={{ borderRadius: 'calc(var(--radius) - 1px)' }}
             >
               <div>

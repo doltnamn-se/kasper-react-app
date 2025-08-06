@@ -33,7 +33,7 @@ export const MobilePersistentLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] pb-16">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#161618] pb-16">
       {/* Fixed Top Navigation */}
       <TopNav />
       

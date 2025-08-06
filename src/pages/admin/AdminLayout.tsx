@@ -16,7 +16,7 @@ const AdminLayout = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618]">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#161618]">
       <div className="flex">
         {/* Admin Sidebar - Desktop Only */}
         <div className={cn(

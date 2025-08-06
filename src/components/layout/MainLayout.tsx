@@ -73,7 +73,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </div>
 
       {/* Main Content with conditional navigation for desktop vs mobile */}
-      <div className="md:ml-72 min-h-screen bg-[#f4f4f4] dark:bg-[#161618] transition-colors duration-200">
+      <div className="md:ml-72 min-h-screen bg-[#fafafa] dark:bg-[#161618] transition-colors duration-200">
         {/* Only show TopNav on desktop, on mobile it comes from MobilePersistentLayout */}
         {!isMobile && <TopNav />}
         

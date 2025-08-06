@@ -26,7 +26,7 @@ export const Completion = () => {
   }, [navigate]);
 
   return (
-    <div className="h-screen overflow-hidden bg-[#f4f4f4] dark:bg-[#161618] flex items-center justify-center">
+    <div className="h-screen overflow-hidden bg-[#fafafa] dark:bg-[#161618] flex items-center justify-center">
       {showWelcome && (
         <div className="text-center">
           <Player

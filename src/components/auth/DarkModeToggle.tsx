@@ -11,7 +11,7 @@ interface DarkModeToggleProps {
 export const DarkModeToggle = ({ isDarkMode, onToggle }: DarkModeToggleProps) => {
   // Update theme-color meta tag when theme changes
   useEffect(() => {
-    const themeColor = isDarkMode ? '#161618' : '#f4f4f4';
+    const themeColor = isDarkMode ? '#161618' : '#fafafa';
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     
     if (metaThemeColor) {

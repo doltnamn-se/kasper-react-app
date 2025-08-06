@@ -76,12 +76,12 @@ export const TopNav = () => {
       "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
       isMobile ? (
         cn(
-          "left-0 px-4 bg-[#f4f4f4] dark:bg-[#161618] w-full",
+          "left-0 px-4 bg-[#fafafa] dark:bg-[#161618] w-full",
           isVisible ? "translate-y-0" : "-translate-y-full"
         )
       ) : (
         cn(
-          "bg-[#f4f4f4] dark:bg-[#161618]",
+          "bg-[#fafafa] dark:bg-[#161618]",
           isCollapsed ? "left-16 px-12" : "left-72 px-12"
         )
       )

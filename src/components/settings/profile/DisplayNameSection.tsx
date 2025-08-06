@@ -55,7 +55,7 @@ export const DisplayNameSection = ({ userProfile, onDisplayNameUpdate }: Display
           id="displayName"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          className="flex-1 bg-[#f4f4f4] dark:bg-[#2a2a2b] border-0"
+          className="flex-1 bg-[#fafafa] dark:bg-[#2a2a2b] border-0"
           placeholder={t('display.name')}
         />
         <Button
