@@ -50,7 +50,7 @@ export const AuthForm = ({
           <AnnouncementBadge />
         </div>
         <AuthEyeLogo />
-        <h2 className="text-xl font-bold mb-10 text-left dark:text-white font-system-ui font-[700]">
+        <h2 className="mb-10 text-left">
           {isResetPasswordMode ? t('reset.password') : t('sign.in')}
         </h2>
         

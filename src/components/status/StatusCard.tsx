@@ -34,7 +34,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       )}
     >
       <div>
-        <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
+        <h2>
           {language === 'sv' ? 'Status' : 'Status'}
         </h2>
         <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mb-6 md:mb-10">

@@ -76,7 +76,7 @@ const ResetPassword = () => {
           <div className="w-full max-w-md space-y-8">
             <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
               <AuthEyeLogo />
-              <h2 className="text-xl font-bold mb-10 text-left dark:text-white font-system-ui font-[700]">
+              <h2 className="mb-10 text-left">
                 {t('reset.password')}
               </h2>
 

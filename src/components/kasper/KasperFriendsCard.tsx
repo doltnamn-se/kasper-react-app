@@ -124,7 +124,7 @@ export const KasperFriendsCard = () => {
     >
       <div className="space-y-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#000000] dark:text-[#FFFFFF]">
+          <h2>
             Kasper <span className="font-domaine font-normal tracking-normal">Friends</span>
           </h2>
           <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
