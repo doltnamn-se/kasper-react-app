@@ -131,24 +131,32 @@ export default {
           '25%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
           '100%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
         },
-        'reveal-text': {
+        'reveal-text-gradient': {
           '0%': { 
-            clipPath: 'inset(0 100% 0 0)',
-            opacity: '1'
+            background: 'linear-gradient(to right, currentColor 0%, currentColor 0%, transparent 0%, transparent 100%)',
+            '-webkit-background-clip': 'text',
+            'background-clip': 'text',
+            color: 'transparent'
           },
           '100%': { 
-            clipPath: 'inset(0 0 0 0)',
-            opacity: '1'
+            background: 'linear-gradient(to right, currentColor 0%, currentColor 100%, transparent 100%, transparent 100%)',
+            '-webkit-background-clip': 'text',
+            'background-clip': 'text',
+            color: 'transparent'
           }
         },
-        'hide-text': {
+        'hide-text-gradient': {
           '0%': { 
-            clipPath: 'inset(0 0 0 0)',
-            opacity: '1'
+            background: 'linear-gradient(to right, currentColor 0%, currentColor 100%, transparent 100%, transparent 100%)',
+            '-webkit-background-clip': 'text',
+            'background-clip': 'text',
+            color: 'transparent'
           },
           '100%': { 
-            clipPath: 'inset(0 100% 0 0)',
-            opacity: '1'
+            background: 'linear-gradient(to right, transparent 0%, transparent 100%, currentColor 100%, currentColor 100%)',
+            '-webkit-background-clip': 'text',
+            'background-clip': 'text',
+            color: 'transparent'
           }
         },
         'smooth-fade-out': {
@@ -175,8 +183,10 @@ export default {
         'toast-slide-in': 'toast-slide-in 400ms ease-out forwards',
         'toast-slide-out': 'toast-slide-out 300ms ease-out forwards',
         'kasper-pulse': 'kasper-pulse 4s ease-in-out infinite',
-        'reveal-text': 'reveal-text 0.8s ease-out forwards',
-        'hide-text': 'hide-text 0.8s ease-out forwards',
+        'reveal-text-opacity': 'reveal-text-opacity 0.8s ease-out forwards',
+        'hide-text-opacity': 'hide-text-opacity 0.8s ease-out forwards',
+        'reveal-text-gradient': 'reveal-text-gradient 0.8s ease-out forwards',
+        'hide-text-gradient': 'hide-text-gradient 0.8s ease-out forwards',
         'smooth-fade-out': 'smooth-fade-out 1s ease-out forwards'
       },
       colors: {
