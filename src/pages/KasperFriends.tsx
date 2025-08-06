@@ -17,7 +17,7 @@ const KasperFriends = () => {
   const content = (
     <div className="space-y-8">
       <h1>
-        Kasper Friends
+        <span className="font-satoshi font-semibold">Kasper</span> Friends
       </h1>
       
       <KasperFriendsCard />
