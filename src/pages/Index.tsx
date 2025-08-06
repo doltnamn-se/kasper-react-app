@@ -16,7 +16,6 @@ const Index = () => {
   const { lastChecked } = useLastChecked();
   const { siteStatuses, isLoading } = useSiteStatuses(userProfile?.id);
   const isMobile = useIsMobile();
-  const [greetingFontSize, setGreetingFontSize] = useState("text-2xl");
 
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
@@ -26,26 +25,11 @@ const Index = () => {
     return language === 'sv' ? "Välkommen" : "Welcome";
   };
 
-  // Adjust font size based on name length for mobile
-  useEffect(() => {
-    if (isMobile) {
-      const greeting = `${getWelcomeMessage()} ${firstNameOnly}`;
-      if (greeting.length > 20) {
-        setGreetingFontSize("text-xl");
-      } else if (greeting.length > 25) {
-        setGreetingFontSize("text-lg");
-      } else {
-        setGreetingFontSize("text-2xl");
-      }
-    } else {
-      setGreetingFontSize("text-2xl");
-    }
-  }, [firstNameOnly, isMobile, language]);
 
   // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <h1 className={`${greetingFontSize} mb-6 whitespace-nowrap overflow-hidden text-ellipsis`}>
+      <h1 className="mb-6">
         {`${getWelcomeMessage()} ${firstNameOnly}`}
       </h1>
 
