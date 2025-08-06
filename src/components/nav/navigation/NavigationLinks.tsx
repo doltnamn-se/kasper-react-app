@@ -54,8 +54,8 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
       {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadCounts.monitoring)}
       {renderNavLink("/deindexing", <EyeOff className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
-      {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadCounts.guides)}
       {renderNavLink("/kasper-friends", <Infinity className="w-[18px] h-[18px]" />, "Kasper Friends", 0)}
+      {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadCounts.guides)}
     </>
   );
 };
