@@ -131,24 +131,24 @@ export default {
           '25%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
           '100%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
         },
-        'letter-fade-in': {
+        'reveal-text': {
           '0%': { 
-            opacity: '0',
-            transform: 'translateY(10px)'
+            clipPath: 'inset(0 100% 0 0)',
+            opacity: '1'
           },
           '100%': { 
-            opacity: '1',
-            transform: 'translateY(0)'
+            clipPath: 'inset(0 0 0 0)',
+            opacity: '1'
           }
         },
-        'letter-fade-out': {
+        'hide-text': {
           '0%': { 
-            opacity: '1',
-            transform: 'translateY(0)'
+            clipPath: 'inset(0 0 0 0)',
+            opacity: '1'
           },
           '100%': { 
-            opacity: '0',
-            transform: 'translateY(10px)'
+            clipPath: 'inset(0 100% 0 0)',
+            opacity: '1'
           }
         },
         'smooth-fade-out': {
@@ -175,8 +175,8 @@ export default {
         'toast-slide-in': 'toast-slide-in 400ms ease-out forwards',
         'toast-slide-out': 'toast-slide-out 300ms ease-out forwards',
         'kasper-pulse': 'kasper-pulse 4s ease-in-out infinite',
-        'letter-fade-in': 'letter-fade-in 0.6s ease-out forwards',
-        'letter-fade-out': 'letter-fade-out 0.6s ease-out forwards',
+        'reveal-text': 'reveal-text 0.8s ease-out forwards',
+        'hide-text': 'hide-text 0.8s ease-out forwards',
         'smooth-fade-out': 'smooth-fade-out 1s ease-out forwards'
       },
       colors: {

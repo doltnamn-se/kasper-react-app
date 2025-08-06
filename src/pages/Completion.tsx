@@ -37,28 +37,17 @@ export const Completion = () => {
     }, 3900); // 300ms + 800ms + 2000ms + 800ms hide animation
   }, [navigate]);
 
-  const welcomeText = t('checklist.completion.welcome');
-  
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] flex items-center justify-center">
       {showWelcome && (
         <div className="text-center">
-          <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
-            {welcomeText.split('').map((char, index) => (
-              <span
-                key={index}
-                className={`inline-block ${
-                  animationPhase === 'reveal' ? 'animate-letter-fade-in' : 
-                  animationPhase === 'hide' ? 'animate-letter-fade-out' : ''
-                }`}
-                style={{
-                  animationDelay: `${index * 50}ms`,
-                  opacity: animationPhase === 'stay' ? 1 : 0
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
+          <h1 
+            className={`text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white ${
+              animationPhase === 'reveal' ? 'animate-reveal-text' : 
+              animationPhase === 'hide' ? 'animate-hide-text' : ''
+            }`}
+          >
+            {t('checklist.completion.welcome')}
           </h1>
         </div>
       )}
