@@ -150,7 +150,7 @@ function getActivationEmailTemplate(displayName: string, password: string): stri
 }
 
 const handler = async (req: Request) => {
-  console.log("🚀 KASPER ACTIVATION EMAIL - Updated template v4.1");
+  console.log("🚀 KASPER ACTIVATION EMAIL - Updated template v5.0");
   
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
