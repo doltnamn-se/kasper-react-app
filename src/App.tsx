@@ -126,7 +126,7 @@ function App() {
                 {/* Auth routes */}
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
                 <Route path="/auth/reset-password" element={<ResetPassword />} />
-                <Route path="/completion" element={<ProtectedRoute customerOnly><Completion /></ProtectedRoute>} />
+                <Route path="/completion" element={<Completion />} />
                 
                 {/* Admin routes */}
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
