@@ -6,33 +6,47 @@ export const Completion = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState<'reveal' | 'stay' | 'hide'>('reveal');
 
   useEffect(() => {
     console.log('Completion page mounted');
     
-    // Show welcome message after a brief moment (fade in)
+    // Show welcome message after a brief moment and start reveal animation
     setTimeout(() => {
-      console.log('Showing welcome message');
+      console.log('Starting welcome message reveal');
       setShowWelcome(true);
+      setAnimationPhase('reveal');
     }, 300);
     
-    // Hide welcome message and navigate to platform after 3 seconds
+    // After reveal animation completes, stay for 2 seconds
     setTimeout(() => {
-      console.log('Hiding welcome message and navigating to platform');
-      setShowWelcome(false);
-      
-      // Navigate to platform after fade out
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
-    }, 3000);
+      console.log('Welcome message fully revealed, staying visible');
+      setAnimationPhase('stay');
+    }, 1100); // 300ms delay + 800ms reveal animation
+    
+    // Start hide animation after 2 seconds of staying
+    setTimeout(() => {
+      console.log('Starting welcome message hide animation');
+      setAnimationPhase('hide');
+    }, 3100); // 300ms + 800ms + 2000ms stay
+    
+    // Navigate to platform after hide animation completes
+    setTimeout(() => {
+      console.log('Hide animation complete, navigating to platform');
+      window.location.href = '/';
+    }, 3900); // 300ms + 800ms + 2000ms + 800ms hide animation
   }, [navigate]);
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#161618] flex items-center justify-center">
       {showWelcome && (
-        <div className="text-center animate-fade-in">
-          <h1 className="text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white">
+        <div className="text-center">
+          <h1 
+            className={`text-2xl md:text-[2.5rem] font-domaine font-normal tracking-[0px] text-[#000000] dark:text-white ${
+              animationPhase === 'reveal' ? 'animate-reveal-text' : 
+              animationPhase === 'hide' ? 'animate-hide-text' : ''
+            }`}
+          >
             {t('checklist.completion.welcome')}
           </h1>
         </div>

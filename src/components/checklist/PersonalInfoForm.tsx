@@ -67,12 +67,12 @@ export const PersonalInfoForm = ({ onComplete }: PersonalInfoFormProps) => {
       // Show completion flow
       setShowCompletion(true);
       
-      console.log('Starting completion flow - step 1: fading out screen');
+      console.log('Starting completion flow - step 1: fading out screen smoothly');
       
-      // Fade out everything on screen (1 second)
+      // Fade out everything on screen smoothly (1 second)
       const checklistPage = document.querySelector('.checklist-page');
       if (checklistPage) {
-        checklistPage.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
+        checklistPage.classList.add('animate-smooth-fade-out');
       }
       
       // Navigate to completion page after fade out (1 second)

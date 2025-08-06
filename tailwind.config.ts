@@ -130,6 +130,36 @@ export default {
           '24%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 2.4deg, transparent 2.4deg)' },
           '25%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
           '100%': { background: 'conic-gradient(from 0deg, rgba(255, 255, 255, 0.3) 0deg, rgba(255, 255, 255, 0.3) 0deg, transparent 0deg)' },
+        },
+        'reveal-text': {
+          '0%': { 
+            clipPath: 'inset(0 100% 0 0)',
+            opacity: '1'
+          },
+          '100%': { 
+            clipPath: 'inset(0 0 0 0)',
+            opacity: '1'
+          }
+        },
+        'hide-text': {
+          '0%': { 
+            clipPath: 'inset(0 0 0 0)',
+            opacity: '1'
+          },
+          '100%': { 
+            clipPath: 'inset(0 100% 0 0)',
+            opacity: '1'
+          }
+        },
+        'smooth-fade-out': {
+          '0%': { 
+            opacity: '1',
+            transform: 'scale(1)'
+          },
+          '100%': { 
+            opacity: '0',
+            transform: 'scale(0.98)'
+          }
         }
       },
       animation: {
@@ -144,7 +174,10 @@ export default {
         'draw-check': 'draw-check 0.3s ease-in-out forwards',
         'toast-slide-in': 'toast-slide-in 400ms ease-out forwards',
         'toast-slide-out': 'toast-slide-out 300ms ease-out forwards',
-        'kasper-pulse': 'kasper-pulse 4s ease-in-out infinite'
+        'kasper-pulse': 'kasper-pulse 4s ease-in-out infinite',
+        'reveal-text': 'reveal-text 0.8s ease-out forwards',
+        'hide-text': 'hide-text 0.8s ease-out forwards',
+        'smooth-fade-out': 'smooth-fade-out 1s ease-out forwards'
       },
       colors: {
         border: 'hsl(var(--border))',
