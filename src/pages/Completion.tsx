@@ -33,8 +33,7 @@ export const Completion = () => {
             autoplay
             loop={false}
             src={theme === 'dark' ? '/lovable-uploads/welcome-light-text.json' : '/lovable-uploads/welcome-dark-text.json'}
-            style={{ height: '80px', width: '520px' }}
-            className="mx-auto"
+            className="w-72 h-12 sm:w-96 sm:h-16 md:w-[520px] md:h-20 mx-auto"
           />
         </div>
       )}
