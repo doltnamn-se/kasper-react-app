@@ -32,7 +32,7 @@ export const Completion = () => {
           <Player
             autoplay
             loop={false}
-            src={theme === 'dark' ? '/lovable-uploads/welcome-dark-text.json' : '/lovable-uploads/welcome-light-text.json'}
+            src={theme === 'dark' ? '/lovable-uploads/welcome-light-text.json' : '/lovable-uploads/welcome-dark-text.json'}
             style={{ height: '80px', width: '520px' }}
             className="mx-auto"
           />
