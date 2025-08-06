@@ -7,6 +7,7 @@ import { StatusActions } from "./StatusActions";
 import { getSpinnerColor, getStatusText } from "./SiteConfig";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SiteStatus {
   site_name: string;
@@ -30,6 +31,7 @@ export const StatusTable: React.FC<StatusTableProps> = ({
   onRemoveSite
 }) => {
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
   const [openTooltip, setOpenTooltip] = useState<string | null>(null);
 
   const getSiteStatus = (siteName: string): string => {
@@ -93,7 +95,11 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                               <Info className="w-3 h-3 md:w-4 md:h-4 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors" />
                             </button>
                           </TooltipTrigger>
-                          <TooltipContent side="top" align="center" className="max-w-xs z-[9999]">
+                           <TooltipContent 
+                             side={isMobile ? "top" : "left"} 
+                             align={isMobile ? "center" : "center"} 
+                             className={`max-w-xs z-[9999] ${isMobile ? 'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}
+                           >
                             <p className="text-sm">
                               {language === 'sv' 
                                 ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
