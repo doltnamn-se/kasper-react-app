@@ -123,14 +123,6 @@ export const KasperFriendsCard = () => {
       )}
     >
       <div className="space-y-4">
-        <div>
-          <h2>
-            Kasper <span className="font-domaine font-normal tracking-normal">Friends</span>
-          </h2>
-          <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm">
-            {language === 'sv' ? 'Sänk priset på ditt abonnemang' : 'Lower the price of your subscription'}
-          </p>
-        </div>
 
         <div className="flex flex-col items-center py-8">
           <p className={`text-sm md:text-base font-medium mb-2 ${
