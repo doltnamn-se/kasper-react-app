@@ -18,10 +18,10 @@ export const UserBottomNav = () => {
 
   const navItems = [
     { path: '/', icon: <House className="h-5 w-5" />, label: t('nav.home') },
-    { path: '/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.monitoring') },
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
-    { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts.mobile') },
-    { path: '/kasper-friends', icon: <Infinity className="h-5 w-5" />, label: "Friends" }
+    { path: '/kasper-friends', icon: <Infinity className="h-5 w-5" />, label: "Friends" },
+    { path: '/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.monitoring') },
+    { path: '/address-alerts', icon: <MapPinHouse className="h-5 w-5" />, label: t('nav.address.alerts.mobile') }
   ];
 
   const isActive = (path: string) => location.pathname === path;
