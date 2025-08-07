@@ -90,7 +90,7 @@ export const ResetPasswordForm = ({ isLoading, setIsLoading }: ResetPasswordForm
 
       <Button
         type="submit"
-        className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+        className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[10px] font-system-ui"
         disabled={isLoading || !checkAllRequirements(newPassword, "", false)}
       >
         {isLoading ? t('loading') : t('update.password')}

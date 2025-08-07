@@ -79,7 +79,7 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
           <div className="flex flex-col gap-3">
             <Button
               onClick={handleResetPassword}
-              className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[4px] font-system-ui"
+              className="w-full h-12 bg-black hover:bg-[#333333] text-white dark:bg-white dark:text-black dark:hover:bg-[#cfcfcf] rounded-[10px] font-system-ui"
               disabled={isLoading}
             >
               {isLoading ? t('sending.recovery.link') : t('send.recovery.link')}
@@ -87,7 +87,7 @@ export const PasswordResetForm = ({ onCancel, initialError }: PasswordResetFormP
             <Button
               onClick={onCancel}
               variant="outline"
-              className="w-full h-12 rounded-[4px] font-system-ui"
+              className="w-full h-12 rounded-[10px] font-system-ui"
               disabled={isLoading}
             >
               {t('cancel')}

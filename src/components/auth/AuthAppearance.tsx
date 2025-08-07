@@ -20,8 +20,8 @@ export const getAuthAppearance = (isDarkMode: boolean) => ({
         inputBorderWidth: '1px',
       },
       radii: {
-        borderRadiusButton: '4px',
-        buttonBorderRadius: '4px',
+        borderRadiusButton: '10px',
+        buttonBorderRadius: '10px',
         inputBorderRadius: '4px',
       },
       fonts: {
