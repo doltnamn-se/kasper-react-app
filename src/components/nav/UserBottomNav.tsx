@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
-import kasperLogoDark from "/lovable-uploads/kasper-logo-app-dark.svg";
-import kasperLogoLight from "/lovable-uploads/kasper-logo-app-light.svg";
+import kasperFaviconDark from "/lovable-uploads/kasper-mob-icon-darkmode.svg";
+import kasperFaviconLight from "/lovable-uploads/kasper-mob-icon-lightmode.svg";
 
 export const UserBottomNav = () => {
   const location = useLocation();
@@ -20,8 +20,8 @@ export const UserBottomNav = () => {
   const navItems = [
     { path: '/', icon: (
         <>
-          <img src={kasperLogoLight} alt="Home" className="h-5 w-5 dark:hidden" />
-          <img src={kasperLogoDark} alt="Home" className="h-5 w-5 hidden dark:block" />
+          <img src={kasperFaviconLight} alt="Home" className="h-5 w-5 dark:hidden" />
+          <img src={kasperFaviconDark} alt="Home" className="h-5 w-5 hidden dark:block" />
         </>
       ), label: t('nav.home') },
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
