@@ -76,10 +76,8 @@ export const UserBottomNav = () => {
             key={item.path}
             to={item.path} 
             ref={el => navRefs.current[index] = el}
-            className={`flex flex-col items-center justify-center pb-3 ${
-              isActive(item.path) 
-                ? 'text-[#121212] dark:text-[#fafafa] font-medium' 
-                : 'text-[#121212] dark:text-[#fafafa] font-normal'
+            className={`flex flex-col items-center justify-center pb-3 text-[#121212] dark:text-[#fafafa] ${
+              isActive(item.path) ? 'font-medium' : 'font-normal'
             }`}
           >
             {item.icon}
