@@ -77,7 +77,7 @@ export const AdminBottomNav = () => {
             ref={el => navRefs.current[index] = el}
             className={`flex flex-col items-center justify-center pb-3 ${
               isActive(item.path) 
-                ? 'text-black dark:text-white font-medium' 
+                ? 'text-[#121212] dark:text-[#fafafa] font-medium' 
                 : 'text-[#000000A6] dark:text-[#FFFFFFA6] font-normal'
             }`}
           >
