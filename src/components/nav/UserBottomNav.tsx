@@ -57,7 +57,7 @@ export const UserBottomNav = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
+    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
       <div className="relative">
         {/* Active indicator - positioned absolutely and will slide with transitions */}
         <div 
@@ -76,7 +76,7 @@ export const UserBottomNav = () => {
             key={item.path}
             to={item.path} 
             ref={el => navRefs.current[index] = el}
-            className="flex flex-col items-center justify-center pb-3 text-[#121212] dark:text-[#fafafa] font-medium"
+            className="flex flex-col items-center justify-center pb-1 text-[#121212] dark:text-[#fafafa] font-medium"
           >
             {item.icon}
             <span className="mt-1" style={{ fontSize: '0.7rem' }}>{item.label}</span>
