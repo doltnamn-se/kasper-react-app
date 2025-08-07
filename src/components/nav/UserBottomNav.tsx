@@ -1,7 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { 
-  House, 
   UserRoundSearch, 
   EyeOff,
   MapPinHouse,
@@ -9,6 +8,8 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
+import kasperLogoDark from "/lovable-uploads/kasper-logo-app-dark.svg";
+import kasperLogoLight from "/lovable-uploads/kasper-logo-app-light.svg";
 
 export const UserBottomNav = () => {
   const location = useLocation();
@@ -17,7 +18,12 @@ export const UserBottomNav = () => {
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const navItems = [
-    { path: '/', icon: <House className="h-5 w-5" />, label: t('nav.home') },
+    { path: '/', icon: (
+        <>
+          <img src={kasperLogoLight} alt="Home" className="h-5 w-5 dark:hidden" />
+          <img src={kasperLogoDark} alt="Home" className="h-5 w-5 hidden dark:block" />
+        </>
+      ), label: t('nav.home') },
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
     { path: '/kasper-friends', icon: <Infinity className="h-5 w-5" />, label: "Friends" },
     { path: '/monitoring', icon: <UserRoundSearch className="h-5 w-5" />, label: t('nav.monitoring') },
