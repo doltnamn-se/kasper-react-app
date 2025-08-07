@@ -174,13 +174,12 @@ const Auth = () => {
       <div className="hidden md:block md:w-1/2 bg-[#FFFFFF] dark:bg-[#1a1a1a] h-screen p-[15px]">
         <div className="h-full w-full flex items-center justify-center p-0 rounded-lg overflow-hidden relative">
           <img 
-            src={bgImage}
-            alt="Digitaltskydd App" 
+            src="/lovable-uploads/kasper-app-desktop-hero.webp"
+            alt="Kasper App" 
             className="w-full h-full object-cover rounded-lg pointer-events-none"
             draggable="false"
             onContextMenu={(e) => e.preventDefault()}
           />
-          <IOSNotification isDarkMode={isDarkMode} />
         </div>
       </div>
     </div>
