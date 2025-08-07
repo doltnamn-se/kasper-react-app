@@ -104,6 +104,8 @@ const sharedEmailStyles = `
         }
 `;
 function getActivationEmailTemplate(displayName, password) {
+  // Extract first name from display name (everything before the first space)
+  const firstName = displayName.split(' ')[0];
   return `
     <!DOCTYPE html>
     <html lang="sv">
@@ -117,7 +119,7 @@ function getActivationEmailTemplate(displayName, password) {
     </head>
 <body style="background-color: #fafafa !important; margin: 0; padding: 0; min-height: 100%;">
     <div style="display: none; max-height: 0; overflow: hidden;">
-        Hej ${displayName} 👋
+        Hej ${firstName} 👋
         <br><br>
         Ditt konto har skapats och du kan nu logga in för att aktivera ditt konto.ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ
     </div>
@@ -128,7 +130,7 @@ function getActivationEmailTemplate(displayName, password) {
         <div class="email-wrapper">
             <h1 style="font-size: 20px; color: #121212; margin-bottom: 20px; text-align: center;">Aktivera ditt konto</h1>
             <p>
-                Hej ${displayName} 👋
+                Hej ${firstName} 👋
                 <br><br>
                 Ditt konto har skapats och du kan nu logga in för att aktivera ditt konto. Du loggar in med din e-postadress samt det lösenord vi genererat åt dig nedan.
             </p>
