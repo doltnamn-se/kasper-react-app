@@ -146,7 +146,7 @@ const Auth = () => {
   return (
     <div className="h-screen overflow-hidden auth-page flex">
       {/* Left side - Authentication content or Pricing Table */}
-      <div className="w-full md:w-2/5 flex flex-col h-screen p-4 md:p-8 bg-[#f4f4f4] dark:bg-[#1a1a1a]">
+      <div className="w-full md:w-2/5 flex flex-col h-screen p-4 md:p-8 bg-[#fafafa] dark:bg-[#1a1a1a]">
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
             {showPricingTable ? (
@@ -171,7 +171,7 @@ const Auth = () => {
       </div>
 
       {/* Right side - Image background */}
-      <div className="hidden md:block md:w-3/5 bg-[#f4f4f4] dark:bg-[#1a1a1a] h-screen p-[15px]">
+      <div className="hidden md:block md:w-3/5 bg-[#fafafa] dark:bg-[#1a1a1a] h-screen p-[15px]">
         <div className="h-full w-full flex items-center justify-center p-0 rounded-lg overflow-hidden relative">
           <img 
             src="/lovable-uploads/kasper-app-desktop-hero.webp"
