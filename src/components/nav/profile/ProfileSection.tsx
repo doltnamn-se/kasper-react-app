@@ -68,36 +68,6 @@ export const ProfileSection = () => {
 
   return (
     <div className="mb-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex flex-col">
-          <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-            {firstName}
-          </span>
-          {lastName && (
-            <span className="text-sm font-medium text-[#000000] dark:text-white leading-tight">
-              {lastName}
-            </span>
-          )}
-        </div>
-        <TooltipProvider delayDuration={300}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button 
-                variant="ghost" 
-                className="p-0 h-auto hover:bg-transparent"
-              >
-                <SubscriptionBadge plan={customerData?.subscription_plan} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent 
-              side="right" 
-              className="bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#2d2d2d] text-sm z-[2000]"
-            >
-              <p>{t(getSubscriptionTooltipKey(customerData?.subscription_plan))}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
       <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
     </div>
   );
