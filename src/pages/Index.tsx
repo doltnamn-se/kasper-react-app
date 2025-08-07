@@ -53,9 +53,6 @@ const Index = () => {
                 <MousePointerClick className="h-5 w-5" />
                 {language === 'sv' ? 'Guider' : 'Guides'}
               </h2>
-              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-2">
-                {language === 'sv' ? 'Lär dig hur du skyddar din integritet' : 'Learn how to protect your privacy'}
-              </p>
             </div>
           </Link>
         )}
