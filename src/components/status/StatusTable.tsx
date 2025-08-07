@@ -97,21 +97,17 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                           </TooltipTrigger>
                            <TooltipContent 
                              side={isMobile ? "top" : "left"} 
-                             align={isMobile ? "center" : "center"}
-                             className={`z-[9999] ${isMobile ? 'w-[90vw] max-w-none mx-auto' : 'max-w-xs'}`}
-                             style={isMobile ? { 
-                               position: 'fixed',
-                               left: '50%',
-                               transform: 'translateX(-50%)',
-                               maxWidth: '90vw'
-                             } : undefined}
+                             align="center"
+                             alignOffset={isMobile ? -50 : 0}
+                             sideOffset={isMobile ? 10 : 4}
+                             className={`z-[9999] ${isMobile ? 'w-[90vw] max-w-none' : 'max-w-xs'}`}
                            >
-                            <p className="text-sm">
-                              {language === 'sv' 
-                                ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
-                                : "Legal request has been sent for removal of your profile on MrKoll. Their processing time is approximately 3-4 weeks."
-                              }
-                            </p>
+                             <p className="text-sm">
+                               {language === 'sv' 
+                                 ? "Legal begäran är skickad för borttagning av din profil på MrKoll. Deras handläggningstid är ca 3-4 veckor."
+                                 : "Legal request has been sent for removal of your profile on MrKoll. Their processing time is approximately 3-4 weeks."
+                               }
+                             </p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
