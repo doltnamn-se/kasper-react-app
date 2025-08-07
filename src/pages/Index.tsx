@@ -46,7 +46,7 @@ const Index = () => {
         {isMobile && (
           <Link 
             to="/guides" 
-            className="p-4 md:p-6 bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#e5e7eb] dark:border-[#232325] hover:shadow-md transition-shadow duration-200"
+            className="p-4 md:p-6 bg-[#f0f0f0] dark:bg-[#1c1c1e] rounded-2xl border border-[#e5e7eb] dark:border-[#232325] hover:shadow-md transition-shadow duration-200"
           >
             <div>
               <h2 className="flex items-center gap-2">
