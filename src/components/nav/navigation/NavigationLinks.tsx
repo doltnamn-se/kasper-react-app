@@ -1,7 +1,9 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { House, UserRoundSearch, EyeOff, MapPinHouse, MousePointerClick, Infinity } from "lucide-react";
+import { UserRoundSearch, EyeOff, MapPinHouse, MousePointerClick, Infinity } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import kasperFaviconDark from "/lovable-uploads/kasper-mob-icon-darkmode.svg";
+import kasperFaviconLight from "/lovable-uploads/kasper-mob-icon-lightmode.svg";
 
 interface NavigationLinksProps {
   unreadCounts: {
@@ -50,7 +52,12 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
 
   return (
     <>
-      {renderNavLink("/", <House className="w-[18px] h-[18px]" />, t('nav.home'), unreadCounts.total)}
+      {renderNavLink("/", (
+        <>
+          <img src={kasperFaviconLight} alt="Home" className="w-[18px] h-[18px] dark:hidden" />
+          <img src={kasperFaviconDark} alt="Home" className="w-[18px] h-[18px] hidden dark:block" />
+        </>
+      ), t('nav.home'), unreadCounts.total)}
       {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadCounts.monitoring)}
       {renderNavLink("/deindexing", <EyeOff className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
       {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
