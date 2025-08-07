@@ -66,9 +66,5 @@ export const ProfileSection = () => {
     return 'subscription.tooltip.1month';
   };
 
-  return (
-    <div className="mb-6">
-      <Separator className="mb-6 bg-[#e5e7eb] dark:bg-[#2d2d2d]" />
-    </div>
-  );
+  return null;
 };
