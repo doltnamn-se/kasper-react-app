@@ -58,10 +58,10 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
           <img src={kasperFaviconDark} alt="Home" className="w-[18px] h-[18px] hidden dark:block" />
         </>
       ), t('nav.home'), unreadCounts.total)}
-      {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadCounts.monitoring)}
       {renderNavLink("/deindexing", <EyeOff className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
-      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
       {renderNavLink("/kasper-friends", <Infinity className="w-[18px] h-[18px]" />, "Kasper Friends", 0)}
+      {renderNavLink("/monitoring", <UserRoundSearch className="w-[18px] h-[18px]" />, t('nav.monitoring'), unreadCounts.monitoring)}
+      {renderNavLink("/address-alerts", <MapPinHouse className="w-[18px] h-[18px]" />, t('nav.address.alerts'), unreadCounts.addressAlerts)}
       {renderNavLink("/guides", <MousePointerClick className="w-[18px] h-[18px]" />, t('nav.guides'), unreadCounts.guides)}
     </>
   );
