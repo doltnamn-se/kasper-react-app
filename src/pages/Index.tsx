@@ -46,20 +46,16 @@ const Index = () => {
         {isMobile && (
           <Link 
             to="/guides" 
-            className="p-6 bg-white dark:bg-[#1c1c1e] rounded-lg border border-[#e5e7eb] dark:border-[#2d2d2d] hover:shadow-md transition-shadow duration-200"
+            className="p-4 md:p-6 bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#e5e7eb] dark:border-[#232325] hover:shadow-md transition-shadow duration-200"
           >
-            <div className="flex items-center gap-4">
-              <div className="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-                <MousePointerClick className="h-6 w-6 text-gray-600 dark:text-gray-400" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                  {language === 'sv' ? 'Guider' : 'Guides'}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {language === 'sv' ? 'Lär dig hur du skyddar din integritet' : 'Learn how to protect your privacy'}
-                </p>
-              </div>
+            <div>
+              <h2 className="flex items-center gap-2">
+                <MousePointerClick className="h-5 w-5" />
+                {language === 'sv' ? 'Guider' : 'Guides'}
+              </h2>
+              <p className="text-[#000000A6] dark:text-[#FFFFFFA6] font-medium text-sm mt-2">
+                {language === 'sv' ? 'Lär dig hur du skyddar din integritet' : 'Learn how to protect your privacy'}
+              </p>
             </div>
           </Link>
         )}
