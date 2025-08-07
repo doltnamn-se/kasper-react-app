@@ -98,7 +98,13 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                            <TooltipContent 
                              side={isMobile ? "top" : "left"} 
                              align={isMobile ? "center" : "center"}
-                             className={`z-[9999] ${isMobile ? 'w-[90vw] max-w-none fixed left-1/2 -translate-x-1/2' : 'max-w-xs'}`}
+                             className={`z-[9999] ${isMobile ? 'w-[90vw] max-w-none mx-auto' : 'max-w-xs'}`}
+                             style={isMobile ? { 
+                               position: 'fixed',
+                               left: '50%',
+                               transform: 'translateX(-50%)',
+                               maxWidth: '90vw'
+                             } : undefined}
                            >
                             <p className="text-sm">
                               {language === 'sv' 
