@@ -50,7 +50,7 @@ export const AdminMonitoringUrlForm = ({
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-full justify-between"
+              className="w-full justify-between bg-[#f5f5f5] dark:bg-[#121212] border border-[#e5e5e5] dark:border-[#2a2a2b] hover:bg-[#eaeaea] dark:hover:bg-[#1a1a1a]"
             >
               {selectedLabel || selectCustomerText}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
