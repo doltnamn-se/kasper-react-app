@@ -29,7 +29,7 @@ export const IdVerificationCard = () => {
     thankYou: language === 'sv' ? 'Tack! Ditt dokument är uppladdat.' : 'Thank you! Your document has been uploaded.',
     invalidType: language === 'sv' ? 'Ogiltig filtyp. Tillåtna: PDF, PNG, JPG.' : 'Invalid file type. Allowed: PDF, PNG, JPG.',
     tooLarge: language === 'sv' ? 'Filen är för stor. Max 5 MB.' : 'File is too large. Max 5 MB.',
-    missing: language === 'sv' ? 'Välj en fil först.' : 'Please choose a file first.'
+    missing: language === 'sv' ? 'Vänligen ladda upp din fil först' : 'Please upload your file first'
   }), [language]);
 
 
@@ -47,7 +47,7 @@ export const IdVerificationCard = () => {
     if (!userProfile?.id) return;
     const file = fileRef?.files?.[0];
     if (!file) {
-      toast({ title: 'Info', description: tText.missing });
+      toast({ title: language === 'sv' ? 'Fil saknas' : 'File missing', description: tText.missing });
       return;
     }
     const validTypes = ['application/pdf', 'image/png', 'image/jpeg'];
