@@ -83,6 +83,12 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.75rem;
+
+    /* ID verification card tokens */
+    --id-info-bg: 201 84% 90%;
+    --id-info-border: 201 84% 90%;
+    --id-info-text: 210 41% 36%;
+    --id-info-icon: 201 96% 65%;
 }
 
 @keyframes expandSweepAnimation {
@@ -209,6 +215,12 @@
     --border: 240 2% 19%;
     --input: 240 4% 27%;
     --ring: 229 83% 86%;
+
+    /* ID verification card tokens */
+    --id-info-bg: 201 84% 90%;
+    --id-info-border: 201 84% 90%;
+    --id-info-text: 210 41% 36%;
+    --id-info-icon: 201 96% 65%;
   }
 }
 

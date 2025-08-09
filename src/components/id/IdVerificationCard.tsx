@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { FileUp } from "lucide-react";
+import { Info } from "lucide-react";
 
 interface IdVerification {
   id: string;
@@ -102,11 +102,11 @@ export const IdVerificationCard = () => {
   };
 
   return (
-    <div className="p-4 md:p-6 rounded-2xl border bg-[#f9f9f9] dark:bg-[#1b1b1d] border-[#e5e7eb] dark:border-[#232325]">
-      <h2 className="mb-2 flex items-center gap-2">
-        <FileUp className="h-5 w-5" /> {tText.title}
+    <div className="p-4 md:p-6 rounded-2xl border bg-[hsl(var(--id-info-bg))] dark:bg-[hsl(var(--id-info-bg))] border-[hsl(var(--id-info-border))] dark:border-[hsl(var(--id-info-border))]">
+      <h2 className="mb-2 flex items-center gap-2 text-[hsl(var(--id-info-text))]">
+        <Info className="h-5 w-5 text-[hsl(var(--id-info-icon))]" /> {tText.title}
       </h2>
-      <p className="text-sm text-muted-foreground mb-4">{tText.description}</p>
+      <p className="text-sm mb-4 text-[hsl(var(--id-info-text))]">{tText.description}</p>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <Input
           type="file"
@@ -119,7 +119,7 @@ export const IdVerificationCard = () => {
           {tText.upload}
         </Button>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">{tText.selectFile}</p>
+      <p className="mt-2 text-xs text-[hsl(var(--id-info-text))]">{tText.selectFile}</p>
     </div>
   );
 }
