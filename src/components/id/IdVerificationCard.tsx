@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Info } from "lucide-react";
+import { Info, IdCard } from "lucide-react";
 
 interface IdVerification {
   id: string;
@@ -129,11 +129,11 @@ export const IdVerificationCard = () => {
             type="button"
             variant="outline"
             onClick={handleChooseClick}
-            className="rounded-[12px] !h-[2.5rem] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-file-text))]"
+            className="rounded-[12px] !h-[2.5rem] w-full sm:w-auto justify-center bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-file-text))]"
           >
-            {tText.choose}
+            <IdCard className="h-4 w-4 mr-2" /> {tText.choose}
           </Button>
-          <span className={selectedFileName ? "text-[hsl(var(--id-info-file-text))] text-sm" : "text-[hsl(var(--id-info-file-placeholder))] text-sm"}>
+          <span className={selectedFileName ? "text-[hsl(var(--id-info-file-text))] text-sm" : "text-[hsl(var(--id-info-file-text))] text-sm"}>
             {selectedFileName ?? tText.noFile}
           </span>
         </div>
