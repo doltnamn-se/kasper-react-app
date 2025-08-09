@@ -28,7 +28,7 @@ export const IdVerificationCard = () => {
     description: language === 'sv'
       ? 'En administratör har begärt att du laddar upp en bild eller PDF av din ID-handling.'
       : 'An administrator has requested that you upload a photo or PDF of your ID/passport.',
-    selectFile: language === 'sv' ? 'Välj fil (PDF/PNG/JPG, max 5 MB)' : 'Choose file (PDF/PNG/JPG, max 5 MB)',
+    selectFile: language === 'sv' ? 'Tillåten filtyp är PDF/PNG/JPG, max 5 MB' : 'Allowed file type is PDF/PNG/JPG, max 5 MB',
     choose: language === 'sv' ? 'Välj fil' : 'Choose file',
     noFile: language === 'sv' ? 'Ingen fil vald' : 'No file chosen',
     upload: language === 'sv' ? 'Ladda upp' : 'Upload',
