@@ -309,6 +309,42 @@ export type Database = {
           },
         ]
       }
+      id_verifications: {
+        Row: {
+          created_at: string
+          customer_id: string
+          document_path: string | null
+          id: string
+          notes: string | null
+          requested_by: string | null
+          status: string
+          updated_at: string
+          uploaded_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          document_path?: string | null
+          id?: string
+          notes?: string | null
+          requested_by?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          document_path?: string | null
+          id?: string
+          notes?: string | null
+          requested_by?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_at?: string | null
+        }
+        Relationships: []
+      }
       monitoring_urls: {
         Row: {
           admin_user_id: string | null
@@ -673,6 +709,10 @@ export type Database = {
       is_super_admin: {
         Args: Record<PropertyKey, never> | { user_id: string }
         Returns: boolean
+      }
+      request_id_verification: {
+        Args: { p_customer_id: string; p_requested_by: string }
+        Returns: string
       }
       test_push_notification: {
         Args: {

@@ -7,10 +7,10 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { PrivacyScoreCard } from "@/components/privacy/PrivacyScoreCard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { StatusCard } from "@/components/status/StatusCard";
-
 import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 import { useLastChecked } from "@/hooks/useLastChecked";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { IdVerificationCard } from "@/components/id/IdVerificationCard";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -41,6 +41,9 @@ const Index = () => {
           siteStatuses={siteStatuses} 
           isLoading={isLoading}
         />
+
+        {/* ID Verification upload card */}
+        <IdVerificationCard />
         
         {/* Guides link - only visible on mobile */}
         {isMobile && (

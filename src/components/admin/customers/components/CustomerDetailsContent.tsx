@@ -12,6 +12,7 @@ import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { Separator } from "@/components/ui/separator";
+import { IdVerificationSection } from "./IdVerificationSection";
 
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -131,6 +132,16 @@ export const CustomerDetailsContent = ({
             {/* URL input field - moved below the data display */}
             {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
           </div>
+
+          {/* ID Verification section */}
+          {isSuperAdmin && (
+            <div className="pt-3 pb-5">
+              <Separator />
+              <div className="pt-6">
+                <IdVerificationSection customerId={customer.id} />
+              </div>
+            </div>
+          )}
           
           <SiteStatusManager customerId={customer.id} />
         </div>
