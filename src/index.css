@@ -95,6 +95,7 @@
     --id-info-input-border: 214.3 31.8% 91.4%;
     --id-info-input-text: 0 0% 7%;
     --id-info-file-text: 0 0% 7%;
+    --id-info-file-placeholder: 0 0% 44%;
 }
 
 @keyframes expandSweepAnimation {
@@ -233,6 +234,7 @@
     --id-info-input-border: 214.3 31.8% 91.4%;
     --id-info-input-text: 0 0% 7%;
     --id-info-file-text: 0 0% 7%;
+    --id-info-file-placeholder: 0 0% 44%;
   }
 }
 

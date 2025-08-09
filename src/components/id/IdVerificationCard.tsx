@@ -21,6 +21,7 @@ export const IdVerificationCard = () => {
   const { toast } = useToast();
   const [pending, setPending] = useState<IdVerification | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
   const tText = useMemo(() => ({
     title: language === 'sv' ? 'ID-intyg' : 'ID verification',
@@ -28,6 +29,8 @@ export const IdVerificationCard = () => {
       ? 'En administratör har begärt att du laddar upp en bild eller PDF av din ID-handling.'
       : 'An administrator has requested that you upload a photo or PDF of your ID/passport.',
     selectFile: language === 'sv' ? 'Välj fil (PDF/PNG/JPG, max 5 MB)' : 'Choose file (PDF/PNG/JPG, max 5 MB)',
+    choose: language === 'sv' ? 'Välj fil' : 'Choose file',
+    noFile: language === 'sv' ? 'Ingen fil vald' : 'No file chosen',
     upload: language === 'sv' ? 'Ladda upp' : 'Upload',
     thankYou: language === 'sv' ? 'Tack! Ditt dokument är uppladdat.' : 'Thank you! Your document has been uploaded.',
     invalidType: language === 'sv' ? 'Ogiltig filtyp. Tillåtna: PDF, PNG, JPG.' : 'Invalid file type. Allowed: PDF, PNG, JPG.',
@@ -59,6 +62,12 @@ export const IdVerificationCard = () => {
   if (!pending) return null;
 
   let fileRef: HTMLInputElement | null = null;
+
+  const handleChooseClick = () => fileRef?.click();
+  const handleFileChange = () => {
+    const f = fileRef?.files?.[0] || null;
+    setSelectedFileName(f ? f.name : null);
+  };
 
   const onUpload = async () => {
     if (!userProfile?.id) return;
@@ -111,10 +120,23 @@ export const IdVerificationCard = () => {
         <Input
           type="file"
           accept="application/pdf,image/png,image/jpeg"
-          onChange={() => { /* handled on button click */ }}
+          onChange={handleFileChange}
           ref={(el) => (fileRef = el)}
-          className="flex-1 !h-[2.5rem] rounded-[12px] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-input-text))] placeholder:text-[hsl(var(--id-info-input-text))] placeholder:opacity-60 file:h-full file:rounded-[12px] file:!bg-[hsl(var(--id-info-input-bg))] file:!text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-input-text))] dark:placeholder:text-[hsl(var(--id-info-input-text))] dark:placeholder:opacity-60 dark:file:h-full dark:file:rounded-[12px] dark:file:!bg-[hsl(var(--id-info-input-bg))] dark:file:!text-[hsl(var(--id-info-file-text))]"
+          className="sr-only"
         />
+        <div className="flex flex-col sm:flex-row flex-1 items-start sm:items-center gap-1 sm:gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleChooseClick}
+            className="rounded-[12px] !h-[2.5rem] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-file-text))]"
+          >
+            {tText.choose}
+          </Button>
+          <span className={selectedFileName ? "text-[hsl(var(--id-info-file-text))] text-sm" : "text-[hsl(var(--id-info-file-placeholder))] text-sm"}>
+            {selectedFileName ?? tText.noFile}
+          </span>
+        </div>
         <p className="mb-2 text-xs text-[hsl(var(--id-info-text))] sm:hidden">{tText.selectFile}</p>
         <Button variant="idinfo" className="rounded-[12px] !h-[2.5rem]" onClick={onUpload} disabled={isUploading}>
           {tText.upload}
