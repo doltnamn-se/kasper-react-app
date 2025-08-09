@@ -47,7 +47,7 @@ export const IdVerificationCard = () => {
     if (!userProfile?.id) return;
     const file = fileRef?.files?.[0];
     if (!file) {
-      toast({ title: language === 'sv' ? 'Fil saknas' : 'File missing', description: tText.missing });
+      toast({ title: language === 'sv' ? 'Fil saknas' : 'File missing', description: tText.missing, variant: 'destructive' });
       return;
     }
     const validTypes = ['application/pdf', 'image/png', 'image/jpeg'];
