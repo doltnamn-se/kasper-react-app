@@ -113,7 +113,7 @@ export const IdVerificationCard = () => {
   return (
     <div className="p-4 md:p-6 rounded-2xl border bg-[hsl(var(--id-info-bg))] dark:bg-[hsl(var(--id-info-bg))] border-[hsl(var(--id-info-border))] dark:border-[hsl(var(--id-info-border))]">
       <h2 className="mb-2 flex items-center gap-2 !text-[hsl(var(--id-info-text))]">
-        <Info className="h-5 w-5 text-[hsl(var(--id-info-icon))]" /> {tText.title}
+        <Info className="h-5 w-5 [&>circle]:fill-[hsl(var(--id-info-icon-fill))] [&>circle]:stroke-[hsl(var(--id-info-icon-fill))] [&>path]:stroke-[hsl(var(--id-info-icon-i))]" /> {tText.title}
       </h2>
       <p className="text-sm mb-4 text-[hsl(var(--id-info-text))]">{tText.description}</p>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
