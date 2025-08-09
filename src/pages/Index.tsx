@@ -11,6 +11,7 @@ import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 import { useLastChecked } from "@/hooks/useLastChecked";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { IdVerificationCard } from "@/components/id/IdVerificationCard";
+import { usePendingIdVerification } from "@/components/id/hooks/usePendingIdVerification";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -18,7 +19,8 @@ const Index = () => {
   const { lastChecked } = useLastChecked();
   const { siteStatuses, isLoading } = useSiteStatuses(userProfile?.id);
   const isMobile = useIsMobile();
-
+  const { pending } = usePendingIdVerification();
+  const hasPending = !!pending;
   const displayName = userProfile?.display_name || '';
   const firstNameOnly = displayName.split(' ')[0];
 
@@ -38,6 +40,7 @@ const Index = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* ID Verification upload card - should appear first */}
         <IdVerificationCard />
+        {hasPending && <div className="hidden lg:block" aria-hidden="true" />}
 
         <PrivacyScoreCard />
         <StatusCard 

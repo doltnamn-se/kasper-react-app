@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -6,20 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Info, Upload } from "lucide-react";
+import { usePendingIdVerification, IdVerification } from "@/components/id/hooks/usePendingIdVerification";
 
-interface IdVerification {
-  id: string;
-  customer_id: string;
-  status: string;
-  document_path: string | null;
-  created_at: string;
-}
 
 export const IdVerificationCard = () => {
   const { userProfile } = useUserProfile();
   const { language } = useLanguage();
   const { toast } = useToast();
-  const [pending, setPending] = useState<IdVerification | null>(null);
+  const { pending, setPending } = usePendingIdVerification();
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
@@ -38,26 +32,6 @@ export const IdVerificationCard = () => {
     missing: language === 'sv' ? 'Välj en fil först.' : 'Please choose a file first.'
   }), [language]);
 
-  useEffect(() => {
-    const fetchPending = async () => {
-      if (!userProfile?.id) return;
-      const { data, error } = await supabase
-        .from('id_verifications')
-        .select('*')
-        .eq('customer_id', userProfile.id)
-        .eq('status', 'requested')
-        .is('document_path', null)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (error) {
-        console.error('Error fetching id_verifications:', error);
-        return;
-      }
-      setPending(data as IdVerification | null);
-    };
-    fetchPending();
-  }, [userProfile?.id]);
 
   if (!pending) return null;
 
