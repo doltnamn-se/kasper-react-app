@@ -10,11 +10,14 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const AdminDeindexingView = () => {
   const { urls, handleStatusChange, handleDeleteUrl } = useAdminURLManagement();
   const { t, language } = useLanguage();
   const { customers, isLoading } = useCustomers();
+  const isMobile = useIsMobile();
 
   const [open, setOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -55,6 +58,35 @@ export const AdminDeindexingView = () => {
     }
   };
 
+  const PickerBody = (
+    <Command>
+      <CommandInput placeholder={language === 'sv' ? 'Sök kund...' : 'Search customer...'} />
+      <CommandList>
+        <CommandEmpty>{language === 'sv' ? 'Inga kunder hittades.' : 'No customers found.'}</CommandEmpty>
+        <CommandGroup heading={language === 'sv' ? 'Kunder' : 'Customers'}>
+          {isLoading ? (
+            <div className="px-3 py-2 text-muted-foreground text-sm">
+              {language === 'sv' ? 'Laddar kunder...' : 'Loading customers...'}
+            </div>
+          ) : (
+            customers.map((c) => (
+              <CommandItem
+                key={c.id}
+                value={`${c.profile?.display_name ?? ''} ${c.profile?.email ?? ''}`}
+                onSelect={() => handleRequestVerification(c.id)}
+              >
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">{c.profile?.display_name ?? '—'}</span>
+                  <span className="text-xs text-muted-foreground">{c.profile?.email}</span>
+                </div>
+              </CommandItem>
+            ))
+          )}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -65,43 +97,31 @@ export const AdminDeindexingView = () => {
         </Button>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{language === 'sv' ? 'Begär ID-intyg' : 'Request ID verification'}</DialogTitle>
-            <DialogDescription>
-              {language === 'sv' ? 'Välj kund att skicka begäran till.' : 'Select a customer to send the request to.'}
-            </DialogDescription>
-          </DialogHeader>
-
-          <Command>
-            <CommandInput placeholder={language === 'sv' ? 'Sök kund...' : 'Search customer...'} />
-            <CommandList>
-              <CommandEmpty>{language === 'sv' ? 'Inga kunder hittades.' : 'No customers found.'}</CommandEmpty>
-              <CommandGroup heading={language === 'sv' ? 'Kunder' : 'Customers'}>
-                {isLoading ? (
-                  <div className="px-3 py-2 text-muted-foreground text-sm">
-                    {language === 'sv' ? 'Laddar kunder...' : 'Loading customers...'}
-                  </div>
-                ) : (
-                  customers.map((c) => (
-                    <CommandItem
-                      key={c.id}
-                      value={`${c.profile?.display_name ?? ''} ${c.profile?.email ?? ''}`}
-                      onSelect={() => handleRequestVerification(c.id)}
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{c.profile?.display_name ?? '—'}</span>
-                        <span className="text-xs text-muted-foreground">{c.profile?.email}</span>
-                      </div>
-                    </CommandItem>
-                  ))
-                )}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </DialogContent>
-      </Dialog>
+      {isMobile ? (
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>{language === 'sv' ? 'Begär ID-intyg' : 'Request ID verification'}</DrawerTitle>
+              <DrawerDescription>
+                {language === 'sv' ? 'Välj kund att skicka begäran till.' : 'Select a customer to send the request to.'}
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="p-4">{PickerBody}</div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{language === 'sv' ? 'Begär ID-intyg' : 'Request ID verification'}</DialogTitle>
+              <DialogDescription>
+                {language === 'sv' ? 'Välj kund att skicka begäran till.' : 'Select a customer to send the request to.'}
+              </DialogDescription>
+            </DialogHeader>
+            {PickerBody}
+          </DialogContent>
+        </Dialog>
+      )}
       
       <URLTable 
         urls={urls} 
