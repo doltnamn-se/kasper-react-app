@@ -24,10 +24,10 @@ export const IdVerificationCard = () => {
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
   const tText = useMemo(() => ({
-    title: language === 'sv' ? 'ID-intyg' : 'ID verification',
+    title: language === 'sv' ? 'ID verifiering krävs' : 'ID verification required',
     description: language === 'sv'
-      ? 'En administratör har begärt att du laddar upp en bild eller PDF av din ID-handling.'
-      : 'An administrator has requested that you upload a photo or PDF of your ID/passport.',
+      ? 'För borttagning av länkar på Bing krävs det att man styker sin identitet med kopia på ID-handling. För att vi ska skicka en legal begäran för borttagning av dina länkar på Bing behöver du dela en fotokopia av antingen ditt pass eller id-kort.'
+      : 'To remove links on Bing, you must provide proof of your identity with a copy of your ID. In order for us to send a legal request to remove your links on Bing, you will need to share a photocopy of either your passport or ID card.',
     selectFile: language === 'sv' ? 'Tillåten filtyp är PDF/PNG/JPG, max 5 MB' : 'Allowed file type is PDF/PNG/JPG, max 5 MB',
     choose: language === 'sv' ? 'Välj fil' : 'Choose file',
     noFile: language === 'sv' ? 'Ingen fil vald' : 'No file chosen',
