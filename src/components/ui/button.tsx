@@ -18,6 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-transparent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        idinfo: "bg-[hsl(var(--id-info-button-bg))] text-[hsl(var(--id-info-button-foreground))] hover:brightness-95 dark:bg-[hsl(var(--id-info-button-bg))] dark:text-[hsl(var(--id-info-button-foreground))]"
       },
       size: {
         default: "h-10 px-4 py-2.5",
