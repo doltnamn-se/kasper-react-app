@@ -113,9 +113,9 @@ export const IdVerificationCard = () => {
           accept="application/pdf,image/png,image/jpeg"
           onChange={() => { /* handled on button click */ }}
           ref={(el) => (fileRef = el)}
-          className="flex-1 bg-[hsl(var(--background))] border-[hsl(var(--input))] dark:bg-[hsl(var(--background))] dark:border-[hsl(var(--input))] dark:text-[#000000] dark:placeholder:text-[#000000A6]"
+          className="flex-1 rounded-[12px] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-input-text))] placeholder:text-[hsl(var(--id-info-input-text))] placeholder:opacity-60 dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-input-text))] dark:placeholder:text-[hsl(var(--id-info-input-text))] dark:placeholder:opacity-60"
         />
-        <Button variant="idinfo" onClick={onUpload} disabled={isUploading}>
+        <Button variant="idinfo" className="rounded-[12px]" onClick={onUpload} disabled={isUploading}>
           {tText.upload}
         </Button>
       </div>
