@@ -133,7 +133,7 @@ export const IdVerificationCard = () => {
           >
             <Upload className="h-4 w-4 mr-2" /> {tText.choose}
           </Button>
-          <span className={selectedFileName ? "text-[hsl(var(--id-info-file-text))] text-sm" : "hidden sm:inline text-[hsl(var(--id-info-file-text))] text-sm">
+          <span className={selectedFileName ? "text-[hsl(var(--id-info-file-text))] text-sm" : "hidden sm:inline text-[hsl(var(--id-info-file-text))] text-sm"}>
             {selectedFileName ?? tText.noFile}
           </span>
         </div>
