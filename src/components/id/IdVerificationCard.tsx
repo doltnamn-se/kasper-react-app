@@ -113,9 +113,9 @@ export const IdVerificationCard = () => {
           accept="application/pdf,image/png,image/jpeg"
           onChange={() => { /* handled on button click */ }}
           ref={(el) => (fileRef = el)}
-          className="flex-1 h-10 rounded-[12px] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-input-text))] placeholder:text-[hsl(var(--id-info-input-text))] placeholder:opacity-60 file:rounded-[12px] file:!bg-[hsl(var(--id-info-input-bg))] file:!text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-input-text))] dark:placeholder:text-[hsl(var(--id-info-input-text))] dark:placeholder:opacity-60 dark:file:rounded-[12px] dark:file:!bg-[hsl(var(--id-info-input-bg))] dark:file:!text-[hsl(var(--id-info-file-text))]"
+          className="flex-1 !h-[2.5rem] rounded-[12px] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-input-text))] placeholder:text-[hsl(var(--id-info-input-text))] placeholder:opacity-60 file:h-full file:rounded-[12px] file:!bg-[hsl(var(--id-info-input-bg))] file:!text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-input-text))] dark:placeholder:text-[hsl(var(--id-info-input-text))] dark:placeholder:opacity-60 dark:file:h-full dark:file:rounded-[12px] dark:file:!bg-[hsl(var(--id-info-input-bg))] dark:file:!text-[hsl(var(--id-info-file-text))]"
         />
-        <Button variant="idinfo" className="rounded-[12px] h-10" onClick={onUpload} disabled={isUploading}>
+        <Button variant="idinfo" className="rounded-[12px] !h-[2.5rem]" onClick={onUpload} disabled={isUploading}>
           {tText.upload}
         </Button>
       </div>
