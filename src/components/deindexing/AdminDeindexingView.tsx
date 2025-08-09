@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { useCustomers } from "@/components/admin/customers/useCustomers";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/use-toast";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -33,7 +33,11 @@ export const AdminDeindexingView = () => {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) {
         console.error('Failed to get current user', userError);
-        toast.error(language === 'sv' ? 'Kunde inte hämta administratör' : 'Failed to get admin user');
+        toast({
+          variant: "destructive",
+          title: language === 'sv' ? 'Fel' : 'Error',
+          description: language === 'sv' ? 'Kunde inte hämta administratör' : 'Failed to get admin user',
+        });
         return;
       }
 
@@ -44,15 +48,26 @@ export const AdminDeindexingView = () => {
 
       if (error) {
         console.error('request_id_verification error:', error);
-        toast.error(language === 'sv' ? 'Misslyckades att skicka begäran' : 'Failed to send request');
+        toast({
+          variant: "destructive",
+          title: language === 'sv' ? 'Begäran misslyckades' : 'Request failed',
+          description: language === 'sv' ? 'Kunde inte skicka ID-begäran' : 'Could not send ID request',
+        });
         return;
       }
 
-      toast.success(language === 'sv' ? 'Begäran skickad till kund' : 'Request sent to customer');
+      toast({
+        title: language === 'sv' ? 'Begäran skickad' : 'Request sent',
+        description: language === 'sv' ? 'ID-begäran har skickats till kunden' : 'ID request has been sent to the customer',
+      });
       setOpen(false);
     } catch (err) {
       console.error(err);
-      toast.error(language === 'sv' ? 'Ett fel uppstod' : 'An error occurred');
+      toast({
+        variant: "destructive",
+        title: language === 'sv' ? 'Något gick fel' : 'Something went wrong',
+        description: language === 'sv' ? 'Försök igen senare.' : 'Please try again later.',
+      });
     } finally {
       setIsSending(false);
     }
