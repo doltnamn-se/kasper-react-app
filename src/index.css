@@ -228,7 +228,7 @@
     /* ID verification card tokens */
     --id-info-bg: 218 73% 19%;
     --id-info-border: 218 73% 19%;
-    --id-info-text: 201 96% 65%;
+    --id-info-text: 0 0% 100%;
     --id-info-icon: 201 96% 65%;
     --id-info-icon-fill: 201 96% 65%;
     --id-info-icon-i: 0 0% 100%;
@@ -237,7 +237,7 @@
     --id-info-input-bg: 0 0% 100%;
     --id-info-input-border: 214.3 31.8% 91.4%;
     --id-info-input-text: 0 0% 7%;
-    --id-info-file-text: 201 96% 65%;
+    --id-info-file-text: 0 0% 100%;
     --id-info-file-placeholder: 0 0% 44%;
   }
 }
