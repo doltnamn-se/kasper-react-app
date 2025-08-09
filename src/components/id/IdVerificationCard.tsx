@@ -129,7 +129,7 @@ export const IdVerificationCard = () => {
             type="button"
             variant="outline"
             onClick={handleChooseClick}
-            className="rounded-[12px] !h-[2.5rem] w-full sm:w-auto justify-center bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-file-text))] dark:hover:!text-[hsl(var(--id-info-choose-hover-dark))]"
+            className="rounded-[12px] !h-[2.5rem] w-full sm:w-auto justify-center bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-file-text))]"
           >
             <Upload className="h-4 w-4 mr-2" /> {tText.choose}
           </Button>
