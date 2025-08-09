@@ -115,11 +115,12 @@ export const IdVerificationCard = () => {
           ref={(el) => (fileRef = el)}
           className="flex-1 !h-[2.5rem] rounded-[12px] bg-[hsl(var(--id-info-input-bg))] border-[hsl(var(--id-info-input-border))] text-[hsl(var(--id-info-input-text))] placeholder:text-[hsl(var(--id-info-input-text))] placeholder:opacity-60 file:h-full file:rounded-[12px] file:!bg-[hsl(var(--id-info-input-bg))] file:!text-[hsl(var(--id-info-file-text))] dark:bg-[hsl(var(--id-info-input-bg))] dark:border-[hsl(var(--id-info-input-border))] dark:text-[hsl(var(--id-info-input-text))] dark:placeholder:text-[hsl(var(--id-info-input-text))] dark:placeholder:opacity-60 dark:file:h-full dark:file:rounded-[12px] dark:file:!bg-[hsl(var(--id-info-input-bg))] dark:file:!text-[hsl(var(--id-info-file-text))]"
         />
+        <p className="mt-2 text-xs text-[hsl(var(--id-info-text))] sm:hidden">{tText.selectFile}</p>
         <Button variant="idinfo" className="rounded-[12px] !h-[2.5rem]" onClick={onUpload} disabled={isUploading}>
           {tText.upload}
         </Button>
       </div>
-      <p className="mt-2 text-xs text-[hsl(var(--id-info-text))]">{tText.selectFile}</p>
+      <p className="mt-2 text-xs text-[hsl(var(--id-info-text))] hidden sm:block">{tText.selectFile}</p>
     </div>
   );
 }
