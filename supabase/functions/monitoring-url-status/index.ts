@@ -53,9 +53,9 @@ serve(async (req) => {
       removalUrl = await createRemovalUrl(customerId, siteName);
     }
 
-    // 3. Create user notification and potentially send email
+    // 3. Create user notification and potentially send email (only for approved)
     let userNotification = null;
-    if (newStatus === 'approved' || newStatus === 'rejected') {
+    if (newStatus === 'approved') {
       userNotification = await createUserNotification(
         customerId, 
         newStatus, 
@@ -63,6 +63,8 @@ serve(async (req) => {
         skipUserEmail, 
         forceEmail
       );
+    } else if (newStatus === 'rejected') {
+      console.log('Skipping user notification/email for rejected status as per policy');
     }
 
     // 4. Create admin notification about the status change
