@@ -220,7 +220,12 @@ export const getColumns = (
               variant="secondary"
               size="sm"
               className="h-7"
-              onClick={() => setOpen(true)}
+              onMouseDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(true);
+              }}
             >
               <Users className="h-4 w-4 mr-1" />
               Manage
