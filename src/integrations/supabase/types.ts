@@ -136,10 +136,49 @@ export type Database = {
           },
         ]
       }
+      customer_members: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          customer_id: string
+          display_name: string
+          id: string
+          relationship: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          customer_id: string
+          display_name: string
+          id?: string
+          relationship?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          customer_id?: string
+          display_name?: string
+          id?: string
+          relationship?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_members_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customer_site_statuses: {
         Row: {
           customer_id: string
           id: string
+          member_id: string | null
           site_name: string
           status: string
           updated_at: string | null
@@ -148,6 +187,7 @@ export type Database = {
         Insert: {
           customer_id: string
           id?: string
+          member_id?: string | null
           site_name: string
           status?: string
           updated_at?: string | null
@@ -156,6 +196,7 @@ export type Database = {
         Update: {
           customer_id?: string
           id?: string
+          member_id?: string | null
           site_name?: string
           status?: string
           updated_at?: string | null
@@ -167,6 +208,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_site_statuses_member_fk"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "customer_members"
             referencedColumns: ["id"]
           },
         ]

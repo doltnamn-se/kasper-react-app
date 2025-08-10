@@ -1,4 +1,5 @@
 
+import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,8 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
+import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide, Users } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { MemberManagerDialog } from "./members/MemberManagerDialog";
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -136,7 +139,7 @@ export const getColumns = (
                 cx="6" 
                 cy="6" 
                 r="3" 
-                fill={isOnline ? '#20f922' : '#ea384c'} 
+                fill={isOnline ? 'hsl(var(--ds-success-foreground))' : 'hsl(var(--destructive))'} 
                 filter="url(#glow)"
               />
             </svg>
@@ -203,6 +206,35 @@ export const getColumns = (
         return new Date(bLastSeen).getTime() - new Date(aLastSeen).getTime();
       },
       enableSorting: true,
+    },
+    {
+      id: "members",
+      header: "Members",
+      cell: ({ row }) => {
+        const [open, setOpen] = useState(false);
+        const customerId = row.original.id;
+        const name = row.original.profile?.display_name || row.original.profile?.email || "Customer";
+        return (
+          <>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-7"
+              onClick={() => setOpen(true)}
+            >
+              <Users className="h-4 w-4 mr-1" />
+              Manage
+            </Button>
+            <MemberManagerDialog
+              open={open}
+              onOpenChange={setOpen}
+              customerId={customerId}
+              customerName={name}
+            />
+          </>
+        );
+      },
+      enableSorting: false,
     },
   ];
 };
