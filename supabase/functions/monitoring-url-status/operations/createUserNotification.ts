@@ -21,7 +21,7 @@ export async function createUserNotification(
   // Normalize status and guard: only notify on approved
   const normalizedStatus = (newStatus || '').toLowerCase().trim();
   if (normalizedStatus !== 'approved') {
-    console.log(`Skipping user in-app notification for non-approved status: ${normalizedStatus}`);
+    console.log(`Guard: Skipping user in-app notification for non-approved status: ${normalizedStatus}`);
     return null;
   }
 
@@ -31,10 +31,8 @@ export async function createUserNotification(
     ? 'Länken är mottagen och kommer behandlas inom kort'
     : 'The link has been received and will be processed shortly';
 
-  console.log(`Creating user notification for customer ${customerId} with status ${normalizedStatus}, language: ${language}`);
-  console.log(`Skip email: ${skipUserEmail}, Force email: ${forceEmail}`);
-
   try {
+    console.log(`Proceeding to create user notification for customer ${customerId} (status: ${normalizedStatus}, lang: ${language}). Skip email: ${skipUserEmail}, Force email: ${forceEmail}`);
     // Create notification for the user
     const { error: userNotificationError, data: notification } = await supabaseAdmin
       .from('notifications')
