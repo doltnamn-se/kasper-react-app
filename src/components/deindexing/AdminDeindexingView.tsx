@@ -108,7 +108,7 @@ export const AdminDeindexingView = () => {
         <h1>{t('nav.admin.deindexing')}</h1>
         <Button variant="outline" className="gap-2" onClick={() => setOpen(true)}>
           {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Fingerprint className="h-4 w-4" />}
-          <span>{language === 'sv' ? 'Intyg' : 'Certificate'}</span>
+          <span>{language === 'sv' ? 'Begär ID' : 'Request ID'}</span>
         </Button>
       </div>
 
