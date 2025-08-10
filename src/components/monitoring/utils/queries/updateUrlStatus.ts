@@ -39,8 +39,9 @@ export async function updateUrlStatus(
         reason: reason || null,
         customerId: urlData.customer_id,
         language: document.documentElement.lang || 'en',
-        forceEmail: true,  // Keep this flag to force email sending for debugging
-        skipUserEmail: false // Changed from true to false to allow email notifications
+        // Only send user emails/notifications on approved; skip for rejected
+        forceEmail: status === 'approved',
+        skipUserEmail: status === 'rejected'
       }
     });
     

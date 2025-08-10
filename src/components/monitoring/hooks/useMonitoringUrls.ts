@@ -73,10 +73,13 @@ export const useMonitoringUrls = (customerId?: string) => {
       return updateMonitoringUrlStatus(urlId, status, reason);
     },
     onSuccess: async () => {
-      toast({
-        title: t('success'),
-        description: t('monitoring.url.updated'),
-      });
+      // Show success toast only for admin context (no customerId)
+      if (!customerId) {
+        toast({
+          title: t('success'),
+          description: t('monitoring.url.updated'),
+        });
+      }
       
       // Invalidate and refetch all relevant queries
       await queryClient.invalidateQueries({ queryKey: ['admin-monitoring-urls'] });
