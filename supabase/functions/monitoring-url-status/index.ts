@@ -160,14 +160,14 @@ async function deleteRecentMonitoringNotification(userId: string) {
   const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   try {
-    const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+    const windowAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
     // Find recent monitoring notifications for this user
     const { data: recentNotifications, error: fetchError } = await supabaseAdmin
       .from('notifications')
       .select('id, created_at, type')
       .eq('user_id', userId)
       .eq('type', 'monitoring')
-      .gte('created_at', twoMinutesAgo)
+      .gte('created_at', windowAgo)
       .order('created_at', { ascending: false })
       .limit(5);
 
