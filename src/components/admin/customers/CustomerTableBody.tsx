@@ -22,17 +22,20 @@ export const CustomerTableBody = ({
             data-state={row.getIsSelected() && "selected"}
             className="bg-[#f8f8f8] dark:bg-[#171717] border-b border-[#ededed] dark:border-[#242424] cursor-pointer hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
           >
-            {row.getVisibleCells().map((cell, cellIndex) => (
-              <TableCell 
-                key={cell.id}
-                onClick={() => onRowClick(row.original, cellIndex === 0)}
-              >
-                {flexRender(
-                  cell.column.columnDef.cell,
-                  cell.getContext()
-                )}
-              </TableCell>
-            ))}
+            {row.getVisibleCells().map((cell, cellIndex) => {
+              const isMembersCell = cell.column.id === 'members';
+              return (
+                <TableCell 
+                  key={cell.id}
+                  onClick={isMembersCell ? undefined : () => onRowClick(row.original, cellIndex === 0)}
+                >
+                  {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                  )}
+                </TableCell>
+              );
+            })}
           </TableRow>
         ))
       ) : (
