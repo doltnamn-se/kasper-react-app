@@ -74,7 +74,7 @@ export const IdVerificationCard = () => {
         .eq('id', pending.id);
       if (updateError) throw updateError;
 
-      toast({ title: 'Klart', description: tText.thankYou });
+      toast({ title: language === 'sv' ? 'Klart!' : 'Done!', description: language === 'sv' ? 'Ditt dokument är mottaget.' : 'Your document has been received.' });
       setPending(null);
     } catch (e) {
       console.error('Upload failed', e);
