@@ -54,6 +54,24 @@ export const useUserMonitoring = () => {
       setIsProcessing(true);
       console.log(`Rejecting URL ${urlId}`);
       await handleUpdateStatus(urlId, 'rejected');
+
+      // Safety: immediately mark any fresh monitoring notifications as read for this user
+      // to avoid showing an in-app notification after rejecting a URL
+      const nowMinus10Min = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      if (userId) {
+        const { error: markReadError } = await supabase
+          .from('notifications')
+          .update({ read: true })
+          .eq('user_id', userId)
+          .eq('type', 'monitoring')
+          .eq('read', false)
+          .gte('created_at', nowMinus10Min);
+        if (markReadError) {
+          console.error('Error marking recent monitoring notifications as read:', markReadError);
+        } else {
+          console.log('Marked recent monitoring notifications as read after rejection');
+        }
+      }
     } catch (error) {
       console.error("Error rejecting URL:", error);
       toast({
