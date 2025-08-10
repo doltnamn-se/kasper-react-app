@@ -22,7 +22,7 @@ export const UserMonitoringUrlList = ({
 }: UserMonitoringUrlListProps) => {
   const { language, t } = useLanguage();
   const { toast } = useToast();
-  const [processingUrls, setProcessingUrls] = useState<Record<string, boolean>>({});
+  const [processingState, setProcessingState] = useState<Record<string, 'approve' | 'reject' | null>>({});
   const isMobile = useIsMobile();
   
   const formatTime = (dateString: string) => {
@@ -38,7 +38,7 @@ export const UserMonitoringUrlList = ({
 
   const handleApprove = async (urlId: string) => {
     try {
-      setProcessingUrls(prev => ({ ...prev, [urlId]: true }));
+      setProcessingState(prev => ({ ...prev, [urlId]: 'approve' }));
       await onApprove(urlId);
       toast({
         title: language === 'sv' ? 'Tillagd i länkar' : 'Added to links',
@@ -52,13 +52,13 @@ export const UserMonitoringUrlList = ({
         variant: "destructive"
       });
     } finally {
-      setProcessingUrls(prev => ({ ...prev, [urlId]: false }));
+      setProcessingState(prev => ({ ...prev, [urlId]: null }));
     }
   };
 
   const handleReject = async (urlId: string) => {
     try {
-      setProcessingUrls(prev => ({ ...prev, [urlId]: true }));
+      setProcessingState(prev => ({ ...prev, [urlId]: 'reject' }));
       await onReject(urlId);
       toast({
         title: language === 'sv' ? 'Åtgärd slutförd' : 'Action completed',
@@ -72,7 +72,7 @@ export const UserMonitoringUrlList = ({
         variant: "destructive"
       });
     } finally {
-      setProcessingUrls(prev => ({ ...prev, [urlId]: false }));
+      setProcessingState(prev => ({ ...prev, [urlId]: null }));
     }
   };
 
@@ -120,9 +120,9 @@ export const UserMonitoringUrlList = ({
                   <Button
                     onClick={() => handleApprove(url.id)}
                     className={`bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] ${isMobile ? 'w-full mb-2' : ''}`}
-                    disabled={processingUrls[url.id]}
+                    disabled={!!processingState[url.id]}
                   >
-                    {processingUrls[url.id] ? 
+                    {processingState[url.id] === 'approve' ? 
                       (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
                       (language === 'sv' ? 'Ja' : 'Yes')}
                   </Button>
@@ -130,9 +130,9 @@ export const UserMonitoringUrlList = ({
                     onClick={() => handleReject(url.id)}
                     variant="outline"
                     className={`bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] dark:border-transparent ${isMobile ? 'w-full' : ''}`}
-                    disabled={processingUrls[url.id]}
+                    disabled={!!processingState[url.id]}
                   >
-                    {processingUrls[url.id] ? 
+                    {processingState[url.id] === 'reject' ? 
                       (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
                       (language === 'sv' ? 'Nej' : 'No')}
                   </Button>
