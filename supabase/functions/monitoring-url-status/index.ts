@@ -24,11 +24,15 @@ serve(async (req) => {
       skipUserEmail
     } = await req.json();
 
-    console.log(`Processing URL status update: ${monitoringUrlId} to ${newStatus} for customer ${customerId}`);
+    // Normalize status to avoid casing/whitespace mismatches
+    const normalizedStatus = (newStatus || '').toLowerCase().trim();
+
+    console.log(`Processing URL status update: ${monitoringUrlId} to ${normalizedStatus} for customer ${customerId}`);
     console.log(`Request details:`, { 
       monitoringUrlId, 
       siteName, 
       newStatus, 
+      normalizedStatus,
       reason, 
       customerId, 
       language, 
@@ -45,30 +49,30 @@ serve(async (req) => {
     }
 
     // 1. Update monitoring URL status
-    const updatedUrl = await updateMonitoringUrl(monitoringUrlId, newStatus, reason);
+    const updatedUrl = await updateMonitoringUrl(monitoringUrlId, normalizedStatus, reason);
 
     // 2. Create a removal URL entry if status is 'approved' and it doesn't already exist
     let removalUrl = null;
-    if (newStatus === 'approved') {
+    if (normalizedStatus === 'approved') {
       removalUrl = await createRemovalUrl(customerId, siteName);
     }
 
     // 3. Create user notification and potentially send email (only for approved)
     let userNotification = null;
-    if (newStatus === 'approved') {
+    if (normalizedStatus === 'approved') {
       userNotification = await createUserNotification(
         customerId, 
-        newStatus, 
+        normalizedStatus, 
         language, 
         skipUserEmail, 
         forceEmail
       );
-    } else if (newStatus === 'rejected') {
+    } else if (normalizedStatus === 'rejected') {
       console.log('Skipping user notification/email for rejected status as per policy');
       try {
         await deleteRecentMonitoringNotification(customerId);
       } catch (cleanupError) {
-        console.error('Error cleaning up recent monitoring notification:', cleanupError);
+        console.error('Error cleaning up monitoring notifications:', cleanupError);
       }
     }
 
