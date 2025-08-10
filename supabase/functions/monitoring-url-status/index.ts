@@ -152,7 +152,7 @@ async function createAdminMonitoringApprovalNotification(language: string) {
   }
 }
 
-// Helper function to remove any recent "monitoring" notifications accidentally created on rejection
+// Helper function to remove any "monitoring" notifications when a URL is rejected
 async function deleteRecentMonitoringNotification(userId: string) {
   const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2.47.0");
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
@@ -160,39 +160,19 @@ async function deleteRecentMonitoringNotification(userId: string) {
   const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   try {
-    const windowAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
-    // Find recent monitoring notifications for this user
-    const { data: recentNotifications, error: fetchError } = await supabaseAdmin
-      .from('notifications')
-      .select('id, created_at, type')
-      .eq('user_id', userId)
-      .eq('type', 'monitoring')
-      .gte('created_at', windowAgo)
-      .order('created_at', { ascending: false })
-      .limit(5);
-
-    if (fetchError) {
-      console.error('Error fetching recent monitoring notifications:', fetchError);
-      return;
-    }
-
-    if (!recentNotifications || recentNotifications.length === 0) {
-      console.log('No recent monitoring notifications to delete for user', userId);
-      return;
-    }
-
-    const idsToDelete = recentNotifications.map(n => n.id);
+    // Delete ALL monitoring notifications for this user to prevent confusion
     const { error: deleteError } = await supabaseAdmin
       .from('notifications')
       .delete()
-      .in('id', idsToDelete);
+      .eq('user_id', userId)
+      .eq('type', 'monitoring');
 
     if (deleteError) {
-      console.error('Error deleting recent monitoring notifications:', deleteError);
+      console.error('Error deleting monitoring notifications:', deleteError);
       return;
     }
 
-    console.log('Deleted recent monitoring notifications for user', userId, idsToDelete);
+    console.log('Deleted ALL monitoring notifications for user', userId);
   } catch (error) {
     console.error('Unexpected error during notification cleanup:', error);
   }
