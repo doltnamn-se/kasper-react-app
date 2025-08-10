@@ -18,9 +18,10 @@ export async function createUserNotification(
   skipUserEmail: boolean,
   forceEmail?: boolean
 ) {
-  // Skip creating any user notification for rejected status
-  if (newStatus === 'rejected') {
-    console.log('Skipping user in-app notification for rejected status');
+  // Normalize status and guard: only notify on approved
+  const normalizedStatus = (newStatus || '').toLowerCase().trim();
+  if (normalizedStatus !== 'approved') {
+    console.log(`Skipping user in-app notification for non-approved status: ${normalizedStatus}`);
     return null;
   }
 
@@ -30,7 +31,7 @@ export async function createUserNotification(
     ? 'Länken är mottagen och kommer behandlas inom kort'
     : 'The link has been received and will be processed shortly';
 
-  console.log(`Creating user notification for customer ${customerId} with status ${newStatus}, language: ${language}`);
+  console.log(`Creating user notification for customer ${customerId} with status ${normalizedStatus}, language: ${language}`);
   console.log(`Skip email: ${skipUserEmail}, Force email: ${forceEmail}`);
 
   try {
