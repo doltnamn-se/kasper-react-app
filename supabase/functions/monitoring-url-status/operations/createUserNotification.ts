@@ -18,14 +18,17 @@ export async function createUserNotification(
   skipUserEmail: boolean,
   forceEmail?: boolean
 ) {
-  // Generate notification message based on status
-  const notificationTitle = newStatus === 'approved' 
-    ? (language === 'sv' ? 'Tillagd i länkar' : 'Added to links')
-    : (language === 'sv' ? 'Länk avvisad' : 'Link rejected');
-    
-  const notificationMessage = newStatus === 'approved'
-    ? (language === 'sv' ? 'Länken är mottagen och kommer behandlas inom kort' : 'The link has been received and will be processed shortly')
-    : (language === 'sv' ? 'Länken har avvisats från systemet' : 'The link has been rejected from the system');
+  // Skip creating any user notification for rejected status
+  if (newStatus === 'rejected') {
+    console.log('Skipping user in-app notification for rejected status');
+    return null;
+  }
+
+  // Generate notification message for approved status only
+  const notificationTitle = language === 'sv' ? 'Tillagd i länkar' : 'Added to links';
+  const notificationMessage = language === 'sv'
+    ? 'Länken är mottagen och kommer behandlas inom kort'
+    : 'The link has been received and will be processed shortly';
 
   console.log(`Creating user notification for customer ${customerId} with status ${newStatus}, language: ${language}`);
   console.log(`Skip email: ${skipUserEmail}, Force email: ${forceEmail}`);
