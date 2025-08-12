@@ -1,6 +1,7 @@
 
 import React from "react";
-import { Badge } from "@/components/ui/badge";
+import { badgeVariants } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,15 +35,15 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Badge
-          variant="secondary"
-          className="cursor-pointer select-none gap-1 px-3 py-1 text-sm"
-          aria-label={language === 'sv' ? 'Växla användare' : 'Switch user'}
-        >
-          {current}
-          <ChevronDown className="h-4 w-4 opacity-70" />
-        </Badge>
+      <DropdownMenuTrigger
+        className={cn(
+          badgeVariants({ variant: "secondary" }),
+          "cursor-pointer select-none gap-1 px-3 py-1 text-sm"
+        )}
+        aria-label={language === 'sv' ? 'Växla användare' : 'Switch user'}
+      >
+        {current}
+        <ChevronDown className="h-4 w-4 opacity-70" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[200px]">
         <DropdownMenuLabel>
