@@ -165,7 +165,7 @@ const Deindexing = () => {
             <div className="flex flex-col-reverse md:flex-row justify-between md:items-end w-full gap-4 md:gap-0">
               <TabsList className="relative w-full md:w-auto overflow-hidden">
                 <div
-                  className={`pointer-events-none absolute top-1 bottom-1 rounded-[12px] bg-[#d4f5b6] transition-[left,right] duration-300 ease-out w-[calc(50%-0.25rem)] ${activeTab === 'incoming' ? 'left-1' : 'right-1'}`}
+                  className={`pointer-events-none absolute top-1 bottom-1 left-1 rounded-[12px] bg-[#d4f5b6] w-[calc(50%-0.25rem)] transition-transform duration-300 ease-out will-change-transform ${activeTab === 'incoming' ? 'translate-x-0' : 'translate-x-[calc(50%-0.25rem)]'}`}
                   aria-hidden
                 />
                 <TabsTrigger value="incoming" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
