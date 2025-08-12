@@ -26,7 +26,9 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
   const { language } = useLanguage();
   const { members } = useCustomerMembers();
   const { userProfile } = useUserProfile();
-  const mainName = userProfile?.display_name ?? (language === "sv" ? "Huvudanvändare" : "Main user");
+  const mainName =
+    userProfile?.display_name?.trim()?.split(/\s+/)[0] ||
+    (language === "sv" ? "Huvudanvändare" : "Main user");
 
   const hasMembers = (members?.length ?? 0) > 0;
 
