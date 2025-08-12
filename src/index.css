@@ -563,7 +563,7 @@ input[type="search"]:focus {
 :root {
   --switcher-bg: 0 0% 7%;
   --switcher-bg-hover: 0 0% 19%;
-  --switcher-fg: 0 0% 98%;
+  --switcher-fg: 0 0% 100%;
 }
 
 .dark {
