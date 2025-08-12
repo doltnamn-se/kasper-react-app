@@ -15,6 +15,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCustomerMembers } from "@/hooks/useCustomerMembers";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface UserSwitcherProps {
   value: string | null;
@@ -24,10 +25,8 @@ interface UserSwitcherProps {
 export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) => {
   const { language } = useLanguage();
   const { members } = useCustomerMembers();
-
-  const current = value
-    ? members.find((m) => m.id === value)?.display_name
-    : language === "sv" ? "Huvudanvändare" : "Main user";
+  const { userProfile } = useUserProfile();
+  const mainName = userProfile?.display_name ?? (language === "sv" ? "Huvudanvändare" : "Main user");
 
   const hasMembers = (members?.length ?? 0) > 0;
 
@@ -42,12 +41,12 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
         )}
         aria-label={language === 'sv' ? 'Växla användare' : 'Switch user'}
       >
-        {current}
+        {language === 'sv' ? 'Växla' : 'Switch'}
         <ChevronDown className="h-4 w-4 opacity-70" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[200px]">
         <DropdownMenuLabel>
-          {language === "sv" ? "Välj användare" : "Select user"}
+          {language === "sv" ? "Familjemedlemmar" : "Family members"}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
@@ -55,7 +54,7 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
           onValueChange={(val) => onChange(val === "main" ? null : val)}
         >
           <DropdownMenuRadioItem value="main">
-            {language === "sv" ? "Huvudanvändare" : "Main user"}
+            {mainName}
           </DropdownMenuRadioItem>
           {members.map((m) => (
             <DropdownMenuRadioItem key={m.id} value={m.id}>
