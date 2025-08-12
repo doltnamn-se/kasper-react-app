@@ -4,8 +4,8 @@ import { useSiteStatuses } from "@/hooks/useSiteStatuses";
 
 type BadgeVariant = 'green' | 'red' | 'yellow';
 
-export const useSiteStatusBadge = (sites: string[], userId?: string) => {
-  const { siteStatuses } = useSiteStatuses(userId);
+export const useSiteStatusBadge = (sites: string[], userId?: string, memberId?: string) => {
+  const { siteStatuses } = useSiteStatuses(userId, memberId);
   const { language } = useLanguage();
 
   const getSiteStatusBadge = () => {

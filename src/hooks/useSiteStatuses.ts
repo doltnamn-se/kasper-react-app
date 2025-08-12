@@ -7,7 +7,7 @@ interface SiteStatus {
   status: string;
 }
 
-export const useSiteStatuses = (userId?: string) => {
+export const useSiteStatuses = (userId?: string, memberId?: string) => {
   const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,11 +20,19 @@ export const useSiteStatuses = (userId?: string) => {
     
     setIsLoading(true);
     try {
-      console.log(`Fetching site statuses for user: ${userId}`);
-      const { data, error } = await supabase
+      console.log(`Fetching site statuses for user: ${userId} member: ${memberId ?? 'main'}`);
+      let query = supabase
         .from('customer_site_statuses')
         .select('*')
         .eq('customer_id', userId);
+
+      if (memberId) {
+        query = query.eq('member_id', memberId);
+      } else {
+        query = query.is('member_id', null);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching site statuses:', error);
@@ -39,7 +47,7 @@ export const useSiteStatuses = (userId?: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, memberId]);
 
   useEffect(() => {
     // Initial fetch
@@ -63,23 +71,27 @@ export const useSiteStatuses = (userId?: string) => {
         },
         (payload) => {
           console.log('Real-time update received:', payload);
-          // Instead of refetching, update the state directly for better performance
-          if (payload.eventType === 'INSERT') {
+          const newMemberId = (payload.new as any)?.member_id ?? null;
+          const oldMemberId = (payload.old as any)?.member_id ?? null;
+          const matchesNew = memberId ? newMemberId === memberId : newMemberId === null;
+          const matchesOld = memberId ? oldMemberId === memberId : oldMemberId === null;
+
+          if (payload.eventType === 'INSERT' && matchesNew) {
             setSiteStatuses(prev => [...prev, payload.new as SiteStatus]);
-          } else if (payload.eventType === 'UPDATE') {
+          } else if (payload.eventType === 'UPDATE' && matchesNew) {
             setSiteStatuses(prev => 
               prev.map(status => 
                 status.site_name === (payload.new as SiteStatus).site_name 
-                  ? payload.new as SiteStatus 
+                  ? (payload.new as SiteStatus) 
                   : status
               )
             );
-          } else if (payload.eventType === 'DELETE') {
+          } else if (payload.eventType === 'DELETE' && matchesOld) {
             setSiteStatuses(prev => 
               prev.filter(status => status.site_name !== (payload.old as SiteStatus).site_name)
             );
           } else {
-            // For other cases or as a fallback, refetch all statuses
+            // For other cases or non-matching member updates, refetch to stay consistent
             fetchSiteStatuses();
           }
         }

@@ -10,7 +10,7 @@ import { useSiteStatusBadge } from "@/utils/siteStatusUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-export const usePrivacyScore = () => {
+export const usePrivacyScore = (memberId?: string) => {
   const { incomingUrls } = useIncomingUrls();
   const { addressData } = useAddressData();
   const { language } = useLanguage();
@@ -25,7 +25,7 @@ export const usePrivacyScore = () => {
     'Ratsit',
     'Birthday',
     'Upplysning'
-  ], userProfile?.id);
+  ], userProfile?.id, memberId);
 
   const calculateScore = () => {
     console.log('Calculating privacy score with new weights');

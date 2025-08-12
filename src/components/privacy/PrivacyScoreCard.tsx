@@ -8,9 +8,12 @@ import { useAddressData } from "@/components/address/hooks/useAddressData";
 import { Separator } from "@/components/ui/separator";
 import { ScoreDisplay } from './score-card/ScoreDisplay';
 import { ScoreItemsList } from './score-card/ScoreItemsList';
+interface PrivacyScoreCardProps {
+  selectedMemberId?: string;
+}
 
-export const PrivacyScoreCard = () => {
-  const { calculateScore } = usePrivacyScore();
+export const PrivacyScoreCard = ({ selectedMemberId }: PrivacyScoreCardProps) => {
+  const { calculateScore } = usePrivacyScore(selectedMemberId);
   const { language } = useLanguage();
   const score = calculateScore();
   const { incomingUrls } = useIncomingUrls();
