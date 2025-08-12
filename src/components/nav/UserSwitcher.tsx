@@ -37,7 +37,7 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
       <DropdownMenuTrigger
         className={cn(
           badgeVariants({ variant: "secondary" }),
-          "cursor-pointer select-none gap-1 px-3 py-1 text-sm rounded-[10px]"
+          "cursor-pointer select-none gap-1 px-3 py-1 text-sm rounded-[10px] bg-[hsl(var(--switcher-bg))] hover:bg-[hsl(var(--switcher-bg-hover))] text-[hsl(var(--switcher-fg))]"
         )}
         aria-label={language === 'sv' ? 'Byt användare' : 'Switch user'}
       >

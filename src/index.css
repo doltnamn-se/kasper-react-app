@@ -558,3 +558,16 @@ input[type="search"]:focus {
 .data-[state=closed]:animate-accordion-up {
   animation: accordion-up 0.5s ease-in-out;
 }
+
+/* User switcher semantic tokens */
+:root {
+  --switcher-bg: 95 74% 85%;
+  --switcher-bg-hover: 95 61% 80%;
+  --switcher-fg: 0 0% 7%;
+}
+
+.dark {
+  --switcher-bg: 95 74% 85%;
+  --switcher-bg-hover: 95 61% 80%;
+  --switcher-fg: 0 0% 7%;
+}
