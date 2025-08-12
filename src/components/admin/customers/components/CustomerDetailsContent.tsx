@@ -140,15 +140,6 @@ export const CustomerDetailsContent = ({
             {isSuperAdmin && <AdminUrlSubmission customerId={customer.id} />}
           </div>
 
-          {/* ID Verification section */}
-          {isSuperAdmin && (
-            <div className="pt-3 pb-5">
-              <Separator />
-              <div className="pt-6">
-                <IdVerificationSection customerId={customer.id} />
-              </div>
-            </div>
-          )}
           
           <SiteStatusManager customerId={customer.id} />
 
@@ -184,6 +175,16 @@ export const CustomerDetailsContent = ({
               )}
             </div>
           </div>
+
+          {/* ID Verification section - moved to bottom */}
+          {isSuperAdmin && (
+            <div className="pt-3 pb-5">
+              <Separator />
+              <div className="pt-6">
+                <IdVerificationSection customerId={customer.id} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>;
