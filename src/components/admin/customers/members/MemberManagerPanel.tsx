@@ -6,8 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Trash2, UserPlus } from "lucide-react";
 import { useCustomerMembers } from "./hooks/useCustomerMembers";
-import { MemberStatusEditor } from "./MemberStatusEditor";
 import { CustomerMember } from "@/types/customer-member";
+import { MemberStatusCard } from "@/components/status/MemberStatusCard";
 
 interface MemberManagerPanelProps {
   customerId: string;
@@ -125,12 +125,12 @@ export function MemberManagerPanel({ customerId, customerName }: MemberManagerPa
           ) : (
             <div className="space-y-3">
               <div>
-                <div className="text-sm font-medium">Statuses for {activeMember.display_name}</div>
+                <div className="text-sm font-medium">Upplysningssidor för {activeMember.display_name}</div>
                 <p className="text-xs text-muted-foreground">
-                  These are per-member statuses; links and address remain shared for the main customer.
+                  Dessa statusar gäller endast för den här medlemmen.
                 </p>
               </div>
-              <MemberStatusEditor customerId={customerId} memberId={activeMember.id} />
+              <MemberStatusCard customerId={customerId} memberId={activeMember.id} />
             </div>
           )}
         </div>
