@@ -37,7 +37,7 @@ const Index = () => {
           {`${getWelcomeMessage()} ${firstNameOnly}`}
         </h1>
         {/* Badge-style user switcher: right on mobile, next to title on desktop */}
-        <div className="ml-auto md:ml-3">
+        <div className="ml-auto">
           <UserSwitcher value={selectedMemberId} onChange={setSelectedMemberId} />
         </div>
       </div>
