@@ -561,9 +561,9 @@ input[type="search"]:focus {
 
 /* User switcher semantic tokens */
 :root {
-  --switcher-bg: 0 0% 94%;
-  --switcher-bg-hover: 0 0% 92%;
-  --switcher-fg: 0 0% 7%;
+  --switcher-bg: 0 0% 7%;
+  --switcher-bg-hover: 0 0% 19%;
+  --switcher-fg: 0 0% 98%;
 }
 
 .dark {
