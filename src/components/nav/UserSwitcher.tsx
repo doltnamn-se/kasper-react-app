@@ -39,7 +39,7 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
       <DropdownMenuTrigger
         className={cn(
           badgeVariants({ variant: "secondary" }),
-          "cursor-pointer select-none gap-1 px-3 py-1 text-xs md:text-sm font-medium rounded-[10px] bg-[hsl(var(--switcher-bg))] hover:bg-[hsl(var(--switcher-bg-hover))] text-[hsl(var(--switcher-fg))]"
+          "cursor-pointer select-none gap-1 px-3 py-1 text-xs md:text-sm font-medium rounded-full bg-[hsl(var(--switcher-bg))] hover:bg-[hsl(var(--switcher-bg-hover))] text-[hsl(var(--switcher-fg))]"
         )}
         aria-label={language === 'sv' ? 'Växla användare' : 'Switch user'}
       >
@@ -47,7 +47,7 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
         <ChevronDown className="h-[0.9rem] w-[0.9rem] md:h-4 md:w-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[200px] user-switcher-menu">
-        <DropdownMenuLabel>
+        <DropdownMenuLabel className="font-medium">
           {language === "sv" ? "Familjemedlemmar" : "Family members"}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
