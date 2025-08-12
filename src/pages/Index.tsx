@@ -38,12 +38,12 @@ const Index = () => {
   };
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <div className="mb-6 flex items-center justify-start gap-3">
-        <h1 className={`m-0 ${isMobile ? 'whitespace-nowrap flex-1 min-w-0 leading-tight text-[clamp(1rem,6.5vw,1.75rem)]' : ''}`}>
+      <div className="mb-6 flex items-center justify-start gap-3 min-w-0">
+        <h1 className={`m-0 flex-1 min-w-0 ${isMobile ? 'whitespace-nowrap truncate text-ellipsis leading-tight text-[clamp(1rem,6.5vw,1.75rem)]' : ''}`}>
           {`${getWelcomeMessage()} ${firstNameOnly}`}
         </h1>
         {/* Badge-style user switcher: right on mobile, next to title on desktop */}
-        <div className="ml-auto">
+        <div className="ml-auto shrink-0">
           <UserSwitcher value={selectedMemberId} onChange={setSelectedMemberId} />
         </div>
       </div>
