@@ -564,10 +564,18 @@ input[type="search"]:focus {
   --switcher-bg: 0 0% 7%;
   --switcher-bg-hover: 0 0% 19%;
   --switcher-fg: 0 0% 100%;
+  --switcher-active-dot: 120 95% 55%;
 }
 
 .dark {
   --switcher-bg: 0 0% 94%;
   --switcher-bg-hover: 0 0% 92%;
   --switcher-fg: 0 0% 7%;
+  --switcher-active-dot: 120 95% 55%;
 }
+
+/* UserSwitcher: active radio dot color */
+.user-switcher-menu [data-state="checked"] svg {
+  color: hsl(var(--switcher-active-dot));
+}
+

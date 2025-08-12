@@ -46,7 +46,7 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
         {language === 'sv' ? 'Växla' : 'Switch'}
         <ChevronDown className="h-[0.9rem] w-[0.9rem] md:h-4 md:w-4" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[200px]">
+      <DropdownMenuContent align="end" className="min-w-[200px] user-switcher-menu">
         <DropdownMenuLabel>
           {language === "sv" ? "Familjemedlemmar" : "Family members"}
         </DropdownMenuLabel>
