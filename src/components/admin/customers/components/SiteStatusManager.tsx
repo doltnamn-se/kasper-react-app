@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCustomerMembers } from "../members/hooks/useCustomerMembers";
 import { toast } from "sonner";
 
 interface SiteStatusManagerProps {
@@ -15,11 +16,11 @@ type SiteStatus = {
 export function SiteStatusManager({
   customerId
 }: SiteStatusManagerProps) {
-  const {
-    language
-  } = useLanguage();
-  const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const { language } = useLanguage();
+const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
+const [isLoading, setIsLoading] = useState(true);
+const { members: customerMembers } = useCustomerMembers(customerId);
+const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const sites = [{
     name: 'Mrkoll',
     icon: '/fonts/MrKoll.svg'
@@ -58,17 +59,23 @@ export function SiteStatusManager({
     value: 'Synlig',
     label: language === 'sv' ? 'Synlig' : 'Visible'
   }];
-  useEffect(() => {
+useEffect(() => {
     fetchSiteStatuses();
-  }, [customerId]);
+  }, [customerId, selectedMemberId]);
   const fetchSiteStatuses = async () => {
     if (!customerId) return;
     setIsLoading(true);
     try {
-      const {
-        data,
-        error
-      } = await supabase.from('customer_site_statuses').select('*').eq('customer_id', customerId);
+      let query = supabase
+        .from('customer_site_statuses')
+        .select('*')
+        .eq('customer_id', customerId);
+      if (selectedMemberId) {
+        query = query.eq('member_id', selectedMemberId);
+      } else {
+        query = query.is('member_id', null);
+      }
+      const { data, error } = await query;
       if (error) {
         console.error('Error fetching site statuses:', error);
         toast.error('Failed to load site statuses');
@@ -118,7 +125,8 @@ export function SiteStatusManager({
           customer_id: customerId,
           site_name: siteName,
           status: newStatus,
-          updated_by: (await supabase.auth.getUser()).data.user?.id
+          updated_by: (await supabase.auth.getUser()).data.user?.id,
+          member_id: selectedMemberId
         });
         if (error) throw error;
       }
@@ -139,9 +147,27 @@ export function SiteStatusManager({
       </div>;
   }
   return <div className="space-y-4 pt-2">
-      <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF] mt-[-25px]">
-        {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
-      </h3>
+      <div className="flex items-center justify-between mt-[-25px]">
+        <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">
+          {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
+        </h3>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">{language === 'sv' ? 'Användare' : 'User'}</span>
+          <Select value={selectedMemberId ?? 'main'} onValueChange={(value) => setSelectedMemberId(value === 'main' ? null : value)}>
+            <SelectTrigger className="w-[180px] h-8 text-xs font-medium">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="text-xs">
+              <SelectItem value="main">{language === 'sv' ? 'Huvudanvändare' : 'Main user'}</SelectItem>
+              {customerMembers.map((m) => (
+                <SelectItem key={m.id} value={m.id} className="text-xs">
+                  {m.display_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       <div className="space-y-3">
         {sites.map(site => {
         const siteStatus = siteStatuses.find(s => s.site_name === site.name);

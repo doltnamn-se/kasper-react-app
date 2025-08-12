@@ -13,9 +13,7 @@ import { Copy, Check } from "lucide-react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { Separator } from "@/components/ui/separator";
 import { IdVerificationSection } from "./IdVerificationSection";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useCustomerMembers } from "../members/hooks/useCustomerMembers";
-import { MemberStatusEditor } from "../members/MemberStatusEditor";
+
 import { MemberManagerPanel } from "../members/MemberManagerPanel";
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
@@ -67,8 +65,6 @@ export const CustomerDetailsContent = ({
   const {
     t
 } = useLanguage();
-
-  const { members: customerMembers, loading: membersLoading } = useCustomerMembers(customer.id);
 
   // Get display name or fallback to a default
   const customerName = customer.profile?.display_name || 'Customer';
@@ -147,38 +143,6 @@ export const CustomerDetailsContent = ({
           
           <SiteStatusManager customerId={customer.id} />
 
-          {/* Members statuses */}
-          <div className="pt-3 pb-5">
-            <Separator />
-            <div className="pt-6">
-              <h3 className="text-base font-medium">Members</h3>
-              {membersLoading ? (
-                <div className="text-sm text-muted-foreground">Loading members...</div>
-              ) : customerMembers.length === 0 ? (
-                <div className="text-sm text-muted-foreground">No members yet.</div>
-              ) : (
-                <Accordion type="single" collapsible className="w-full">
-                  {customerMembers.map((m) => (
-                    <AccordionItem key={m.id} value={m.id}>
-                      <AccordionTrigger>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{m.display_name}</span>
-                          {m.relationship && (
-                            <span className="text-xs text-muted-foreground">{m.relationship}</span>
-                          )}
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="rounded-lg border p-4">
-                          <MemberStatusEditor customerId={customer.id} memberId={m.id} />
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              )}
-            </div>
-          </div>
 
           {/* ID Verification section - moved to bottom */}
           {isSuperAdmin && (
