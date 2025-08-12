@@ -32,12 +32,14 @@ const Index = () => {
   };
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <div className="mb-6 flex items-center justify-between gap-3">
+      <div className="mb-6 flex items-center justify-start gap-3">
         <h1 className="m-0">
           {`${getWelcomeMessage()} ${firstNameOnly}`}
         </h1>
-        {/* Badge-style user switcher */}
-        <UserSwitcher value={selectedMemberId} onChange={setSelectedMemberId} />
+        {/* Badge-style user switcher: right on mobile, next to title on desktop */}
+        <div className="ml-auto md:ml-3">
+          <UserSwitcher value={selectedMemberId} onChange={setSelectedMemberId} />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
