@@ -35,10 +35,14 @@ const Settings = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="profile" className="flex-1">{t('profile.manage')}</TabsTrigger>
-            <TabsTrigger value="notifications" className="flex-1">{t('notifications')}</TabsTrigger>
-            <TabsTrigger value="password" className="flex-1">{t('password')}</TabsTrigger>
+          <TabsList className="relative w-full overflow-hidden">
+            <div
+              className={`pointer-events-none absolute top-1 bottom-1 left-1 rounded-[12px] bg-[#d4f5b6] w-[calc((100%-0.5rem)/3)] transition-transform duration-300 ease-out will-change-transform ${activeTab === 'profile' ? 'translate-x-0' : activeTab === 'notifications' ? 'translate-x-full' : 'translate-x-[200%]'}`}
+              aria-hidden
+            />
+            <TabsTrigger value="profile" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">{t('profile.manage')}</TabsTrigger>
+            <TabsTrigger value="notifications" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">{t('notifications')}</TabsTrigger>
+            <TabsTrigger value="password" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">{t('password')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="mt-6">

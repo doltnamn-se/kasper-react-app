@@ -46,6 +46,7 @@ const AdminPromotionalCodes = () => {
   const [editingCode, setEditingCode] = useState<PromotionalCode | null>(null);
   const [globalFilter, setGlobalFilter] = useState('');
   const isMobile = useBreakpoint('(max-width: 767px)');
+  const [activeTab, setActiveTab] = useState<'manage'|'import'|'assign'>('manage');
 
   // Define table columns
   const columns = useMemo<ColumnDef<PromotionalCode>[]>(() => [
@@ -425,11 +426,15 @@ const AdminPromotionalCodes = () => {
         </Card>
       </div>
 
-      <Tabs defaultValue="manage" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="manage">{t('kasper.friends.tabs.manage')}</TabsTrigger>
-          <TabsTrigger value="import">{t('kasper.friends.tabs.import')}</TabsTrigger>
-          <TabsTrigger value="assign">{t('kasper.friends.tabs.assign')}</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'manage' | 'import' | 'assign')} className="space-y-6">
+        <TabsList className="relative w-full overflow-hidden">
+          <div
+            className={`pointer-events-none absolute top-1 bottom-1 left-1 rounded-[12px] bg-[#d4f5b6] w-[calc((100%-0.5rem)/3)] transition-transform duration-300 ease-out will-change-transform ${activeTab === 'manage' ? 'translate-x-0' : activeTab === 'import' ? 'translate-x-full' : 'translate-x-[200%]'}`}
+            aria-hidden
+          />
+          <TabsTrigger value="manage" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">{t('kasper.friends.tabs.manage')}</TabsTrigger>
+          <TabsTrigger value="import" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">{t('kasper.friends.tabs.import')}</TabsTrigger>
+          <TabsTrigger value="assign" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">{t('kasper.friends.tabs.assign')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="import" className="space-y-4">

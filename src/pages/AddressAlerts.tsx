@@ -77,11 +77,15 @@ const AddressAlerts = () => {
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="address" className="flex-1">
+          <TabsList className="relative w-full overflow-hidden">
+            <div
+              className={`pointer-events-none absolute top-1 bottom-1 left-1 rounded-[12px] bg-[#d4f5b6] w-[calc((100%-0.5rem)/2)] transition-transform duration-300 ease-out will-change-transform ${activeTab === 'address' ? 'translate-x-0' : 'translate-x-full'}`}
+              aria-hidden
+            />
+            <TabsTrigger value="address" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
               {language === 'sv' ? 'Din adress' : 'Your Address'}
             </TabsTrigger>
-            <TabsTrigger value="alerts" className="flex-1">
+            <TabsTrigger value="alerts" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
               {language === 'sv' ? 'Larm' : 'Alarm'}
             </TabsTrigger>
           </TabsList>
