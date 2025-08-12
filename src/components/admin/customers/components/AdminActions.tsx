@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Send, Trash, RefreshCw, Ban, SmilePlus } from "lucide-react";
+import { Send, Trash, RefreshCw, Ban, UserRoundPen } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -66,73 +66,79 @@ export const AdminActionButtons = ({
   onManageMembers?: () => void;
 }) => {
   return (
-    <div className="absolute right-6 top-8 md:top-6 flex gap-2">
-      {onRefreshData && (
+    <div className="absolute top-8 md:top-6 left-6 right-6 flex items-center justify-between">
+      {/* Left-aligned: Manage members */}
+      <div className="flex">
+        {onManageMembers && (
+          <Button
+            onClick={onManageMembers}
+            variant="outline"
+            size="icon"
+            title="Manage members"
+            className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+          >
+            <UserRoundPen className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+
+      {/* Right-aligned: other actions */}
+      <div className="flex gap-2">
+        {onRefreshData && (
+          <Button
+            onClick={onRefreshData}
+            disabled={isRefreshing}
+            variant="outline"
+            size="icon"
+            title="Refresh customer data"
+            className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          </Button>
+        )}
+        
         <Button
-          onClick={onRefreshData}
-          disabled={isRefreshing}
+          onClick={onSendActivationEmail}
+          disabled={isSendingEmail}
           variant="outline"
           size="icon"
-          title="Refresh customer data"
+          title="Resend activation email"
           className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
         >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          <Send className="h-4 w-4" />
         </Button>
-      )}
-      
-      <Button
-        onClick={onSendActivationEmail}
-        disabled={isSendingEmail}
-        variant="outline"
-        size="icon"
-        title="Resend activation email"
-        className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-      >
-        <Send className="h-4 w-4" />
-      </Button>
-      
-      {onBanUser && (
+        
+        {onBanUser && (
+          <Button
+            onClick={onBanUser}
+            disabled={isTogglingBan}
+            variant="outline"
+            size="icon"
+            title={isBanned ? "Unban user" : "Ban user"}
+            className={`hover:bg-transparent ${isBanned ? 'text-red-500 hover:text-red-600' : 'text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]'}`}
+          >
+            <Ban className={`h-4 w-4 ${isTogglingBan ? 'animate-spin' : ''}`} />
+          </Button>
+        )}
+        
         <Button
-          onClick={onBanUser}
-          disabled={isTogglingBan}
+          onClick={() => {
+            if (onDeleteUser) {
+              // Call the delete function directly when the button is clicked
+              onDeleteUser();
+            } else {
+              // Fall back to just opening the dialog if no direct delete handler
+              setShowDeleteDialog(true);
+            }
+          }}
           variant="outline"
           size="icon"
-          title={isBanned ? "Unban user" : "Ban user"}
-          className={`hover:bg-transparent ${isBanned ? 'text-red-500 hover:text-red-600' : 'text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]'}`}
-        >
-          <Ban className={`h-4 w-4 ${isTogglingBan ? 'animate-spin' : ''}`} />
-        </Button>
-      )}
-      {/* Manage members button */}
-      {onManageMembers && (
-        <Button
-          onClick={onManageMembers}
-          variant="outline"
-          size="icon"
-          title="Manage members"
           className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+          title="Delete user"
         >
-          <SmilePlus className="h-4 w-4" />
+          <Trash className="h-4 w-4" />
         </Button>
-      )}
-      
-      <Button
-        onClick={() => {
-          if (onDeleteUser) {
-            // Call the delete function directly when the button is clicked
-            onDeleteUser();
-          } else {
-            // Fall back to just opening the dialog if no direct delete handler
-            setShowDeleteDialog(true);
-          }
-        }}
-        variant="outline"
-        size="icon"
-        className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-        title="Delete user"
-      >
-        <Trash className="h-4 w-4" />
-      </Button>
+      </div>
     </div>
   );
 };
