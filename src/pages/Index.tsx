@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { IdVerificationCard } from "@/components/id/IdVerificationCard";
 import { usePendingIdVerification } from "@/components/id/hooks/usePendingIdVerification";
 import { UserSwitcher } from "@/components/nav/UserSwitcher";
+import { useCustomerMembers } from "@/hooks/useCustomerMembers";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -23,8 +24,12 @@ const Index = () => {
   const isMobile = useIsMobile();
   const { pending } = usePendingIdVerification();
   const hasPending = !!pending;
-  const displayName = userProfile?.display_name || '';
-  const firstNameOnly = displayName.split(' ')[0];
+  const { members } = useCustomerMembers();
+  const mainDisplayName = userProfile?.display_name || '';
+  const selectedDisplayName = selectedMemberId
+    ? (members.find((m) => m.id === selectedMemberId)?.display_name || mainDisplayName)
+    : mainDisplayName;
+  const firstNameOnly = (selectedDisplayName || '').split(' ')[0] || '';
 
   // Function to get welcome message based on language
   const getWelcomeMessage = () => {
