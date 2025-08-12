@@ -37,11 +37,11 @@ export const UserSwitcher: React.FC<UserSwitcherProps> = ({ value, onChange }) =
       <DropdownMenuTrigger
         className={cn(
           badgeVariants({ variant: "secondary" }),
-          "cursor-pointer select-none gap-1 px-3 py-1 text-sm rounded-[10px] bg-[hsl(var(--switcher-bg))] hover:bg-[hsl(var(--switcher-bg-hover))] text-[hsl(var(--switcher-fg))]"
+          "cursor-pointer select-none gap-1 px-3 py-1 text-sm font-medium rounded-[10px] bg-[hsl(var(--switcher-bg))] hover:bg-[hsl(var(--switcher-bg-hover))] text-[hsl(var(--switcher-fg))]"
         )}
-        aria-label={language === 'sv' ? 'Byt användare' : 'Switch user'}
+        aria-label={language === 'sv' ? 'Växla användare' : 'Switch user'}
       >
-        {language === 'sv' ? 'Byt' : 'Switch'}
+        {language === 'sv' ? 'Växla' : 'Switch'}
         <ChevronDown className="h-4 w-4 opacity-70" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[200px]">
