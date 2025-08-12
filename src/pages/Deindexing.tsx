@@ -163,11 +163,15 @@ const Deindexing = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col-reverse md:flex-row justify-between md:items-end w-full gap-4 md:gap-0">
-              <TabsList className="w-full md:w-auto">
-                <TabsTrigger value="incoming" className="flex-1">
+              <TabsList className="relative w-full md:w-auto overflow-hidden">
+                <div
+                  className={`absolute inset-1 w-1/2 rounded-[12px] bg-[#d4f5b6] transition-transform duration-300 ease-out ${activeTab === 'incoming' ? 'translate-x-0' : 'translate-x-full'}`}
+                  aria-hidden
+                />
+                <TabsTrigger value="incoming" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
                   {t('deindexing.incoming.links')}
                 </TabsTrigger>
-                <TabsTrigger value="deindexed" className="flex-1">
+                <TabsTrigger value="deindexed" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
                   {t('deindexing.deindexed.links')}
                 </TabsTrigger>
               </TabsList>
