@@ -12,12 +12,14 @@ import { useLastChecked } from "@/hooks/useLastChecked";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { IdVerificationCard } from "@/components/id/IdVerificationCard";
 import { usePendingIdVerification } from "@/components/id/hooks/usePendingIdVerification";
+import { UserSwitcher } from "@/components/nav/UserSwitcher";
 
 const Index = () => {
   const { language } = useLanguage();
   const { userProfile } = useUserProfile();
   const { lastChecked } = useLastChecked();
-  const { siteStatuses, isLoading } = useSiteStatuses(userProfile?.id);
+  const [selectedMemberId, setSelectedMemberId] = React.useState<string | null>(null);
+  const { siteStatuses, isLoading } = useSiteStatuses(userProfile?.id, selectedMemberId ?? undefined);
   const isMobile = useIsMobile();
   const { pending } = usePendingIdVerification();
   const hasPending = !!pending;
@@ -28,25 +30,26 @@ const Index = () => {
   const getWelcomeMessage = () => {
     return language === 'sv' ? "Välkommen" : "Welcome";
   };
-
-
-  // For mobile, we don't need the MainLayout wrapper since we're using MobilePersistentLayout
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <h1 className="mb-6">
-        {`${getWelcomeMessage()} ${firstNameOnly}`}
-      </h1>
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <h1 className="m-0">
+          {`${getWelcomeMessage()} ${firstNameOnly}`}
+        </h1>
+        {/* Badge-style user switcher */}
+        <UserSwitcher value={selectedMemberId} onChange={setSelectedMemberId} />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* ID Verification upload card - should appear first */}
         <IdVerificationCard />
         {hasPending && <div className="hidden lg:block" aria-hidden="true" />}
 
-        <PrivacyScoreCard />
-        <StatusCard 
-          siteStatuses={siteStatuses} 
-          isLoading={isLoading}
-        />
+      <PrivacyScoreCard selectedMemberId={selectedMemberId ?? undefined} />
+      <StatusCard 
+        siteStatuses={siteStatuses} 
+        isLoading={isLoading}
+      />
         
         {/* Guides link - only visible on mobile */}
         {isMobile && (

@@ -19,6 +19,7 @@ interface ScoreItemsListProps {
   totalGuidesCount: number;
   hasAddress: boolean;
   incomingUrls?: { status: string }[];
+  selectedMemberId?: string;
 }
 
 export const ScoreItemsList = ({
@@ -29,7 +30,8 @@ export const ScoreItemsList = ({
   completedGuidesCount,
   totalGuidesCount,
   hasAddress,
-  incomingUrls
+  incomingUrls,
+  selectedMemberId
 }: ScoreItemsListProps) => {
   const { userProfile } = useUserProfile();
   const isDesktop = useBreakpoint('(min-width: 768px)');
@@ -41,7 +43,7 @@ export const ScoreItemsList = ({
     'Ratsit',
     'Birthday',
     'Upplysning'
-  ], userProfile?.id);
+  ], userProfile?.id, selectedMemberId);
 
   const handleUplysningClick = useCallback(() => {
     const statusWidget = document.getElementById('status-widget');

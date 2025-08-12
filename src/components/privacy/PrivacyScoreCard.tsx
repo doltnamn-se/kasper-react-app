@@ -56,6 +56,7 @@ export const PrivacyScoreCard = ({ selectedMemberId }: PrivacyScoreCardProps) =>
         totalGuidesCount={allGuides.length}
         hasAddress={Boolean(addressData?.street_address)}
         incomingUrls={incomingUrls}
+        selectedMemberId={selectedMemberId}
       />
     </div>
   );
