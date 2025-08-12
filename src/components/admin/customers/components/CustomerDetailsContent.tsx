@@ -16,7 +16,7 @@ import { IdVerificationSection } from "./IdVerificationSection";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useCustomerMembers } from "../members/hooks/useCustomerMembers";
 import { MemberStatusEditor } from "../members/MemberStatusEditor";
-import { MemberManagerDialog } from "../members/MemberManagerDialog";
+import { MemberManagerPanel } from "../members/MemberManagerPanel";
 interface CustomerDetailsContentProps {
   customer: CustomerWithProfile;
   isOnline: boolean;
@@ -99,10 +99,14 @@ export const CustomerDetailsContent = ({
     }, 200);
   };
   return <div className="px-6 py-6 relative bg-[#FFFFFF] dark:bg-[#161617]">
-      {isSuperAdmin && <AdminActionButtons isSendingEmail={isSendingEmail} onSendActivationEmail={onSendActivationEmail} setShowDeleteDialog={setShowDeleteDialog} onRefreshData={onRefresh} isRefreshing={isRefreshing} onBanUser={onBanUser} onDeleteUser={onDeleteUser} isTogglingBan={isTogglingBan} isBanned={isBanned} onManageMembers={() => setShowMembersDialog(true)} />}
-      <MemberManagerDialog open={showMembersDialog} onOpenChange={setShowMembersDialog} customerId={customer.id} customerName={customerName} />
+      {isSuperAdmin && <AdminActionButtons isSendingEmail={isSendingEmail} onSendActivationEmail={onSendActivationEmail} setShowDeleteDialog={setShowDeleteDialog} onRefreshData={onRefresh} isRefreshing={isRefreshing} onBanUser={onBanUser} onDeleteUser={onDeleteUser} isTogglingBan={isTogglingBan} isBanned={isBanned} onManageMembers={() => setShowMembersDialog((v) => !v)} isManagingMembers={showMembersDialog} />}
+      {showMembersDialog && (
+        <div className="space-y-8 mt-16 md:mt-12">
+          <MemberManagerPanel customerId={customer.id} customerName={customerName} />
+        </div>
+      )}
       
-      <div className="space-y-8 mt-16 md:mt-12">
+      <div className={`${showMembersDialog ? 'hidden' : ''} space-y-8 mt-16 md:mt-12`}>
         <div className="space-y-8 md:space-y-6">
           <div className="flex items-center gap-3 pt-2 md:pt-0">
             <CustomerAvatar customer={customer} progressPercentage={customer.checklist_completed ? 100 : 0} />

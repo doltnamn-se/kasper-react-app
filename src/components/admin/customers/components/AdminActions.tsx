@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Send, Trash, RefreshCw, Ban, UserRoundPen } from "lucide-react";
+import { Send, Trash, RefreshCw, Ban, UserRoundPen, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -53,6 +53,7 @@ export const AdminActionButtons = ({
   isTogglingBan = false,
   isBanned = false,
   onManageMembers,
+  isManagingMembers = false,
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
@@ -64,6 +65,7 @@ export const AdminActionButtons = ({
   isTogglingBan?: boolean;
   isBanned?: boolean;
   onManageMembers?: () => void;
+  isManagingMembers?: boolean;
 }) => {
   return (
     <div className="absolute top-8 md:top-6 left-6 right-6 flex items-center justify-between">
@@ -74,10 +76,14 @@ export const AdminActionButtons = ({
             onClick={onManageMembers}
             variant="outline"
             size="icon"
-            title="Manage members"
+            title={isManagingMembers ? "Back to profile" : "Manage members"}
             className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
           >
-            <UserRoundPen className="h-4 w-4" />
+            {isManagingMembers ? (
+              <ArrowLeft className="h-4 w-4" />
+            ) : (
+              <UserRoundPen className="h-4 w-4" />
+            )}
           </Button>
         )}
       </div>
