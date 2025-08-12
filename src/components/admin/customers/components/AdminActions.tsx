@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Send, Trash, RefreshCw, Ban } from "lucide-react";
+import { Send, Trash, RefreshCw, Ban, SmilePlus } from "lucide-react";
 import { useState } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -51,7 +51,8 @@ export const AdminActionButtons = ({
   onBanUser,
   onDeleteUser,
   isTogglingBan = false,
-  isBanned = false
+  isBanned = false,
+  onManageMembers,
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
@@ -62,6 +63,7 @@ export const AdminActionButtons = ({
   onDeleteUser?: () => void;
   isTogglingBan?: boolean;
   isBanned?: boolean;
+  onManageMembers?: () => void;
 }) => {
   return (
     <div className="absolute right-6 top-8 md:top-6 flex gap-2">
@@ -99,6 +101,18 @@ export const AdminActionButtons = ({
           className={`hover:bg-transparent ${isBanned ? 'text-red-500 hover:text-red-600' : 'text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]'}`}
         >
           <Ban className={`h-4 w-4 ${isTogglingBan ? 'animate-spin' : ''}`} />
+        </Button>
+      )}
+      {/* Manage members button */}
+      {onManageMembers && (
+        <Button
+          onClick={onManageMembers}
+          variant="outline"
+          size="icon"
+          title="Manage members"
+          className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+        >
+          <SmilePlus className="h-4 w-4" />
         </Button>
       )}
       

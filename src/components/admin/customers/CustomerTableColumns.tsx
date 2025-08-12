@@ -207,13 +207,5 @@ export const getColumns = (
       },
       enableSorting: true,
     },
-    {
-      id: "members",
-      header: "Members",
-      cell: () => (
-        <span className="text-muted-foreground text-xs">Manage in profile</span>
-      ),
-      enableSorting: false,
-    },
   ];
 };
