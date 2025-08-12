@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerWithProfile } from "@/types/customer";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,10 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserInitials } from "@/utils/profileUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide, Users } from "lucide-react";
+import { ChevronDown, ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "@/components/ui/button";
-import { MemberManagerDialog } from "./members/MemberManagerDialog";
+
+
 
 export const getColumns = (
   onlineUsers: Set<string>,
@@ -210,35 +210,9 @@ export const getColumns = (
     {
       id: "members",
       header: "Members",
-      cell: ({ row }) => {
-        const [open, setOpen] = useState(false);
-        const customerId = row.original.id;
-        const name = row.original.profile?.display_name || row.original.profile?.email || "Customer";
-        return (
-          <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="h-7"
-              onMouseDown={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpen(true);
-              }}
-            >
-              <Users className="h-4 w-4 mr-1" />
-              Manage
-            </Button>
-            <MemberManagerDialog
-              open={open}
-              onOpenChange={setOpen}
-              customerId={customerId}
-              customerName={name}
-            />
-          </>
-        );
-      },
+      cell: () => (
+        <span className="text-muted-foreground text-xs">Manage in profile</span>
+      ),
       enableSorting: false,
     },
   ];
