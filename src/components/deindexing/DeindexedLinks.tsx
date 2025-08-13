@@ -106,16 +106,9 @@ export const DeindexedLinks = () => {
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                 {t('deindexing.url')}
               </p>
-              <a 
-                href={url.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
-                title={url.url}
-              >
-                <Link2 className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">{extractSiteName(url.url)}</span>
-              </a>
+              <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] truncate max-w-[150px] block" title={url.url}>
+                {extractSiteName(url.url)}
+              </span>
             </div>
             <div className="space-y-2">
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
