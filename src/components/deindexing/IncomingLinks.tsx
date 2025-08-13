@@ -61,7 +61,7 @@ export const IncomingLinks = () => {
       {sortedUrls.map((url) => (
         <Collapsible key={url.id} open={expandedUrls.has(url.id)} onOpenChange={() => toggleExpanded(url.id)}>
           <div className="bg-[#fafafa] dark:bg-[#1a1a1a] rounded-[12px] p-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                   {t('deindexing.url')}
@@ -77,17 +77,6 @@ export const IncomingLinks = () => {
                 <p className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] capitalize">
                   {getStatusText(url.status, t)}
                 </p>
-              </div>
-              <div className="flex items-end h-full">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => copyToClipboard(url.url)}
-                  className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
-                >
-                  <Copy className="h-3 w-3 mr-2" />
-                  {language === 'sv' ? 'Kopiera länk' : 'Copy link'}
-                </Button>
               </div>
               <div className="flex items-end h-full">
                 <CollapsibleTrigger asChild>
@@ -111,9 +100,20 @@ export const IncomingLinks = () => {
                 <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium mb-2">
                   {language === 'sv' ? 'Full URL' : 'Full URL'}
                 </p>
-                <p className="text-xs text-[#000000] dark:text-white break-all bg-[#f0f0f0] dark:bg-[#2a2a2a] p-2 rounded">
-                  {url.url}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs text-[#000000] dark:text-white break-all bg-[#f0f0f0] dark:bg-[#2a2a2a] p-2 rounded flex-1">
+                    {url.url}
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => copyToClipboard(url.url)}
+                    className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] shrink-0"
+                  >
+                    <Copy className="h-3 w-3 mr-1" />
+                    {language === 'sv' ? 'Kopiera' : 'Copy'}
+                  </Button>
+                </div>
               </div>
             </CollapsibleContent>
           </div>
