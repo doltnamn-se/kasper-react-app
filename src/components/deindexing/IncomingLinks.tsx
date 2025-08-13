@@ -79,39 +79,28 @@ export const IncomingLinks = () => {
                 </p>
               </div>
               <div className="space-y-2">
-                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                  {t('deindexing.copy.link')}
-                </p>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => copyToClipboard(url.url)}
-                  className="h-6 text-xs px-2"
+                  className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
                 >
-                  <Copy className="h-3 w-3 mr-1" />
-                  {language === 'sv' ? 'Kopiera' : 'Copy'}
+                  <Copy className="h-3 w-3 mr-2" />
+                  {language === 'sv' ? 'Kopiera länk' : 'Copy link'}
                 </Button>
               </div>
               <div className="space-y-2">
-                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                  {t('deindexing.show.url')}
-                </p>
                 <CollapsibleTrigger asChild>
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-6 text-xs px-2"
+                    className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
                   >
+                    {language === 'sv' ? 'Visa URL' : 'Show URL'}
                     {expandedUrls.has(url.id) ? (
-                      <>
-                        <ChevronUp className="h-3 w-3 mr-1" />
-                        {language === 'sv' ? 'Dölj' : 'Hide'}
-                      </>
+                      <ChevronUp className="h-3 w-3 ml-2" />
                     ) : (
-                      <>
-                        <ChevronDown className="h-3 w-3 mr-1" />
-                        {language === 'sv' ? 'Visa' : 'Show'}
-                      </>
+                      <ChevronDown className="h-3 w-3 ml-2" />
                     )}
                   </Button>
                 </CollapsibleTrigger>
