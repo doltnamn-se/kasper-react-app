@@ -212,7 +212,7 @@ const Deindexing = () => {
                 <h2>
                   {t('deindexing.incoming.links')}
                 </h2>
-                <Badge variant="static" className="bg-muted text-muted-foreground">
+                <Badge variant="static" className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 rounded-full flex items-center justify-center p-0 text-xs font-medium">
                   {incomingUrls?.length || 0}
                 </Badge>
               </div>
