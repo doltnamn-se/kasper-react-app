@@ -126,14 +126,9 @@ export const UserMonitoringUrlList = ({
                     {language === 'sv' ? 'Sida' : 'Site'}
                   </p>
                   <a 
-                    href={url.url} 
+                    href={url.url.startsWith('http') ? url.url : `https://${url.url}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      console.log('Opening URL:', url.url);
-                      window.open(url.url, '_blank', 'noopener,noreferrer');
-                    }}
                     className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block hover:bg-[#c5e9ff] dark:hover:bg-[#0d3447] transition-colors cursor-pointer" 
                     title={url.url}
                   >
