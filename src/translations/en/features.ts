@@ -79,6 +79,8 @@ const features: FeaturesTranslations = {
   'deindexing.customer': 'Customer',
   'deindexing.submitted': 'Submitted',
   'deindexing.status': 'Status',
+  'deindexing.copy.link': 'Copy link',
+  'deindexing.show.url': 'Show URL',
   'deindexing.status.received': 'Received',
   'deindexing.status.case.started': 'Case Started',
   'deindexing.status.request.submitted': 'Request Submitted',

@@ -2,17 +2,41 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
-import { Link2 } from "lucide-react";
+import { Link2, Copy, ChevronDown, ChevronUp } from "lucide-react";
 import { getStatusText } from "./utils/statusUtils";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export const IncomingLinks = () => {
   const { t, language } = useLanguage();
   const { incomingUrls, isLoading } = useIncomingUrls();
+  const [expandedUrls, setExpandedUrls] = useState<Set<string>>(new Set());
 
   // Sort URLs by creation date (newest first)
   const sortedUrls = incomingUrls?.sort((a, b) => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
+
+  const copyToClipboard = (url: string) => {
+    navigator.clipboard.writeText(url).then(() => {
+      toast({
+        title: language === 'sv' ? 'Länk kopierad' : 'Link copied',
+        description: language === 'sv' ? 'URL:en har kopierats till urklipp' : 'URL has been copied to clipboard',
+      });
+    });
+  };
+
+  const toggleExpanded = (urlId: string) => {
+    const newExpanded = new Set(expandedUrls);
+    if (newExpanded.has(urlId)) {
+      newExpanded.delete(urlId);
+    } else {
+      newExpanded.add(urlId);
+    }
+    setExpandedUrls(newExpanded);
+  };
 
   if (isLoading) {
     return (
@@ -34,33 +58,79 @@ export const IncomingLinks = () => {
   return (
     <div className="space-y-3">
       {sortedUrls.map((url) => (
-        <div key={url.id} className="bg-[#fafafa] dark:bg-[#1a1a1a] rounded-[12px] p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                {t('deindexing.url')}
-              </p>
-              <a 
-                href={url.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-white truncate block flex items-center gap-2"
-                title={url.url}
-              >
-                <Link2 className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">{url.url}</span>
-              </a>
+        <Collapsible key={url.id} open={expandedUrls.has(url.id)} onOpenChange={() => toggleExpanded(url.id)}>
+          <div className="bg-[#fafafa] dark:bg-[#1a1a1a] rounded-[12px] p-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {t('deindexing.url')}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Link2 className="h-3 w-3 flex-shrink-0 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+                  <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] truncate max-w-[150px]" title={url.url}>
+                    {url.url}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {language === 'sv' ? 'Status' : 'Status'}
+                </p>
+                <p className="text-xs text-[#000000] dark:text-white capitalize">
+                  {getStatusText(url.status, t)}
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {t('deindexing.copy.link')}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => copyToClipboard(url.url)}
+                  className="h-6 text-xs px-2"
+                >
+                  <Copy className="h-3 w-3 mr-1" />
+                  {language === 'sv' ? 'Kopiera' : 'Copy'}
+                </Button>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {t('deindexing.show.url')}
+                </p>
+                <CollapsibleTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-6 text-xs px-2"
+                  >
+                    {expandedUrls.has(url.id) ? (
+                      <>
+                        <ChevronUp className="h-3 w-3 mr-1" />
+                        {language === 'sv' ? 'Dölj' : 'Hide'}
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="h-3 w-3 mr-1" />
+                        {language === 'sv' ? 'Visa' : 'Show'}
+                      </>
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
             </div>
-            <div className="space-y-2">
-              <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                {language === 'sv' ? 'Status' : 'Status'}
-              </p>
-              <p className="text-xs text-[#000000] dark:text-white capitalize">
-                {getStatusText(url.status, t)}
-              </p>
-            </div>
+            <CollapsibleContent className="space-y-2">
+              <div className="mt-4 pt-4 border-t border-[#dfdfdf] dark:border-[#2e2e2e]">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium mb-2">
+                  {language === 'sv' ? 'Full URL' : 'Full URL'}
+                </p>
+                <p className="text-xs text-[#000000] dark:text-white break-all bg-[#f0f0f0] dark:bg-[#2a2a2a] p-2 rounded">
+                  {url.url}
+                </p>
+              </div>
+            </CollapsibleContent>
           </div>
-        </div>
+        </Collapsible>
       ))}
     </div>
   );

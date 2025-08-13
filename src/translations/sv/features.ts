@@ -79,6 +79,8 @@ const features: FeaturesTranslations = {
   'deindexing.customer': 'Kund',
   'deindexing.submitted': 'Inskickad',
   'deindexing.status': 'Status',
+  'deindexing.copy.link': 'Kopiera länk',
+  'deindexing.show.url': 'Visa URL',
   'deindexing.status.received': 'Mottagen',
   'deindexing.status.case.started': 'Ärende påbörjat',
   'deindexing.status.request.submitted': 'Begäran inskickad',
