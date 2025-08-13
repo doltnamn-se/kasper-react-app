@@ -212,7 +212,7 @@ const Deindexing = () => {
                 <h2>
                   {t('deindexing.incoming.links')}
                 </h2>
-                <div className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium">
+                <div className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium" style={{ paddingRight: '1px' }}>
                   {incomingUrls?.length || 0}
                 </div>
               </div>
