@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { extractSiteName } from "@/utils/urlUtils";
 
 export const IncomingLinks = () => {
   const { t, language } = useLanguage();
@@ -68,7 +69,7 @@ export const IncomingLinks = () => {
                 <div className="flex items-center gap-2">
                   <Link2 className="h-3 w-3 flex-shrink-0 text-[#000000A6] dark:text-[#FFFFFFA6]" />
                   <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] truncate max-w-[150px]" title={url.url}>
-                    {url.url}
+                    {extractSiteName(url.url)}
                   </span>
                 </div>
               </div>
