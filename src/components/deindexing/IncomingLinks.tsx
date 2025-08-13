@@ -79,6 +79,7 @@ export const IncomingLinks = () => {
                 </p>
               </div>
               <div className="space-y-2">
+                <div className="h-[1.125rem]"></div>
                 <Button
                   size="sm"
                   variant="outline"
@@ -90,6 +91,7 @@ export const IncomingLinks = () => {
                 </Button>
               </div>
               <div className="space-y-2">
+                <div className="h-[1.125rem]"></div>
                 <CollapsibleTrigger asChild>
                   <Button
                     size="sm"
