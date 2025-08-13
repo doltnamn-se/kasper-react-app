@@ -49,7 +49,9 @@ export const DeindexedLinks = () => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
-  const getRemovalDate = (statusHistory: URLStatusHistory[]) => {
+  const getRemovalDate = (statusHistory: URLStatusHistory[] | undefined | null) => {
+    if (!statusHistory || !Array.isArray(statusHistory)) return '';
+    
     const removalEntry = statusHistory.find(entry => entry.status === 'removal_approved');
     if (!removalEntry) return '';
 
@@ -62,7 +64,9 @@ export const DeindexedLinks = () => {
     }
   };
 
-  const calculateLeadTime = (statusHistory: URLStatusHistory[]) => {
+  const calculateLeadTime = (statusHistory: URLStatusHistory[] | undefined | null) => {
+    if (!statusHistory || !Array.isArray(statusHistory) || statusHistory.length === 0) return '';
+    
     const startDate = new Date(statusHistory[0]?.timestamp || '');
     const endDate = statusHistory[statusHistory.length - 1]?.timestamp;
     
