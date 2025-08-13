@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { URLStatusHistory } from "@/types/url-management";
 import { formatDistanceStrict, format } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
+import { extractSiteName } from "@/utils/urlUtils";
 
 export const DeindexedLinks = () => {
   const { t, language } = useLanguage();
@@ -113,7 +114,7 @@ export const DeindexedLinks = () => {
                 title={url.url}
               >
                 <Link2 className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">{url.url}</span>
+                <span className="truncate">{extractSiteName(url.url)}</span>
               </a>
             </div>
             <div className="space-y-2">
