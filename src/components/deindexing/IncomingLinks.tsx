@@ -85,7 +85,7 @@ export const IncomingLinks = () => {
                     variant="outline"
                     className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
                   >
-                    {language === 'sv' ? 'Visa URL' : 'Show URL'}
+                    {language === 'sv' ? 'Visa länk' : 'Show link'}
                     {expandedUrls.has(url.id) ? (
                       <ChevronUp className="h-3 w-3 ml-2" />
                     ) : (
