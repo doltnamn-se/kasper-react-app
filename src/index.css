@@ -581,3 +581,21 @@ input[type="search"]:focus {
   color: hsl(var(--switcher-active-dot));
 }
 
+/* Force tab slider colors during all states */
+[data-radix-tabs-trigger][data-state="active"] {
+  background-color: #d4f5b6 !important;
+}
+
+.dark [data-radix-tabs-trigger][data-state="active"] {
+  background-color: #034313 !important;
+}
+
+/* Force tab slider colors during transitions */
+[data-radix-tabs-trigger][data-state="active"]:not([data-disabled]) {
+  background-color: #d4f5b6 !important;
+}
+
+.dark [data-radix-tabs-trigger][data-state="active"]:not([data-disabled]) {
+  background-color: #034313 !important;
+}
+
