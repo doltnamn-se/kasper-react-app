@@ -78,8 +78,7 @@ export const IncomingLinks = () => {
                   {getStatusText(url.status, t)}
                 </p>
               </div>
-              <div className="space-y-2">
-                <div className="h-[1.125rem]"></div>
+              <div className="flex items-end h-full">
                 <Button
                   size="sm"
                   variant="outline"
@@ -90,8 +89,7 @@ export const IncomingLinks = () => {
                   {language === 'sv' ? 'Kopiera länk' : 'Copy link'}
                 </Button>
               </div>
-              <div className="space-y-2">
-                <div className="h-[1.125rem]"></div>
+              <div className="flex items-end h-full">
                 <CollapsibleTrigger asChild>
                   <Button
                     size="sm"
