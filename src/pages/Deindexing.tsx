@@ -2,6 +2,7 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { IncomingLinks } from "@/components/deindexing/IncomingLinks";
 import { DeindexedLinks } from "@/components/deindexing/DeindexedLinks";
@@ -12,12 +13,14 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 
 const Deindexing = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
   const [showNewLinkForm, setShowNewLinkForm] = useState(false);
   const isMobile = useIsMobile();
+  const { incomingUrls } = useIncomingUrls();
 
   // Add useEffect to mark deindexing notifications as read
   useEffect(() => {
@@ -169,7 +172,14 @@ const Deindexing = () => {
                   aria-hidden
                 />
                 <TabsTrigger value="incoming" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
-                  {t('deindexing.incoming.links')}
+                  <span className="flex items-center gap-2">
+                    {t('deindexing.incoming.links')}
+                    {incomingUrls && incomingUrls.length > 0 && (
+                      <Badge variant="secondary" className="text-xs px-2 py-0.5 min-w-[20px] h-5 flex items-center justify-center">
+                        {incomingUrls.length}
+                      </Badge>
+                    )}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger value="deindexed" className="flex-1 relative z-10 data-[state=active]:bg-transparent dark:data-[state=active]:bg-transparent">
                   {t('deindexing.deindexed.links')}
