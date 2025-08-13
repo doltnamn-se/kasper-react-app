@@ -75,7 +75,7 @@ const features: FeaturesTranslations = {
   'guide.upplysning.step1': 'Fill in the form.',
   'guide.upplysning.step2': 'Write this in the message field:\n" I request that my personal information be removed from Upplysning.se and that my information be hidden from public search results. My personal number is YYYYMMDD-NNNN. "',
   'step.2.skip': 'Skip this step',
-  'deindexing.url': 'URL',
+  'deindexing.url': 'Site',
   'deindexing.customer': 'Customer',
   'deindexing.submitted': 'Submitted',
   'deindexing.status': 'Status',
