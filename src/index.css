@@ -565,7 +565,6 @@ input[type="search"]:focus {
   --switcher-bg-hover: 0 0% 19%;
   --switcher-fg: 0 0% 100%;
   --switcher-active-dot: 120 95% 55%;
-  --tab-active-bg: #d4f5b6;
 }
 
 .dark {
@@ -573,29 +572,10 @@ input[type="search"]:focus {
   --switcher-bg-hover: 0 0% 92%;
   --switcher-fg: 0 0% 7%;
   --switcher-active-dot: 120 95% 55%;
-  --tab-active-bg: #034313;
 }
 
 /* UserSwitcher: active radio dot color */
 .user-switcher-menu [data-state="checked"] svg {
   color: hsl(var(--switcher-active-dot));
-}
-
-/* Force tab slider colors during all states */
-[data-radix-tabs-trigger][data-state="active"] {
-  background-color: #d4f5b6 !important;
-}
-
-.dark [data-radix-tabs-trigger][data-state="active"] {
-  background-color: #034313 !important;
-}
-
-/* Force tab slider colors during transitions */
-[data-radix-tabs-trigger][data-state="active"]:not([data-disabled]) {
-  background-color: #d4f5b6 !important;
-}
-
-.dark [data-radix-tabs-trigger][data-state="active"]:not([data-disabled]) {
-  background-color: #034313 !important;
 }
 
