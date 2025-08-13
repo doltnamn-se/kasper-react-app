@@ -160,7 +160,7 @@ export const UserMonitoringUrlList = ({
                   <div className="flex gap-2">
                     <Button
                       onClick={() => handleApprove(url.id)}
-                      className="h-8 text-xs bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] flex-1"
+                      className="h-8 text-[0.8rem] bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] flex-1"
                       disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
                     >
                       {processingApprove[url.id] ? 
@@ -170,7 +170,7 @@ export const UserMonitoringUrlList = ({
                     <Button
                       onClick={() => handleReject(url.id)}
                       variant="outline"
-                      className="h-8 text-xs bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#cccccc] dark:hover:bg-[#b8b8b8] dark:text-[#000000] dark:hover:text-[#000000] dark:border-transparent flex-1"
+                      className="h-8 text-[0.8rem] bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#cccccc] dark:hover:bg-[#b8b8b8] dark:text-[#000000] dark:hover:text-[#000000] dark:border-transparent flex-1"
                       disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
                     >
                       {processingReject[url.id] ? 
