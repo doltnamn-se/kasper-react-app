@@ -123,7 +123,7 @@ export const DeindexedLinks = () => {
                 {language === 'sv' ? 'Ledtid' : 'Lead time'}
               </p>
               <div>
-                <span className="bg-[#24cc5b] text-[#121212] dark:text-white px-3 py-1.5 rounded-[10px] text-[0.8rem] font-medium">
+                <span className="bg-[#24cc5b] text-white px-3 py-1.5 rounded-[10px] text-[0.8rem] font-medium capitalize">
                   {calculateLeadTime(url.status_history as URLStatusHistory[])}
                 </span>
               </div>
