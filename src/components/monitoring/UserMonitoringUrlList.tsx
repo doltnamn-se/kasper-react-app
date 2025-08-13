@@ -155,10 +155,10 @@ export const UserMonitoringUrlList = ({
                   <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                     {language === 'sv' ? 'Vill du att vi tar bort länken?' : 'Do you want us to remove this link?'}
                   </p>
-                  <div className={`flex ${isMobile ? 'flex-col' : 'gap-3'}`}>
+                  <div className="flex gap-2">
                     <Button
                       onClick={() => handleApprove(url.id)}
-                      className={`bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] ${isMobile ? 'w-full mb-2' : ''}`}
+                      className="h-7 text-xs bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] flex-1"
                       disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
                     >
                       {processingApprove[url.id] ? 
@@ -168,7 +168,7 @@ export const UserMonitoringUrlList = ({
                     <Button
                       onClick={() => handleReject(url.id)}
                       variant="outline"
-                      className={`bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] dark:border-transparent ${isMobile ? 'w-full' : ''}`}
+                      className="h-7 text-xs bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] dark:border-transparent flex-1"
                       disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
                     >
                       {processingReject[url.id] ? 
