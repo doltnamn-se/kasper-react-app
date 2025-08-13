@@ -66,12 +66,9 @@ export const IncomingLinks = () => {
                 <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                   {t('deindexing.url')}
                 </p>
-                <div className="flex items-center gap-2">
-                  <Link2 className="h-3 w-3 flex-shrink-0 text-[#000000A6] dark:text-[#FFFFFFA6]" />
-                  <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] truncate max-w-[150px]" title={url.url}>
-                    {extractSiteName(url.url)}
-                  </span>
-                </div>
+                <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] truncate max-w-[150px] block" title={url.url}>
+                  {extractSiteName(url.url)}
+                </span>
               </div>
               <div className="space-y-2">
                 <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
