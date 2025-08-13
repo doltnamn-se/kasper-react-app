@@ -12,12 +12,15 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useIncomingUrls } from "@/hooks/useIncomingUrls";
+import { Badge } from "@/components/ui/badge";
 
 const Deindexing = () => {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("incoming");
   const [showNewLinkForm, setShowNewLinkForm] = useState(false);
   const isMobile = useIsMobile();
+  const { incomingUrls } = useIncomingUrls();
 
   // Add useEffect to mark deindexing notifications as read
   useEffect(() => {
@@ -205,9 +208,14 @@ const Deindexing = () => {
 
           <TabsContent value="incoming" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="mb-6">
-                {t('deindexing.incoming.links')}
-              </h2>
+              <div className="flex items-center gap-3 mb-6">
+                <h2>
+                  {t('deindexing.incoming.links')}
+                </h2>
+                <Badge variant="static" className="bg-muted text-muted-foreground">
+                  {incomingUrls?.length || 0}
+                </Badge>
+              </div>
               <IncomingLinks />
             </div>
           </TabsContent>
