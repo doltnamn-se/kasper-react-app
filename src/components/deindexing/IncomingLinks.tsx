@@ -100,7 +100,7 @@ export const IncomingLinks = () => {
                 <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium mb-2">
                   {language === 'sv' ? 'Full URL' : 'Full URL'}
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <p className="text-xs text-[#000000] dark:text-white break-all bg-[#f0f0f0] dark:bg-[#2a2a2a] p-2 rounded flex-1">
                     {url.url}
                   </p>
@@ -108,7 +108,7 @@ export const IncomingLinks = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => copyToClipboard(url.url)}
-                    className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] shrink-0"
+                    className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] shrink-0 self-start md:self-auto"
                   >
                     <Copy className="h-3 w-3 mr-1" />
                     {language === 'sv' ? 'Kopiera' : 'Copy'}
