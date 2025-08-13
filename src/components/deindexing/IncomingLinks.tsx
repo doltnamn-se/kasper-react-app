@@ -83,7 +83,7 @@ export const IncomingLinks = () => {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121]"
+                    className="h-8 text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] rounded-full"
                   >
                     {language === 'sv' ? 'Visa länk' : 'Show link'}
                     {expandedUrls.has(url.id) ? (
