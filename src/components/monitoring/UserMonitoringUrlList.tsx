@@ -8,6 +8,7 @@ import { sv, enUS } from "date-fns/locale";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { extractSiteName } from "@/utils/urlUtils";
 
 interface UserMonitoringUrlListProps {
   monitoringUrls: MonitoringUrl[];
@@ -87,35 +88,29 @@ export const UserMonitoringUrlList = ({
         {language === 'sv' ? 'Nya länkar att granska' : 'New links to review'}
       </h2>
       
-      <div className="space-y-4">
+      <div className="space-y-3">
         {monitoringUrls.map((url) => (
-          <div 
-            key={url.id} 
-            className="bg-[#fdfdfd] dark:bg-[#242424] p-4 rounded-md border border-[#e2e8f0] dark:border-[#232325]"
-          >
-            <div className="space-y-4">
-              <div>
-                <a 
-                  href={url.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 text-md overflow-hidden text-ellipsis break-all max-w-full"
-                  title={url.url}
-                >
-                  {url.url}
-                  <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                </a>
-                <p className="text-sm text-[#000000] dark:text-[#FFFFFFA6] mt-1">
-                  {language === 'sv' ? 'Hittades för ' : 'Found '}
+          <div key={url.id} className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {language === 'sv' ? 'URL' : 'URL'}
+                </p>
+                <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block" title={url.url}>
+                  {extractSiteName(url.url)}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {language === 'sv' ? 'Hittades' : 'Found'}
+                </p>
+                <p className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff]">
                   {formatTime(url.created_at)}
                 </p>
               </div>
-              
-              <div className="border-t border-[#e2e8f0] dark:border-[#232325] pt-4">
-                <p className="text-sm font-medium mb-3">
-                  {language === 'sv' 
-                    ? 'Vill du att vi tar bort länken?' 
-                    : 'Do you want us to remove this link?'}
+              <div className="space-y-2">
+                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                  {language === 'sv' ? 'Vill du att vi tar bort länken?' : 'Do you want us to remove this link?'}
                 </p>
                 <div className={`flex ${isMobile ? 'flex-col' : 'gap-3'}`}>
                   <Button
