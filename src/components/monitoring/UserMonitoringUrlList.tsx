@@ -2,13 +2,14 @@
 import { MonitoringUrl } from "@/types/monitoring-urls";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Copy, ChevronDown, ChevronUp } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { sv, enUS } from "date-fns/locale";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { extractSiteName } from "@/utils/urlUtils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface UserMonitoringUrlListProps {
   monitoringUrls: MonitoringUrl[];
@@ -25,17 +26,39 @@ export const UserMonitoringUrlList = ({
   const { toast } = useToast();
   const [processingApprove, setProcessingApprove] = useState<Record<string, boolean>>({});
   const [processingReject, setProcessingReject] = useState<Record<string, boolean>>({});
+  const [expandedUrls, setExpandedUrls] = useState<Set<string>>(new Set());
   const isMobile = useIsMobile();
   
   const formatTime = (dateString: string) => {
     try {
-      return formatDistanceToNow(parseISO(dateString), {
+      const result = formatDistanceToNow(parseISO(dateString), {
         addSuffix: true,
         locale: language === 'sv' ? sv : enUS
       });
+      // Capitalize only the first letter
+      return result.charAt(0).toUpperCase() + result.slice(1);
     } catch (error) {
       return 'Invalid date';
     }
+  };
+
+  const copyToClipboard = (url: string) => {
+    navigator.clipboard.writeText(url).then(() => {
+      toast({
+        title: language === 'sv' ? 'Länk kopierad' : 'Link copied',
+        description: language === 'sv' ? 'URL:en har kopierats till urklipp' : 'URL has been copied to clipboard',
+      });
+    });
+  };
+
+  const toggleExpanded = (urlId: string) => {
+    const newExpanded = new Set(expandedUrls);
+    if (newExpanded.has(urlId)) {
+      newExpanded.delete(urlId);
+    } else {
+      newExpanded.add(urlId);
+    }
+    setExpandedUrls(newExpanded);
   };
 
   const handleApprove = async (urlId: string) => {
@@ -90,52 +113,94 @@ export const UserMonitoringUrlList = ({
       
       <div className="space-y-3">
         {monitoringUrls.map((url) => (
-          <div key={url.id} className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                  {language === 'sv' ? 'URL' : 'URL'}
-                </p>
-                <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block" title={url.url}>
-                  {extractSiteName(url.url)}
-                </span>
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                  {language === 'sv' ? 'Hittades' : 'Found'}
-                </p>
-                <p className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff]">
-                  {formatTime(url.created_at)}
-                </p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                  {language === 'sv' ? 'Vill du att vi tar bort länken?' : 'Do you want us to remove this link?'}
-                </p>
-                <div className={`flex ${isMobile ? 'flex-col' : 'gap-3'}`}>
-                  <Button
-                    onClick={() => handleApprove(url.id)}
-                    className={`bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] ${isMobile ? 'w-full mb-2' : ''}`}
-                    disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
-                  >
-                    {processingApprove[url.id] ? 
-                      (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
-                      (language === 'sv' ? 'Ja' : 'Yes')}
-                  </Button>
-                  <Button
-                    onClick={() => handleReject(url.id)}
-                    variant="outline"
-                    className={`bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] dark:border-transparent ${isMobile ? 'w-full' : ''}`}
-                    disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
-                  >
-                    {processingReject[url.id] ? 
-                      (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
-                      (language === 'sv' ? 'Nej' : 'No')}
-                  </Button>
+          <Collapsible key={url.id} open={expandedUrls.has(url.id)} onOpenChange={() => toggleExpanded(url.id)}>
+            <div className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="space-y-2">
+                  <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                    {language === 'sv' ? 'URL' : 'URL'}
+                  </p>
+                  <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block" title={url.url}>
+                    {extractSiteName(url.url)}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                    {language === 'sv' ? 'Hittades' : 'Found'}
+                  </p>
+                  <p className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff]">
+                    {formatTime(url.created_at)}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                    {language === 'sv' ? 'Visa url' : 'Show URL'}
+                  </p>
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 bg-transparent border border-[#dfdfdf] dark:border-[#595959] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] rounded-full"
+                    >
+                      {language === 'sv' ? 'Visa länk' : 'Show link'}
+                      {expandedUrls.has(url.id) ? (
+                        <ChevronUp className="h-3 w-3 ml-2" />
+                      ) : (
+                        <ChevronDown className="h-3 w-3 ml-2" />
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+                    {language === 'sv' ? 'Vill du att vi tar bort länken?' : 'Do you want us to remove this link?'}
+                  </p>
+                  <div className={`flex ${isMobile ? 'flex-col' : 'gap-3'}`}>
+                    <Button
+                      onClick={() => handleApprove(url.id)}
+                      className={`bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] ${isMobile ? 'w-full mb-2' : ''}`}
+                      disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
+                    >
+                      {processingApprove[url.id] ? 
+                        (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
+                        (language === 'sv' ? 'Ja' : 'Yes')}
+                    </Button>
+                    <Button
+                      onClick={() => handleReject(url.id)}
+                      variant="outline"
+                      className={`bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#2a2a2b] dark:hover:bg-[#3a3a3b] dark:text-[#FFFFFF] dark:border-transparent ${isMobile ? 'w-full' : ''}`}
+                      disabled={!!processingApprove[url.id] || !!processingReject[url.id]}
+                    >
+                      {processingReject[url.id] ? 
+                        (language === 'sv' ? 'Behandlar...' : 'Processing...') : 
+                        (language === 'sv' ? 'Nej' : 'No')}
+                    </Button>
+                  </div>
                 </div>
               </div>
+              <CollapsibleContent className="space-y-2">
+                <div className="mt-4 pt-4 border-t border-[#dfdfdf] dark:border-[#2e2e2e]">
+                  <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium mb-2">
+                    {language === 'sv' ? 'Full URL' : 'Full URL'}
+                  </p>
+                  <div className="flex flex-col md:flex-row md:items-center gap-2">
+                    <p className="text-xs text-[#000000] dark:text-white break-all bg-[#f0f0f0] dark:bg-[#2a2a2a] p-2 rounded flex-1">
+                      {url.url}
+                    </p>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => copyToClipboard(url.url)}
+                      className="h-8 text-xs px-3 bg-transparent border-[#dfdfdf] dark:border-[#2e2e2e] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] shrink-0 self-start md:self-auto"
+                    >
+                      <Copy className="h-3 w-3 mr-1" />
+                      {language === 'sv' ? 'Kopiera' : 'Copy'}
+                    </Button>
+                  </div>
+                </div>
+              </CollapsibleContent>
             </div>
-          </div>
+          </Collapsible>
         ))}
       </div>
     </div>
