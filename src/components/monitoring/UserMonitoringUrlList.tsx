@@ -107,9 +107,14 @@ export const UserMonitoringUrlList = ({
 
   return (
     <div className="bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-      <h2 className="mb-6">
-        {language === 'sv' ? 'Nya länkar att granska' : 'New links to review'}
-      </h2>
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-lg font-semibold">
+          {language === 'sv' ? 'Nya länkar att granska' : 'New links to review'}
+        </h2>
+        <span className="bg-[#24cc5b] text-white px-2 py-1 rounded-full text-xs font-medium min-w-[24px] text-center">
+          {monitoringUrls.length}
+        </span>
+      </div>
       
       <div className="space-y-3">
         {monitoringUrls.map((url) => (
