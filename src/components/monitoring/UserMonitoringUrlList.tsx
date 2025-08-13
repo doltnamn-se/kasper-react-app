@@ -61,13 +61,6 @@ export const UserMonitoringUrlList = ({
     setExpandedUrls(newExpanded);
   };
 
-  const getFullUrl = (url: string) => {
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-    return `https://${url}`;
-  };
-
   const handleApprove = async (urlId: string) => {
     try {
       setProcessingApprove(prev => ({ ...prev, [urlId]: true }));
@@ -133,7 +126,7 @@ export const UserMonitoringUrlList = ({
                     {language === 'sv' ? 'Sida' : 'Site'}
                   </p>
                   <a 
-                    href={getFullUrl(url.url)} 
+                    href={url.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block hover:bg-[#c5e9ff] dark:hover:bg-[#0d3447] transition-colors cursor-pointer" 
