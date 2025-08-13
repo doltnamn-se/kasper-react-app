@@ -22,6 +22,28 @@ const Deindexing = () => {
   const isMobile = useIsMobile();
   const { incomingUrls } = useIncomingUrls();
 
+  // Query for deindexed URLs count
+  const { data: deindexedUrls } = useQuery({
+    queryKey: ['deindexed-urls'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return [];
+
+      const { data, error } = await supabase
+        .from('removal_urls')
+        .select('id')
+        .eq('customer_id', session.user.id)
+        .eq('status', 'removal_approved');
+
+      if (error) {
+        console.error('Error fetching deindexed URLs:', error);
+        return [];
+      }
+
+      return data;
+    }
+  });
+
   // Add useEffect to mark deindexing notifications as read
   useEffect(() => {
     const markDeindexingNotificationsAsRead = async () => {
@@ -222,9 +244,14 @@ const Deindexing = () => {
 
           <TabsContent value="deindexed" className="mt-6">
             <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="mb-6">
-                {t('deindexing.deindexed.links')}
-              </h2>
+              <div className="flex items-center gap-3 mb-6">
+                <h2>
+                  {t('deindexing.deindexed.links')}
+                </h2>
+                <div className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-xs md:text-[0.9rem] font-medium md:pb-[2px]" style={{ paddingRight: '1px' }}>
+                  {deindexedUrls?.length || 0}
+                </div>
+              </div>
               <DeindexedLinks />
             </div>
           </TabsContent>
