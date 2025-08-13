@@ -114,7 +114,7 @@ export const DeindexedLinks = () => {
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                 {language === 'sv' ? 'Borttagningsdatum' : 'Removal date'}
               </p>
-              <p className="text-xs text-[#000000] dark:text-white capitalize">
+              <p className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] capitalize">
                 {getRemovalDate(url.status_history as URLStatusHistory[])}
               </p>
             </div>
