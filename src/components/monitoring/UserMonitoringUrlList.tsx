@@ -137,10 +137,7 @@ export const UserMonitoringUrlList = ({
                     {formatTime(url.created_at)}
                   </p>
                 </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                    {language === 'sv' ? 'Visa url' : 'Show URL'}
-                  </p>
+                <div className="flex items-end h-full">
                   <CollapsibleTrigger asChild>
                     <Button
                       size="sm"
