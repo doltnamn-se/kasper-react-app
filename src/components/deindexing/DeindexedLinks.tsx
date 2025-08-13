@@ -100,7 +100,7 @@ export const DeindexedLinks = () => {
   return (
     <div className="space-y-3">
       {sortedUrls.map((url) => (
-        <div key={url.id} className="bg-[#fafafa] dark:bg-[#1a1a1a] rounded-[12px] p-4">
+        <div key={url.id} className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
