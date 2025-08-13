@@ -123,7 +123,7 @@ export const UserMonitoringUrlList = ({
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
                   <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
-                    {language === 'sv' ? 'Länk' : 'Link'}
+                    {language === 'sv' ? 'Sida' : 'Site'}
                   </p>
                   <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block" title={url.url}>
                     {extractSiteName(url.url)}
