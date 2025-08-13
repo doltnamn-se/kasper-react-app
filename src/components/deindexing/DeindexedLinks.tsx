@@ -106,7 +106,7 @@ export const DeindexedLinks = () => {
               <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
                 {t('deindexing.url')}
               </p>
-              <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] truncate max-w-[150px] block px-3 py-1.5 rounded-[10px]" style={{ backgroundColor: '#50bffb80' }} title={url.url}>
+              <span className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] truncate max-w-[150px] block px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55]" title={url.url}>
                 {extractSiteName(url.url)}
               </span>
             </div>
