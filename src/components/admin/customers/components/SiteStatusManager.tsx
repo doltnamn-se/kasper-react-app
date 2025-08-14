@@ -133,7 +133,8 @@ useEffect(() => {
         } = await supabase.from('customer_site_statuses').update({
           status: newStatus,
           updated_at: new Date().toISOString(),
-          updated_by: (await supabase.auth.getUser()).data.user?.id
+          updated_by: (await supabase.auth.getUser()).data.user?.id,
+          member_id: selectedMemberId
         }).eq('id', existingStatus.id);
         if (error) throw error;
       } else {
