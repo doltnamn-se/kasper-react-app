@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Send, Trash, RefreshCw, Ban, UserRoundPen, ArrowLeft, BadgeCheck } from "lucide-react";
+import { Send, Trash, RefreshCw, Ban, UserRoundPen, ArrowLeft, IdCard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
@@ -148,7 +148,7 @@ export const AdminActionButtons = ({
             title="Download ID document"
             className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
           >
-            <BadgeCheck className="h-4 w-4" />
+            <IdCard className="h-4 w-4" />
           </Button>
         )}
       </div>
