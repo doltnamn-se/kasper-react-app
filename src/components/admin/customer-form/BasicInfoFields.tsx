@@ -57,11 +57,6 @@ export const BasicInfoFields = ({
             <SelectValue placeholder={t('select.subscription.plan')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1_month">{t('1.month')}</SelectItem>
-            <SelectItem value="3_months">{t('3.months')}</SelectItem>
-            <SelectItem value="6_months">{t('6.months')}</SelectItem>
-            <SelectItem value="12_months">{t('12.months')}</SelectItem>
-            <SelectItem value="24_months">{t('24.months')}</SelectItem>
             <SelectItem value="personskydd_1_year">Personskydd - 1 år</SelectItem>
             <SelectItem value="parskydd_1_year">Parskydd - 1 år</SelectItem>
             <SelectItem value="familjeskydd_1_year">Familjeskydd - 1 år</SelectItem>

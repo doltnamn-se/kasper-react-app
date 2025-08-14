@@ -8,7 +8,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
   const [formData, setFormData] = useState({
     email: "",
     displayName: "",
-    subscriptionPlan: "1_month" as "1_month" | "3_months" | "6_months" | "12_months" | "24_months" | "personskydd_1_year" | "parskydd_1_year" | "familjeskydd_1_year" | "personskydd_2_years" | "parskydd_2_years" | "familjeskydd_2_years",
+    subscriptionPlan: "personskydd_1_year" as "1_month" | "3_months" | "6_months" | "12_months" | "24_months" | "personskydd_1_year" | "parskydd_1_year" | "familjeskydd_1_year" | "personskydd_2_years" | "parskydd_2_years" | "familjeskydd_2_years",
     customerType: "private" as "private" | "business",
     hasAddressAlert: false
   });
@@ -17,7 +17,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     setFormData({
       email: "",
       displayName: "",
-      subscriptionPlan: "1_month",
+      subscriptionPlan: "personskydd_1_year",
       customerType: "private",
       hasAddressAlert: false
     });
