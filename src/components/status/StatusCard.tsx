@@ -23,7 +23,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
   isLoading
 }) => {
   const { language } = useLanguage();
-  const { handleRemoveSite } = useGuideOpener();
+  const { handleRemoveSite, isOpening } = useGuideOpener();
 
   return (
     <Card 
@@ -45,7 +45,8 @@ export const StatusCard: React.FC<StatusCardProps> = ({
         <StatusTable 
           siteStatuses={siteStatuses} 
           sites={siteConfig} 
-          onRemoveSite={handleRemoveSite} 
+          onRemoveSite={handleRemoveSite}
+          isProcessing={isOpening}
         />
       </div>
     </Card>

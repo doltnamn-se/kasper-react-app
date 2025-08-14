@@ -16,7 +16,7 @@ interface MemberStatusCardProps {
 export const MemberStatusCard: React.FC<MemberStatusCardProps> = ({ customerId, memberId }) => {
   const { language } = useLanguage();
   const { siteStatuses, isLoading } = useMemberSiteStatuses(customerId, memberId);
-  const { handleRemoveSite } = useMemberGuideOpener(customerId, memberId);
+  const { handleRemoveSite, isOpening } = useMemberGuideOpener(customerId, memberId);
 
   return (
     <Card
@@ -39,6 +39,7 @@ export const MemberStatusCard: React.FC<MemberStatusCardProps> = ({ customerId, 
           siteStatuses={siteStatuses}
           sites={siteConfig}
           onRemoveSite={handleRemoveSite}
+          isProcessing={isOpening}
         />
       </div>
     </Card>

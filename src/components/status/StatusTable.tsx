@@ -23,12 +23,14 @@ interface StatusTableProps {
   siteStatuses: SiteStatus[];
   sites: SiteInfo[];
   onRemoveSite: (siteName: string) => void;
+  isProcessing?: boolean;
 }
 
 export const StatusTable: React.FC<StatusTableProps> = ({ 
   siteStatuses, 
-  sites,
-  onRemoveSite
+  sites, 
+  onRemoveSite,
+  isProcessing = false
 }) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
@@ -112,11 +114,12 @@ export const StatusTable: React.FC<StatusTableProps> = ({
                       </TooltipProvider>
                     )}
                   </div>
-                  <StatusActions 
-                    status={status}
-                    siteName={site.name}
-                    onRemoveSite={onRemoveSite}
-                  />
+                    <StatusActions
+                      status={status}
+                      siteName={site.name}
+                      onRemoveSite={onRemoveSite}
+                      isProcessing={isProcessing}
+                    />
                 </div>
               </TableCell>
             </TableRow>
