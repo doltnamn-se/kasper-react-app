@@ -54,6 +54,7 @@ export const AdminActionButtons = ({
   isBanned = false,
   onManageMembers,
   isManagingMembers = false,
+  subscriptionPlan,
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
@@ -66,12 +67,13 @@ export const AdminActionButtons = ({
   isBanned?: boolean;
   onManageMembers?: () => void;
   isManagingMembers?: boolean;
+  subscriptionPlan?: string | null;
 }) => {
   return (
     <div className="absolute top-8 md:top-6 left-6 right-6 flex items-center justify-between">
       {/* Left-aligned: Manage members */}
       <div className="flex">
-        {onManageMembers && (
+        {onManageMembers && subscriptionPlan && (subscriptionPlan.includes('parskydd') || subscriptionPlan.includes('familjeskydd')) && (
           <Button
             onClick={onManageMembers}
             variant="outline"
