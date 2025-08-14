@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -739,11 +739,11 @@ export type Database = {
     }
     Functions: {
       assign_promotional_code: {
-        Args: { code_id: string; customer_id: string; code_value: string }
+        Args: { code_id: string; code_value: string; customer_id: string }
         Returns: undefined
       }
       can_update_site_status: {
-        Args: { user_id: string; customer_id: string }
+        Args: { customer_id: string; user_id: string }
         Returns: boolean
       }
       get_promotional_codes_with_customers: {
@@ -764,15 +764,15 @@ export type Database = {
       }
       test_push_notification: {
         Args: {
-          user_id: string
-          title: string
           message: string
           notification_type?: string
+          title: string
+          user_id: string
         }
         Returns: Json
       }
       update_user_password: {
-        Args: { user_id: string; new_password: string }
+        Args: { new_password: string; user_id: string }
         Returns: undefined
       }
     }
