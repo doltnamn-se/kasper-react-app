@@ -12,7 +12,7 @@ import { SiteStatusManager } from "./SiteStatusManager";
 import { Copy, Check } from "lucide-react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { Separator } from "@/components/ui/separator";
-import { IdVerificationSection } from "./IdVerificationSection";
+
 
 import { MemberManagerPanel } from "../members/MemberManagerPanel";
 interface CustomerDetailsContentProps {
@@ -95,7 +95,7 @@ export const CustomerDetailsContent = ({
     }, 200);
   };
   return <div className="px-6 py-6 relative bg-[#FFFFFF] dark:bg-[#161617]">
-      {isSuperAdmin && <AdminActionButtons isSendingEmail={isSendingEmail} onSendActivationEmail={onSendActivationEmail} setShowDeleteDialog={setShowDeleteDialog} onRefreshData={onRefresh} isRefreshing={isRefreshing} onBanUser={onBanUser} onDeleteUser={onDeleteUser} isTogglingBan={isTogglingBan} isBanned={isBanned} onManageMembers={() => setShowMembersDialog((v) => !v)} isManagingMembers={showMembersDialog} subscriptionPlan={customer.subscription_plan} />}
+      {isSuperAdmin && <AdminActionButtons isSendingEmail={isSendingEmail} onSendActivationEmail={onSendActivationEmail} setShowDeleteDialog={setShowDeleteDialog} onRefreshData={onRefresh} isRefreshing={isRefreshing} onBanUser={onBanUser} onDeleteUser={onDeleteUser} isTogglingBan={isTogglingBan} isBanned={isBanned} onManageMembers={() => setShowMembersDialog((v) => !v)} isManagingMembers={showMembersDialog} subscriptionPlan={customer.subscription_plan} customerId={customer.id} />}
       {showMembersDialog && (
         <div className="space-y-8 mt-16 md:mt-12">
           <MemberManagerPanel customerId={customer.id} customerName={customerName} />
@@ -148,15 +148,6 @@ export const CustomerDetailsContent = ({
           />
 
 
-          {/* ID Verification section - moved to bottom */}
-          {isSuperAdmin && (
-            <div className="pt-3 pb-5">
-              <Separator />
-              <div className="pt-6">
-                <IdVerificationSection customerId={customer.id} />
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>;

@@ -1,10 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { Send, Trash, RefreshCw, Ban, UserRoundPen, ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { Send, Trash, RefreshCw, Ban, UserRoundPen, ArrowLeft, IdCard } from "lucide-react";
+import { useState, useEffect } from "react";
 import { AdminUrlSubmission } from "./AdminUrlSubmission";
 import { DeleteUserDialog } from "./DeleteUserDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface AdminActionsProps {
   customerId: string;
@@ -55,6 +57,7 @@ export const AdminActionButtons = ({
   onManageMembers,
   isManagingMembers = false,
   subscriptionPlan,
+  customerId,
 }: {
   isSendingEmail: boolean;
   onSendActivationEmail: () => void;
@@ -68,7 +71,54 @@ export const AdminActionButtons = ({
   onManageMembers?: () => void;
   isManagingMembers?: boolean;
   subscriptionPlan?: string | null;
+  customerId: string;
 }) => {
+  const { toast } = useToast();
+  const [idVerification, setIdVerification] = useState<any>(null);
+  const [downloading, setDownloading] = useState(false);
+
+  useEffect(() => {
+    const fetchIdVerification = async () => {
+      const { data, error } = await supabase
+        .from('id_verifications')
+        .select('*')
+        .eq('customer_id', customerId)
+        .not('document_path', 'is', null)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      
+      if (!error && data) {
+        setIdVerification(data);
+      }
+    };
+    
+    if (customerId) {
+      fetchIdVerification();
+    }
+  }, [customerId]);
+
+  const handleDownloadId = async () => {
+    if (!idVerification?.document_path) return;
+    setDownloading(true);
+    try {
+      const { data, error } = await supabase.storage
+        .from('id_documents')
+        .createSignedUrl(idVerification.document_path, 60);
+      if (error) throw error;
+      const url = data?.signedUrl;
+      if (url) window.open(url, '_blank');
+    } catch (e) {
+      console.error('Download failed', e);
+      toast({ 
+        title: 'Error', 
+        description: 'Failed to download document.', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setDownloading(false);
+    }
+  };
   return (
     <div className="absolute top-8 md:top-6 left-6 right-6 flex items-center justify-between">
       {/* Left-aligned: Manage members */}
@@ -115,6 +165,19 @@ export const AdminActionButtons = ({
         >
           <Send className="h-4 w-4" />
         </Button>
+
+        {idVerification && (
+          <Button
+            onClick={handleDownloadId}
+            disabled={downloading}
+            variant="outline"
+            size="icon"
+            title="Download ID document"
+            className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+          >
+            <IdCard className="h-4 w-4" />
+          </Button>
+        )}
         
         {onBanUser && (
           <Button
