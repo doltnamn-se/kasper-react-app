@@ -121,8 +121,8 @@ export const AdminActionButtons = ({
   };
   return (
     <div className="absolute top-8 md:top-6 left-6 right-6 flex items-center justify-between">
-      {/* Left-aligned: Manage members */}
-      <div className="flex">
+      {/* Left-aligned: Manage members and ID card */}
+      <div className="flex gap-2">
         {onManageMembers && subscriptionPlan && (subscriptionPlan.includes('parskydd') || subscriptionPlan.includes('familjeskydd')) && (
           <Button
             onClick={onManageMembers}
@@ -136,6 +136,19 @@ export const AdminActionButtons = ({
             ) : (
               <UserRoundPen className="h-4 w-4" />
             )}
+          </Button>
+        )}
+        
+        {idVerification && (
+          <Button
+            onClick={handleDownloadId}
+            disabled={downloading}
+            variant="outline"
+            size="icon"
+            title="Download ID document"
+            className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
+          >
+            <IdCard className="h-4 w-4" />
           </Button>
         )}
       </div>
@@ -165,19 +178,6 @@ export const AdminActionButtons = ({
         >
           <Send className="h-4 w-4" />
         </Button>
-
-        {idVerification && (
-          <Button
-            onClick={handleDownloadId}
-            disabled={downloading}
-            variant="outline"
-            size="icon"
-            title="Download ID document"
-            className="hover:bg-transparent text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]"
-          >
-            <IdCard className="h-4 w-4" />
-          </Button>
-        )}
         
         {onBanUser && (
           <Button
