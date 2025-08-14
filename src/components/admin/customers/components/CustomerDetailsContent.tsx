@@ -141,7 +141,11 @@ export const CustomerDetailsContent = ({
           </div>
 
           
-          <SiteStatusManager customerId={customer.id} />
+          <SiteStatusManager 
+            customerId={customer.id} 
+            customerName={customerName}
+            subscriptionPlan={customer.subscription_plan}
+          />
 
 
           {/* ID Verification section - moved to bottom */}

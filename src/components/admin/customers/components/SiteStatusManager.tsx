@@ -7,6 +7,8 @@ import { toast } from "sonner";
 
 interface SiteStatusManagerProps {
   customerId: string;
+  customerName?: string;
+  subscriptionPlan?: string | null;
 }
 type SiteStatus = {
   id: string;
@@ -14,13 +16,18 @@ type SiteStatus = {
   status: string;
 };
 export function SiteStatusManager({
-  customerId
+  customerId,
+  customerName,
+  subscriptionPlan
 }: SiteStatusManagerProps) {
 const { language } = useLanguage();
 const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
 const [isLoading, setIsLoading] = useState(true);
 const { members: customerMembers } = useCustomerMembers(customerId);
-const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  
+  // Check if user has member management subscription
+  const hasMembers = subscriptionPlan && (subscriptionPlan.includes('parskydd') || subscriptionPlan.includes('familjeskydd'));
   const sites = [{
     name: 'Mrkoll',
     icon: '/fonts/MrKoll.svg'
@@ -186,22 +193,26 @@ useEffect(() => {
         <h3 className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">
           {language === 'sv' ? 'Upplysningssidor' : 'Search sites'}
         </h3>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">{language === 'sv' ? 'Användare' : 'User'}</span>
-          <Select value={selectedMemberId ?? 'main'} onValueChange={(value) => setSelectedMemberId(value === 'main' ? null : value)}>
-            <SelectTrigger className="w-[180px] h-8 text-xs font-medium">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="text-xs">
-              <SelectItem value="main">{language === 'sv' ? 'Huvudanvändare' : 'Main user'}</SelectItem>
-              {customerMembers.map((m) => (
-                <SelectItem key={m.id} value={m.id} className="text-xs">
-                  {m.display_name}
+        {hasMembers && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">{language === 'sv' ? 'Användare' : 'User'}</span>
+            <Select value={selectedMemberId ?? 'main'} onValueChange={(value) => setSelectedMemberId(value === 'main' ? null : value)}>
+              <SelectTrigger className="w-[180px] h-8 text-xs font-medium bg-white dark:bg-gray-800 z-50">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="text-xs bg-white dark:bg-gray-800 z-50">
+                <SelectItem value="main" className="text-xs">
+                  {customerName || (language === 'sv' ? 'Huvudanvändare' : 'Main user')}
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+                {customerMembers.map((m) => (
+                  <SelectItem key={m.id} value={m.id} className="text-xs">
+                    {m.display_name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
       <div className="space-y-3">
         {sites.map(site => {
