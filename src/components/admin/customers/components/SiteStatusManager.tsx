@@ -108,7 +108,25 @@ useEffect(() => {
   };
   const updateSiteStatus = async (siteName: string, newStatus: string) => {
     try {
-      const existingStatus = siteStatuses.find(s => s.site_name === siteName);
+      // Check for existing status with correct customer_id, site_name AND member_id combination
+      let query = supabase
+        .from('customer_site_statuses')
+        .select('*')
+        .eq('customer_id', customerId)
+        .eq('site_name', siteName);
+      
+      if (selectedMemberId) {
+        query = query.eq('member_id', selectedMemberId);
+      } else {
+        query = query.is('member_id', null);
+      }
+      
+      const { data: existingStatuses, error: queryError } = await query;
+      
+      if (queryError) throw queryError;
+      
+      const existingStatus = existingStatuses?.[0];
+      
       if (existingStatus?.id) {
         const {
           error
