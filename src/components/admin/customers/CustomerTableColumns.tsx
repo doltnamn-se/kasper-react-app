@@ -139,7 +139,7 @@ export const getColumns = (
                 cx="6" 
                 cy="6" 
                 r="3" 
-                fill={isOnline ? 'hsl(var(--ds-success-foreground))' : 'hsl(var(--destructive))'} 
+                fill={isOnline ? 'hsl(142 76% 36%)' : 'hsl(var(--destructive))'} 
                 filter="url(#glow)"
               />
             </svg>
