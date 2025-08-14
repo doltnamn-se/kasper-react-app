@@ -126,21 +126,13 @@ export const getColumns = (
         return (
           <div className="flex items-center gap-2">
             <svg width="12" height="12" viewBox="0 0 12 12">
-              <defs>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                  <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
               <circle 
                 cx="6" 
                 cy="6" 
                 r="3" 
                 fill={isOnline ? 'hsl(142 76% 36%)' : 'hsl(var(--destructive))'} 
-                filter="url(#glow)"
+                stroke={isOnline ? 'hsl(142 76% 26%)' : 'hsl(var(--destructive) / 0.8)'} 
+                strokeWidth="0.5"
               />
             </svg>
             <span className="text-black dark:text-white">
