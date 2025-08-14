@@ -108,6 +108,8 @@ useEffect(() => {
   };
   const updateSiteStatus = async (siteName: string, newStatus: string) => {
     try {
+      console.log('updateSiteStatus called:', { siteName, newStatus, customerId, selectedMemberId });
+      
       // Check for existing status with correct customer_id, site_name AND member_id combination
       let query = supabase
         .from('customer_site_statuses')
@@ -123,30 +125,44 @@ useEffect(() => {
       
       const { data: existingStatuses, error: queryError } = await query;
       
+      console.log('Query result:', { existingStatuses, queryError });
+      
       if (queryError) throw queryError;
       
       const existingStatus = existingStatuses?.[0];
       
       if (existingStatus?.id) {
-        const {
-          error
-        } = await supabase.from('customer_site_statuses').update({
+        console.log('Updating existing status:', existingStatus);
+        const updateData = {
           status: newStatus,
           updated_at: new Date().toISOString(),
           updated_by: (await supabase.auth.getUser()).data.user?.id,
           member_id: selectedMemberId
-        }).eq('id', existingStatus.id);
-        if (error) throw error;
-      } else {
+        };
+        console.log('Update data:', updateData);
+        
         const {
           error
-        } = await supabase.from('customer_site_statuses').insert({
+        } = await supabase.from('customer_site_statuses').update(updateData).eq('id', existingStatus.id);
+        
+        console.log('Update result:', { error });
+        if (error) throw error;
+      } else {
+        console.log('Creating new status');
+        const insertData = {
           customer_id: customerId,
           site_name: siteName,
           status: newStatus,
           updated_by: (await supabase.auth.getUser()).data.user?.id,
           member_id: selectedMemberId
-        });
+        };
+        console.log('Insert data:', insertData);
+        
+        const {
+          error
+        } = await supabase.from('customer_site_statuses').insert(insertData);
+        
+        console.log('Insert result:', { error });
         if (error) throw error;
       }
       setSiteStatuses(prev => prev.map(s => s.site_name === siteName ? {
