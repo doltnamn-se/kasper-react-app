@@ -10,13 +10,14 @@ import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthLogo } from "./auth/AuthLogo";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const TopNav = () => {
   const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const isMobile = useIsMobile();
   const { t } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -122,7 +123,13 @@ export const TopNav = () => {
                   variant="ghost"
                   size="icon"
                   className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
-                  onClick={() => window.open("https://joinkasper.com/support/#kontakt", "_blank")}
+                  onClick={() => {
+                    if (isAdminRoute) {
+                      navigate("/admin/chat");
+                    } else {
+                      window.open("https://joinkasper.com/support/#kontakt", "_blank");
+                    }
+                  }}
                 >
                   <MessageSquareText className="w-4 h-4" />
                 </Button>
