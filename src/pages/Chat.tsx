@@ -195,16 +195,24 @@ export default function Chat() {
             {t('nav.admin.support')}
           </h1>
           {!isMobile && (
-            <Button
-              onClick={() => {
-                setIsCreatingNew(true);
-                setActiveConversationId(null);
-                if (isMobile) setIsChatOpen(true);
-              }}
-              className="rounded-xl h-9"
-            >
-              {t('new.message')}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => {
+                  setIsCreatingNew(true);
+                  setActiveConversationId(null);
+                  if (isMobile) setIsChatOpen(true);
+                }}
+                className="rounded-xl h-9"
+              >
+                {t('new.message')}
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-xl h-9"
+              >
+                {t('general.questions')}
+              </Button>
+            </div>
           )}
         </div>
 
@@ -251,18 +259,26 @@ export default function Chat() {
             </CardContent>
           </Card>
 
-          {/* Mobile New Message Button */}
+          {/* Mobile Buttons */}
           {isMobile && (
-            <Button
-              onClick={() => {
-                setIsCreatingNew(true);
-                setActiveConversationId(null);
-                if (isMobile) setIsChatOpen(true);
-              }}
-              className="w-full rounded-xl h-9"
-            >
-              {t('new.message')}
-            </Button>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                onClick={() => {
+                  setIsCreatingNew(true);
+                  setActiveConversationId(null);
+                  if (isMobile) setIsChatOpen(true);
+                }}
+                className="rounded-xl h-9"
+              >
+                {t('new.message')}
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-xl h-9"
+              >
+                {t('general.questions')}
+              </Button>
+            </div>
           )}
 
           {/* Desktop Chat Interface or Mobile Sheet */}

@@ -30,4 +30,5 @@ export interface NavigationTranslations {
   'inbox': string;
   'no.message.history': string;
   'new.message': string;
+  'general.questions': string;
 }

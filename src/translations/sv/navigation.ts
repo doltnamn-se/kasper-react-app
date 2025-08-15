@@ -31,5 +31,6 @@ export const navigation: NavigationTranslations = {
   'last.seen': 'Senast sedd',
   'inbox': 'Inkorg',
   'no.message.history': 'Du har ingen meddelandehistorik',
-  'new.message': 'Nytt meddelande'
+  'new.message': 'Nytt meddelande',
+  'general.questions': 'Vanliga frågor'
 };
