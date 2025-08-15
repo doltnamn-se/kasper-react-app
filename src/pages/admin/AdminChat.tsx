@@ -4,16 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Send } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow } from 'date-fns';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AdminChat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [newMessage, setNewMessage] = useState('');
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   const {
     conversations,
@@ -36,7 +40,85 @@ export default function AdminChat() {
   const handleConversationSelect = (conversationId: string) => {
     setActiveConversationId(conversationId);
     if (userId) markAsRead(conversationId, userId);
+    if (isMobile) setIsChatOpen(true);
   };
+
+  const renderChatInterface = (inSheet = false) => (
+    <Card className={`${inSheet ? '' : 'lg:col-span-2'} rounded-2xl`}>
+      {activeConversationId ? (
+        <>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Chat</CardTitle>
+            <div className="flex gap-2">
+              {userId && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => assignConversation({ conversationId: activeConversationId, adminId: userId })}
+                >
+                  Assign to me
+                </Button>
+              )}
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => closeConversation(activeConversationId)}
+              >
+                Close
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className={`flex flex-col ${inSheet ? 'h-[70vh]' : 'h-[500px]'} p-0`}>
+            <ScrollArea className="flex-1 p-4">
+              {messages.map((message) => {
+                const isAdmin = message.sender?.role === 'super_admin';
+                return (
+                  <div
+                    key={message.id}
+                    className={`flex mb-3 ${isAdmin ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-lg px-3 py-2 ${
+                        isAdmin ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      }`}
+                    >
+                      <p className="text-sm">{message.message}</p>
+                      <p className="text-xs opacity-70 mt-1">
+                        {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </ScrollArea>
+            <div className="p-4 border-t">
+              <div className="flex gap-2">
+                <Textarea
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type your response..."
+                  className="flex-1 min-h-[40px] max-h-[100px]"
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!newMessage.trim() || isSendingMessage}
+                  size="icon"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </>
+      ) : (
+        <CardContent className={`flex items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'}`}>
+          <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
+            {t('select.conversation.to.chat')}
+          </p>
+        </CardContent>
+      )}
+    </Card>
+  );
 
   return (
     <div>
@@ -46,14 +128,14 @@ export default function AdminChat() {
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
+      <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
         {/* Conversations List */}
-        <Card className="lg:col-span-1 rounded-2xl">
+        <Card className={`${isMobile ? '' : 'lg:col-span-1'} rounded-2xl`}>
           <CardHeader>
             <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('conversations')} ({conversations.length})</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <ScrollArea className="h-[500px]">
+            <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
               {conversations.map((conversation) => (
                 <div
                   key={conversation.id}
@@ -84,81 +166,21 @@ export default function AdminChat() {
           </CardContent>
         </Card>
 
-        {/* Chat Interface */}
-        <Card className="lg:col-span-2 rounded-2xl">
-          {activeConversationId ? (
-            <>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Chat</CardTitle>
-                <div className="flex gap-2">
-                  {userId && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => assignConversation({ conversationId: activeConversationId, adminId: userId })}
-                    >
-                      Assign to me
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => closeConversation(activeConversationId)}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="flex flex-col h-[500px] p-0">
-                <ScrollArea className="flex-1 p-4">
-                  {messages.map((message) => {
-                    const isAdmin = message.sender?.role === 'super_admin';
-                    return (
-                      <div
-                        key={message.id}
-                        className={`flex mb-3 ${isAdmin ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div
-                          className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                            isAdmin ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                          }`}
-                        >
-                          <p className="text-sm">{message.message}</p>
-                          <p className="text-xs opacity-70 mt-1">
-                            {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </ScrollArea>
-                <div className="p-4 border-t">
-                  <div className="flex gap-2">
-                    <Textarea
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Type your response..."
-                      className="flex-1 min-h-[40px] max-h-[100px]"
-                    />
-                    <Button
-                      onClick={handleSendMessage}
-                      disabled={!newMessage.trim() || isSendingMessage}
-                      size="icon"
-                    >
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </>
-          ) : (
-            <CardContent className="flex items-center justify-center h-[500px]">
-              <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
-                {t('select.conversation.to.chat')}
-              </p>
-            </CardContent>
-          )}
-        </Card>
+        {/* Desktop Chat Interface or Mobile Sheet */}
+        {!isMobile ? (
+          renderChatInterface()
+        ) : (
+          <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+            <SheetContent side="bottom" className="h-[90vh]">
+              <SheetHeader>
+                <SheetTitle>Chat</SheetTitle>
+              </SheetHeader>
+              <div className="mt-4">
+                {renderChatInterface(true)}
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}
       </div>
     </div>
   );

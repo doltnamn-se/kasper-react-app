@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Send } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
@@ -12,12 +13,15 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { MainLayout } from '@/components/layout/MainLayout';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [newMessage, setNewMessage] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [newChatData, setNewChatData] = useState({
     subject: '',
     priority: 'medium' as 'low' | 'medium' | 'high',
@@ -53,10 +57,11 @@ export default function Chat() {
     setActiveConversationId(conversationId);
     markAsRead(conversationId);
     setIsCreatingNew(false);
+    if (isMobile) setIsChatOpen(true);
   };
 
-  const renderNewChatForm = () => (
-    <Card className="lg:col-span-2 rounded-2xl">
+  const renderNewChatForm = (inSheet = false) => (
+    <Card className={`${inSheet ? '' : 'lg:col-span-2'} rounded-2xl`}>
       <CardHeader>
         <CardTitle>Start New Conversation</CardTitle>
       </CardHeader>
@@ -105,12 +110,80 @@ export default function Chat() {
           </Button>
           <Button
             variant="outline"
-            onClick={() => setIsCreatingNew(false)}
+            onClick={() => {
+              setIsCreatingNew(false);
+              if (inSheet) setIsChatOpen(false);
+            }}
           >
             Cancel
           </Button>
         </div>
       </CardContent>
+    </Card>
+  );
+
+  const renderChatInterface = (inSheet = false) => (
+    <Card className={`${inSheet ? '' : 'lg:col-span-2'} rounded-2xl`}>
+      {activeConversationId ? (
+        <>
+          <CardHeader>
+            <CardTitle>Chat</CardTitle>
+          </CardHeader>
+          <CardContent className={`flex flex-col ${inSheet ? 'h-[70vh]' : 'h-[500px]'} p-0`}>
+            <ScrollArea className="flex-1 p-4">
+              {messages.map((message) => {
+                const isUser = message.sender_id === userId;
+                return (
+                  <div
+                    key={message.id}
+                    className={`flex mb-3 ${isUser ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-lg px-3 py-2 ${
+                        isUser ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      }`}
+                    >
+                      <p className="text-sm">{message.message}</p>
+                      <p className="text-xs opacity-70 mt-1">
+                        {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </ScrollArea>
+            <div className="p-4 border-t">
+              <div className="flex gap-2">
+                <Textarea
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type your message..."
+                  className="flex-1 min-h-[40px] max-h-[100px]"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!newMessage.trim() || isSendingMessage}
+                  size="icon"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </>
+      ) : (
+        <CardContent className={`flex items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'}`}>
+          <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
+            Select a conversation to start chatting
+          </p>
+        </CardContent>
+      )}
     </Card>
   );
 
@@ -125,6 +198,7 @@ export default function Chat() {
             onClick={() => {
               setIsCreatingNew(true);
               setActiveConversationId(null);
+              if (isMobile) setIsChatOpen(true);
             }}
             className="rounded-xl h-9"
           >
@@ -132,14 +206,14 @@ export default function Chat() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
+        <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
           {/* Conversations List */}
-          <Card className="lg:col-span-1 rounded-2xl">
+          <Card className={`${isMobile ? '' : 'lg:col-span-1'} rounded-2xl`}>
             <CardHeader>
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea className="h-[500px]">
+              <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
@@ -175,70 +249,22 @@ export default function Chat() {
             </CardContent>
           </Card>
 
-          {/* Chat Interface or New Chat Form */}
-          {isCreatingNew ? renderNewChatForm() : (
-            <Card className="lg:col-span-2 rounded-2xl">
-              {activeConversationId ? (
-                <>
-                  <CardHeader>
-                    <CardTitle>Chat</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col h-[500px] p-0">
-                    <ScrollArea className="flex-1 p-4">
-                      {messages.map((message) => {
-                        const isUser = message.sender_id === userId;
-                        return (
-                          <div
-                            key={message.id}
-                            className={`flex mb-3 ${isUser ? 'justify-end' : 'justify-start'}`}
-                          >
-                            <div
-                              className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                                isUser ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                              }`}
-                            >
-                              <p className="text-sm">{message.message}</p>
-                              <p className="text-xs opacity-70 mt-1">
-                                {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </ScrollArea>
-                    <div className="p-4 border-t">
-                      <div className="flex gap-2">
-                        <Textarea
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          placeholder="Type your message..."
-                          className="flex-1 min-h-[40px] max-h-[100px]"
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              e.preventDefault();
-                              handleSendMessage();
-                            }
-                          }}
-                        />
-                        <Button
-                          onClick={handleSendMessage}
-                          disabled={!newMessage.trim() || isSendingMessage}
-                          size="icon"
-                        >
-                          <Send className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </>
-              ) : (
-                <CardContent className="flex items-center justify-center h-[500px]">
-                  <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
-                    Select a conversation to start chatting
-                  </p>
-                </CardContent>
-              )}
-            </Card>
+          {/* Desktop Chat Interface or Mobile Sheet */}
+          {!isMobile ? (
+            isCreatingNew ? renderNewChatForm() : renderChatInterface()
+          ) : (
+            <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+              <SheetContent side="bottom" className="h-[90vh]">
+                <SheetHeader>
+                  <SheetTitle>
+                    {isCreatingNew ? 'Start New Conversation' : 'Chat'}
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="mt-4">
+                  {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
+                </div>
+              </SheetContent>
+            </Sheet>
           )}
         </div>
       </div>
