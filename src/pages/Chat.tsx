@@ -201,7 +201,7 @@ export default function Chat() {
                 setActiveConversationId(null);
                 if (isMobile) setIsChatOpen(true);
               }}
-              className="rounded-xl h-9 bg-[#59bffa] hover:bg-[#4aa8e8] text-white"
+              className="rounded-xl h-9"
             >
               {t('new.message')}
             </Button>
@@ -259,7 +259,7 @@ export default function Chat() {
                 setActiveConversationId(null);
                 if (isMobile) setIsChatOpen(true);
               }}
-              className="w-full rounded-xl h-9 bg-[#59bffa] hover:bg-[#4aa8e8] text-white"
+              className="w-full rounded-xl h-9"
             >
               {t('new.message')}
             </Button>
