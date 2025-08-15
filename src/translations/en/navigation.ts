@@ -29,5 +29,6 @@ export const navigation: NavigationTranslations = {
   'light.mode': 'Light mode',
   'status': 'Status',
   'last.seen': 'Last seen',
-  'inbox': 'Inbox'
+  'inbox': 'Inbox',
+  'no.message.history': 'You have no message history'
 };

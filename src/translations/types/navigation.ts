@@ -28,4 +28,5 @@ export interface NavigationTranslations {
   'status': string;
   'last.seen': string;
   'inbox': string;
+  'no.message.history': string;
 }

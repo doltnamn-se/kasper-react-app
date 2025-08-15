@@ -169,7 +169,7 @@ export default function Chat() {
                 ))}
                 {conversations.length === 0 && (
                   <div className="p-4 text-center text-muted-foreground">
-                    No conversations yet. Start your first conversation!
+                    {t('no.message.history')}
                   </div>
                 )}
               </ScrollArea>

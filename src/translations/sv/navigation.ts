@@ -29,5 +29,6 @@ export const navigation: NavigationTranslations = {
   'light.mode': 'Ljust läge',
   'status': 'Status',
   'last.seen': 'Senast sedd',
-  'inbox': 'Inkorg'
+  'inbox': 'Inkorg',
+  'no.message.history': 'Du har ingen meddelandehistorik'
 };
