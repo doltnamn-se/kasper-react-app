@@ -197,6 +197,12 @@ export default function Chat() {
           {!isMobile && (
             <div className="flex gap-2">
               <Button
+                variant="outline"
+                className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0]"
+              >
+                {t('general.questions')}
+              </Button>
+              <Button
                 onClick={() => {
                   setIsCreatingNew(true);
                   setActiveConversationId(null);
@@ -205,12 +211,6 @@ export default function Chat() {
                 className="rounded-xl h-9"
               >
                 {t('new.message')}
-              </Button>
-              <Button
-                variant="outline"
-                className="rounded-xl h-9"
-              >
-                {t('general.questions')}
               </Button>
             </div>
           )}
@@ -263,6 +263,12 @@ export default function Chat() {
           {isMobile && (
             <div className="grid grid-cols-2 gap-2">
               <Button
+                variant="outline"
+                className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0]"
+              >
+                {t('general.questions')}
+              </Button>
+              <Button
                 onClick={() => {
                   setIsCreatingNew(true);
                   setActiveConversationId(null);
@@ -271,12 +277,6 @@ export default function Chat() {
                 className="rounded-xl h-9"
               >
                 {t('new.message')}
-              </Button>
-              <Button
-                variant="outline"
-                className="rounded-xl h-9"
-              >
-                {t('general.questions')}
               </Button>
             </div>
           )}
