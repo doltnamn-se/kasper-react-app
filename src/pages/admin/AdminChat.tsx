@@ -153,7 +153,9 @@ export default function AdminChat() {
             </>
           ) : (
             <CardContent className="flex items-center justify-center h-[500px]">
-              <p className="text-muted-foreground">Select a conversation to start chatting</p>
+              <p className="text-muted-foreground underline decoration-[#24CC5C] decoration-1 underline-offset-2">
+                {t('select.conversation.to.chat')}
+              </p>
             </CardContent>
           )}
         </Card>

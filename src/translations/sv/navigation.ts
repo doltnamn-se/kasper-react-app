@@ -20,6 +20,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.version.log': 'Versionslogg',
   'nav.admin.support': 'Support',
   'conversations': 'Konversationer',
+  'select.conversation.to.chat': 'Välj en konversation för att börja chatta',
   'nav.dashboard': 'Översikt',
   'nav.customers': 'Kunder',
   'nav.links': 'Länkar',

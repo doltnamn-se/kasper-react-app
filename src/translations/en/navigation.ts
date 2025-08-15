@@ -20,6 +20,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.version.log': 'Version log',
   'nav.admin.support': 'Support',
   'conversations': 'Conversations',
+  'select.conversation.to.chat': 'Select a conversation to start chatting',
   'nav.dashboard': 'Dashboard',
   'nav.customers': 'Customers',
   'nav.links': 'Links',

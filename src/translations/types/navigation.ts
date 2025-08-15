@@ -18,6 +18,7 @@ export interface NavigationTranslations {
   'nav.admin.version.log': string;
   'nav.admin.support': string;
   'conversations': string;
+  'select.conversation.to.chat': string;
   'nav.dashboard': string;
   'nav.customers': string;
   'nav.links': string;
