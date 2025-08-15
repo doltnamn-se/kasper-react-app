@@ -200,7 +200,7 @@ export default function Chat() {
               setActiveConversationId(null);
               if (isMobile) setIsChatOpen(true);
             }}
-            className="rounded-xl h-9"
+            className="rounded-xl h-9 bg-[#59bffa] hover:bg-[#4aa8e8] text-white"
           >
             {t('new.message')}
           </Button>
