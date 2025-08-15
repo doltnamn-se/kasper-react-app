@@ -19,6 +19,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.monitoring': 'Bevakning', // Added this key
   'nav.admin.version.log': 'Versionslogg',
   'nav.admin.support': 'Support',
+  'conversations': 'Konversationer',
   'nav.dashboard': 'Översikt',
   'nav.customers': 'Kunder',
   'nav.links': 'Länkar',

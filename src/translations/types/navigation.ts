@@ -17,6 +17,7 @@ export interface NavigationTranslations {
   'nav.admin.monitoring': string; // Added this key
   'nav.admin.version.log': string;
   'nav.admin.support': string;
+  'conversations': string;
   'nav.dashboard': string;
   'nav.customers': string;
   'nav.links': string;
