@@ -16,6 +16,7 @@ export interface NavigationTranslations {
   'nav.admin.deindexing': string; // Added this key
   'nav.admin.monitoring': string; // Added this key
   'nav.admin.version.log': string;
+  'nav.admin.support': string;
   'nav.dashboard': string;
   'nav.customers': string;
   'nav.links': string;

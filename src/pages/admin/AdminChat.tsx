@@ -50,7 +50,7 @@ export default function AdminChat() {
         {/* Conversations List */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Conversations ({conversations.length})</CardTitle>
+            <CardTitle className="text-lg font-semibold">Conversations ({conversations.length})</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className="h-[500px]">
