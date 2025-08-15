@@ -33,12 +33,13 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
       const customerId = session.user.id;
       console.log(`Customer ID: ${customerId}`);
       
-      // Check if there's an existing status entry
+      // Check if there's an existing status entry for the main user (where member_id is null)
       const { data: existingStatus, error: queryError } = await supabase
         .from('customer_site_statuses')
         .select('id')
         .eq('customer_id', customerId)
         .eq('site_name', siteName)
+        .is('member_id', null)
         .maybeSingle();
 
       if (queryError) {
@@ -74,7 +75,8 @@ export const useStatusUpdates = (): UseStatusUpdatesReturn => {
           .insert({
             customer_id: customerId,
             site_name: siteName,
-            status: newStatus
+            status: newStatus,
+            member_id: null  // Explicitly set member_id to null for main user
           })
           .select();
       }
