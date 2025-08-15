@@ -30,5 +30,6 @@ export const navigation: NavigationTranslations = {
   'status': 'Status',
   'last.seen': 'Last seen',
   'inbox': 'Inbox',
-  'no.message.history': 'You have no message history'
+  'no.message.history': 'You have no message history',
+  'new.message': 'New message'
 };

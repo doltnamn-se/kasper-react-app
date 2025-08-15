@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, Plus } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow } from 'date-fns';
@@ -126,10 +126,9 @@ export default function Chat() {
               setIsCreatingNew(true);
               setActiveConversationId(null);
             }}
-            className="flex items-center gap-2"
+            className="rounded-xl h-9"
           >
-            <Plus className="w-4 h-4" />
-            New Conversation
+            {t('new.message')}
           </Button>
         </div>
 
