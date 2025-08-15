@@ -11,6 +11,10 @@ import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow } from 'date-fns';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function AdminChat() {
   const { userId } = useAuthStatus();
@@ -18,18 +22,45 @@ export default function AdminChat() {
   const isMobile = useIsMobile();
   const [newMessage, setNewMessage] = useState('');
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [newChatData, setNewChatData] = useState({
+    customerId: '',
+    subject: '',
+    priority: 'medium' as 'low' | 'medium' | 'high',
+    message: ''
+  });
   
   const {
     conversations,
     messages,
     activeConversationId,
     setActiveConversationId,
+    createConversation,
     sendMessage,
     assignConversation,
     closeConversation,
     markAsRead,
+    isCreatingConversation,
     isSendingMessage
   } = useAdminChat();
+
+  // Fetch customers for admin conversation creation
+  const { data: customersData = [] } = useQuery({
+    queryKey: ['all-customers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('id, profiles(display_name, email)');
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const customers = customersData.map(c => ({
+    id: c.id,
+    profile: c.profiles
+  }));
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !activeConversationId || !userId) return;
@@ -37,11 +68,107 @@ export default function AdminChat() {
     setNewMessage('');
   };
 
+  const handleCreateConversation = () => {
+    if (!newChatData.message.trim() || !newChatData.customerId || !userId) return;
+    createConversation({ 
+      customerId: newChatData.customerId, 
+      adminId: userId, 
+      chatData: {
+        subject: newChatData.subject,
+        priority: newChatData.priority,
+        message: newChatData.message
+      }
+    });
+    setNewChatData({ customerId: '', subject: '', priority: 'medium', message: '' });
+    setIsCreatingNew(false);
+  };
+
   const handleConversationSelect = (conversationId: string) => {
     setActiveConversationId(conversationId);
     if (userId) markAsRead(conversationId, userId);
+    setIsCreatingNew(false);
     if (isMobile) setIsChatOpen(true);
   };
+
+  const renderNewChatForm = (inSheet = false) => (
+    <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
+      <CardHeader>
+        <CardTitle>Start New Conversation</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div>
+          <label className="text-sm font-medium mb-2 block">Customer</label>
+          <Select
+            value={newChatData.customerId}
+            onValueChange={(value) => setNewChatData(prev => ({ ...prev, customerId: value }))}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a customer" />
+            </SelectTrigger>
+            <SelectContent>
+              {customers.map((customer) => (
+                <SelectItem key={customer.id} value={customer.id}>
+                  {customer.profile?.display_name || customer.profile?.email || 'Unknown Customer'}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-2 block">Subject (Optional)</label>
+          <Input
+            value={newChatData.subject}
+            onChange={(e) => setNewChatData(prev => ({ ...prev, subject: e.target.value }))}
+            placeholder="What is this about?"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-2 block">Priority</label>
+          <Select
+            value={newChatData.priority}
+            onValueChange={(value: 'low' | 'medium' | 'high') => 
+              setNewChatData(prev => ({ ...prev, priority: value }))
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="low">Low</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-2 block">Message</label>
+          <Textarea
+            value={newChatData.message}
+            onChange={(e) => setNewChatData(prev => ({ ...prev, message: e.target.value }))}
+            placeholder="Type your message..."
+            className="min-h-[120px]"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleCreateConversation}
+            disabled={!newChatData.message.trim() || !newChatData.customerId || isCreatingConversation}
+          >
+            {isCreatingConversation ? 'Starting...' : 'Start Conversation'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setIsCreatingNew(false);
+              if (inSheet) setIsChatOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   const renderChatInterface = (inSheet = false) => (
     <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
@@ -126,6 +253,16 @@ export default function AdminChat() {
         <h1>
           {t('nav.admin.support')}
         </h1>
+        <Button
+          onClick={() => {
+            setIsCreatingNew(true);
+            setActiveConversationId(null);
+            if (isMobile) setIsChatOpen(true);
+          }}
+          className="rounded-xl h-9"
+        >
+          {t('new.message')}
+        </Button>
       </div>
 
       <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
@@ -173,16 +310,18 @@ export default function AdminChat() {
 
         {/* Desktop Chat Interface or Mobile Sheet */}
         {!isMobile ? (
-          renderChatInterface()
+          isCreatingNew ? renderNewChatForm() : renderChatInterface()
         ) : (
           <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
             <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617]">
               <div className="p-6">
                 <SheetHeader>
-                  <SheetTitle>Chat</SheetTitle>
+                  <SheetTitle>
+                    {isCreatingNew ? 'Start New Conversation' : 'Chat'}
+                  </SheetTitle>
                 </SheetHeader>
                 <div className="mt-4">
-                  {renderChatInterface(true)}
+                  {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
                 </div>
               </div>
             </SheetContent>

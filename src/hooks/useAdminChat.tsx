@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { ChatConversation, ChatMessage } from '@/types/chat';
+import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
 
 export const useAdminChat = () => {
@@ -113,6 +113,69 @@ export const useAdminChat = () => {
     onError: (error) => {
       console.error('Error sending admin message:', error);
       toast.error('Failed to send message');
+    }
+  });
+
+  // Create new conversation as admin
+  const createConversationMutation = useMutation({
+    mutationFn: async ({ customerId, adminId, chatData }: { 
+      customerId: string; 
+      adminId: string; 
+      chatData: NewChatData; 
+    }) => {
+      const { data: conversationId, error } = await supabase
+        .rpc('create_chat_conversation', {
+          p_customer_id: customerId,
+          p_subject: chatData.subject,
+          p_priority: chatData.priority
+        });
+
+      if (error) throw error;
+
+      // Update conversation to assign admin
+      const { error: updateError } = await supabase
+        .from('chat_conversations')
+        .update({
+          admin_id: adminId,
+          status: 'active'
+        })
+        .eq('id', conversationId);
+
+      if (updateError) throw updateError;
+
+      // Send initial message
+      const { error: messageError } = await supabase
+        .from('chat_messages')
+        .insert({
+          conversation_id: conversationId,
+          sender_id: adminId,
+          message: chatData.message,
+          message_type: 'text'
+        });
+
+      if (messageError) throw messageError;
+
+      // Add admin as participant
+      const { error: participantError } = await supabase
+        .from('chat_participants')
+        .insert({
+          conversation_id: conversationId,
+          user_id: adminId,
+          role: 'admin'
+        });
+
+      if (participantError) throw participantError;
+
+      return conversationId;
+    },
+    onSuccess: (conversationId) => {
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      setActiveConversationId(conversationId);
+      toast.success('Chat conversation started');
+    },
+    onError: (error) => {
+      console.error('Error creating admin conversation:', error);
+      toast.error('Failed to start conversation');
     }
   });
 
@@ -248,10 +311,12 @@ export const useAdminChat = () => {
     loadingConversations,
     loadingMessages,
     setActiveConversationId,
+    createConversation: createConversationMutation.mutate,
     sendMessage: sendMessageMutation.mutate,
     assignConversation: assignConversationMutation.mutate,
     closeConversation: closeConversationMutation.mutate,
     markAsRead,
+    isCreatingConversation: createConversationMutation.isPending,
     isSendingMessage: sendMessageMutation.isPending
   };
 };
