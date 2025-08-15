@@ -127,7 +127,7 @@ export const TopNav = () => {
                     if (isAdminRoute) {
                       navigate("/admin/chat");
                     } else {
-                      window.open("https://joinkasper.com/support/#kontakt", "_blank");
+                      navigate("/chat");
                     }
                   }}
                 >

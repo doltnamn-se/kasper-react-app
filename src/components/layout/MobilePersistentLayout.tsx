@@ -6,7 +6,7 @@ import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ChatWidget } from "@/components/chat/ChatWidget";
+
 
 export const MobilePersistentLayout = () => {
   const { userProfile } = useUserProfile();
@@ -45,9 +45,6 @@ export const MobilePersistentLayout = () => {
       
       {/* Fixed Bottom Navigation */}
       {isAdmin ? <AdminBottomNav /> : <UserBottomNav />}
-      
-      {/* Chat Widget for customers only */}
-      {!isAdmin && <ChatWidget />}
     </div>
   );
 };

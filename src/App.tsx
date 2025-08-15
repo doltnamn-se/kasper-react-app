@@ -24,6 +24,7 @@ import AddressAlerts from "@/pages/AddressAlerts";
 import Guides from "@/pages/Guides";
 import KasperFriends from "@/pages/KasperFriends";
 import Settings from "@/pages/Settings";
+import Chat from "@/pages/Chat";
 
 
 // Admin routes
@@ -150,6 +151,7 @@ function App() {
                   <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
                   <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
                   <Route path="/kasper-friends" element={<ProtectedRoute customerOnly><KasperFriends /></ProtectedRoute>} />
+                  <Route path="/chat" element={<ProtectedRoute customerOnly><Chat /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
                 </Route>
                 
