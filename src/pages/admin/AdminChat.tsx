@@ -132,7 +132,12 @@ export default function AdminChat() {
         {/* Conversations List */}
         <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
           <CardHeader>
-            <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('conversations')} ({conversations.length})</CardTitle>
+            <div className="flex items-center gap-3">
+              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('conversations')}</CardTitle>
+              <div className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-xs md:text-[0.9rem] font-medium md:pb-[2px]" style={{ paddingRight: '1px' }}>
+                {conversations.length}
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
