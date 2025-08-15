@@ -21,10 +21,10 @@ export const useAdminURLManagement = () => {
       console.log('useAdminURLManagement - Received URLs:', data);
       return data;
     },
-    staleTime: Infinity, // Never refetch automatically
+    staleTime: 5 * 60 * 1000, // 5 minutes instead of Infinity
     gcTime: Infinity, // Keep in cache
     refetchOnWindowFocus: false, // Don't refetch on window focus
-    refetchOnMount: false, // Don't refetch on component mount
+    refetchOnMount: true, // Allow refetch on mount
     refetchOnReconnect: false, // Don't refetch on network reconnect
   });
 
