@@ -48,7 +48,7 @@ export default function AdminChat() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
         {/* Conversations List */}
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-1 rounded-2xl">
           <CardHeader>
             <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('conversations')} ({conversations.length})</CardTitle>
           </CardHeader>
@@ -85,7 +85,7 @@ export default function AdminChat() {
         </Card>
 
         {/* Chat Interface */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 rounded-2xl">
           {activeConversationId ? (
             <>
               <CardHeader className="flex flex-row items-center justify-between">

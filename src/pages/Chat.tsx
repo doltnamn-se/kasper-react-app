@@ -56,7 +56,7 @@ export default function Chat() {
   };
 
   const renderNewChatForm = () => (
-    <Card className="lg:col-span-2">
+    <Card className="lg:col-span-2 rounded-2xl">
       <CardHeader>
         <CardTitle>Start New Conversation</CardTitle>
       </CardHeader>
@@ -135,7 +135,7 @@ export default function Chat() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
           {/* Conversations List */}
-          <Card className="lg:col-span-1">
+          <Card className="lg:col-span-1 rounded-2xl">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')} ({conversations.length})</CardTitle>
             </CardHeader>
@@ -178,7 +178,7 @@ export default function Chat() {
 
           {/* Chat Interface or New Chat Form */}
           {isCreatingNew ? renderNewChatForm() : (
-            <Card className="lg:col-span-2">
+            <Card className="lg:col-span-2 rounded-2xl">
               {activeConversationId ? (
                 <>
                   <CardHeader>
