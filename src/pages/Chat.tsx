@@ -178,10 +178,8 @@ export default function Chat() {
           </CardContent>
         </>
       ) : (
-        <CardContent className={`flex items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'}`}>
-          <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
-            {t('select.conversation.to.chat')}
-          </p>
+        <CardContent className={`flex items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'} opacity-30 grayscale`}>
+          {/* Empty state - no conversation selected */}
         </CardContent>
       )}
     </Card>
