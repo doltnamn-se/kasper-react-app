@@ -28,5 +28,6 @@ export const navigation: NavigationTranslations = {
   'dark.mode': 'Dark mode',
   'light.mode': 'Light mode',
   'status': 'Status',
-  'last.seen': 'Last seen'
+  'last.seen': 'Last seen',
+  'inbox': 'Inbox'
 };

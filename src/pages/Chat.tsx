@@ -119,7 +119,7 @@ export default function Chat() {
       <div>
         <div className="flex justify-between items-center mb-6">
           <h1>
-            {t('messages')}
+            {t('nav.admin.support')}
           </h1>
           <Button
             onClick={() => {
@@ -137,7 +137,7 @@ export default function Chat() {
           {/* Conversations List */}
           <Card className="lg:col-span-1">
             <CardHeader>
-              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">Your Conversations ({conversations.length})</CardTitle>
+              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')} ({conversations.length})</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <ScrollArea className="h-[500px]">

@@ -28,5 +28,6 @@ export const navigation: NavigationTranslations = {
   'dark.mode': 'Mörkt läge',
   'light.mode': 'Ljust läge',
   'status': 'Status',
-  'last.seen': 'Senast sedd'
+  'last.seen': 'Senast sedd',
+  'inbox': 'Inkorg'
 };
