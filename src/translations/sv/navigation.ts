@@ -18,6 +18,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.deindexing': 'Länkar', // Changed from "Länkhantering" to "Länkar"
   'nav.admin.monitoring': 'Bevakning', // Added this key
   'nav.admin.version.log': 'Versionslogg',
+  'nav.admin.support': 'Support',
   'nav.dashboard': 'Översikt',
   'nav.customers': 'Kunder',
   'nav.links': 'Länkar',

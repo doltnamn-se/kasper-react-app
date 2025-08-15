@@ -8,9 +8,11 @@ import { Send } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow } from 'date-fns';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AdminChat() {
   const { userId } = useAuthStatus();
+  const { t } = useLanguage();
   const [newMessage, setNewMessage] = useState('');
   
   const {
@@ -40,7 +42,7 @@ export default function AdminChat() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1>
-          Chat Support
+          {t('nav.admin.support')}
         </h1>
       </div>
 

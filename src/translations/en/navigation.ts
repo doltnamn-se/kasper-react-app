@@ -18,6 +18,7 @@ export const navigation: NavigationTranslations = {
   'nav.admin.deindexing': 'Links', // Changed from "Link Management" to "Links"
   'nav.admin.monitoring': 'Monitoring', // Added this key
   'nav.admin.version.log': 'Version log',
+  'nav.admin.support': 'Support',
   'nav.dashboard': 'Dashboard',
   'nav.customers': 'Customers',
   'nav.links': 'Links',
