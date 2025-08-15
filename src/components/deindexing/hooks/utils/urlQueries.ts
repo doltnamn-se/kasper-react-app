@@ -19,7 +19,8 @@ export const fetchAdminUrls = async () => {
       status_history
     `)
     .order('created_at', { ascending: false })
-    .order('id', { ascending: true }); // Secondary sort by ID for stability
+    .order('id', { ascending: true }) // Secondary sort by ID for stability
+    .limit(5000); // Increase limit to show all URLs (current total: ~1350)
 
   if (error) {
     console.error('urlQueries - Error fetching URLs:', error);
