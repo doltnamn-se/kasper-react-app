@@ -137,7 +137,7 @@ export default function Chat() {
           {/* Conversations List */}
           <Card className="lg:col-span-1 rounded-2xl">
             <CardHeader>
-              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')} ({conversations.length})</CardTitle>
+              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <ScrollArea className="h-[500px]">
