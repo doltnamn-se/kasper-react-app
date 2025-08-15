@@ -177,17 +177,6 @@ export default function AdminChat() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Chat</CardTitle>
             <div className="flex gap-2">
-              {!isMobile && (
-                <Button
-                  onClick={() => {
-                    setIsCreatingNew(true);
-                    setActiveConversationId(null);
-                  }}
-                  className="rounded-xl h-9"
-                >
-                  {t('new.message')}
-                </Button>
-              )}
               {userId && (
                 <Button
                   size="sm"
@@ -249,18 +238,10 @@ export default function AdminChat() {
           </CardContent>
         </>
       ) : (
-        <CardContent className={`flex flex-col items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'} gap-4`}>
-          {!isMobile && (
-            <Button
-              onClick={() => {
-                setIsCreatingNew(true);
-                setActiveConversationId(null);
-              }}
-              className="rounded-xl h-9"
-            >
-              {t('new.message')}
-            </Button>
-          )}
+        <CardContent className={`flex items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'}`}>
+          <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
+            {t('select.conversation.to.chat')}
+          </p>
         </CardContent>
       )}
     </Card>
@@ -272,18 +253,16 @@ export default function AdminChat() {
         <h1>
           {t('nav.admin.support')}
         </h1>
-        {isMobile && (
-          <Button
-            onClick={() => {
-              setIsCreatingNew(true);
-              setActiveConversationId(null);
-              if (isMobile) setIsChatOpen(true);
-            }}
-            className="rounded-xl h-9"
-          >
-            {t('new.message')}
-          </Button>
-        )}
+        <Button
+          onClick={() => {
+            setIsCreatingNew(true);
+            setActiveConversationId(null);
+            if (isMobile) setIsChatOpen(true);
+          }}
+          className="rounded-xl h-9"
+        >
+          {t('new.message')}
+        </Button>
       </div>
 
       <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
