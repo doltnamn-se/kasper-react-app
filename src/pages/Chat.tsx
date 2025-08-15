@@ -180,7 +180,7 @@ export default function Chat() {
       ) : (
         <CardContent className={`flex items-center justify-center ${inSheet ? 'h-[70vh]' : 'h-[500px]'}`}>
           <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
-            Select a conversation to start chatting
+            {t('select.conversation.to.chat')}
           </p>
         </CardContent>
       )}
