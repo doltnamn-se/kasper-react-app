@@ -168,7 +168,7 @@ export default function Chat() {
                   </div>
                 ))}
                 {conversations.length === 0 && (
-                  <div className="p-4 text-center text-muted-foreground">
+                  <div className="p-4 text-center text-[#707070] dark:text-[#ffffffa6] text-[0.8rem] md:text-[0.9rem]">
                     {t('no.message.history')}
                   </div>
                 )}
