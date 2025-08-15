@@ -37,10 +37,11 @@ export default function AdminChat() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Chat Support</h1>
-        <p className="text-muted-foreground">Manage customer support conversations</p>
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h1>
+          Chat Support
+        </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
