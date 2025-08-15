@@ -253,18 +253,16 @@ export default function AdminChat() {
         <h1>
           {t('nav.admin.support')}
         </h1>
-        {!isMobile && (
-          <Button
-            onClick={() => {
-              setIsCreatingNew(true);
-              setActiveConversationId(null);
-              if (isMobile) setIsChatOpen(true);
-            }}
-            className="rounded-xl h-9 bg-[#59bffa] hover:bg-[#4aa8e8] text-white"
-          >
-            {t('new.message')}
-          </Button>
-        )}
+        <Button
+          onClick={() => {
+            setIsCreatingNew(true);
+            setActiveConversationId(null);
+            if (isMobile) setIsChatOpen(true);
+          }}
+          className="rounded-xl h-9 bg-[#59bffa] hover:bg-[#4aa8e8] text-white"
+        >
+          {t('new.message')}
+        </Button>
       </div>
 
       <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
@@ -309,20 +307,6 @@ export default function AdminChat() {
             </ScrollArea>
           </CardContent>
         </Card>
-
-        {/* Mobile New Message Button */}
-        {isMobile && (
-          <Button
-            onClick={() => {
-              setIsCreatingNew(true);
-              setActiveConversationId(null);
-              if (isMobile) setIsChatOpen(true);
-            }}
-            className="w-full rounded-xl h-9 bg-[#59bffa] hover:bg-[#4aa8e8] text-white"
-          >
-            {t('new.message')}
-          </Button>
-        )}
 
         {/* Desktop Chat Interface or Mobile Sheet */}
         {!isMobile ? (
