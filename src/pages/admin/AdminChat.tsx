@@ -44,7 +44,7 @@ export default function AdminChat() {
   };
 
   const renderChatInterface = (inSheet = false) => (
-    <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-card dark:border dark:border-border rounded-2xl`}>
+    <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
       {activeConversationId ? (
         <>
           <CardHeader className="flex flex-row items-center justify-between">
@@ -130,7 +130,7 @@ export default function AdminChat() {
 
       <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
         {/* Conversations List */}
-        <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-card dark:border dark:border-border rounded-2xl`}>
+        <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
           <CardHeader>
             <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('conversations')} ({conversations.length})</CardTitle>
           </CardHeader>
