@@ -24,10 +24,7 @@ export default function AdminChat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [newChatData, setNewChatData] = useState({
-    customerId: '',
-    subject: '',
-    priority: 'medium' as 'low' | 'medium' | 'high',
-    message: ''
+    customerId: ''
   });
   
   const {
@@ -69,17 +66,17 @@ export default function AdminChat() {
   };
 
   const handleCreateConversation = () => {
-    if (!newChatData.message.trim() || !newChatData.customerId || !userId) return;
+    if (!newChatData.customerId || !userId) return;
     createConversation({ 
       customerId: newChatData.customerId, 
       adminId: userId, 
       chatData: {
-        subject: newChatData.subject,
-        priority: newChatData.priority,
-        message: newChatData.message
+        subject: 'Support Chat',
+        priority: 'medium',
+        message: 'Admin has started a conversation with you.'
       }
     });
-    setNewChatData({ customerId: '', subject: '', priority: 'medium', message: '' });
+    setNewChatData({ customerId: '' });
     setIsCreatingNew(false);
   };
 
@@ -114,45 +111,10 @@ export default function AdminChat() {
             </SelectContent>
           </Select>
         </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">Subject (Optional)</label>
-          <Input
-            value={newChatData.subject}
-            onChange={(e) => setNewChatData(prev => ({ ...prev, subject: e.target.value }))}
-            placeholder="What is this about?"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">Priority</label>
-          <Select
-            value={newChatData.priority}
-            onValueChange={(value: 'low' | 'medium' | 'high') => 
-              setNewChatData(prev => ({ ...prev, priority: value }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">Message</label>
-          <Textarea
-            value={newChatData.message}
-            onChange={(e) => setNewChatData(prev => ({ ...prev, message: e.target.value }))}
-            placeholder="Type your message..."
-            className="min-h-[120px]"
-          />
-        </div>
         <div className="flex gap-2">
           <Button
             onClick={handleCreateConversation}
-            disabled={!newChatData.message.trim() || !newChatData.customerId || isCreatingConversation}
+            disabled={!newChatData.customerId || isCreatingConversation}
           >
             {isCreatingConversation ? 'Starting...' : 'Start Conversation'}
           </Button>
