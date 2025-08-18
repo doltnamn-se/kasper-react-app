@@ -160,7 +160,7 @@ export default function AdminChat() {
                 })}
               </ScrollArea>
               <div className="px-4 pt-2 pb-8 border-t border-[#ecedee] dark:border-[#2C2C2E]">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -168,7 +168,7 @@ export default function AdminChat() {
                   >
                     <span className="text-lg">+</span>
                   </Button>
-                  <div className="flex items-center gap-2 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-1.5 flex-1">
+                  <div className="flex items-center gap-1 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-1.5 flex-1">
                     <input
                       type="text"
                       value={newMessage}
