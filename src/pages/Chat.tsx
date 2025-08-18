@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Send } from 'lucide-react';
+import { Send, ChevronUp } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow } from 'date-fns';
@@ -167,7 +167,7 @@ export default function Chat() {
                   >
                     <span className="text-lg">+</span>
                   </Button>
-                  <div className="flex items-center gap-3 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-3 flex-1">
+                  <div className="flex items-center gap-3 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-2 flex-1">
                     <input
                       type="text"
                       value={newMessage}
@@ -188,7 +188,7 @@ export default function Chat() {
                       size="icon"
                       className="w-8 h-8 rounded-full bg-[#59bffa] hover:bg-[#0056CC] text-white p-0 flex-shrink-0"
                     >
-                      <Send className="h-4 w-4" />
+                      <ChevronUp className="h-4 w-4 text-[#ffffff]" />
                     </Button>
                   </div>
                 </div>
