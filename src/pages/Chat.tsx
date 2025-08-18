@@ -167,7 +167,7 @@ export default function Chat() {
                   >
                     <span className="text-lg">+</span>
                   </Button>
-                  <div className="flex items-center gap-1 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-1.5 flex-1">
+                  <div className="flex items-center gap-1 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <input
                       type="text"
                       value={newMessage}
