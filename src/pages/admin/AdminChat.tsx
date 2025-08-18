@@ -292,13 +292,13 @@ export default function AdminChat() {
         ) : (
           <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
             <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617]">
-              <div className="p-6">
+              <div className="p-6 relative z-[10001]">
                 <SheetHeader>
                   <SheetTitle>
                     {isCreatingNew ? 'Start New Conversation' : 'Chat'}
                   </SheetTitle>
                 </SheetHeader>
-                <div className="mt-4">
+                <div className="mt-4 relative z-[10001]">
                   {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
                 </div>
               </div>
