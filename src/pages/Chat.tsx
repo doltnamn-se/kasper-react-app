@@ -60,7 +60,6 @@ export default function Chat() {
       message: 'I need help with something.'
     };
     createConversation(defaultChatData);
-    setIsCreatingNew(false);
   };
 
   const handleConversationSelect = (conversationId: string) => {
@@ -285,7 +284,7 @@ export default function Chat() {
 
           {/* Desktop Chat Interface or Mobile Sheet */}
           {!isMobile ? (
-            isCreatingNew ? renderNewChatForm() : renderChatInterface()
+            renderChatInterface()
           ) : (
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617]">
