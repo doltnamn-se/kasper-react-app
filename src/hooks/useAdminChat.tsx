@@ -95,12 +95,11 @@ export const useAdminChat = () => {
 
       if (error) throw error;
 
-      // Update conversation status and assign admin if not already assigned
+      // Update conversation to assign admin if not already assigned
       const { error: updateError } = await supabase
         .from('chat_conversations')
         .update({
-          admin_id: adminId,
-          status: 'active'
+          admin_id: adminId
         })
         .eq('id', conversationId);
 
@@ -132,12 +131,11 @@ export const useAdminChat = () => {
 
       if (error) throw error;
 
-      // Update conversation to assign admin
+      // Update conversation to assign admin (status is already 'active' by default)
       const { error: updateError } = await supabase
         .from('chat_conversations')
         .update({
-          admin_id: adminId,
-          status: 'active'
+          admin_id: adminId
         })
         .eq('id', conversationId);
 
@@ -185,8 +183,7 @@ export const useAdminChat = () => {
       const { error } = await supabase
         .from('chat_conversations')
         .update({
-          admin_id: adminId,
-          status: 'active'
+          admin_id: adminId
         })
         .eq('id', conversationId);
 
