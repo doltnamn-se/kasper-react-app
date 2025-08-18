@@ -345,9 +345,9 @@ export default function AdminChat() {
           isCreatingNew ? renderNewChatForm() : renderChatInterface()
         ) : (
           <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-            <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617]">
+            <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617] border-none">
               <div className="flex flex-col h-full relative z-[10001]">
-                <div className="flex items-center justify-between p-4 border-b border-[#F2F2F7] dark:border-[#2C2C2E]">
+                <div className="flex items-center justify-between p-4">
                   <div>
                     <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                       {isCreatingNew ? 'Start New Conversation' : 'Nytt meddelande'}
