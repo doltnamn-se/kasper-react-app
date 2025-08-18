@@ -187,9 +187,10 @@ export default function AdminChat() {
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim() || isSendingMessage}
                       size="icon"
-                      className="w-8 h-8 rounded-full bg-[#59bffa] hover:bg-[#0056CC] text-white p-0 flex-shrink-0"
+                      className="w-8 h-8 rounded-full p-0 flex-shrink-0"
+                      style={{ backgroundColor: '#59bffa' }}
                     >
-                      <ChevronUp className="h-4 w-4 text-[#ffffff]" />
+                      <ChevronUp className="h-4 w-4" style={{ color: '#ffffff' }} />
                     </Button>
                   </div>
                 </div>
