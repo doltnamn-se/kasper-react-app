@@ -190,7 +190,7 @@ export default function Chat() {
                       className="w-8 h-8 rounded-full p-0 flex-shrink-0 disabled:opacity-100"
                       style={{ backgroundColor: '#59bffa' }}
                     >
-                      <ChevronUp className="h-4 w-4" style={{ color: '#ffffff' }} />
+                      <ChevronUp className="h-4 w-4" color="#ffffff" stroke="#ffffff" />
                     </Button>
                   </div>
                 </div>
