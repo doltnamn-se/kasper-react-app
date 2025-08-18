@@ -138,26 +138,6 @@ export default function AdminChat() {
         <div className="flex flex-col h-full">
           {activeConversationId ? (
             <>
-              <div className="flex justify-end gap-2 px-4 py-2 border-b border-[#F2F2F7] dark:border-[#2C2C2E]">
-                {userId && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => assignConversation({ conversationId: activeConversationId, adminId: userId })}
-                    className="text-xs"
-                  >
-                    Assign to me
-                  </Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => closeConversation(activeConversationId)}
-                  className="text-xs"
-                >
-                  Close
-                </Button>
-              </div>
               <ScrollArea className="flex-1 px-4 py-2">
                 {messages.map((message) => {
                   const isAdmin = message.sender?.role === 'super_admin';
@@ -227,26 +207,8 @@ export default function AdminChat() {
       <Card className="lg:col-span-2 bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? (
           <>
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader>
               <CardTitle>Chat</CardTitle>
-              <div className="flex gap-2">
-                {userId && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => assignConversation({ conversationId: activeConversationId, adminId: userId })}
-                  >
-                    Assign to me
-                  </Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => closeConversation(activeConversationId)}
-                >
-                  Close
-                </Button>
-              </div>
             </CardHeader>
             <CardContent className="flex flex-col h-[500px] p-0">
               <ScrollArea className="flex-1 p-4">
