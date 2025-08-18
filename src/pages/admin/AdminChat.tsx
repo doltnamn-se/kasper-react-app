@@ -168,7 +168,7 @@ export default function AdminChat() {
                   >
                     <span className="text-lg">+</span>
                   </Button>
-                  <div className="flex items-center gap-3 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-2 flex-1">
+                  <div className="flex items-center gap-3 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-1.5 flex-1">
                     <input
                       type="text"
                       value={newMessage}
@@ -188,10 +188,10 @@ export default function AdminChat() {
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim() || isSendingMessage}
                       size="icon"
-                      className="w-8 h-8 rounded-full p-0 flex-shrink-0 disabled:opacity-100"
+                      className="w-7 h-7 rounded-full p-0 flex-shrink-0 disabled:opacity-100"
                       style={{ backgroundColor: '#59bffa' }}
                     >
-                      <ChevronUp className="h-4 w-4" color="#ffffff" stroke="#ffffff" />
+                      <ChevronUp className="h-5 w-5" color="#ffffff" stroke="#ffffff" />
                     </Button>
                   </div>
                 </div>
