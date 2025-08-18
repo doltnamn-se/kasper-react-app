@@ -53,6 +53,16 @@ export default function Chat() {
     setIsCreatingNew(false);
   };
 
+  const handleStartNewChat = () => {
+    const defaultChatData = {
+      subject: 'Support Request',
+      priority: 'medium' as const,
+      message: 'I need help with something.'
+    };
+    createConversation(defaultChatData);
+    setIsCreatingNew(false);
+  };
+
   const handleConversationSelect = (conversationId: string) => {
     setActiveConversationId(conversationId);
     markAsRead(conversationId);
@@ -203,11 +213,7 @@ export default function Chat() {
                 {t('general.questions')}
               </Button>
               <Button
-                onClick={() => {
-                  setIsCreatingNew(true);
-                  setActiveConversationId(null);
-                  if (isMobile) setIsChatOpen(true);
-                }}
+                onClick={handleStartNewChat}
                 className="rounded-xl h-9"
               >
                 {t('new.message')}
@@ -269,11 +275,7 @@ export default function Chat() {
                 {t('general.questions')}
               </Button>
               <Button
-                onClick={() => {
-                  setIsCreatingNew(true);
-                  setActiveConversationId(null);
-                  if (isMobile) setIsChatOpen(true);
-                }}
+                onClick={handleStartNewChat}
                 className="rounded-xl h-9"
               >
                 {t('new.message')}
