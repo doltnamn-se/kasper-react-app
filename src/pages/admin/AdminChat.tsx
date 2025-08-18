@@ -173,7 +173,8 @@ export default function AdminChat() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Skriv här..."
-                    className="flex-1 bg-transparent outline-none text-base placeholder:text-[#8E8E93]"
+                    className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6]"
+                    style={{ fontSize: '0.9rem', fontWeight: '500' }}
                     onKeyPress={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
