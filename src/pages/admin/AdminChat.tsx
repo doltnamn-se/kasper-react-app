@@ -173,13 +173,18 @@ export default function AdminChat() {
                     <span className="text-lg">+</span>
                   </Button>
                   <div className="flex items-center gap-1 bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-xl pl-4 pr-2 py-1.5 flex-1">
-                    <input
-                      type="text"
+                    <textarea
                       value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
+                      onChange={(e) => {
+                        setNewMessage(e.target.value);
+                        // Auto-resize textarea
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
                       placeholder="Skriv här..."
-                      className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6]"
+                      className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]"
                       style={{ fontSize: '0.95rem', fontWeight: '500' }}
+                      rows={1}
                       onKeyPress={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
