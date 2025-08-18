@@ -158,7 +158,7 @@ export default function Chat() {
                   );
                 })}
               </ScrollArea>
-              <div className="px-4 pt-2 pb-8 border-t border-[#ecedee] dark:border-[#2C2C2E]">
+              <div className="px-2 pt-2 pb-8 border-t border-[#ecedee] dark:border-[#2C2C2E]">
                 <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"
