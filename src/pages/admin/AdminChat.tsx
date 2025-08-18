@@ -345,7 +345,7 @@ export default function AdminChat() {
           isCreatingNew ? renderNewChatForm() : renderChatInterface()
         ) : (
           <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-            <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617] border-none">
+            <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none">
               <div className="flex flex-col h-full relative z-[10001]">
                 <div className="flex items-center justify-between p-4">
                   <div>
