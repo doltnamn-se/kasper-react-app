@@ -162,16 +162,16 @@ export default function Chat() {
                   );
                 })}
               </ScrollArea>
-              <div className="px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#2C2C2E]">
+              <div className="px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d]">
                 <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="w-8 h-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    className="w-8 h-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#3b3b3d] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
                   >
                     <span className="text-lg">+</span>
                   </Button>
-                  <div className="flex items-center gap-1 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl pl-4 pr-2 py-1.5 flex-1">
+                  <div className="flex items-center gap-1 bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <input
                       type="text"
                       value={newMessage}
