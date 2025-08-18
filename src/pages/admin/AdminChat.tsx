@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Send, ChevronUp } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -144,7 +144,7 @@ export default function AdminChat() {
                   return (
                     <div
                       key={message.id}
-                      className={`flex mb-4 ${isAdmin ? 'justify-end' : 'justify-start'}`}
+                      className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}
                     >
                       <div
                         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
@@ -152,12 +152,12 @@ export default function AdminChat() {
                             ? 'bg-[#007AFF] text-white' 
                             : 'bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#000000] dark:text-[#FFFFFF]'
                         }`}
-                       >
-                         <p className="text-base" style={{ fontSize: '0.9rem' }}>{message.message}</p>
-                         <p className="text-xs opacity-70 mt-1">
-                           {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                         </p>
-                       </div>
+                      >
+                        <p className="text-base" style={{ fontSize: '0.9rem' }}>{message.message}</p>
+                      </div>
+                      <p className="text-xs opacity-70 mt-1 px-2">
+                        {format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}
+                      </p>
                     </div>
                   );
                 })}
