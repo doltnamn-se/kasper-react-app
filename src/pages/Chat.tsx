@@ -151,9 +151,12 @@ export default function Chat() {
                             ? 'bg-[#007AFF] text-white' 
                             : 'bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#000000] dark:text-[#FFFFFF]'
                         }`}
-                      >
-                        <p className="text-base">{message.message}</p>
-                      </div>
+                       >
+                         <p className="text-base" style={{ fontSize: '0.9rem' }}>{message.message}</p>
+                         <p className="text-xs opacity-70 mt-1">
+                           {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                         </p>
+                       </div>
                     </div>
                   );
                 })}
