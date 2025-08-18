@@ -148,11 +148,11 @@ export default function Chat() {
                       <div
                         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                           isCurrentUser 
-                            ? 'bg-[#007AFF] text-white' 
+                            ? 'bg-[#d0ecfb] text-[#000000]' 
                             : 'bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#000000] dark:text-[#FFFFFF]'
                         }`}
                       >
-                        <p className="text-base" style={{ fontSize: '0.9rem' }}>{message.message}</p>
+                        <p className="text-base" style={{ fontSize: '0.95rem' }}>{message.message}</p>
                       </div>
                       <p className="text-xs opacity-70 mt-1 px-2">
                         {format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}
