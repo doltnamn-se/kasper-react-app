@@ -159,7 +159,7 @@ export default function AdminChat() {
                   );
                 })}
               </ScrollArea>
-              <div className="px-4 pb-4">
+              <div className="px-4 pb-4 border-t border-[#F2F2F7] dark:border-[#2C2C2E]">
                 <div className="flex items-center gap-3 bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-full px-4 py-3">
                   <Button
                     variant="ghost"
