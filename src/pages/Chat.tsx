@@ -159,36 +159,38 @@ export default function Chat() {
                 })}
               </ScrollArea>
               <div className="px-4 pt-2 pb-8 border-t border-[#ecedee] dark:border-[#2C2C2E]">
-                <div className="flex items-center gap-3 bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-xl px-4 py-3">
+                <div className="flex items-center gap-3">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="w-8 h-8 rounded-full bg-transparent hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    className="w-8 h-8 rounded-full bg-[#f0f0f0] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
                   >
                     <span className="text-lg">+</span>
                   </Button>
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Skriv här..."
-                    className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6]"
-                    style={{ fontSize: '0.9rem', fontWeight: '500' }}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSendMessage();
-                      }
-                    }}
-                  />
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={!newMessage.trim() || isSendingMessage}
-                    size="icon"
-                    className="w-8 h-8 rounded-full bg-[#007AFF] hover:bg-[#0056CC] text-white p-0 flex-shrink-0"
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center gap-3 bg-[#f0f0f0] dark:bg-[#2C2C2E] rounded-xl px-4 py-3 flex-1">
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Skriv här..."
+                      className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6]"
+                      style={{ fontSize: '0.9rem', fontWeight: '500' }}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSendMessage();
+                        }
+                      }}
+                    />
+                    <Button
+                      onClick={handleSendMessage}
+                      disabled={!newMessage.trim() || isSendingMessage}
+                      size="icon"
+                      className="w-8 h-8 rounded-full bg-[#59bffa] hover:bg-[#0056CC] text-white p-0 flex-shrink-0"
+                    >
+                      <Send className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </>
