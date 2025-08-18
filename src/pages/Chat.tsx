@@ -146,13 +146,13 @@ export default function Chat() {
                       className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                        className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
                           isCurrentUser 
-                            ? 'bg-[#d0ecfb] text-[#000000]' 
-                            : 'bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#000000] dark:text-[#FFFFFF]'
+                            ? 'bg-[#d0ecfb]' 
+                            : 'bg-[#F2F2F7] dark:bg-[#2C2C2E]'
                         }`}
                       >
-                        <p className="text-base" style={{ fontSize: '0.95rem' }}>{message.message}</p>
+                        <p className="text-base" style={{ fontSize: '0.95rem', fontWeight: '500', color: '#121212' }}>{message.message}</p>
                       </div>
                       <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                         <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
