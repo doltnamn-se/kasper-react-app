@@ -155,8 +155,9 @@ export default function AdminChat() {
                       >
                         <p className="text-base" style={{ fontSize: '0.95rem' }}>{message.message}</p>
                       </div>
-                      <p className="text-xs opacity-70 mt-1 px-2">
-                        {format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}
+                      <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                        <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                        <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                       </p>
                     </div>
                   );
