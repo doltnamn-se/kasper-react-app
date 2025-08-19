@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
 import { Send, ChevronUp } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
@@ -434,8 +434,9 @@ export default function AdminChat() {
           isCreatingNew ? renderNewChatForm() : renderChatInterface()
         ) : (
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none backdrop-blur-md">
-                <div className="flex flex-col h-full relative z-[10001] backdrop-blur-md">
+              <SheetOverlay className="backdrop-blur-md" />
+              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none">
+                <div className="flex flex-col h-full relative z-[10001]">
                   {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
                 </div>
               </SheetContent>
