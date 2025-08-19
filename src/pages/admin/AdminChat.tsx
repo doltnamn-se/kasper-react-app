@@ -161,7 +161,7 @@ export default function AdminChat() {
               
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
-                <ScrollArea className="h-full px-4 py-2">
+                <ScrollArea className="h-full px-4 py-0">
                   {messages.map(message => {
                 const isAdmin = message.sender?.role === 'super_admin';
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
