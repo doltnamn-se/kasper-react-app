@@ -410,7 +410,7 @@ export default function Chat() {
                     }`}
                     onClick={() => handleConversationSelect(conversation.id)}
                   >
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="flex justify-between items-start mb-1">
                       <h4 className="font-medium text-sm">
                         {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
                       </h4>
