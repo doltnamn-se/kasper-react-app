@@ -171,10 +171,10 @@ export default function Chat() {
                         className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
+                          className={`max-w-[80%] px-3 py-2 ${
                             isCurrentUser 
-                              ? 'bg-[#d0ecfb]' 
-                              : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
+                              ? 'bg-[#d0ecfb] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                              : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
                           }`}
                         >
                           <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
