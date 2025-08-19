@@ -149,10 +149,10 @@ export default function Chat() {
                         className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
                           isCurrentUser 
                             ? 'bg-[#d0ecfb]' 
-                            : 'bg-[#F2F2F7] dark:bg-[#2C2C2E]'
+                            : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
                         }`}
                       >
-                        <p className="text-base" style={{ fontSize: '0.95rem', fontWeight: '500', color: '#121212' }}>{message.message}</p>
+                        <p className={`text-base ${isCurrentUser ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
                       </div>
                       <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                         <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
@@ -234,7 +234,7 @@ export default function Chat() {
                     >
                       <div
                         className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                          isUser ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                          isUser ? 'bg-primary text-primary-foreground' : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] text-[#121212] dark:text-[#ffffff]'
                         }`}
                       >
                         <p className="text-sm">{message.message}</p>
