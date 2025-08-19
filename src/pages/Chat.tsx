@@ -22,6 +22,7 @@ export default function Chat() {
   const [newMessage, setNewMessage] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [newChatData, setNewChatData] = useState({
     subject: '',
     priority: 'medium' as 'low' | 'medium' | 'high',
@@ -29,6 +30,7 @@ export default function Chat() {
   });
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   
   const {
     conversations,
@@ -48,6 +50,22 @@ export default function Chat() {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, activeConversationId]);
+
+  // Handle scroll to show/hide header border
+  const handleScroll = React.useCallback((e: Event) => {
+    const target = e.target as HTMLElement;
+    const scrollTop = target.scrollTop;
+    setShowHeaderBorder(scrollTop > 10);
+  }, []);
+
+  // Set up scroll listener
+  React.useEffect(() => {
+    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll, activeConversationId]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !activeConversationId) return;
@@ -151,7 +169,7 @@ export default function Chat() {
           {activeConversationId ? (
             <>
               {/* Fixed header */}
-              <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'border-b border-[#ecedee] dark:border-[#3d3d3d]' : ''}`}>
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                   Nytt meddelande
                 </h2>
@@ -162,7 +180,7 @@ export default function Chat() {
               
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
-                <ScrollArea className="h-full px-4 py-2">
+                <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
                   {messages.map((message) => {
                     const isCurrentUser = message.sender_id === userId;
                     return (
@@ -255,7 +273,7 @@ export default function Chat() {
         {activeConversationId ? (
           <>
             {/* Fixed header */}
-            <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'border-b border-[#ecedee] dark:border-[#3d3d3d]' : ''}`}>
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                 Nytt meddelande
               </h2>
@@ -266,7 +284,7 @@ export default function Chat() {
             
             {/* Scrollable messages area */}
             <div className="flex-1 h-[450px] overflow-hidden">
-              <ScrollArea className="h-full px-4 py-2">
+              <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
                 {messages.map((message) => {
                   const isCurrentUser = message.sender_id === userId;
                   return (

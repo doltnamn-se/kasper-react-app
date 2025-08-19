@@ -26,11 +26,13 @@ export default function AdminChat() {
   const [newMessage, setNewMessage] = useState('');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const {
     conversations,
     messages,
@@ -53,6 +55,22 @@ export default function AdminChat() {
       });
     }
   }, [messages, activeConversationId]);
+
+  // Handle scroll to show/hide header border
+  const handleScroll = React.useCallback((e: Event) => {
+    const target = e.target as HTMLElement;
+    const scrollTop = target.scrollTop;
+    setShowHeaderBorder(scrollTop > 10);
+  }, []);
+
+  // Set up scroll listener
+  React.useEffect(() => {
+    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll, activeConversationId]);
 
   // Fetch customers for admin conversation creation
   const {
@@ -146,7 +164,7 @@ export default function AdminChat() {
       return <div className="flex flex-col h-full">
           {activeConversationId ? <>
               {/* Fixed header */}
-              <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'border-b border-[#ecedee] dark:border-[#3d3d3d]' : ''}`}>
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
               fontSize: '0.95rem'
             }}>
@@ -161,7 +179,7 @@ export default function AdminChat() {
               
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
-                <ScrollArea className="h-full px-4 py-0">
+                <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
                   {messages.map(message => {
                 const isAdmin = message.sender?.role === 'super_admin';
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
@@ -225,7 +243,7 @@ export default function AdminChat() {
     return <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#232324] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? <>
             {/* Fixed header */}
-            <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'border-b border-[#ecedee] dark:border-[#3d3d3d]' : ''}`}>
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
             fontSize: '0.95rem'
           }}>
@@ -240,7 +258,7 @@ export default function AdminChat() {
             
             {/* Scrollable messages area */}
             <div className="flex-1 h-[450px] overflow-hidden">
-              <ScrollArea className="h-full px-4 py-0">
+              <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
                 {messages.map(message => {
               const isAdmin = message.sender?.role === 'super_admin';
               return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
