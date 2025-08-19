@@ -391,7 +391,7 @@ export default function AdminChat() {
 
         {/* Desktop Chat Interface or Mobile Sheet */}
         {!isMobile ? isCreatingNew ? renderNewChatForm() : renderChatInterface() : <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-              <SheetOverlay className="backdrop-blur-md bg-black/50 dark:bg-black/30" />
+              <SheetOverlay className="backdrop-blur-md" style={{ backgroundColor: '#71717133' }} />
               <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]">
                 <div className="flex flex-col h-full relative z-[10001]">
                   {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
