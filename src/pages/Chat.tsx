@@ -405,8 +405,8 @@ export default function Chat() {
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
-                    className={`p-4 border-b cursor-pointer hover:bg-muted/50 ${
-                      activeConversationId === conversation.id ? 'bg-muted' : ''
+                    className={`p-4 border-b cursor-pointer hover:bg-[#f0f0f0] dark:hover:bg-[#232324] ${
+                      activeConversationId === conversation.id ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''
                     }`}
                     onClick={() => handleConversationSelect(conversation.id)}
                   >
