@@ -199,7 +199,7 @@ export default function Chat() {
                           className={`max-w-[80%] px-3 py-2 ${
                             isCurrentUser 
                               ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
-                              : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                              : 'bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
                           }`}
                         >
                           <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
@@ -218,7 +218,7 @@ export default function Chat() {
               {/* Fixed bottom input area */}
               <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
-                  <Button
+                   <Button
                     variant="ghost"
                     size="icon"
                     className="w-8 h-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#3b3b3d] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
@@ -313,7 +313,7 @@ export default function Chat() {
                         className={`max-w-[80%] px-3 py-2 ${
                           isCurrentUser 
                             ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
-                            : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                            : 'bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
                         }`}
                       >
                         <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
