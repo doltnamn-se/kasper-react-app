@@ -180,11 +180,14 @@ export default function AdminChat() {
           {activeConversationId ? <>
               {/* Fixed header */}
               <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-                <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
+                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
               fontSize: '0.95rem'
             }}>
-                  {isCreatingNew ? 'Start New Conversation' : 'Admin Chat'}
-                </h2>
+                   {(() => {
+                     const activeConv = conversations.find(c => c.id === activeConversationId);
+                     return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
+                   })()}
+                 </h2>
                 <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
               fontSize: '0.95rem'
             }}>
@@ -259,11 +262,14 @@ export default function AdminChat() {
         {activeConversationId ? <>
             {/* Fixed header */}
             <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-              <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
-            fontSize: '0.95rem'
-          }}>
-                Admin Chat
-              </h2>
+               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
+             fontSize: '0.95rem'
+           }}>
+                 {(() => {
+                   const activeConv = conversations.find(c => c.id === activeConversationId);
+                   return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
+                 })()}
+               </h2>
               <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
             fontSize: '0.95rem'
           }}>
