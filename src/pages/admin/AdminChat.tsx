@@ -9,6 +9,7 @@ import { Send, ChevronUp } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -188,11 +189,21 @@ export default function AdminChat() {
                      return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
                    })()}
                  </h2>
-                <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
+                 <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
               fontSize: '0.95rem'
             }}>
-                  Chatting with customer
-                </p>
+                   {(() => {
+                     const activeConv = conversations.find(c => c.id === activeConversationId);
+                     if (!activeConv?.created_at) return 'Chatting with customer';
+                     const date = new Date(activeConv.created_at);
+                     const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                     if (currentLang === 'sv') {
+                        return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                     } else {
+                       return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                     }
+                   })()}
+                 </p>
               </div>
               
               {/* Scrollable messages area */}
@@ -270,11 +281,21 @@ export default function AdminChat() {
                    return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
                  })()}
                </h2>
-              <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
-            fontSize: '0.95rem'
-          }}>
-                Chatting with customer
-              </p>
+               <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
+             fontSize: '0.95rem'
+           }}>
+                 {(() => {
+                   const activeConv = conversations.find(c => c.id === activeConversationId);
+                   if (!activeConv?.created_at) return 'Chatting with customer';
+                   const date = new Date(activeConv.created_at);
+                   const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                   if (currentLang === 'sv') {
+                     return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                   } else {
+                     return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                   }
+                 })()}
+               </p>
             </div>
             
             {/* Scrollable messages area */}

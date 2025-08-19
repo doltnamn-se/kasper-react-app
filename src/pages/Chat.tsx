@@ -9,6 +9,7 @@ import { Send, ChevronUp } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -169,9 +170,19 @@ export default function Chat() {
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                   Nytt meddelande
                 </h2>
-                <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
-                  Skriv för att börja konversationen
-                </p>
+                 <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                   {(() => {
+                     const activeConv = conversations.find(c => c.id === activeConversationId);
+                     if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
+                     const date = new Date(activeConv.created_at);
+                     const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                     if (currentLang === 'sv') {
+                        return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                     } else {
+                       return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                     }
+                   })()}
+                 </p>
               </div>
               
               {/* Scrollable messages area */}
@@ -273,9 +284,19 @@ export default function Chat() {
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                 Nytt meddelande
               </h2>
-              <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
-                Skriv för att börja konversationen
-              </p>
+               <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                 {(() => {
+                   const activeConv = conversations.find(c => c.id === activeConversationId);
+                   if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
+                   const date = new Date(activeConv.created_at);
+                   const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                   if (currentLang === 'sv') {
+                     return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                   } else {
+                     return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                   }
+                 })()}
+               </p>
             </div>
             
             {/* Scrollable messages area */}
