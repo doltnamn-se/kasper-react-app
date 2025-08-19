@@ -414,13 +414,13 @@ export default function Chat() {
                       <h4 className="font-medium text-sm">
                         {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
                       </h4>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-[#121212] dark:text-[#FFFFFF]">
                         {conversation.last_message_at && 
                           format(new Date(conversation.last_message_at), 'dd MMM yyyy')
                         }
                       </p>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#707070] dark:text-[#FFFFFFA6]">
                       {conversation.last_message || 'No messages yet'}
                     </p>
                   </div>
