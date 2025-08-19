@@ -58,14 +58,20 @@ export default function Chat() {
     setShowHeaderBorder(scrollTop > 10);
   }, []);
 
-  // Set up scroll listener
+  // Set up scroll listener (re-attach when conversation or sheet open changes)
   React.useEffect(() => {
-    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    const root = scrollAreaRef.current;
+    const scrollContainer = root?.querySelector('[data-radix-scroll-area-viewport]');
     if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll);
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
       return () => scrollContainer.removeEventListener('scroll', handleScroll);
     }
-  }, [handleScroll, activeConversationId]);
+  }, [handleScroll, activeConversationId, isChatOpen]);
+
+  // Reset header border when switching conversations or opening sheet
+  React.useEffect(() => {
+    setShowHeaderBorder(false);
+  }, [activeConversationId, isChatOpen]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !activeConversationId) return;
