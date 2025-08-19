@@ -165,7 +165,7 @@ export default function Chat() {
           {activeConversationId ? (
             <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                   Nytt meddelande
                 </h2>
@@ -205,7 +205,7 @@ export default function Chat() {
               </div>
               
               {/* Fixed bottom input area */}
-              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
                   <Button
                     variant="ghost"
@@ -265,11 +265,11 @@ export default function Chat() {
     }
 
     return (
-      <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#232324] dark:border dark:border-[#232325] rounded-2xl">
+      <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? (
           <>
             {/* Fixed header */}
-            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                 Nytt meddelande
               </h2>
@@ -309,7 +309,7 @@ export default function Chat() {
             </div>
             
             {/* Fixed bottom input area */}
-            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
               <div className="flex items-end gap-2">
                 <Button
                   variant="ghost"
@@ -459,7 +459,7 @@ export default function Chat() {
           ) : (
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetOverlay className="backdrop-blur-md" />
-              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none rounded-t-[1rem]">
+              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]">
                 <div className="flex flex-col h-full relative z-[10001]">
                   {renderChatInterface(true)}
                 </div>
