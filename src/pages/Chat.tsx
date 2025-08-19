@@ -324,6 +324,7 @@ export default function Chat() {
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
+                onClick={() => window.open('https://joinkasper.com/support/', '_blank')}
               >
                 {t('general.questions')}
               </Button>
@@ -386,6 +387,7 @@ export default function Chat() {
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
+                onClick={() => window.open('https://joinkasper.com/support/', '_blank')}
               >
                 {t('general.questions')}
               </Button>
