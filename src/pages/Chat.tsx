@@ -25,7 +25,6 @@ export default function Chat() {
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [newChatData, setNewChatData] = useState({
     subject: '',
-    priority: 'medium' as 'low' | 'medium' | 'high',
     message: ''
   });
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -96,14 +95,13 @@ export default function Chat() {
   const handleCreateConversation = () => {
     if (!newChatData.message.trim()) return;
     createConversation(newChatData);
-    setNewChatData({ subject: '', priority: 'medium', message: '' });
+    setNewChatData({ subject: '', message: '' });
     setIsCreatingNew(false);
   };
 
   const handleStartNewChat = () => {
     const defaultChatData = {
       subject: 'Support',
-      priority: 'medium' as const,
       message: 'I need help with something.'
     };
     createConversation(defaultChatData);
@@ -129,24 +127,6 @@ export default function Chat() {
             onChange={(e) => setNewChatData(prev => ({ ...prev, subject: e.target.value }))}
             placeholder="What is this about?"
           />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">Priority</label>
-          <Select
-            value={newChatData.priority}
-            onValueChange={(value: 'low' | 'medium' | 'high') => 
-              setNewChatData(prev => ({ ...prev, priority: value }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
         <div>
           <label className="text-sm font-medium mb-2 block">Message</label>

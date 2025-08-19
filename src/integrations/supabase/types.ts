@@ -51,7 +51,6 @@ export type Database = {
           customer_id: string
           id: string
           last_message_at: string | null
-          priority: string
           status: string
           subject: string | null
           updated_at: string
@@ -62,7 +61,6 @@ export type Database = {
           customer_id: string
           id?: string
           last_message_at?: string | null
-          priority?: string
           status?: string
           subject?: string | null
           updated_at?: string
@@ -73,7 +71,6 @@ export type Database = {
           customer_id?: string
           id?: string
           last_message_at?: string | null
-          priority?: string
           status?: string
           subject?: string | null
           updated_at?: string
@@ -924,7 +921,9 @@ export type Database = {
         Returns: boolean
       }
       create_chat_conversation: {
-        Args: { p_customer_id: string; p_priority?: string; p_subject?: string }
+        Args:
+          | { p_customer_id: string; p_priority?: string; p_subject?: string }
+          | { p_customer_id: string; p_subject?: string }
         Returns: string
       }
       get_promotional_codes_with_customers: {

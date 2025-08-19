@@ -126,7 +126,6 @@ export default function AdminChat() {
       adminId: userId,
       chatData: {
         subject: 'Support',
-        priority: 'medium',
         message: 'Admin has started a conversation with you.'
       }
     });

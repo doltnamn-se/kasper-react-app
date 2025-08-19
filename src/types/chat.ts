@@ -4,7 +4,6 @@ export interface ChatConversation {
   admin_id?: string;
   status: 'active' | 'closed' | 'waiting_admin' | 'waiting_customer';
   subject?: string;
-  priority: 'low' | 'medium' | 'high';
   created_at: string;
   updated_at: string;
   last_message_at?: string;
@@ -50,6 +49,5 @@ export interface ChatParticipant {
 
 export interface NewChatData {
   subject?: string;
-  priority: 'low' | 'medium' | 'high';
   message: string;
 }

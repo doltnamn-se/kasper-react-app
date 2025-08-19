@@ -20,7 +20,6 @@ export const ChatWidget = () => {
   const [newMessage, setNewMessage] = useState('');
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
-    priority: 'medium',
     message: ''
   });
 
@@ -39,7 +38,7 @@ export const ChatWidget = () => {
   const handleCreateConversation = () => {
     if (!newChatData.message.trim()) return;
     createConversation(newChatData);
-    setNewChatData({ subject: '', priority: 'medium', message: '' });
+    setNewChatData({ subject: '', message: '' });
     setShowNewChat(false);
   };
 
@@ -133,24 +132,6 @@ export const ChatWidget = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="priority">Priority</Label>
-                  <Select
-                    value={newChatData.priority}
-                    onValueChange={(value: 'low' | 'medium' | 'high') => 
-                      setNewChatData(prev => ({ ...prev, priority: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
                   <Label htmlFor="message">Message</Label>
                   <Textarea
                     id="message"
@@ -238,20 +219,12 @@ export const ChatWidget = () => {
                           <h4 className="font-medium text-sm">
                             {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
                           </h4>
-                          <div className="flex gap-1">
-                            <Badge
-                              variant={conversation.status === 'active' ? 'default' : 'secondary'}
-                              className="text-xs"
-                            >
-                              {conversation.status}
-                            </Badge>
-                            <Badge
-                              variant={conversation.priority === 'high' ? 'destructive' : 'outline'}
-                              className="text-xs"
-                            >
-                              {conversation.priority}
-                            </Badge>
-                          </div>
+                          <Badge
+                            variant={conversation.status === 'active' ? 'default' : 'secondary'}
+                            className="text-xs"
+                          >
+                            {conversation.status}
+                          </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground">
                           {conversation.last_message_at && 

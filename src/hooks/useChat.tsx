@@ -90,8 +90,7 @@ export const useChat = (userId?: string) => {
       const { data: conversationId, error } = await supabase
         .rpc('create_chat_conversation', {
           p_customer_id: userId,
-          p_subject: chatData.subject,
-          p_priority: chatData.priority
+          p_subject: chatData.subject
         });
 
       if (error) throw error;
