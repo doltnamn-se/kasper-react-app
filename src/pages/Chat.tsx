@@ -226,8 +226,12 @@ export default function Chat() {
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim() || isSendingMessage}
                       size="icon"
-                      className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 dark:!bg-[#007aff]"
-                      style={{ backgroundColor: '#59bffa' }}
+                      className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
+                        !newMessage.trim() 
+                          ? 'bg-[#d0ecfb] dark:bg-[#004999]' 
+                          : 'dark:!bg-[#007aff]'
+                      }`}
+                      style={{ backgroundColor: newMessage.trim() ? '#59bffa' : undefined }}
                     >
                       <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
                     </Button>
@@ -326,8 +330,12 @@ export default function Chat() {
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim() || isSendingMessage}
                     size="icon"
-                    className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 dark:!bg-[#007aff]"
-                    style={{ backgroundColor: '#59bffa' }}
+                    className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
+                      !newMessage.trim() 
+                        ? 'bg-[#d0ecfb] dark:bg-[#004999]' 
+                        : 'dark:!bg-[#007aff]'
+                    }`}
+                    style={{ backgroundColor: newMessage.trim() ? '#59bffa' : undefined }}
                   >
                     <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
                   </Button>
