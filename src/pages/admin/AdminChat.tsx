@@ -364,7 +364,7 @@ export default function AdminChat() {
           <CardContent className="p-0">
             <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
               {conversations.map(conversation => <div key={conversation.id} className={`p-4 border-b cursor-pointer hover:bg-muted/50 ${activeConversationId === conversation.id ? 'bg-muted' : ''}`} onClick={() => handleConversationSelect(conversation.id)}>
-                  <div className="flex justify-between items-start mb-1">
+                  <div className="flex justify-between items-start mb-2">
                     <h4 className="font-medium text-sm">
                       {conversation.customer?.profile?.display_name || 'Customer'}
                     </h4>
