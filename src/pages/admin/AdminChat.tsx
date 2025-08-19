@@ -174,11 +174,11 @@ export default function AdminChat() {
                         <div
                           className={`max-w-[80%] px-3 py-2 ${
                             isAdmin 
-                              ? 'bg-[#d0ecfb] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                              ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
                               : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
                           }`}
                         >
-                          <p className={`text-base break-words ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                          <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
                         </div>
                         <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                           <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
@@ -227,7 +227,7 @@ export default function AdminChat() {
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim() || isSendingMessage}
                       size="icon"
-                      className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100"
+                      className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 dark:!bg-[#007aff]"
                       style={{ backgroundColor: '#59bffa' }}
                     >
                       <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
@@ -274,11 +274,11 @@ export default function AdminChat() {
                       <div
                         className={`max-w-[80%] px-3 py-2 ${
                           isAdmin 
-                            ? 'bg-[#d0ecfb] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                            ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
                             : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
                         }`}
                       >
-                        <p className={`text-base break-words ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                        <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
                       </div>
                       <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                         <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
@@ -327,7 +327,7 @@ export default function AdminChat() {
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim() || isSendingMessage}
                     size="icon"
-                    className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100"
+                    className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 dark:!bg-[#007aff]"
                     style={{ backgroundColor: '#59bffa' }}
                   >
                     <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
