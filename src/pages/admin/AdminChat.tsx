@@ -435,7 +435,7 @@ export default function AdminChat() {
         ) : (
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetOverlay className="backdrop-blur-md" />
-              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none">
+              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none rounded-t-[1rem]">
                 <div className="flex flex-col h-full relative z-[10001]">
                   {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
                 </div>
