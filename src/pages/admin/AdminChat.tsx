@@ -26,6 +26,8 @@ export default function AdminChat() {
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   
   const {
     conversations,
@@ -40,6 +42,13 @@ export default function AdminChat() {
     isCreatingConversation,
     isSendingMessage
   } = useAdminChat();
+
+  // Auto-scroll to bottom when messages change
+  React.useEffect(() => {
+    if (messagesEndRef.current && activeConversationId) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, activeConversationId]);
 
   // Fetch customers for admin conversation creation
   const { data: customersData = [] } = useQuery({
@@ -63,6 +72,10 @@ export default function AdminChat() {
     if (!newMessage.trim() || !activeConversationId || !userId) return;
     sendMessage({ conversationId: activeConversationId, message: newMessage, adminId: userId });
     setNewMessage('');
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
   };
 
   const handleCreateConversation = () => {
@@ -171,9 +184,10 @@ export default function AdminChat() {
                           <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                           <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                         </p>
-                      </div>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
+                  <div ref={messagesEndRef} />
                 </ScrollArea>
               </div>
               
@@ -189,6 +203,7 @@ export default function AdminChat() {
                   </Button>
                   <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <textarea
+                      ref={textareaRef}
                       value={newMessage}
                       onChange={(e) => {
                         setNewMessage(e.target.value);

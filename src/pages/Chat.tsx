@@ -27,6 +27,8 @@ export default function Chat() {
     priority: 'medium' as 'low' | 'medium' | 'high',
     message: ''
   });
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   
   const {
     conversations,
@@ -40,10 +42,21 @@ export default function Chat() {
     isSendingMessage
   } = useChat(userId);
 
+  // Auto-scroll to bottom when messages change
+  React.useEffect(() => {
+    if (messagesEndRef.current && activeConversationId) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, activeConversationId]);
+
   const handleSendMessage = () => {
     if (!newMessage.trim() || !activeConversationId) return;
     sendMessage({ conversationId: activeConversationId, message: newMessage });
     setNewMessage('');
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
   };
 
   const handleCreateConversation = () => {
@@ -170,9 +183,10 @@ export default function Chat() {
                           <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                           <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                         </p>
-                      </div>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
+                  <div ref={messagesEndRef} />
                 </ScrollArea>
               </div>
               
@@ -188,6 +202,7 @@ export default function Chat() {
                   </Button>
                   <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <textarea
+                      ref={textareaRef}
                       value={newMessage}
                       onChange={(e) => {
                         setNewMessage(e.target.value);
