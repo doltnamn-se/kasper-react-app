@@ -56,24 +56,34 @@ export default function AdminChat() {
     }
   }, [messages, activeConversationId]);
 
-  // Handle scroll to show/hide header border
+  // Handle scroll to show/hide header shadow
   const handleScroll = React.useCallback((e: Event) => {
     const target = e.target as HTMLElement;
     const scrollTop = target.scrollTop;
     setShowHeaderBorder(scrollTop > 10);
   }, []);
 
-  // Set up scroll listener (re-attach when conversation or sheet open changes)
+  // Set up scroll listener with timeout for mobile sheet rendering
   React.useEffect(() => {
-    const root = scrollAreaRef.current;
-    const scrollContainer = root?.querySelector('[data-radix-scroll-area-viewport]');
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-      return () => scrollContainer.removeEventListener('scroll', handleScroll);
-    }
-  }, [handleScroll, activeConversationId, isChatOpen]);
+    const attachScrollListener = () => {
+      const root = scrollAreaRef.current;
+      const scrollContainer = root?.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+        return () => scrollContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
 
-  // Reset header border when switching conversations or opening sheet
+    // For mobile sheet, add a small delay to ensure DOM is ready
+    if (isChatOpen && isMobile) {
+      const timeout = setTimeout(attachScrollListener, 100);
+      return () => clearTimeout(timeout);
+    } else {
+      return attachScrollListener();
+    }
+  }, [handleScroll, activeConversationId, isChatOpen, isMobile]);
+
+  // Reset header shadow when switching conversations or opening sheet
   React.useEffect(() => {
     setShowHeaderBorder(false);
   }, [activeConversationId, isChatOpen]);
@@ -170,7 +180,7 @@ export default function AdminChat() {
       return <div className="flex flex-col h-full">
           {activeConversationId ? <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'border-b border-[#ecedee] dark:border-[#3d3d3d]' : ''}`}>
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm' : ''}`}>
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
               fontSize: '0.95rem'
             }}>
@@ -249,7 +259,7 @@ export default function AdminChat() {
     return <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#232324] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? <>
             {/* Fixed header */}
-            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'border-b border-[#ecedee] dark:border-[#3d3d3d]' : ''}`}>
+            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm' : ''}`}>
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
             fontSize: '0.95rem'
           }}>
