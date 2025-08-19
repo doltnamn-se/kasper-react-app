@@ -178,7 +178,7 @@ export default function AdminChat() {
                               : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
                           }`}
                         >
-                          <p className={`text-base ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                          <p className={`text-base break-words ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
                         </div>
                         <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                           <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
@@ -268,7 +268,7 @@ export default function AdminChat() {
                           isAdmin ? 'bg-primary text-primary-foreground' : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] text-[#121212] dark:text-[#ffffff]'
                         }`}
                       >
-                        <p className="text-sm">{message.message}</p>
+                        <p className="text-sm break-words">{message.message}</p>
                         <p className="text-xs opacity-70 mt-1">
                           {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
                         </p>
