@@ -138,42 +138,32 @@ export default function AdminChat() {
         <div className="flex flex-col h-full">
           {activeConversationId ? (
             <>
-              {/* Fixed Header */}
-              <div className="flex-shrink-0 px-4 py-3 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
-                <h3 className="font-medium text-[#121212] dark:text-[#ffffff]">Admin Chat</h3>
-              </div>
-              
-              {/* Scrollable Messages */}
-              <div className="flex-1 overflow-hidden">
-                <ScrollArea className="h-full px-4 py-2">
-                  {messages.map((message) => {
-                    const isAdmin = message.sender?.role === 'super_admin';
-                    return (
+              <ScrollArea className="flex-1 px-4 py-2">
+                {messages.map((message) => {
+                  const isAdmin = message.sender?.role === 'super_admin';
+                  return (
+                    <div
+                      key={message.id}
+                      className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}
+                    >
                       <div
-                        key={message.id}
-                        className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}
+                        className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
+                          isAdmin 
+                            ? 'bg-[#d0ecfb]' 
+                            : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
+                        }`}
                       >
-                        <div
-                          className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
-                            isAdmin 
-                              ? 'bg-[#d0ecfb]' 
-                              : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
-                          }`}
-                        >
-                          <p className={`text-base ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
-                        </div>
-                        <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                          <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        </p>
+                        <p className={`text-base ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
                       </div>
-                    );
-                  })}
-                </ScrollArea>
-              </div>
-              
-              {/* Fixed Input Area */}
-              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+                      <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                        <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                        <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                      </p>
+                    </div>
+                  );
+                })}
+              </ScrollArea>
+              <div className="px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d]">
                 <div className="flex items-end gap-2">
                   <Button
                     variant="ghost"
@@ -230,15 +220,12 @@ export default function AdminChat() {
     return (
       <Card className="lg:col-span-2 bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? (
-          <div className="flex flex-col h-[500px]">
-            {/* Fixed Header */}
-            <CardHeader className="flex-shrink-0 border-b">
-              <CardTitle>Admin Chat</CardTitle>
+          <>
+            <CardHeader>
+              <CardTitle>Chat</CardTitle>
             </CardHeader>
-            
-            {/* Scrollable Messages */}
-            <div className="flex-1 overflow-hidden">
-              <ScrollArea className="h-full p-4">
+            <CardContent className="flex flex-col h-[500px] p-0">
+              <ScrollArea className="flex-1 p-4">
                 {messages.map((message) => {
                   const isAdmin = message.sender?.role === 'super_admin';
                   return (
@@ -260,27 +247,25 @@ export default function AdminChat() {
                   );
                 })}
               </ScrollArea>
-            </div>
-            
-            {/* Fixed Input Area */}
-            <div className="flex-shrink-0 p-4 border-t">
-              <div className="flex gap-2">
-                <Textarea
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type your response..."
-                  className="flex-1 min-h-[40px] max-h-[100px]"
-                />
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!newMessage.trim() || isSendingMessage}
-                  size="icon"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
+              <div className="p-4 border-t">
+                <div className="flex gap-2">
+                  <Textarea
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your response..."
+                    className="flex-1 min-h-[40px] max-h-[100px]"
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!newMessage.trim() || isSendingMessage}
+                    size="icon"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </>
         ) : (
           <CardContent className="flex items-center justify-center h-[500px]">
             <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
