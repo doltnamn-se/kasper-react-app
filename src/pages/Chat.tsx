@@ -444,8 +444,8 @@ export default function Chat() {
             renderChatInterface()
           ) : (
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none">
-                <div className="flex flex-col h-full relative z-[10001]">
+              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none backdrop-blur-md">
+                <div className="flex flex-col h-full relative z-[10001] backdrop-blur-md">
                   {renderChatInterface(true)}
                 </div>
               </SheetContent>
