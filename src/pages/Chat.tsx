@@ -355,7 +355,7 @@ export default function Chat() {
                   >
                     <div className="flex justify-between items-start mb-2">
                       <h4 className="font-medium text-sm">
-                        {conversation.subject || 'Support Chat'}
+                        {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
                       </h4>
                       <Badge variant={conversation.status === 'active' ? 'default' : 'secondary'}>
                         {conversation.status}

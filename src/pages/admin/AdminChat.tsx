@@ -357,7 +357,7 @@ export default function AdminChat() {
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-1">
-                    {conversation.subject || 'Support'}
+                    {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {conversation.last_message_at && 
