@@ -420,7 +420,7 @@ export default function Chat() {
                         }
                       </p>
                     </div>
-                    <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium" style={{ fontSize: '0.875rem' }}>
+                    <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
                       {conversation.last_message || 'No messages yet'}
                     </p>
                   </div>
