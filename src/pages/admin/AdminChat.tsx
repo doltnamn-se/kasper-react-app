@@ -152,7 +152,7 @@ export default function AdminChat() {
           {activeConversationId ? (
             <>
               {/* Fixed header */}
-              <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+              <div className="flex-shrink-0 px-4 pt-4 pb-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                   {isCreatingNew ? 'Start New Conversation' : 'Admin Chat'}
                 </h2>
