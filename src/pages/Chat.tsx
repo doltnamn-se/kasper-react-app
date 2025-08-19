@@ -137,32 +137,47 @@ export default function Chat() {
         <div className="flex flex-col h-full">
           {activeConversationId ? (
             <>
-              <ScrollArea className="flex-1 px-4 py-2">
-                {messages.map((message) => {
-                  const isCurrentUser = message.sender_id === userId;
-                  return (
-                    <div
-                      key={message.id}
-                      className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
-                    >
+              {/* Fixed header */}
+              <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+                <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                  Nytt meddelande
+                </h2>
+                <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                  Skriv för att börja konversationen
+                </p>
+              </div>
+              
+              {/* Scrollable messages area */}
+              <div className="flex-1 overflow-hidden">
+                <ScrollArea className="h-full px-4 py-2">
+                  {messages.map((message) => {
+                    const isCurrentUser = message.sender_id === userId;
+                    return (
                       <div
-                        className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
-                          isCurrentUser 
-                            ? 'bg-[#d0ecfb]' 
-                            : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
-                        }`}
+                        key={message.id}
+                        className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
                       >
-                        <p className={`text-base ${isCurrentUser ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                        <div
+                          className={`max-w-[80%] rounded-[10px] px-4 py-3 ${
+                            isCurrentUser 
+                              ? 'bg-[#d0ecfb]' 
+                              : 'bg-[#f0f0f0] dark:bg-[#3b3b3d]'
+                          }`}
+                        >
+                          <p className={`text-base ${isCurrentUser ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                        </div>
+                        <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                          <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                        </p>
                       </div>
-                      <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                        <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                      </p>
-                    </div>
-                  );
-                })}
-              </ScrollArea>
-              <div className="px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d]">
+                    );
+                  })}
+                </ScrollArea>
+              </div>
+              
+              {/* Fixed bottom input area */}
+              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
                 <div className="flex items-end gap-2">
                   <Button
                     variant="ghost"
@@ -375,19 +390,7 @@ export default function Chat() {
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetContent side="bottom" className="h-[90vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#232324] border-none">
                 <div className="flex flex-col h-full relative z-[10001]">
-                  <div className="flex items-center justify-between p-4">
-                    <div>
-                      <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
-                        Nytt meddelande
-                      </h2>
-                      <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
-                        Skriv för att börja konversationen
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex-1 relative z-[10001]">
-                    {renderChatInterface(true)}
-                  </div>
+                  {renderChatInterface(true)}
                 </div>
               </SheetContent>
             </Sheet>
