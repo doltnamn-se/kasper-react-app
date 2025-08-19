@@ -68,7 +68,7 @@ export default function Chat() {
 
   const handleStartNewChat = () => {
     const defaultChatData = {
-      subject: 'Support Request',
+      subject: 'Support',
       priority: 'medium' as const,
       message: 'I need help with something.'
     };

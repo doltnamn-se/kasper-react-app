@@ -84,7 +84,7 @@ export default function AdminChat() {
       customerId: newChatData.customerId, 
       adminId: userId, 
       chatData: {
-        subject: 'Support Chat',
+        subject: 'Support',
         priority: 'medium',
         message: 'Admin has started a conversation with you.'
       }
@@ -357,7 +357,7 @@ export default function AdminChat() {
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-1">
-                    {conversation.subject || 'Support Chat'}
+                    {conversation.subject || 'Support'}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {conversation.last_message_at && 
