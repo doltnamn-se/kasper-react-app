@@ -21,6 +21,7 @@ export interface ChatConversation {
     email?: string;
   };
   unread_count?: number;
+  last_message?: string;
 }
 
 export interface ChatMessage {

@@ -31,7 +31,7 @@ export const useAdminChat = () => {
         return [];
       }
 
-      // Add unread count for each conversation
+      // Add unread count and latest message for each conversation
       const conversationsWithUnread = await Promise.all(
         data.map(async (conv) => {
           const { count } = await supabase
@@ -41,9 +41,18 @@ export const useAdminChat = () => {
             .neq('sender_id', conv.customer_id)
             .is('read_at', null);
 
+          const { data: lastMessage } = await supabase
+            .from('chat_messages')
+            .select('message')
+            .eq('conversation_id', conv.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
           return {
             ...conv,
-            unread_count: count || 0
+            unread_count: count || 0,
+            last_message: lastMessage?.message || ''
           };
         })
       );

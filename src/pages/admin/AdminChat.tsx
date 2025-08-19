@@ -352,17 +352,17 @@ export default function AdminChat() {
                     <h4 className="font-medium text-sm">
                       {conversation.customer?.profile?.display_name || 'Customer'}
                     </h4>
-                    <Badge variant={conversation.status === 'active' ? 'default' : 'secondary'}>
-                      {conversation.status}
-                    </Badge>
+                    <p className="text-xs text-muted-foreground">
+                      {conversation.last_message_at && 
+                        format(new Date(conversation.last_message_at), 'dd MMM yyyy')
+                      }
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-1">
+                  <p className="text-sm text-muted-foreground">
                     {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {conversation.last_message_at && 
-                      formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })
-                    }
+                  <p className="text-sm text-muted-foreground">
+                    {conversation.last_message || 'No messages yet'}
                   </p>
                 </div>
               ))}

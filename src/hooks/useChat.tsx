@@ -34,7 +34,25 @@ export const useChat = (userId?: string) => {
         return [];
       }
 
-      return data as ChatConversation[];
+      // Add the latest message text to each conversation
+      const conversationsWithLastMessage = await Promise.all(
+        data.map(async (conv) => {
+          const { data: lastMessage } = await supabase
+            .from('chat_messages')
+            .select('message')
+            .eq('conversation_id', conv.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
+          return {
+            ...conv,
+            last_message: lastMessage?.message || ''
+          };
+        })
+      );
+
+      return conversationsWithLastMessage as ChatConversation[];
     },
     enabled: !!userId
   });
