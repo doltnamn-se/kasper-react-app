@@ -248,53 +248,93 @@ export default function AdminChat() {
     }
 
     return (
-      <Card className="lg:col-span-2 bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
+      <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#232324] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? (
           <>
-            <CardHeader>
-              <CardTitle>Chat</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col h-[500px] p-0">
-              <ScrollArea className="flex-1 p-4">
+            {/* Fixed header */}
+            <div className="flex-shrink-0 p-4 border-b border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+              <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                Admin Chat
+              </h2>
+              <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                Chatting with customer
+              </p>
+            </div>
+            
+            {/* Scrollable messages area */}
+            <div className="flex-1 h-[450px] overflow-hidden">
+              <ScrollArea className="h-full px-4 py-2">
                 {messages.map((message) => {
                   const isAdmin = message.sender?.role === 'super_admin';
                   return (
                     <div
                       key={message.id}
-                      className={`flex mb-3 ${isAdmin ? 'justify-end' : 'justify-start'}`}
+                      className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                          isAdmin ? 'bg-primary text-primary-foreground' : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] text-[#121212] dark:text-[#ffffff]'
+                        className={`max-w-[80%] px-3 py-2 ${
+                          isAdmin 
+                            ? 'bg-[#d0ecfb] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                            : 'bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
                         }`}
                       >
-                        <p className="text-sm break-words">{message.message}</p>
-                        <p className="text-xs opacity-70 mt-1">
-                          {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                        </p>
+                        <p className={`text-base break-words ${isAdmin ? 'text-[#121212]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
                       </div>
+                      <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                        <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                        <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                      </p>
                     </div>
                   );
                 })}
+                <div ref={messagesEndRef} />
               </ScrollArea>
-              <div className="p-4 border-t">
-                <div className="flex gap-2">
-                  <Textarea
+            </div>
+            
+            {/* Fixed bottom input area */}
+            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#232324]">
+              <div className="flex items-end gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-8 h-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#3b3b3d] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                >
+                  <span className="text-lg">+</span>
+                </Button>
+                <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#3b3b3d] rounded-xl pl-4 pr-2 py-1.5 flex-1">
+                  <textarea
+                    ref={textareaRef}
                     value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type your response..."
-                    className="flex-1 min-h-[40px] max-h-[100px]"
+                    onChange={(e) => {
+                      setNewMessage(e.target.value);
+                      // Auto-resize textarea
+                      e.target.style.height = 'auto';
+                      e.target.style.height = e.target.scrollHeight + 'px';
+                    }}
+                    placeholder="Skriv här..."
+                    className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]"
+                    style={{ fontSize: '0.95rem', fontWeight: '500' }}
+                    rows={1}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }
+                    }}
                   />
                   <Button
+                    variant="ghost"
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim() || isSendingMessage}
                     size="icon"
+                    className="w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100"
+                    style={{ backgroundColor: '#59bffa' }}
                   >
-                    <Send className="h-4 w-4" />
+                    <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
                   </Button>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </>
         ) : (
           <CardContent className="flex items-center justify-center h-[500px]">
