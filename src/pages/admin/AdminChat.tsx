@@ -180,7 +180,7 @@ export default function AdminChat() {
       return <div className="flex flex-col h-full">
           {activeConversationId ? <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm' : ''}`}>
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
               fontSize: '0.95rem'
             }}>
@@ -259,7 +259,7 @@ export default function AdminChat() {
     return <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#232324] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId ? <>
             {/* Fixed header */}
-            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm' : ''}`}>
+            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
             fontSize: '0.95rem'
           }}>

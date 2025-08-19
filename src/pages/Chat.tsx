@@ -185,7 +185,7 @@ export default function Chat() {
           {activeConversationId ? (
             <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm' : ''}`}>
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                   Nytt meddelande
                 </h2>
@@ -289,7 +289,7 @@ export default function Chat() {
         {activeConversationId ? (
           <>
             {/* Fixed header */}
-            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm' : ''}`}>
+            <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#232324] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
                 Nytt meddelande
               </h2>
