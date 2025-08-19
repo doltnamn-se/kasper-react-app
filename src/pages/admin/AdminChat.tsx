@@ -229,7 +229,7 @@ export default function AdminChat() {
                       size="icon"
                       className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
                         !newMessage.trim() 
-                        ? 'bg-[#d0ecfb] dark:bg-[#00254c]'
+                        ? 'bg-[#d0ecfb] dark:bg-[#232324]'
                           : 'dark:!bg-[#007aff]'
                       }`}
                       style={{ backgroundColor: newMessage.trim() ? '#59bffa' : undefined }}
@@ -333,7 +333,7 @@ export default function AdminChat() {
                     size="icon"
                     className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
                       !newMessage.trim() 
-                        ? 'bg-[#d0ecfb] dark:bg-[#00254c]' 
+                        ? 'bg-[#d0ecfb] dark:bg-[#232324]' 
                         : 'dark:!bg-[#007aff]'
                     }`}
                     style={{ backgroundColor: newMessage.trim() ? '#59bffa' : undefined }}
