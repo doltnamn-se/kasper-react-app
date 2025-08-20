@@ -489,38 +489,34 @@
   animation: typing-flow-dark-3 0.8s infinite ease-in-out;
 }
 
-@keyframes typing-indicator-reveal-left {
+@keyframes typing-indicator-fade-in {
   0% {
-    clip-path: inset(0 100% 0 0);
     opacity: 0;
+    transform: translateY(4px);
   }
   100% {
-    clip-path: inset(0 0 0 0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@keyframes typing-indicator-reveal-right {
+@keyframes typing-indicator-fade-out {
   0% {
-    clip-path: inset(0 0 0 0);
     opacity: 1;
+    transform: translateY(0);
   }
   100% {
-    clip-path: inset(0 0 0 100%);
     opacity: 0;
+    transform: translateY(4px);
   }
-}
-
-.typing-indicator-container {
-  overflow: hidden;
 }
 
 .typing-indicator-enter {
-  animation: typing-indicator-reveal-left 0.3s ease-out forwards;
+  animation: typing-indicator-fade-in 0.2s ease-out forwards;
 }
 
 .typing-indicator-exit {
-  animation: typing-indicator-reveal-right 0.3s ease-in forwards;
+  animation: typing-indicator-fade-out 0.2s ease-in forwards;
 }
 
 @keyframes fadeInUp {
