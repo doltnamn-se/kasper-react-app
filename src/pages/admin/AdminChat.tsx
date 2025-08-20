@@ -242,7 +242,7 @@ export default function AdminChat() {
               {/* Fixed bottom input area */}
               <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
-                  <Button variant="ghost" size="icon" className="w-8 h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0">
+                  <Button variant="ghost" size="icon" className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0">
                     <span className="text-lg">+</span>
                   </Button>
                   <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
@@ -334,7 +334,7 @@ export default function AdminChat() {
             {/* Fixed bottom input area */}
             <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
               <div className="flex items-end gap-2">
-                <Button variant="ghost" size="icon" className="w-8 h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0">
+                <Button variant="ghost" size="icon" className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0">
                   <span className="text-lg">+</span>
                 </Button>
                 <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
