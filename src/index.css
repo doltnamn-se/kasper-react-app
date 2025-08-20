@@ -377,6 +377,48 @@
   }
 }
 
+@keyframes typing-flow-light-1 {
+  0% { background-color: #9e9da2; }
+  33.33% { background-color: #b6b5ba; }
+  66.66% { background-color: #b6b5ba; }
+  100% { background-color: #9e9da2; }
+}
+
+@keyframes typing-flow-light-2 {
+  0% { background-color: #b6b5ba; }
+  33.33% { background-color: #b6b5ba; }
+  66.66% { background-color: #9e9da2; }
+  100% { background-color: #b6b5ba; }
+}
+
+@keyframes typing-flow-light-3 {
+  0% { background-color: #b6b5ba; }
+  33.33% { background-color: #9e9da2; }
+  66.66% { background-color: #b6b5ba; }
+  100% { background-color: #b6b5ba; }
+}
+
+@keyframes typing-flow-dark-1 {
+  0% { background-color: #56555a; }
+  33.33% { background-color: #656469; }
+  66.66% { background-color: #7f7e83; }
+  100% { background-color: #56555a; }
+}
+
+@keyframes typing-flow-dark-2 {
+  0% { background-color: #656469; }
+  33.33% { background-color: #7f7e83; }
+  66.66% { background-color: #56555a; }
+  100% { background-color: #656469; }
+}
+
+@keyframes typing-flow-dark-3 {
+  0% { background-color: #7f7e83; }
+  33.33% { background-color: #56555a; }
+  66.66% { background-color: #656469; }
+  100% { background-color: #7f7e83; }
+}
+
 .animate-bounce-dot {
   animation: bounce-dot 1.4s infinite ease-in-out;
 }
@@ -421,6 +463,30 @@
 
 .dark .typing-dot-3 {
   background-color: #7f7e83;
+}
+
+.typing-dot-animated-1 {
+  animation: typing-flow-light-1 1.5s infinite ease-in-out;
+}
+
+.dark .typing-dot-animated-1 {
+  animation: typing-flow-dark-1 1.5s infinite ease-in-out;
+}
+
+.typing-dot-animated-2 {
+  animation: typing-flow-light-2 1.5s infinite ease-in-out;
+}
+
+.dark .typing-dot-animated-2 {
+  animation: typing-flow-dark-2 1.5s infinite ease-in-out;
+}
+
+.typing-dot-animated-3 {
+  animation: typing-flow-light-3 1.5s infinite ease-in-out;
+}
+
+.dark .typing-dot-animated-3 {
+  animation: typing-flow-dark-3 1.5s infinite ease-in-out;
 }
 
 @keyframes fadeInUp {
