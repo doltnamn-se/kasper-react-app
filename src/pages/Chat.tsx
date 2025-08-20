@@ -670,7 +670,9 @@ export default function Chat() {
                   >
                     <div className="flex justify-between items-start mb-1">
                       <h4 className="font-medium text-sm">
-                        {(conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support')}
+                        {conversation.status === 'closed'
+                          ? t('conversation.history')
+                          : ((conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support'))}
                       </h4>
                       <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
                         {conversation.last_message_at && (() => {
