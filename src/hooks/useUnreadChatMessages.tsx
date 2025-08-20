@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const useUnreadChatMessages = (userId?: string) => {
   const { data: conversations = [] } = useQuery({
-    queryKey: ['chat-conversations', userId],
+    queryKey: ['chat-unread-conversations', userId],
     queryFn: async () => {
       if (!userId) return [];
       
@@ -15,7 +15,7 @@ export const useUnreadChatMessages = (userId?: string) => {
           customer_id,
           admin_id
         `)
-        .eq('customer_id', userId)
+        .or(`customer_id.eq.${userId},admin_id.eq.${userId}`)
         .eq('status', 'active');
 
       if (error) {
