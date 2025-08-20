@@ -269,7 +269,7 @@ export default function Chat() {
                                   <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                                 </p>
                                  {isRead ? (
-                                   <CheckCheck className="w-3 h-3" color="#787878" strokeWidth={2} />
+                                   <CheckCheck className="w-3 h-3" color="#10b981" strokeWidth={2} />
                                  ) : (
                                    <div className="relative w-3 h-3">
                                      <svg className="w-3 h-3" viewBox="0 0 16 16">
@@ -410,7 +410,7 @@ export default function Chat() {
                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                               </p>
                                  {isRead ? (
-                                   <CheckCheck className="w-3 h-3" color="#787878" strokeWidth={2} />
+                                   <CheckCheck className="w-3 h-3" color="#10b981" strokeWidth={2} />
                                  ) : (
                                    <div className="relative w-3 h-3">
                                      <svg className="w-3 h-3" viewBox="0 0 16 16">
