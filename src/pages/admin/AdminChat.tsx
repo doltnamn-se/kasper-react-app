@@ -144,6 +144,10 @@ export default function AdminChat() {
       customerId: ''
     });
     setIsCreatingNew(false);
+    // Open chat interface on mobile after creating conversation
+    if (isMobile) {
+      setIsChatOpen(true);
+    }
   };
   const handleConversationSelect = (conversationId: string) => {
     setActiveConversationId(conversationId);
