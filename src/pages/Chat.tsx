@@ -373,7 +373,7 @@ export default function Chat() {
                       placeholder={(() => {
                         const activeConv = conversations.find(c => c.id === activeConversationId);
                         if (activeConv?.status === 'closed') {
-                          return t('nav.dashboard') === 'Översikt' ? 'Konversationen är arkiverad' : 'Conversation is archived';
+                          return '';
                         }
                         return t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...';
                       })()}
