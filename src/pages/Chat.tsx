@@ -239,6 +239,7 @@ export default function Chat() {
                    {(() => {
                      if (isDraftConversation) return t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message';
                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                     console.log('Chat title debug - activeConv:', activeConv, 'status:', activeConv?.status);
                      if (activeConv?.status === 'closed') return t('conversation.history');
                      return t('nav.admin.support');
                    })()}
@@ -438,6 +439,7 @@ export default function Chat() {
                 {(() => {
                   if (isDraftConversation) return t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message';
                   const activeConv = conversations.find(c => c.id === activeConversationId);
+                  console.log('Chat title debug desktop - activeConv:', activeConv, 'status:', activeConv?.status);
                   if (activeConv?.status === 'closed') return t('conversation.history');
                   return t('nav.admin.support');
                 })()}
