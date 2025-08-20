@@ -32,6 +32,8 @@ export default function AdminChat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
+  const [isDraftConversation, setIsDraftConversation] = useState(false);
+  const [draftCustomerId, setDraftCustomerId] = useState<string | null>(null);
   React.useEffect(() => {
     try {
       const isDark = document.documentElement.classList.contains('dark');
@@ -61,12 +63,12 @@ export default function AdminChat() {
     messages,
     activeConversationId,
     setActiveConversationId,
-    createConversation,
+    createConversationWithMessage,
     sendMessage,
     assignConversation,
     closeConversation,
     markAsRead,
-    isCreatingConversation,
+    isCreatingConversationWithMessage,
     isSendingMessage
   } = useAdminChat();
 
@@ -158,12 +160,25 @@ export default function AdminChat() {
     profile: c.profiles
   }));
   const handleSendMessage = () => {
-    if (!newMessage.trim() || !activeConversationId || !userId) return;
-    sendMessage({
-      conversationId: activeConversationId,
-      message: newMessage,
-      adminId: userId
-    });
+    if (!newMessage.trim() || !userId) return;
+
+    if (isDraftConversation && draftCustomerId) {
+      createConversationWithMessage({
+        customerId: draftCustomerId,
+        adminId: userId,
+        message: newMessage,
+        subject: 'Support'
+      });
+      setIsDraftConversation(false);
+      setDraftCustomerId(null);
+    } else if (activeConversationId) {
+      sendMessage({
+        conversationId: activeConversationId,
+        message: newMessage,
+        adminId: userId
+      });
+    }
+
     setNewMessage('');
     // Reset textarea height
     if (textareaRef.current) {
@@ -175,32 +190,21 @@ export default function AdminChat() {
       console.log('Missing data for conversation creation:', { customerId: newChatData.customerId, userId });
       return;
     }
-    
-    console.log('Creating admin conversation with:', {
-      customerId: newChatData.customerId,
-      adminId: userId,
-      isMobile
-    });
-    
-    // For admin, we create conversation with an initial message immediately
-    createConversation({
-      customerId: newChatData.customerId,
-      adminId: userId,
-      chatData: {
-        subject: 'Support',
-        message: 'Admin has started a conversation with you.'
-      }
-    });
-    setNewChatData({
-      customerId: ''
-    });
+
+    // Enter draft mode: do NOT create a conversation yet
+    setDraftCustomerId(newChatData.customerId);
+    setIsDraftConversation(true);
+    setActiveConversationId(null);
+
+    setNewChatData({ customerId: '' });
     setIsCreatingNew(false);
-    // Open chat interface on mobile after creating conversation
     if (isMobile) {
       setIsChatOpen(true);
     }
   };
   const handleConversationSelect = (conversationId: string) => {
+    setIsDraftConversation(false);
+    setDraftCustomerId(null);
     setActiveConversationId(conversationId);
     if (userId) markAsRead(conversationId, userId);
     setIsCreatingNew(false);
@@ -268,8 +272,8 @@ export default function AdminChat() {
           </Popover>
         </div>
         <div className="flex gap-2">
-          <Button onClick={handleCreateConversation} disabled={!newChatData.customerId || isCreatingConversation} className="rounded-xl h-9">
-            {isCreatingConversation ? 'Starting...' : 'Start Conversation'}
+          <Button onClick={handleCreateConversation} disabled={!newChatData.customerId} className="rounded-xl h-9">
+            Start Conversation
           </Button>
           <Button variant="outline" onClick={() => {
           setIsCreatingNew(false);
@@ -283,13 +287,17 @@ export default function AdminChat() {
   const renderChatInterface = (inSheet = false) => {
     if (inSheet) {
       return <div className="flex flex-col h-full">
-          {activeConversationId ? <>
+          {(activeConversationId || isDraftConversation) ? <>
               {/* Fixed header */}
               <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                  <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
               fontSize: '0.95rem'
             }}>
                    {(() => {
+                     if (isDraftConversation) {
+                       const draft = customers.find(c => c.id === draftCustomerId);
+                       return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
+                     }
                      const activeConv = conversations.find(c => c.id === activeConversationId);
                      return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
                    })()}
@@ -298,6 +306,7 @@ export default function AdminChat() {
               fontSize: '0.95rem'
             }}>
                    {(() => {
+                     if (isDraftConversation) return 'Chatting with customer';
                      const activeConv = conversations.find(c => c.id === activeConversationId);
                      if (!activeConv?.created_at) return 'Chatting with customer';
                      const date = new Date(activeConv.created_at);

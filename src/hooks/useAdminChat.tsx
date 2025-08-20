@@ -124,7 +124,7 @@ export const useAdminChat = () => {
     }
   });
 
-  // Create new conversation as admin
+  // Create new conversation as admin (without sending any message)
   const createConversationMutation = useMutation({
     mutationFn: async ({ customerId, adminId, chatData }: { 
       customerId: string; 
@@ -161,18 +161,6 @@ export const useAdminChat = () => {
 
       if (participantError) throw participantError;
 
-      // Send the initial message
-      const { error: messageError } = await supabase
-        .from('chat_messages')
-        .insert({
-          conversation_id: conversationId,
-          sender_id: adminId,
-          message: chatData.message,
-          message_type: 'text'
-        });
-
-      if (messageError) throw messageError;
-
       return conversationId;
     },
     onSuccess: (conversationId) => {
@@ -184,6 +172,60 @@ export const useAdminChat = () => {
     onError: (error) => {
       console.error('Error creating admin conversation:', error);
       console.error('Full error details:', JSON.stringify(error, null, 2));
+      toast.error('Failed to start conversation');
+    }
+  });
+
+  // Create conversation and send the first message atomically
+  const createConversationWithMessageMutation = useMutation({
+    mutationFn: async ({ customerId, adminId, message, subject = 'Support' }: {
+      customerId: string;
+      adminId: string;
+      message: string;
+      subject?: string;
+    }) => {
+      // Create conversation
+      const { data: conversationId, error } = await supabase
+        .rpc('create_chat_conversation', {
+          p_customer_id: customerId,
+          p_subject: subject,
+          p_priority: 'medium'
+        });
+      if (error) throw error;
+
+      // Assign admin to conversation
+      const { error: updateError } = await supabase
+        .from('chat_conversations')
+        .update({ admin_id: adminId })
+        .eq('id', conversationId);
+      if (updateError) throw updateError;
+
+      // Ensure admin is a participant
+      const { error: participantError } = await supabase
+        .from('chat_participants')
+        .insert({ conversation_id: conversationId, user_id: adminId, role: 'admin' });
+      if (participantError) throw participantError;
+
+      // Send the first message
+      const { error: messageError } = await supabase
+        .from('chat_messages')
+        .insert({
+          conversation_id: conversationId,
+          sender_id: adminId,
+          message,
+          message_type: 'text'
+        });
+      if (messageError) throw messageError;
+
+      return conversationId;
+    },
+    onSuccess: (conversationId) => {
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', conversationId] });
+      setActiveConversationId(conversationId);
+    },
+    onError: (error) => {
+      console.error('Error creating admin conversation with message:', error);
       toast.error('Failed to start conversation');
     }
   });
@@ -320,11 +362,13 @@ export const useAdminChat = () => {
     loadingMessages,
     setActiveConversationId,
     createConversation: createConversationMutation.mutate,
+    createConversationWithMessage: createConversationWithMessageMutation.mutate,
     sendMessage: sendMessageMutation.mutate,
     assignConversation: assignConversationMutation.mutate,
     closeConversation: closeConversationMutation.mutate,
     markAsRead,
     isCreatingConversation: createConversationMutation.isPending,
+    isCreatingConversationWithMessage: createConversationWithMessageMutation.isPending,
     isSendingMessage: sendMessageMutation.isPending
   };
 };
