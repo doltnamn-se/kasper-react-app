@@ -21,6 +21,8 @@ import { ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
+import { CustomerDetailsSheet } from '@/components/admin/customers/CustomerDetailsSheet';
+import { CustomerWithProfile } from '@/types/customer';
 export default function AdminChat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
@@ -33,6 +35,7 @@ export default function AdminChat() {
   const [draftCustomerId, setDraftCustomerId] = useState<string | null>(null);
   const [customerDropdownOpen, setCustomerDropdownOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'inbox' | 'archive'>('inbox');
+  const [selectedCustomerProfile, setSelectedCustomerProfile] = useState<CustomerWithProfile | null>(null);
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
@@ -226,6 +229,34 @@ export default function AdminChat() {
     setIsCreatingNew(false);
     if (isMobile) setIsChatOpen(true);
   };
+
+  const handleOpenCustomerProfile = async () => {
+    const activeConv = conversations.find(c => c.id === activeConversationId);
+    if (activeConv?.customer?.id) {
+      try {
+        // Fetch full customer data with profile
+        const { data: customer, error } = await supabase
+          .from('customers')
+          .select(`
+            *,
+            profile:profiles(*)
+          `)
+          .eq('id', activeConv.customer.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching customer:', error);
+          return;
+        }
+
+        if (customer) {
+          setSelectedCustomerProfile(customer as CustomerWithProfile);
+        }
+      } catch (error) {
+        console.error('Error fetching customer profile:', error);
+      }
+    }
+  };
   const renderNewChatForm = (inSheet = false) => <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
       <CardHeader>
         <div className={`flex-shrink-0 p-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] ${inSheet ? '' : 'rounded-t-2xl'}`}>
@@ -344,13 +375,7 @@ export default function AdminChat() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
-                        onClick={() => {
-                          const activeConv = conversations.find(c => c.id === activeConversationId);
-                          if (activeConv?.customer_id) {
-                            // Navigate to customer profile or open customer details
-                            window.open(`/admin/customers?id=${activeConv.customer_id}`, '_blank');
-                          }
-                        }}
+                        onClick={handleOpenCustomerProfile}
                         title="Open customer profile"
                       >
                         <User className="h-4 w-4" />
@@ -546,13 +571,7 @@ export default function AdminChat() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
-                      onClick={() => {
-                        const activeConv = conversations.find(c => c.id === activeConversationId);
-                        if (activeConv?.customer_id) {
-                          // Navigate to customer profile or open customer details
-                          window.open(`/admin/customers?id=${activeConv.customer_id}`, '_blank');
-                        }
-                      }}
+                      onClick={handleOpenCustomerProfile}
                       title="Open customer profile"
                     >
                       <User className="h-4 w-4" />
@@ -818,6 +837,16 @@ export default function AdminChat() {
                 </div>
               </SheetContent>
             </Sheet>}
+
+        {/* Customer Profile Details Sheet */}
+        <CustomerDetailsSheet
+          customer={selectedCustomerProfile}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedCustomerProfile(null);
+            }
+          }}
+        />
       </div>
     </div>;
 }
