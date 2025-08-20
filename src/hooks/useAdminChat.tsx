@@ -150,18 +150,6 @@ export const useAdminChat = () => {
 
       if (updateError) throw updateError;
 
-      // Send initial message
-      const { error: messageError } = await supabase
-        .from('chat_messages')
-        .insert({
-          conversation_id: conversationId,
-          sender_id: adminId,
-          message: chatData.message,
-          message_type: 'text'
-        });
-
-      if (messageError) throw messageError;
-
       // Add admin as participant
       const { error: participantError } = await supabase
         .from('chat_participants')
