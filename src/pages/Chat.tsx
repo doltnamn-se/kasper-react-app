@@ -693,11 +693,16 @@ export default function Chat() {
                     onClick={() => handleConversationSelect(conversation.id)}
                   >
                     <div className="flex justify-between items-start mb-1">
-                      <h4 className="font-medium text-sm">
-                        {conversation.status === 'closed'
-                          ? t('conversation.history')
-                          : ((conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support'))}
-                      </h4>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium text-sm">
+                          {conversation.status === 'closed'
+                            ? t('conversation.history')
+                            : ((conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support'))}
+                        </h4>
+                        {(conversation.unread_count || 0) > 0 && (
+                          <div className="h-2 w-2 rounded-full bg-[#2e77d0] flex-shrink-0" />
+                        )}
+                      </div>
                       <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
                         {conversation.last_message_at && (() => {
                           const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';

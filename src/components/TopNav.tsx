@@ -11,6 +11,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthLogo } from "./auth/AuthLogo";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ChatMessageIcon } from "./chat/ChatMessageIcon";
+import { useUnreadChatMessages } from "@/hooks/useUnreadChatMessages";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 export const TopNav = () => {
   const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
@@ -21,6 +24,8 @@ export const TopNav = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { userProfile } = useUserProfile();
+  const { totalUnreadMessages } = useUnreadChatMessages(userProfile?.id);
 
   // Effect for search keyboard shortcut
   useEffect(() => {
@@ -119,10 +124,8 @@ export const TopNav = () => {
             {/* Moon/ThemeToggle button removed */}
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] h-8 w-8 flex items-center justify-center hover:bg-transparent"
+                <ChatMessageIcon
+                  unreadCount={totalUnreadMessages}
                   onClick={() => {
                     if (isAdminRoute) {
                       navigate("/admin/chat");
@@ -130,9 +133,7 @@ export const TopNav = () => {
                       navigate("/chat");
                     }
                   }}
-                >
-                  <MessageSquareText className="w-4 h-4" />
-                </Button>
+                />
               </TooltipTrigger>
               <TooltipContent>
                 <p>{t('messages')}</p>
