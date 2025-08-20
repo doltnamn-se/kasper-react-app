@@ -32,7 +32,7 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
 
   // Fetch all conversations for admin
   const { data: conversations = [], isLoading: loadingConversations } = useQuery({
-    queryKey: ['admin-chat-conversations', statusFilter],
+    queryKey: ['admin-chat-conversations', statusFilter, adminProfile?.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('chat_conversations')
@@ -57,12 +57,16 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
       // Add unread count and latest message for each conversation
       const conversationsWithUnread = await Promise.all(
         data.map(async (conv) => {
-          const { count } = await supabase
+          // Exclude messages sent by the current admin from unread count
+          const adminIdForFilter = adminProfile?.id || conv.admin_id || null;
+          const unreadQuery = supabase
             .from('chat_messages')
             .select('*', { count: 'exact', head: true })
             .eq('conversation_id', conv.id)
-            .neq('sender_id', conv.customer_id)
             .is('read_at', null);
+          const { count } = await (adminIdForFilter 
+            ? unreadQuery.neq('sender_id', adminIdForFilter)
+            : unreadQuery);
 
           const { data: lastMessage } = await supabase
             .from('chat_messages')
