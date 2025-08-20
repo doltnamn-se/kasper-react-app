@@ -217,8 +217,12 @@ export const useChat = (userId?: string) => {
 
     if (error) {
       console.error('Error marking messages as read:', error);
+    } else {
+      // Invalidate unread message queries to update notification dots
+      queryClient.invalidateQueries({ queryKey: ['chat-unread-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['chat-unread-counts'] });
     }
-  }, [userId]);
+  }, [userId, queryClient]);
 
   // Real-time subscription for new messages
   useEffect(() => {
