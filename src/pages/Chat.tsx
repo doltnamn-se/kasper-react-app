@@ -350,8 +350,18 @@ export default function Chat() {
                         e.target.style.height = 'auto';
                         e.target.style.height = e.target.scrollHeight + 'px';
                       }}
-                      placeholder={t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...'}
-                      className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]"
+                      placeholder={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        if (activeConv?.status === 'closed') {
+                          return t('nav.dashboard') === 'Översikt' ? 'Konversationen är arkiverad' : 'Conversation is archived';
+                        }
+                        return t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...';
+                      })()}
+                      disabled={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return activeConv?.status === 'closed';
+                      })()}
+                      className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{ fontSize: '0.95rem', fontWeight: '500' }}
                       rows={1}
                       onKeyPress={(e) => {
@@ -364,7 +374,10 @@ export default function Chat() {
                     <Button
                       variant="ghost"
                       onClick={handleSendMessage}
-                      disabled={!newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage}
+                      disabled={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return !newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage || activeConv?.status === 'closed';
+                      })()}
                       size="icon"
                       className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
                         !newMessage.trim() 
@@ -511,8 +524,18 @@ export default function Chat() {
                       e.target.style.height = 'auto';
                       e.target.style.height = e.target.scrollHeight + 'px';
                     }}
-                    placeholder={t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...'}
-                    className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]"
+                    placeholder={(() => {
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      if (activeConv?.status === 'closed') {
+                        return t('nav.dashboard') === 'Översikt' ? 'Konversationen är arkiverad' : 'Conversation is archived';
+                      }
+                      return t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...';
+                    })()}
+                    disabled={(() => {
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      return activeConv?.status === 'closed';
+                    })()}
+                    className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ fontSize: '0.95rem', fontWeight: '500' }}
                     rows={1}
                     onKeyPress={(e) => {
@@ -525,7 +548,10 @@ export default function Chat() {
                   <Button
                     variant="ghost"
                     onClick={handleSendMessage}
-                    disabled={!newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage}
+                    disabled={(() => {
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      return !newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage || activeConv?.status === 'closed';
+                    })()}
                     size="icon"
                     className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
                       !newMessage.trim() 
