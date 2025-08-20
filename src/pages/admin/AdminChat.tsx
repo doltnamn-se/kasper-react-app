@@ -202,12 +202,12 @@ export default function AdminChat() {
                      const activeConv = conversations.find(c => c.id === activeConversationId);
                      if (!activeConv?.created_at) return 'Chatting with customer';
                      const date = new Date(activeConv.created_at);
-                     const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                     if (currentLang === 'sv') {
-                        return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                     } else {
-                       return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                     }
+                      const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                      if (currentLang === 'sv') {
+                         return `Inskickat ${formatDistanceToNow(date, { addSuffix: true, locale: sv })}`;
+                      } else {
+                        return `Submitted ${formatDistanceToNow(date, { addSuffix: true })}`;
+                      }
                    })()}
                  </p>
               </div>
@@ -251,7 +251,7 @@ export default function AdminChat() {
                   // Auto-resize textarea
                   e.target.style.height = 'auto';
                   e.target.style.height = e.target.scrollHeight + 'px';
-                }} placeholder="Skriv här..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
+                }} placeholder={t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...'} className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
                   fontSize: '0.95rem',
                   fontWeight: '500'
                 }} rows={1} onKeyPress={e => {
@@ -294,12 +294,12 @@ export default function AdminChat() {
                    const activeConv = conversations.find(c => c.id === activeConversationId);
                    if (!activeConv?.created_at) return 'Chatting with customer';
                    const date = new Date(activeConv.created_at);
-                   const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                   if (currentLang === 'sv') {
-                     return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                   } else {
-                     return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                   }
+                    const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                    if (currentLang === 'sv') {
+                      return `Inskickat ${formatDistanceToNow(date, { addSuffix: true, locale: sv })}`;
+                    } else {
+                      return `Submitted ${formatDistanceToNow(date, { addSuffix: true })}`;
+                    }
                  })()}
                </p>
             </div>
@@ -343,7 +343,7 @@ export default function AdminChat() {
                 // Auto-resize textarea
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';
-              }} placeholder="Skriv här..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
+              }} placeholder={t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...'} className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
                 fontSize: '0.95rem',
                 fontWeight: '500'
               }} rows={1} onKeyPress={e => {
