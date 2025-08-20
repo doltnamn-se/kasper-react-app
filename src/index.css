@@ -391,6 +391,14 @@
   animation-delay: 0.32s;
 }
 
+.typing-indicator-bubble {
+  background-color: #f0f0f0;
+}
+
+.dark .typing-indicator-bubble {
+  background-color: #2f2f31;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
