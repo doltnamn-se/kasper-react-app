@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp, Search, Check, CheckCheck, User, Archive } from 'lucide-react';
+import { Send, ChevronUp, Search, Check, CheckCheck, UserRound, Archive } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -378,7 +378,7 @@ export default function AdminChat() {
                         onClick={handleOpenCustomerProfile}
                         title="Open customer profile"
                       >
-                        <User className="h-4 w-4" />
+                        <UserRound className="h-4 w-4" />
                       </Button>
                       
                       <Button
@@ -574,7 +574,7 @@ export default function AdminChat() {
                       onClick={handleOpenCustomerProfile}
                       title="Open customer profile"
                     >
-                      <User className="h-4 w-4" />
+                      <UserRound className="h-4 w-4" />
                     </Button>
                     
                     <Button
