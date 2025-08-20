@@ -238,7 +238,7 @@ export default function Chat() {
                       const isCurrentUser = message.sender_id === userId;
                       const isLastMessage = index === messages.length - 1;
                       const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
-                      const statusText = isRead ? t('message.read') : t('message.delivered');
+                       const statusText = isRead ? t('message.seen') : t('message.delivered');
                      return (
                        <div
                          key={message.id}
@@ -269,7 +269,10 @@ export default function Chat() {
                                   <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                                 </p>
                                  {isRead ? (
-                                   <CheckCheck className="w-3 h-3" color="#10b981" strokeWidth={2} />
+                                   <>
+                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2} />
+                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2} />
+                                   </>
                                  ) : (
                                    <div className="relative w-3 h-3">
                                      <svg className="w-3 h-3" viewBox="0 0 16 16">
@@ -379,7 +382,7 @@ export default function Chat() {
                     const isCurrentUser = message.sender_id === userId;
                     const isLastMessage = index === messages.length - 1;
                     const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
-                    const statusText = isRead ? t('message.read') : t('message.delivered');
+                    const statusText = isRead ? t('message.seen') : t('message.delivered');
                    return (
                      <div
                        key={message.id}
@@ -410,7 +413,10 @@ export default function Chat() {
                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                               </p>
                                  {isRead ? (
-                                   <CheckCheck className="w-3 h-3" color="#10b981" strokeWidth={2} />
+                                   <>
+                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2} />
+                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2} />
+                                   </>
                                  ) : (
                                    <div className="relative w-3 h-3">
                                      <svg className="w-3 h-3" viewBox="0 0 16 16">

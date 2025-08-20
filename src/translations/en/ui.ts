@@ -181,5 +181,5 @@ export const ui: UITranslations = {
   'light.mode': 'Light mode',
   'dark.mode': 'Dark mode',
   'message.delivered': 'Delivered',
-  'message.read': 'Read',
+  'message.seen': 'Seen',
 };

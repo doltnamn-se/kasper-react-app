@@ -316,7 +316,7 @@ export default function AdminChat() {
                 const isAdmin = message.sender?.role === 'super_admin';
                 const isLastMessage = index === messages.length - 1;
                 const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
-                const statusText = isRead ? t('message.read') : t('message.delivered');
+                const statusText = isRead ? t('message.seen') : t('message.delivered');
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                         <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
                           <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
@@ -345,7 +345,10 @@ export default function AdminChat() {
                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                               </p>
                                {isRead ? (
-                                 <CheckCheck className="w-3 h-3" color="#10b981" strokeWidth={2} />
+                                 <>
+                                   <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2} />
+                                   <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2} />
+                                 </>
                                ) : (
                                  <div className="relative w-3 h-3">
                                    <svg className="w-3 h-3" viewBox="0 0 16 16">
@@ -435,7 +438,7 @@ export default function AdminChat() {
               const isAdmin = message.sender?.role === 'super_admin';
               const isLastMessage = index === messages.length - 1;
               const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
-              const statusText = isRead ? t('message.read') : t('message.delivered');
+              const statusText = isRead ? t('message.seen') : t('message.delivered');
               return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                       <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
                         <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
@@ -464,7 +467,10 @@ export default function AdminChat() {
                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                             </p>
                              {isRead ? (
-                               <CheckCheck className="w-3 h-3" color="#10b981" strokeWidth={2} />
+                               <>
+                                 <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2} />
+                                 <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2} />
+                               </>
                              ) : (
                                <div className="relative w-3 h-3">
                                  <svg className="w-3 h-3" viewBox="0 0 16 16">

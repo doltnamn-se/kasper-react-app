@@ -181,5 +181,5 @@ export const ui: UITranslations = {
   'light.mode': 'Ljust läge',
   'dark.mode': 'Mörkt läge',
   'message.delivered': 'Levererat',
-  'message.read': 'Läst',
+  'message.seen': 'Sett',
 };

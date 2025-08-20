@@ -179,5 +179,5 @@ export interface UITranslations {
   'light.mode': string;
   'dark.mode': string;
   'message.delivered': string;
-  'message.read': string;
+  'message.seen': string;
 }
