@@ -251,7 +251,7 @@ export default function AdminChat() {
                   // Auto-resize textarea
                   e.target.style.height = 'auto';
                   e.target.style.height = e.target.scrollHeight + 'px';
-                }} placeholder="Type here..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
+                }} placeholder="Skriv här..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
                   fontSize: '0.95rem',
                   fontWeight: '500'
                 }} rows={1} onKeyPress={e => {
@@ -343,7 +343,7 @@ export default function AdminChat() {
                 // Auto-resize textarea
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';
-              }} placeholder="Type here..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
+              }} placeholder="Skriv här..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
                 fontSize: '0.95rem',
                 fontWeight: '500'
               }} rows={1} onKeyPress={e => {
@@ -402,7 +402,7 @@ export default function AdminChat() {
                       {conversation.customer?.profile?.display_name || 'Customer'}
                     </h4>
                     <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
-                      {conversation.last_message_at && formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true, locale: sv })}
+                      {conversation.last_message_at && formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })}
                     </p>
                   </div>
                   <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
