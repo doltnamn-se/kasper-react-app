@@ -75,6 +75,22 @@ export default function AdminChat() {
     }
   }, [messages, activeConversationId, isMobile]);
 
+  // Ensure scroll to latest when mobile sheet opens
+  React.useEffect(() => {
+    if (isMobile && isChatOpen && messagesEndRef.current) {
+      const doScroll = () => {
+        if (scrollAreaRef.current) {
+          const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+          if (viewport) viewport.scrollTop = viewport.scrollHeight;
+        }
+        messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+      };
+      const t1 = setTimeout(doScroll, 200);
+      const t2 = setTimeout(doScroll, 450);
+      return () => { clearTimeout(t1); clearTimeout(t2); };
+    }
+  }, [isMobile, isChatOpen, activeConversationId]);
+
   // Handle scroll to show/hide header shadow
   const handleScroll = React.useCallback((e: Event) => {
     const target = e.target as HTMLElement;
