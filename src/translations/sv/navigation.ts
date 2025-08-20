@@ -30,6 +30,7 @@ export const navigation: NavigationTranslations = {
   'status': 'Status',
   'last.seen': 'Senast sedd',
   'inbox': 'Inkorg',
+  'archive': 'Arkiv',
   'no.message.history': 'Du har ingen meddelandehistorik',
   'new.message': 'Nytt meddelande',
   'general.questions': 'Vanliga frågor'

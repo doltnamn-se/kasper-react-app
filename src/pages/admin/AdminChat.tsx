@@ -22,32 +22,50 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
 export default function AdminChat() {
-  const {
-    userId
-  } = useAuthStatus();
-  const {
-    t
-  } = useLanguage();
+  const { userId } = useAuthStatus();
+  const { t } = useLanguage();
   const isMobile = useIsMobile();
   const [newMessage, setNewMessage] = useState('');
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [isDraftConversation, setIsDraftConversation] = useState(false);
   const [draftCustomerId, setDraftCustomerId] = useState<string | null>(null);
-  React.useEffect(() => {
-    try {
-      const isDark = document.documentElement.classList.contains('dark');
-      console.info('AdminChat: dark mode?', isDark, 'Left bubble dark class: #2f2f31');
-    } catch {}
-  }, []);
+  const [customerDropdownOpen, setCustomerDropdownOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'inbox' | 'archive'>('inbox');
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
-  const [customerDropdownOpen, setCustomerDropdownOpen] = useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
+
+  // Use separate hooks for active and archived conversations
+  const inboxData = useAdminChat('active');
+  const archiveData = useAdminChat('closed');
+  
+  // Get data based on active tab
+  const {
+    conversations,
+    messages,
+    activeConversationId,
+    adminProfile,
+    loadingConversations,
+    loadingMessages,
+    setActiveConversationId,
+    createConversation,
+    createConversationWithMessage,
+    sendMessage,
+    assignConversation,
+    closeConversation,
+    markAsRead,
+    isCreatingConversation,
+    isCreatingConversationWithMessage,
+    isSendingMessage,
+    typingUsers,
+    startTyping,
+    stopTyping
+  } = activeTab === 'inbox' ? inboxData : archiveData;
 
   // Helper to reliably scroll to bottom (used for mobile sheet)
   const scrollToBottom = React.useCallback(() => {
@@ -59,23 +77,13 @@ export default function AdminChat() {
     }
     messagesEndRef.current?.scrollIntoView({ block: 'end' });
   }, []);
-  const {
-    conversations,
-    messages,
-    activeConversationId,
-    adminProfile,
-    setActiveConversationId,
-    createConversationWithMessage,
-    sendMessage,
-    assignConversation,
-    closeConversation,
-    markAsRead,
-    isCreatingConversationWithMessage,
-    isSendingMessage,
-    typingUsers,
-    startTyping,
-    stopTyping
-  } = useAdminChat();
+
+  React.useEffect(() => {
+    try {
+      const isDark = document.documentElement.classList.contains('dark');
+      console.info('AdminChat: dark mode?', isDark, 'Left bubble dark class: #2f2f31');
+    } catch {}
+  }, []);
 
   // Auto-scroll to bottom when messages change
   React.useEffect(() => {
@@ -352,13 +360,13 @@ export default function AdminChat() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
-                        onClick={() => {
-                          if (activeConversationId) {
-                            // Archive/close conversation logic
-                            // For now, just close the active conversation
-                            setActiveConversationId(null);
-                          }
-                        }}
+                      onClick={() => {
+                        if (activeConversationId) {
+                          // Archive/close conversation logic - always use inbox data for closing
+                          inboxData.closeConversation(activeConversationId);
+                          setActiveConversationId(null);
+                        }
+                      }}
                         title="Archive conversation"
                       >
                         <Archive className="h-4 w-4" />
@@ -534,13 +542,13 @@ export default function AdminChat() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
-                      onClick={() => {
-                        if (activeConversationId) {
-                          // Archive/close conversation logic
-                          // For now, just close the active conversation
-                          setActiveConversationId(null);
-                        }
-                      }}
+                     onClick={() => {
+                       if (activeConversationId) {
+                         // Archive/close conversation logic - always use inbox data for closing
+                         inboxData.closeConversation(activeConversationId);
+                         setActiveConversationId(null);
+                       }
+                     }}
                       title="Archive conversation"
                     >
                       <Archive className="h-4 w-4" />
@@ -672,11 +680,35 @@ export default function AdminChat() {
         {/* Conversations List */}
         <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
           <CardHeader>
-            <div className="flex items-center gap-3">
-              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
+            <div className="flex items-center justify-between">
+              {/* Tab Bar */}
+              <div className="flex items-center bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-lg p-1">
+                <button
+                  onClick={() => setActiveTab('inbox')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                    activeTab === 'inbox'
+                      ? 'bg-white dark:bg-[#1c1c1e] text-[#121212] dark:text-[#ffffff] shadow-sm'
+                      : 'text-[#707070] dark:text-[#ffffffA6] hover:text-[#121212] dark:hover:text-[#ffffff]'
+                  }`}
+                >
+                  {t('inbox')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('archive')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                    activeTab === 'archive'
+                      ? 'bg-white dark:bg-[#1c1c1e] text-[#121212] dark:text-[#ffffff] shadow-sm'
+                      : 'text-[#707070] dark:text-[#ffffffA6] hover:text-[#121212] dark:hover:text-[#ffffff]'
+                  }`}
+                >
+                  {t('archive')}
+                </button>
+              </div>
+              
+              {/* Count Badge */}
               <div className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-xs md:text-[0.9rem] font-medium md:pb-[2px]" style={{
-              paddingRight: '1px'
-            }}>
+                paddingRight: '1px'
+              }}>
                 {conversations.length}
               </div>
             </div>

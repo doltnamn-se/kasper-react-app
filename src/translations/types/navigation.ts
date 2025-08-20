@@ -28,6 +28,7 @@ export interface NavigationTranslations {
   'status': string;
   'last.seen': string;
   'inbox': string;
+  'archive': string;
   'no.message.history': string;
   'new.message': string;
   'general.questions': string;

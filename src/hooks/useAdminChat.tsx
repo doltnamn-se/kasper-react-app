@@ -5,7 +5,7 @@ import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
 import { useTypingIndicator } from './useTypingIndicator';
 
-export const useAdminChat = () => {
+export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
   const queryClient = useQueryClient();
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   
@@ -32,7 +32,7 @@ export const useAdminChat = () => {
 
   // Fetch all conversations for admin
   const { data: conversations = [], isLoading: loadingConversations } = useQuery({
-    queryKey: ['admin-chat-conversations'],
+    queryKey: ['admin-chat-conversations', statusFilter],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('chat_conversations')
@@ -46,6 +46,7 @@ export const useAdminChat = () => {
             id, display_name, email
           )
         `)
+        .eq('status', statusFilter)
         .order('last_message_at', { ascending: false });
 
       if (error) {
@@ -138,7 +139,8 @@ export const useAdminChat = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', activeConversationId] });
-      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
     },
     onError: (error) => {
       console.error('Error sending admin message:', error);
@@ -187,7 +189,8 @@ export const useAdminChat = () => {
     },
     onSuccess: (conversationId) => {
       console.log('Admin conversation created successfully:', conversationId);
-      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
       setActiveConversationId(conversationId);
       toast.success('Chat conversation started');
     },
@@ -242,7 +245,8 @@ export const useAdminChat = () => {
       return conversationId;
     },
     onSuccess: (conversationId) => {
-      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
       queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', conversationId] });
       setActiveConversationId(conversationId);
     },
@@ -285,7 +289,8 @@ export const useAdminChat = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
       toast.success('Conversation assigned');
     },
     onError: (error) => {
@@ -305,7 +310,8 @@ export const useAdminChat = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
       toast.success('Conversation closed');
     },
     onError: (error) => {
@@ -344,7 +350,8 @@ export const useAdminChat = () => {
         },
         () => {
           queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', activeConversationId] });
-          queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
         }
       )
       .subscribe();
@@ -366,7 +373,8 @@ export const useAdminChat = () => {
           table: 'chat_conversations'
         },
         () => {
-          queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
+          queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
         }
       )
       .subscribe();
