@@ -32,4 +32,5 @@ export interface NavigationTranslations {
   'no.message.history': string;
   'new.message': string;
   'general.questions': string;
+  'conversation.history': string;
 }

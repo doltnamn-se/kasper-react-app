@@ -33,5 +33,6 @@ export const navigation: NavigationTranslations = {
   'archive': 'Archive',
   'no.message.history': 'You have no message history',
   'new.message': 'New message',
-  'general.questions': 'General questions'
+  'general.questions': 'General questions',
+  'conversation.history': 'Conversation history'
 };

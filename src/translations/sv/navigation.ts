@@ -33,5 +33,6 @@ export const navigation: NavigationTranslations = {
   'archive': 'Arkiv',
   'no.message.history': 'Du har ingen meddelandehistorik',
   'new.message': 'Nytt meddelande',
-  'general.questions': 'Vanliga frågor'
+  'general.questions': 'Vanliga frågor',
+  'conversation.history': 'Konversationshistorik'
 };
