@@ -270,8 +270,8 @@ export default function Chat() {
                                 </p>
                                  {isRead ? (
                                    <>
-                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2} />
-                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2} />
+                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2.5} />
+                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2.5} />
                                    </>
                                  ) : (
                                    <div className="relative w-3 h-3">
@@ -414,8 +414,8 @@ export default function Chat() {
                               </p>
                                  {isRead ? (
                                    <>
-                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2} />
-                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2} />
+                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2.5} />
+                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2.5} />
                                    </>
                                  ) : (
                                    <div className="relative w-3 h-3">
