@@ -14,6 +14,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Check, ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 export default function AdminChat() {
@@ -37,6 +40,7 @@ export default function AdminChat() {
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
+  const [customerDropdownOpen, setCustomerDropdownOpen] = useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
@@ -149,27 +153,67 @@ export default function AdminChat() {
   };
   const renderNewChatForm = (inSheet = false) => <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
       <CardHeader>
-        <CardTitle>Start New Conversation</CardTitle>
+        <div className={`flex-shrink-0 p-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] ${inSheet ? '' : 'rounded-t-2xl'}`}>
+          <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
+            fontSize: '0.95rem'
+          }}>
+            Start New Conversation
+          </h2>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
           <label className="text-sm font-medium mb-2 block">Customer</label>
-          <Select value={newChatData.customerId} onValueChange={value => setNewChatData(prev => ({
-          ...prev,
-          customerId: value
-        }))}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a customer" />
-            </SelectTrigger>
-            <SelectContent>
-              {customers.map(customer => <SelectItem key={customer.id} value={customer.id}>
-                  {customer.profile?.display_name || customer.profile?.email || 'Unknown Customer'}
-                </SelectItem>)}
-            </SelectContent>
-          </Select>
+          <Popover open={customerDropdownOpen} onOpenChange={setCustomerDropdownOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={customerDropdownOpen}
+                className="w-full justify-between"
+              >
+                {newChatData.customerId
+                  ? customers.find(customer => customer.id === newChatData.customerId)?.profile?.display_name || 
+                    customers.find(customer => customer.id === newChatData.customerId)?.profile?.email ||
+                    'Unknown Customer'
+                  : "Select a customer..."}
+                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0" style={{ width: 'var(--radix-popover-trigger-width)' }}>
+              <Command>
+                <CommandInput placeholder="Search customers..." />
+                <CommandList>
+                  <CommandEmpty>No customer found.</CommandEmpty>
+                  <CommandGroup>
+                    {customers.map(customer => (
+                      <CommandItem
+                        key={customer.id}
+                        value={`${customer.profile?.display_name || ''} ${customer.profile?.email || ''}`}
+                        onSelect={() => {
+                          setNewChatData(prev => ({
+                            ...prev,
+                            customerId: customer.id
+                          }));
+                          setCustomerDropdownOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            newChatData.customerId === customer.id ? "opacity-100" : "opacity-0"
+                          }`}
+                        />
+                        {customer.profile?.display_name || customer.profile?.email || 'Unknown Customer'}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         <div className="flex gap-2">
-          <Button onClick={handleCreateConversation} disabled={!newChatData.customerId || isCreatingConversation}>
+          <Button onClick={handleCreateConversation} disabled={!newChatData.customerId || isCreatingConversation} className="rounded-xl h-9">
             {isCreatingConversation ? 'Starting...' : 'Start Conversation'}
           </Button>
           <Button variant="outline" onClick={() => {
