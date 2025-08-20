@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp, Search, Check, CheckCircle } from 'lucide-react';
+import { Send, ChevronUp, Search, Check } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -304,10 +304,12 @@ export default function AdminChat() {
                                 <span className="dark:hidden">{deliveryStatus}</span>
                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
                               </p>
-                               <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                 <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                                 <path d="M6.5 9.5l1.5 1.5 3-3" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                               </svg>
+                               <div className="relative w-3 h-3">
+                                 <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                   <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                 </svg>
+                                 <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={2.5} />
+                               </div>
                             </>
                           )}
                         </div>
@@ -416,10 +418,12 @@ export default function AdminChat() {
                               <span className="dark:hidden">{deliveryStatus}</span>
                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
                             </p>
-                             <svg className="w-3 h-3" viewBox="0 0 16 16">
-                               <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                               <path d="M6.5 9.5l1.5 1.5 3-3" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                             </svg>
+                             <div className="relative w-3 h-3">
+                               <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                 <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                               </svg>
+                               <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={2.5} />
+                             </div>
                           </>
                         )}
                       </div>
