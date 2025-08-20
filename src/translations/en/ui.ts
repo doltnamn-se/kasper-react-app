@@ -180,4 +180,6 @@ export const ui: UITranslations = {
   'appearance': 'Appearance',
   'light.mode': 'Light mode',
   'dark.mode': 'Dark mode',
+  'message.delivered': 'Delivered',
+  'message.read': 'Read',
 };

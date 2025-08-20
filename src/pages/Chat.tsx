@@ -193,9 +193,10 @@ export default function Chat() {
               <div className="flex-1 overflow-hidden">
                  <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
                    {messages.map((message, index) => {
-                     const isCurrentUser = message.sender_id === userId;
-                     const isLastMessage = index === messages.length - 1;
-                     const deliveryStatus = t('nav.dashboard') === 'Översikt' ? 'Levererat' : 'Delivered';
+                      const isCurrentUser = message.sender_id === userId;
+                      const isLastMessage = index === messages.length - 1;
+                      const isRead = message.read_at !== null;
+                      const statusText = isRead ? t('message.read') : t('message.delivered');
                      return (
                        <div
                          key={message.id}
@@ -221,10 +222,10 @@ export default function Chat() {
                                  <span className="dark:hidden">·</span>
                                  <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
                                </span>
-                               <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                                 <span className="dark:hidden">{deliveryStatus}</span>
-                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
-                               </p>
+                                <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                                  <span className="dark:hidden">{statusText}</span>
+                                  <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
+                                </p>
                                 <div className="relative w-3 h-3">
                                   <svg className="w-3 h-3" viewBox="0 0 16 16">
                                     <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
@@ -329,9 +330,10 @@ export default function Chat() {
             <div className="flex-1 h-[450px] overflow-hidden">
                <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
                  {messages.map((message, index) => {
-                   const isCurrentUser = message.sender_id === userId;
-                   const isLastMessage = index === messages.length - 1;
-                   const deliveryStatus = t('nav.dashboard') === 'Översikt' ? 'Levererat' : 'Delivered';
+                    const isCurrentUser = message.sender_id === userId;
+                    const isLastMessage = index === messages.length - 1;
+                    const isRead = message.read_at !== null;
+                    const statusText = isRead ? t('message.read') : t('message.delivered');
                    return (
                      <div
                        key={message.id}
@@ -357,10 +359,10 @@ export default function Chat() {
                                <span className="dark:hidden">·</span>
                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
                              </span>
-                             <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                               <span className="dark:hidden">{deliveryStatus}</span>
-                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
-                             </p>
+                              <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                                <span className="dark:hidden">{statusText}</span>
+                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
+                              </p>
                                 <div className="relative w-3 h-3">
                                   <svg className="w-3 h-3" viewBox="0 0 16 16">
                                     <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
