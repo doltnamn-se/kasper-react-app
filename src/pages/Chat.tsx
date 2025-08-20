@@ -195,7 +195,7 @@ export default function Chat() {
                    {messages.map((message, index) => {
                       const isCurrentUser = message.sender_id === userId;
                       const isLastMessage = index === messages.length - 1;
-                      const isRead = message.read_at !== null;
+                      const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
                       const statusText = isRead ? t('message.read') : t('message.delivered');
                      return (
                        <div
@@ -332,7 +332,7 @@ export default function Chat() {
                  {messages.map((message, index) => {
                     const isCurrentUser = message.sender_id === userId;
                     const isLastMessage = index === messages.length - 1;
-                    const isRead = message.read_at !== null;
+                    const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
                     const statusText = isRead ? t('message.read') : t('message.delivered');
                    return (
                      <div

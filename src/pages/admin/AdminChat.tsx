@@ -276,7 +276,7 @@ export default function AdminChat() {
                   {messages.map((message, index) => {
                 const isAdmin = message.sender?.role === 'super_admin';
                 const isLastMessage = index === messages.length - 1;
-                const isRead = message.read_at !== null;
+                const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
                 const statusText = isRead ? t('message.read') : t('message.delivered');
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                         <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
@@ -391,7 +391,7 @@ export default function AdminChat() {
                 {messages.map((message, index) => {
               const isAdmin = message.sender?.role === 'super_admin';
               const isLastMessage = index === messages.length - 1;
-              const isRead = message.read_at !== null;
+              const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
               const statusText = isRead ? t('message.read') : t('message.delivered');
               return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                       <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
