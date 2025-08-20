@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp } from 'lucide-react';
+import { Send, ChevronUp, Search, Check, CheckCircle } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Check, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 export default function AdminChat() {
@@ -273,8 +273,10 @@ export default function AdminChat() {
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
-                  {messages.map(message => {
+                  {messages.map((message, index) => {
                 const isAdmin = message.sender?.role === 'super_admin';
+                const isLastMessage = index === messages.length - 1;
+                const deliveryStatus = t('nav.dashboard') === 'Översikt' ? 'Levererat' : 'Delivered';
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                         <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
                           <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
@@ -282,17 +284,32 @@ export default function AdminChat() {
                       fontWeight: '500'
                     }}>{message.message}</p>
                         </div>
-                        <p className="text-xs mt-1 px-2 font-medium" style={{
-                    fontWeight: '500',
-                    color: '#787878'
-                  }}>
-                          <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                          <span className="hidden dark:inline" style={{
-                      color: '#ffffffa6'
-                    }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        </p>
-                    </div>;
-              })}
+                        <div className="flex items-center gap-1 mt-1 px-2">
+                          <p className="text-xs font-medium" style={{
+                      fontWeight: '500',
+                      color: '#787878'
+                    }}>
+                            <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                            <span className="hidden dark:inline" style={{
+                        color: '#ffffffa6'
+                      }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                          </p>
+                          {isLastMessage && (
+                            <>
+                              <span className="text-xs" style={{ color: '#787878' }}>
+                                <span className="dark:hidden">·</span>
+                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                              </span>
+                              <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                                <span className="dark:hidden">{deliveryStatus}</span>
+                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
+                              </p>
+                              <CheckCircle className="w-3 h-3" style={{ color: '#787878' }} />
+                            </>
+                          )}
+                        </div>
+                      </div>;
+            })}
                   <div ref={messagesEndRef} />
                 </ScrollArea>
               </div>
@@ -365,8 +382,10 @@ export default function AdminChat() {
             {/* Scrollable messages area */}
             <div className="flex-1 h-[450px] overflow-hidden">
               <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
-                {messages.map(message => {
+                {messages.map((message, index) => {
               const isAdmin = message.sender?.role === 'super_admin';
+              const isLastMessage = index === messages.length - 1;
+              const deliveryStatus = t('nav.dashboard') === 'Översikt' ? 'Levererat' : 'Delivered';
               return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                       <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
                         <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
@@ -374,15 +393,30 @@ export default function AdminChat() {
                     fontWeight: '500'
                   }}>{message.message}</p>
                       </div>
-                      <p className="text-xs mt-1 px-2 font-medium" style={{
-                  fontWeight: '500',
-                  color: '#787878'
-                }}>
-                        <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        <span className="hidden dark:inline" style={{
-                    color: '#ffffffa6'
-                  }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                      </p>
+                      <div className="flex items-center gap-1 mt-1 px-2">
+                        <p className="text-xs font-medium" style={{
+                    fontWeight: '500',
+                    color: '#787878'
+                  }}>
+                          <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                          <span className="hidden dark:inline" style={{
+                      color: '#ffffffa6'
+                    }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                        </p>
+                        {isLastMessage && (
+                          <>
+                            <span className="text-xs" style={{ color: '#787878' }}>
+                              <span className="dark:hidden">·</span>
+                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                            </span>
+                            <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                              <span className="dark:hidden">{deliveryStatus}</span>
+                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
+                            </p>
+                            <CheckCircle className="w-3 h-3" style={{ color: '#787878' }} />
+                          </>
+                        )}
+                      </div>
                     </div>;
             })}
                 <div ref={messagesEndRef} />

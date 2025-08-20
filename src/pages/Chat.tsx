@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp } from 'lucide-react';
+import { Send, ChevronUp, CheckCircle } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -191,32 +191,49 @@ export default function Chat() {
               
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
-                <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
-                  {messages.map((message) => {
-                    const isCurrentUser = message.sender_id === userId;
-                    return (
-                      <div
-                        key={message.id}
-                        className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
-                      >
-                        <div
-                          className={`max-w-[80%] px-3 py-2 ${
-                            isCurrentUser 
-                              ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
-                              : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
-                          }`}
-                        >
-                          <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
-                        </div>
-                        <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                          <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        </p>
-                    </div>
-                  );
-                })}
-                  <div ref={messagesEndRef} />
-                </ScrollArea>
+                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
+                   {messages.map((message, index) => {
+                     const isCurrentUser = message.sender_id === userId;
+                     const isLastMessage = index === messages.length - 1;
+                     const deliveryStatus = t('nav.dashboard') === 'Översikt' ? 'Levererat' : 'Delivered';
+                     return (
+                       <div
+                         key={message.id}
+                         className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
+                       >
+                         <div
+                           className={`max-w-[80%] px-3 py-2 ${
+                             isCurrentUser 
+                               ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                               : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                           }`}
+                         >
+                           <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                         </div>
+                         <div className="flex items-center gap-1 mt-1 px-2">
+                           <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                             <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                             <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                           </p>
+                           {isLastMessage && (
+                             <>
+                               <span className="text-xs" style={{ color: '#787878' }}>
+                                 <span className="dark:hidden">·</span>
+                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                               </span>
+                               <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                                 <span className="dark:hidden">{deliveryStatus}</span>
+                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
+                               </p>
+                               <CheckCircle className="w-3 h-3" style={{ color: '#787878' }} />
+                             </>
+                           )}
+                         </div>
+                     </div>
+                   );
+                 })}
+                   <div ref={messagesEndRef} />
+                 </ScrollArea>
               </div>
               
               {/* Fixed bottom input area */}
@@ -305,32 +322,49 @@ export default function Chat() {
             
             {/* Scrollable messages area */}
             <div className="flex-1 h-[450px] overflow-hidden">
-              <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
-                {messages.map((message) => {
-                  const isCurrentUser = message.sender_id === userId;
-                  return (
-                    <div
-                      key={message.id}
-                      className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
-                    >
-                      <div
-                        className={`max-w-[80%] px-3 py-2 ${
-                          isCurrentUser 
-                            ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
-                            : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
-                        }`}
-                      >
-                        <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
-                      </div>
-                      <p className="text-xs mt-1 px-2 font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                        <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                      </p>
-                    </div>
-                  );
-                })}
-                <div ref={messagesEndRef} />
-              </ScrollArea>
+               <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
+                 {messages.map((message, index) => {
+                   const isCurrentUser = message.sender_id === userId;
+                   const isLastMessage = index === messages.length - 1;
+                   const deliveryStatus = t('nav.dashboard') === 'Översikt' ? 'Levererat' : 'Delivered';
+                   return (
+                     <div
+                       key={message.id}
+                       className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
+                     >
+                       <div
+                         className={`max-w-[80%] px-3 py-2 ${
+                           isCurrentUser 
+                             ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                             : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                         }`}
+                       >
+                         <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                       </div>
+                       <div className="flex items-center gap-1 mt-1 px-2">
+                         <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                           <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                           <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
+                         </p>
+                         {isLastMessage && (
+                           <>
+                             <span className="text-xs" style={{ color: '#787878' }}>
+                               <span className="dark:hidden">·</span>
+                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                             </span>
+                             <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                               <span className="dark:hidden">{deliveryStatus}</span>
+                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
+                             </p>
+                             <CheckCircle className="w-3 h-3" style={{ color: '#787878' }} />
+                           </>
+                         )}
+                       </div>
+                   </div>
+                 );
+               })}
+                 <div ref={messagesEndRef} />
+               </ScrollArea>
             </div>
             
             {/* Fixed bottom input area */}
