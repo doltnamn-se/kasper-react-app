@@ -598,7 +598,7 @@ export default function AdminChat() {
             </div>
             
             <div className="flex-1 h-[450px] overflow-hidden">
-               <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
+               <ScrollArea ref={scrollAreaRef} className="h-full px-4">
                  {isDraftConversation ? (
                    <div className="flex-1 flex items-center justify-center h-full">
                      <p className="text-[#8E8E93] text-lg text-center">
