@@ -184,6 +184,9 @@ export default function AdminChat() {
       });
     }
 
+    // Stop typing indicator when message is sent
+    stopTyping();
+    
     setNewMessage('');
     // Reset textarea height
     if (textareaRef.current) {
