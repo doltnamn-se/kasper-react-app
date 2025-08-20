@@ -141,6 +141,9 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
       queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', activeConversationId] });
       queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
+      // Also invalidate unread message queries to update TopNav notification dots
+      queryClient.invalidateQueries({ queryKey: ['chat-unread-conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['chat-unread-counts'] });
     },
     onError: (error) => {
       console.error('Error sending admin message:', error);
@@ -352,6 +355,9 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
           queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', activeConversationId] });
           queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
           queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
+          // Also invalidate unread message queries to update TopNav notification dots
+          queryClient.invalidateQueries({ queryKey: ['chat-unread-conversations'] });
+          queryClient.invalidateQueries({ queryKey: ['chat-unread-counts'] });
         }
       )
       .subscribe();
