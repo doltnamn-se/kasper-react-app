@@ -323,7 +323,14 @@ export default function AdminChat() {
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
-                  {messages.map((message, index) => {
+                  {isDraftConversation ? (
+                    <div className="flex-1 flex items-center justify-center h-full">
+                      <p className="text-[#8E8E93] text-lg text-center">
+                        Write the first message to start the conversation
+                      </p>
+                    </div>
+                  ) : (
+                    messages.map((message, index) => {
                 const isAdmin = message.sender?.role === 'super_admin';
                 const isLastMessage = index === messages.length - 1;
                 const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
@@ -372,7 +379,8 @@ export default function AdminChat() {
                           )}
                         </div>
                       </div>;
-            })}
+                    })
+                  )}
                   <div ref={messagesEndRef} />
                 </ScrollArea>
               </div>
@@ -398,7 +406,7 @@ export default function AdminChat() {
                     handleSendMessage();
                   }
                 }} />
-                    <Button variant="ghost" onClick={handleSendMessage} disabled={!newMessage.trim() || isSendingMessage} size="icon" className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${!newMessage.trim() ? 'bg-[#d0ecfb] dark:bg-[#232324]' : 'dark:!bg-[#007aff]'}`} style={{
+                    <Button variant="ghost" onClick={handleSendMessage} disabled={!newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage} size="icon" className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${!newMessage.trim() ? 'bg-[#d0ecfb] dark:bg-[#232324]' : 'dark:!bg-[#007aff]'}`} style={{
                   backgroundColor: newMessage.trim() ? '#59bffa' : undefined
                 }}>
                       <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
@@ -414,13 +422,17 @@ export default function AdminChat() {
         </div>;
     }
     return <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
-        {activeConversationId ? <>
+        {(activeConversationId || isDraftConversation) ? <>
             {/* Fixed header */}
             <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
-             fontSize: '0.95rem'
-           }}>
+              fontSize: '0.95rem'
+            }}>
                  {(() => {
+                   if (isDraftConversation) {
+                     const draft = customers.find(c => c.id === draftCustomerId);
+                     return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
+                   }
                    const activeConv = conversations.find(c => c.id === activeConversationId);
                    return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
                  })()}
@@ -429,12 +441,13 @@ export default function AdminChat() {
              fontSize: '0.95rem'
            }}>
                  {(() => {
+                   if (isDraftConversation) return 'Chatting with customer';
                    const activeConv = conversations.find(c => c.id === activeConversationId);
                    if (!activeConv?.created_at) return 'Chatting with customer';
                    const date = new Date(activeConv.created_at);
                    const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
                    if (currentLang === 'sv') {
-                     return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                      return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
                    } else {
                      return `Submitted ${format(date, 'MMMM do, yyyy')}`;
                    }
@@ -442,61 +455,68 @@ export default function AdminChat() {
                </p>
             </div>
             
-            {/* Scrollable messages area */}
             <div className="flex-1 h-[450px] overflow-hidden">
-              <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
-                {messages.map((message, index) => {
-              const isAdmin = message.sender?.role === 'super_admin';
-              const isLastMessage = index === messages.length - 1;
-              const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
-              const statusText = isRead ? t('message.seen') : t('message.delivered');
-              return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
-                      <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
-                        <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
-                    fontSize: '0.95rem',
-                    fontWeight: '500'
-                  }}>{message.message}</p>
-                      </div>
-                      <div className="flex items-center gap-1 mt-1 px-2">
-                           <p className="text-xs font-medium" style={{
-                       fontWeight: '500',
-                       color: '#787878'
-                     }}>
-                             <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
-                             <span className="hidden dark:inline" style={{
-                         color: '#ffffffa6'
-                       }}>{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
-                           </p>
-                        {isLastMessage && isAdmin && (
-                          <>
-                            <span className="text-xs" style={{ color: '#787878' }}>
-                              <span className="dark:hidden">·</span>
-                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
-                            </span>
-                            <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                              <span className="dark:hidden">{statusText}</span>
-                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
-                            </p>
-                             {isRead ? (
-                               <>
-                                 <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2.5} />
-                                 <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2.5} />
-                               </>
-                             ) : (
-                               <div className="relative w-3 h-3">
-                                 <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                   <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                                 </svg>
-                                 <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
-                               </div>
-                             )}
-                          </>
-                        )}
-                      </div>
-                    </div>;
-            })}
-                <div ref={messagesEndRef} />
-              </ScrollArea>
+               <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
+                 {isDraftConversation ? (
+                   <div className="flex-1 flex items-center justify-center h-full">
+                     <p className="text-[#8E8E93] text-lg text-center">
+                       Write the first message to start the conversation
+                     </p>
+                   </div>
+                 ) : (
+                   messages.map((message, index) => {
+                     const isAdmin = message.sender?.role === 'super_admin';
+                     const isLastMessage = index === messages.length - 1;
+                     const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
+                     const statusText = isRead ? t('message.seen') : t('message.delivered');
+                     return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
+                       <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
+                         <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
+                           fontSize: '0.95rem',
+                           fontWeight: '500'
+                         }}>{message.message}</p>
+                       </div>
+                       <div className="flex items-center gap-1 mt-1 px-2">
+                          <p className="text-xs font-medium" style={{
+                            fontWeight: '500',
+                            color: '#787878'
+                          }}>
+                            <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                            <span className="hidden dark:inline" style={{
+                              color: '#ffffffa6'
+                            }}>{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                          </p>
+                         {isLastMessage && isAdmin && (
+                           <>
+                             <span className="text-xs" style={{ color: '#787878' }}>
+                               <span className="dark:hidden">·</span>
+                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                             </span>
+                             <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                               <span className="dark:hidden">{statusText}</span>
+                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
+                             </p>
+                              {isRead ? (
+                                <>
+                                  <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2.5} />
+                                  <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2.5} />
+                                </>
+                              ) : (
+                                <div className="relative w-3 h-3">
+                                  <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                    <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                  </svg>
+                                  <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
+                                </div>
+                              )}
+                           </>
+                         )}
+                       </div>
+                     </div>;
+                   })
+                 )}
+                 <div ref={messagesEndRef} />
+               </ScrollArea>
             </div>
             
             {/* Fixed bottom input area */}
@@ -520,7 +540,7 @@ export default function AdminChat() {
                   handleSendMessage();
                 }
               }} />
-                  <Button variant="ghost" onClick={handleSendMessage} disabled={!newMessage.trim() || isSendingMessage} size="icon" className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${!newMessage.trim() ? 'bg-[#d0ecfb] dark:bg-[#232324]' : 'dark:!bg-[#007aff]'}`} style={{
+                  <Button variant="ghost" onClick={handleSendMessage} disabled={!newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage} size="icon" className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${!newMessage.trim() ? 'bg-[#d0ecfb] dark:bg-[#232324]' : 'dark:!bg-[#007aff]'}`} style={{
                 backgroundColor: newMessage.trim() ? '#59bffa' : undefined
               }}>
                     <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
