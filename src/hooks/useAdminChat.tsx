@@ -161,6 +161,18 @@ export const useAdminChat = () => {
 
       if (participantError) throw participantError;
 
+      // Send the initial message
+      const { error: messageError } = await supabase
+        .from('chat_messages')
+        .insert({
+          conversation_id: conversationId,
+          sender_id: adminId,
+          message: chatData.message,
+          message_type: 'text'
+        });
+
+      if (messageError) throw messageError;
+
       return conversationId;
     },
     onSuccess: (conversationId) => {
