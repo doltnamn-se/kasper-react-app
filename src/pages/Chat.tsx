@@ -701,10 +701,12 @@ export default function Chat() {
                       <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
                         {conversation.last_message_at && (() => {
                           const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                          return formatDistanceToNow(new Date(conversation.last_message_at), { 
+                          const formattedTime = formatDistanceToNow(new Date(conversation.last_message_at), { 
                             addSuffix: true,
                             locale: currentLang === 'sv' ? sv : undefined
                           });
+                          // Remove "ungefär " from Swedish timestamps
+                          return currentLang === 'sv' ? formattedTime.replace(/^ungefär /, '') : formattedTime;
                         })()}
                       </p>
                     </div>
