@@ -705,8 +705,10 @@ export default function Chat() {
                             addSuffix: true,
                             locale: currentLang === 'sv' ? sv : undefined
                           });
-                          // Remove "ungefär " from Swedish timestamps
-                          return currentLang === 'sv' ? formattedTime.replace(/^ungefär /, '') : formattedTime;
+                          // Remove "ungefär " from Swedish and "about " from English timestamps
+                          return currentLang === 'sv' 
+                            ? formattedTime.replace(/^ungefär /, '') 
+                            : formattedTime.replace(/^about /, '');
                         })()}
                       </p>
                     </div>
