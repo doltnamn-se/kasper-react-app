@@ -13,10 +13,10 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users }) => {
 
   return (
     <div className="flex justify-start px-4 py-2">
-      <div className="bg-muted/50 rounded-2xl px-4 py-2 flex items-center gap-1">
-        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce-dot"></div>
-        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce-dot-delay-1"></div>
-        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce-dot-delay-2"></div>
+      <div className="bg-gray-200 dark:bg-gray-700 rounded-2xl px-4 py-2 flex items-center gap-1">
+        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce-dot"></div>
+        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce-dot-delay-1"></div>
+        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce-dot-delay-2"></div>
       </div>
     </div>
   );
