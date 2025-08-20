@@ -227,7 +227,7 @@ export default function Chat() {
                    <Button
                     variant="ghost"
                     size="icon"
-                    className="w-8 h-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    className="h-auto w-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0 py-1.5"
                   >
                     <span className="text-lg">+</span>
                   </Button>
@@ -341,7 +341,7 @@ export default function Chat() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="w-8 h-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                  className="h-auto w-8 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0 py-1.5"
                 >
                   <span className="text-lg">+</span>
                 </Button>
