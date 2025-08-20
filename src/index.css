@@ -399,6 +399,30 @@
   background-color: #2f2f31;
 }
 
+.typing-dot-1 {
+  background-color: #9e9da2;
+}
+
+.dark .typing-dot-1 {
+  background-color: #56555a;
+}
+
+.typing-dot-2 {
+  background-color: #b6b5ba;
+}
+
+.dark .typing-dot-2 {
+  background-color: #656469;
+}
+
+.typing-dot-3 {
+  background-color: #b6b5ba;
+}
+
+.dark .typing-dot-3 {
+  background-color: #7f7e83;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

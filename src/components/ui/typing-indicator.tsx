@@ -14,9 +14,9 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users }) => {
   return (
     <div className="flex justify-start px-4 py-2">
       <div className="typing-indicator-bubble px-4 py-2 flex items-center gap-1 rounded-2xl rounded-bl-none">
-        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce-dot"></div>
-        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce-dot-delay-1"></div>
-        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce-dot-delay-2"></div>
+        <div className="w-2 h-2 typing-dot-1 rounded-full"></div>
+        <div className="w-2 h-2 typing-dot-2 rounded-full"></div>
+        <div className="w-2 h-2 typing-dot-3 rounded-full"></div>
       </div>
     </div>
   );
