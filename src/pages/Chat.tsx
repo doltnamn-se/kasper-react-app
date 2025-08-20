@@ -241,7 +241,7 @@ export default function Chat() {
                         e.target.style.height = 'auto';
                         e.target.style.height = e.target.scrollHeight + 'px';
                       }}
-                      placeholder="Skriv här..."
+                      placeholder="Type here..."
                       className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]"
                       style={{ fontSize: '0.95rem', fontWeight: '500' }}
                       rows={1}
@@ -355,7 +355,7 @@ export default function Chat() {
                       e.target.style.height = 'auto';
                       e.target.style.height = e.target.scrollHeight + 'px';
                     }}
-                    placeholder="Skriv här..."
+                    placeholder="Type here..."
                     className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]"
                     style={{ fontSize: '0.95rem', fontWeight: '500' }}
                     rows={1}
@@ -443,7 +443,7 @@ export default function Chat() {
                       </h4>
                       <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
                         {conversation.last_message_at && 
-                          formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })
+                          formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true, locale: sv })
                         }
                       </p>
                     </div>
