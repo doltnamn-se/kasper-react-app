@@ -318,9 +318,29 @@ export default function Chat() {
                      </div>
                    );
                      })
+                  )}
+                   <TypingIndicator users={typingUsers} />
+                   
+                   {/* Show closed chat message if conversation is archived */}
+                   {!isDraftConversation && activeConversationId && (
+                     (() => {
+                       const activeConv = conversations.find(c => c.id === activeConversationId);
+                       if (activeConv?.status === 'closed') {
+                         return (
+                           <div className="flex justify-center py-4">
+                             <div className="bg-[#f0f0f0] dark:bg-[#2f2f31] px-4 py-2 rounded-full">
+                               <p className="text-sm text-[#8E8E93] dark:text-[#ffffffa6] font-medium">
+                                 {t('chat.closed.message')}
+                               </p>
+                             </div>
+                           </div>
+                         );
+                       }
+                       return null;
+                     })()
                    )}
-                    <TypingIndicator users={typingUsers} />
-                    <div ref={messagesEndRef} />
+                   
+                   <div ref={messagesEndRef} />
                  </ScrollArea>
               </div>
               
@@ -492,9 +512,29 @@ export default function Chat() {
                    </div>
                  );
                    })
-                 )}
-                  <TypingIndicator users={typingUsers} />
-                  <div ref={messagesEndRef} />
+                  )}
+                   <TypingIndicator users={typingUsers} />
+                   
+                   {/* Show closed chat message if conversation is archived */}
+                   {!isDraftConversation && activeConversationId && (
+                     (() => {
+                       const activeConv = conversations.find(c => c.id === activeConversationId);
+                       if (activeConv?.status === 'closed') {
+                         return (
+                           <div className="flex justify-center py-4">
+                             <div className="bg-[#f0f0f0] dark:bg-[#2f2f31] px-4 py-2 rounded-full">
+                               <p className="text-sm text-[#8E8E93] dark:text-[#ffffffa6] font-medium">
+                                 {t('chat.closed.message')}
+                               </p>
+                             </div>
+                           </div>
+                         );
+                       }
+                       return null;
+                     })()
+                   )}
+                   
+                   <div ref={messagesEndRef} />
                </ScrollArea>
             </div>
             

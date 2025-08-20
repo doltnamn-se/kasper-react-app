@@ -184,4 +184,5 @@ export const ui: UITranslations = {
   'message.seen': 'Sett',
   'today': 'Idag',
   'yesterday': 'Igår',
+  'chat.closed.message': 'Chatten är avslutad',
 };

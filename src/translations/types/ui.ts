@@ -182,4 +182,5 @@ export interface UITranslations {
   'message.seen': string;
   'today': string;
   'yesterday': string;
+  'chat.closed.message': string;
 }

@@ -184,4 +184,5 @@ export const ui: UITranslations = {
   'message.seen': 'Seen',
   'today': 'Today',
   'yesterday': 'Yesterday',
+  'chat.closed.message': 'The chat is closed',
 };
