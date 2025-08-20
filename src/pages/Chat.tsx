@@ -235,30 +235,42 @@ export default function Chat() {
             <>
               {/* Fixed header */}
               <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
-                   {(() => {
-                     if (isDraftConversation) return t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message';
-                     const activeConv = conversations.find(c => c.id === activeConversationId);
-                     console.log('Chat title debug - activeConv:', activeConv, 'status:', activeConv?.status);
-                     if (activeConv?.status === 'closed') return t('conversation.history');
-                     return t('nav.admin.support');
-                   })()}
-                 </h2>
-                  <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
-                    {(() => {
-                      if (isDraftConversation) return 'Skriv för att börja konversationen';
-                      
-                      const activeConv = conversations.find(c => c.id === activeConversationId);
-                      if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
-                      const date = new Date(activeConv.created_at);
-                      const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                      if (currentLang === 'sv') {
-                         return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                      } else {
-                        return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                      }
-                    })()}
-                  </p>
+                {(() => {
+                  const activeConv = conversations.find(c => c.id === activeConversationId);
+                  const isArchived = activeConv?.status === 'closed';
+                  
+                  if (isArchived) {
+                    // Archived conversation: show title in subtitle position, centered
+                    return (
+                      <h2 className="font-medium text-[#121212] dark:text-[#ffffff] text-center" style={{ fontSize: '0.95rem' }}>
+                        {t('conversation.history')}
+                      </h2>
+                    );
+                  } else {
+                    // Active conversation: show title + subtitle
+                    return (
+                      <>
+                        <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                          {isDraftConversation ? (t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message') : t('nav.admin.support')}
+                        </h2>
+                        <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                          {(() => {
+                            if (isDraftConversation) return 'Skriv för att börja konversationen';
+                            
+                            if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
+                            const date = new Date(activeConv.created_at);
+                            const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                            if (currentLang === 'sv') {
+                               return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                            } else {
+                              return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                            }
+                          })()}
+                        </p>
+                      </>
+                    );
+                  }
+                })()}
               </div>
               
               {/* Scrollable messages area */}
@@ -435,30 +447,42 @@ export default function Chat() {
           <>
             {/* Fixed header */}
             <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-              <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
-                {(() => {
-                  if (isDraftConversation) return t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message';
-                  const activeConv = conversations.find(c => c.id === activeConversationId);
-                  console.log('Chat title debug desktop - activeConv:', activeConv, 'status:', activeConv?.status);
-                  if (activeConv?.status === 'closed') return t('conversation.history');
-                  return t('nav.admin.support');
-                })()}
-              </h2>
-               <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
-                 {(() => {
-                   if (isDraftConversation) return 'Skriv för att börja konversationen';
-                   
-                   const activeConv = conversations.find(c => c.id === activeConversationId);
-                   if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
-                   const date = new Date(activeConv.created_at);
-                   const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                   if (currentLang === 'sv') {
-                     return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                   } else {
-                     return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                   }
-                 })()}
-               </p>
+              {(() => {
+                const activeConv = conversations.find(c => c.id === activeConversationId);
+                const isArchived = activeConv?.status === 'closed';
+                
+                if (isArchived) {
+                  // Archived conversation: show title in subtitle position
+                  return (
+                    <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                      {t('conversation.history')}
+                    </h2>
+                  );
+                } else {
+                  // Active conversation: show title + subtitle
+                  return (
+                    <>
+                      <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                        {isDraftConversation ? (t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message') : t('nav.admin.support')}
+                      </h2>
+                      <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                        {(() => {
+                          if (isDraftConversation) return 'Skriv för att börja konversationen';
+                          
+                          if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
+                          const date = new Date(activeConv.created_at);
+                          const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                          if (currentLang === 'sv') {
+                            return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                          } else {
+                            return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                          }
+                        })()}
+                      </p>
+                    </>
+                  );
+                }
+              })()}
             </div>
             
             {/* Scrollable messages area */}
