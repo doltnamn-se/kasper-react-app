@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp, Search, Check, CheckCheck } from 'lucide-react';
+import { Send, ChevronUp, Search, Check, CheckCheck, User, Archive } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -298,34 +298,74 @@ export default function AdminChat() {
           {(activeConversationId || isDraftConversation) ? <>
               {/* Fixed header */}
               <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
-              fontSize: '0.95rem'
-            }}>
-                   {(() => {
-                     if (isDraftConversation) {
-                       const draft = customers.find(c => c.id === draftCustomerId);
-                       return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
-                     }
-                     const activeConv = conversations.find(c => c.id === activeConversationId);
-                     return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
-                   })()}
-                 </h2>
-                 <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
-              fontSize: '0.95rem'
-            }}>
-                   {(() => {
-                     if (isDraftConversation) return 'Chatting with customer';
-                     const activeConv = conversations.find(c => c.id === activeConversationId);
-                     if (!activeConv?.created_at) return 'Chatting with customer';
-                     const date = new Date(activeConv.created_at);
-                     const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                     if (currentLang === 'sv') {
-                        return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                     } else {
-                       return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                     }
-                   })()}
-                 </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
+                      fontSize: '0.95rem'
+                    }}>
+                      {(() => {
+                        if (isDraftConversation) {
+                          const draft = customers.find(c => c.id === draftCustomerId);
+                          return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
+                        }
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
+                      })()}
+                    </h2>
+                    <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
+                      fontSize: '0.95rem'
+                    }}>
+                      {(() => {
+                        if (isDraftConversation) return 'Chatting with customer';
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        if (!activeConv?.created_at) return 'Chatting with customer';
+                        const date = new Date(activeConv.created_at);
+                        const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                        if (currentLang === 'sv') {
+                           return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                        } else {
+                          return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                        }
+                      })()}
+                    </p>
+                  </div>
+                  
+                  {!isDraftConversation && (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
+                        onClick={() => {
+                          const activeConv = conversations.find(c => c.id === activeConversationId);
+                          if (activeConv?.customer_id) {
+                            // Navigate to customer profile or open customer details
+                            window.open(`/admin/customers?id=${activeConv.customer_id}`, '_blank');
+                          }
+                        }}
+                        title="Open customer profile"
+                      >
+                        <User className="h-4 w-4" />
+                      </Button>
+                      
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
+                        onClick={() => {
+                          if (activeConversationId) {
+                            // Archive/close conversation logic
+                            // For now, just close the active conversation
+                            setActiveConversationId(null);
+                          }
+                        }}
+                        title="Archive conversation"
+                      >
+                        <Archive className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
               
               {/* Scrollable messages area */}
@@ -440,34 +480,74 @@ export default function AdminChat() {
         {(activeConversationId || isDraftConversation) ? <>
             {/* Fixed header */}
             <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-               <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
-              fontSize: '0.95rem'
-            }}>
-                 {(() => {
-                   if (isDraftConversation) {
-                     const draft = customers.find(c => c.id === draftCustomerId);
-                     return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
-                   }
-                   const activeConv = conversations.find(c => c.id === activeConversationId);
-                   return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
-                 })()}
-               </h2>
-               <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
-             fontSize: '0.95rem'
-           }}>
-                 {(() => {
-                   if (isDraftConversation) return 'Chatting with customer';
-                   const activeConv = conversations.find(c => c.id === activeConversationId);
-                   if (!activeConv?.created_at) return 'Chatting with customer';
-                   const date = new Date(activeConv.created_at);
-                   const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                   if (currentLang === 'sv') {
-                      return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                   } else {
-                     return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                   }
-                 })()}
-               </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
+                    fontSize: '0.95rem'
+                  }}>
+                    {(() => {
+                      if (isDraftConversation) {
+                        const draft = customers.find(c => c.id === draftCustomerId);
+                        return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
+                      }
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
+                    })()}
+                  </h2>
+                  <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
+                    fontSize: '0.95rem'
+                  }}>
+                    {(() => {
+                      if (isDraftConversation) return 'Chatting with customer';
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      if (!activeConv?.created_at) return 'Chatting with customer';
+                      const date = new Date(activeConv.created_at);
+                      const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                      if (currentLang === 'sv') {
+                         return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                      } else {
+                        return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                      }
+                    })()}
+                  </p>
+                </div>
+                
+                {!isDraftConversation && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
+                      onClick={() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        if (activeConv?.customer_id) {
+                          // Navigate to customer profile or open customer details
+                          window.open(`/admin/customers?id=${activeConv.customer_id}`, '_blank');
+                        }
+                      }}
+                      title="Open customer profile"
+                    >
+                      <User className="h-4 w-4" />
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
+                      onClick={() => {
+                        if (activeConversationId) {
+                          // Archive/close conversation logic
+                          // For now, just close the active conversation
+                          setActiveConversationId(null);
+                        }
+                      }}
+                      title="Archive conversation"
+                    >
+                      <Archive className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="flex-1 h-[450px] overflow-hidden">
