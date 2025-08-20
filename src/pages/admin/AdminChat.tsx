@@ -402,7 +402,13 @@ export default function AdminChat() {
                       {conversation.customer?.profile?.display_name || 'Customer'}
                     </h4>
                     <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
-                      {conversation.last_message_at && formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })}
+                      {conversation.last_message_at && (() => {
+                        const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                        return formatDistanceToNow(new Date(conversation.last_message_at), { 
+                          addSuffix: true,
+                          locale: currentLang === 'sv' ? sv : undefined
+                        });
+                      })()}
                     </p>
                   </div>
                   <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
