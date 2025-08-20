@@ -225,7 +225,10 @@ export default function Chat() {
                                  <span className="dark:hidden">{deliveryStatus}</span>
                                  <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
                                </p>
-                               <CheckCircle className="w-3 h-3" style={{ color: '#787878' }} />
+                                <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                  <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                  <path d="M6.5 9.5l1.5 1.5 3-3" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
                              </>
                            )}
                          </div>
@@ -356,7 +359,10 @@ export default function Chat() {
                                <span className="dark:hidden">{deliveryStatus}</span>
                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
                              </p>
-                             <CheckCircle className="w-3 h-3" style={{ color: '#787878' }} />
+                                <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                  <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                  <path d="M6.5 9.5l1.5 1.5 3-3" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
                            </>
                          )}
                        </div>
