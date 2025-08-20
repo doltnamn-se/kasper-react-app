@@ -182,4 +182,6 @@ export const ui: UITranslations = {
   'dark.mode': 'Dark mode',
   'message.delivered': 'Delivered',
   'message.seen': 'Seen',
+  'today': 'Today',
+  'yesterday': 'Yesterday',
 };

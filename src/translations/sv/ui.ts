@@ -182,4 +182,6 @@ export const ui: UITranslations = {
   'dark.mode': 'Mörkt läge',
   'message.delivered': 'Levererat',
   'message.seen': 'Sett',
+  'today': 'Idag',
+  'yesterday': 'Igår',
 };

@@ -11,6 +11,7 @@ import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { formatChatTimestamp } from '@/utils/dateUtils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -325,15 +326,15 @@ export default function AdminChat() {
                     }}>{message.message}</p>
                         </div>
                         <div className="flex items-center gap-1 mt-1 px-2">
-                          <p className="text-xs font-medium" style={{
-                      fontWeight: '500',
-                      color: '#787878'
-                    }}>
-                            <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                            <span className="hidden dark:inline" style={{
-                        color: '#ffffffa6'
-                      }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                          </p>
+                           <p className="text-xs font-medium" style={{
+                       fontWeight: '500',
+                       color: '#787878'
+                     }}>
+                             <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                             <span className="hidden dark:inline" style={{
+                         color: '#ffffffa6'
+                       }}>{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                           </p>
                         {isLastMessage && isAdmin && (
                             <>
                               <span className="text-xs" style={{ color: '#787878' }}>
@@ -447,15 +448,15 @@ export default function AdminChat() {
                   }}>{message.message}</p>
                       </div>
                       <div className="flex items-center gap-1 mt-1 px-2">
-                        <p className="text-xs font-medium" style={{
-                    fontWeight: '500',
-                    color: '#787878'
-                  }}>
-                          <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                          <span className="hidden dark:inline" style={{
-                      color: '#ffffffa6'
-                    }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
-                        </p>
+                           <p className="text-xs font-medium" style={{
+                       fontWeight: '500',
+                       color: '#787878'
+                     }}>
+                             <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                             <span className="hidden dark:inline" style={{
+                         color: '#ffffffa6'
+                       }}>{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                           </p>
                         {isLastMessage && isAdmin && (
                           <>
                             <span className="text-xs" style={{ color: '#787878' }}>

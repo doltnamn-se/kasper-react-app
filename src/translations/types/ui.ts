@@ -180,4 +180,6 @@ export interface UITranslations {
   'dark.mode': string;
   'message.delivered': string;
   'message.seen': string;
+  'today': string;
+  'yesterday': string;
 }
