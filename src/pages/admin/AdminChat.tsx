@@ -44,6 +44,17 @@ export default function AdminChat() {
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
+
+  // Helper to reliably scroll to bottom (used for mobile sheet)
+  const scrollToBottom = React.useCallback(() => {
+    if (scrollAreaRef.current) {
+      const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+      if (viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
+    }
+    messagesEndRef.current?.scrollIntoView({ block: 'end' });
+  }, []);
   const {
     conversations,
     messages,
@@ -75,21 +86,25 @@ export default function AdminChat() {
     }
   }, [messages, activeConversationId, isMobile]);
 
-  // Ensure scroll to latest when mobile sheet opens
+  // Ensure scroll to latest when mobile sheet opens (with retries)
   React.useEffect(() => {
     if (isMobile && isChatOpen && messagesEndRef.current) {
-      const doScroll = () => {
-        if (scrollAreaRef.current) {
-          const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
-          if (viewport) viewport.scrollTop = viewport.scrollHeight;
-        }
-        messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+      let rafId = 0;
+      let tries = 0;
+      const maxTries = 20;
+      const tick = () => {
+        scrollToBottom();
+        if (tries++ < maxTries) rafId = requestAnimationFrame(tick);
       };
-      const t1 = setTimeout(doScroll, 200);
-      const t2 = setTimeout(doScroll, 450);
-      return () => { clearTimeout(t1); clearTimeout(t2); };
+      const start = setTimeout(() => {
+        tick();
+      }, 100);
+      return () => {
+        clearTimeout(start);
+        cancelAnimationFrame(rafId);
+      };
     }
-  }, [isMobile, isChatOpen, activeConversationId]);
+  }, [isMobile, isChatOpen, activeConversationId, messages.length, scrollToBottom]);
 
   // Handle scroll to show/hide header shadow
   const handleScroll = React.useCallback((e: Event) => {
@@ -559,7 +574,18 @@ export default function AdminChat() {
         {/* Desktop Chat Interface or Mobile Sheet */}
         {!isMobile ? isCreatingNew ? renderNewChatForm() : renderChatInterface() : <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetOverlay className="backdrop-blur-md" />
-              <SheetContent side="bottom" className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]">
+              <SheetContent
+                side="bottom"
+                className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                onOpenAutoFocus={(e) => {
+                  e.preventDefault();
+                  setTimeout(() => {
+                    scrollToBottom();
+                    setTimeout(scrollToBottom, 150);
+                    setTimeout(scrollToBottom, 350);
+                  }, 50);
+                }}
+              >
                 <div className="flex flex-col h-full relative z-[10001]">
                   {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
                 </div>
