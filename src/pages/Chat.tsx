@@ -222,7 +222,7 @@ export default function Chat() {
               </div>
               
               {/* Fixed bottom input area */}
-              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
                    <Button
                     variant="ghost"
@@ -336,7 +336,7 @@ export default function Chat() {
             </div>
             
             {/* Fixed bottom input area */}
-            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#3d3d3d] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
               <div className="flex items-end gap-2">
                 <Button
                   variant="ghost"
