@@ -787,12 +787,12 @@ export default function AdminChat() {
               {conversations.map(conversation => <div key={conversation.id} className={`p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''}`} onClick={() => handleConversationSelect(conversation.id)}>
                   <div className="flex justify-between items-start mb-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-sm">
-                        {conversation.customer?.profile?.display_name || 'Customer'}
-                      </h4>
                       {(conversation.unread_count || 0) > 0 && (
                         <div className="h-2 w-2 rounded-full bg-[#2e77d0] flex-shrink-0" />
                       )}
+                      <h4 className="font-medium text-sm">
+                        {conversation.customer?.profile?.display_name || 'Customer'}
+                      </h4>
                     </div>
                       <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
                         {conversation.last_message_at && (() => {
