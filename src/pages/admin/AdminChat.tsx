@@ -251,7 +251,7 @@ export default function AdminChat() {
                   // Auto-resize textarea
                   e.target.style.height = 'auto';
                   e.target.style.height = e.target.scrollHeight + 'px';
-                }} placeholder="Skriv här..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
+                }} placeholder={t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...'} className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
                   fontSize: '0.95rem',
                   fontWeight: '500'
                 }} rows={1} onKeyPress={e => {
@@ -343,7 +343,7 @@ export default function AdminChat() {
                 // Auto-resize textarea
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';
-              }} placeholder="Skriv här..." className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
+              }} placeholder={t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...'} className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px]" style={{
                 fontSize: '0.95rem',
                 fontWeight: '500'
               }} rows={1} onKeyPress={e => {
