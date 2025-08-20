@@ -11,24 +11,13 @@ interface TypingIndicatorProps {
 export const TypingIndicator: React.FC<TypingIndicatorProps> = ({ users }) => {
   if (users.length === 0) return null;
 
-  const getTypingText = () => {
-    if (users.length === 1) {
-      return `${users[0].display_name} skriver...`;
-    } else if (users.length === 2) {
-      return `${users[0].display_name} och ${users[1].display_name} skriver...`;
-    } else {
-      return `${users[0].display_name} och ${users.length - 1} andra skriver...`;
-    }
-  };
-
   return (
-    <div className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground">
-      <div className="flex gap-1">
-        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-        <div className="w-2 h-2 bg-primary rounded-full animate-pulse animation-delay-150"></div>
-        <div className="w-2 h-2 bg-primary rounded-full animate-pulse animation-delay-300"></div>
+    <div className="flex justify-start px-4 py-2">
+      <div className="bg-muted/50 rounded-2xl px-4 py-2 flex items-center gap-1">
+        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce-dot"></div>
+        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce-dot-delay-1"></div>
+        <div className="w-2 h-2 bg-muted-foreground/60 rounded-full animate-bounce-dot-delay-2"></div>
       </div>
-      <span className="text-xs">{getTypingText()}</span>
     </div>
   );
 };

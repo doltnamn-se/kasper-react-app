@@ -368,6 +368,29 @@
   }
 }
 
+@keyframes bounce-dot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-bounce-dot {
+  animation: bounce-dot 1.4s infinite ease-in-out;
+}
+
+.animate-bounce-dot-delay-1 {
+  animation: bounce-dot 1.4s infinite ease-in-out;
+  animation-delay: 0.16s;
+}
+
+.animate-bounce-dot-delay-2 {
+  animation: bounce-dot 1.4s infinite ease-in-out;
+  animation-delay: 0.32s;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
