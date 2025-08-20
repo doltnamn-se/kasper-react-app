@@ -68,7 +68,7 @@ export const ChatWidget = () => {
               ? 'bg-muted text-muted-foreground text-center text-sm'
               : isOwn
               ? 'bg-primary text-primary-foreground'
-              : 'bg-[#f0f0f0] dark:bg-[#2f2f31] text-[#121212] dark:text-[#ffffff]'
+              : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] text-[#121212] dark:text-[#ffffff]'
           }`}
         >
           <p className="text-sm">{message.message}</p>

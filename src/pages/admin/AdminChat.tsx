@@ -28,6 +28,12 @@ export default function AdminChat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
+  React.useEffect(() => {
+    try {
+      const isDark = document.documentElement.classList.contains('dark');
+      console.info('AdminChat: dark mode?', isDark, 'Left bubble dark class: #2f2f31');
+    } catch {}
+  }, []);
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
@@ -212,7 +218,7 @@ export default function AdminChat() {
                   {messages.map(message => {
                 const isAdmin = message.sender?.role === 'super_admin';
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
-                        <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
+                        <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
                           <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
                       fontSize: '0.95rem',
                       fontWeight: '500'
@@ -304,7 +310,7 @@ export default function AdminChat() {
                 {messages.map(message => {
               const isAdmin = message.sender?.role === 'super_admin';
               return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
-                      <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
+                      <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
                         <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
                     fontSize: '0.95rem',
                     fontWeight: '500'
