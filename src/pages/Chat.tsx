@@ -56,13 +56,16 @@ export default function Chat() {
     activeConversationId,
     setActiveConversationId,
     createConversation,
-    createEmptyConversation,
+    createConversationWithMessage,
     sendMessage,
     markAsRead,
     isCreatingConversation,
-    isCreatingEmptyConversation,
+    isCreatingConversationWithMessage,
     isSendingMessage
   } = useChat(userId);
+
+  // Draft conversation state - when user is composing a new conversation
+  const [isDraftConversation, setIsDraftConversation] = useState(false);
 
   // Auto-scroll to bottom when messages change
   React.useEffect(() => {
@@ -135,8 +138,17 @@ export default function Chat() {
   }, [activeConversationId, isChatOpen]);
 
   const handleSendMessage = () => {
-    if (!newMessage.trim() || !activeConversationId) return;
-    sendMessage({ conversationId: activeConversationId, message: newMessage });
+    if (!newMessage.trim()) return;
+    
+    if (isDraftConversation) {
+      // This is the first message in a new conversation - create conversation with message
+      createConversationWithMessage({ message: newMessage, subject: 'Support' });
+      setIsDraftConversation(false);
+    } else if (activeConversationId) {
+      // This is a message in an existing conversation
+      sendMessage({ conversationId: activeConversationId, message: newMessage });
+    }
+    
     setNewMessage('');
     // Reset textarea height
     if (textareaRef.current) {
@@ -152,13 +164,17 @@ export default function Chat() {
   };
 
   const handleStartNewChat = () => {
-    createEmptyConversation('Support');
+    setActiveConversationId(null);
+    setIsDraftConversation(true);
+    setIsCreatingNew(false);
+    if (isMobile) setIsChatOpen(true);
   };
 
   const handleConversationSelect = (conversationId: string) => {
     setActiveConversationId(conversationId);
     markAsRead(conversationId);
     setIsCreatingNew(false);
+    setIsDraftConversation(false);
     if (isMobile) setIsChatOpen(true);
   };
 
@@ -210,32 +226,41 @@ export default function Chat() {
     if (inSheet) {
       return (
         <div className="flex flex-col h-full">
-          {activeConversationId ? (
+          {activeConversationId || isDraftConversation ? (
             <>
               {/* Fixed header */}
               <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-                <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
-                  Nytt meddelande
-                </h2>
-                 <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
-                   {(() => {
-                     const activeConv = conversations.find(c => c.id === activeConversationId);
-                     if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
-                     const date = new Date(activeConv.created_at);
-                     const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                     if (currentLang === 'sv') {
-                        return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                     } else {
-                       return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                     }
-                   })()}
-                 </p>
+                 <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                   Nytt meddelande
+                 </h2>
+                  <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                    {(() => {
+                      if (isDraftConversation) return 'Skriv för att börja konversationen';
+                      
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
+                      const date = new Date(activeConv.created_at);
+                      const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                      if (currentLang === 'sv') {
+                         return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                      } else {
+                        return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                      }
+                    })()}
+                  </p>
               </div>
               
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden">
                  <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
-                   {messages.map((message, index) => {
+                   {isDraftConversation ? (
+                     <div className="flex-1 flex items-center justify-center h-full">
+                       <p className="text-[#8E8E93] text-lg text-center">
+                         Skriv för att börja konversationen
+                       </p>
+                     </div>
+                   ) : (
+                     messages.map((message, index) => {
                       const isCurrentUser = message.sender_id === userId;
                       const isLastMessage = index === messages.length - 1;
                       const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
@@ -287,7 +312,8 @@ export default function Chat() {
                          </div>
                      </div>
                    );
-                 })}
+                     })
+                   )}
                    <div ref={messagesEndRef} />
                  </ScrollArea>
               </div>
@@ -326,7 +352,7 @@ export default function Chat() {
                     <Button
                       variant="ghost"
                       onClick={handleSendMessage}
-                      disabled={!newMessage.trim() || isSendingMessage}
+                      disabled={!newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage}
                       size="icon"
                       className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
                         !newMessage.trim() 
@@ -354,7 +380,7 @@ export default function Chat() {
 
     return (
       <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
-        {activeConversationId ? (
+        {activeConversationId || isDraftConversation ? (
           <>
             {/* Fixed header */}
             <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] rounded-t-2xl transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
@@ -363,6 +389,8 @@ export default function Chat() {
               </h2>
                <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
                  {(() => {
+                   if (isDraftConversation) return 'Skriv för att börja konversationen';
+                   
                    const activeConv = conversations.find(c => c.id === activeConversationId);
                    if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
                    const date = new Date(activeConv.created_at);
@@ -379,7 +407,14 @@ export default function Chat() {
             {/* Scrollable messages area */}
             <div className="flex-1 h-[450px] overflow-hidden">
                <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-2">
-                 {messages.map((message, index) => {
+                 {isDraftConversation ? (
+                   <div className="flex-1 flex items-center justify-center h-full">
+                     <p className="text-[#8E8E93] text-lg text-center">
+                       Skriv för att börja konversationen
+                     </p>
+                   </div>
+                 ) : (
+                   messages.map((message, index) => {
                     const isCurrentUser = message.sender_id === userId;
                     const isLastMessage = index === messages.length - 1;
                     const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
@@ -431,7 +466,8 @@ export default function Chat() {
                        </div>
                    </div>
                  );
-               })}
+                   })
+                 )}
                  <div ref={messagesEndRef} />
                </ScrollArea>
             </div>
@@ -470,11 +506,11 @@ export default function Chat() {
                   <Button
                     variant="ghost"
                     onClick={handleSendMessage}
-                    disabled={!newMessage.trim() || isSendingMessage}
+                    disabled={!newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage}
                     size="icon"
                     className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
                       !newMessage.trim() 
-                        ? 'bg-[#d0ecfb] dark:bg-[#232324]' 
+                      ? 'bg-[#d0ecfb] dark:bg-[#232324]'
                         : 'dark:!bg-[#007aff]'
                     }`}
                     style={{ backgroundColor: newMessage.trim() ? '#59bffa' : undefined }}

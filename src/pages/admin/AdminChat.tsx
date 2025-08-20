@@ -182,6 +182,7 @@ export default function AdminChat() {
       isMobile
     });
     
+    // For admin, we create conversation with an initial message immediately
     createConversation({
       customerId: newChatData.customerId,
       adminId: userId,
