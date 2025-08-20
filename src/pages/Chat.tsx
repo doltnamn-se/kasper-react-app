@@ -385,10 +385,7 @@ export default function Chat() {
             </div>
           </>
         ) : (
-          <CardContent className="flex items-center justify-center h-[500px]">
-            <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#59bffa] decoration-1 underline-offset-2">
-              {t('select.conversation.to.chat')}
-            </p>
+          <CardContent className="flex items-center justify-center h-[500px] bg-[#fafafa] dark:bg-[#161618]">
           </CardContent>
         )}
       </Card>
