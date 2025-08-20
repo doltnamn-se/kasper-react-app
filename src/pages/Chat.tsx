@@ -44,9 +44,11 @@ export default function Chat() {
     activeConversationId,
     setActiveConversationId,
     createConversation,
+    createEmptyConversation,
     sendMessage,
     markAsRead,
     isCreatingConversation,
+    isCreatingEmptyConversation,
     isSendingMessage
   } = useChat(userId);
 
@@ -107,11 +109,7 @@ export default function Chat() {
   };
 
   const handleStartNewChat = () => {
-    const defaultChatData = {
-      subject: 'Support',
-      message: 'I need help with something.'
-    };
-    createConversation(defaultChatData);
+    createEmptyConversation('Support');
   };
 
   const handleConversationSelect = (conversationId: string) => {

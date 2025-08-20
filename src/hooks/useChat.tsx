@@ -121,6 +121,33 @@ export const useChat = (userId?: string) => {
     }
   });
 
+  // Create empty conversation (without initial message)
+  const createEmptyConversationMutation = useMutation({
+    mutationFn: async (subject: string = 'Support') => {
+      if (!userId) throw new Error('User not authenticated');
+
+      const { data: conversationId, error } = await supabase
+        .rpc('create_chat_conversation', {
+          p_customer_id: userId,
+          p_subject: subject,
+          p_priority: 'medium'
+        });
+
+      if (error) throw error;
+
+      return conversationId;
+    },
+    onSuccess: (conversationId) => {
+      queryClient.invalidateQueries({ queryKey: ['chat-conversations'] });
+      setActiveConversationId(conversationId);
+      toast.success('Chat conversation started');
+    },
+    onError: (error) => {
+      console.error('Error creating conversation:', error);
+      toast.error('Failed to start conversation');
+    }
+  });
+
   // Send message
   const sendMessageMutation = useMutation({
     mutationFn: async ({ conversationId, message }: { conversationId: string; message: string }) => {
@@ -222,9 +249,11 @@ export const useChat = (userId?: string) => {
     loadingMessages,
     setActiveConversationId,
     createConversation: createConversationMutation.mutate,
+    createEmptyConversation: createEmptyConversationMutation.mutate,
     sendMessage: sendMessageMutation.mutate,
     markAsRead,
     isCreatingConversation: createConversationMutation.isPending,
+    isCreatingEmptyConversation: createEmptyConversationMutation.isPending,
     isSendingMessage: sendMessageMutation.isPending
   };
 };
