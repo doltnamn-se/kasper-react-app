@@ -20,6 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { TypingIndicator } from '@/components/ui/typing-indicator';
 export default function AdminChat() {
   const {
     userId
@@ -62,6 +63,7 @@ export default function AdminChat() {
     conversations,
     messages,
     activeConversationId,
+    adminProfile,
     setActiveConversationId,
     createConversationWithMessage,
     sendMessage,
@@ -69,7 +71,10 @@ export default function AdminChat() {
     closeConversation,
     markAsRead,
     isCreatingConversationWithMessage,
-    isSendingMessage
+    isSendingMessage,
+    typingUsers,
+    startTyping,
+    stopTyping
   } = useAdminChat();
 
   // Auto-scroll to bottom when messages change
@@ -381,6 +386,7 @@ export default function AdminChat() {
                       </div>;
                     })
                   )}
+                  <TypingIndicator users={typingUsers} />
                   <div ref={messagesEndRef} />
                 </ScrollArea>
               </div>
@@ -394,6 +400,12 @@ export default function AdminChat() {
                   <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <textarea ref={textareaRef} value={newMessage} onChange={e => {
                   setNewMessage(e.target.value);
+                  // Handle typing indicator
+                  if (e.target.value.trim() && adminProfile) {
+                    startTyping(adminProfile.display_name, adminProfile.role);
+                  } else {
+                    stopTyping();
+                  }
                   // Auto-resize textarea
                   e.target.style.height = 'auto';
                   e.target.style.height = e.target.scrollHeight + 'px';
@@ -514,8 +526,9 @@ export default function AdminChat() {
                        </div>
                      </div>;
                    })
-                 )}
-                 <div ref={messagesEndRef} />
+                  )}
+                  <TypingIndicator users={typingUsers} />
+                  <div ref={messagesEndRef} />
                </ScrollArea>
             </div>
             
@@ -528,6 +541,12 @@ export default function AdminChat() {
                 <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                   <textarea ref={textareaRef} value={newMessage} onChange={e => {
                 setNewMessage(e.target.value);
+                // Handle typing indicator
+                if (e.target.value.trim() && adminProfile) {
+                  startTyping(adminProfile.display_name, adminProfile.role);
+                } else {
+                  stopTyping();
+                }
                 // Auto-resize textarea
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';

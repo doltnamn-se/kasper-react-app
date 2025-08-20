@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { TypingIndicator } from '@/components/ui/typing-indicator';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -54,6 +55,7 @@ export default function Chat() {
     conversations,
     messages,
     activeConversationId,
+    userProfile,
     setActiveConversationId,
     createConversation,
     createConversationWithMessage,
@@ -61,7 +63,10 @@ export default function Chat() {
     markAsRead,
     isCreatingConversation,
     isCreatingConversationWithMessage,
-    isSendingMessage
+    isSendingMessage,
+    typingUsers,
+    startTyping,
+    stopTyping
   } = useChat(userId);
 
   // Draft conversation state - when user is composing a new conversation
@@ -314,7 +319,8 @@ export default function Chat() {
                    );
                      })
                    )}
-                   <div ref={messagesEndRef} />
+                    <TypingIndicator users={typingUsers} />
+                    <div ref={messagesEndRef} />
                  </ScrollArea>
               </div>
               
@@ -334,6 +340,12 @@ export default function Chat() {
                       value={newMessage}
                       onChange={(e) => {
                         setNewMessage(e.target.value);
+                        // Handle typing indicator
+                        if (e.target.value.trim() && userProfile) {
+                          startTyping(userProfile.display_name, userProfile.role);
+                        } else {
+                          stopTyping();
+                        }
                         // Auto-resize textarea
                         e.target.style.height = 'auto';
                         e.target.style.height = e.target.scrollHeight + 'px';
@@ -468,7 +480,8 @@ export default function Chat() {
                  );
                    })
                  )}
-                 <div ref={messagesEndRef} />
+                  <TypingIndicator users={typingUsers} />
+                  <div ref={messagesEndRef} />
                </ScrollArea>
             </div>
             
@@ -488,6 +501,12 @@ export default function Chat() {
                     value={newMessage}
                     onChange={(e) => {
                       setNewMessage(e.target.value);
+                      // Handle typing indicator
+                      if (e.target.value.trim() && userProfile) {
+                        startTyping(userProfile.display_name, userProfile.role);
+                      } else {
+                        stopTyping();
+                      }
                       // Auto-resize textarea
                       e.target.style.height = 'auto';
                       e.target.style.height = e.target.scrollHeight + 'px';

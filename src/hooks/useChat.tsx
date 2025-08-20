@@ -3,10 +3,28 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
+import { useTypingIndicator } from './useTypingIndicator';
 
 export const useChat = (userId?: string) => {
   const queryClient = useQueryClient();
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  
+  // Get user profile for typing indicator
+  const { data: userProfile } = useQuery({
+    queryKey: ['user-profile', userId],
+    queryFn: async () => {
+      if (!userId) return null;
+      const { data } = await supabase
+        .from('profiles')
+        .select('display_name, role')
+        .eq('id', userId)
+        .single();
+      return data;
+    },
+    enabled: !!userId
+  });
+
+  const { typingUsers, startTyping, stopTyping } = useTypingIndicator(activeConversationId, userId);
 
   // Fetch conversations
   const { data: conversations = [], isLoading: loadingConversations } = useQuery({
@@ -257,6 +275,7 @@ export const useChat = (userId?: string) => {
     conversations,
     messages,
     activeConversationId,
+    userProfile,
     loadingConversations,
     loadingMessages,
     setActiveConversationId,
@@ -266,6 +285,9 @@ export const useChat = (userId?: string) => {
     markAsRead,
     isCreatingConversation: createConversationMutation.isPending,
     isCreatingConversationWithMessage: createConversationWithMessageMutation.isPending,
-    isSendingMessage: sendMessageMutation.isPending
+    isSendingMessage: sendMessageMutation.isPending,
+    typingUsers,
+    startTyping: (displayName: string, role: string) => startTyping(displayName, role),
+    stopTyping
   };
 };

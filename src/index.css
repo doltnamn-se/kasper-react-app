@@ -62,6 +62,21 @@
 @tailwind utilities;
 
 @layer base {
+  /* ... keep existing code */
+  
+  /* Typing indicator animation delays */
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  /* ... keep existing code */
+}
+
+@layer base {
   :root {
     --background: 0 0% 96%;
     --foreground: 222.2 84% 4.9%;

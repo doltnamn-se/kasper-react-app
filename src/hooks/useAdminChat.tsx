@@ -3,10 +3,32 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
+import { useTypingIndicator } from './useTypingIndicator';
 
 export const useAdminChat = () => {
   const queryClient = useQueryClient();
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  
+  // Get current admin profile for typing indicator
+  const { data: adminProfile } = useQuery({
+    queryKey: ['admin-profile'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+      
+      const { data } = await supabase
+        .from('profiles')
+        .select('id, display_name, role')
+        .eq('id', user.id)
+        .single();
+      return data;
+    }
+  });
+
+  const { typingUsers, startTyping, stopTyping } = useTypingIndicator(
+    activeConversationId, 
+    adminProfile?.id || null
+  );
 
   // Fetch all conversations for admin
   const { data: conversations = [], isLoading: loadingConversations } = useQuery({
@@ -358,6 +380,7 @@ export const useAdminChat = () => {
     conversations,
     messages,
     activeConversationId,
+    adminProfile,
     loadingConversations,
     loadingMessages,
     setActiveConversationId,
@@ -369,6 +392,9 @@ export const useAdminChat = () => {
     markAsRead,
     isCreatingConversation: createConversationMutation.isPending,
     isCreatingConversationWithMessage: createConversationWithMessageMutation.isPending,
-    isSendingMessage: sendMessageMutation.isPending
+    isSendingMessage: sendMessageMutation.isPending,
+    typingUsers,
+    startTyping: (displayName: string, role: string) => startTyping(displayName, role),
+    stopTyping
   };
 };
