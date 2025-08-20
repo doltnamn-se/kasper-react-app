@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp, Search, Check } from 'lucide-react';
+import { Send, ChevronUp, Search, Check, Loader2 } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -19,6 +19,65 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+
+// Message delivery status component with smooth transitions
+const MessageDeliveryStatus = ({ isSending, deliveryStatus }: { isSending: boolean; deliveryStatus: string }) => {
+  const [showDelivered, setShowDelivered] = useState(false);
+
+  React.useEffect(() => {
+    if (!isSending) {
+      // Add delay before showing delivered status
+      const timer = setTimeout(() => {
+        setShowDelivered(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    } else {
+      setShowDelivered(false);
+    }
+  }, [isSending]);
+
+  if (isSending) {
+    return (
+      <>
+        <span className="text-xs" style={{ color: '#787878' }}>
+          <span className="dark:hidden">·</span>
+          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+        </span>
+        <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+          <span className="dark:hidden">Skickar...</span>
+          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>Sending...</span>
+        </p>
+        <div className="relative w-3 h-3 animate-pulse">
+          <Loader2 className="w-3 h-3 animate-spin text-[#59bffa] dark:text-[#007aff]" />
+        </div>
+      </>
+    );
+  }
+
+  if (showDelivered) {
+    return (
+      <div className="animate-fade-in">
+        <span className="text-xs" style={{ color: '#787878' }}>
+          <span className="dark:hidden">·</span>
+          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+        </span>
+        <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+          <span className="dark:hidden">{deliveryStatus}</span>
+          <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
+        </p>
+        <div className="relative w-3 h-3">
+          <svg className="w-3 h-3" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+          </svg>
+          <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 export default function AdminChat() {
   const {
     userId
@@ -295,23 +354,11 @@ export default function AdminChat() {
                       }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                           </p>
                         {isLastMessage && isAdmin && (
-                            <>
-                              <span className="text-xs" style={{ color: '#787878' }}>
-                                <span className="dark:hidden">·</span>
-                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
-                              </span>
-                              <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                                <span className="dark:hidden">{deliveryStatus}</span>
-                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
-                              </p>
-                               <div className="relative w-3 h-3">
-                                 <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                   <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                                 </svg>
-                                 <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
-                               </div>
-                            </>
-                          )}
+                          <MessageDeliveryStatus 
+                            isSending={isSendingMessage}
+                            deliveryStatus={deliveryStatus}
+                          />
+                        )}
                         </div>
                       </div>;
             })}
@@ -409,22 +456,10 @@ export default function AdminChat() {
                     }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                         </p>
                         {isLastMessage && isAdmin && (
-                          <>
-                            <span className="text-xs" style={{ color: '#787878' }}>
-                              <span className="dark:hidden">·</span>
-                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
-                            </span>
-                            <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                              <span className="dark:hidden">{deliveryStatus}</span>
-                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
-                            </p>
-                             <div className="relative w-3 h-3">
-                               <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                 <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                               </svg>
-                               <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
-                             </div>
-                          </>
+                          <MessageDeliveryStatus 
+                            isSending={isSendingMessage}
+                            deliveryStatus={deliveryStatus}
+                          />
                         )}
                       </div>
                     </div>;
