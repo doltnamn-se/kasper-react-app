@@ -295,23 +295,23 @@ export default function AdminChat() {
                       }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                           </p>
                         {isLastMessage && isAdmin && (
-                          <div className="animate-fade-in delay-300">
-                            <span className="text-xs" style={{ color: '#787878' }}>
-                              <span className="dark:hidden">·</span>
-                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
-                            </span>
-                            <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
-                              <span className="dark:hidden">{deliveryStatus}</span>
-                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
-                            </p>
-                            <div className="relative w-3 h-3">
-                              <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                              </svg>
-                              <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
-                            </div>
-                          </div>
-                        )}
+                            <>
+                              <span className="text-xs" style={{ color: '#787878' }}>
+                                <span className="dark:hidden">·</span>
+                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                              </span>
+                              <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                                <span className="dark:hidden">{deliveryStatus}</span>
+                                <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
+                              </p>
+                               <div className="relative w-3 h-3">
+                                 <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                   <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                 </svg>
+                                 <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
+                               </div>
+                            </>
+                          )}
                         </div>
                       </div>;
             })}
@@ -409,7 +409,7 @@ export default function AdminChat() {
                     }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                         </p>
                         {isLastMessage && isAdmin && (
-                          <div className="animate-fade-in delay-300">
+                          <>
                             <span className="text-xs" style={{ color: '#787878' }}>
                               <span className="dark:hidden">·</span>
                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
@@ -418,13 +418,13 @@ export default function AdminChat() {
                               <span className="dark:hidden">{deliveryStatus}</span>
                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{deliveryStatus}</span>
                             </p>
-                            <div className="relative w-3 h-3">
-                              <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                              </svg>
-                              <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
-                            </div>
-                          </div>
+                             <div className="relative w-3 h-3">
+                               <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                 <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                               </svg>
+                               <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
+                             </div>
+                          </>
                         )}
                       </div>
                     </div>;
