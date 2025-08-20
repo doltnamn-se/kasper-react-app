@@ -215,7 +215,7 @@ export default function Chat() {
                              <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                            </p>
-                           {isLastMessage && (
+                         {isLastMessage && isCurrentUser && (
                              <>
                                <span className="text-xs" style={{ color: '#787878' }}>
                                  <span className="dark:hidden">·</span>
@@ -346,7 +346,7 @@ export default function Chat() {
                            <span className="dark:hidden">{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                            <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{format(new Date(message.created_at), 'MMM dd, yyyy - HH:mm')}</span>
                          </p>
-                         {isLastMessage && (
+                         {isLastMessage && isCurrentUser && (
                            <>
                              <span className="text-xs" style={{ color: '#787878' }}>
                                <span className="dark:hidden">·</span>
