@@ -326,10 +326,7 @@ export default function AdminChat() {
                   </div>
                 </div>
               </div>
-            </> : <div className="flex-1 flex items-center justify-center">
-              <p className="text-[#8E8E93] text-lg text-center">
-                Skriv för att börja konversationen
-              </p>
+            </> : <div className="flex-1 flex items-center justify-center bg-[#fafafa] dark:bg-[#161618]">
             </div>}
         </div>;
     }
@@ -418,10 +415,7 @@ export default function AdminChat() {
                 </div>
               </div>
             </div>
-          </> : <CardContent className="flex items-center justify-center h-[500px]">
-            <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
-              {t('select.conversation.to.chat')}
-            </p>
+          </> : <CardContent className="flex items-center justify-center h-[500px] bg-[#fafafa] dark:bg-[#161618]">
           </CardContent>}
       </Card>;
   };
