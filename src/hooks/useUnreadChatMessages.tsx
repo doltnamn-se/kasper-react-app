@@ -15,7 +15,7 @@ export const useUnreadChatMessages = (userId?: string) => {
           customer_id,
           admin_id
         `)
-        .or(`customer_id.eq.${userId},admin_id.eq.${userId}`)
+        .eq('customer_id', userId)
         .eq('status', 'active');
 
       if (error) {

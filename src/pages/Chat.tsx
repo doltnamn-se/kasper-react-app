@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetOverla
 import { Send, ChevronUp, Check, CheckCheck } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
+import { useUnreadChatMessages } from '@/hooks/useUnreadChatMessages';
 import { formatDistanceToNow, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -52,7 +53,7 @@ export default function Chat() {
   }, []);
   
   const {
-    conversations,
+    conversations: baseConversations,
     messages,
     activeConversationId,
     userProfile,
@@ -68,6 +69,18 @@ export default function Chat() {
     startTyping,
     stopTyping
   } = useChat(userId);
+
+  // Get unread message counts
+  const { conversations: conversationsWithUnread } = useUnreadChatMessages(userId);
+
+  // Merge conversations with unread counts
+  const conversations = baseConversations.map(conv => {
+    const unreadConv = conversationsWithUnread.find(c => c.id === conv.id);
+    return {
+      ...conv,
+      unread_count: unreadConv?.unread_count || 0
+    };
+  });
 
   // Draft conversation state - when user is composing a new conversation
   const [isDraftConversation, setIsDraftConversation] = useState(false);
