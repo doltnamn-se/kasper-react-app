@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetOverlay } from '@/components/ui/sheet';
-import { Send, ChevronUp, Search, Check } from 'lucide-react';
+import { Send, ChevronUp, Search, Check, CheckCheck } from 'lucide-react';
 import { useAdminChat } from '@/hooks/useAdminChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -344,12 +344,16 @@ export default function AdminChat() {
                                 <span className="dark:hidden">{statusText}</span>
                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                               </p>
-                               <div className="relative w-3 h-3">
-                                 <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                   <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                                 </svg>
-                                  <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
-                               </div>
+                               {isRead ? (
+                                 <CheckCheck className="w-3 h-3" color="#787878" strokeWidth={2} />
+                               ) : (
+                                 <div className="relative w-3 h-3">
+                                   <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                     <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                   </svg>
+                                   <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
+                                 </div>
+                               )}
                             </>
                           )}
                         </div>
@@ -459,12 +463,16 @@ export default function AdminChat() {
                               <span className="dark:hidden">{statusText}</span>
                               <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
                             </p>
-                             <div className="relative w-3 h-3">
-                               <svg className="w-3 h-3" viewBox="0 0 16 16">
-                                 <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
-                               </svg>
-                               <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
-                             </div>
+                             {isRead ? (
+                               <CheckCheck className="w-3 h-3" color="#787878" strokeWidth={2} />
+                             ) : (
+                               <div className="relative w-3 h-3">
+                                 <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                   <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                 </svg>
+                                 <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
+                               </div>
+                             )}
                           </>
                         )}
                       </div>
