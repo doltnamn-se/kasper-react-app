@@ -61,11 +61,19 @@ export default function AdminChat() {
   // Auto-scroll to bottom when messages change
   React.useEffect(() => {
     if (messagesEndRef.current && activeConversationId) {
-      messagesEndRef.current.scrollIntoView({
-        behavior: 'smooth'
-      });
+      // For mobile, we need to scroll within the ScrollArea viewport
+      if (isMobile && scrollAreaRef.current) {
+        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (viewport) {
+          setTimeout(() => {
+            viewport.scrollTop = viewport.scrollHeight;
+          }, 100);
+        }
+      } else {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, [messages, activeConversationId]);
+  }, [messages, activeConversationId, isMobile]);
 
   // Handle scroll to show/hide header shadow
   const handleScroll = React.useCallback((e: Event) => {
