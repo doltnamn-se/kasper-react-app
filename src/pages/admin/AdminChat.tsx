@@ -396,7 +396,7 @@ export default function AdminChat() {
           </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
-              {conversations.map(conversation => <div key={conversation.id} className={`p-4 border-b cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''}`} onClick={() => handleConversationSelect(conversation.id)}>
+              {conversations.map(conversation => <div key={conversation.id} className={`p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''}`} onClick={() => handleConversationSelect(conversation.id)}>
                   <div className="flex justify-between items-start mb-1">
                     <h4 className="font-medium text-sm">
                       {conversation.customer?.profile?.display_name || 'Customer'}

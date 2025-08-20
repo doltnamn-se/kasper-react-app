@@ -432,7 +432,7 @@ export default function Chat() {
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
-                    className={`p-4 border-b cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${
+                    className={`p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${
                       activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''
                     }`}
                     onClick={() => handleConversationSelect(conversation.id)}
