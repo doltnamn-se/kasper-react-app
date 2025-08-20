@@ -348,7 +348,7 @@ export default function AdminChat() {
                                  <svg className="w-3 h-3" viewBox="0 0 16 16">
                                    <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
                                  </svg>
-                                 <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
+                                  <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
                                </div>
                             </>
                           )}
@@ -463,7 +463,7 @@ export default function AdminChat() {
                                <svg className="w-3 h-3" viewBox="0 0 16 16">
                                  <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
                                </svg>
-                               <Check className="absolute inset-0 w-2 h-2 m-auto text-white" strokeWidth={3} />
+                               <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
                              </div>
                           </>
                         )}
