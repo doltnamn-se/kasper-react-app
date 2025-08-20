@@ -131,7 +131,17 @@ export default function AdminChat() {
     }
   };
   const handleCreateConversation = () => {
-    if (!newChatData.customerId || !userId) return;
+    if (!newChatData.customerId || !userId) {
+      console.log('Missing data for conversation creation:', { customerId: newChatData.customerId, userId });
+      return;
+    }
+    
+    console.log('Creating admin conversation with:', {
+      customerId: newChatData.customerId,
+      adminId: userId,
+      isMobile
+    });
+    
     createConversation({
       customerId: newChatData.customerId,
       adminId: userId,

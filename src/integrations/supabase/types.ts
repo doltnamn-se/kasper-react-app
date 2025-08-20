@@ -51,6 +51,7 @@ export type Database = {
           customer_id: string
           id: string
           last_message_at: string | null
+          priority: string
           status: string
           subject: string | null
           updated_at: string
@@ -61,6 +62,7 @@ export type Database = {
           customer_id: string
           id?: string
           last_message_at?: string | null
+          priority?: string
           status?: string
           subject?: string | null
           updated_at?: string
@@ -71,6 +73,7 @@ export type Database = {
           customer_id?: string
           id?: string
           last_message_at?: string | null
+          priority?: string
           status?: string
           subject?: string | null
           updated_at?: string

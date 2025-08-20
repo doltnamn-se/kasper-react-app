@@ -176,12 +176,14 @@ export const useAdminChat = () => {
       return conversationId;
     },
     onSuccess: (conversationId) => {
+      console.log('Admin conversation created successfully:', conversationId);
       queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations'] });
       setActiveConversationId(conversationId);
       toast.success('Chat conversation started');
     },
     onError: (error) => {
       console.error('Error creating admin conversation:', error);
+      console.error('Full error details:', JSON.stringify(error, null, 2));
       toast.error('Failed to start conversation');
     }
   });
