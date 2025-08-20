@@ -571,9 +571,6 @@ export default function AdminChat() {
               </div>
             </div>
           </> : <CardContent className="flex items-center justify-center h-[500px]">
-            <p className="text-[#707070] dark:text-[#ffffffA6] underline decoration-dotted decoration-[#24CC5C] decoration-1 underline-offset-2">
-              {t('select.conversation.to.chat')}
-            </p>
           </CardContent>}
       </Card>;
   };
