@@ -126,7 +126,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 
         {/* Desktop hover buttons */}
         {!isMobile && isHovered && (
-          <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center gap-2">
+          <div className="absolute inset-0 bg-black/20 rounded-lg flex flex-col items-center justify-center gap-1">
             <Button
               variant="secondary"
               size="sm"
@@ -134,10 +134,9 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
                 e.stopPropagation();
                 handleView();
               }}
-              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
+              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg h-8 px-2"
             >
-              <Eye className="w-4 h-4 mr-1" />
-              {viewText}
+              <Eye className="w-4 h-4" />
             </Button>
             <Button
               variant="secondary"
@@ -146,10 +145,9 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
                 e.stopPropagation();
                 handleDownload();
               }}
-              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
+              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg h-8 px-2"
             >
-              <Download className="w-4 h-4 mr-1" />
-              {downloadText}
+              <Download className="w-4 h-4" />
             </Button>
           </div>
         )}
