@@ -19,6 +19,7 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { supabase } from '@/integrations/supabase/client';
+import { FileAttachment } from '@/components/chat/FileAttachment';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -359,15 +360,25 @@ export default function Chat() {
                          key={message.id}
                          className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
                        >
-                         <div
-                           className={`max-w-[80%] px-3 py-2 ${
-                             isCurrentUser 
-                               ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
-                               : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
-                           }`}
-                         >
-                           <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
-                         </div>
+                          <div
+                            className={`max-w-[80%] px-3 py-2 ${
+                              isCurrentUser 
+                                ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                                : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                            }`}
+                          >
+                            {message.attachment_url ? (
+                              <div className="mb-2">
+                                <FileAttachment 
+                                  attachmentUrl={message.attachment_url} 
+                                  fileName={message.message.replace('📎 ', '')} 
+                                  isCurrentUser={isCurrentUser}
+                                />
+                              </div>
+                            ) : (
+                              <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                            )}
+                          </div>
                          <div className="flex items-center gap-1 mt-1 px-2">
                             <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                               <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
@@ -579,15 +590,25 @@ export default function Chat() {
                        key={message.id}
                        className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
                      >
-                       <div
-                         className={`max-w-[80%] px-3 py-2 ${
-                           isCurrentUser 
-                             ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
-                             : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
-                         }`}
-                       >
-                         <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
-                       </div>
+                        <div
+                          className={`max-w-[80%] px-3 py-2 ${
+                            isCurrentUser 
+                              ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                              : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                          }`}
+                        >
+                          {message.attachment_url ? (
+                            <div className="mb-2">
+                              <FileAttachment 
+                                attachmentUrl={message.attachment_url} 
+                                fileName={message.message.replace('📎 ', '')} 
+                                isCurrentUser={isCurrentUser}
+                              />
+                            </div>
+                          ) : (
+                            <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                          )}
+                        </div>
                        <div className="flex items-center gap-1 mt-1 px-2">
                             <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
                               <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>

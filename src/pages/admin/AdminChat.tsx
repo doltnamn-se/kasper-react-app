@@ -23,6 +23,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { CustomerDetailsSheet } from '@/components/admin/customers/CustomerDetailsSheet';
 import { CustomerWithProfile } from '@/types/customer';
+import { FileAttachment } from '@/components/chat/FileAttachment';
 export default function AdminChat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
@@ -474,10 +475,20 @@ export default function AdminChat() {
                 const statusText = isRead ? t('message.seen') : t('message.delivered');
                 return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
                         <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
-                          <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
-                      fontSize: '0.95rem',
-                      fontWeight: '500'
-                    }}>{message.message}</p>
+                          {message.attachment_url ? (
+                            <div className="mb-2">
+                              <FileAttachment 
+                                attachmentUrl={message.attachment_url} 
+                                fileName={message.message.replace('📎 ', '')} 
+                                isCurrentUser={isAdmin}
+                              />
+                            </div>
+                          ) : (
+                            <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
+                              fontSize: '0.95rem',
+                              fontWeight: '500'
+                            }}>{message.message}</p>
+                          )}
                         </div>
                         <div className="flex items-center gap-1 mt-1 px-2">
                            <p className="text-xs font-medium" style={{
@@ -680,12 +691,22 @@ export default function AdminChat() {
                      const isRead = message.read_at !== null && isAdmin; // Only show read status for admin's messages that have been read
                      const statusText = isRead ? t('message.seen') : t('message.delivered');
                      return <div key={message.id} className={`flex flex-col mb-4 ${isAdmin ? 'items-end' : 'items-start'}`}>
-                       <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
-                         <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
-                           fontSize: '0.95rem',
-                           fontWeight: '500'
-                         }}>{message.message}</p>
-                       </div>
+                        <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
+                          {message.attachment_url ? (
+                            <div className="mb-2">
+                              <FileAttachment 
+                                attachmentUrl={message.attachment_url} 
+                                fileName={message.message.replace('📎 ', '')} 
+                                isCurrentUser={isAdmin}
+                              />
+                            </div>
+                          ) : (
+                            <p className={`text-base break-words ${isAdmin ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{
+                              fontSize: '0.95rem',
+                              fontWeight: '500'
+                            }}>{message.message}</p>
+                          )}
+                        </div>
                        <div className="flex items-center gap-1 mt-1 px-2">
                           <p className="text-xs font-medium" style={{
                             fontWeight: '500',
