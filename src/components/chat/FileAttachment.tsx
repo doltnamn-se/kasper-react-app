@@ -138,17 +138,19 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
             >
               <Eye className="w-4 h-4" />
             </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDownload();
-              }}
-              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg h-8 px-2"
-            >
-              <Download className="w-4 h-4" />
-            </Button>
+            {!isCurrentUser && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownload();
+                }}
+                className="bg-white/90 hover:bg-white text-gray-800 shadow-lg h-8 px-2"
+              >
+                <Download className="w-4 h-4" />
+              </Button>
+            )}
           </div>
         )}
 
@@ -163,7 +165,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       </div>
 
       {/* Mobile download button - outside the rectangle */}
-      {isMobile && (
+      {isMobile && !isCurrentUser && (
         <Button
           variant="ghost"
           size="sm"
