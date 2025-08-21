@@ -700,39 +700,39 @@ export default function Chat() {
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
-                    className={`p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${
+                    className={`relative p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${
                       activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''
                     }`}
                     onClick={() => handleConversationSelect(conversation.id)}
                   >
-                    <div className="flex justify-between items-start mb-1">
-                      <div className="flex items-center gap-2">
-                        {(conversation.unread_count || 0) > 0 && (
-                          <div className="h-2 w-2 rounded-full bg-[#2e77d0] flex-shrink-0" />
-                        )}
+                    {(conversation.unread_count || 0) > 0 && (
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 h-2 w-2 rounded-full bg-[#2e77d0] flex-shrink-0" />
+                    )}
+                    <div className={`${(conversation.unread_count || 0) > 0 ? 'ml-4' : ''}`}>
+                      <div className="flex justify-between items-start mb-1">
                         <h4 className="font-medium text-sm">
                           {conversation.status === 'closed'
                             ? t('conversation.history')
                             : ((conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support'))}
                         </h4>
+                        <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
+                          {conversation.last_message_at && (() => {
+                            const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                            const formattedTime = formatDistanceToNow(new Date(conversation.last_message_at), { 
+                              addSuffix: true,
+                              locale: currentLang === 'sv' ? sv : undefined
+                            });
+                            // Remove "ungefär " from Swedish and "about " from English timestamps
+                            return currentLang === 'sv' 
+                              ? formattedTime.replace(/^ungefär /, '') 
+                              : formattedTime.replace(/^about /, '');
+                          })()}
+                        </p>
                       </div>
-                      <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
-                        {conversation.last_message_at && (() => {
-                          const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                          const formattedTime = formatDistanceToNow(new Date(conversation.last_message_at), { 
-                            addSuffix: true,
-                            locale: currentLang === 'sv' ? sv : undefined
-                          });
-                          // Remove "ungefär " from Swedish and "about " from English timestamps
-                          return currentLang === 'sv' 
-                            ? formattedTime.replace(/^ungefär /, '') 
-                            : formattedTime.replace(/^about /, '');
-                        })()}
+                      <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
+                        {conversation.last_message || 'No messages yet'}
                       </p>
                     </div>
-                    <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
-                      {conversation.last_message || 'No messages yet'}
-                    </p>
                   </div>
                 ))}
                 {conversations.length === 0 && (
