@@ -74,7 +74,7 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
             .eq('conversation_id', conv.id)
             .order('created_at', { ascending: false })
             .limit(1)
-            .single();
+            .maybeSingle();
 
           return {
             ...conv,
@@ -338,8 +338,12 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
 
     if (error) {
       console.error('Error marking admin messages as read:', error);
+    } else {
+      // Refresh conversation list to update unread counts
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active', adminProfile?.id] });
+      queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed', adminProfile?.id] });
     }
-  }, []);
+  }, [queryClient, adminProfile?.id]);
 
   // Real-time subscription for new messages
   useEffect(() => {
