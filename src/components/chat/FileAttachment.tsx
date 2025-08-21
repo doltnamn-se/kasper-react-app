@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Download, Eye, FileText, Image, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -15,6 +16,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const { t } = useLanguage();
 
   // Get file extension and determine file type
   const getFileExtension = (filename: string) => {
@@ -86,12 +88,15 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
     );
   };
 
+  const viewText = t('nav.dashboard') === 'Översikt' ? 'Visa' : 'View';
+  const downloadText = t('nav.dashboard') === 'Översikt' ? 'Ladda ner' : 'Download';
+
   return (
     <div
-      className={`relative w-64 h-32 rounded-lg border-2 border-dashed transition-all duration-200 ${
+      className={`relative w-64 h-32 rounded-lg transition-all duration-200 ${
         isCurrentUser 
-          ? 'border-blue-200 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20' 
-          : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800'
+          ? 'bg-blue-50 dark:bg-blue-900/20' 
+          : 'bg-gray-50 dark:bg-gray-800'
       } hover:shadow-md cursor-pointer`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -122,7 +127,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
             className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
           >
             <Eye className="w-4 h-4 mr-1" />
-            View
+            {viewText}
           </Button>
           <Button
             variant="secondary"
@@ -131,7 +136,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
             className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
           >
             <Download className="w-4 h-4 mr-1" />
-            Download
+            {downloadText}
           </Button>
         </div>
       )}
