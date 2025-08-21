@@ -20,13 +20,13 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
       {/* Close button */}
       <Button
         variant="ghost"
         size="sm"
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 text-white hover:bg-white/20 hover:text-white"
+        className="absolute top-4 right-4 z-10 text-gray-800 bg-white/90 hover:bg-white hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70"
       >
         <X className="w-6 h-6" />
       </Button>
