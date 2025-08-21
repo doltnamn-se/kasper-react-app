@@ -54,15 +54,17 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   };
 
   const renderFileIcon = () => {
+    const iconClass = `w-6 h-6 ${isCurrentUser ? 'text-[#121212] dark:text-[#ffffff]' : 'text-[#121212] dark:text-[#ffffff]'}`;
+    
     switch (fileType) {
       case 'image':
-        return <Image className="w-6 h-6 text-gray-500" />;
+        return <Image className={iconClass} />;
       case 'pdf':
-        return <FileText className="w-6 h-6 text-red-500" />;
+        return <FileText className={iconClass} />;
       case 'document':
-        return <FileText className="w-6 h-6 text-blue-500" />;
+        return <FileText className={iconClass} />;
       default:
-        return <File className="w-6 h-6 text-gray-500" />;
+        return <File className={iconClass} />;
     }
   };
 
@@ -101,16 +103,12 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 
   return (
     <div
-      className={`relative w-64 h-32 rounded-lg transition-all duration-200 ${
-        isCurrentUser 
-          ? 'bg-blue-50 dark:bg-blue-900/20' 
-          : 'bg-gray-50 dark:bg-gray-800'
-      } hover:shadow-md cursor-pointer`}
+      className="relative w-64 h-32 rounded-lg transition-all duration-200 hover:shadow-md cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* File preview */}
-      <div className="w-full h-full p-2">
+      <div className="w-full h-full">
         {renderPreview()}
       </div>
 
