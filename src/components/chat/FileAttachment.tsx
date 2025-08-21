@@ -126,7 +126,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 
         {/* Desktop hover buttons */}
         {!isMobile && isHovered && (
-          <div className="absolute inset-0 bg-black/20 rounded-lg flex flex-col items-center justify-center gap-1">
+          <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center gap-2">
             <Button
               variant="secondary"
               size="sm"

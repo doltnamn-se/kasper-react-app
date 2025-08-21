@@ -215,7 +215,7 @@ export default function Chat() {
         .getPublicUrl(data.path);
 
       // Send message with attachment
-      const messageText = `📎 ${file.name}`;
+      const messageText = file.name;
       
       if (isDraftConversation) {
         createConversationWithMessage({ 
@@ -363,7 +363,7 @@ export default function Chat() {
                           {message.attachment_url ? (
                             <FileAttachment 
                               attachmentUrl={message.attachment_url} 
-                              fileName={message.message.replace('📎 ', '')} 
+                              fileName={message.message} 
                               isCurrentUser={isCurrentUser}
                             />
                           ) : (
@@ -591,7 +591,7 @@ export default function Chat() {
                         {message.attachment_url ? (
                           <FileAttachment 
                             attachmentUrl={message.attachment_url} 
-                            fileName={message.message.replace('📎 ', '')} 
+                            fileName={message.message} 
                             isCurrentUser={isCurrentUser}
                           />
                         ) : (

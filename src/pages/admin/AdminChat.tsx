@@ -284,7 +284,7 @@ export default function AdminChat() {
         .getPublicUrl(data.path);
 
       // Send message with attachment
-      const messageText = `📎 ${file.name}`;
+      const messageText = file.name;
       
       if (isDraftConversation && draftCustomerId) {
         createConversationWithMessage({
@@ -477,7 +477,7 @@ export default function AdminChat() {
                   {message.attachment_url ? (
                     <FileAttachment 
                       attachmentUrl={message.attachment_url} 
-                      fileName={message.message.replace('📎 ', '')} 
+                      fileName={message.message} 
                       isCurrentUser={isAdmin}
                     />
                   ) : (
@@ -692,7 +692,7 @@ export default function AdminChat() {
                         {message.attachment_url ? (
                           <FileAttachment 
                             attachmentUrl={message.attachment_url} 
-                            fileName={message.message.replace('📎 ', '')} 
+                            fileName={message.message} 
                             isCurrentUser={isAdmin}
                           />
                         ) : (
