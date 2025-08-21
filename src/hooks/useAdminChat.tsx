@@ -115,10 +115,11 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
 
   // Send message as admin
   const sendMessageMutation = useMutation({
-    mutationFn: async ({ conversationId, message, adminId }: { 
+    mutationFn: async ({ conversationId, message, adminId, attachmentUrl }: { 
       conversationId: string; 
       message: string; 
-      adminId: string; 
+      adminId: string;
+      attachmentUrl?: string;
     }) => {
       const { error } = await supabase
         .from('chat_messages')
@@ -126,7 +127,8 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
           conversation_id: conversationId,
           sender_id: adminId,
           message,
-          message_type: 'text'
+          message_type: attachmentUrl ? 'attachment' : 'text',
+          attachment_url: attachmentUrl
         });
 
       if (error) throw error;
@@ -210,11 +212,12 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
 
   // Create conversation and send the first message atomically
   const createConversationWithMessageMutation = useMutation({
-    mutationFn: async ({ customerId, adminId, message, subject = 'Support' }: {
+    mutationFn: async ({ customerId, adminId, message, subject = 'Support', attachmentUrl }: {
       customerId: string;
       adminId: string;
       message: string;
       subject?: string;
+      attachmentUrl?: string;
     }) => {
       // Create conversation
       const { data: conversationId, error } = await supabase
@@ -245,7 +248,8 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
           conversation_id: conversationId,
           sender_id: adminId,
           message,
-          message_type: 'text'
+          message_type: attachmentUrl ? 'attachment' : 'text',
+          attachment_url: attachmentUrl
         });
       if (messageError) throw messageError;
 

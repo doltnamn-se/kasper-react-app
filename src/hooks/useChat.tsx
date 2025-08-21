@@ -141,7 +141,11 @@ export const useChat = (userId?: string) => {
 
   // Create conversation with first message (atomic operation)
   const createConversationWithMessageMutation = useMutation({
-    mutationFn: async ({ message, subject = 'Support' }: { message: string; subject?: string }) => {
+    mutationFn: async ({ message, subject = 'Support', attachmentUrl }: { 
+      message: string; 
+      subject?: string;
+      attachmentUrl?: string;
+    }) => {
       if (!userId) throw new Error('User not authenticated');
 
       const { data: conversationId, error } = await supabase
@@ -160,7 +164,8 @@ export const useChat = (userId?: string) => {
           conversation_id: conversationId,
           sender_id: userId,
           message,
-          message_type: 'text'
+          message_type: attachmentUrl ? 'attachment' : 'text',
+          attachment_url: attachmentUrl
         });
 
       if (messageError) throw messageError;
@@ -180,7 +185,11 @@ export const useChat = (userId?: string) => {
 
   // Send message
   const sendMessageMutation = useMutation({
-    mutationFn: async ({ conversationId, message }: { conversationId: string; message: string }) => {
+    mutationFn: async ({ conversationId, message, attachmentUrl }: { 
+      conversationId: string; 
+      message: string;
+      attachmentUrl?: string;
+    }) => {
       if (!userId) throw new Error('User not authenticated');
 
       const { error } = await supabase
@@ -189,7 +198,8 @@ export const useChat = (userId?: string) => {
           conversation_id: conversationId,
           sender_id: userId,
           message,
-          message_type: 'text'
+          message_type: attachmentUrl ? 'attachment' : 'text',
+          attachment_url: attachmentUrl
         });
 
       if (error) throw error;

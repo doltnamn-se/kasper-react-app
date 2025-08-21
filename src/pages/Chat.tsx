@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -27,6 +28,7 @@ export default function Chat() {
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
   React.useEffect(() => {
     try {
       const isDark = document.documentElement.classList.contains('dark');
@@ -40,6 +42,7 @@ export default function Chat() {
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // Helper to reliably scroll to bottom (used for mobile sheet)
   const scrollToBottom = React.useCallback(() => {
@@ -186,6 +189,56 @@ export default function Chat() {
     setIsDraftConversation(true);
     setIsCreatingNew(false);
     if (isMobile) setIsChatOpen(true);
+  };
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !userId) return;
+
+    setIsUploadingFile(true);
+    try {
+      // Generate unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${userId}/${Date.now()}.${fileExt}`;
+
+      // Upload file to storage
+      const { data, error } = await supabase.storage
+        .from('chat-attachments')
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('chat-attachments')
+        .getPublicUrl(data.path);
+
+      // Send message with attachment
+      const messageText = `📎 ${file.name}`;
+      
+      if (isDraftConversation) {
+        createConversationWithMessage({ 
+          message: messageText, 
+          subject: 'Support',
+          attachmentUrl: publicUrl
+        });
+        setIsDraftConversation(false);
+      } else if (activeConversationId) {
+        sendMessage({ 
+          conversationId: activeConversationId, 
+          message: messageText,
+          attachmentUrl: publicUrl
+        });
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    } finally {
+      setIsUploadingFile(false);
+      // Reset file input
+      if (event.target) {
+        event.target.value = '';
+      }
+    }
   };
 
   const handleConversationSelect = (conversationId: string) => {
@@ -378,9 +431,17 @@ export default function Chat() {
               {/* Fixed bottom input area */}
               <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
+                   <input
+                     type="file"
+                     ref={fileInputRef}
+                     onChange={handleFileSelect}
+                     className="hidden"
+                     accept="image/*,.pdf,.doc,.docx,.txt"
+                   />
                    <Button
                     variant="ghost"
                     size="icon"
+                    onClick={() => fileInputRef.current?.click()}
                     className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
                   >
                     <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
@@ -587,16 +648,24 @@ export default function Chat() {
                </ScrollArea>
             </div>
             
-            {/* Fixed bottom input area */}
-            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
-              <div className="flex items-end gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
-                >
-                  <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
-                </Button>
+             {/* Fixed bottom input area */}
+             <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+               <div className="flex items-end gap-2">
+                 <input
+                   type="file"
+                   ref={fileInputRef}
+                   onChange={handleFileSelect}
+                   className="hidden"
+                   accept="image/*,.pdf,.doc,.docx,.txt"
+                 />
+                 <Button
+                   variant="ghost"
+                   size="icon"
+                   onClick={() => fileInputRef.current?.click()}
+                   className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                 >
+                   <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
+                 </Button>
                 <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                   <textarea
                     ref={textareaRef}
