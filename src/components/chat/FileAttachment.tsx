@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Download, Eye, FileText, Image, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { FileViewer } from './FileViewer';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -16,6 +17,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
   const { t } = useLanguage();
 
   // Get file extension and determine file type
@@ -41,7 +43,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const fileExt = getFileExtension(fileName);
 
   const handleView = () => {
-    window.open(attachmentUrl, '_blank');
+    setIsViewerOpen(true);
   };
 
   const handleDownload = () => {
@@ -135,6 +137,15 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
           </Button>
         </div>
       )}
+
+      {/* File Viewer Modal */}
+      <FileViewer
+        isOpen={isViewerOpen}
+        onClose={() => setIsViewerOpen(false)}
+        attachmentUrl={attachmentUrl}
+        fileName={fileName}
+        fileType={fileType}
+      />
     </div>
   );
 };
