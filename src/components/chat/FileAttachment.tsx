@@ -3,6 +3,7 @@ import { Download, Eye, FileText, Image, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { FileViewer } from './FileViewer';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -19,6 +20,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const [imageError, setImageError] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
 
   // Get file extension and determine file type
   const getFileExtension = (filename: string) => {
@@ -103,49 +105,76 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const viewText = t('nav.dashboard') === 'Översikt' ? 'Visa' : 'View';
   const downloadText = t('nav.dashboard') === 'Översikt' ? 'Ladda ner' : 'Download';
 
+  const handleRectangleClick = () => {
+    if (isMobile) {
+      setIsViewerOpen(true);
+    }
+  };
+
   return (
-    <div
-      className="relative w-64 h-32 rounded-lg transition-all duration-200 hover:shadow-md cursor-pointer"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* File preview */}
-      <div className="w-full h-full">
-        {renderPreview()}
+    <div className="flex items-center gap-2">
+      <div
+        className="relative w-64 h-32 rounded-lg transition-all duration-200 hover:shadow-md cursor-pointer"
+        onMouseEnter={() => !isMobile && setIsHovered(true)}
+        onMouseLeave={() => !isMobile && setIsHovered(false)}
+        onClick={handleRectangleClick}
+      >
+        {/* File preview */}
+        <div className="w-full h-full">
+          {renderPreview()}
+        </div>
+
+        {/* Desktop hover buttons */}
+        {!isMobile && isHovered && (
+          <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleView();
+              }}
+              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
+            >
+              <Eye className="w-4 h-4 mr-1" />
+              {viewText}
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownload();
+              }}
+              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
+            >
+              <Download className="w-4 h-4 mr-1" />
+              {downloadText}
+            </Button>
+          </div>
+        )}
+
+        {/* File Viewer Modal */}
+        <FileViewer
+          isOpen={isViewerOpen}
+          onClose={() => setIsViewerOpen(false)}
+          attachmentUrl={attachmentUrl}
+          fileName={fileName}
+          fileType={fileType}
+        />
       </div>
 
-      {/* Hover buttons */}
-      {isHovered && (
-        <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleView}
-            className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
-          >
-            <Eye className="w-4 h-4 mr-1" />
-            {viewText}
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleDownload}
-            className="bg-white/90 hover:bg-white text-gray-800 shadow-lg"
-          >
-            <Download className="w-4 h-4 mr-1" />
-            {downloadText}
-          </Button>
-        </div>
+      {/* Mobile download button - outside the rectangle */}
+      {isMobile && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleDownload}
+          className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          <Download className="w-5 h-5" />
+        </Button>
       )}
-
-      {/* File Viewer Modal */}
-      <FileViewer
-        isOpen={isViewerOpen}
-        onClose={() => setIsViewerOpen(false)}
-        attachmentUrl={attachmentUrl}
-        fileName={fileName}
-        fileType={fileType}
-      />
     </div>
   );
 };
