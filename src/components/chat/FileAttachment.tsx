@@ -79,9 +79,17 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
     }
     
     return (
-      <div className="flex flex-col items-center justify-center w-full h-full bg-gray-50 dark:bg-gray-800 rounded-lg">
+      <div className={`flex flex-col items-center justify-center w-full h-full rounded-lg ${
+        isCurrentUser 
+          ? 'bg-[#d0ecfb] dark:bg-[#007aff]' 
+          : 'bg-[#f0f0f0] dark:bg-[#2f2f31]'
+      }`}>
         {renderFileIcon()}
-        <span className="text-xs font-medium text-gray-600 dark:text-gray-300 mt-1 uppercase">
+        <span className={`text-xs font-medium mt-1 uppercase ${
+          isCurrentUser 
+            ? 'text-[#121212] dark:text-[#ffffff]' 
+            : 'text-[#121212] dark:text-[#ffffff]'
+        }`}>
           {fileExt}
         </span>
       </div>
@@ -104,17 +112,6 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       {/* File preview */}
       <div className="w-full h-full p-2">
         {renderPreview()}
-      </div>
-
-      {/* File name overlay */}
-      <div className={`absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t ${
-        isCurrentUser 
-          ? 'from-blue-900/80 to-transparent' 
-          : 'from-gray-900/80 to-transparent'
-      } rounded-b-lg`}>
-        <p className="text-xs font-medium text-white truncate" title={fileName}>
-          {fileName}
-        </p>
       </div>
 
       {/* Hover buttons */}
