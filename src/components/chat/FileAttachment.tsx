@@ -114,7 +114,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   return (
     <div className="flex items-center gap-2">
       <div
-        className="relative w-64 h-32 rounded-lg transition-all duration-200 hover:shadow-md cursor-pointer"
+        className="relative w-32 h-32 rounded-lg transition-all duration-200 hover:shadow-md cursor-pointer"
         onMouseEnter={() => !isMobile && setIsHovered(true)}
         onMouseLeave={() => !isMobile && setIsHovered(false)}
         onClick={handleRectangleClick}
