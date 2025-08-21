@@ -82,8 +82,27 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const fileType = getFileType(fileName);
   const fileExt = getFileExtension(fileName);
 
-  const handleView = () => {
-    setIsViewerOpen(true);
+  const handleView = async () => {
+    // For PDFs, open in new tab to avoid Chrome blocking issues
+    if (fileType === 'pdf') {
+      if (isStoragePath) {
+        try {
+          const { data, error } = await supabase.storage
+            .from('chat-attachments')
+            .createSignedUrl(attachmentUrl, 3600); // 1 hour expiry
+
+          if (error) throw error;
+          window.open(data.signedUrl, '_blank');
+        } catch (error) {
+          console.error('Failed to open PDF:', error);
+        }
+      } else {
+        window.open(attachmentUrl, '_blank');
+      }
+    } else {
+      // For images and other files, use the modal viewer
+      setIsViewerOpen(true);
+    }
   };
 
   const handleDownload = async () => {
@@ -166,7 +185,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 
   const handleRectangleClick = () => {
     if (isMobile) {
-      setIsViewerOpen(true);
+      handleView(); // Use the same view logic for mobile clicks
     }
   };
 
