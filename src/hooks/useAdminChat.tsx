@@ -342,6 +342,9 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
       // Refresh conversation list to update unread counts
       queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active', adminProfile?.id] });
       queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed', adminProfile?.id] });
+      // Also invalidate TopNav message icon queries
+      queryClient.invalidateQueries({ queryKey: ['chat-unread-conversations', adminId] });
+      queryClient.invalidateQueries({ queryKey: ['chat-unread-counts'] });
     }
   }, [queryClient, adminProfile?.id]);
 
