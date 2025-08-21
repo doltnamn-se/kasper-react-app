@@ -209,26 +209,21 @@ export default function Chat() {
 
       if (error) throw error;
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('chat-attachments')
-        .getPublicUrl(data.path);
-
-      // Send message with attachment
+      // Send message with attachment (store path, not public URL)
       const messageText = file.name;
       
       if (isDraftConversation) {
         createConversationWithMessage({ 
           message: messageText, 
           subject: 'Support',
-          attachmentUrl: publicUrl
+          attachmentUrl: data.path
         });
         setIsDraftConversation(false);
       } else if (activeConversationId) {
         sendMessage({ 
           conversationId: activeConversationId, 
           message: messageText,
-          attachmentUrl: publicUrl
+          attachmentUrl: data.path
         });
       }
     } catch (error) {

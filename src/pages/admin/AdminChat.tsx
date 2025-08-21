@@ -278,12 +278,7 @@ export default function AdminChat() {
 
       if (error) throw error;
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('chat-attachments')
-        .getPublicUrl(data.path);
-
-      // Send message with attachment
+      // Send message with attachment (store path, not public URL)
       const messageText = file.name;
       
       if (isDraftConversation && draftCustomerId) {
@@ -292,7 +287,7 @@ export default function AdminChat() {
           adminId: userId,
           message: messageText,
           subject: 'Support',
-          attachmentUrl: publicUrl
+          attachmentUrl: data.path
         });
         setIsDraftConversation(false);
         setDraftCustomerId(null);
@@ -301,7 +296,7 @@ export default function AdminChat() {
           conversationId: activeConversationId,
           message: messageText,
           adminId: userId,
-          attachmentUrl: publicUrl
+          attachmentUrl: data.path
         });
       }
     } catch (error) {

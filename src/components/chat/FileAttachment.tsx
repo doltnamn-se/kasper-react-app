@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Download, Eye, FileText, Image, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { FileViewer } from './FileViewer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -19,8 +20,45 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [signedUrl, setSignedUrl] = useState<string>('');
+  const [urlError, setUrlError] = useState(false);
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+
+  // Check if the attachmentUrl is a path (new format) or full URL (old format)
+  const isStoragePath = attachmentUrl && !attachmentUrl.startsWith('http');
+
+  // Generate signed URL for storage paths
+  useEffect(() => {
+    const generateSignedUrl = async () => {
+      if (isStoragePath) {
+        try {
+          const { data, error } = await supabase.storage
+            .from('chat-attachments')
+            .createSignedUrl(attachmentUrl, 3600); // 1 hour expiry
+
+          if (error) {
+            console.error('Error generating signed URL:', error);
+            setUrlError(true);
+            return;
+          }
+
+          setSignedUrl(data.signedUrl);
+        } catch (error) {
+          console.error('Failed to generate signed URL:', error);
+          setUrlError(true);
+        }
+      } else {
+        // For old format (full URLs), use as-is
+        setSignedUrl(attachmentUrl);
+      }
+    };
+
+    generateSignedUrl();
+  }, [attachmentUrl, isStoragePath]);
+
+  // Use the signed URL or fall back to original
+  const displayUrl = signedUrl || attachmentUrl;
 
   // Get file extension and determine file type
   const getFileExtension = (filename: string) => {
@@ -48,13 +86,34 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
     setIsViewerOpen(true);
   };
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = attachmentUrl;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    if (isStoragePath) {
+      // Generate a fresh signed URL for download
+      try {
+        const { data, error } = await supabase.storage
+          .from('chat-attachments')
+          .createSignedUrl(attachmentUrl, 300); // 5 minute expiry for download
+
+        if (error) throw error;
+
+        const link = document.createElement('a');
+        link.href = data.signedUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Download failed:', error);
+      }
+    } else {
+      // For old format URLs
+      const link = document.createElement('a');
+      link.href = attachmentUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   const renderFileIcon = () => {
@@ -73,10 +132,10 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   };
 
   const renderPreview = () => {
-    if (fileType === 'image' && !imageError) {
+    if (fileType === 'image' && !imageError && !urlError && displayUrl) {
       return (
         <img
-          src={attachmentUrl}
+          src={displayUrl}
           alt={fileName}
           className="w-full h-full object-cover rounded-lg"
           onError={() => setImageError(true)}
@@ -158,7 +217,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         <FileViewer
           isOpen={isViewerOpen}
           onClose={() => setIsViewerOpen(false)}
-          attachmentUrl={attachmentUrl}
+          attachmentUrl={displayUrl}
           fileName={fileName}
           fileType={fileType}
         />
