@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-// Sheet component removed - using full page on mobile now
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetOverlay } from '@/components/ui/sheet';
 import { Send, ChevronUp, Check, CheckCheck } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
@@ -28,6 +28,7 @@ export default function Chat() {
   const isMobile = useIsMobile();
   const [newMessage, setNewMessage] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
@@ -136,13 +137,26 @@ export default function Chat() {
     }
   }, [messages, activeConversationId, isMobile]);
 
-  // Remove mobile sheet references since we're using full screen now
+  // Ensure scroll to latest when mobile sheet opens (with retries)
   React.useEffect(() => {
-    if (messages.length > 0 && messagesEndRef.current && activeConversationId) {
-      // Simple auto-scroll on message changes
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (isMobile && isChatOpen && messagesEndRef.current) {
+      let rafId = 0;
+      let tries = 0;
+      const maxTries = 20;
+      const tick = () => {
+        scrollToBottom();
+        if (tries++ < maxTries) rafId = requestAnimationFrame(tick);
+      };
+      // Start after small delay to allow sheet animation/layout
+      const start = setTimeout(() => {
+        tick();
+      }, 100);
+      return () => {
+        clearTimeout(start);
+        cancelAnimationFrame(rafId);
+      };
     }
-  }, [messages, activeConversationId]);
+  }, [isMobile, isChatOpen, activeConversationId, messages.length, scrollToBottom]);
 
   // Handle scroll to show/hide header shadow
   const handleScroll = React.useCallback((e: Event) => {
@@ -151,7 +165,7 @@ export default function Chat() {
     setShowHeaderBorder(scrollTop > 10);
   }, []);
 
-  // Simplified scroll listener without sheet-specific logic
+  // Set up scroll listener with timeout for mobile sheet rendering
   React.useEffect(() => {
     const attachScrollListener = () => {
       const root = scrollAreaRef.current;
@@ -161,14 +175,20 @@ export default function Chat() {
         return () => scrollContainer.removeEventListener('scroll', handleScroll);
       }
     };
-    
-    return attachScrollListener();
-  }, [handleScroll, activeConversationId]);
 
-  // Reset header shadow when switching conversations
+    // For mobile sheet, add a small delay to ensure DOM is ready
+    if (isChatOpen && isMobile) {
+      const timeout = setTimeout(attachScrollListener, 100);
+      return () => clearTimeout(timeout);
+    } else {
+      return attachScrollListener();
+    }
+  }, [handleScroll, activeConversationId, isChatOpen, isMobile]);
+
+  // Reset header shadow when switching conversations or opening sheet
   React.useEffect(() => {
     setShowHeaderBorder(false);
-  }, [activeConversationId]);
+  }, [activeConversationId, isChatOpen]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
@@ -200,6 +220,7 @@ export default function Chat() {
     setActiveConversationId(null);
     setIsDraftConversation(true);
     setIsCreatingNew(false);
+    if (isMobile) setIsChatOpen(true);
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -269,6 +290,7 @@ export default function Chat() {
     markAsRead(conversationId);
     setIsCreatingNew(false);
     setIsDraftConversation(false);
+    if (isMobile) setIsChatOpen(true);
   };
 
   const renderNewChatForm = (inSheet = false) => (
@@ -305,6 +327,7 @@ export default function Chat() {
             variant="outline"
             onClick={() => {
               setIsCreatingNew(false);
+              if (inSheet) setIsChatOpen(false);
             }}
           >
             Cancel
@@ -314,7 +337,267 @@ export default function Chat() {
     </Card>
   );
 
-  const renderChatInterface = () => {
+  const renderChatInterface = (inSheet = false) => {
+    if (inSheet) {
+      return (
+        <div className="flex flex-col h-full relative">
+          {activeConversationId || isDraftConversation ? (
+            <>
+              {/* Fixed header */}
+              <div className={`absolute top-0 left-0 w-full z-10 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+                {(() => {
+                  const activeConv = conversations.find(c => c.id === activeConversationId);
+                  const isArchived = activeConv?.status === 'closed';
+                  
+                  if (isArchived) {
+                    // Archived conversation: show title in subtitle position, centered
+                    return (
+                      <h2 className="font-medium text-[#121212] dark:text-[#ffffff] text-center" style={{ fontSize: '0.95rem' }}>
+                        {t('conversation.history')}
+                      </h2>
+                    );
+                  } else {
+                    // Active conversation: show title + subtitle
+                    return (
+                      <>
+                        <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{ fontSize: '0.95rem' }}>
+                          {isDraftConversation ? (t('nav.dashboard') === 'Översikt' ? 'Nytt meddelande' : 'New message') : t('nav.admin.support')}
+                        </h2>
+                        <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{ fontSize: '0.95rem' }}>
+                          {(() => {
+                            if (isDraftConversation) return 'Skriv för att börja konversationen';
+                            
+                            if (!activeConv?.created_at) return 'Skriv för att börja konversationen';
+                            const date = new Date(activeConv.created_at);
+                            const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                            if (currentLang === 'sv') {
+                               return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                            } else {
+                              return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                            }
+                          })()}
+                        </p>
+                      </>
+                    );
+                  }
+                })()}
+              </div>
+              
+              {/* Scrollable messages area */}
+              <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
+                 <ScrollArea 
+                   ref={scrollAreaRef} 
+                   className="h-full px-4"
+                   style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
+                 >
+                   {isDraftConversation ? (
+                     <div className="flex-1 flex items-center justify-center h-full">
+                       <p className="text-[#8E8E93] text-lg text-center">
+                         Skriv för att börja konversationen
+                       </p>
+                     </div>
+                   ) : (
+                     messages.map((message, index) => {
+                      const isCurrentUser = message.sender_id === userId;
+                      const isLastMessage = index === messages.length - 1;
+                      const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
+                       const statusText = isRead ? t('message.seen') : t('message.delivered');
+                     return (
+                        <div
+                          key={message.id}
+                          className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
+                        >
+                          {message.attachment_url ? (
+                            <FileAttachment 
+                              attachmentUrl={message.attachment_url} 
+                              fileName={message.message} 
+                              isCurrentUser={isCurrentUser}
+                            />
+                          ) : (
+                            <div
+                              className={`max-w-[80%] px-3 py-2 ${
+                                isCurrentUser 
+                                  ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' 
+                                  : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'
+                              }`}
+                            >
+                              <p className={`text-base break-words ${isCurrentUser ? 'text-[#121212] dark:text-[#FFFFFF]' : 'text-[#121212] dark:text-[#ffffff]'}`} style={{ fontSize: '0.95rem', fontWeight: '500' }}>{message.message}</p>
+                            </div>
+                          )}
+                         <div className="flex items-center gap-1 mt-1 px-2">
+                            <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                              <span className="dark:hidden">{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                              <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{formatChatTimestamp(new Date(message.created_at), { today: t('today'), yesterday: t('yesterday') })}</span>
+                            </p>
+                         {isLastMessage && isCurrentUser && (
+                             <>
+                               <span className="text-xs" style={{ color: '#787878' }}>
+                                 <span className="dark:hidden">·</span>
+                                 <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>·</span>
+                               </span>
+                                <p className="text-xs font-medium" style={{ fontWeight: '500', color: '#787878' }}>
+                                  <span className="dark:hidden">{statusText}</span>
+                                  <span className="hidden dark:inline" style={{ color: '#ffffffa6' }}>{statusText}</span>
+                                </p>
+                                 {isRead ? (
+                                   <>
+                                     <CheckCheck className="w-3 h-3 dark:hidden" color="#59bffa" strokeWidth={2.5} />
+                                     <CheckCheck className="w-3 h-3 hidden dark:inline" color="#007aff" strokeWidth={2.5} />
+                                   </>
+                                 ) : (
+                                   <div className="relative w-3 h-3">
+                                     <svg className="w-3 h-3" viewBox="0 0 16 16">
+                                       <circle cx="8" cy="8" r="8" className="fill-[#59bffa] dark:fill-[#007aff]" />
+                                     </svg>
+                                     <Check className="absolute inset-0 w-2 h-2 m-auto" strokeWidth={3} color="#ffffff" />
+                                   </div>
+                                 )}
+                             </>
+                           )}
+                         </div>
+                     </div>
+                   );
+                     })
+                  )}
+                   <TypingIndicator users={typingUsers} />
+                   
+                   {/* Show closed chat message if conversation is archived */}
+                   {!isDraftConversation && activeConversationId && (
+                     (() => {
+                       const activeConv = conversations.find(c => c.id === activeConversationId);
+                       if (activeConv?.status === 'closed') {
+                         return (
+                           <div className="flex justify-center py-4">
+                             <div className="bg-[#f0f0f0] dark:bg-[#2f2f31] px-4 py-2 rounded-full">
+                               <p className="text-sm text-[#8E8E93] dark:text-[#ffffffa6] font-medium">
+                                 {t('chat.closed.message')}
+                               </p>
+                             </div>
+                           </div>
+                         );
+                       }
+                       return null;
+                     })()
+                   )}
+                   
+                   <div ref={messagesEndRef} />
+                 </ScrollArea>
+              </div>
+              
+              {/* Fixed bottom input area */}
+              <div className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+                <div className="flex items-end gap-2">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*,.pdf,.doc,.docx,.txt"
+                  />
+                  <input
+                    type="file"
+                    ref={cameraInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*"
+                    capture="environment"
+                  />
+                  <input
+                    type="file"
+                    ref={photoInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                  
+                  {/* Upload button - Mobile shows menu, Desktop shows regular button */}
+                  {isMobile ? (
+                    <MobileUploadMenu
+                      isOpen={isUploadMenuOpen}
+                      onToggle={handleToggleUploadMenu}
+                      onCameraCapture={handleCameraCapture}
+                      onPhotoUpload={handlePhotoUpload}
+                      onFileUpload={handleFileUpload}
+                    />
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    >
+                      <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
+                    </Button>
+                  )}
+                  <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
+                    <textarea
+                      ref={textareaRef}
+                      value={newMessage}
+                      onChange={(e) => {
+                        setNewMessage(e.target.value);
+                        // Handle typing indicator
+                        if (e.target.value.trim() && userProfile) {
+                          startTyping(userProfile.display_name, userProfile.role);
+                        } else {
+                          stopTyping();
+                        }
+                        // Auto-resize textarea
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                      placeholder={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        if (activeConv?.status === 'closed') {
+                          return '';
+                        }
+                        return t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...';
+                      })()}
+                      disabled={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return activeConv?.status === 'closed';
+                      })()}
+                      className="flex-1 bg-transparent outline-none font-medium placeholder:text-[#707070] dark:placeholder:text-[#ffffffa6] resize-none overflow-hidden min-h-[20px] max-h-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ fontSize: '0.95rem', fontWeight: '500' }}
+                      rows={1}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSendMessage();
+                        }
+                      }}
+                    />
+                    <Button
+                      variant="ghost"
+                      onClick={handleSendMessage}
+                      disabled={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return !newMessage.trim() || isSendingMessage || isCreatingConversationWithMessage || activeConv?.status === 'closed';
+                      })()}
+                      size="icon"
+                      className={`w-6 h-6 rounded-full p-0 flex-shrink-0 disabled:opacity-100 ${
+                        !newMessage.trim() 
+                        ? 'bg-[#d0ecfb] dark:bg-[#232324]'
+                          : 'dark:!bg-[#007aff]'
+                      }`}
+                      style={{ backgroundColor: newMessage.trim() ? '#59bffa' : undefined }}
+                    >
+                      <ChevronUp className="h-6 w-6" color="#ffffff" stroke="#ffffff" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-[#8E8E93] text-lg text-center">
+                Skriv för att börja konversationen
+              </p>
+            </div>
+          )}
+        </div>
+      );
+    }
+
     return (
       <Card className="lg:col-span-2 bg-[#FFFFFF] dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl">
         {activeConversationId || isDraftConversation ? (
@@ -667,8 +950,31 @@ export default function Chat() {
             </div>
           )}
 
-          {/* Desktop Chat Interface or Mobile Full Screen */}
-          {renderChatInterface()}
+          {/* Desktop Chat Interface or Mobile Sheet */}
+          {!isMobile ? (
+            renderChatInterface()
+          ) : (
+            <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+              <SheetOverlay className="backdrop-blur-md" />
+              <SheetContent
+                side="bottom"
+                className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
+                onOpenAutoFocus={(e) => {
+                  e.preventDefault();
+                  setTimeout(() => {
+                    scrollToBottom();
+                    setTimeout(scrollToBottom, 150);
+                    setTimeout(scrollToBottom, 350);
+                  }, 50);
+                }}
+              >
+                <div className="flex flex-col h-full relative z-[10001]">
+                  {renderChatInterface(true)}
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </MainLayout>
