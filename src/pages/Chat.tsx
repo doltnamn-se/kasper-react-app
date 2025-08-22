@@ -20,6 +20,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { supabase } from '@/integrations/supabase/client';
 import { FileAttachment } from '@/components/chat/FileAttachment';
+import { MobileUploadMenu } from '@/components/chat/MobileUploadMenu';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -44,6 +45,8 @@ export default function Chat() {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const cameraInputRef = React.useRef<HTMLInputElement>(null);
+  const photoInputRef = React.useRef<HTMLInputElement>(null);
 
   // Helper to reliably scroll to bottom (used for mobile sheet)
   const scrollToBottom = React.useCallback(() => {
@@ -235,6 +238,19 @@ export default function Chat() {
         event.target.value = '';
       }
     }
+  };
+
+  // Mobile upload handlers
+  const handleCameraCapture = () => {
+    cameraInputRef.current?.click();
+  };
+
+  const handlePhotoUpload = () => {
+    photoInputRef.current?.click();
+  };
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
   };
 
   const handleConversationSelect = (conversationId: string) => {
@@ -435,21 +451,46 @@ export default function Chat() {
               {/* Fixed bottom input area */}
               <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
-                   <input
-                     type="file"
-                     ref={fileInputRef}
-                     onChange={handleFileSelect}
-                     className="hidden"
-                     accept="image/*,.pdf,.doc,.docx,.txt"
-                   />
-                   <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
-                  >
-                    <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
-                  </Button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*,.pdf,.doc,.docx,.txt"
+                  />
+                  <input
+                    type="file"
+                    ref={cameraInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*"
+                    capture="environment"
+                  />
+                  <input
+                    type="file"
+                    ref={photoInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                  
+                  {/* Upload button - Mobile shows menu, Desktop shows regular button */}
+                  {isMobile ? (
+                    <MobileUploadMenu
+                      onCameraCapture={handleCameraCapture}
+                      onPhotoUpload={handlePhotoUpload}
+                      onFileUpload={handleFileUpload}
+                    />
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    >
+                      <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
+                    </Button>
+                  )}
                   <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <textarea
                       ref={textareaRef}
@@ -663,21 +704,46 @@ export default function Chat() {
              {/* Fixed bottom input area */}
              <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                <div className="flex items-end gap-2">
-                 <input
-                   type="file"
-                   ref={fileInputRef}
-                   onChange={handleFileSelect}
-                   className="hidden"
-                   accept="image/*,.pdf,.doc,.docx,.txt"
-                 />
-                 <Button
-                   variant="ghost"
-                   size="icon"
-                   onClick={() => fileInputRef.current?.click()}
-                   className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
-                 >
-                   <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
-                 </Button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  accept="image/*,.pdf,.doc,.docx,.txt"
+                />
+                <input
+                  type="file"
+                  ref={cameraInputRef}
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  accept="image/*"
+                  capture="environment"
+                />
+                <input
+                  type="file"
+                  ref={photoInputRef}
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  accept="image/*"
+                />
+                
+                {/* Upload button - Mobile shows menu, Desktop shows regular button */}
+                {isMobile ? (
+                  <MobileUploadMenu
+                    onCameraCapture={handleCameraCapture}
+                    onPhotoUpload={handlePhotoUpload}
+                    onFileUpload={handleFileUpload}
+                  />
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                  >
+                    <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
+                  </Button>
+                )}
                 <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                   <textarea
                     ref={textareaRef}

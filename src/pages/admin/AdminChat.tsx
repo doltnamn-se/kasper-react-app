@@ -24,6 +24,7 @@ import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { CustomerDetailsSheet } from '@/components/admin/customers/CustomerDetailsSheet';
 import { CustomerWithProfile } from '@/types/customer';
 import { FileAttachment } from '@/components/chat/FileAttachment';
+import { MobileUploadMenu } from '@/components/chat/MobileUploadMenu';
 export default function AdminChat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
@@ -45,6 +46,8 @@ export default function AdminChat() {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const cameraInputRef = React.useRef<HTMLInputElement>(null);
+  const photoInputRef = React.useRef<HTMLInputElement>(null);
 
   // Use separate hooks for active and archived conversations
   const inboxData = useAdminChat('active');
@@ -309,6 +312,19 @@ export default function AdminChat() {
       }
     }
   };
+
+  // Mobile upload handlers
+  const handleCameraCapture = () => {
+    cameraInputRef.current?.click();
+  };
+
+  const handlePhotoUpload = () => {
+    photoInputRef.current?.click();
+  };
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
   const renderNewChatForm = (inSheet = false) => <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
       <CardHeader>
         <div className={`flex-shrink-0 p-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] ${inSheet ? '' : 'rounded-t-2xl'}`}>
@@ -557,14 +573,39 @@ export default function AdminChat() {
                     className="hidden"
                     accept="image/*,.pdf,.doc,.docx,.txt"
                   />
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
-                  >
-                    <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
-                  </Button>
+                  <input
+                    type="file"
+                    ref={cameraInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*"
+                    capture="environment"
+                  />
+                  <input
+                    type="file"
+                    ref={photoInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                  
+                  {/* Upload button - Mobile shows menu, Desktop shows regular button */}
+                  {isMobile ? (
+                    <MobileUploadMenu
+                      onCameraCapture={handleCameraCapture}
+                      onPhotoUpload={handlePhotoUpload}
+                      onFileUpload={handleFileUpload}
+                    />
+                  ) : (
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    >
+                      <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
+                    </Button>
+                  )}
                   <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                     <textarea ref={textareaRef} value={newMessage} onChange={e => {
                   setNewMessage(e.target.value);
@@ -770,14 +811,39 @@ export default function AdminChat() {
                   className="hidden"
                   accept="image/*,.pdf,.doc,.docx,.txt"
                 />
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
-                >
-                  <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
-                </Button>
+                <input
+                  type="file"
+                  ref={cameraInputRef}
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  accept="image/*"
+                  capture="environment"
+                />
+                <input
+                  type="file"
+                  ref={photoInputRef}
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  accept="image/*"
+                />
+                
+                {/* Upload button - Mobile shows menu, Desktop shows regular button */}
+                {isMobile ? (
+                  <MobileUploadMenu
+                    onCameraCapture={handleCameraCapture}
+                    onPhotoUpload={handlePhotoUpload}
+                    onFileUpload={handleFileUpload}
+                  />
+                ) : (
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                  >
+                    <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
+                  </Button>
+                )}
                 <div className="flex items-end gap-1 bg-[#f0f0f0] dark:bg-[#2f2f31] rounded-xl pl-4 pr-2 py-1.5 flex-1">
                   <textarea ref={textareaRef} value={newMessage} onChange={e => {
                 setNewMessage(e.target.value);
