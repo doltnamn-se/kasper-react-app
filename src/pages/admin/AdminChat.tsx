@@ -114,6 +114,16 @@ export default function AdminChat() {
     }
   }, [messages, activeConversationId, isMobile]);
 
+  // Prevent body scroll when mobile popup is open
+  React.useEffect(() => {
+    if (isMobile && isChatOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isMobile, isChatOpen]);
+
   // Mobile keyboard detection and handling
   React.useEffect(() => {
     if (!isMobile || !isChatOpen) return;
@@ -474,45 +484,14 @@ export default function AdminChat() {
               <div 
                 className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
                 style={{
-                  position: isKeyboardOpen ? 'fixed' : 'relative',
-                  top: isKeyboardOpen ? '0' : 'auto',
-                  left: isKeyboardOpen ? '0' : 'auto',
-                  right: isKeyboardOpen ? '0' : 'auto',
-                  zIndex: isKeyboardOpen ? 10002 : 'auto'
+                  position: 'fixed',
+                  top: '0',
+                  left: '0',
+                  right: '0',
+                  zIndex: 10002
                 }}
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
-                      fontSize: '0.95rem'
-                    }}>
-                      {(() => {
-                        if (isDraftConversation) {
-                          const draft = customers.find(c => c.id === draftCustomerId);
-                          return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
-                        }
-                        const activeConv = conversations.find(c => c.id === activeConversationId);
-                        return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
-                      })()}
-                    </h2>
-                    <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
-                      fontSize: '0.95rem'
-                    }}>
-                      {(() => {
-                        if (isDraftConversation) return 'Chatting with customer';
-                        const activeConv = conversations.find(c => c.id === activeConversationId);
-                        if (!activeConv?.created_at) return 'Chatting with customer';
-                        const date = new Date(activeConv.created_at);
-                        const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                        if (currentLang === 'sv') {
-                           return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
-                        } else {
-                          return `Submitted ${format(date, 'MMMM do, yyyy')}`;
-                        }
-                      })()}
-                    </p>
-                  </div>
-                  
+                <div className="flex items-center justify-between pr-12">
                   {!isDraftConversation && (
                     <div className="flex items-center gap-2">
                       <Button
@@ -542,11 +521,42 @@ export default function AdminChat() {
                       </Button>
                     </div>
                   )}
+                  
+                  <div className="flex-1 text-center">
+                    <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
+                      fontSize: '0.95rem'
+                    }}>
+                      {(() => {
+                        if (isDraftConversation) {
+                          const draft = customers.find(c => c.id === draftCustomerId);
+                          return draft?.profile?.display_name || draft?.profile?.email || 'Customer';
+                        }
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return activeConv?.customer?.profile?.display_name || activeConv?.customer?.profile?.email || 'Customer';
+                      })()}
+                    </h2>
+                    <p className="font-medium text-[#707070] dark:text-[#ffffffA6] -mt-1" style={{
+                      fontSize: '0.95rem'
+                    }}>
+                      {(() => {
+                        if (isDraftConversation) return 'Chatting with customer';
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        if (!activeConv?.created_at) return 'Chatting with customer';
+                        const date = new Date(activeConv.created_at);
+                        const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                        if (currentLang === 'sv') {
+                           return `Inskickat ${format(date, 'd MMMM yyyy', { locale: sv })}`;
+                        } else {
+                          return `Submitted ${format(date, 'MMMM do, yyyy')}`;
+                        }
+                      })()}
+                    </p>
+                  </div>
                 </div>
               </div>
               
               {/* Scrollable messages area */}
-              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
+              <div className="flex-1 overflow-hidden" style={{ marginTop: '120px' }}>
                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
                   {isDraftConversation ? (
                     <div className="flex-1 flex items-center justify-center h-full">
@@ -1078,14 +1088,6 @@ export default function AdminChat() {
         ) : (
           isChatOpen && (
             <>
-              {/* Overlay */}
-              <div 
-                className={`fixed inset-0 bg-black/20 backdrop-blur-md z-[9999] transition-opacity duration-300 ${
-                  isChatOpen ? 'opacity-100' : 'opacity-0'
-                }`}
-                onClick={() => setIsChatOpen(false)}
-              />
-              
               {/* Full Page Popup */}
               <div 
                 className={`fixed inset-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] z-[10000] transition-all duration-300 ${
