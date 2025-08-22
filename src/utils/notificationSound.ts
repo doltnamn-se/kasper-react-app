@@ -5,7 +5,7 @@ class NotificationSoundManager {
 
   constructor() {
     // Initialize audio object
-    this.audio = new Audio('/sounds/notification.wav');
+    this.audio = new Audio('/sounds/notification-message.wav');
     this.audio.volume = 0.5; // Set default volume to 50%
     this.audio.preload = 'auto';
     
