@@ -112,16 +112,6 @@ export default function Chat() {
     }
   }, [messages, activeConversationId, isMobile]);
 
-  // Prevent body scroll when mobile popup is open
-  React.useEffect(() => {
-    if (isMobile && isChatOpen) {
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = '';
-      };
-    }
-  }, [isMobile, isChatOpen]);
-
   // Mobile keyboard detection and handling
   React.useEffect(() => {
     if (!isMobile || !isChatOpen) return;
@@ -392,11 +382,11 @@ export default function Chat() {
               <div 
                 className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
                 style={{
-                  position: 'fixed',
-                  top: '0',
-                  left: '0',
-                  right: '0',
-                  zIndex: 10002
+                  position: isKeyboardOpen ? 'fixed' : 'relative',
+                  top: isKeyboardOpen ? '0' : 'auto',
+                  left: isKeyboardOpen ? '0' : 'auto',
+                  right: isKeyboardOpen ? '0' : 'auto',
+                  zIndex: isKeyboardOpen ? 10002 : 'auto'
                 }}
               >
                 {(() => {
@@ -438,7 +428,7 @@ export default function Chat() {
               </div>
               
               {/* Scrollable messages area */}
-              <div className="flex-1 overflow-hidden" style={{ marginTop: '120px' }}>
+              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
                  <ScrollArea ref={scrollAreaRef} className="h-full px-4">
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
@@ -1015,6 +1005,14 @@ export default function Chat() {
           ) : (
             isChatOpen && (
               <>
+                {/* Overlay */}
+                <div 
+                  className={`fixed inset-0 bg-black/20 backdrop-blur-md z-[9999] transition-opacity duration-300 ${
+                    isChatOpen ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onClick={() => setIsChatOpen(false)}
+                />
+                
                 {/* Full Page Popup */}
                 <div 
                   className={`fixed inset-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] z-[10000] transition-all duration-300 ${

@@ -114,16 +114,6 @@ export default function AdminChat() {
     }
   }, [messages, activeConversationId, isMobile]);
 
-  // Prevent body scroll when mobile popup is open
-  React.useEffect(() => {
-    if (isMobile && isChatOpen) {
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = '';
-      };
-    }
-  }, [isMobile, isChatOpen]);
-
   // Mobile keyboard detection and handling
   React.useEffect(() => {
     if (!isMobile || !isChatOpen) return;
@@ -484,45 +474,15 @@ export default function AdminChat() {
               <div 
                 className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
                 style={{
-                  position: 'fixed',
-                  top: '0',
-                  left: '0',
-                  right: '0',
-                  zIndex: 10002
+                  position: isKeyboardOpen ? 'fixed' : 'relative',
+                  top: isKeyboardOpen ? '0' : 'auto',
+                  left: isKeyboardOpen ? '0' : 'auto',
+                  right: isKeyboardOpen ? '0' : 'auto',
+                  zIndex: isKeyboardOpen ? 10002 : 'auto'
                 }}
               >
-                <div className="flex items-center justify-between pr-12">
-                  {!isDraftConversation && (
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
-                        onClick={handleOpenCustomerProfile}
-                        title="Open customer profile"
-                      >
-                        <UserRound className="h-4 w-4" />
-                      </Button>
-                      
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
-                      onClick={() => {
-                        if (activeConversationId) {
-                          // Archive/close conversation logic - always use inbox data for closing
-                          inboxData.closeConversation(activeConversationId);
-                          setActiveConversationId(null);
-                        }
-                      }}
-                        title="Archive conversation"
-                      >
-                        <Archive className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
-                  
-                  <div className="flex-1 text-center">
+                <div className="flex items-center justify-between">
+                  <div>
                     <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
                       fontSize: '0.95rem'
                     }}>
@@ -552,11 +512,41 @@ export default function AdminChat() {
                       })()}
                     </p>
                   </div>
+                  
+                  {!isDraftConversation && (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
+                        onClick={handleOpenCustomerProfile}
+                        title="Open customer profile"
+                      >
+                        <UserRound className="h-4 w-4" />
+                      </Button>
+                      
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-[#707070] hover:text-[#121212] dark:text-[#ffffffA6] dark:hover:text-[#ffffff] hover:bg-[#f0f0f0] dark:hover:bg-[#2f2f31]"
+                      onClick={() => {
+                        if (activeConversationId) {
+                          // Archive/close conversation logic - always use inbox data for closing
+                          inboxData.closeConversation(activeConversationId);
+                          setActiveConversationId(null);
+                        }
+                      }}
+                        title="Archive conversation"
+                      >
+                        <Archive className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
               
               {/* Scrollable messages area */}
-              <div className="flex-1 overflow-hidden" style={{ marginTop: '120px' }}>
+              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
                   {isDraftConversation ? (
                     <div className="flex-1 flex items-center justify-center h-full">
@@ -1088,6 +1078,14 @@ export default function AdminChat() {
         ) : (
           isChatOpen && (
             <>
+              {/* Overlay */}
+              <div 
+                className={`fixed inset-0 bg-black/20 backdrop-blur-md z-[9999] transition-opacity duration-300 ${
+                  isChatOpen ? 'opacity-100' : 'opacity-0'
+                }`}
+                onClick={() => setIsChatOpen(false)}
+              />
+              
               {/* Full Page Popup */}
               <div 
                 className={`fixed inset-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] z-[10000] transition-all duration-300 ${
