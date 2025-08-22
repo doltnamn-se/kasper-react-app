@@ -471,7 +471,7 @@ export default function AdminChat() {
       return <div className="flex flex-col h-full">
           {(activeConversationId || isDraftConversation) ? <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 sticky top-0 z-10 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
@@ -1065,10 +1065,10 @@ export default function AdminChat() {
 
         {/* Desktop Chat Interface or Mobile Sheet */}
         {!isMobile ? isCreatingNew ? renderNewChatForm() : renderChatInterface() : <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-              <SheetOverlay className="backdrop-blur-md" />
+              <SheetOverlay className="backdrop-blur-md fixed inset-0" />
                <SheetContent
                  side="bottom"
-                 className="h-[90dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                 className="h-[95dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem] fixed bottom-0 left-0 right-0"
                 hideCloseButton={true}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
