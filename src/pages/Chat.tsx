@@ -42,11 +42,9 @@ export default function Chat() {
     subject: '',
     message: ''
   });
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
-  const inputContainerRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const cameraInputRef = React.useRef<HTMLInputElement>(null);
   const photoInputRef = React.useRef<HTMLInputElement>(null);
@@ -111,66 +109,6 @@ export default function Chat() {
       }
     }
   }, [messages, activeConversationId, isMobile]);
-
-  // Mobile keyboard detection and handling
-  React.useEffect(() => {
-    if (!isMobile || !isChatOpen) return;
-
-    const initialViewportHeight = window.visualViewport?.height || window.innerHeight;
-    let keyboardTimeout: NodeJS.Timeout;
-
-    const handleViewportChange = () => {
-      clearTimeout(keyboardTimeout);
-      keyboardTimeout = setTimeout(() => {
-        const currentViewportHeight = window.visualViewport?.height || window.innerHeight;
-        const keyboardHeight = initialViewportHeight - currentViewportHeight;
-        const isKeyboardOpen = keyboardHeight > 150; // Threshold for keyboard detection
-        
-        setIsKeyboardOpen(isKeyboardOpen);
-        
-        if (isKeyboardOpen && textareaRef.current) {
-          // Ensure input is visible when keyboard opens
-          setTimeout(() => {
-            textareaRef.current?.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'center' 
-            });
-          }, 100);
-        }
-      }, 150);
-    };
-
-    const handleFocusIn = (e: FocusEvent) => {
-      if (e.target === textareaRef.current) {
-        setTimeout(() => {
-          textareaRef.current?.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
-        }, 300);
-      }
-    };
-
-    // Listen for viewport changes (keyboard open/close)
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleViewportChange);
-    } else {
-      window.addEventListener('resize', handleViewportChange);
-    }
-
-    // Listen for focus events
-    document.addEventListener('focusin', handleFocusIn);
-
-    return () => {
-      clearTimeout(keyboardTimeout);
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleViewportChange);
-      } else {
-        window.removeEventListener('resize', handleViewportChange);
-      }
-      document.removeEventListener('focusin', handleFocusIn);
-    };
-  }, [isMobile, isChatOpen]);
 
   // Ensure scroll to latest when mobile sheet opens (with retries)
   React.useEffect(() => {
@@ -379,16 +317,7 @@ export default function Chat() {
           {activeConversationId || isDraftConversation ? (
             <>
               {/* Fixed header */}
-              <div 
-                className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
-                style={{
-                  position: isKeyboardOpen ? 'fixed' : 'relative',
-                  top: isKeyboardOpen ? '0' : 'auto',
-                  left: isKeyboardOpen ? '0' : 'auto',
-                  right: isKeyboardOpen ? '0' : 'auto',
-                  zIndex: isKeyboardOpen ? 10002 : 'auto'
-                }}
-              >
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
@@ -428,7 +357,7 @@ export default function Chat() {
               </div>
               
               {/* Scrollable messages area */}
-              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
+              <div className="flex-1 overflow-hidden">
                  <ScrollArea ref={scrollAreaRef} className="h-full px-4">
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
@@ -525,16 +454,7 @@ export default function Chat() {
               </div>
               
               {/* Fixed bottom input area */}
-              <div 
-                ref={inputContainerRef}
-                className={`flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e] ${
-                  isKeyboardOpen ? 'sticky bottom-0 z-10' : ''
-                }`}
-                style={{
-                  transform: isKeyboardOpen ? 'translateY(env(keyboard-height, 0px))' : 'none',
-                  transition: 'transform 0.2s ease-out'
-                }}
-              >
+              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
                   <input
                     type="file"
@@ -999,47 +919,29 @@ export default function Chat() {
             </div>
           )}
 
-          {/* Desktop Chat Interface or Mobile Popup */}
+          {/* Desktop Chat Interface or Mobile Sheet */}
           {!isMobile ? (
             renderChatInterface()
           ) : (
-            isChatOpen && (
-              <>
-                {/* Overlay */}
-                <div 
-                  className={`fixed inset-0 bg-black/20 backdrop-blur-md z-[9999] transition-opacity duration-300 ${
-                    isChatOpen ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onClick={() => setIsChatOpen(false)}
-                />
-                
-                {/* Full Page Popup */}
-                <div 
-                  className={`fixed inset-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] z-[10000] transition-all duration-300 ${
-                    isChatOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
-                  }`}
-                  style={{
-                    height: '100dvh'
-                  }}
-                >
-                  {/* Close Button */}
-                  <div className="absolute top-4 right-4 z-[10001]">
-                    <button
-                      onClick={() => setIsChatOpen(false)}
-                      className="w-8 h-8 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center hover:bg-black/20 dark:hover:bg-white/20 transition-colors"
-                    >
-                      <svg className="w-5 h-5 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                  
-                  <div className="flex flex-col h-full">
-                    {renderChatInterface(true)}
-                  </div>
+            <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+              <SheetOverlay className="backdrop-blur-md" />
+              <SheetContent
+                side="bottom"
+                className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                onOpenAutoFocus={(e) => {
+                  e.preventDefault();
+                  setTimeout(() => {
+                    scrollToBottom();
+                    setTimeout(scrollToBottom, 150);
+                    setTimeout(scrollToBottom, 350);
+                  }, 50);
+                }}
+              >
+                <div className="flex flex-col h-full relative z-[10001]">
+                  {renderChatInterface(true)}
                 </div>
-              </>
-            )
+              </SheetContent>
+            </Sheet>
           )}
         </div>
       </div>
