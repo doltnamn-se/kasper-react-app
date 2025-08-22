@@ -1,52 +1,22 @@
-export interface NotificationSound {
-  id: string;
-  name: string;
-  file: string;
-  description: string;
-}
-
-export const NOTIFICATION_SOUNDS: NotificationSound[] = [
-  { id: 'bell', name: 'Bell', file: '/sounds/notification.wav', description: 'Classic bell ring' },
-  { id: 'chime', name: 'Chime', file: '/sounds/chime.wav', description: 'Gentle chime tone' },
-  { id: 'ding', name: 'Ding', file: '/sounds/ding.wav', description: 'Simple ding sound' },
-  { id: 'pop', name: 'Pop', file: '/sounds/pop.wav', description: 'Light pop sound' },
-  { id: 'whistle', name: 'Whistle', file: '/sounds/whistle.wav', description: 'Short whistle tone' },
-];
-
 class NotificationSoundManager {
-  private audioCache: Map<string, HTMLAudioElement> = new Map();
+  private audio: HTMLAudioElement | null = null;
   private isEnabled: boolean = true;
-  private selectedSoundId: string = 'bell';
   private audioContext: AudioContext | null = null;
 
   constructor() {
+    // Initialize audio object
+    this.audio = new Audio('/sounds/notification.wav');
+    this.audio.volume = 0.5; // Set default volume to 50%
+    this.audio.preload = 'auto';
+    
     // Load sound settings from localStorage
     const savedSettings = localStorage.getItem('chatSoundEnabled');
     this.isEnabled = savedSettings !== null ? JSON.parse(savedSettings) : true;
-    
-    const savedSoundId = localStorage.getItem('chatSoundId');
-    this.selectedSoundId = savedSoundId || 'bell';
 
-    // Preload all sounds
-    this.preloadSounds();
-  }
-
-  private preloadSounds() {
-    NOTIFICATION_SOUNDS.forEach(sound => {
-      const audio = new Audio(sound.file);
-      audio.volume = 0.5;
-      audio.preload = 'auto';
-      
-      audio.addEventListener('error', () => {
-        console.log(`Sound ${sound.name} failed to load, will use fallback`);
-      });
-      
-      this.audioCache.set(sound.id, audio);
+    // Handle audio loading errors with fallback
+    this.audio.addEventListener('error', () => {
+      console.log('External notification sound failed to load, using Web Audio API fallback');
     });
-  }
-
-  private getCurrentAudio(): HTMLAudioElement | null {
-    return this.audioCache.get(this.selectedSoundId) || null;
   }
 
   // Create a simple notification beep using Web Audio API
@@ -77,11 +47,10 @@ class NotificationSoundManager {
     if (!this.isEnabled) return;
 
     try {
-      const audio = this.getCurrentAudio();
-      if (audio && !audio.error) {
+      if (this.audio && !this.audio.error) {
         // Reset audio to beginning in case it was playing
-        audio.currentTime = 0;
-        await audio.play();
+        this.audio.currentTime = 0;
+        await this.audio.play();
       } else {
         // Fallback to Web Audio API beep
         await this.createBeepSound();
@@ -97,39 +66,6 @@ class NotificationSoundManager {
     }
   }
 
-  // Play a specific sound for preview
-  async playSound(soundId: string) {
-    try {
-      const audio = this.audioCache.get(soundId);
-      if (audio && !audio.error) {
-        audio.currentTime = 0;
-        await audio.play();
-      } else {
-        await this.createBeepSound();
-      }
-    } catch (error) {
-      console.log('Could not play preview sound:', error);
-      try {
-        await this.createBeepSound();
-      } catch (fallbackError) {
-        console.log('Fallback sound also failed:', fallbackError);
-      }
-    }
-  }
-
-  // Set the selected sound
-  setSelectedSound(soundId: string) {
-    if (NOTIFICATION_SOUNDS.find(s => s.id === soundId)) {
-      this.selectedSoundId = soundId;
-      localStorage.setItem('chatSoundId', soundId);
-    }
-  }
-
-  // Get the selected sound
-  getSelectedSound(): string {
-    return this.selectedSoundId;
-  }
-
   // Enable/disable sound notifications
   setEnabled(enabled: boolean) {
     this.isEnabled = enabled;
@@ -143,12 +79,12 @@ class NotificationSoundManager {
 
   // Set volume (0.0 to 1.0)
   setVolume(volume: number) {
-    this.audioCache.forEach(audio => {
-      audio.volume = Math.max(0, Math.min(1, volume));
-    });
+    if (this.audio) {
+      this.audio.volume = Math.max(0, Math.min(1, volume));
+    }
   }
 
-  // Test the current notification sound
+  // Test the notification sound
   async testSound() {
     await this.playNotification();
   }
@@ -176,16 +112,4 @@ export const testNotificationSound = () => {
 
 export const setNotificationVolume = (volume: number) => {
   notificationSound.setVolume(volume);
-};
-
-export const setSelectedSound = (soundId: string) => {
-  notificationSound.setSelectedSound(soundId);
-};
-
-export const getSelectedSound = () => {
-  return notificationSound.getSelectedSound();
-};
-
-export const previewSound = (soundId: string) => {
-  notificationSound.playSound(soundId);
 };
