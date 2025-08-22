@@ -514,7 +514,7 @@ export default function AdminChat() {
                   </div>
                   
                   {!isDraftConversation && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mr-12">
                       <Button
                         variant="ghost"
                         size="icon"
