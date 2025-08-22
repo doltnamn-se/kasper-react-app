@@ -43,9 +43,11 @@ export default function AdminChat() {
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
+  const inputContainerRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const cameraInputRef = React.useRef<HTMLInputElement>(null);
   const photoInputRef = React.useRef<HTMLInputElement>(null);
@@ -111,6 +113,66 @@ export default function AdminChat() {
       }
     }
   }, [messages, activeConversationId, isMobile]);
+
+  // Mobile keyboard detection and handling
+  React.useEffect(() => {
+    if (!isMobile || !isChatOpen) return;
+
+    const initialViewportHeight = window.visualViewport?.height || window.innerHeight;
+    let keyboardTimeout: NodeJS.Timeout;
+
+    const handleViewportChange = () => {
+      clearTimeout(keyboardTimeout);
+      keyboardTimeout = setTimeout(() => {
+        const currentViewportHeight = window.visualViewport?.height || window.innerHeight;
+        const keyboardHeight = initialViewportHeight - currentViewportHeight;
+        const isKeyboardOpen = keyboardHeight > 150; // Threshold for keyboard detection
+        
+        setIsKeyboardOpen(isKeyboardOpen);
+        
+        if (isKeyboardOpen && textareaRef.current) {
+          // Ensure input is visible when keyboard opens
+          setTimeout(() => {
+            textareaRef.current?.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center' 
+            });
+          }, 100);
+        }
+      }, 150);
+    };
+
+    const handleFocusIn = (e: FocusEvent) => {
+      if (e.target === textareaRef.current) {
+        setTimeout(() => {
+          textareaRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+        }, 300);
+      }
+    };
+
+    // Listen for viewport changes (keyboard open/close)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleViewportChange);
+    } else {
+      window.addEventListener('resize', handleViewportChange);
+    }
+
+    // Listen for focus events
+    document.addEventListener('focusin', handleFocusIn);
+
+    return () => {
+      clearTimeout(keyboardTimeout);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleViewportChange);
+      } else {
+        window.removeEventListener('resize', handleViewportChange);
+      }
+      document.removeEventListener('focusin', handleFocusIn);
+    };
+  }, [isMobile, isChatOpen]);
 
   // Ensure scroll to latest when mobile sheet opens (with retries)
   React.useEffect(() => {
@@ -475,7 +537,7 @@ export default function AdminChat() {
               </div>
               
               {/* Scrollable messages area */}
-              <div className="flex-1 overflow-hidden">
+              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
                   {isDraftConversation ? (
                     <div className="flex-1 flex items-center justify-center h-full">
@@ -569,7 +631,16 @@ export default function AdminChat() {
               </div>
               
               {/* Fixed bottom input area */}
-              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+              <div 
+                ref={inputContainerRef}
+                className={`flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e] ${
+                  isKeyboardOpen ? 'sticky bottom-0 z-10' : ''
+                }`}
+                style={{
+                  transform: isKeyboardOpen ? 'translateY(env(keyboard-height, 0px))' : 'none',
+                  transition: 'transform 0.2s ease-out'
+                }}
+              >
                 <div className="flex items-end gap-2">
                   <input
                     type="file"
