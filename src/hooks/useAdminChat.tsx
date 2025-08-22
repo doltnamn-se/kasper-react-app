@@ -368,11 +368,7 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
           filter: `conversation_id=eq.${activeConversationId}`
         },
         (payload) => {
-          // Play notification sound if message is not from current admin
-          if (payload.new && payload.new.sender_id !== adminProfile.id) {
-            playNewMessageSound();
-          }
-          
+          // Don't play notification sound for active conversation - user is already viewing it
           queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', activeConversationId] });
           queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
           queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
@@ -387,6 +383,35 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
       supabase.removeChannel(channel);
     };
   }, [activeConversationId, queryClient, adminProfile?.id]);
+
+  // Global subscription for notification sounds (messages NOT in active conversation)
+  useEffect(() => {
+    if (!adminProfile?.id) return;
+
+    const channel = supabase
+      .channel('admin-global-messages')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat_messages'
+        },
+        (payload) => {
+          // Play notification sound if message is not from current admin and not from active conversation
+          if (payload.new && 
+              payload.new.sender_id !== adminProfile.id && 
+              payload.new.conversation_id !== activeConversationId) {
+            playNewMessageSound();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [adminProfile?.id, activeConversationId]);
 
   // Real-time subscription for all conversation updates
   useEffect(() => {

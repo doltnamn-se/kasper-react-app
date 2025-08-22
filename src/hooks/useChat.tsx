@@ -305,8 +305,8 @@ export const useChat = (userId?: string) => {
           table: 'chat_messages'
         },
         async (payload) => {
-          // Only play sound if message is not from current user
-          if (payload.new && payload.new.sender_id !== userId) {
+          // Only play sound if message is not from current user and not from the active conversation
+          if (payload.new && payload.new.sender_id !== userId && payload.new.conversation_id !== activeConversationId) {
             // Check if this message is in one of the user's conversations
             const { data: conversation } = await supabase
               .from('chat_conversations')
@@ -315,7 +315,7 @@ export const useChat = (userId?: string) => {
               .eq('customer_id', userId)
               .single();
             
-            // Play sound if this is a message in the user's conversation
+            // Play sound if this is a message in the user's conversation (but not the active one)
             if (conversation) {
               playNewMessageSound();
             }
@@ -327,7 +327,7 @@ export const useChat = (userId?: string) => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userId]);
+  }, [userId, activeConversationId]);
 
   return {
     conversations,
