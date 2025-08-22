@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MessageCircle, X, Send, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,26 +22,10 @@ export const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
   });
-
-  // Track viewport height changes for keyboard detection
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportHeight(window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
-    };
-  }, []);
 
   const {
     conversations,
@@ -102,22 +86,6 @@ export const ChatWidget = () => {
 
   if (!userId) return null;
 
-  // Calculate dynamic height for mobile chat area
-  const getMobileChatHeight = () => {
-    if (!isMobile) return 'flex-1';
-    
-    // Base drawer height is 85vh
-    const drawerHeight = viewportHeight * 0.85;
-    
-    // Fixed heights: header (~80px), footer/input (~100px), padding (~40px)
-    const fixedHeight = 220;
-    
-    // Available height for the scrollable content
-    const availableHeight = drawerHeight - fixedHeight;
-    
-    return `${Math.max(200, availableHeight)}px`;
-  };
-
   const ChatContent = () => (
     <>
       {showNewChat ? (
@@ -171,13 +139,7 @@ export const ChatWidget = () => {
             </Button>
           </div>
           
-          <ScrollArea 
-            className="p-4" 
-            style={{ 
-              height: isMobile ? getMobileChatHeight() : 'auto',
-              flex: isMobile ? 'none' : '1'
-            }}
-          >
+          <ScrollArea className="flex-1 p-4">
             {messages.map(renderMessage)}
           </ScrollArea>
 
@@ -207,13 +169,7 @@ export const ChatWidget = () => {
         </>
       ) : (
         /* Conversation List */
-        <ScrollArea 
-          className="p-4" 
-          style={{ 
-            height: isMobile ? getMobileChatHeight() : 'auto',
-            flex: isMobile ? 'none' : '1'
-          }}
-        >
+        <ScrollArea className="flex-1 p-4">
           {conversations.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
               <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />

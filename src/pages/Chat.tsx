@@ -86,24 +86,6 @@ export default function Chat() {
       }
     }
   }, []);
-
-  // Calculate dynamic height for mobile chat area when keyboard is open
-  const getMobileChatHeight = () => {
-    if (!isMobile) return 'auto';
-    
-    // When keyboard is open, calculate available space
-    if (keyboardHeight > 0) {
-      // Available viewport height minus keyboard
-      const availableHeight = window.innerHeight - keyboardHeight;
-      // Fixed heights: header (~88px), footer (~80px), padding
-      const fixedHeight = 168;
-      const chatHeight = Math.max(200, availableHeight - fixedHeight);
-      return `${chatHeight}px`;
-    }
-    
-    // Default mobile height when keyboard is closed
-    return 'auto';
-  };
   
   const {
     conversations: baseConversations,
@@ -405,11 +387,8 @@ export default function Chat() {
               <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
                  <ScrollArea 
                    ref={scrollAreaRef} 
-                   className="px-4"
-                   style={{ 
-                     height: getMobileChatHeight(),
-                     flex: keyboardHeight > 0 ? 'none' : '1'
-                   }}
+                   className="h-full px-4"
+                   style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
                  >
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
