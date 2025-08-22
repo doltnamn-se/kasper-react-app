@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
 import { useTypingIndicator } from './useTypingIndicator';
+import { playNewMessageSound } from '@/utils/notificationSound';
 
 export const useChat = (userId?: string) => {
   const queryClient = useQueryClient();
@@ -248,7 +249,12 @@ export const useChat = (userId?: string) => {
           table: 'chat_messages',
           filter: `conversation_id=eq.${activeConversationId}`
         },
-        () => {
+        (payload) => {
+          // Play notification sound if message is not from current user
+          if (payload.new && payload.new.sender_id !== userId) {
+            playNewMessageSound();
+          }
+          
           queryClient.invalidateQueries({ queryKey: ['chat-messages', activeConversationId] });
           queryClient.invalidateQueries({ queryKey: ['chat-conversations'] });
         }
@@ -258,7 +264,7 @@ export const useChat = (userId?: string) => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [activeConversationId, queryClient]);
+  }, [activeConversationId, queryClient, userId]);
 
   // Real-time subscription for conversation updates
   useEffect(() => {
@@ -284,6 +290,44 @@ export const useChat = (userId?: string) => {
       supabase.removeChannel(channel);
     };
   }, [userId, queryClient]);
+
+  // Real-time subscription for all new messages (for sound notifications)
+  useEffect(() => {
+    if (!userId) return;
+
+    const channel = supabase
+      .channel('chat-messages-global')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat_messages'
+        },
+        async (payload) => {
+          // Only play sound if message is not from current user
+          if (payload.new && payload.new.sender_id !== userId) {
+            // Check if this message is in one of the user's conversations
+            const { data: conversation } = await supabase
+              .from('chat_conversations')
+              .select('id')
+              .eq('id', payload.new.conversation_id)
+              .eq('customer_id', userId)
+              .single();
+            
+            // Play sound if this is a message in the user's conversation
+            if (conversation) {
+              playNewMessageSound();
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userId]);
 
   return {
     conversations,

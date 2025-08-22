@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NotificationPreferences } from "@/components/settings/NotificationPreferences";
 import { PasswordChange } from "@/components/settings/PasswordChange";
 import { ProfileSettings } from "@/components/settings/ProfileSettings";
+import { SoundSettings } from "@/components/settings/SoundSettings";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -55,11 +56,17 @@ const Settings = () => {
           </TabsContent>
 
           <TabsContent value="notifications" className="mt-6">
-            <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
-              <h2 className="mb-6">
-                {t('settings.notification.preferences')}
-              </h2>
-              <NotificationPreferences />
+            <div className="space-y-6">
+              <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+                <h2 className="mb-6">
+                  {t('settings.notification.preferences')}
+                </h2>
+                <NotificationPreferences />
+              </div>
+              
+              <div className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+                <SoundSettings />
+              </div>
             </div>
           </TabsContent>
 

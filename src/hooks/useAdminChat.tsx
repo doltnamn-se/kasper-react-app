@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
 import { useTypingIndicator } from './useTypingIndicator';
+import { playNewMessageSound } from '@/utils/notificationSound';
 
 export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
   const queryClient = useQueryClient();
@@ -354,7 +355,7 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
 
   // Real-time subscription for new messages
   useEffect(() => {
-    if (!activeConversationId) return;
+    if (!activeConversationId || !adminProfile?.id) return;
 
     const channel = supabase
       .channel(`admin-chat-${activeConversationId}`)
@@ -366,7 +367,12 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
           table: 'chat_messages',
           filter: `conversation_id=eq.${activeConversationId}`
         },
-        () => {
+        (payload) => {
+          // Play notification sound if message is not from current admin
+          if (payload.new && payload.new.sender_id !== adminProfile.id) {
+            playNewMessageSound();
+          }
+          
           queryClient.invalidateQueries({ queryKey: ['admin-chat-messages', activeConversationId] });
           queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'active'] });
           queryClient.invalidateQueries({ queryKey: ['admin-chat-conversations', 'closed'] });
@@ -380,7 +386,7 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [activeConversationId, queryClient]);
+  }, [activeConversationId, queryClient, adminProfile?.id]);
 
   // Real-time subscription for all conversation updates
   useEffect(() => {
