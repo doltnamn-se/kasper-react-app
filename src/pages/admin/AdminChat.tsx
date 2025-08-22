@@ -474,11 +474,11 @@ export default function AdminChat() {
               <div 
                 className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
                 style={{
-                  position: isKeyboardOpen ? 'fixed' : 'relative',
-                  top: isKeyboardOpen ? '0' : 'auto',
-                  left: isKeyboardOpen ? '0' : 'auto',
-                  right: isKeyboardOpen ? '0' : 'auto',
-                  zIndex: isKeyboardOpen ? 10002 : 'auto'
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 10000
                 }}
               >
                 <div className="flex items-center justify-between">
@@ -546,7 +546,7 @@ export default function AdminChat() {
               </div>
               
               {/* Scrollable messages area */}
-              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
+              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ marginTop: '72px', height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
                 <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
                   {isDraftConversation ? (
                     <div className="flex-1 flex items-center justify-center h-full">
