@@ -372,58 +372,14 @@ export default function Chat() {
     </Card>
   );
 
-  const handleDragStart = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    const startY = touch.clientY;
-    let currentY = startY;
-    
-    const handleDragMove = (e: TouchEvent) => {
-      currentY = e.touches[0].clientY;
-      const deltaY = currentY - startY;
-      
-      if (deltaY > 0) {
-        const element = document.querySelector('[data-drawer-content]') as HTMLElement;
-        if (element) {
-          element.style.transform = `translateY(${Math.min(deltaY, 200)}px)`;
-          element.style.transition = 'none';
-        }
-      }
-    };
-    
-    const handleDragEnd = () => {
-      const deltaY = currentY - startY;
-      const element = document.querySelector('[data-drawer-content]') as HTMLElement;
-      
-      if (element) {
-        element.style.transition = 'transform 0.3s ease-out';
-        
-        if (deltaY > 80) {
-          setIsChatOpen(false);
-        } else {
-          element.style.transform = 'translateY(0px)';
-        }
-      }
-      
-      document.removeEventListener('touchmove', handleDragMove);
-      document.removeEventListener('touchend', handleDragEnd);
-    };
-    
-    document.addEventListener('touchmove', handleDragMove);
-    document.addEventListener('touchend', handleDragEnd);
-  };
-
   const renderChatInterface = (inSheet = false) => {
     if (inSheet) {
       return (
-        <div className="flex flex-col h-full" data-drawer-content>
+        <div className="flex flex-col h-full">
           {activeConversationId || isDraftConversation ? (
             <>
-              {/* Fixed header with drag handle */}
-              <div 
-                className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''} fixed top-0 left-0 right-0 z-50 cursor-grab active:cursor-grabbing`}
-                style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }}
-                onTouchStart={handleDragStart}
-              >
+              {/* Fixed header */}
+              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
@@ -463,7 +419,7 @@ export default function Chat() {
               </div>
               
               {/* Scrollable messages area */}
-              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''} pt-20`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
+              <div className={`flex-1 overflow-hidden ${isKeyboardOpen ? 'pb-[env(keyboard-height,0px)]' : ''}`} style={{ height: isKeyboardOpen ? 'calc(100% - 180px)' : 'auto' }}>
                  <ScrollArea ref={scrollAreaRef} className="h-full px-4">
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
