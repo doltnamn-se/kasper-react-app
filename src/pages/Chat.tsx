@@ -379,7 +379,7 @@ export default function Chat() {
           {activeConversationId || isDraftConversation ? (
             <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+              <div className={`flex-shrink-0 p-4 sticky top-0 z-10 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
@@ -998,7 +998,7 @@ export default function Chat() {
               <SheetOverlay className="backdrop-blur-md" />
               <SheetContent
                 side="bottom"
-                className="h-[85dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                className="h-[90dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
