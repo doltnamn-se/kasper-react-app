@@ -53,7 +53,7 @@ export const MobileUploadMenu: React.FC<MobileUploadMenuProps> = ({
         <Button
           variant="ghost"
           onClick={() => handleOptionSelect(onCameraCapture)}
-          className="w-auto h-[3rem] px-4 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] flex items-center gap-3 flex-shrink-0"
+          className="w-auto h-[3rem] px-4 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] flex items-center justify-start gap-3 flex-shrink-0"
         >
           <Camera className="w-5 h-5 text-[#121212] dark:text-[#ffffff]" />
           <span className="text-sm font-medium text-[#121212] dark:text-[#ffffff] whitespace-nowrap">
@@ -65,7 +65,7 @@ export const MobileUploadMenu: React.FC<MobileUploadMenuProps> = ({
         <Button
           variant="ghost"
           onClick={() => handleOptionSelect(onPhotoUpload)}
-          className="w-auto h-[3rem] px-4 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] flex items-center gap-3 flex-shrink-0"
+          className="w-auto h-[3rem] px-4 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] flex items-center justify-start gap-3 flex-shrink-0"
         >
           <Image className="w-5 h-5 text-[#121212] dark:text-[#ffffff]" />
           <span className="text-sm font-medium text-[#121212] dark:text-[#ffffff] whitespace-nowrap">
@@ -77,7 +77,7 @@ export const MobileUploadMenu: React.FC<MobileUploadMenuProps> = ({
         <Button
           variant="ghost"
           onClick={() => handleOptionSelect(onFileUpload)}
-          className="w-auto h-[3rem] px-4 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] flex items-center gap-3 flex-shrink-0"
+          className="w-auto h-[3rem] px-4 rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] flex items-center justify-start gap-3 flex-shrink-0"
         >
           <FileText className="w-5 h-5 text-[#121212] dark:text-[#ffffff]" />
           <span className="text-sm font-medium text-[#121212] dark:text-[#ffffff] whitespace-nowrap">
