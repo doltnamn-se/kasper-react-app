@@ -23,9 +23,9 @@ export const MobileUploadMenu: React.FC<MobileUploadMenuProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-end gap-2">
-      {/* Upload options - revealed/hidden with animation */}
-      <div className={`flex flex-col gap-2 transition-all duration-300 ease-out ${
+    <div className="relative">
+      {/* Upload options - absolutely positioned to not affect layout */}
+      <div className={`absolute bottom-[3rem] right-0 flex flex-col gap-2 transition-all duration-300 ease-out ${
         isOpen 
           ? 'opacity-100 translate-y-0 pointer-events-auto' 
           : 'opacity-0 translate-y-2 pointer-events-none'
