@@ -32,6 +32,34 @@ export default function Chat() {
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  // Set up stable viewport height and keyboard detection for iOS
+  React.useEffect(() => {
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
+    setVH();
+    window.addEventListener('resize', setVH);
+    
+    // iOS keyboard detection via visualViewport
+    if (window.visualViewport) {
+      const handleViewportChange = () => {
+        const heightDiff = window.innerHeight - window.visualViewport.height;
+        setKeyboardHeight(heightDiff > 150 ? heightDiff : 0);
+      };
+      
+      window.visualViewport.addEventListener('resize', handleViewportChange);
+      return () => {
+        window.removeEventListener('resize', setVH);
+        window.visualViewport?.removeEventListener('resize', handleViewportChange);
+      };
+    }
+    
+    return () => window.removeEventListener('resize', setVH);
+  }, []);
+
   React.useEffect(() => {
     try {
       const isDark = document.documentElement.classList.contains('dark');
@@ -49,7 +77,7 @@ export default function Chat() {
   const cameraInputRef = React.useRef<HTMLInputElement>(null);
   const photoInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Helper to reliably scroll to bottom (used for mobile sheet)
+  // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps
   const scrollToBottom = React.useCallback(() => {
     if (scrollAreaRef.current) {
       const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
@@ -57,7 +85,6 @@ export default function Chat() {
         viewport.scrollTop = viewport.scrollHeight;
       }
     }
-    messagesEndRef.current?.scrollIntoView({ block: 'end' });
   }, []);
   
   const {
@@ -358,7 +385,11 @@ export default function Chat() {
               
               {/* Scrollable messages area */}
               <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
-                 <ScrollArea ref={scrollAreaRef} className="h-full px-4">
+                 <ScrollArea 
+                   ref={scrollAreaRef} 
+                   className="h-full px-4"
+                   style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
+                 >
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
                        <p className="text-[#8E8E93] text-lg text-center">
@@ -927,7 +958,8 @@ export default function Chat() {
               <SheetOverlay className="backdrop-blur-md" />
               <SheetContent
                 side="bottom"
-                className="h-[90dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {

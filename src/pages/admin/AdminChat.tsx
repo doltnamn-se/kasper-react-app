@@ -40,6 +40,7 @@ export default function AdminChat() {
   const [selectedCustomerProfile, setSelectedCustomerProfile] = useState<CustomerWithProfile | null>(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
@@ -77,7 +78,34 @@ export default function AdminChat() {
     stopTyping
   } = activeTab === 'inbox' ? inboxData : archiveData;
 
-  // Helper to reliably scroll to bottom (used for mobile sheet)
+  // Set up stable viewport height and keyboard detection for iOS
+  React.useEffect(() => {
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
+    setVH();
+    window.addEventListener('resize', setVH);
+    
+    // iOS keyboard detection via visualViewport
+    if (window.visualViewport) {
+      const handleViewportChange = () => {
+        const heightDiff = window.innerHeight - window.visualViewport.height;
+        setKeyboardHeight(heightDiff > 150 ? heightDiff : 0);
+      };
+      
+      window.visualViewport.addEventListener('resize', handleViewportChange);
+      return () => {
+        window.removeEventListener('resize', setVH);
+        window.visualViewport?.removeEventListener('resize', handleViewportChange);
+      };
+    }
+    
+    return () => window.removeEventListener('resize', setVH);
+  }, []);
+
+  // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps
   const scrollToBottom = React.useCallback(() => {
     if (scrollAreaRef.current) {
       const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
@@ -85,7 +113,6 @@ export default function AdminChat() {
         viewport.scrollTop = viewport.scrollHeight;
       }
     }
-    messagesEndRef.current?.scrollIntoView({ block: 'end' });
   }, []);
 
   React.useEffect(() => {
@@ -95,22 +122,18 @@ export default function AdminChat() {
     } catch {}
   }, []);
 
-  // Auto-scroll to bottom when messages change
+  // Auto-scroll to bottom when new messages arrive - simplified to prevent keyboard jumps
   React.useEffect(() => {
-    if (messagesEndRef.current && activeConversationId) {
-      // For mobile, we need to scroll within the ScrollArea viewport
-      if (isMobile && scrollAreaRef.current) {
-        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (viewport) {
-          setTimeout(() => {
-            viewport.scrollTop = viewport.scrollHeight;
-          }, 100);
-        }
-      } else {
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (messages.length > 0 && scrollAreaRef.current) {
+      const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (viewport) {
+        // Use requestAnimationFrame for smooth scrolling without triggering viewport changes
+        requestAnimationFrame(() => {
+          viewport.scrollTop = viewport.scrollHeight;
+        });
       }
     }
-  }, [messages, activeConversationId, isMobile]);
+  }, [messages, activeConversationId]);
 
   // Ensure scroll to latest when mobile sheet opens (with retries)
   React.useEffect(() => {
@@ -476,7 +499,11 @@ export default function AdminChat() {
              
              {/* Scrollable messages area */}
              <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
-                <ScrollArea ref={scrollAreaRef} className="h-full px-4 py-0">
+                <ScrollArea 
+                  ref={scrollAreaRef} 
+                  className="h-full px-4 py-0"
+                  style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
+                >
                   {isDraftConversation ? (
                     <div className="flex-1 flex items-center justify-center h-full">
                       <p className="text-[#8E8E93] text-lg text-center">
@@ -997,7 +1024,8 @@ export default function AdminChat() {
               <SheetOverlay className="backdrop-blur-md" />
               <SheetContent
                 side="bottom"
-                className="h-[90dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
                 hideCloseButton={true}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
