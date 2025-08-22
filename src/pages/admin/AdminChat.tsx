@@ -39,6 +39,7 @@ export default function AdminChat() {
   const [activeTab, setActiveTab] = useState<'inbox' | 'archive'>('inbox');
   const [selectedCustomerProfile, setSelectedCustomerProfile] = useState<CustomerWithProfile | null>(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
@@ -325,6 +326,10 @@ export default function AdminChat() {
   const handleFileUpload = () => {
     fileInputRef.current?.click();
   };
+
+  const handleToggleUploadMenu = () => {
+    setIsUploadMenuOpen(!isUploadMenuOpen);
+  };
   const renderNewChatForm = (inSheet = false) => <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
       <CardHeader>
         <div className={`flex-shrink-0 p-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] ${inSheet ? '' : 'rounded-t-2xl'}`}>
@@ -592,6 +597,8 @@ export default function AdminChat() {
                   {/* Upload button - Mobile shows menu, Desktop shows regular button */}
                   {isMobile ? (
                     <MobileUploadMenu
+                      isOpen={isUploadMenuOpen}
+                      onToggle={handleToggleUploadMenu}
                       onCameraCapture={handleCameraCapture}
                       onPhotoUpload={handlePhotoUpload}
                       onFileUpload={handleFileUpload}
@@ -830,6 +837,8 @@ export default function AdminChat() {
                 {/* Upload button - Mobile shows menu, Desktop shows regular button */}
                 {isMobile ? (
                   <MobileUploadMenu
+                    isOpen={isUploadMenuOpen}
+                    onToggle={handleToggleUploadMenu}
                     onCameraCapture={handleCameraCapture}
                     onPhotoUpload={handlePhotoUpload}
                     onFileUpload={handleFileUpload}

@@ -31,6 +31,7 @@ export default function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   React.useEffect(() => {
     try {
       const isDark = document.documentElement.classList.contains('dark');
@@ -251,6 +252,10 @@ export default function Chat() {
 
   const handleFileUpload = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleToggleUploadMenu = () => {
+    setIsUploadMenuOpen(!isUploadMenuOpen);
   };
 
   const handleConversationSelect = (conversationId: string) => {
@@ -477,6 +482,8 @@ export default function Chat() {
                   {/* Upload button - Mobile shows menu, Desktop shows regular button */}
                   {isMobile ? (
                     <MobileUploadMenu
+                      isOpen={isUploadMenuOpen}
+                      onToggle={handleToggleUploadMenu}
                       onCameraCapture={handleCameraCapture}
                       onPhotoUpload={handlePhotoUpload}
                       onFileUpload={handleFileUpload}
@@ -730,6 +737,8 @@ export default function Chat() {
                 {/* Upload button - Mobile shows menu, Desktop shows regular button */}
                 {isMobile ? (
                   <MobileUploadMenu
+                    isOpen={isUploadMenuOpen}
+                    onToggle={handleToggleUploadMenu}
                     onCameraCapture={handleCameraCapture}
                     onPhotoUpload={handlePhotoUpload}
                     onFileUpload={handleFileUpload}
