@@ -475,7 +475,7 @@ export default function AdminChat() {
                 className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
                 style={{
                   position: isKeyboardOpen ? 'fixed' : 'relative',
-                  top: isKeyboardOpen ? '5dvh' : 'auto',
+                  top: isKeyboardOpen ? '0' : 'auto',
                   left: isKeyboardOpen ? '0' : 'auto',
                   right: isKeyboardOpen ? '0' : 'auto',
                   zIndex: isKeyboardOpen ? 10002 : 'auto'
@@ -1092,8 +1092,7 @@ export default function AdminChat() {
                   isChatOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
                 }`}
                 style={{
-                  height: '95dvh',
-                  top: '5dvh'
+                  height: '100dvh'
                 }}
               >
                 {/* Close Button */}
