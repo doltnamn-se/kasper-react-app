@@ -471,7 +471,16 @@ export default function AdminChat() {
       return <div className="flex flex-col h-full">
           {(activeConversationId || isDraftConversation) ? <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+              <div 
+                className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}
+                style={{
+                  position: isKeyboardOpen ? 'fixed' : 'relative',
+                  top: isKeyboardOpen ? '5dvh' : 'auto',
+                  left: isKeyboardOpen ? '0' : 'auto',
+                  right: isKeyboardOpen ? '0' : 'auto',
+                  zIndex: isKeyboardOpen ? 10002 : 'auto'
+                }}
+              >
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="font-medium text-[#121212] dark:text-[#ffffff]" style={{
@@ -1063,27 +1072,49 @@ export default function AdminChat() {
             {t('new.message')}
           </Button>}
 
-        {/* Desktop Chat Interface or Mobile Sheet */}
-        {!isMobile ? isCreatingNew ? renderNewChatForm() : renderChatInterface() : <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
-              <SheetOverlay className="backdrop-blur-md fixed inset-0" />
-               <SheetContent
-                 side="bottom"
-                 className="h-[95dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem] fixed bottom-0 left-0 right-0"
-                hideCloseButton={true}
-                onOpenAutoFocus={(e) => {
-                  e.preventDefault();
-                  setTimeout(() => {
-                    scrollToBottom();
-                    setTimeout(scrollToBottom, 150);
-                    setTimeout(scrollToBottom, 350);
-                  }, 50);
+        {/* Desktop Chat Interface or Mobile Popup */}
+        {!isMobile ? (
+          isCreatingNew ? renderNewChatForm() : renderChatInterface()
+        ) : (
+          isChatOpen && (
+            <>
+              {/* Overlay */}
+              <div 
+                className={`fixed inset-0 bg-black/20 backdrop-blur-md z-[9999] transition-opacity duration-300 ${
+                  isChatOpen ? 'opacity-100' : 'opacity-0'
+                }`}
+                onClick={() => setIsChatOpen(false)}
+              />
+              
+              {/* Full Page Popup */}
+              <div 
+                className={`fixed inset-0 bg-[#FFFFFF] dark:bg-[#1c1c1e] z-[10000] transition-all duration-300 ${
+                  isChatOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
+                }`}
+                style={{
+                  height: '95dvh',
+                  top: '5dvh'
                 }}
               >
-                <div className="flex flex-col h-full relative z-[10001]">
+                {/* Close Button */}
+                <div className="absolute top-4 right-4 z-[10001]">
+                  <button
+                    onClick={() => setIsChatOpen(false)}
+                    className="w-8 h-8 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center hover:bg-black/20 dark:hover:bg-white/20 transition-colors"
+                  >
+                    <svg className="w-5 h-5 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="flex flex-col h-full">
                   {isCreatingNew ? renderNewChatForm(true) : renderChatInterface(true)}
                 </div>
-              </SheetContent>
-            </Sheet>}
+              </div>
+            </>
+          )
+        )}
 
         {/* Customer Profile Details Sheet */}
         <CustomerDetailsSheet
