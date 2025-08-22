@@ -25,7 +25,7 @@ export const MobileUploadMenu: React.FC<MobileUploadMenuProps> = ({
   return (
     <div className="relative">
       {/* Upload options - absolutely positioned to not affect layout */}
-      <div className={`absolute bottom-[3rem] left-4 flex flex-col gap-2 transition-all duration-300 ease-out ${
+      <div className={`absolute bottom-[3rem] -left-2 flex flex-col gap-2 transition-all duration-300 ease-out ${
         isOpen 
           ? 'opacity-100 translate-y-0 pointer-events-auto' 
           : 'opacity-0 translate-y-2 pointer-events-none'
