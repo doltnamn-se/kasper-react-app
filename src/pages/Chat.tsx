@@ -927,7 +927,7 @@ export default function Chat() {
               <SheetOverlay className="backdrop-blur-md" />
               <SheetContent
                 side="bottom"
-                className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                className="h-[85dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
