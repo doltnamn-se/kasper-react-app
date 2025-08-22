@@ -313,11 +313,11 @@ export default function Chat() {
   const renderChatInterface = (inSheet = false) => {
     if (inSheet) {
       return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full relative">
           {activeConversationId || isDraftConversation ? (
             <>
               {/* Fixed header */}
-              <div className={`flex-shrink-0 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+              <div className={`absolute top-0 left-0 w-full z-10 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
@@ -357,7 +357,7 @@ export default function Chat() {
               </div>
               
               {/* Scrollable messages area */}
-              <div className="flex-1 overflow-hidden">
+              <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
                  <ScrollArea ref={scrollAreaRef} className="h-full px-4">
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
@@ -454,7 +454,7 @@ export default function Chat() {
               </div>
               
               {/* Fixed bottom input area */}
-              <div className="flex-shrink-0 px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+              <div className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                 <div className="flex items-end gap-2">
                   <input
                     type="file"
@@ -927,7 +927,7 @@ export default function Chat() {
               <SheetOverlay className="backdrop-blur-md" />
               <SheetContent
                 side="bottom"
-                className="h-[93vh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                className="h-[90dvh] p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
