@@ -2,6 +2,7 @@ class NotificationSoundManager {
   private audio: HTMLAudioElement | null = null;
   private isEnabled: boolean = true;
   private audioContext: AudioContext | null = null;
+  private userInteracted: boolean = false;
 
   constructor() {
     // Initialize audio object
@@ -16,6 +17,33 @@ class NotificationSoundManager {
     // Handle audio loading errors with fallback
     this.audio.addEventListener('error', () => {
       console.log('External notification sound failed to load, using Web Audio API fallback');
+    });
+
+    // Track user interaction for mobile audio context
+    this.setupUserInteractionTracking();
+  }
+
+  private setupUserInteractionTracking() {
+    const handleUserInteraction = () => {
+      this.userInteracted = true;
+      // Initialize audio context on first user interaction (required for mobile)
+      if (!this.audioContext) {
+        try {
+          this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        } catch (error) {
+          console.log('Could not create audio context:', error);
+        }
+      }
+      // Resume audio context if suspended (common on mobile)
+      if (this.audioContext && this.audioContext.state === 'suspended') {
+        this.audioContext.resume();
+      }
+    };
+
+    // Listen for various user interaction events
+    const events = ['click', 'touchstart', 'keydown'];
+    events.forEach(event => {
+      document.addEventListener(event, handleUserInteraction, { once: true });
     });
   }
 
@@ -46,11 +74,24 @@ class NotificationSoundManager {
   async playNotification() {
     if (!this.isEnabled) return;
 
+    // Ensure audio context is ready (especially important for mobile)
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      try {
+        await this.audioContext.resume();
+      } catch (error) {
+        console.log('Could not resume audio context:', error);
+      }
+    }
+
     try {
       if (this.audio && !this.audio.error) {
         // Reset audio to beginning in case it was playing
         this.audio.currentTime = 0;
-        await this.audio.play();
+        // Try to play with user interaction requirement handling
+        const playPromise = this.audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
       } else {
         // Fallback to Web Audio API beep
         await this.createBeepSound();
