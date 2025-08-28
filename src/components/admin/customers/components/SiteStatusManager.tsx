@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -25,6 +25,8 @@ const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
 const [isLoading, setIsLoading] = useState(true);
 const { members: customerMembers } = useCustomerMembers(customerId);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [showMemberDropdown, setShowMemberDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   
   // Check if user has member management subscription
   const hasMembers = subscriptionPlan && (subscriptionPlan.includes('parskydd') || subscriptionPlan.includes('familjeskydd'));
@@ -69,6 +71,25 @@ const { members: customerMembers } = useCustomerMembers(customerId);
 useEffect(() => {
     fetchSiteStatuses();
   }, [customerId, selectedMemberId]);
+
+  // Handle clicking outside dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowMemberDropdown(false);
+      }
+    };
+
+    if (showMemberDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMemberDropdown]);
   const fetchSiteStatuses = async () => {
     if (!customerId) return;
     setIsLoading(true);
@@ -196,21 +217,75 @@ useEffect(() => {
         {hasMembers && (
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">{language === 'sv' ? 'Användare' : 'User'}</span>
-            <Select value={selectedMemberId ?? 'main'} onValueChange={(value) => setSelectedMemberId(value === 'main' ? null : value)}>
-              <SelectTrigger className="w-[180px] h-8 text-xs font-medium bg-white dark:bg-gray-800">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="text-xs bg-white dark:bg-gray-800 z-[9999] border shadow-lg">
-                <SelectItem value="main" className="text-xs">
-                  {customerName || (language === 'sv' ? 'Huvudanvändare' : 'Main user')}
-                </SelectItem>
-                {customerMembers.map((m) => (
-                  <SelectItem key={m.id} value={m.id} className="text-xs">
-                    {m.display_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                className="flex h-8 w-[180px] items-center justify-between rounded-md border border-input bg-white dark:bg-gray-800 px-3 py-1 text-xs font-medium shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Custom dropdown clicked');
+                  setShowMemberDropdown(!showMemberDropdown);
+                }}
+                type="button"
+              >
+                <span>
+                  {selectedMemberId 
+                    ? customerMembers.find(m => m.id === selectedMemberId)?.display_name 
+                    : (customerName || (language === 'sv' ? 'Huvudanvändare' : 'Main user'))
+                  }
+                </span>
+                <svg
+                  className="h-4 w-4 opacity-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
+              </button>
+              
+              {showMemberDropdown && (
+                <div className="absolute top-full left-0 z-[9999] mt-1 w-full rounded-md border bg-white dark:bg-gray-800 shadow-lg">
+                  <div className="py-1">
+                    <button
+                      className={`w-full px-3 py-1.5 text-left text-xs hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                        !selectedMemberId ? 'bg-gray-100 dark:bg-gray-700' : ''
+                      }`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Selected main user');
+                        setSelectedMemberId(null);
+                        setShowMemberDropdown(false);
+                      }}
+                    >
+                      {customerName || (language === 'sv' ? 'Huvudanvändare' : 'Main user')}
+                    </button>
+                    {customerMembers.map((member) => (
+                      <button
+                        key={member.id}
+                        className={`w-full px-3 py-1.5 text-left text-xs hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                          selectedMemberId === member.id ? 'bg-gray-100 dark:bg-gray-700' : ''
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('Selected member:', member.display_name);
+                          setSelectedMemberId(member.id);
+                          setShowMemberDropdown(false);
+                        }}
+                      >
+                        {member.display_name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
