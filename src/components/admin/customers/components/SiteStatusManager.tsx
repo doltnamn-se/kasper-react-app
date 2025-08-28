@@ -197,10 +197,10 @@ useEffect(() => {
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">{language === 'sv' ? 'Användare' : 'User'}</span>
             <Select value={selectedMemberId ?? 'main'} onValueChange={(value) => setSelectedMemberId(value === 'main' ? null : value)}>
-              <SelectTrigger className="w-[180px] h-8 text-xs font-medium bg-white dark:bg-gray-800 z-50">
+              <SelectTrigger className="w-[180px] h-8 text-xs font-medium bg-white dark:bg-gray-800">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="text-xs bg-white dark:bg-gray-800 z-50">
+              <SelectContent className="text-xs bg-white dark:bg-gray-800 z-[9999] border shadow-lg">
                 <SelectItem value="main" className="text-xs">
                   {customerName || (language === 'sv' ? 'Huvudanvändare' : 'Main user')}
                 </SelectItem>
