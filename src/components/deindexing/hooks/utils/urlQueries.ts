@@ -3,6 +3,14 @@ import { URL } from "@/types/url-management";
 
 export const fetchAdminUrls = async () => {
   console.log('urlQueries - Fetching URLs for admin view');
+  
+  // First get total count for logging
+  const { count } = await supabase
+    .from('removal_urls')
+    .select('*', { count: 'exact', head: true });
+  
+  console.log(`Total URLs in database: ${count}`);
+  
   const { data, error } = await supabase
     .from('removal_urls')
     .select(`
@@ -19,8 +27,7 @@ export const fetchAdminUrls = async () => {
       status_history
     `)
     .order('created_at', { ascending: false })
-    .order('id', { ascending: true }) // Secondary sort by ID for stability
-    .limit(5000); // Increase limit to show all URLs (current total: ~1350)
+    .order('id', { ascending: true }); // Secondary sort by ID for stability - no limit to fetch all records
 
   if (error) {
     console.error('urlQueries - Error fetching URLs:', error);
