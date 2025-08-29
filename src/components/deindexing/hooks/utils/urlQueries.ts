@@ -2,53 +2,57 @@ import { supabase } from "@/integrations/supabase/client";
 import { URL } from "@/types/url-management";
 
 export const fetchAdminUrls = async () => {
-  console.log('urlQueries - Fetching URLs for admin view');
-  
-  // First get total count for logging
-  const { count } = await supabase
-    .from('removal_urls')
-    .select('*', { count: 'exact', head: true });
-  
-  console.log(`Total URLs in database: ${count}`);
-  
-  const { data, error } = await supabase
-    .from('removal_urls')
-    .select(`
-      id,
-      url,
-      status,
-      created_at,
-      customer:customers (
-        id,
-        profiles (
-          email
-        )
-      ),
-      status_history
-    `)
-    .order('created_at', { ascending: false })
-    .order('id', { ascending: true }); // Secondary sort by ID for stability - no limit to fetch all records
+  console.log('urlQueries - Fetching ALL URLs for admin view (batched)');
 
-  if (error) {
-    console.error('urlQueries - Error fetching URLs:', error);
-    throw error;
+  const PAGE_SIZE = 1000; // PostgREST default hard cap per request
+  let from = 0;
+  let page = 1;
+  const allData: URL[] = [];
+
+  while (true) {
+    console.log(`Fetching page ${page} (rows ${from}-${from + PAGE_SIZE - 1})`);
+
+    const { data, error } = await supabase
+      .from('removal_urls')
+      .select(`
+        id,
+        url,
+        status,
+        created_at,
+        customer:customers (
+          id,
+          profiles (
+            email
+          )
+        ),
+        status_history
+      `)
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error('urlQueries - Error fetching URLs:', error);
+      throw error;
+    }
+
+    if (!data || data.length === 0) {
+      break;
+    }
+
+    allData.push(...(data as URL[]));
+
+    if (data.length < PAGE_SIZE) {
+      // Last page reached
+      break;
+    }
+
+    from += PAGE_SIZE;
+    page += 1;
   }
 
-  // Add detailed logging of the fetched URLs
-  console.log('urlQueries - Raw response from Supabase:', data);
-  
-  // Log each URL separately for easier inspection
-  data?.forEach(url => {
-    console.log('urlQueries - URL entry:', {
-      id: url.id,
-      url: url.url,
-      status: url.status,
-      created_at: url.created_at,
-      customer: url.customer
-    });
-  });
-
-  return data as URL[];
+  console.log(`urlQueries - Total URLs fetched: ${allData.length}`);
+  return allData;
 };
 
 export const updateUrlStatus = async (
