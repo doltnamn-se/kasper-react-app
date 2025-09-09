@@ -32,9 +32,10 @@ interface URLTableProps {
   }>;
   onStatusChange: (urlId: string, newStatus: string) => void;
   onDelete: (urlId: string) => void;
+  onBulkStatusUpdate?: () => void;
 }
 
-export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
+export const URLTable = ({ urls, onStatusChange, onDelete, onBulkStatusUpdate }: URLTableProps) => {
   const { t } = useLanguage();
   const isMobile = useBreakpoint('(max-width: 767px)');
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -119,6 +120,7 @@ export const URLTable = ({ urls, onStatusChange, onDelete }: URLTableProps) => {
                     globalFilter={globalFilter}
                     setGlobalFilter={setGlobalFilter}
                     onRefresh={handleRefresh}
+                    onBulkStatusUpdate={onBulkStatusUpdate}
                   />
                 </TableHead>
               </TableRow>

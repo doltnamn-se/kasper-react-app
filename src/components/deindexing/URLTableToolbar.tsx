@@ -12,6 +12,7 @@ interface URLTableToolbarProps<TData> {
   globalFilter: string;
   setGlobalFilter: (value: string) => void;
   onRefresh: () => void;
+  onBulkStatusUpdate?: () => void;
 }
 
 export const URLTableToolbar = <TData,>({
@@ -19,6 +20,7 @@ export const URLTableToolbar = <TData,>({
   globalFilter,
   setGlobalFilter,
   onRefresh,
+  onBulkStatusUpdate,
 }: URLTableToolbarProps<TData>) => {
   const { t, language } = useLanguage();
   const isMobile = useBreakpoint('(max-width: 767px)');
@@ -105,6 +107,19 @@ export const URLTableToolbar = <TData,>({
             {language === 'sv' ? 'Uppdatera' : 'Refresh'}
           </Button>
         </>
+      )}
+      {onBulkStatusUpdate && (
+        <Button
+          variant="outline"
+          onClick={onBulkStatusUpdate}
+          className="
+            text-xs font-medium border flex items-center gap-2 text-[#000000] border-[#d4d4d4] hover:text-[#000000] hover:bg-background/80 hover:border-[#8f8f8f]
+            dark:text-[#FFFFFF] dark:border-[#363636] dark:hover:text-[#FFFFFF] dark:hover:border-[#454545] dark:hover:bg-transparent
+            h-8 rounded-[0.375rem] px-[0.625rem]
+          "
+        >
+          {language === 'sv' ? 'Uppdatera till "Begäran inskickad"' : 'Update to "Request Submitted"'}
+        </Button>
       )}
     </div>
   );

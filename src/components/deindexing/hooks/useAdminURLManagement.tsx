@@ -120,5 +120,78 @@ export const useAdminURLManagement = () => {
     }
   };
 
-  return { urls, handleStatusChange, handleDeleteUrl, refetch };
+  const handleBulkStatusUpdate = async () => {
+    try {
+      console.log('useAdminURLManagement - Starting bulk status update');
+      
+      // Find URLs with status "received" or "in_progress"
+      const urlsToUpdate = urls.filter(url => 
+        url.status === 'received' || url.status === 'in_progress'
+      );
+      
+      if (urlsToUpdate.length === 0) {
+        toast({
+          title: t('success'),
+          description: 'Inga URLs att uppdatera',
+        });
+        return;
+      }
+
+      console.log(`Found ${urlsToUpdate.length} URLs to update`);
+      
+      // Apply optimistic updates for all URLs
+      queryClient.setQueryData(['admin-urls-static'], (oldData: any[]) => {
+        if (!oldData) return oldData;
+        return oldData.map(item => 
+          (item.status === 'received' || item.status === 'in_progress') 
+            ? { ...item, status: 'request_submitted' } 
+            : item
+        );
+      });
+
+      // Update all URLs
+      const updatePromises = urlsToUpdate.map(async (url) => {
+        if (!url.customer?.id) {
+          console.warn(`No customer ID for URL: ${url.id}`);
+          return null;
+        }
+        
+        try {
+          const result = await updateUrlStatus(url.id, 'request_submitted', url.customer.id);
+          
+          // Create notification for the user
+          if (result) {
+            await createStatusNotification(
+              url.customer.id,
+              t('notification.status.update.title'),
+              t('notification.status.update.message'),
+              'removal'
+            );
+          }
+          
+          return result;
+        } catch (error) {
+          console.error(`Error updating URL ${url.id}:`, error);
+          return null;
+        }
+      });
+
+      const results = await Promise.all(updatePromises);
+      const successCount = results.filter(result => result !== null).length;
+      
+      toast({
+        title: t('success'),
+        description: `Uppdaterade ${successCount} av ${urlsToUpdate.length} URLs till "Begäran inskickad"`,
+      });
+      
+    } catch (error) {
+      console.error('useAdminURLManagement - Error in bulk status update:', error);
+      
+      // Revert optimistic updates on error by refreshing data
+      refetch();
+      showErrorToast();
+    }
+  };
+
+  return { urls, handleStatusChange, handleDeleteUrl, handleBulkStatusUpdate, refetch };
 };

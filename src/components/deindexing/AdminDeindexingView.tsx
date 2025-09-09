@@ -14,7 +14,7 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } f
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const AdminDeindexingView = () => {
-  const { urls, handleStatusChange, handleDeleteUrl } = useAdminURLManagement();
+  const { urls, handleStatusChange, handleDeleteUrl, handleBulkStatusUpdate } = useAdminURLManagement();
   const { t, language } = useLanguage();
   const { customers, isLoading } = useCustomers();
   const isMobile = useIsMobile();
@@ -142,6 +142,7 @@ export const AdminDeindexingView = () => {
         urls={urls} 
         onStatusChange={handleStatusChange} 
         onDelete={handleDeleteUrl}
+        onBulkStatusUpdate={handleBulkStatusUpdate}
       />
     </div>
   );
