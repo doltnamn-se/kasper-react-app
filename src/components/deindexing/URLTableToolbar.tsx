@@ -108,7 +108,7 @@ export const URLTableToolbar = <TData,>({
           </Button>
         </>
       )}
-      {onBulkStatusUpdate && (
+      {!isMobile && onBulkStatusUpdate && (
         <Button
           variant="outline"
           onClick={onBulkStatusUpdate}
