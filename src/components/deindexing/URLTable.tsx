@@ -42,6 +42,7 @@ export const URLTable = ({ urls, onStatusChange, onDelete, onBulkStatusUpdate }:
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [globalFilter, setGlobalFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   
   // Add pagination state
   const [{ pageIndex, pageSize }, setPagination] = useState({
@@ -56,6 +57,11 @@ export const URLTable = ({ urls, onStatusChange, onDelete, onBulkStatusUpdate }:
       pageSize: isMobile ? 5 : 10
     }));
   }, [isMobile]);
+
+  // Filter URLs based on status filter
+  const filteredUrls = statusFilter 
+    ? urls.filter(url => url.status === statusFilter)
+    : urls;
 
   const columns = [
     {
@@ -76,7 +82,7 @@ export const URLTable = ({ urls, onStatusChange, onDelete, onBulkStatusUpdate }:
   ];
 
   const table = useReactTable({
-    data: urls,
+    data: filteredUrls,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -97,7 +103,7 @@ export const URLTable = ({ urls, onStatusChange, onDelete, onBulkStatusUpdate }:
     },
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
-    pageCount: Math.ceil(urls.length / pageSize),
+    pageCount: Math.ceil(filteredUrls.length / pageSize),
     autoResetPageIndex: false, // This is the key - prevent auto reset of page index
     enableRowSelection: false, // Disable row selection to prevent state conflicts
   });
@@ -121,6 +127,8 @@ export const URLTable = ({ urls, onStatusChange, onDelete, onBulkStatusUpdate }:
                     setGlobalFilter={setGlobalFilter}
                     onRefresh={handleRefresh}
                     onBulkStatusUpdate={onBulkStatusUpdate}
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
                   />
                 </TableHead>
               </TableRow>
