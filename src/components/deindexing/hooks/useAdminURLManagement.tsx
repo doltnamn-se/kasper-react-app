@@ -124,9 +124,9 @@ export const useAdminURLManagement = () => {
     try {
       console.log('useAdminURLManagement - Starting bulk status update');
       
-      // Find URLs with status "received" or "in_progress"
+      // Find URLs with status "received" or "case_started" (which displays as "Ärende påbörjat")
       const urlsToUpdate = urls.filter(url => 
-        url.status === 'received' || url.status === 'in_progress'
+        url.status === 'received' || url.status === 'case_started'
       );
       
       if (urlsToUpdate.length === 0) {
@@ -143,7 +143,7 @@ export const useAdminURLManagement = () => {
       queryClient.setQueryData(['admin-urls-static'], (oldData: any[]) => {
         if (!oldData) return oldData;
         return oldData.map(item => 
-          (item.status === 'received' || item.status === 'in_progress') 
+          (item.status === 'received' || item.status === 'case_started') 
             ? { ...item, status: 'request_submitted' } 
             : item
         );
