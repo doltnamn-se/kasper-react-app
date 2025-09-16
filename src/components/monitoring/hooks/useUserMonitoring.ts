@@ -5,11 +5,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from "@/integrations/supabase/client";
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useMonitoringUrls } from './useMonitoringUrls';
+import { useCustomerMembers } from '@/hooks/useCustomerMembers';
 
 export const useUserMonitoring = () => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const { userProfile } = useUserProfile();
+  const { members } = useCustomerMembers();
   const [userId, setUserId] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   
@@ -81,7 +83,27 @@ export const useUserMonitoring = () => {
     }
   };
 
-  const displayName = userProfile?.display_name || '';
+  // Generate display name based on subscription plan and members
+  const getDisplayName = () => {
+    const mainUserName = userProfile?.display_name || '';
+    const subscriptionPlan = userProfile?.subscription_plan;
+    
+    // Check if user has parskydd or familjeskydd and has members
+    if ((subscriptionPlan?.includes('parskydd') || subscriptionPlan?.includes('familjeskydd')) && members.length > 0) {
+      const allNames = [mainUserName, ...members.map(member => member.display_name)].filter(Boolean);
+      
+      if (allNames.length > 1) {
+        // Join names with "och" for the last name in Swedish
+        const firstNames = allNames.slice(0, -1);
+        const lastName = allNames[allNames.length - 1];
+        return firstNames.join(', ') + ' och ' + lastName;
+      }
+    }
+    
+    return mainUserName;
+  };
+  
+  const displayName = getDisplayName();
   const firstNameOnly = displayName.split(' ')[0];
 
   return {
