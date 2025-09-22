@@ -13,8 +13,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
 
-    <!-- 🔑 Single Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; img-src 'self' https: data: blob:; media-src 'self' https: data: blob:; font-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' capacitor: capacitor://localhost https://app.joinkasper.com https://*.joinkasper.com https://upfapfohwnkiugvebujh.supabase.co https://*.supabase.co wss://upfapfohwnkiugvebujh.supabase.co wss://*.supabase.co;">
+    <!-- 🔑 Single Content Security Policy with Capacitor HTTP Interceptor Support -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; img-src 'self' https: data: blob:; media-src 'self' https: data: blob:; font-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' capacitor: capacitor://localhost capacitor://localhost/* https://app.joinkasper.com https://*.joinkasper.com https://upfapfohwnkiugvebujh.supabase.co https://*.supabase.co wss://upfapfohwnkiugvebujh.supabase.co wss://*.supabase.co;">
 
     <meta name="theme-color" content="#f4f4f4" />
     <title>Kasper</title>
