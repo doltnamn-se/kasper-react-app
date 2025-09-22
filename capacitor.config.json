@@ -20,7 +20,7 @@
       "splashImmersive": true
     },
     "CapacitorHttp": {
-      "enabled": false
+      "enabled": true
     },
     "PushNotifications": {
       "presentationOptions": ["badge", "sound", "alert"]
