@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,7 +10,6 @@ import { initializeVersionTracking, cleanupVersionTracking } from "@/config/vers
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
-import { initializeDeepLinking, parseDeepLink } from "@/services/deepLinkService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -42,20 +41,6 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AuthRoute } from "@/components/auth/AuthRoute";
 
 const queryClient = new QueryClient();
-
-const DeepLinkHandler = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    initializeDeepLinking((url) => {
-      const { path } = parseDeepLink(url);
-      console.log('Deep link opened, navigating to:', path);
-      navigate(path);
-    });
-  }, [navigate]);
-
-  return null;
-};
 
 function App() {
   useEffect(() => {
@@ -140,7 +125,6 @@ function App() {
         <LanguageProvider>
           <SidebarProvider>
             <Router>
-              <DeepLinkHandler />
               <Routes>
                 {/* Auth routes */}
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />

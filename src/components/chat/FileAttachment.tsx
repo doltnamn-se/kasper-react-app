@@ -5,7 +5,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { FileViewer } from './FileViewer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
-import { openUrl } from '@/services/browserService';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -93,12 +92,12 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
             .createSignedUrl(attachmentUrl, 3600); // 1 hour expiry
 
           if (error) throw error;
-          await openUrl(data.signedUrl);
+          window.open(data.signedUrl, '_blank');
         } catch (error) {
           console.error('Failed to open PDF:', error);
         }
       } else {
-        await openUrl(attachmentUrl);
+        window.open(attachmentUrl, '_blank');
       }
     } else {
       // For images and other files, use the modal viewer

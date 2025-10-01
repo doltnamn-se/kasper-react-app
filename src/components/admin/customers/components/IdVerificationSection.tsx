@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-import { openUrl } from "@/services/browserService";
 
 interface IdVerification {
   id: string;
@@ -47,7 +46,7 @@ export const IdVerificationSection = ({ customerId }: { customerId: string }) =>
         .createSignedUrl(verification.document_path, 60);
       if (error) throw error;
       const url = data?.signedUrl;
-      if (url) await openUrl(url);
+      if (url) window.open(url, '_blank');
     } catch (e) {
       console.error('Download failed', e);
       toast({ title: 'Error', description: language === 'sv' ? 'Kunde inte hämta dokumentet.' : 'Failed to download document.', variant: 'destructive' });

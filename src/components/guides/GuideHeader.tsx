@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useGuideData } from "@/hooks/useGuideData";
-import { openUrl } from "@/services/browserService";
 
 interface GuideHeaderProps {
   title: string;
@@ -34,9 +33,9 @@ export const GuideHeader = ({ title, url }: GuideHeaderProps) => {
   
   const logoSrc = `/fonts/${logoFileName}.svg`;
 
-  const handleButtonClick = async (e: React.MouseEvent) => {
+  const handleButtonClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (url) await openUrl(url);
+    if (url) window.open(url, '_blank');
   };
 
   return (

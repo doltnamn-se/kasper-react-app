@@ -2,7 +2,6 @@
 import { useGuideService } from "@/services/guideService";
 import { useStatusUpdates } from "./useStatusUpdates";
 import { useState } from "react";
-import { openUrl } from "@/services/browserService";
 
 export const useGuideOpener = () => {
   const { getGuideForSite } = useGuideService();
@@ -22,7 +21,7 @@ export const useGuideOpener = () => {
     }
     
     // Open the URL immediately, don't wait for the status update
-    await openUrl(guide.steps[0].text);
+    window.open(guide.steps[0].text, '_blank');
     
     // Update status AFTER opening the window
     try {

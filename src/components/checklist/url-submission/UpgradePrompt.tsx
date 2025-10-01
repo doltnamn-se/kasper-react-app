@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { openUrl } from "@/services/browserService";
 
 interface UpgradePromptProps {
   onSkip: () => void;
@@ -30,7 +29,7 @@ export const UpgradePrompt = ({ onSkip, isLoading, onComplete }: UpgradePromptPr
       if (progressError) throw progressError;
 
       // Open both upgrade URLs in new window
-      await openUrl(url);
+      window.open(url, '_blank');
       
       console.log('UpgradePrompt - Upgrade process complete, calling onComplete');
       onComplete();

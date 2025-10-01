@@ -21,7 +21,6 @@ import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { supabase } from '@/integrations/supabase/client';
 import { FileAttachment } from '@/components/chat/FileAttachment';
 import { MobileUploadMenu } from '@/components/chat/MobileUploadMenu';
-import { openUrl } from '@/services/browserService';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -863,7 +862,7 @@ export default function Chat() {
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
-                onClick={() => openUrl('https://joinkasper.com/support/')}
+                onClick={() => window.open('https://joinkasper.com/support/', '_blank')}
               >
                 {t('general.questions')}
               </Button>
@@ -938,7 +937,7 @@ export default function Chat() {
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
-                onClick={() => openUrl('https://joinkasper.com/support/')}
+                onClick={() => window.open('https://joinkasper.com/support/', '_blank')}
               >
                 {t('general.questions')}
               </Button>

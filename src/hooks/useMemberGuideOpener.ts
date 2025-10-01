@@ -2,7 +2,6 @@
 import { useGuideService } from "@/services/guideService";
 import { useState } from "react";
 import { useMemberStatusUpdates } from "./useMemberStatusUpdates";
-import { openUrl } from "@/services/browserService";
 
 export const useMemberGuideOpener = (customerId?: string, memberId?: string) => {
   const { getGuideForSite } = useGuideService();
@@ -19,7 +18,7 @@ export const useMemberGuideOpener = (customerId?: string, memberId?: string) => 
       return;
     }
 
-    await openUrl(guide.steps[0].text);
+    window.open(guide.steps[0].text, '_blank');
 
     try {
       await updateMemberSiteStatus(siteName, 'Granskar');
