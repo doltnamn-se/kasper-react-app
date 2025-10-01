@@ -7,6 +7,7 @@ import { DeleteUserDialog } from "./DeleteUserDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { openUrl } from "@/services/browserService";
 
 interface AdminActionsProps {
   customerId: string;
@@ -107,7 +108,7 @@ export const AdminActionButtons = ({
         .createSignedUrl(idVerification.document_path, 60);
       if (error) throw error;
       const url = data?.signedUrl;
-      if (url) window.open(url, '_blank');
+      if (url) await openUrl(url);
     } catch (e) {
       console.error('Download failed', e);
       toast({ 

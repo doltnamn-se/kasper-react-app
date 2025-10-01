@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { openUrl } from "@/services/browserService";
 
 export const AuthFooter = () => {
   const { t } = useLanguage();
@@ -10,21 +11,21 @@ export const AuthFooter = () => {
       <Button 
         variant="link" 
         className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-        onClick={() => window.open('https://joinkasper.com/integritetspolicy/', '_blank')}
+        onClick={() => openUrl('https://joinkasper.com/integritetspolicy/')}
       >
         {t('privacy')}
       </Button>
       <Button 
         variant="link" 
         className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-        onClick={() => window.open('https://joinkasper.com/licensvillkor/', '_blank')}
+        onClick={() => openUrl('https://joinkasper.com/licensvillkor/')}
       >
         {t('license')}
       </Button>
       <Button 
         variant="link" 
         className="text-xs font-medium text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:no-underline"
-        onClick={() => window.open('https://joinkasper.com/anvandarvillkor/', '_blank')}
+        onClick={() => openUrl('https://joinkasper.com/anvandarvillkor/')}
       >
         {t('terms')}
       </Button>
