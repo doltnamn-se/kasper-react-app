@@ -27,6 +27,11 @@
     },
     "Browser": {
       "toolbarColor": "#ffffff"
+    },
+    "App": {
+      "appUrlOpen": {
+        "iosCustomApplicationProtocol": "kasper"
+      }
     }
   }
 }
