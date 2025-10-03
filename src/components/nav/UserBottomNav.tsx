@@ -83,7 +83,7 @@ export const UserBottomNav = () => {
         />
       </div>
       
-      <div className="grid grid-cols-5 h-full" style={{ paddingTop: isIOS() ? '8px' : undefined }}>
+      <div className="grid grid-cols-5 h-full" style={{ marginTop: isIOS() ? '-8px' : undefined }}>
         {navItems.map((item, index) => (
           <Link 
             key={item.path}
