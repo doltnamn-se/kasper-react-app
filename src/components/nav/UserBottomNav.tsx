@@ -67,7 +67,6 @@ export const UserBottomNav = () => {
     <div 
       className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md"
       style={{
-        paddingTop: isIOS() ? '-5px' : undefined,
         paddingBottom: isIOS() ? 'calc(env(safe-area-inset-bottom) - 20px)' : undefined,
         height: isIOS() ? 'calc(4rem + env(safe-area-inset-bottom))' : undefined
       }}
@@ -84,16 +83,17 @@ export const UserBottomNav = () => {
         />
       </div>
       
-      <div className="grid grid-cols-5 h-full">
+      <div className="grid grid-cols-5 h-full" style={{ paddingTop: isIOS() ? '0px' : undefined, paddingBottom: isIOS() ? '0px' : undefined }}>
         {navItems.map((item, index) => (
           <Link 
             key={item.path}
             to={item.path} 
             ref={el => navRefs.current[index] = el}
-            className="flex flex-col items-center justify-center pb-1 text-[#121212] dark:text-[#fafafa] font-medium"
+            className="flex flex-col items-center justify-center text-[#121212] dark:text-[#fafafa] font-medium"
+            style={{ paddingTop: isIOS() ? '0px' : undefined, paddingBottom: isIOS() ? '0px' : undefined }}
           >
             {item.icon}
-            <span className="mt-1" style={{ fontSize: '0.7rem' }}>{item.label}</span>
+            <span style={{ fontSize: '0.7rem', marginTop: isIOS() ? '2px' : '4px' }}>{item.label}</span>
           </Link>
         ))}
       </div>
