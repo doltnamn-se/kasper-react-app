@@ -61,7 +61,7 @@ export const AdminBottomNav = () => {
       className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md"
       style={{
         paddingBottom: isIOS() ? 'calc(env(safe-area-inset-bottom) - 20px)' : undefined,
-        height: isIOS() ? 'calc(5rem + env(safe-area-inset-bottom))' : undefined
+        height: isIOS() ? 'calc(4.5rem + env(safe-area-inset-bottom))' : undefined
       }}
     >
       <div className="relative">
@@ -76,7 +76,7 @@ export const AdminBottomNav = () => {
         />
       </div>
       
-      <div className="grid grid-cols-5 h-full" style={{ paddingTop: isIOS() ? '0px' : undefined, paddingBottom: isIOS() ? '0px' : undefined }}>
+      <div className="grid grid-cols-5 h-full">
         {navItems.map((item, index) => (
           <Link 
             key={item.path}
@@ -87,10 +87,10 @@ export const AdminBottomNav = () => {
                 ? 'text-[#121212] dark:text-[#fafafa]' 
                 : 'text-[#000000A6] dark:text-[#FFFFFFA6]'
             }`}
-            style={{ paddingTop: isIOS() ? '0px' : undefined, paddingBottom: isIOS() ? '0px' : undefined }}
+            style={{ gap: isIOS() ? '1px' : '4px' }}
           >
             {item.icon}
-            <span className="text-[0.7rem]" style={{ marginTop: isIOS() ? '2px' : '4px' }}>{item.label}</span>
+            <span className="text-[0.7rem]">{item.label}</span>
           </Link>
         ))}
       </div>
