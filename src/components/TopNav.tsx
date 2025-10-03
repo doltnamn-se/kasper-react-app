@@ -78,20 +78,26 @@ export const TopNav = () => {
   }, [lastScrollY, isMobile]);
 
   return (
-    <div className={cn(
-      "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
-      isMobile ? (
-        cn(
-          "left-0 px-4 bg-[#fafafa] dark:bg-[#161618] w-full",
-          isVisible ? "translate-y-0" : "-translate-y-full"
+    <div 
+      className={cn(
+        "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
+        isMobile ? (
+          cn(
+            "left-0 px-4 bg-[#fafafa] dark:bg-[#161618] w-full",
+            isVisible ? "translate-y-0" : "-translate-y-full"
+          )
+        ) : (
+          cn(
+            "bg-[#fafafa] dark:bg-[#161618]",
+            isCollapsed ? "left-16 px-12" : "left-72 px-12"
+          )
         )
-      ) : (
-        cn(
-          "bg-[#fafafa] dark:bg-[#161618]",
-          isCollapsed ? "left-16 px-12" : "left-72 px-12"
-        )
-      )
-    )}>
+      )}
+      style={{
+        paddingTop: isMobile ? 'max(env(safe-area-inset-top), 0px)' : undefined,
+        height: isMobile ? 'calc(4rem + env(safe-area-inset-top))' : undefined
+      }}
+    >
       <div className="flex items-center justify-between h-full w-full">
         {isMobile && (
           <div className="flex-none mr-auto w-[8rem] flex items-center justify-left">
