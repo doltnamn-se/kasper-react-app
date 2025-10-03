@@ -67,6 +67,7 @@ export const UserBottomNav = () => {
     <div 
       className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md"
       style={{
+        paddingBottom: isIOS() ? 'env(safe-area-inset-bottom)' : undefined,
         height: isIOS() ? 'calc(4rem + env(safe-area-inset-bottom))' : undefined
       }}
     >
