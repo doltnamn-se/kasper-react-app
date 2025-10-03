@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { ChartSpline, UsersRound, EyeOff, UserRoundSearch, Infinity } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
+import { isIOS } from "@/capacitor";
 
 export const AdminBottomNav = () => {
   const location = useLocation();
@@ -56,7 +57,13 @@ export const AdminBottomNav = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md">
+    <div 
+      className="fixed bottom-0 left-0 right-0 h-20 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md"
+      style={{
+        paddingBottom: isIOS() ? 'env(safe-area-inset-bottom)' : undefined,
+        height: isIOS() ? 'calc(5rem + env(safe-area-inset-bottom))' : undefined
+      }}
+    >
       <div className="relative">
         {/* Active indicator - positioned absolutely and will slide with transitions */}
         <div 
