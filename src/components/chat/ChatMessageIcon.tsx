@@ -15,7 +15,7 @@ export const ChatMessageIcon = ({ unreadCount, onClick }: ChatMessageIconProps) 
       className="relative h-8 w-8 p-0 hover:bg-transparent"
       onClick={onClick}
     >
-      <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] items-center justify-center">
+      <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
         <MessageSquareText className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
         {unreadCount > 0 && (
           <div className="absolute -top-[0.025rem] -right-[0.025rem] h-2 w-2 rounded-full bg-[#2e77d0]" />

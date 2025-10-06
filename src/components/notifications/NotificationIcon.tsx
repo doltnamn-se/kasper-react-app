@@ -8,7 +8,7 @@ interface NotificationIconProps {
 
 export const NotificationIcon = ({ unreadCount }: NotificationIconProps) => {
   return (
-    <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] items-center justify-center">
+    <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
       {unreadCount > 0 ? (
         <>
           <BellRing className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />

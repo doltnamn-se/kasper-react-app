@@ -74,7 +74,7 @@ export const UserProfileMenu = () => {
           className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'p-2'}`}
         >
           {isMobile ? (
-            <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] items-center justify-center">
+            <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
               <User className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
             </div>
           ) : (
