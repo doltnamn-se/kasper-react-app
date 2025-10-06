@@ -1,12 +1,41 @@
+import { useEffect, useState } from "react";
+
 export const ScoreVisual = () => {
   const score = 100;
+  const [displayScore, setDisplayScore] = useState(0);
+  const [animatedScore, setAnimatedScore] = useState(0);
+
+  useEffect(() => {
+    setDisplayScore(0);
+    setAnimatedScore(0);
+    
+    const duration = 1000; // 1 second
+    const steps = 60;
+    const increment = score / steps;
+    let currentStep = 0;
+
+    const interval = setInterval(() => {
+      currentStep++;
+      const newScore = Math.min(Math.round(increment * currentStep), score);
+      setDisplayScore(newScore);
+      setAnimatedScore(newScore);
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+      }
+    }, duration / steps);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [score]);
   
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Score number */}
       <div className="flex flex-col items-center">
         <div className="text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]">
-          {score}
+          {displayScore}
         </div>
         <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mt-1">
           Fullt skyddad
@@ -18,7 +47,7 @@ export const ScoreVisual = () => {
         <div className="relative mb-2">
           <div 
             style={{ 
-              left: `${score}%`,
+              left: `${animatedScore}%`,
               transform: 'translateX(-50%)',
               clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
               width: '3.5px',
@@ -35,7 +64,7 @@ export const ScoreVisual = () => {
           <div 
             className="absolute top-0 left-0 h-full rounded-r-lg relative overflow-hidden"
             style={{ 
-              width: `${score}%`,
+              width: `${animatedScore}%`,
               background: `linear-gradient(90deg, 
                 rgba(234, 56, 76, 1) 0%,
                 rgb(249, 115, 22) 35%,
@@ -43,7 +72,7 @@ export const ScoreVisual = () => {
                 rgba(17, 84, 242, 255) 88%,
                 rgba(25, 208, 91, 255) 100%
               )`,
-            }} 
+            }}
           >
             {/* Animated liquid shimmer effect */}
             <div 
