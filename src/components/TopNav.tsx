@@ -128,7 +128,7 @@ export const TopNav = () => {
           <SearchBar />
         </div>
         
-        <div className="flex items-center gap-1 ml-auto">
+        <div className="flex items-center gap-2 ml-auto">
           <TooltipProvider delayDuration={300}>
             {/* Moon/ThemeToggle button removed */}
             <Tooltip>
