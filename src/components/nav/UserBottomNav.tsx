@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
-import { isIOS } from "@/capacitor";
+import { isIOS, isAndroid } from "@/capacitor";
 import kasperFaviconDark from "/lovable-uploads/kasper-mob-icon-darkmode.svg";
 import kasperFaviconLight from "/lovable-uploads/kasper-mob-icon-lightmode.svg";
 
@@ -63,12 +63,14 @@ export const UserBottomNav = () => {
     };
   }, [location.pathname, navItems]);
 
+  const isNative = isIOS() || isAndroid();
+
   return (
     <div 
       className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#1c1c1e] border-t border-[#e5e7eb] dark:border-[#232325] md:hidden z-[9999] shadow-md"
       style={{
-        paddingBottom: isIOS() ? 'calc(env(safe-area-inset-bottom) - 20px)' : undefined,
-        height: isIOS() ? 'calc(3.5rem + env(safe-area-inset-bottom))' : undefined
+        paddingBottom: isNative ? (isIOS() ? 'calc(env(safe-area-inset-bottom) - 20px)' : 'env(safe-area-inset-bottom)') : undefined,
+        height: isNative ? (isIOS() ? 'calc(3.5rem + env(safe-area-inset-bottom))' : 'calc(4rem + env(safe-area-inset-bottom))') : undefined
       }}
     >
       <div className="relative">
