@@ -16,7 +16,7 @@ export default function Intro() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#fafafa] dark:bg-[#1a1a1a]">
       {/* Carousel slides */}
       <div className="flex-1 flex items-center justify-center py-12">
         <Carousel className="w-full max-w-md">
