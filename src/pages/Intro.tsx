@@ -122,7 +122,7 @@ export default function Intro() {
           {[0, 1, 2, 3].map((index) => (
             <div
               key={index}
-              className={`h-1 rounded-full transition-all duration-300 overflow-hidden ${
+              className={`h-1 rounded-full transition-all duration-300 overflow-hidden relative ${
                 current === index 
                   ? 'w-8 bg-[#000000]/30 dark:bg-[#ffffff]/30' 
                   : 'w-1 bg-[#000000]/30 dark:bg-[#ffffff]/30'
@@ -130,9 +130,12 @@ export default function Intro() {
             >
               {current === index && (
                 <div 
-                  key={`progress-${index}`}
-                  className="h-full bg-[#000000] dark:bg-[#ffffff] animate-[progress_4s_linear_forwards]"
-                  style={{ width: '0%' }}
+                  key={`progress-${current}-${index}`}
+                  className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left"
+                  style={{
+                    animation: 'progress 4s linear forwards',
+                    transform: 'scaleX(0)'
+                  }}
                 />
               )}
             </div>

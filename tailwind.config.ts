@@ -26,8 +26,8 @@ export default {
       },
       keyframes: {
         progress: {
-          '0%': { width: '0%' },
-          '100%': { width: '100%' },
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' },
         },
         'accordion-down': {
           from: { height: '0', opacity: '0' },
