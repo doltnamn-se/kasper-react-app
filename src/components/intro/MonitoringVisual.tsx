@@ -28,25 +28,6 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
           ? 'Senast kontrollerat CET 12:35 måndag 6 oktober 2025'
           : 'Last checked CET 12:35 Monday October 6, 2025'}
       </p>
-
-      {/* Monitoring text */}
-      <div className="space-y-2">
-        <p className="text-base text-[#000000] dark:text-[#FFFFFF]">
-          {language === 'sv' ? 'Bevakar nya sökträffar för ' : 'Monitoring new search results for '}
-          <span className="font-semibold">Andreas Jakobsson</span>
-        </p>
-      </div>
-
-      {/* Scanning badge */}
-      <div className="pt-2">
-        <Badge 
-          variant="outline" 
-          className="flex items-center gap-2 w-fit font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2 px-4"
-        >
-          <Activity className="w-[0.9rem] h-[0.9rem] text-[#ea384c] animate-icon-fill" />
-          <span>{language === 'sv' ? 'Skannar.' : 'Scanning.'}</span>
-        </Badge>
-      </div>
     </div>
   );
 };
