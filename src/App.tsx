@@ -11,6 +11,7 @@ import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
+import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
 import { supabase } from "@/integrations/supabase/client";
 
 import Auth from "@/pages/Auth";
@@ -126,6 +127,7 @@ function App() {
         <LanguageProvider>
           <SidebarProvider>
             <Router>
+              <MobileIntroRedirect />
               <Routes>
                 {/* Intro/Onboarding route for iOS */}
                 <Route path="/intro" element={<Intro />} />
