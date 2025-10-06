@@ -48,7 +48,7 @@ export const AuthForm = ({
   return (
     <div className="flex justify-center w-full">
       <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
-        <div className={`transition-all duration-300 ${isInputFocused ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 animate-fade-in'}`}>
+        <div className={`transition-opacity duration-300 ease-out ${isInputFocused ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 animate-fade-in'}`} style={{ willChange: 'opacity' }}>
           <AuthEyeLogo />
           <h2 className="mb-10 text-left">
             {isResetPasswordMode ? t('reset.password') : t('sign.in')}
@@ -76,7 +76,7 @@ export const AuthForm = ({
           />
         ) : (
           <>
-            <div className={`transition-all duration-300 ${isInputFocused ? '-mt-12' : 'mt-0'}`}>
+            <div className={`transition-transform duration-300 ease-out ${isInputFocused ? '-translate-y-12' : 'translate-y-0'}`} style={{ willChange: 'transform' }}>
               <LoginForm
                 onForgotPassword={() => setShowResetForm(true)}
                 isLoading={isLoading}
