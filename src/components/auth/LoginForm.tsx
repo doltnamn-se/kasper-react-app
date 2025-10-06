@@ -143,6 +143,7 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
+          onMouseDown={(e) => e.preventDefault()}
           className="absolute right-2 top-1/2 -translate-y-1/2 text-[#000000A6] dark:text-[#FFFFFFA6] hover:text-[#000000] dark:hover:text-[#FFFFFF] focus:outline-none"
           disabled={isLoading}
         >
