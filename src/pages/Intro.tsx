@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { isIOS } from "@/capacitor";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useTheme } from "next-themes";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { IntroSlide } from "@/components/intro/IntroSlide";
 import { ScoreVisual } from "@/components/intro/ScoreVisual";
@@ -15,13 +14,35 @@ import Autoplay from "embla-carousel-autoplay";
 export default function Intro() {
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const { theme } = useTheme();
-  const isDarkMode = theme === 'dark';
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const autoplayRef = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true })
   );
+
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    setIsDarkMode(isDark);
+
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark');
+          setIsDarkMode(isDark);
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!api) {
