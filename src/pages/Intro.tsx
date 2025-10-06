@@ -11,16 +11,7 @@ export default function Intro() {
   const navigate = useNavigate();
   const { language } = useLanguage();
 
-  useEffect(() => {
-    // If not iOS, redirect to auth
-    if (!isIOS()) {
-      navigate("/auth", { replace: true });
-    }
-  }, [navigate]);
-
   const handleSignIn = () => {
-    // Mark that user has seen the intro
-    localStorage.setItem("hasSeenIntro", "true");
     navigate("/auth");
   };
 

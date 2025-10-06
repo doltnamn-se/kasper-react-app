@@ -32,12 +32,6 @@ const Auth = () => {
     ? "/lovable-uploads/ds-auth-bg-dark.png"
     : "/lovable-uploads/ds-auth-bg-light.png";
 
-  // Check if iOS user should see intro first
-  useEffect(() => {
-    if (isIOS() && !localStorage.getItem("hasSeenIntro")) {
-      navigate("/intro", { replace: true });
-    }
-  }, [navigate]);
 
   useEffect(() => {
     document.title = language === 'sv' ? 
@@ -132,8 +126,9 @@ const Auth = () => {
               setProcessingAuthChange(false);
             }, 100);
           } else if (event === "SIGNED_OUT") {
-            console.log("Auth page: User signed out");
+            console.log("Auth page: User signed out, redirecting to intro");
             setErrorMessage("");
+            navigate("/intro");
             setProcessingAuthChange(false);
           } else {
             setProcessingAuthChange(false);
