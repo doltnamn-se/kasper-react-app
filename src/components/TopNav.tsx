@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
+import { useTheme } from "next-themes";
 import { SearchBar } from "./nav/SearchBar";
 import { NotificationButtons } from "./nav/NotificationButtons";
 import { UserProfileMenu } from "./nav/UserProfileMenu";
@@ -19,6 +20,8 @@ export const TopNav = () => {
   const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
   const isMobile = useIsMobile();
   const { t } = useLanguage();
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
   const location = useLocation();
   const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -105,13 +108,13 @@ export const TopNav = () => {
               <img 
                 src="/lovable-uploads/kasper-logo-app-dark.svg" 
                 alt="Logo" 
-                className={`h-6 w-auto transition-opacity duration-200 ${document.documentElement.classList.contains('dark') ? 'opacity-0' : 'opacity-100'}`}
+                className={`h-6 w-auto transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
                 style={{ position: 'absolute', top: 0, left: 0 }}
               />
               <img 
                 src="/lovable-uploads/kasper-logo-app-light.svg" 
                 alt="Logo" 
-                className={`h-6 w-auto transition-opacity duration-200 ${document.documentElement.classList.contains('dark') ? 'opacity-100' : 'opacity-0'}`}
+                className={`h-6 w-auto transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
                 style={{ position: 'absolute', top: 0, left: 0 }}
               />
             </div>

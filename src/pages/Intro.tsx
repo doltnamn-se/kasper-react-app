@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { isIOS } from "@/capacitor";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "next-themes";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { IntroSlide } from "@/components/intro/IntroSlide";
 import { ScoreVisual } from "@/components/intro/ScoreVisual";
@@ -14,6 +15,8 @@ import Autoplay from "embla-carousel-autoplay";
 export default function Intro() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const autoplayRef = useRef(
@@ -45,12 +48,12 @@ export default function Intro() {
           <img 
             src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Logo" 
-            className="h-6 w-auto absolute inset-0 transition-opacity duration-200 dark:opacity-0 opacity-100"
+            className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
           />
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Logo" 
-            className="h-6 w-auto absolute inset-0 transition-opacity duration-200 dark:opacity-100 opacity-0"
+            className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
         
