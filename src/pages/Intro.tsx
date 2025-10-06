@@ -2,9 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { isIOS } from "@/capacitor";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { IntroSlide } from "@/components/intro/IntroSlide";
+import { ScoreVisual } from "@/components/intro/ScoreVisual";
 
 export default function Intro() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
 
   useEffect(() => {
     // If not iOS, redirect to auth
@@ -21,9 +26,20 @@ export default function Intro() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Main content area - will contain carousel slides */}
-      <div className="flex-1 flex items-center justify-center">
-        <p className="text-muted-foreground">Carousel content will go here</p>
+      {/* Carousel slides */}
+      <div className="flex-1 flex items-center justify-center py-12">
+        <Carousel className="w-full max-w-md">
+          <CarouselContent>
+            <CarouselItem>
+              <IntroSlide
+                visual={<ScoreVisual />}
+                headlineSwedish="Ta bort dig från\nupplysningssidor"
+                headlineEnglish="Remove yourself\nfrom Search sites"
+                language={language}
+              />
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
       </div>
 
       {/* Bottom button */}
