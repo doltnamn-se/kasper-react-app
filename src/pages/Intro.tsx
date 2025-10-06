@@ -52,21 +52,21 @@ export default function Intro() {
           <CarouselContent>
             <CarouselItem>
               <IntroSlide
-                visual={<ScoreVisual language={language} />}
-                headlineSwedishLine1="Dölj dina personliga"
-                headlineSwedishLine2="uppgifter online"
-                headlineEnglishLine1="Hide your personal"
-                headlineEnglishLine2="information online"
-                language={language}
-              />
-            </CarouselItem>
-            <CarouselItem>
-              <IntroSlide
                 visual={<StatusVisual language={language} />}
                 headlineSwedishLine1="Se din status på"
                 headlineSwedishLine2="upplysningssidor"
                 headlineEnglishLine1="Track your status on"
                 headlineEnglishLine2="search sites"
+                language={language}
+              />
+            </CarouselItem>
+            <CarouselItem>
+              <IntroSlide
+                visual={<ScoreVisual language={language} />}
+                headlineSwedishLine1="Dölj dina personliga"
+                headlineSwedishLine2="uppgifter online"
+                headlineEnglishLine1="Hide your personal"
+                headlineEnglishLine2="information online"
                 language={language}
               />
             </CarouselItem>
