@@ -74,44 +74,45 @@ export const UserProfileMenu = () => {
     }
   };
 
+  // On mobile, just render the button without dropdown
+  if (isMobile) {
+    return (
+      <Button 
+        variant="ghost" 
+        onClick={handleProfileClick}
+        className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent p-0"
+      >
+        <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
+          <UserRound className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
+        </div>
+      </Button>
+    );
+  }
+
+  // On desktop, render with dropdown
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          onClick={isMobile ? handleProfileClick : undefined}
-          className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'py-2 pr-2 pl-0'}`}
+          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group py-2 pr-2 pl-0"
         >
-          {isMobile ? (
-            <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
-              <UserRound className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
-            </div>
-          ) : (
-            <>
-              <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
-                <UserRound className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
-              </div>
-              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-                {displayName}
-              </span>
-              <ChevronDown 
-                className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
-                  isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
-                }`}
-              />
-            </>
-          )}
+          <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
+            <UserRound className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
+          </div>
+          <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+            {displayName}
+          </span>
+          <ChevronDown 
+            className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
+              isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
+            }`}
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
         className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
-        style={isMobile ? { 
-          width: 'calc(100vw - 24px)', 
-          paddingRight: '12px',
-          paddingLeft: '12px',
-          marginLeft: '12px'  // Added 12px margin to the left side on mobile
-        } : undefined}
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
       </DropdownMenuContent>
