@@ -134,11 +134,12 @@ export default function Intro() {
                     key={`progress-${current}-${index}`}
                     className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left animate-[progress_5s_linear_forwards]"
                   />
+                  {/* Sparkle effect on top edge */}
                   <div 
-                    className="absolute inset-y-0 w-1 bg-gradient-to-r from-transparent via-white dark:via-white to-transparent opacity-80 blur-[2px] animate-[sparkle_5s_linear_forwards]"
+                    className="absolute top-0 w-3 h-3 rounded-full bg-white dark:bg-white animate-[sparkle_5s_linear_forwards] -translate-y-1/2"
                     style={{
-                      left: '-2px',
-                      boxShadow: '0 0 8px 2px rgba(255, 255, 255, 0.6)'
+                      boxShadow: '0 0 12px 3px rgba(255, 255, 255, 0.9), 0 0 6px 1px rgba(255, 255, 255, 0.7)',
+                      filter: 'blur(0.5px)'
                     }}
                   />
                 </>
