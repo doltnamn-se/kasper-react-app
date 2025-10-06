@@ -72,7 +72,7 @@ export const ProcessingTimeAnnouncements = () => {
   // Swipe handlers for MrKoll
   const handleMrKollTouchStart = (e: React.TouchEvent) => {
     if (!isMobile) return;
-    mrKollStartX.current = e.touches[0].clientX;
+    mrKollStartX.current = e.touches[0].clientX - mrKollSwipeX; // Account for current position
     setMrKollIsSwiping(true);
   };
 
@@ -80,16 +80,14 @@ export const ProcessingTimeAnnouncements = () => {
     if (!isMobile || !mrKollIsSwiping) return;
     const currentX = e.touches[0].clientX;
     const diff = currentX - mrKollStartX.current;
-    // Only allow left swipe (negative values) and limit to -80px
-    if (diff < 0) {
-      setMrKollSwipeX(Math.max(diff, -80));
-    }
+    // Allow swipe left (negative) and right (positive back to 0), limit between -80 and 0
+    setMrKollSwipeX(Math.max(Math.min(diff, 0), -80));
   };
 
   const handleMrKollTouchEnd = () => {
     if (!isMobile) return;
     setMrKollIsSwiping(false);
-    // If swiped more than 40px, keep it revealed, otherwise reset
+    // If swiped more than 40px left, snap to revealed (-80), otherwise snap back to normal (0)
     if (mrKollSwipeX < -40) {
       setMrKollSwipeX(-80);
     } else {
@@ -100,7 +98,7 @@ export const ProcessingTimeAnnouncements = () => {
   // Swipe handlers for Google
   const handleGoogleTouchStart = (e: React.TouchEvent) => {
     if (!isMobile) return;
-    googleStartX.current = e.touches[0].clientX;
+    googleStartX.current = e.touches[0].clientX - googleSwipeX; // Account for current position
     setGoogleIsSwiping(true);
   };
 
@@ -108,16 +106,14 @@ export const ProcessingTimeAnnouncements = () => {
     if (!isMobile || !googleIsSwiping) return;
     const currentX = e.touches[0].clientX;
     const diff = currentX - googleStartX.current;
-    // Only allow left swipe (negative values) and limit to -80px
-    if (diff < 0) {
-      setGoogleSwipeX(Math.max(diff, -80));
-    }
+    // Allow swipe left (negative) and right (positive back to 0), limit between -80 and 0
+    setGoogleSwipeX(Math.max(Math.min(diff, 0), -80));
   };
 
   const handleGoogleTouchEnd = () => {
     if (!isMobile) return;
     setGoogleIsSwiping(false);
-    // If swiped more than 40px, keep it revealed, otherwise reset
+    // If swiped more than 40px left, snap to revealed (-80), otherwise snap back to normal (0)
     if (googleSwipeX < -40) {
       setGoogleSwipeX(-80);
     } else {
@@ -155,8 +151,10 @@ export const ProcessingTimeAnnouncements = () => {
           <div 
             className={`relative rounded-2xl border bg-[hsl(var(--id-info-bg))] dark:bg-[hsl(var(--id-info-bg))] border-[hsl(var(--id-info-border))] dark:border-[hsl(var(--id-info-border))] transition-all duration-300 ${isMrKollExpanded ? 'p-4 md:p-6' : 'p-3'}`}
             style={{
-              transform: `translateX(${mrKollSwipeX}px)`,
-              transition: mrKollIsSwiping ? 'none' : 'transform 0.3s ease-out'
+              transform: `translate3d(${mrKollSwipeX}px, 0, 0)`,
+              transition: mrKollIsSwiping ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              willChange: mrKollIsSwiping ? 'transform' : 'auto',
+              touchAction: 'pan-y'
             }}
             onTouchStart={handleMrKollTouchStart}
             onTouchMove={handleMrKollTouchMove}
@@ -202,8 +200,10 @@ export const ProcessingTimeAnnouncements = () => {
           <div 
             className={`relative rounded-2xl border bg-[hsl(var(--id-info-bg))] dark:bg-[hsl(var(--id-info-bg))] border-[hsl(var(--id-info-border))] dark:border-[hsl(var(--id-info-border))] transition-all duration-300 ${isGoogleExpanded ? 'p-4 md:p-6' : 'p-3'}`}
             style={{
-              transform: `translateX(${googleSwipeX}px)`,
-              transition: googleIsSwiping ? 'none' : 'transform 0.3s ease-out'
+              transform: `translate3d(${googleSwipeX}px, 0, 0)`,
+              transition: googleIsSwiping ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              willChange: googleIsSwiping ? 'transform' : 'auto',
+              touchAction: 'pan-y'
             }}
             onTouchStart={handleGoogleTouchStart}
             onTouchMove={handleGoogleTouchMove}
