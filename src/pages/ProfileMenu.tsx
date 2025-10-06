@@ -73,9 +73,9 @@ export default function ProfileMenu() {
       onClick={onClick}
       className="w-full flex items-start py-3 px-4 hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] transition-colors"
     >
-      <Icon className="mr-3 h-5 w-5 mt-0.5 flex-shrink-0 text-[#121212] dark:text-[#ffffff]" />
+      <Icon className="mr-3 h-4 w-4 mt-0.5 flex-shrink-0 text-[#121212] dark:text-[#ffffff]" />
       <div className="flex flex-col flex-1 text-left">
-        <span className="text-black dark:text-gray-300 font-medium">{label}</span>
+        <span className="text-sm text-black dark:text-gray-300 font-medium">{label}</span>
         {sublabel && (
           <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mt-0.5">{sublabel}</span>
         )}
@@ -166,7 +166,7 @@ export default function ProfileMenu() {
           className="w-full flex items-center py-3 px-4 hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] transition-colors"
         >
           <span className="mr-3 text-xl">{languages.sv.flag}</span>
-          <span className="text-black dark:text-gray-300 font-medium flex-1 text-left">
+          <span className="text-sm text-black dark:text-gray-300 font-medium flex-1 text-left">
             {languages.sv.label}
           </span>
           {language === 'sv' && (
@@ -181,7 +181,7 @@ export default function ProfileMenu() {
           className="w-full flex items-center py-3 px-4 hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] transition-colors"
         >
           <span className="mr-3 text-xl">{languages.en.flag}</span>
-          <span className="text-black dark:text-gray-300 font-medium flex-1 text-left">
+          <span className="text-sm text-black dark:text-gray-300 font-medium flex-1 text-left">
             {languages.en.label}
           </span>
           {language === 'en' && (
