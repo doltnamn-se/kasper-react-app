@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { isIOS } from "@/capacitor";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { IntroSlide } from "@/components/intro/IntroSlide";
 import { ScoreVisual } from "@/components/intro/ScoreVisual";
 import { StatusVisual } from "@/components/intro/StatusVisual";
@@ -13,6 +13,20 @@ import { AddressAlertsVisual } from "@/components/intro/AddressAlertsVisual";
 export default function Intro() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   const handleSignIn = () => {
     navigate("/auth");
@@ -48,7 +62,7 @@ export default function Intro() {
 
       {/* Carousel slides */}
       <div className="flex-1 flex items-center justify-center">
-        <Carousel className="w-full max-w-md">
+        <Carousel setApi={setApi} className="w-full max-w-md">
           <CarouselContent>
             <CarouselItem>
               <IntroSlide
@@ -62,7 +76,7 @@ export default function Intro() {
             </CarouselItem>
             <CarouselItem>
               <IntroSlide
-                visual={<ScoreVisual language={language} />}
+                visual={<ScoreVisual language={language} isActive={current === 1} />}
                 headlineSwedishLine1="Ta bort dina personliga"
                 headlineSwedishLine2="uppgifter online"
                 headlineEnglishLine1="Remove your personal"

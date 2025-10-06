@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 
 interface ScoreVisualProps {
   language: string;
+  isActive?: boolean;
 }
 
-export const ScoreVisual = ({ language }: ScoreVisualProps) => {
+export const ScoreVisual = ({ language, isActive = false }: ScoreVisualProps) => {
   const score = 100;
   const [displayScore, setDisplayScore] = useState(0);
   const [animatedScore, setAnimatedScore] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
+    if (!isActive || hasAnimated) {
+      return;
+    }
+
     setDisplayScore(0);
     setAnimatedScore(0);
     
@@ -26,13 +32,14 @@ export const ScoreVisual = ({ language }: ScoreVisualProps) => {
       
       if (currentStep >= steps) {
         clearInterval(interval);
+        setHasAnimated(true);
       }
     }, duration / steps);
 
     return () => {
       clearInterval(interval);
     };
-  }, [score]);
+  }, [isActive, hasAnimated, score]);
   
   return (
     <div className="flex flex-col items-start gap-6 w-full bg-transparent p-4 md:p-6 rounded-2xl border border-transparent transition-colors duration-200">
