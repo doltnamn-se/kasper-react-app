@@ -33,7 +33,7 @@ export const ScoreVisual = () => {
         <div className="relative w-full h-3 rounded-lg overflow-hidden">
           <div className="absolute inset-0 bg-[#e8e8e5] dark:bg-[#2f2e31]" />
           <div 
-            className="absolute top-0 left-0 h-full rounded-r-lg"
+            className="absolute top-0 left-0 h-full rounded-r-lg relative overflow-hidden"
             style={{ 
               width: `${score}%`,
               background: `linear-gradient(90deg, 
@@ -44,7 +44,16 @@ export const ScoreVisual = () => {
                 rgba(25, 208, 91, 255) 100%
               )`,
             }} 
-          />
+          >
+            {/* Animated liquid shimmer effect */}
+            <div 
+              className="absolute inset-0 animate-pulse"
+              style={{
+                background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
+                animation: 'shimmer 2s ease-in-out infinite',
+              }}
+            />
+          </div>
         </div>
         <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
           <span>0</span>
