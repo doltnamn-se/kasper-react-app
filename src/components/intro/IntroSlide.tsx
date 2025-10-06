@@ -18,9 +18,9 @@ export const IntroSlide = ({ visual, headlineSwedish, headlineEnglish, language 
       </div>
       
       {/* Two-line headline */}
-      <h2 className="text-2xl font-bold text-center leading-tight whitespace-pre-line">
+      <h1 className="text-center leading-tight whitespace-pre-line">
         {headline}
-      </h2>
+      </h1>
     </div>
   );
 };
