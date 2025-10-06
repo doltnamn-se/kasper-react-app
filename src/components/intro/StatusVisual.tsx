@@ -5,7 +5,7 @@ interface StatusVisualProps {
   language: string;
 }
 
-const allSites = [
+const swedishSites = [
   { name: 'Mrkoll', icon: '/fonts/MrKoll.svg', status: 'Borttagen' },
   { name: 'Ratsit', icon: '/fonts/Ratsit.svg', status: 'Borttagen' },
   { name: 'Hitta', icon: '/fonts/Hitta.svg', status: 'Borttagen' },
@@ -14,7 +14,18 @@ const allSites = [
   { name: 'Birthday', icon: '/fonts/Birthday.svg', status: 'Borttagen' },
 ];
 
+const englishSites = [
+  { name: 'Whitepages', icon: '/fonts/MrKoll.svg', status: 'Borttagen' },
+  { name: 'Spokeo', icon: '/fonts/Ratsit.svg', status: 'Borttagen' },
+  { name: 'BeenVerified', icon: '/fonts/Hitta.svg', status: 'Borttagen' },
+  { name: 'Intelius', icon: '/fonts/Merinfo.svg', status: 'Borttagen' },
+  { name: 'PeopleFinder', icon: '/fonts/Eniro.svg', status: 'Borttagen' },
+  { name: 'TruthFinder', icon: '/fonts/Birthday.svg', status: 'Borttagen' },
+];
+
 export const StatusVisual = ({ language }: StatusVisualProps) => {
+  // Select sites based on language
+  const allSites = language === 'sv' ? swedishSites : englishSites;
   // Double the array to create seamless loop
   const sites = [...allSites, ...allSites];
 
