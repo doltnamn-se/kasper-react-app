@@ -25,7 +25,7 @@ export default function Intro() {
               <IntroSlide
                 visual={<ScoreVisual />}
                 headlineSwedish="Ta bort dig från\nupplysningssidor"
-                headlineEnglish="Remove yourself\nfrom Search sites"
+                headlineEnglish="Remove yourself\nfrom Search Sites"
                 language={language}
               />
             </CarouselItem>
