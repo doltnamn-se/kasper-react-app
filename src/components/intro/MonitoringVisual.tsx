@@ -52,7 +52,7 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
               {language === 'sv' ? 'Sida' : 'Site'}
             </p>
             <div className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block">
-              example.com
+              Google
             </div>
           </div>
           <div className="space-y-2">
