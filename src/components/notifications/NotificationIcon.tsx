@@ -14,7 +14,7 @@ export const NotificationIcon = ({ unreadCount }: NotificationIconProps) => {
         : 'bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325]'
     }`}>
       {unreadCount > 0 ? (
-        <BellRing className="w-4 h-4 text-[#50bffb]" />
+        <BellRing className="w-4 h-4 text-[#50bffb]" fill="#50bffb" />
       ) : (
         <Bell className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
       )}
