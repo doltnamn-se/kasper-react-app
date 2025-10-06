@@ -90,9 +90,9 @@ export default function ProfileMenu() {
   );
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#121212]">
+    <div className="min-h-screen bg-[#f9fafb] dark:bg-[#121212]">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-[#121212] border-b border-[#e5e7eb] dark:border-[#232325]">
+      <div className="sticky top-0 z-10 bg-[#f9fafb] dark:bg-[#121212] border-b border-[#e5e7eb] dark:border-[#232325]">
         <div className="flex items-center justify-between px-4 py-3">
           <Button
             variant="ghost"
@@ -110,7 +110,8 @@ export default function ProfileMenu() {
       </div>
 
       {/* Content */}
-      <div className="pb-6">
+      <div className="p-4">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
         {/* Profile Section */}
         <MenuItem
           icon={UserCircle}
@@ -219,6 +220,7 @@ export default function ProfileMenu() {
           label={signingOut ? t('profile.signing.out') : t('profile.sign.out')}
           onClick={handleSignOut}
         />
+        </div>
       </div>
     </div>
   );
