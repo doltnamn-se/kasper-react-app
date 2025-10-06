@@ -61,7 +61,7 @@ export default function Intro() {
       </div>
 
       {/* Carousel slides */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <Carousel setApi={setApi} className="w-full max-w-md">
           <CarouselContent>
             <CarouselItem>
@@ -106,20 +106,20 @@ export default function Intro() {
             </CarouselItem>
           </CarouselContent>
         </Carousel>
-      </div>
-
-      {/* Carousel indicators */}
-      <div className="flex items-center justify-center gap-2 pb-6">
-        {[0, 1, 2, 3].map((index) => (
-          <div
-            key={index}
-            className={`h-1 rounded-full transition-all duration-300 ${
-              current === index 
-                ? 'w-8 bg-[#000000] dark:bg-[#ffffff]' 
-                : 'w-1 bg-[#000000]/30 dark:bg-[#ffffff]/30'
-            }`}
-          />
-        ))}
+        
+        {/* Carousel indicators */}
+        <div className="flex items-center justify-center gap-2">
+          {[0, 1, 2, 3].map((index) => (
+            <div
+              key={index}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                current === index 
+                  ? 'w-8 bg-[#000000] dark:bg-[#ffffff]' 
+                  : 'w-1 bg-[#000000]/30 dark:bg-[#ffffff]/30'
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Bottom button */}
