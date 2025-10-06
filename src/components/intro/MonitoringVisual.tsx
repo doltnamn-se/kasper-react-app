@@ -35,7 +35,7 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
       </Badge>
 
       {/* Sample link card */}
-      <div className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
+      <div className="bg-white dark:bg-[#232325] rounded-[12px] p-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
