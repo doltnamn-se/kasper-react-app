@@ -54,8 +54,8 @@ export const NavigationLinks = ({ unreadCounts, toggleMobileMenu }: NavigationLi
     <>
       {renderNavLink("/", (
         <>
-          <img src={kasperFaviconLight} alt="Home" className="w-[18px] h-[18px] dark:hidden" />
-          <img src={kasperFaviconDark} alt="Home" className="w-[18px] h-[18px] hidden dark:block" />
+          <img src={kasperFaviconDark} alt="Home" className="w-[18px] h-[18px] dark:hidden" />
+          <img src={kasperFaviconLight} alt="Home" className="w-[18px] h-[18px] hidden dark:block" />
         </>
       ), t('nav.home'), unreadCounts.total)}
       {renderNavLink("/deindexing", <EyeOff className="w-[18px] h-[18px]" />, t('nav.my.links'), unreadCounts.deindexing)}
