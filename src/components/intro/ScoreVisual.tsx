@@ -73,7 +73,7 @@ export const ScoreVisual = ({ language, isActive = false }: ScoreVisualProps) =>
         <div className="relative w-full h-3 rounded-lg overflow-hidden">
           <div className="absolute inset-0 bg-[#e8e8e5] dark:bg-[#2f2e31]" />
           <div 
-            className="absolute top-0 left-0 h-full rounded-r-lg relative overflow-hidden"
+            className="absolute top-0 left-0 h-full rounded-r-lg relative overflow-visible"
             style={{ 
               width: `${animatedScore}%`,
               background: `linear-gradient(90deg, 
@@ -93,6 +93,18 @@ export const ScoreVisual = ({ language, isActive = false }: ScoreVisualProps) =>
                 animation: 'shimmer 2s ease-in-out infinite',
               }}
             />
+            {/* Sparkle light on top edge */}
+            {animatedScore > 0 && (
+              <div 
+                className="absolute top-0 right-0 w-2 h-2 rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 40%, transparent 70%)',
+                  boxShadow: '0 0 8px 2px rgba(255,255,255,0.8), 0 0 12px 4px rgba(255,255,255,0.4)',
+                  transform: 'translateY(-50%)',
+                  animation: 'sparkle-pulse 1.5s ease-in-out infinite',
+                }}
+              />
+            )}
           </div>
         </div>
         <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
