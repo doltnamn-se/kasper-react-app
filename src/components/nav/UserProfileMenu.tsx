@@ -27,6 +27,12 @@ export const UserProfileMenu = () => {
     return userProfile.display_name;
   };
 
+  const getFirstName = () => {
+    if (!userProfile?.display_name) return userEmail?.split('@')[0] || 'User';
+    const names = userProfile.display_name.split(' ');
+    return names[0] || userProfile.display_name;
+  };
+
   const handleSignOut = async () => {
     if (isSigningOut) {
       console.log("Sign out already in progress");
@@ -67,27 +73,31 @@ export const UserProfileMenu = () => {
           variant="ghost" 
           className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'p-2'}`}
         >
-          <Avatar className="h-8 w-8 shrink-0">
-            <AvatarImage 
-              src={userProfile?.avatar_url} 
-              alt={displayName}
-              className="aspect-square object-cover"
-            />
-            <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          {!isMobile && (
-            <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-              {displayName}
+          {isMobile ? (
+            <span className={`text-sm font-medium px-2 py-1 ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+              {getFirstName()}
             </span>
-          )}
-          {!isMobile && (
-            <ChevronDown 
-              className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
-                isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
-              }`}
-            />
+          ) : (
+            <>
+              <Avatar className="h-8 w-8 shrink-0">
+                <AvatarImage 
+                  src={userProfile?.avatar_url} 
+                  alt={displayName}
+                  className="aspect-square object-cover"
+                />
+                <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+                {displayName}
+              </span>
+              <ChevronDown 
+                className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
+                  isOpen ? 'rotate-180 !text-[#000000] dark:!text-[#FFFFFF]' : ''
+                }`}
+              />
+            </>
           )}
         </Button>
       </DropdownMenuTrigger>
