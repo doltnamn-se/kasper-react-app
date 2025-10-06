@@ -53,10 +53,10 @@ export default function Intro() {
             <CarouselItem>
               <IntroSlide
                 visual={<StatusVisual language={language} />}
-                headlineSwedishLine1="Se din status på"
+                headlineSwedishLine1="Ta bort dig från"
                 headlineSwedishLine2="upplysningssidor"
-                headlineEnglishLine1="Track your status on"
-                headlineEnglishLine2="search sites"
+                headlineEnglishLine1="Remove yourself"
+                headlineEnglishLine2="from Search Sites"
                 language={language}
               />
             </CarouselItem>
