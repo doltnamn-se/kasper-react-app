@@ -45,6 +45,46 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
           ? 'Senast kontrollerat CET 12:35 måndag 6 oktober 2025'
           : 'Last checked CET 12:35 Monday October 6, 2025'}
       </p>
+
+      {/* Sample link card */}
+      <div className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="space-y-2">
+            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+              {language === 'sv' ? 'Sida' : 'Site'}
+            </p>
+            <div className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 py-1.5 rounded-[10px] bg-[#d8f1ff] dark:bg-[#0f3c55] inline-block">
+              example.com
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+              {language === 'sv' ? 'Hittades' : 'Found'}
+            </p>
+            <p className="text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff]">
+              {language === 'sv' ? '2 timmar sedan' : '2 hours ago'}
+            </p>
+          </div>
+          <div className="flex items-end h-full">
+            <button className="h-8 text-[0.8rem] font-medium text-[#121212] dark:text-[#ffffff] px-3 bg-transparent border border-[#dfdfdf] dark:border-[#595959] hover:bg-[#f3f3f3] dark:hover:bg-[#212121] rounded-full">
+              {language === 'sv' ? 'Visa länk' : 'Show link'}
+            </button>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] font-medium">
+              {language === 'sv' ? 'Vill du att vi tar bort länken?' : 'Do you want us to remove this link?'}
+            </p>
+            <div className="flex gap-2">
+              <button className="h-8 text-[0.8rem] bg-[#000000] hover:bg-[#333333] text-white dark:bg-[#FFFFFF] dark:hover:bg-[#FFFFFFA6] dark:text-[#000000] flex-1 rounded-md">
+                {language === 'sv' ? 'Ja' : 'Yes'}
+              </button>
+              <button className="h-8 text-[0.8rem] bg-[#e0e0e0] hover:bg-[#d0d0d0] border-transparent text-black dark:bg-[#cccccc] dark:hover:bg-[#b8b8b8] dark:text-[#000000] flex-1 rounded-md">
+                {language === 'sv' ? 'Nej' : 'No'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
