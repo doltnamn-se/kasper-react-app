@@ -11,6 +11,7 @@ import { getLatestVersion } from "@/utils/versionUtils";
 import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
 import { IOSNotification } from "@/components/auth/iOSNotification";
+import { isIOS } from "@/capacitor";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -30,6 +31,13 @@ const Auth = () => {
   const bgImage = isDarkMode 
     ? "/lovable-uploads/ds-auth-bg-dark.png"
     : "/lovable-uploads/ds-auth-bg-light.png";
+
+  // Check if iOS user should see intro first
+  useEffect(() => {
+    if (isIOS() && !localStorage.getItem("hasSeenIntro")) {
+      navigate("/intro", { replace: true });
+    }
+  }, [navigate]);
 
   useEffect(() => {
     document.title = language === 'sv' ? 

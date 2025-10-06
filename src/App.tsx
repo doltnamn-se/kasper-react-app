@@ -14,6 +14,7 @@ import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayo
 import { supabase } from "@/integrations/supabase/client";
 
 import Auth from "@/pages/Auth";
+import Intro from "@/pages/Intro";
 import ResetPassword from "@/pages/ResetPassword";
 import Index from "@/pages/Index";
 import Checklist from "@/pages/Checklist";
@@ -126,6 +127,9 @@ function App() {
           <SidebarProvider>
             <Router>
               <Routes>
+                {/* Intro/Onboarding route for iOS */}
+                <Route path="/intro" element={<Intro />} />
+                
                 {/* Auth routes */}
                 <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
                 <Route path="/auth/reset-password" element={<ResetPassword />} />
