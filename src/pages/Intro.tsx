@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { IntroSlide } from "@/components/intro/IntroSlide";
 import { ScoreVisual } from "@/components/intro/ScoreVisual";
+import { MonitoringVisual } from "@/components/intro/MonitoringVisual";
 
 export default function Intro() {
   const navigate = useNavigate();
@@ -54,6 +55,16 @@ export default function Intro() {
                 headlineSwedishLine2="uppgifter online"
                 headlineEnglishLine1="Hide your personal"
                 headlineEnglishLine2="information online"
+                language={language}
+              />
+            </CarouselItem>
+            <CarouselItem>
+              <IntroSlide
+                visual={<MonitoringVisual language={language} />}
+                headlineSwedishLine1="Vår bevakningstjänst"
+                headlineSwedishLine2="noterar dig om nya länkar"
+                headlineEnglishLine1="Our monitoring service"
+                headlineEnglishLine2="notifies you of new links"
                 language={language}
               />
             </CarouselItem>
