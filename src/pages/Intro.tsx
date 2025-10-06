@@ -35,12 +35,12 @@ export default function Intro() {
 
       {/* Bottom button */}
       <div className="pb-8">
-        <Button
+        <Button 
           onClick={handleSignIn}
           className="w-full"
           size="lg"
         >
-          Sign In
+          {language === 'sv' ? 'Logga in' : 'Sign in'}
         </Button>
       </div>
     </div>
