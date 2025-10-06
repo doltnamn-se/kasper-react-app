@@ -16,9 +16,8 @@ export const AddressAlertsVisual = ({ language }: AddressAlertsVisualProps) => {
             </p>
             <Badge 
               variant="secondary" 
-              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239] flex items-center gap-1.5"
+              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239]"
             >
-              <span className="w-2 h-2 rounded-full bg-[#16b674] dark:bg-[#20f922] animate-pulse"></span>
               {language === 'sv' ? 'Aktiv' : 'Active'}
             </Badge>
           </div>
