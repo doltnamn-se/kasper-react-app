@@ -17,7 +17,7 @@ export const ChatMessageIcon = ({ unreadCount, onClick }: ChatMessageIconProps) 
     >
       <div className={`relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full items-center justify-center ${
         unreadCount > 0 
-          ? 'bg-[#d4f5bc] border border-[#d4f5bc]' 
+          ? 'bg-[#d4f5bc] dark:bg-[#054101] border border-[#d4f5bc] dark:border-[#054101]' 
           : 'bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325]'
       }`}>
         {unreadCount > 0 ? (
