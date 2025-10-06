@@ -22,17 +22,17 @@ export const IntroSlide = ({
   
   return (
     <div className="flex flex-col items-center justify-center gap-8 px-6">
+      {/* Visual showcase */}
+      <div className="w-full max-w-sm">
+        {visual}
+      </div>
+      
       {/* Two-line headline */}
       <h1 className="text-center leading-tight">
         {line1}
         <br />
         {line2}
       </h1>
-      
-      {/* Visual showcase */}
-      <div className="w-full max-w-sm">
-        {visual}
-      </div>
     </div>
   );
 };
