@@ -17,7 +17,7 @@ export default function Intro() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const autoplayRef = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true })
+    Autoplay({ delay: 5000, stopOnInteraction: true })
   );
 
   useEffect(() => {
@@ -131,7 +131,7 @@ export default function Intro() {
               {current === index && (
                 <div 
                   key={`progress-${current}-${index}`}
-                  className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left animate-[progress_4s_linear_forwards]"
+                  className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left animate-[progress_5s_linear_forwards]"
                 />
               )}
             </div>
