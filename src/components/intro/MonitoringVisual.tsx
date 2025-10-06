@@ -1,13 +1,23 @@
 import { Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useScanningStatus } from "@/components/monitoring/hooks/useScanningStatus";
+import { useState, useEffect } from "react";
 
 interface MonitoringVisualProps {
   language: string;
 }
 
 export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
-  const { dots } = useScanningStatus();
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    let count = 0;
+    const dotInterval = setInterval(() => {
+      count = (count + 1) % 4;
+      setDots('.'.repeat(count));
+    }, 500);
+
+    return () => clearInterval(dotInterval);
+  }, []);
   return (
     <div className="w-full bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 space-y-6">
       {/* Header */}
