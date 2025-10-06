@@ -63,9 +63,9 @@ export default function Intro() {
             <CarouselItem>
               <IntroSlide
                 visual={<ScoreVisual language={language} />}
-                headlineSwedishLine1="Dölj dina personliga"
+                headlineSwedishLine1="Ta bort dina personliga"
                 headlineSwedishLine2="uppgifter online"
-                headlineEnglishLine1="Hide your personal"
+                headlineEnglishLine1="Remove your personal"
                 headlineEnglishLine2="information online"
                 language={language}
               />
