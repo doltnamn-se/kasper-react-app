@@ -47,12 +47,10 @@ export const AuthForm = ({
   return (
     <div className="flex justify-center w-full">
       <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
-        {!isIOS() && <AuthEyeLogo />}
-        {!isIOS() && (
-          <h2 className="mb-10 text-left">
-            {isResetPasswordMode ? t('reset.password') : t('sign.in')}
-          </h2>
-        )}
+        <AuthEyeLogo />
+        <h2 className="mb-10 text-left">
+          {isResetPasswordMode ? t('reset.password') : t('sign.in')}
+        </h2>
         
         {errorMessage && (
           <Alert variant="destructive" className="mb-4">
