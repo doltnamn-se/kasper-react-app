@@ -2,14 +2,23 @@ import { ReactNode } from "react";
 
 interface IntroSlideProps {
   visual: ReactNode;
-  headlineSwedish: string;
-  headlineEnglish: string;
+  headlineSwedishLine1: string;
+  headlineSwedishLine2: string;
+  headlineEnglishLine1: string;
+  headlineEnglishLine2: string;
   language: string;
 }
 
-export const IntroSlide = ({ visual, headlineSwedish, headlineEnglish, language }: IntroSlideProps) => {
-  const headline = language === 'sv' ? headlineSwedish : headlineEnglish;
-  const lines = headline.split('\n');
+export const IntroSlide = ({ 
+  visual, 
+  headlineSwedishLine1, 
+  headlineSwedishLine2, 
+  headlineEnglishLine1, 
+  headlineEnglishLine2, 
+  language 
+}: IntroSlideProps) => {
+  const line1 = language === 'sv' ? headlineSwedishLine1 : headlineEnglishLine1;
+  const line2 = language === 'sv' ? headlineSwedishLine2 : headlineEnglishLine2;
   
   return (
     <div className="flex flex-col items-center justify-center gap-8 px-6">
@@ -20,12 +29,9 @@ export const IntroSlide = ({ visual, headlineSwedish, headlineEnglish, language 
       
       {/* Two-line headline */}
       <h1 className="text-center leading-tight">
-        {lines.map((line, index) => (
-          <span key={index}>
-            {line}
-            {index < lines.length - 1 && <br />}
-          </span>
-        ))}
+        {line1}
+        <br />
+        {line2}
       </h1>
     </div>
   );
