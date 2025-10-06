@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { IntroSlide } from "@/components/intro/IntroSlide";
 import { ScoreVisual } from "@/components/intro/ScoreVisual";
+import { StatusVisual } from "@/components/intro/StatusVisual";
 import { MonitoringVisual } from "@/components/intro/MonitoringVisual";
 import { AddressAlertsVisual } from "@/components/intro/AddressAlertsVisual";
 
@@ -56,6 +57,16 @@ export default function Intro() {
                 headlineSwedishLine2="uppgifter online"
                 headlineEnglishLine1="Hide your personal"
                 headlineEnglishLine2="information online"
+                language={language}
+              />
+            </CarouselItem>
+            <CarouselItem>
+              <IntroSlide
+                visual={<StatusVisual language={language} />}
+                headlineSwedishLine1="Se din status på"
+                headlineSwedishLine2="upplysningssidor"
+                headlineEnglishLine1="Track your status on"
+                headlineEnglishLine2="search sites"
                 language={language}
               />
             </CarouselItem>
