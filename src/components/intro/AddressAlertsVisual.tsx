@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 
 interface AddressAlertsVisualProps {
   language: string;
@@ -16,8 +17,13 @@ export const AddressAlertsVisual = ({ language }: AddressAlertsVisualProps) => {
             </p>
             <Badge 
               variant="secondary" 
-              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239]"
+              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239] flex items-center gap-2"
             >
+              <Spinner 
+                color="#20f922" 
+                size={16} 
+                centerSize={5}
+              />
               {language === 'sv' ? 'Aktiv' : 'Active'}
             </Badge>
           </div>
