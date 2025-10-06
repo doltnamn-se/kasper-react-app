@@ -129,10 +129,19 @@ export default function Intro() {
               }`}
             >
               {current === index && (
-                <div 
-                  key={`progress-${current}-${index}`}
-                  className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left animate-[progress_5s_linear_forwards]"
-                />
+                <>
+                  <div 
+                    key={`progress-${current}-${index}`}
+                    className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left animate-[progress_5s_linear_forwards]"
+                  />
+                  <div 
+                    className="absolute inset-y-0 w-1 bg-gradient-to-r from-transparent via-white dark:via-white to-transparent opacity-80 blur-[2px] animate-[sparkle_5s_linear_forwards]"
+                    style={{
+                      left: '-2px',
+                      boxShadow: '0 0 8px 2px rgba(255, 255, 255, 0.6)'
+                    }}
+                  />
+                </>
               )}
             </div>
           ))}

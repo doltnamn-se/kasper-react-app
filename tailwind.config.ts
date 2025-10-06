@@ -29,6 +29,10 @@ export default {
           '0%': { transform: 'scaleX(0)' },
           '100%': { transform: 'scaleX(1)' },
         },
+        sparkle: {
+          '0%': { left: '-2px' },
+          '100%': { left: 'calc(100% - 2px)' },
+        },
         'accordion-down': {
           from: { height: '0', opacity: '0' },
           to: { height: 'var(--radix-accordion-content-height)', opacity: '1' }
