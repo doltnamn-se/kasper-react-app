@@ -38,7 +38,7 @@ export const StatusVisual = ({ language }: StatusVisualProps) => {
           {sites.map((site, index) => (
             <div 
               key={`${site.name}-${index}`}
-              className="flex items-center justify-between py-3 border-b border-[#e5e7eb] dark:border-[#232325]"
+              className="flex items-center justify-between py-3"
             >
               <div className="flex items-center gap-2">
                 <img 
