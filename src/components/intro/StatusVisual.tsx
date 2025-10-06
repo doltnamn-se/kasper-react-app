@@ -6,12 +6,12 @@ interface StatusVisualProps {
 }
 
 const allSites = [
-  { name: 'Mrkoll', icon: '/fonts/MrKoll.svg', status: 'Dold' },
+  { name: 'Mrkoll', icon: '/fonts/MrKoll.svg', status: 'Borttagen' },
   { name: 'Ratsit', icon: '/fonts/Ratsit.svg', status: 'Borttagen' },
-  { name: 'Hitta', icon: '/fonts/Hitta.svg', status: 'Dold' },
-  { name: 'Merinfo', icon: '/fonts/Merinfo.svg', status: 'Adress dold' },
+  { name: 'Hitta', icon: '/fonts/Hitta.svg', status: 'Borttagen' },
+  { name: 'Merinfo', icon: '/fonts/Merinfo.svg', status: 'Borttagen' },
   { name: 'Eniro', icon: '/fonts/Eniro.svg', status: 'Borttagen' },
-  { name: 'Birthday', icon: '/fonts/Birthday.svg', status: 'Dold' },
+  { name: 'Birthday', icon: '/fonts/Birthday.svg', status: 'Borttagen' },
 ];
 
 export const StatusVisual = ({ language }: StatusVisualProps) => {
