@@ -13,7 +13,9 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
   centered = false,
   ...props
 }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
   const location = useLocation();
   const isMobile = useIsMobile();
 
@@ -70,12 +72,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
         {...props}
       >
         <img 
-          src="/lovable-uploads/kasper-logo-app-light.svg" 
+          src="/lovable-uploads/kasper-logo-app-dark.svg" 
           alt="Logo" 
           className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`} 
         />
         <img 
-          src="/lovable-uploads/kasper-logo-app-dark.svg" 
+          src="/lovable-uploads/kasper-logo-app-light.svg" 
           alt="Logo" 
           className={`h-full w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`} 
         />
@@ -92,13 +94,13 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       {isAdminRoute ? (
         <div className={`relative ${logoHeight} w-auto min-w-[80px]`}>
           <img 
-            src="/lovable-uploads/kasper-logo-app-light.svg" 
+            src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Admin Logo" 
             className={`h-6 w-auto transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
             style={{ position: 'absolute', top: 0, left: 0 }}
           />
           <img 
-            src="/lovable-uploads/kasper-logo-app-dark.svg" 
+            src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Admin Logo" 
             className={`h-6 w-auto transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
             style={{ position: 'absolute', top: 0, left: 0 }}
@@ -107,12 +109,12 @@ export const AuthLogo: React.FC<AuthLogoProps> = ({
       ) : isMobile ? (
         <div className="relative h-[1.5rem] w-auto">
           <img 
-            src="/lovable-uploads/kasper-logo-app-light.svg" 
+            src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Mobile Logo" 
             className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
           />
           <img 
-            src="/lovable-uploads/kasper-logo-app-dark.svg" 
+            src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Mobile Logo" 
             className={`h-[1.5rem] w-auto absolute inset-0 object-contain transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
           />
