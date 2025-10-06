@@ -35,7 +35,7 @@ export const ScoreVisual = ({ language }: ScoreVisualProps) => {
   }, [score]);
   
   return (
-    <div className="flex flex-col items-start gap-6 w-full bg-[#fbfbfb] dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200">
+    <div className="flex flex-col items-start gap-6 w-full bg-transparent p-4 md:p-6 rounded-2xl shadow-sm border border-transparent transition-colors duration-200">
       {/* Score number */}
       <div className="flex flex-col items-start">
         <div className="text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]">

@@ -19,7 +19,7 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
     return () => clearInterval(dotInterval);
   }, []);
   return (
-    <div className="w-full bg-[#fbfbfb] dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 space-y-6">
+    <div className="w-full bg-transparent p-4 md:p-6 rounded-2xl shadow-sm border border-transparent transition-colors duration-200 space-y-6">
       {/* Scanning Badge */}
       <Badge 
         variant="outline" 
