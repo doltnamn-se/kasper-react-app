@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { ScoreItem } from './ScoreItem';
-import { SearchX, MapPinHouse, EyeOff, UserSearch } from "lucide-react";
+import { SearchX, MapPinHouse, EyeOff, UserRoundSearch } from "lucide-react";
 import { useSiteStatusBadge } from '@/utils/siteStatusUtils';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
@@ -84,7 +84,7 @@ export const ScoreItemsList = ({
         linkTo="/deindexing"
       />
       <ScoreItem
-        icon={UserSearch}
+        icon={UserRoundSearch}
         title={language === 'sv' ? 'Bevakning' : 'Monitoring'}
         score={scores.monitoring}
         showProgress={false}
