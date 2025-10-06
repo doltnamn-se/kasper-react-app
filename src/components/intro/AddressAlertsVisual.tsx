@@ -9,7 +9,7 @@ export const AddressAlertsVisual = ({ language }: AddressAlertsVisualProps) => {
   return (
     <div className="w-full bg-transparent p-4 md:p-6 rounded-2xl border border-transparent transition-colors duration-200 space-y-6">
       {/* Address Card */}
-      <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30]">
+      <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-transparent">
         <div className="space-y-1 mb-4">
           <div className="flex items-center justify-between">
             <p className="text-[#111827] dark:text-white text-base font-bold">
