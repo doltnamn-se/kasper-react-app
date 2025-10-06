@@ -65,7 +65,7 @@ export const UserProfileMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group p-2"
+          className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'p-2'}`}
         >
           <Avatar className="h-8 w-8 shrink-0">
             <AvatarImage 
