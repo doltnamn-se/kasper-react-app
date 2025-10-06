@@ -74,7 +74,7 @@ export const UserProfileMenu = () => {
           className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'p-2'}`}
         >
           {isMobile ? (
-            <span className={`text-sm font-medium px-3 py-1.5 rounded-full bg-[#e8e8e8] dark:bg-[#303032] ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+            <span className={`text-sm font-medium px-3 py-1.5 rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
               {getFirstName()}
             </span>
           ) : (
