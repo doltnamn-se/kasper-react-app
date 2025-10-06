@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, UserRound } from "lucide-react";
 import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -75,7 +75,7 @@ export const UserProfileMenu = () => {
         >
           {isMobile ? (
             <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
-              <User className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+              <UserRound className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
             </div>
           ) : (
             <>
