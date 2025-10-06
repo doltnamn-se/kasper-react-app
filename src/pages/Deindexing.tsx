@@ -14,6 +14,7 @@ import { NewLinkForm } from "@/components/deindexing/NewLinkForm";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useIncomingUrls } from "@/hooks/useIncomingUrls";
 import { Badge } from "@/components/ui/badge";
+import { GoogleAnnouncement } from "@/components/announcements/GoogleAnnouncement";
 
 const Deindexing = () => {
   const { t, language } = useLanguage();
@@ -162,6 +163,8 @@ const Deindexing = () => {
   return (
     <MainLayout>
       <div className="space-y-8">
+        <GoogleAnnouncement />
+        
         {/* Modified header section with flex layout for mobile */}
         <div className="flex flex-row justify-between items-center mb-6">
           <h1>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MousePointerClick } from "lucide-react";
@@ -14,7 +13,7 @@ import { IdVerificationCard } from "@/components/id/IdVerificationCard";
 import { usePendingIdVerification } from "@/components/id/hooks/usePendingIdVerification";
 import { UserSwitcher } from "@/components/nav/UserSwitcher";
 import { useCustomerMembers } from "@/hooks/useCustomerMembers";
-import { ProcessingTimeAnnouncements } from "@/components/announcements/ProcessingTimeAnnouncements";
+import { MrKollAnnouncement } from "@/components/announcements/MrKollAnnouncement";
 
 
 const Index = () => {
@@ -39,7 +38,7 @@ const Index = () => {
   };
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <ProcessingTimeAnnouncements />
+      <MrKollAnnouncement />
       
       <div className="mb-6 flex items-center justify-start gap-3 min-w-0">
         <h1 className={`m-0 flex-1 min-w-0 ${isMobile ? 'whitespace-nowrap truncate text-ellipsis' : ''}`}>
