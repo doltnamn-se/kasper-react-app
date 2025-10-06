@@ -89,9 +89,9 @@ export default function ProfileMenu() {
   );
 
   return (
-    <div className="min-h-screen bg-transparent">
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
-        {/* Profile Section */}
+    <div className="min-h-screen bg-transparent space-y-4">
+      {/* Profile Section Container */}
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
         <MenuItem
           icon={UserCircle}
           label={displayName}
@@ -103,8 +103,10 @@ export default function ProfileMenu() {
             {language === 'sv' ? 'Hantera profil' : 'Manage profile'}
           </span>
         </div>
+      </div>
 
-        <Separator className="my-2 dark:bg-[#2d2d2d]" />
+      {/* Menu Items Container */}
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
 
         {/* Support */}
         <MenuItem
