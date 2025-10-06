@@ -21,8 +21,8 @@ export const UserBottomNav = () => {
   const navItems = [
     { path: '/', icon: (
         <>
-          <img src={kasperFaviconDark} alt="Home" className="h-5 w-5 dark:hidden" />
-          <img src={kasperFaviconLight} alt="Home" className="h-5 w-5 hidden dark:block" />
+          <img src={kasperFaviconLight} alt="Home" className="h-5 w-5 dark:hidden" />
+          <img src={kasperFaviconDark} alt="Home" className="h-5 w-5 hidden dark:block" />
         </>
       ), label: t('nav.home') },
     { path: '/deindexing', icon: <EyeOff className="h-5 w-5" />, label: t('nav.my.links') },
