@@ -39,7 +39,7 @@ export default function Intro() {
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] dark:bg-[#1a1a1a] p-4 md:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className={`flex justify-between items-center mb-8 ${isIOS() ? 'pt-12' : ''}`}>
         {/* Logo */}
         <div className="relative h-6 w-auto min-w-[80px]">
           <img 
