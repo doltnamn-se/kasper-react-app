@@ -79,16 +79,9 @@ export const UserProfileMenu = () => {
             </div>
           ) : (
             <>
-              <Avatar className="h-8 w-8 shrink-0">
-                <AvatarImage 
-                  src={userProfile?.avatar_url} 
-                  alt={displayName}
-                  className="aspect-square object-cover"
-                />
-                <AvatarFallback className="text-[#5e5e5e] dark:text-[#FFFFFFA6] text-sm">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
+              <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
+                <UserRound className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+              </div>
               <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
                 {displayName}
               </span>
