@@ -1,11 +1,13 @@
 import { Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useScanningStatus } from "@/components/monitoring/hooks/useScanningStatus";
 
 interface MonitoringVisualProps {
   language: string;
 }
 
 export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
+  const { dots } = useScanningStatus();
   return (
     <div className="w-full bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 space-y-6">
       {/* Header */}
@@ -18,7 +20,12 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
           className="flex items-center gap-2 font-medium border-[#d4d4d4] dark:border-[#363636] bg-[#fdfdfd] dark:bg-[#242424] text-[0.8rem] py-2"
         >
           <Activity className="w-[0.9rem] h-[0.9rem] text-[#ea384c] animate-icon-fill" />
-          <span>{language === 'sv' ? 'Skannar..' : 'Scanning..'}</span>
+          <span className="inline-flex items-center whitespace-nowrap">
+            {language === 'sv' ? 
+              <><span>Skannar</span><span className="inline-block w-[24px]">{dots}</span></> : 
+              <><span>Scanning</span><span className="inline-block w-[24px]">{dots}</span></>
+            }
+          </span>
         </Badge>
       </div>
 
