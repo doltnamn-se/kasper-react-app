@@ -15,17 +15,16 @@ export const AddressAlertsVisual = ({ language }: AddressAlertsVisualProps) => {
             <p className="text-[#111827] dark:text-white text-base font-bold">
               {language === 'sv' ? 'Storgatan 12' : 'Main Street 12'}
             </p>
-            <Badge 
-              variant="secondary" 
-              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239] flex items-center gap-2"
-            >
+            <div className="flex items-center gap-2">
               <Spinner 
                 color="#20f922" 
                 size={16} 
                 centerSize={5}
               />
-              {language === 'sv' ? 'Aktiv' : 'Active'}
-            </Badge>
+              <span className="text-xs md:text-sm">
+                {language === 'sv' ? 'Aktiv' : 'Active'}
+              </span>
+            </div>
           </div>
           <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
             {language === 'sv' ? '123 45 Stockholm' : '123 45 Stockholm'}
