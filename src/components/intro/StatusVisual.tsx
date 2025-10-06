@@ -26,7 +26,7 @@ export const StatusVisual = ({ language }: StatusVisualProps) => {
       </h2>
 
       {/* Status list with smooth vertical scroll */}
-      <div className="relative h-[140px] overflow-hidden">
+      <div className="relative h-[210px] overflow-hidden">
         {/* Fade out gradient at top */}
         <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-[#1c1c1e] to-transparent z-10 pointer-events-none" />
         
