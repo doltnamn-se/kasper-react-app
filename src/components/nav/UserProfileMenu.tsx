@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, User } from "lucide-react";
 import { getUserInitials } from "@/utils/profileUtils";
 import { ProfileMenuItems } from "./ProfileMenuItems";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -74,9 +74,9 @@ export const UserProfileMenu = () => {
           className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'p-2'}`}
         >
           {isMobile ? (
-            <span className={`text-sm font-medium px-3 py-1.5 rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-              {getFirstName()}
-            </span>
+            <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] items-center justify-center">
+              <User className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+            </div>
           ) : (
             <>
               <Avatar className="h-8 w-8 shrink-0">
