@@ -27,11 +27,6 @@ export const UserProfileMenu = () => {
     return userProfile.display_name;
   };
 
-  const getFirstName = () => {
-    if (!userProfile?.display_name) return userEmail;
-    return userProfile.display_name.split(' ')[0];
-  };
-
   const handleSignOut = async () => {
     if (isSigningOut) {
       console.log("Sign out already in progress");
@@ -82,9 +77,11 @@ export const UserProfileMenu = () => {
               {initials}
             </AvatarFallback>
           </Avatar>
-          <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
-            {isMobile ? getFirstName() : displayName}
-          </span>
+          {!isMobile && (
+            <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
+              {displayName}
+            </span>
+          )}
           {!isMobile && (
             <ChevronDown 
               className={`w-4 h-4 text-[#000000A6] group-hover:text-[#000000] dark:text-[#FFFFFFA6] dark:group-hover:text-[#FFFFFF] transition-transform duration-200 ${
