@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-export const ScoreVisual = () => {
+interface ScoreVisualProps {
+  language: string;
+}
+
+export const ScoreVisual = ({ language }: ScoreVisualProps) => {
   const score = 100;
   const [displayScore, setDisplayScore] = useState(0);
   const [animatedScore, setAnimatedScore] = useState(0);
@@ -38,7 +42,7 @@ export const ScoreVisual = () => {
           {displayScore}
         </div>
         <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mt-1">
-          Fullt skyddad
+          {language === 'sv' ? 'Fullt skyddad' : 'Fully protected'}
         </p>
       </div>
       
