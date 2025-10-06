@@ -7,7 +7,7 @@ interface MonitoringVisualProps {
 
 export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
   return (
-    <div className="w-full bg-[#fafafa] dark:bg-[#1a1a1a] rounded-2xl p-6 space-y-6">
+    <div className="w-full bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-[#000000] dark:text-[#FFFFFF]">
