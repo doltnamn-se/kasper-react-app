@@ -10,14 +10,15 @@ export const AddressAlertsVisual = ({ language }: AddressAlertsVisualProps) => {
       {/* Address Card */}
       <div className="bg-[#f9fafb] dark:bg-[#232325] rounded-lg p-4 border border-[#e5e7eb] dark:border-[#2e2e30]">
         <div className="space-y-2 mb-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between">
             <p className="text-[#111827] dark:text-white text-base font-bold">
               {language === 'sv' ? 'Storgatan 12' : 'Main Street 12'}
             </p>
             <Badge 
               variant="secondary" 
-              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239]"
+              className="text-[#097c4f] dark:text-[#85e0ba] bg-[#3fcf8e1a] dark:bg-[#3ecf8e1a] border border-[#16b674] dark:border-[#006239] flex items-center gap-1.5"
             >
+              <span className="w-2 h-2 rounded-full bg-[#16b674] dark:bg-[#20f922] animate-pulse"></span>
               {language === 'sv' ? 'Aktiv' : 'Active'}
             </Badge>
           </div>
