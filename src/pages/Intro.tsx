@@ -108,6 +108,20 @@ export default function Intro() {
         </Carousel>
       </div>
 
+      {/* Carousel indicators */}
+      <div className="flex items-center justify-center gap-2 pb-6">
+        {[0, 1, 2, 3].map((index) => (
+          <div
+            key={index}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              current === index 
+                ? 'w-8 bg-[#000000] dark:bg-[#ffffff]' 
+                : 'w-1 bg-[#000000]/30 dark:bg-[#ffffff]/30'
+            }`}
+          />
+        ))}
+      </div>
+
       {/* Bottom button */}
       <div className="pb-8">
         <Button 
