@@ -164,17 +164,7 @@ export default {
             opacity: '0',
             transform: 'scale(0.98)'
           }
-        },
-        'sparkle-pulse': {
-          '0%, 100%': { 
-            opacity: '1',
-            transform: 'translateY(-50%) scale(1)',
-          },
-          '50%': { 
-            opacity: '0.6',
-            transform: 'translateY(-50%) scale(1.3)',
-          },
-        },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 300ms cubic-bezier(0.87, 0, 0.13, 1)',
