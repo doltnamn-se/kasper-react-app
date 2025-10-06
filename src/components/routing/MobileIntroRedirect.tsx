@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { isIOS, isAndroid, isWeb } from '@/capacitor';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { isIOS, isAndroid } from '@/capacitor';
 import { supabase } from '@/integrations/supabase/client';
 
 export const MobileIntroRedirect = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobileScreen = useIsMobile();
 
   useEffect(() => {
     const checkAndRedirect = async () => {
@@ -19,11 +17,8 @@ export const MobileIntroRedirect = () => {
         return;
       }
 
-      // Check if we should show intro page
-      const shouldShowIntro = 
-        isIOS() || // iOS app
-        isAndroid() || // Android app
-        (isWeb() && isMobileScreen); // Mobile web
+      // Check if we should show intro page (only on native apps)
+      const shouldShowIntro = isIOS() || isAndroid();
 
       // Only redirect if we're not already on intro or auth pages
       const isOnIntroOrAuth = location.pathname === '/intro' || 
@@ -36,7 +31,7 @@ export const MobileIntroRedirect = () => {
     };
 
     checkAndRedirect();
-  }, [navigate, location, isMobileScreen]);
+  }, [navigate, location]);
 
   return null;
 };
