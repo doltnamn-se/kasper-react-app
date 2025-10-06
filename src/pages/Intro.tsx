@@ -53,12 +53,12 @@ export default function Intro() {
           <img 
             src="/lovable-uploads/kasper-logo-app-dark.svg" 
             alt="Logo" 
-            className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
+            className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
           />
           <img 
             src="/lovable-uploads/kasper-logo-app-light.svg" 
             alt="Logo" 
-            className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
+            className={`h-6 w-auto absolute inset-0 transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
         
