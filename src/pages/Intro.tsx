@@ -7,6 +7,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { IntroSlide } from "@/components/intro/IntroSlide";
 import { ScoreVisual } from "@/components/intro/ScoreVisual";
 import { MonitoringVisual } from "@/components/intro/MonitoringVisual";
+import { AddressAlertsVisual } from "@/components/intro/AddressAlertsVisual";
 
 export default function Intro() {
   const navigate = useNavigate();
@@ -65,6 +66,16 @@ export default function Intro() {
                 headlineSwedishLine2="noterar dig om nya länkar"
                 headlineEnglishLine1="Our monitoring service"
                 headlineEnglishLine2="notifies you of new links"
+                language={language}
+              />
+            </CarouselItem>
+            <CarouselItem>
+              <IntroSlide
+                visual={<AddressAlertsVisual language={language} />}
+                headlineSwedishLine1="Håll koll på"
+                headlineSwedishLine2="din adress"
+                headlineEnglishLine1="Keep track of"
+                headlineEnglishLine2="your address"
                 language={language}
               />
             </CarouselItem>
