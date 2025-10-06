@@ -4,8 +4,13 @@ export const ScoreVisual = () => {
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Score number */}
-      <div className="text-7xl font-bold">
-        {score}
+      <div className="flex flex-col items-center">
+        <div className="text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]">
+          {score}
+        </div>
+        <p className="text-[#000000A6] dark:text-[#FFFFFFA6] text-sm font-medium mt-1">
+          Fullt skyddad
+        </p>
       </div>
       
       {/* Progress bar */}
