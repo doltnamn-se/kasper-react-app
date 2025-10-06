@@ -1,12 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Info, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+import { Preferences } from '@capacitor/preferences';
 
 export const ProcessingTimeAnnouncements = () => {
   const { language } = useLanguage();
   const [showMrKoll, setShowMrKoll] = useState(true);
   const [showGoogle, setShowGoogle] = useState(true);
+
+  // Load the dismissed state from storage on mount
+  useEffect(() => {
+    const loadDismissedState = async () => {
+      const { value: mrKollDismissed } = await Preferences.get({ key: 'announcement_mrkoll_dismissed' });
+      const { value: googleDismissed } = await Preferences.get({ key: 'announcement_google_dismissed' });
+      
+      if (mrKollDismissed === 'true') {
+        setShowMrKoll(false);
+      }
+      if (googleDismissed === 'true') {
+        setShowGoogle(false);
+      }
+    };
+    
+    loadDismissedState();
+  }, []);
+
+  const handleDismissMrKoll = async () => {
+    setShowMrKoll(false);
+    await Preferences.set({ key: 'announcement_mrkoll_dismissed', value: 'true' });
+  };
+
+  const handleDismissGoogle = async () => {
+    setShowGoogle(false);
+    await Preferences.set({ key: 'announcement_google_dismissed', value: 'true' });
+  };
 
   const mrKollText = language === 'sv'
     ? "Just nu är MrKolls handläggningstid för borttagning av profiler mellan 3-5 veckor"
@@ -27,7 +55,7 @@ export const ProcessingTimeAnnouncements = () => {
             variant="ghost"
             size="icon"
             className="absolute top-2 right-2 h-6 w-6 rounded-full hover:bg-[hsl(var(--id-info-text))]/10"
-            onClick={() => setShowMrKoll(false)}
+            onClick={handleDismissMrKoll}
           >
             <X className="h-4 w-4 text-[hsl(var(--id-info-text))]" />
           </Button>
@@ -44,7 +72,7 @@ export const ProcessingTimeAnnouncements = () => {
             variant="ghost"
             size="icon"
             className="absolute top-2 right-2 h-6 w-6 rounded-full hover:bg-[hsl(var(--id-info-text))]/10"
-            onClick={() => setShowGoogle(false)}
+            onClick={handleDismissGoogle}
           >
             <X className="h-4 w-4 text-[hsl(var(--id-info-text))]" />
           </Button>
