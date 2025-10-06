@@ -33,8 +33,8 @@ export const AddressAlertsVisual = ({ language }: AddressAlertsVisualProps) => {
         <div className="pt-3 border-t border-[#e5e7eb] dark:border-[#2e2e30]">
           <p className="text-[#000000] dark:text-[#FFFFFF] text-sm">
             {language === 'sv' 
-              ? 'Adresslarm aktivt sedan 1 oktober 2025'
-              : 'Address alert active since October 1, 2025'
+              ? 'Aktivt sedan 1 oktober 2025'
+              : 'Active since October 1, 2025'
             }
           </p>
         </div>
