@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquareText, MessageSquare } from "lucide-react";
+import { MessageSquareText, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ChatMessageIconProps {
@@ -21,7 +21,7 @@ export const ChatMessageIcon = ({ unreadCount, onClick }: ChatMessageIconProps) 
           : 'bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325]'
       }`}>
         {unreadCount > 0 ? (
-          <MessageSquare className="w-4 h-4 text-[#24cc5c]" fill="#24cc5c" />
+          <MessageCircle className="w-4 h-4 text-[#24cc5c]" fill="#24cc5c" />
         ) : (
           <MessageSquareText className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
         )}
