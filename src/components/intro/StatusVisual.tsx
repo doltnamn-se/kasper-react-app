@@ -19,7 +19,7 @@ export const StatusVisual = ({ language }: StatusVisualProps) => {
   const sites = [...allSites, ...allSites];
 
   return (
-    <div className="w-full bg-transparent p-4 md:p-6 rounded-2xl shadow-sm border border-transparent transition-colors duration-200 space-y-6">
+    <div className="w-full bg-transparent p-4 md:p-6 rounded-2xl border border-transparent transition-colors duration-200 space-y-6">
       {/* Status list with smooth vertical scroll */}
       <div className="relative h-[140px] overflow-hidden">
         {/* Fade out gradient at top */}
