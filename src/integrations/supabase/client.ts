@@ -7,28 +7,63 @@ import { Capacitor } from '@capacitor/core';
 const SUPABASE_URL = "https://upfapfohwnkiugvebujh.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZmFwZm9od25raXVndmVidWpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4OTk1MjEsImV4cCI6MjA1MjQ3NTUyMX0.bph8bum09_ZYifznCYeksXeTsPQnn3m1TdWhbwfcvA0";
 
-// Create custom storage adapter for Capacitor
+// Create custom storage adapter for Capacitor with timeout and fallback
 const createCapacitorStorage = () => {
+  const TIMEOUT_MS = 3000; // 3 second timeout
+  
+  const withTimeout = <T>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
+    return Promise.race([
+      promise,
+      new Promise<T>((_, reject) => 
+        setTimeout(() => reject(new Error('Storage operation timed out')), timeoutMs)
+      )
+    ]);
+  };
+
   return {
     getItem: async (key: string) => {
-      if (Capacitor.isNativePlatform()) {
-        const { value } = await Preferences.get({ key });
-        return value;
-      } else {
+      try {
+        if (Capacitor.isNativePlatform()) {
+          console.log('[Storage] Getting item from Preferences:', key);
+          const { value } = await withTimeout(Preferences.get({ key }), TIMEOUT_MS);
+          console.log('[Storage] Retrieved from Preferences:', key, value ? 'has value' : 'null');
+          return value;
+        } else {
+          return localStorage.getItem(key);
+        }
+      } catch (error) {
+        console.error('[Storage] Error getting item, falling back to localStorage:', error);
+        // Fallback to localStorage on error
         return localStorage.getItem(key);
       }
     },
     setItem: async (key: string, value: string) => {
-      if (Capacitor.isNativePlatform()) {
-        await Preferences.set({ key, value });
-      } else {
+      try {
+        if (Capacitor.isNativePlatform()) {
+          console.log('[Storage] Setting item in Preferences:', key);
+          await withTimeout(Preferences.set({ key, value }), TIMEOUT_MS);
+          console.log('[Storage] Set in Preferences successfully:', key);
+        } else {
+          localStorage.setItem(key, value);
+        }
+      } catch (error) {
+        console.error('[Storage] Error setting item, falling back to localStorage:', error);
+        // Fallback to localStorage on error
         localStorage.setItem(key, value);
       }
     },
     removeItem: async (key: string) => {
-      if (Capacitor.isNativePlatform()) {
-        await Preferences.remove({ key });
-      } else {
+      try {
+        if (Capacitor.isNativePlatform()) {
+          console.log('[Storage] Removing item from Preferences:', key);
+          await withTimeout(Preferences.remove({ key }), TIMEOUT_MS);
+          console.log('[Storage] Removed from Preferences successfully:', key);
+        } else {
+          localStorage.removeItem(key);
+        }
+      } catch (error) {
+        console.error('[Storage] Error removing item, falling back to localStorage:', error);
+        // Fallback to localStorage on error
         localStorage.removeItem(key);
       }
     },

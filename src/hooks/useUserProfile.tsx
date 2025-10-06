@@ -63,24 +63,45 @@ export const useUserProfile = () => {
       if (!mounted.current) return;
       
       try {
+        console.log("[Auth] Initializing profile with session:", session ? "exists" : "null");
         setUserEmail(session?.user?.email ?? null);
         if (session?.user?.id) {
+          console.log("[Auth] Fetching profile for user:", session.user.id);
           await refetchProfile();
         }
+        console.log("[Auth] Profile initialization complete");
         setIsInitializing(false);
       } catch (err) {
-        console.error("Error in initializeProfile:", err);
+        console.error("[Auth] Error in initializeProfile:", err);
         if (mounted.current) {
           setIsInitializing(false);
         }
       }
     };
 
-    // Initial session check
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Initial session check:", session ? "Session found" : "No session");
-      initializeProfile(session);
-    });
+    // Initial session check with timeout
+    console.log("[Auth] Starting initial session check");
+    const sessionCheckTimeout = setTimeout(() => {
+      console.error("[Auth] Session check timed out after 5 seconds, proceeding without session");
+      if (mounted.current) {
+        setUserEmail(null);
+        setIsInitializing(false);
+      }
+    }, 5000);
+
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        clearTimeout(sessionCheckTimeout);
+        console.log("[Auth] Initial session check complete:", session ? "Session found" : "No session");
+        initializeProfile(session);
+      })
+      .catch((error) => {
+        clearTimeout(sessionCheckTimeout);
+        console.error("[Auth] Error getting session:", error);
+        if (mounted.current) {
+          setIsInitializing(false);
+        }
+      });
 
     // Set up real-time subscription for profile changes
     const channel = supabase.channel('profile-changes')
