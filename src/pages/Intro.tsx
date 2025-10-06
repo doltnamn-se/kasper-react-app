@@ -156,7 +156,7 @@ export default function Intro() {
       >
         <Button 
           onClick={handleSignIn}
-          className="w-full"
+          className="w-full text-[1rem]"
           size="lg"
         >
           {language === 'sv' ? 'Logga in' : 'Sign in'}
