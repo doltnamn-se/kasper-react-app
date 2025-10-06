@@ -25,6 +25,10 @@ export default {
         'domaine': ['DomaineDispNrw-Regular', 'serif'],
       },
       keyframes: {
+        progress: {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
         'accordion-down': {
           from: { height: '0', opacity: '0' },
           to: { height: 'var(--radix-accordion-content-height)', opacity: '1' }

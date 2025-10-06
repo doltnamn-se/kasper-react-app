@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { isIOS } from "@/capacitor";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -9,12 +9,16 @@ import { ScoreVisual } from "@/components/intro/ScoreVisual";
 import { StatusVisual } from "@/components/intro/StatusVisual";
 import { MonitoringVisual } from "@/components/intro/MonitoringVisual";
 import { AddressAlertsVisual } from "@/components/intro/AddressAlertsVisual";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function Intro() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const autoplayRef = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
 
   useEffect(() => {
     if (!api) {
@@ -62,7 +66,13 @@ export default function Intro() {
 
       {/* Carousel slides */}
       <div className="flex-1 flex flex-col items-center justify-center gap-6">
-        <Carousel setApi={setApi} className="w-full max-w-md">
+        <Carousel 
+          setApi={setApi} 
+          className="w-full max-w-md"
+          plugins={[autoplayRef.current]}
+          onMouseEnter={() => autoplayRef.current.stop()}
+          onMouseLeave={() => autoplayRef.current.play()}
+        >
           <CarouselContent>
             <CarouselItem>
               <IntroSlide
@@ -112,12 +122,20 @@ export default function Intro() {
           {[0, 1, 2, 3].map((index) => (
             <div
               key={index}
-              className={`h-1 rounded-full transition-all duration-300 ${
+              className={`h-1 rounded-full transition-all duration-300 overflow-hidden ${
                 current === index 
-                  ? 'w-8 bg-[#000000] dark:bg-[#ffffff]' 
+                  ? 'w-8 bg-[#000000]/30 dark:bg-[#ffffff]/30' 
                   : 'w-1 bg-[#000000]/30 dark:bg-[#ffffff]/30'
               }`}
-            />
+            >
+              {current === index && (
+                <div 
+                  key={`progress-${index}`}
+                  className="h-full bg-[#000000] dark:bg-[#ffffff] animate-[progress_4s_linear_forwards]"
+                  style={{ width: '0%' }}
+                />
+              )}
+            </div>
           ))}
         </div>
       </div>
