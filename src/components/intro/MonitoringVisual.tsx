@@ -34,16 +34,6 @@ export const MonitoringVisual = ({ language }: MonitoringVisualProps) => {
         </span>
       </Badge>
 
-      {/* Title with count badge */}
-      <div className="flex items-center gap-3">
-        <h2>
-          {language === 'sv' ? 'Nya länkar att granska' : 'New links to review'}
-        </h2>
-        <div className="bg-[#121212] text-white dark:bg-white dark:text-[#121212] w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-xs md:text-[0.9rem] font-medium md:pb-[2px]" style={{ paddingRight: '1px' }}>
-          1
-        </div>
-      </div>
-
       {/* Sample link card */}
       <div className="bg-[#fafafa] dark:bg-[#232325] rounded-[12px] p-4">
         <div className="grid grid-cols-2 gap-4">
