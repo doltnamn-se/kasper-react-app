@@ -168,7 +168,12 @@ const Auth = () => {
           </div>
         </div>
         
-        <div className="mt-auto">
+        <div 
+          className="mt-auto pb-4"
+          style={{
+            paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))'
+          }}
+        >
           <AuthFooter />
         </div>
       </div>
