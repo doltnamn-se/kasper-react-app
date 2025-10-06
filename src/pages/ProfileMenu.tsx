@@ -89,7 +89,7 @@ export default function ProfileMenu() {
   );
 
   return (
-    <div className="min-h-screen bg-transparent pb-4">
+    <div className="min-h-screen bg-transparent">
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
         {/* Profile Section */}
         <MenuItem
