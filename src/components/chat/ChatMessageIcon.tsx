@@ -23,7 +23,7 @@ export const ChatMessageIcon = ({ unreadCount, onClick }: ChatMessageIconProps) 
         {unreadCount > 0 ? (
           <MessageSquare className="w-4 h-4 text-[#24cc5c]" fill="#24cc5c" />
         ) : (
-          <MessageSquareText className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+          <MessageSquareText className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
         )}
       </div>
     </Button>

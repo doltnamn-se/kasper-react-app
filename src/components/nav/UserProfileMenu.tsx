@@ -75,12 +75,12 @@ export const UserProfileMenu = () => {
         >
           {isMobile ? (
             <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
-              <UserRound className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+              <UserRound className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
             </div>
           ) : (
             <>
               <div className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#ffffff] dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] items-center justify-center">
-                <UserRound className="w-4 h-4 text-[#000000A6] dark:text-[#FFFFFFA6]" />
+                <UserRound className="w-4 h-4 text-[#121212] dark:text-[#ffffff]" />
               </div>
               <span className={`text-sm font-medium ${isOpen ? 'text-[#000000] dark:text-[#FFFFFF]' : ''}`}>
                 {displayName}
