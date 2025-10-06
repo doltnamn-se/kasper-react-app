@@ -29,6 +29,7 @@ export const AuthForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
   const [isResetPasswordMode, setIsResetPasswordMode] = useState(propIsResetPasswordMode);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
     const type = searchParams.get('type');
@@ -47,10 +48,12 @@ export const AuthForm = ({
   return (
     <div className="flex justify-center w-full">
       <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
-        <AuthEyeLogo />
-        <h2 className="mb-10 text-left">
-          {isResetPasswordMode ? t('reset.password') : t('sign.in')}
-        </h2>
+        <div className={`transition-all duration-300 ${isInputFocused ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 animate-fade-in'}`}>
+          <AuthEyeLogo />
+          <h2 className="mb-10 text-left">
+            {isResetPasswordMode ? t('reset.password') : t('sign.in')}
+          </h2>
+        </div>
         
         {errorMessage && (
           <Alert variant="destructive" className="mb-4">
@@ -73,11 +76,15 @@ export const AuthForm = ({
           />
         ) : (
           <>
-            <LoginForm
-              onForgotPassword={() => setShowResetForm(true)}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
+            <div className={`transition-all duration-300 ${isInputFocused ? '-mt-24' : 'mt-0'}`}>
+              <LoginForm
+                onForgotPassword={() => setShowResetForm(true)}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                onInputFocus={() => setIsInputFocused(true)}
+                onInputBlur={() => setIsInputFocused(false)}
+              />
+            </div>
             {!isResetPasswordMode && !showResetForm && !isIOS() && <SignUpPrompt onGetStarted={onShowPricingTable} />}
           </>
         )}

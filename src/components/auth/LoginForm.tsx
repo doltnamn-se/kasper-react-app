@@ -12,9 +12,11 @@ interface LoginFormProps {
   onForgotPassword: () => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
+  onInputFocus?: () => void;
+  onInputBlur?: () => void;
 }
 
-export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFormProps) => {
+export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading, onInputFocus, onInputBlur }: LoginFormProps) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -123,6 +125,8 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onFocus={onInputFocus}
+          onBlur={onInputBlur}
           className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0 placeholder:font-medium font-system-ui"
           placeholder={t('email.placeholder')}
           disabled={isLoading}
@@ -135,6 +139,8 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onFocus={onInputFocus}
+          onBlur={onInputBlur}
           className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0 pr-10 placeholder:font-medium font-system-ui"
           placeholder={t('password.placeholder')}
           disabled={isLoading}
