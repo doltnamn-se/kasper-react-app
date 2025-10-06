@@ -16,9 +16,9 @@ export default function Intro() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafafa] dark:bg-[#1a1a1a]">
+    <div className="min-h-screen flex flex-col bg-[#fafafa] dark:bg-[#1a1a1a] p-4 md:p-8">
       {/* Carousel slides */}
-      <div className="flex-1 flex items-center justify-center py-12">
+      <div className="flex-1 flex items-center justify-center">
         <Carousel className="w-full max-w-md">
           <CarouselContent>
             <CarouselItem>
@@ -34,8 +34,8 @@ export default function Intro() {
       </div>
 
       {/* Bottom button */}
-      <div className="p-6 pb-8">
-        <Button 
+      <div className="pb-8">
+        <Button
           onClick={handleSignIn}
           className="w-full"
           size="lg"
