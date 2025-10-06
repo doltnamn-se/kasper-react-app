@@ -106,13 +106,13 @@ export const TopNav = () => {
           <div className="flex-none mr-auto w-[8rem] flex items-center justify-left">
             <div className="relative h-6 w-auto min-w-[80px]">
               <img 
-                src="/lovable-uploads/kasper-logo-app-dark.svg" 
+                src="/lovable-uploads/kasper-logo-app-light.svg" 
                 alt="Logo" 
                 className={`h-6 w-auto transition-opacity duration-200 ${isDarkMode ? 'opacity-0' : 'opacity-100'}`}
                 style={{ position: 'absolute', top: 0, left: 0 }}
               />
               <img 
-                src="/lovable-uploads/kasper-logo-app-light.svg" 
+                src="/lovable-uploads/kasper-logo-app-dark.svg" 
                 alt="Logo" 
                 className={`h-6 w-auto transition-opacity duration-200 ${isDarkMode ? 'opacity-100' : 'opacity-0'}`}
                 style={{ position: 'absolute', top: 0, left: 0 }}
