@@ -72,10 +72,10 @@ export default function Intro() {
             <CarouselItem>
               <IntroSlide
                 visual={<AddressAlertsVisual language={language} />}
-                headlineSwedishLine1="Håll koll på"
-                headlineSwedishLine2="din adress"
-                headlineEnglishLine1="Keep track of"
-                headlineEnglishLine2="your address"
+                headlineSwedishLine1="Adresslarm"
+                headlineSwedishLine2="för din trygghet"
+                headlineEnglishLine1="Address alarm"
+                headlineEnglishLine2="for your safety"
                 language={language}
               />
             </CarouselItem>
