@@ -68,7 +68,7 @@ export default function Intro() {
       </div>
 
       {/* Carousel slides */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-12">
+      <div className="flex-1 flex flex-col items-center justify-center gap-12 -mt-8">
         <Carousel 
           setApi={setApi} 
           className="w-full max-w-md"
