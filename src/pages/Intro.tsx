@@ -17,6 +17,32 @@ export default function Intro() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] dark:bg-[#1a1a1a] p-4 md:p-8">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8">
+        {/* Logo */}
+        <div className="relative h-6 w-auto min-w-[80px]">
+          <img 
+            src="/lovable-uploads/kasper-logo-app-dark.svg" 
+            alt="Logo" 
+            className="h-6 w-auto absolute inset-0 transition-opacity duration-200 dark:opacity-0 opacity-100"
+          />
+          <img 
+            src="/lovable-uploads/kasper-logo-app-light.svg" 
+            alt="Logo" 
+            className="h-6 w-auto absolute inset-0 transition-opacity duration-200 dark:opacity-100 opacity-0"
+          />
+        </div>
+        
+        {/* Small Login Button */}
+        <Button 
+          onClick={handleSignIn}
+          variant="ghost"
+          size="sm"
+        >
+          {language === 'sv' ? 'Logga in' : 'Sign in'}
+        </Button>
+      </div>
+
       {/* Carousel slides */}
       <div className="flex-1 flex items-center justify-center">
         <Carousel className="w-full max-w-md">
