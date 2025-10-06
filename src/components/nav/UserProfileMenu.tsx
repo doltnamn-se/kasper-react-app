@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const UserProfileMenu = () => {
+  const navigate = useNavigate();
   const { userEmail, userProfile, isSigningOut, setIsSigningOut } = useUserProfile();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
@@ -66,11 +68,18 @@ export const UserProfileMenu = () => {
   const initials = getUserInitials(userProfile);
   const displayName = getDisplayName();
 
+  const handleProfileClick = () => {
+    if (isMobile) {
+      navigate('/profile-menu');
+    }
+  };
+
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
+          onClick={isMobile ? handleProfileClick : undefined}
           className={`flex items-center gap-2 text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF] hover:bg-transparent group ${isMobile ? 'p-0' : 'py-2 pr-2 pl-0'}`}
         >
           {isMobile ? (
