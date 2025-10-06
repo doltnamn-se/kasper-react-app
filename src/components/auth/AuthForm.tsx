@@ -76,7 +76,7 @@ export const AuthForm = ({
           />
         ) : (
           <>
-            <div className={`transition-all duration-300 ${isInputFocused ? '-mt-24' : 'mt-0'}`}>
+            <div className={`transition-all duration-300 ${isInputFocused ? '-mt-12' : 'mt-0'}`}>
               <LoginForm
                 onForgotPassword={() => setShowResetForm(true)}
                 isLoading={isLoading}
