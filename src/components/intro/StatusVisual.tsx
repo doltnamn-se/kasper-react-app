@@ -20,11 +20,6 @@ export const StatusVisual = ({ language }: StatusVisualProps) => {
 
   return (
     <div className="w-full bg-white dark:bg-[#1c1c1e] p-4 md:p-6 rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 space-y-6">
-      {/* Header */}
-      <h2>
-        {language === 'sv' ? 'Status' : 'Status'}
-      </h2>
-
       {/* Status list with smooth vertical scroll */}
       <div className="relative h-[210px] overflow-hidden">
         {/* Fade out gradient at top */}
