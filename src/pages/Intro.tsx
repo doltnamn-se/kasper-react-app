@@ -131,11 +131,7 @@ export default function Intro() {
               {current === index && (
                 <div 
                   key={`progress-${current}-${index}`}
-                  className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left"
-                  style={{
-                    animation: 'progress 4s linear forwards',
-                    transform: 'scaleX(0)'
-                  }}
+                  className="absolute inset-0 bg-[#000000] dark:bg-[#ffffff] origin-left animate-[progress_4s_linear_forwards]"
                 />
               )}
             </div>
