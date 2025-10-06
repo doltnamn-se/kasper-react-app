@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, MessageSquareText, ChevronLeft } from "lucide-react";
+import { UserCircle, CreditCard, Settings, LogOut, Sun, Moon, MessageSquareText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -90,27 +89,7 @@ export default function ProfileMenu() {
   );
 
   return (
-    <div className="min-h-screen bg-[#f9fafb] dark:bg-[#121212]">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#f9fafb] dark:bg-[#121212] border-b border-[#e5e7eb] dark:border-[#232325]">
-        <div className="flex items-center justify-between px-4 py-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="text-[#121212] dark:text-[#ffffff]"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-lg font-semibold text-[#121212] dark:text-[#ffffff]">
-            {language === 'sv' ? 'Profil' : 'Profile'}
-          </h1>
-          <div className="w-10" /> {/* Spacer for centering */}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-4">
+    <div className="min-h-screen bg-[#f9fafb] dark:bg-[#121212] p-4">
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
         {/* Profile Section */}
         <MenuItem
@@ -220,7 +199,6 @@ export default function ProfileMenu() {
           label={signingOut ? t('profile.signing.out') : t('profile.sign.out')}
           onClick={handleSignOut}
         />
-        </div>
       </div>
     </div>
   );
