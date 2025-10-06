@@ -31,9 +31,9 @@ export const ScoreVisual = () => {
   }, [score]);
   
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-start gap-6 w-full">
       {/* Score number */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-start">
         <div className="text-6xl font-medium text-[#000000] dark:text-[#FFFFFF]">
           {displayScore}
         </div>
