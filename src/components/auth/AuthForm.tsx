@@ -9,6 +9,7 @@ import { LoginForm } from "./LoginForm";
 import { ResetPasswordForm } from "./ResetPasswordForm";
 import { AuthEyeLogo } from "./AuthEyeLogo";
 import { AnnouncementBadge } from "@/components/AnnouncementBadge";
+import { isIOS } from "@/capacitor";
 
 interface AuthFormProps {
   errorMessage?: string;
@@ -46,10 +47,12 @@ export const AuthForm = ({
   return (
     <div className="flex justify-center w-full">
       <div className="bg-transparent p-8 w-full max-w-sm fade-in rounded-[7px] font-system-ui">
-        <AuthEyeLogo />
-        <h2 className="mb-10 text-left">
-          {isResetPasswordMode ? t('reset.password') : t('sign.in')}
-        </h2>
+        {!isIOS() && <AuthEyeLogo />}
+        {!isIOS() && (
+          <h2 className="mb-10 text-left">
+            {isResetPasswordMode ? t('reset.password') : t('sign.in')}
+          </h2>
+        )}
         
         {errorMessage && (
           <Alert variant="destructive" className="mb-4">
@@ -77,7 +80,7 @@ export const AuthForm = ({
               isLoading={isLoading}
               setIsLoading={setIsLoading}
             />
-            {!isResetPasswordMode && !showResetForm && <SignUpPrompt onGetStarted={onShowPricingTable} />}
+            {!isResetPasswordMode && !showResetForm && !isIOS() && <SignUpPrompt onGetStarted={onShowPricingTable} />}
           </>
         )}
       </div>
