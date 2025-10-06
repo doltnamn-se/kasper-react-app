@@ -15,12 +15,12 @@ const swedishSites = [
 ];
 
 const englishSites = [
-  { name: 'Whitepages', icon: '/fonts/MrKoll.svg', status: 'Borttagen' },
-  { name: 'Spokeo', icon: '/fonts/Ratsit.svg', status: 'Borttagen' },
-  { name: 'BeenVerified', icon: '/fonts/Hitta.svg', status: 'Borttagen' },
-  { name: 'Intelius', icon: '/fonts/Merinfo.svg', status: 'Borttagen' },
-  { name: 'PeopleFinder', icon: '/fonts/Eniro.svg', status: 'Borttagen' },
-  { name: 'TruthFinder', icon: '/fonts/Birthday.svg', status: 'Borttagen' },
+  { name: 'Whitepages', icon: '/fonts/Whitepages.svg', status: 'Borttagen' },
+  { name: 'Spokeo', icon: '/fonts/Spokeo.svg', status: 'Borttagen' },
+  { name: 'BeenVerified', icon: '/fonts/BeenVerified.svg', status: 'Borttagen' },
+  { name: 'Intelius', icon: '/fonts/Intelius.svg', status: 'Borttagen' },
+  { name: 'PeopleFinder', icon: '/fonts/PeopleFinder.svg', status: 'Borttagen' },
+  { name: 'TruthFinder', icon: '/fonts/TruthFinder.svg', status: 'Borttagen' },
 ];
 
 export const StatusVisual = ({ language }: StatusVisualProps) => {
