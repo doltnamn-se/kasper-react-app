@@ -42,7 +42,12 @@ export default function Intro() {
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] dark:bg-[#1a1a1a] p-4 md:p-8">
       {/* Header */}
-      <div className={`flex justify-between items-center mb-8 ${isIOS() ? 'pt-12' : ''}`}>
+      <div 
+        className="flex justify-between items-center mb-8"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top), 0px)'
+        }}
+      >
         {/* Logo */}
         <div className="relative h-6 w-auto min-w-[80px]">
           <img 
@@ -143,7 +148,12 @@ export default function Intro() {
       </div>
 
       {/* Bottom button */}
-      <div className="pb-8">
+      <div 
+        className="pb-8"
+        style={{
+          paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))'
+        }}
+      >
         <Button 
           onClick={handleSignIn}
           className="w-full"
