@@ -34,15 +34,15 @@ export const MobileWebDownloadBanner = () => {
           <img 
             src="/favicon.ico" 
             alt="App icon" 
-            className="w-8 h-8 rounded-lg object-contain"
+            className="w-6 h-6 rounded-lg object-contain"
           />
           
           {/* Text */}
           <div className="flex flex-col">
-            <span className={`text-xs font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <span className="text-xs font-medium" style={{ color: '#121212' }}>
               {mainText}
             </span>
-            <span className={`text-[10px] ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>
+            <span className="text-[10px]" style={{ color: '#121212', opacity: 0.6 }}>
               {subText}
             </span>
           </div>
@@ -51,10 +51,10 @@ export const MobileWebDownloadBanner = () => {
         {/* Close button */}
         <button
           onClick={() => setIsVisible(false)}
-          className={`p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors`}
+          className="p-1 rounded-full hover:bg-black/5 transition-colors"
           aria-label="Close"
         >
-          <X className={`w-4 h-4 ${isDarkMode ? 'text-white' : 'text-black'}`} />
+          <X className="w-4 h-4" style={{ color: '#121212' }} />
         </button>
       </div>
     </div>
