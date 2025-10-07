@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Volume2, VolumeX } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   isSoundEnabled, 
   setSoundEnabled, 
@@ -12,6 +13,7 @@ import {
 } from '@/utils/notificationSound';
 
 export const SoundSettings: React.FC = () => {
+  const { t } = useLanguage();
   const [soundEnabled, setSoundEnabledState] = React.useState(isSoundEnabled());
   const [volume, setVolume] = React.useState(0.5);
 
@@ -34,7 +36,7 @@ export const SoundSettings: React.FC = () => {
     <div>
       <div>
         <h2 className="mb-6">
-          Sound Notifications
+          {t('settings.sound.notifications')}
         </h2>
       </div>
       <div className="space-y-6">
@@ -42,10 +44,10 @@ export const SoundSettings: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="sound-enabled" className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              Enable notification sounds
+              {t('settings.sound.enable')}
             </Label>
             <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              Play a sound when you receive new chat messages
+              {t('settings.sound.enable.description')}
             </p>
           </div>
           <Switch
@@ -60,7 +62,7 @@ export const SoundSettings: React.FC = () => {
         {soundEnabled && (
           <div className="space-y-3">
             <Label className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              Notification Volume
+              {t('settings.sound.volume')}
             </Label>
             <div className="flex items-center space-x-3">
               <VolumeX className="w-4 h-4" />
@@ -75,7 +77,7 @@ export const SoundSettings: React.FC = () => {
               <Volume2 className="w-4 h-4" />
             </div>
             <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-              {Math.round(volume * 100)}% volume
+              {Math.round(volume * 100)}{t('settings.sound.volume.level')}
             </p>
           </div>
         )}
@@ -88,14 +90,14 @@ export const SoundSettings: React.FC = () => {
               onClick={handleTestSound}
               className="w-full"
             >
-              Test Notification Sound
+              {t('settings.sound.test')}
             </Button>
           </div>
         )}
 
         {!soundEnabled && (
           <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6] bg-muted p-3 rounded-md">
-            Sound notifications are disabled. Enable them to hear when new messages arrive.
+            {t('settings.sound.disabled')}
           </p>
         )}
       </div>

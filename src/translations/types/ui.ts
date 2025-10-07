@@ -48,6 +48,13 @@ export interface UITranslations {
   'settings.email.notifications.description': string;
   'settings.inapp.notifications': string;
   'settings.inapp.notifications.description': string;
+  'settings.sound.notifications': string;
+  'settings.sound.enable': string;
+  'settings.sound.enable.description': string;
+  'settings.sound.volume': string;
+  'settings.sound.volume.level': string;
+  'settings.sound.test': string;
+  'settings.sound.disabled': string;
   'settings.change.password': string;
   'settings.password.updated': string;
   'settings.notification.preferences': string;
