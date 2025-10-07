@@ -26,7 +26,7 @@ export const MobileWebDownloadBanner = () => {
       className="fixed top-0 left-0 right-0 z-50"
       style={{
         paddingTop: 'env(safe-area-inset-top)',
-        backgroundColor: '#d4f5b6'
+        backgroundColor: isDarkMode ? '#404937' : '#d4f5b6'
       }}
     >
       <div className="flex items-center justify-between px-4 py-3">
