@@ -106,12 +106,17 @@ export default function ProfileMenu() {
     <div className="min-h-screen bg-transparent space-y-4">
       {/* Profile Section Container */}
       <div 
-        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center"
+        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative"
         style={{ backgroundImage: getProfileBackground() }}
       >
         <div className="w-full flex items-center justify-center py-6 px-4">
-          <span className="text-sm text-black dark:text-gray-300 font-medium">{displayName}</span>
+          <span className="text-sm text-white font-medium">{displayName}</span>
         </div>
+        <img 
+          src="/lovable-uploads/kasper-profil-k-ikon.svg" 
+          alt="Profile icon" 
+          className="absolute top-4 right-4 w-6 h-6"
+        />
       </div>
 
       {/* Menu Items Container */}
