@@ -109,12 +109,15 @@ export default function ProfileMenu() {
         className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center"
         style={{ backgroundImage: getProfileBackground() }}
       >
-        <MenuItem
-          icon={UserCircle}
-          label={displayName}
-          sublabel={userEmail || undefined}
-          onClick={() => navigate("/settings", { state: { defaultTab: "profile" } })}
-        />
+        <div className="w-full flex items-start py-3 px-4">
+          <UserCircle className="mr-3 h-4 w-4 mt-0.5 flex-shrink-0 text-[#121212] dark:text-[#ffffff]" />
+          <div className="flex flex-col flex-1 text-left">
+            <span className="text-sm text-black dark:text-gray-300 font-medium">{displayName}</span>
+            {userEmail && (
+              <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6] mt-0.5">{userEmail}</span>
+            )}
+          </div>
+        </div>
         <div className="px-4 py-2">
           <span className="text-xs text-[#000000A6] dark:text-[#FFFFFFA6]">
             {language === 'sv' ? 'Hantera profil' : 'Manage profile'}
