@@ -52,7 +52,7 @@ export const ui: UITranslations = {
   'settings.inapp.notifications.description': 'Receive notifications in the app',
   'settings.sound.notifications': 'Sound Notifications',
   'settings.sound.enable': 'Enable notification sounds',
-  'settings.sound.enable.description': 'Play a sound when you receive new chat messages',
+  'settings.sound.enable.description': 'When chatting with support',
   'settings.sound.volume': 'Notification Volume',
   'settings.sound.volume.level': '% volume',
   'settings.sound.test': 'Test Notification Sound',

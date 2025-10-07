@@ -52,7 +52,7 @@ export const ui: UITranslations = {
   'settings.inapp.notifications.description': 'Ta emot notiser i appen',
   'settings.sound.notifications': 'Ljudnotiser',
   'settings.sound.enable': 'Aktivera ljudnotiser',
-  'settings.sound.enable.description': 'Spela upp ett ljud när du får nya chattmeddelanden',
+  'settings.sound.enable.description': 'När du chattar med supporten',
   'settings.sound.volume': 'Notisvolym',
   'settings.sound.volume.level': '% volym',
   'settings.sound.test': 'Testa notisljud',
