@@ -12,6 +12,7 @@ import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
 import { IOSNotification } from "@/components/auth/iOSNotification";
 import { isIOS } from "@/capacitor";
+import { MobileWebDownloadBanner } from "@/components/layout/MobileWebDownloadBanner";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -147,9 +148,13 @@ const Auth = () => {
   }, [navigate, isResetPasswordMode, processingAuthChange]);
 
   return (
-    <div className="h-screen overflow-hidden auth-page flex">
-      {/* Left side - Authentication content or Pricing Table */}
-      <div className="w-full md:w-2/5 flex flex-col h-screen p-4 md:p-8 bg-[#fafafa] dark:bg-[#1a1a1a]">
+    <>
+      {/* Mobile Web Download Banner */}
+      <MobileWebDownloadBanner />
+      
+      <div className="h-screen overflow-hidden auth-page flex">
+        {/* Left side - Authentication content or Pricing Table */}
+        <div className="w-full md:w-2/5 flex flex-col h-screen p-4 md:p-8 bg-[#fafafa] dark:bg-[#1a1a1a]">
         <div className="flex-1 flex items-center justify-center w-full">
           <div className="w-full max-w-md space-y-8">
             {showPricingTable ? (
@@ -190,7 +195,8 @@ const Auth = () => {
           />
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
