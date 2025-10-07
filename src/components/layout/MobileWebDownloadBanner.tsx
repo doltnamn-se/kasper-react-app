@@ -22,11 +22,10 @@ export const MobileWebDownloadBanner = () => {
 
   return (
     <div 
-      className={`fixed top-0 left-0 right-0 z-50 ${
-        isDarkMode ? 'bg-[#1a1a1a]' : 'bg-[#fafafa]'
-      } border-b ${isDarkMode ? 'border-white/10' : 'border-black/10'}`}
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        paddingTop: 'env(safe-area-inset-top)'
+        paddingTop: 'env(safe-area-inset-top)',
+        backgroundColor: '#d4f5b6'
       }}
     >
       <div className="flex items-center justify-between px-4 py-3">
@@ -35,7 +34,7 @@ export const MobileWebDownloadBanner = () => {
           <img 
             src="/favicon.ico" 
             alt="App icon" 
-            className="w-10 h-10 rounded-lg object-contain"
+            className="w-8 h-8 rounded-lg object-contain"
           />
           
           {/* Text */}
