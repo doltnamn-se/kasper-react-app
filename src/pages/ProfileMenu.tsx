@@ -39,9 +39,9 @@ export default function ProfileMenu() {
   const formatSubscriptionPlan = (plan: string) => {
     if (!plan) return '';
     
-    // Extract plan name and duration
+    // Extract plan name
     const parts = plan.toLowerCase().split('_');
-    if (parts.length < 2) return plan;
+    if (parts.length < 1) return plan;
     
     // Get plan name with translation
     const planKey = parts[0];
@@ -53,12 +53,7 @@ export default function ProfileMenu() {
     
     const planName = planTranslations[planKey]?.[language] || planKey.charAt(0).toUpperCase() + planKey.slice(1);
     
-    // Extract year number
-    const yearNumber = parts[1];
-    const yearText = language === 'sv' ? 'år' : (yearNumber === '1' ? 'year' : 'years');
-    
-    // Format as "Planname · X år/year(s)"
-    return `${planName} · ${yearNumber} ${yearText}`;
+    return planName;
   };
 
   const handleSignOut = async () => {
