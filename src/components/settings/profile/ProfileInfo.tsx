@@ -32,6 +32,9 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
 
   const getSubscriptionType = (plan: string | null) => {
     if (!plan) return '-';
+    // Old plans (1_month, 3_months, etc.) are always Personskydd
+    if (plan.includes('_month') || plan.includes('_year')) return 'Personskydd';
+    // New plans
     if (plan.includes('personskydd')) return 'Personskydd';
     if (plan.includes('parskydd')) return 'Pärskydd';
     if (plan.includes('familjeskydd')) return 'Familjeskydd';
@@ -40,10 +43,15 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
 
   const getSubscriptionLength = (plan: string | null) => {
     if (!plan) return '-';
+    // Handle old plan formats
+    if (plan.includes('1_month')) return language === 'sv' ? '1 mån' : '1 month';
+    if (plan.includes('3_months')) return language === 'sv' ? '3 mån' : '3 months';
+    if (plan.includes('6_months')) return language === 'sv' ? '6 mån' : '6 months';
+    if (plan.includes('12_months')) return language === 'sv' ? '12 mån' : '12 months';
+    if (plan.includes('24_months')) return language === 'sv' ? '24 mån' : '24 months';
+    // Handle new plan formats
     if (plan.includes('1_year')) return language === 'sv' ? '1 år' : '1 year';
     if (plan.includes('2_years')) return language === 'sv' ? '2 år' : '2 years';
-    if (plan.includes('12_months')) return language === 'sv' ? '1 år' : '1 year';
-    if (plan.includes('24_months')) return language === 'sv' ? '2 år' : '2 years';
     return '-';
   };
 
