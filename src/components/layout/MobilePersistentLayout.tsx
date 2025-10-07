@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { TopNav } from "@/components/TopNav";
 import { AdminBottomNav } from "@/components/nav/AdminBottomNav";
 import { UserBottomNav } from "@/components/nav/UserBottomNav";
+import { MobileWebDownloadBanner } from "@/components/layout/MobileWebDownloadBanner";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -35,6 +35,9 @@ export const MobilePersistentLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#161618] pb-12">
+      {/* Mobile Web Download Banner */}
+      <MobileWebDownloadBanner />
+      
       {/* Fixed Top Navigation */}
       <TopNav />
       
