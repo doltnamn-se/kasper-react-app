@@ -123,10 +123,11 @@ export default function ProfileMenu() {
     <div className="min-h-screen bg-transparent space-y-4">
       {/* Profile Section Container */}
       <div 
-        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative h-40"
+        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative h-48"
         style={{ backgroundImage: getProfileBackground() }}
       >
-        <div className="absolute top-4 left-4 flex gap-2">
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute top-4 left-4 flex gap-2 z-10">
           <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
             {language === 'sv' ? 'Prenumeration' : 'Subscription'}
           </span>
@@ -134,7 +135,7 @@ export default function ProfileMenu() {
             {language === 'sv' ? 'Aktiv' : 'Active'}
           </span>
         </div>
-        <div className="absolute bottom-4 left-4 flex flex-col gap-1">
+        <div className="absolute bottom-4 left-4 flex flex-col gap-1 z-10">
           {(userProfile as any)?.subscription_plan && (
             <span className="text-white font-medium" style={{ fontSize: '1rem' }}>
               {formatSubscriptionPlan((userProfile as any).subscription_plan)}
@@ -145,7 +146,7 @@ export default function ProfileMenu() {
         <img 
           src="/lovable-uploads/kasper-profil-k-ikon.svg" 
           alt="Profile icon" 
-          className="absolute top-4 right-4 w-6 h-6"
+          className="absolute top-4 right-4 w-6 h-6 z-10"
         />
       </div>
 
