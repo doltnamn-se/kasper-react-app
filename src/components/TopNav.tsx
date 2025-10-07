@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ChatMessageIcon } from "./chat/ChatMessageIcon";
 import { useUnreadChatMessages } from "@/hooks/useUnreadChatMessages";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { isWeb } from "@/capacitor";
 
 export const TopNav = () => {
   const { isCollapsed, toggleCollapse, isMobileMenuOpen, toggleMobileMenu } = useSidebar();
@@ -29,6 +30,16 @@ export const TopNav = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const { userProfile } = useUserProfile();
   const { totalUnreadMessages } = useUnreadChatMessages(userProfile?.id);
+  const [showBanner, setShowBanner] = useState(true);
+
+  // Check if mobile web banner should be shown
+  useEffect(() => {
+    const checkMobileWeb = () => {
+      setShowBanner(isWeb() && isMobile);
+    };
+    
+    checkMobileWeb();
+  }, [isMobile]);
 
   // Effect for search keyboard shortcut
   useEffect(() => {
@@ -83,7 +94,7 @@ export const TopNav = () => {
   return (
     <div 
       className={cn(
-        "sticky top-0 right-0 h-16 z-[40] transition-all duration-300",
+        "sticky z-[40] transition-all duration-300",
         isMobile ? (
           cn(
             "left-0 px-4 bg-[#fafafa] dark:bg-[#161618] w-full",
@@ -97,8 +108,9 @@ export const TopNav = () => {
         )
       )}
       style={{
+        top: isMobile && showBanner ? '52px' : '0',
         paddingTop: isMobile ? 'max(env(safe-area-inset-top), 0px)' : undefined,
-        height: isMobile ? 'calc(4rem + env(safe-area-inset-top))' : undefined
+        height: isMobile ? 'calc(4rem + env(safe-area-inset-top))' : '4rem'
       }}
     >
       <div className="flex items-center justify-between h-full w-full">

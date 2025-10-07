@@ -42,7 +42,7 @@ export const MobilePersistentLayout = () => {
       <TopNav />
       
       {/* Main Content Area (scrollable) */}
-      <main className="px-4 pt-12 pb-16">
+      <main className="px-4 pt-[120px] pb-16">
         <Outlet />
       </main>
       

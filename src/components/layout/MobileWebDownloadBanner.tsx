@@ -34,7 +34,7 @@ export const MobileWebDownloadBanner = () => {
           <img 
             src="/favicon.ico" 
             alt="App icon" 
-            className="w-6 h-6 rounded-lg object-contain"
+            className="w-6 h-6 object-contain"
           />
           
           {/* Text */}
