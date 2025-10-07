@@ -72,7 +72,7 @@ export const SoundSettings: React.FC = () => {
                 max={1}
                 min={0}
                 step={0.1}
-                className="flex-1 [&_[role=slider]]:border-[#121212] dark:[&_[role=slider]]:border-[#FFFFFF] [&_.bg-primary]:bg-[#121212] dark:[&_.bg-primary]:bg-[#FFFFFF]"
+                className="flex-1 [&_[role=slider]]:border-[#121212] dark:[&_[role=slider]]:border-[#FFFFFF] dark:[&_[role=slider]]:bg-[#1c1c1e] [&_.bg-primary]:bg-[#121212] dark:[&_.bg-primary]:bg-[#FFFFFF]"
               />
               <Volume2 className="w-4 h-4" />
             </div>
