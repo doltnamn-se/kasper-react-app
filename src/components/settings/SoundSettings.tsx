@@ -33,10 +33,9 @@ export const SoundSettings: React.FC = () => {
   return (
     <div>
       <div>
-        <h3 className="flex items-center gap-2 text-lg font-semibold mb-6">
-          {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+        <h2 className="mb-6">
           Sound Notifications
-        </h3>
+        </h2>
       </div>
       <div className="space-y-6">
         {/* Enable/Disable Sound */}
