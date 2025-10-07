@@ -56,7 +56,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <p className="text-[0.8rem] text-[#121212] dark:text-[#FFFFFF]">
+        <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {language === 'sv' ? 'Namn' : 'Name'}
         </p>
         <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
@@ -65,7 +65,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       </div>
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] text-[#121212] dark:text-[#FFFFFF]">
+        <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           Email
         </p>
         <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
@@ -76,7 +76,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] text-[#121212] dark:text-[#FFFFFF]">
+        <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {language === 'sv' ? 'Prenumerationstyp' : 'Subscription type'}
         </p>
         <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
@@ -85,7 +85,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       </div>
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] text-[#121212] dark:text-[#FFFFFF]">
+        <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {language === 'sv' ? 'Prenumerationslängd' : 'Subscription length'}
         </p>
         <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
@@ -98,7 +98,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
           
           <div className="space-y-1">
-            <p className="text-[0.8rem] text-[#121212] dark:text-[#FFFFFF]">
+            <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {language === 'sv' ? 'Familjemedlemmar' : 'Family members'}
             </p>
             <div className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
@@ -117,7 +117,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] text-[#121212] dark:text-[#FFFFFF]">
+        <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {language === 'sv' ? 'Datum registrerad' : 'Date joined'}
         </p>
         <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
