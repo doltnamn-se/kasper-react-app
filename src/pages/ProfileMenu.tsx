@@ -106,10 +106,15 @@ export default function ProfileMenu() {
     <div className="min-h-screen bg-transparent space-y-4">
       {/* Profile Section Container */}
       <div 
-        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative"
+        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative h-40"
         style={{ backgroundImage: getProfileBackground() }}
       >
-        <div className="w-full flex items-center justify-center py-6 px-4">
+        <div className="absolute top-4 left-4">
+          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs text-white font-medium">
+            {language === 'sv' ? 'Prenumeration' : 'Subscription'}
+          </span>
+        </div>
+        <div className="absolute bottom-4 left-4">
           <span className="text-sm text-white font-medium">{displayName}</span>
         </div>
         <img 
