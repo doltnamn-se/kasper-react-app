@@ -144,7 +144,7 @@ export default function ProfileMenu() {
     <div className="min-h-screen bg-transparent space-y-4">
       {/* Profile Section Container */}
       <div 
-        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative h-48"
+        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative min-h-48 pb-4"
         style={{ backgroundImage: getProfileBackground() }}
       >
         <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.20) 100%)' }}></div>
