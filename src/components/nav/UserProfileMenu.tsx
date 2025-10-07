@@ -112,7 +112,7 @@ export const UserProfileMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-56 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
+        className="w-80 p-2 dark:bg-[#1c1c1e] dark:border-[#232325]"
       >
         <ProfileMenuItems onSignOut={handleSignOut} isSigningOut={isSigningOut} />
       </DropdownMenuContent>
