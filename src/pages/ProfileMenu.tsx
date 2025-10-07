@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProfileMenu() {
   const navigate = useNavigate();
@@ -14,6 +15,23 @@ export default function ProfileMenu() {
   const { setTheme, resolvedTheme } = useTheme();
   const { userProfile, userEmail, isSigningOut, setIsSigningOut } = useUserProfile();
   const [signingOut, setSigningOut] = useState(false);
+
+  // Fetch customer members
+  const { data: customerMembers } = useQuery({
+    queryKey: ['customer-members', userProfile?.id],
+    queryFn: async () => {
+      if (!userProfile?.id) return [];
+      const { data, error } = await supabase
+        .from('customer_members')
+        .select('*')
+        .eq('customer_id', userProfile.id)
+        .order('created_at', { ascending: true });
+      
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!userProfile?.id,
+  });
 
   const languages = {
     sv: { flag: '🇸🇪', label: 'Svenska' },
@@ -145,6 +163,15 @@ export default function ProfileMenu() {
             </span>
           )}
           <span className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>{displayName}</span>
+          {customerMembers && customerMembers.length > 0 && (
+            <>
+              {customerMembers.map((member) => (
+                <span key={member.id} className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>
+                  {member.display_name}
+                </span>
+              ))}
+            </>
+          )}
         </div>
         <img 
           src="/lovable-uploads/kasper-profil-k-ikon.svg" 
