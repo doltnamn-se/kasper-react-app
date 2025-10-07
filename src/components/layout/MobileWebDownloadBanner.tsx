@@ -17,8 +17,8 @@ export const MobileWebDownloadBanner = () => {
     return null;
   }
 
-  const mainText = language === 'sv' ? 'Ladda ner appen' : 'Download the app';
-  const subText = language === 'sv' ? 'På App Store & Google Play' : 'On App Store & Google Play';
+  const mainText = language === 'sv' ? 'Hämta appen' : 'Get the app';
+  const subText = 'App Store & Google Play';
 
   return (
     <div 
