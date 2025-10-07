@@ -54,7 +54,7 @@ export const SoundSettings: React.FC = () => {
             id="sound-enabled"
             checked={soundEnabled}
             onCheckedChange={handleSoundToggle}
-            className="data-[state=checked]:bg-[#121212] dark:data-[state=checked]:bg-[#FFFFFF] [&_span[data-state=checked]]:bg-white dark:[&_span[data-state=checked]]:bg-black"
+            className="data-[state=checked]:bg-[#121212] dark:data-[state=checked]:bg-[#FFFFFF] [&_span[data-state=checked]]:bg-white dark:[&_span[data-state=checked]]:bg-[#1c1c1e]"
           />
         </div>
 
