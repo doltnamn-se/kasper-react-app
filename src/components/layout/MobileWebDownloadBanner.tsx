@@ -78,8 +78,8 @@ export const MobileWebDownloadBanner = () => {
             rel="noopener noreferrer"
             className="px-3 py-2 rounded-full text-xs font-medium transition-colors"
             style={{ 
-              backgroundColor: '#121212',
-              color: '#ffffff'
+              backgroundColor: isDarkMode ? '#ffffff' : '#121212',
+              color: isDarkMode ? '#121212' : '#ffffff'
             }}
           >
             {downloadText}
