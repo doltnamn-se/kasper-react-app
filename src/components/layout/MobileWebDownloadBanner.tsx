@@ -35,15 +35,15 @@ export const MobileWebDownloadBanner = () => {
           <img 
             src="/favicon.ico" 
             alt="App icon" 
-            className="w-10 h-10 rounded-lg"
+            className="w-10 h-10 rounded-lg object-contain"
           />
           
           {/* Text */}
           <div className="flex flex-col">
-            <span className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <span className={`text-xs font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
               {mainText}
             </span>
-            <span className={`text-xs ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>
+            <span className={`text-[10px] ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>
               {subText}
             </span>
           </div>
