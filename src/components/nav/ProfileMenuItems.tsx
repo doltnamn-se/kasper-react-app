@@ -100,7 +100,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
       >
         <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.20) 100%)' }}></div>
         <div className="relative z-10 pt-4 px-4 pb-4">
-          <div className="flex gap-2 mb-20">
+          <div className="flex gap-2 mb-12">
             <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
               {language === 'sv' ? 'Prenumeration' : 'Subscription'}
             </span>
@@ -132,8 +132,6 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           className="absolute top-4 right-4 w-6 h-6 z-10"
         />
       </div>
-
-      <DropdownMenuSeparator className="mx-[-8px] my-2 dark:bg-[#2d2d2d]" />
 
       <DropdownMenuGroup>
         {/* REPLACED: Notifications replaced with Support */}
