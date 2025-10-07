@@ -22,6 +22,20 @@ export default function ProfileMenu() {
   
   const displayName = userProfile?.display_name || userEmail || t('profile.manage');
 
+  const getProfileBackground = () => {
+    const plan = (userProfile as any)?.subscription_plan;
+    if (!plan) return '';
+    
+    if (plan.includes('personskydd')) {
+      return "url('/lovable-uploads/Kasper Personskydd.png')";
+    } else if (plan.includes('parskydd')) {
+      return "url('/lovable-uploads/Kasper Parskydd.png')";
+    } else if (plan.includes('familjeskydd')) {
+      return "url('/lovable-uploads/Kasper Familjeskydd.png')";
+    }
+    return '';
+  };
+
   const handleSignOut = async () => {
     if (signingOut || isSigningOut) {
       console.log("Sign out already in progress");
@@ -91,7 +105,10 @@ export default function ProfileMenu() {
   return (
     <div className="min-h-screen bg-transparent space-y-4">
       {/* Profile Section Container */}
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden">
+      <div 
+        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: getProfileBackground() }}
+      >
         <MenuItem
           icon={UserCircle}
           label={displayName}
