@@ -13,18 +13,18 @@ interface ProfileInfoProps {
 export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps) => {
   const { t, language } = useLanguage();
 
-  // Get customer members count
-  const { data: membersCount } = useQuery({
-    queryKey: ['customer-members-count', userProfile?.id],
+  // Get customer members
+  const { data: members } = useQuery({
+    queryKey: ['customer-members', userProfile?.id],
     queryFn: async () => {
-      if (!userProfile?.id) return 0;
-      const { count, error } = await supabase
+      if (!userProfile?.id) return [];
+      const { data, error } = await supabase
         .from('customer_members')
-        .select('*', { count: 'exact', head: true })
+        .select('display_name')
         .eq('customer_id', userProfile.id);
       
       if (error) throw error;
-      return count || 0;
+      return data || [];
     },
     enabled: !!userProfile?.id
   });
@@ -56,19 +56,19 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Namn' : 'Name'}
         </p>
-        <p className="font-medium">
+        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
           {userProfile?.display_name || '-'}
         </p>
       </div>
 
       <div className="space-y-1">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
           Email
         </p>
-        <p className="font-medium">
+        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
           {userProfile?.email || '-'}
         </p>
       </div>
@@ -76,19 +76,19 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Prenumerationstyp' : 'Subscription type'}
         </p>
-        <p className="font-medium">
+        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
           {getSubscriptionType(subscriptionPlan)}
         </p>
       </div>
 
       <div className="space-y-1">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Prenumerationslängd' : 'Subscription length'}
         </p>
-        <p className="font-medium">
+        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
           {getSubscriptionLength(subscriptionPlan)}
         </p>
       </div>
@@ -98,12 +98,18 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
           
           <div className="space-y-1">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
               {language === 'sv' ? 'Familjemedlemmar' : 'Family members'}
             </p>
-            <p className="font-medium">
-              {membersCount || 0}
-            </p>
+            <div className="font-medium text-[0.8rem] md:text-[0.9rem]">
+              {members && members.length > 0 ? (
+                members.map((member, index) => (
+                  <div key={index}>{member.display_name}</div>
+                ))
+              ) : (
+                <p>-</p>
+              )}
+            </div>
           </div>
         </>
       )}
@@ -111,10 +117,10 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Datum registrerad' : 'Date joined'}
         </p>
-        <p className="font-medium">
+        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
           {formatDate(userProfile?.created_at)}
         </p>
       </div>
@@ -126,7 +132,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           href="https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline font-medium"
+          className="text-primary hover:underline font-medium text-[0.8rem] md:text-[0.9rem]"
         >
           {language === 'sv' ? 'Hantera prenumeration' : 'Manage subscription'}
         </a>
