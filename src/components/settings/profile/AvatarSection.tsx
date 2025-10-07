@@ -34,19 +34,6 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
     enabled: !!userProfile?.id
   });
 
-  const getProfileBackground = () => {
-    const plan = customerData?.subscription_plan;
-    if (!plan) return '';
-    
-    if (plan.includes('personskydd')) {
-      return "url('/lovable-uploads/kasper-profil-personskydd.png')";
-    } else if (plan.includes('parskydd')) {
-      return "url('/lovable-uploads/kasper-profil-parskydd.png')";
-    } else if (plan.includes('familjeskydd')) {
-      return "url('/lovable-uploads/kasper-profil-familjeskydd.png')";
-    }
-    return '';
-  };
 
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -139,8 +126,7 @@ export const AvatarSection = ({ userProfile, onAvatarUpdate }: AvatarSectionProp
 
   return (
     <div 
-      className="rounded-2xl p-6 bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325] bg-cover bg-center"
-      style={{ backgroundImage: getProfileBackground() }}
+      className="rounded-2xl p-6 bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325]"
     >
       <div className="flex items-start gap-6">
         <div className="relative">
