@@ -46,7 +46,7 @@ export const SoundSettings: React.FC = () => {
             <Label htmlFor="sound-enabled" className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {t('settings.sound.enable')}
             </Label>
-            <p className="text-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6]">
+            <p className="text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
               {t('settings.sound.enable.description')}
             </p>
           </div>
@@ -76,7 +76,7 @@ export const SoundSettings: React.FC = () => {
               />
               <Volume2 className="w-4 h-4" />
             </div>
-            <p className="text-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6]">
+            <p className="text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
               {Math.round(volume * 100)}{t('settings.sound.volume.level')}
             </p>
           </div>
@@ -96,7 +96,7 @@ export const SoundSettings: React.FC = () => {
         )}
 
         {!soundEnabled && (
-          <p className="text-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6] bg-muted p-3 rounded-md">
+          <p className="text-[0.9rem] text-[#121212] dark:text-[#FFFFFF] bg-muted p-3 rounded-md">
             {t('settings.sound.disabled')}
           </p>
         )}

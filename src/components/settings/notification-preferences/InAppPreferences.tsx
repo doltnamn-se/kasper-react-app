@@ -11,7 +11,7 @@ export const InAppPreferences = () => {
         <label className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {t('settings.inapp.notifications')}
         </label>
-        <p className="text-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <p className="text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
           {t('settings.inapp.notifications.description')}
         </p>
       </div>

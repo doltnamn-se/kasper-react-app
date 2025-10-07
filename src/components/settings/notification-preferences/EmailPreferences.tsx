@@ -24,7 +24,7 @@ export const EmailPreferences = ({
           <label className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
             {t('settings.email.notifications')}
           </label>
-          <p className="text-[0.9rem] text-[#000000A6] dark:text-[#FFFFFFA6]">
+          <p className="text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
             {t('settings.email.notifications.description')}
           </p>
         </div>
