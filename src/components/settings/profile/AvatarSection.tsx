@@ -25,10 +25,8 @@ export const AvatarSection = ({ userProfile }: AvatarSectionProps) => {
   });
 
   return (
-    <div 
-      className="rounded-2xl p-6 bg-white dark:bg-[#1c1c1e] border border-[#e5e7eb] dark:border-[#232325]"
-    >
-      <ProfileInfo 
+    <div className="bg-white dark:bg-[#1c1c1e]">
+      <ProfileInfo
         userProfile={userProfile}
         subscriptionPlan={customerData?.subscription_plan}
       />
