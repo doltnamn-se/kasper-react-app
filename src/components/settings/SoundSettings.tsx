@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -32,14 +31,14 @@ export const SoundSettings: React.FC = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <div>
+      <div>
+        <h3 className="flex items-center gap-2 text-lg font-semibold mb-6">
           {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           Sound Notifications
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
+        </h3>
+      </div>
+      <div className="space-y-6">
         {/* Enable/Disable Sound */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">
@@ -99,7 +98,7 @@ export const SoundSettings: React.FC = () => {
             Sound notifications are disabled. Enable them to hear when new messages arrive.
           </p>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
