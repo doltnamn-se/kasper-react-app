@@ -34,7 +34,7 @@ export const ui: UITranslations = {
   'notifications.title': 'Notifications',
   'notifications.mark.all.read': 'Mark all as read',
   'notifications.empty': 'No notifications',
-  'profile.manage': 'Manage Profile',
+  'profile.manage': 'Profile',
   'profile.billing': 'Billing',
   'profile.settings': 'Settings',
   'profile.signing.out': 'Signing out...',

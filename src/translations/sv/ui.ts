@@ -34,7 +34,7 @@ export const ui: UITranslations = {
   'notifications.title': 'Notiser',
   'notifications.mark.all.read': 'Markera alla som lästa',
   'notifications.empty': 'Inga notiser',
-  'profile.manage': 'Hantera Profil',
+  'profile.manage': 'Profil',
   'profile.billing': 'Betalning',
   'profile.settings': 'Inställningar',
   'profile.signing.out': 'Loggar ut...',
