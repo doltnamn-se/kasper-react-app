@@ -43,7 +43,7 @@ export const MobileWebDownloadBanner = () => {
             <span className="text-xs font-semibold" style={{ color: '#121212' }}>
               {mainText}
             </span>
-            <span className="text-[10px] font-medium" style={{ color: '#121212', opacity: 0.6 }}>
+            <span className="text-[10px] font-medium" style={{ color: '#121212' }}>
               {subText}
             </span>
           </div>
@@ -55,7 +55,7 @@ export const MobileWebDownloadBanner = () => {
             className="px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
             style={{ 
               backgroundColor: '#121212',
-              color: '#d4f5b6'
+              color: '#ffffff'
             }}
           >
             {downloadText}
