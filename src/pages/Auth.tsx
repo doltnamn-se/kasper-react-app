@@ -182,7 +182,7 @@ const Auth = () => {
       {/* Right side - Carousel */}
       <div className="hidden md:block md:w-3/5 bg-[#fafafa] dark:bg-[#1a1a1a] h-screen p-[15px]">
         <div className="h-full w-full flex items-center justify-center rounded-lg bg-[#f0f0f0] dark:bg-[#232325]">
-          <IntroCarousel language={language} showIndicators={false} />
+          <IntroCarousel language={language} showIndicators={false} bgColorLight="#f0f0f0" bgColorDark="#232325" />
         </div>
       </div>
     </div>

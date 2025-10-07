@@ -10,9 +10,11 @@ import Autoplay from "embla-carousel-autoplay";
 interface IntroCarouselProps {
   language: string;
   showIndicators?: boolean;
+  bgColorLight?: string;
+  bgColorDark?: string;
 }
 
-export const IntroCarousel = ({ language, showIndicators = true }: IntroCarouselProps) => {
+export const IntroCarousel = ({ language, showIndicators = true, bgColorLight = '#fafafa', bgColorDark = '#1a1a1a' }: IntroCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const autoplayRef = useRef(
@@ -43,7 +45,7 @@ export const IntroCarousel = ({ language, showIndicators = true }: IntroCarousel
         <CarouselContent>
           <CarouselItem>
             <IntroSlide
-              visual={<StatusVisual language={language} />}
+              visual={<StatusVisual language={language} bgColorLight={bgColorLight} bgColorDark={bgColorDark} />}
               headlineSwedishLine1="Ta bort dig från"
               headlineSwedishLine2="upplysningssidor"
               headlineEnglishLine1="Remove yourself"

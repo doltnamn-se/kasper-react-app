@@ -3,6 +3,8 @@ import { getSpinnerColor, getStatusText } from "@/components/status/SiteConfig";
 
 interface StatusVisualProps {
   language: string;
+  bgColorLight?: string;
+  bgColorDark?: string;
 }
 
 const swedishSites = [
@@ -23,7 +25,7 @@ const englishSites = [
   { name: 'TruthFinder', icon: '/fonts/TruthFinder.svg', status: 'Borttagen' },
 ];
 
-export const StatusVisual = ({ language }: StatusVisualProps) => {
+export const StatusVisual = ({ language, bgColorLight = '#fafafa', bgColorDark = '#1a1a1a' }: StatusVisualProps) => {
   // Select sites based on language
   const allSites = language === 'sv' ? swedishSites : englishSites;
   // Double the array to create seamless loop
@@ -34,10 +36,32 @@ export const StatusVisual = ({ language }: StatusVisualProps) => {
       {/* Status list with smooth vertical scroll */}
       <div className="relative h-[140px] overflow-hidden">
         {/* Fade out gradient at top */}
-        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#fafafa] dark:from-[#1a1a1a] to-transparent z-10 pointer-events-none" />
+        <div 
+          className="absolute top-0 left-0 right-0 h-8 z-10 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, ${bgColorLight} 0%, transparent 100%)`
+          }}
+        />
+        <div 
+          className="absolute top-0 left-0 right-0 h-8 z-10 pointer-events-none dark:block hidden"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, ${bgColorDark} 0%, transparent 100%)`
+          }}
+        />
         
         {/* Fade in gradient at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#fafafa] dark:from-[#1a1a1a] to-transparent z-10 pointer-events-none" />
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-8 z-10 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to top, ${bgColorLight} 0%, transparent 100%)`
+          }}
+        />
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-8 z-10 pointer-events-none dark:block hidden"
+          style={{
+            backgroundImage: `linear-gradient(to top, ${bgColorDark} 0%, transparent 100%)`
+          }}
+        />
         
         {/* Scrolling container */}
         <div 
