@@ -110,10 +110,10 @@ export default function ProfileMenu() {
         style={{ backgroundImage: getProfileBackground() }}
       >
         <div className="absolute top-4 left-4 flex gap-2">
-          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm text-xs text-white font-medium" style={{ borderRadius: '8px' }}>
+          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm text-xs text-white font-medium" style={{ borderRadius: '6px' }}>
             {language === 'sv' ? 'Prenumeration' : 'Subscription'}
           </span>
-          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm text-xs text-white font-medium" style={{ borderRadius: '8px' }}>
+          <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm text-xs text-white font-medium" style={{ borderRadius: '6px' }}>
             {language === 'sv' ? 'Aktiv' : 'Active'}
           </span>
         </div>
