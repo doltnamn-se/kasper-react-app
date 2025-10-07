@@ -52,7 +52,7 @@ export const MobileWebDownloadBanner = () => {
         <div className="flex items-center gap-2">
           {/* Download button */}
           <button
-            className="px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
+            className="px-3 py-2 rounded-full text-xs font-medium transition-colors"
             style={{ 
               backgroundColor: '#121212',
               color: '#ffffff'
