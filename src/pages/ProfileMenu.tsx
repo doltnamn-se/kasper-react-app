@@ -144,34 +144,36 @@ export default function ProfileMenu() {
     <div className="min-h-screen bg-transparent space-y-4">
       {/* Profile Section Container */}
       <div 
-        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative min-h-48 pb-4"
+        className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative"
         style={{ backgroundImage: getProfileBackground() }}
       >
         <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.20) 100%)' }}></div>
-        <div className="absolute top-4 left-4 flex gap-2 z-10">
-          <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
-            {language === 'sv' ? 'Prenumeration' : 'Subscription'}
-          </span>
-          <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
-            {language === 'sv' ? 'Aktiv' : 'Active'}
-          </span>
-        </div>
-        <div className="absolute bottom-4 left-4 flex flex-col gap-1 z-10">
-          {(userProfile as any)?.subscription_plan && (
-            <span className="text-white font-medium" style={{ fontSize: '1rem' }}>
-              {formatSubscriptionPlan((userProfile as any).subscription_plan)}
+        <div className="relative z-10 min-h-48 flex flex-col justify-between p-4">
+          <div className="flex gap-2">
+            <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
+              {language === 'sv' ? 'Prenumeration' : 'Subscription'}
             </span>
-          )}
-          <span className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>{displayName}</span>
-          {customerMembers && customerMembers.length > 0 && (
-            <>
-              {customerMembers.map((member) => (
-                <span key={member.id} className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>
-                  {member.display_name}
-                </span>
-              ))}
-            </>
-          )}
+            <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
+              {language === 'sv' ? 'Aktiv' : 'Active'}
+            </span>
+          </div>
+          <div className="flex flex-col gap-1">
+            {(userProfile as any)?.subscription_plan && (
+              <span className="text-white font-medium" style={{ fontSize: '1rem' }}>
+                {formatSubscriptionPlan((userProfile as any).subscription_plan)}
+              </span>
+            )}
+            <span className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>{displayName}</span>
+            {customerMembers && customerMembers.length > 0 && (
+              <>
+                {customerMembers.map((member) => (
+                  <span key={member.id} className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>
+                    {member.display_name}
+                  </span>
+                ))}
+              </>
+            )}
+          </div>
         </div>
         <img 
           src="/lovable-uploads/kasper-profil-k-ikon.svg" 
