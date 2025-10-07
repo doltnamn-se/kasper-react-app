@@ -6,7 +6,11 @@ import { isWeb } from '@/capacitor';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export const MobileWebDownloadBanner = () => {
-  const [isDismissed, setIsDismissed] = useState(false);
+  const BANNER_DISMISSED_KEY = 'mobile-download-banner-dismissed';
+  const [isDismissed, setIsDismissed] = useState(() => {
+    // Check localStorage on initial load
+    return localStorage.getItem(BANNER_DISMISSED_KEY) === 'true';
+  });
   const [isVisible, setIsVisible] = useState(false);
   const { resolvedTheme } = useTheme();
   const { language } = useLanguage();
@@ -89,7 +93,10 @@ export const MobileWebDownloadBanner = () => {
           <button
             onClick={() => {
               setIsVisible(false);
-              setTimeout(() => setIsDismissed(true), 300);
+              setTimeout(() => {
+                setIsDismissed(true);
+                localStorage.setItem(BANNER_DISMISSED_KEY, 'true');
+              }, 300);
             }}
             className="p-1 rounded-full hover:bg-black/5 transition-colors"
             aria-label="Close"
