@@ -7,9 +7,10 @@ import { Capacitor } from '@capacitor/core';
 const SUPABASE_URL = "https://upfapfohwnkiugvebujh.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZmFwZm9od25raXVndmVidWpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4OTk1MjEsImV4cCI6MjA1MjQ3NTUyMX0.bph8bum09_ZYifznCYeksXeTsPQnn3m1TdWhbwfcvA0";
 
-// Create custom storage adapter for Capacitor with timeout and fallback
+// Create custom storage adapter for Capacitor with extended timeout and retry logic
 const createCapacitorStorage = () => {
-  const TIMEOUT_MS = 3000; // 3 second timeout
+  const TIMEOUT_MS = 10000; // 10 second timeout (increased for mobile)
+  const MAX_RETRIES = 3; // Retry failed operations
   
   const withTimeout = <T>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
     return Promise.race([
@@ -20,51 +21,97 @@ const createCapacitorStorage = () => {
     ]);
   };
 
+  const withRetry = async <T>(
+    operation: () => Promise<T>,
+    retries: number = MAX_RETRIES
+  ): Promise<T> => {
+    try {
+      return await operation();
+    } catch (error) {
+      if (retries > 0) {
+        console.log(`[Storage] Retrying operation, ${retries} attempts left`);
+        await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before retry
+        return withRetry(operation, retries - 1);
+      }
+      throw error;
+    }
+  };
+
   return {
     getItem: async (key: string) => {
+      if (!Capacitor.isNativePlatform()) {
+        return localStorage.getItem(key);
+      }
+
       try {
-        if (Capacitor.isNativePlatform()) {
-          console.log('[Storage] Getting item from Preferences:', key);
-          const { value } = await withTimeout(Preferences.get({ key }), TIMEOUT_MS);
-          console.log('[Storage] Retrieved from Preferences:', key, value ? 'has value' : 'null');
-          return value;
-        } else {
-          return localStorage.getItem(key);
+        console.log('[Storage] Getting item from Preferences:', key);
+        const result = await withRetry(() => 
+          withTimeout(Preferences.get({ key }), TIMEOUT_MS)
+        );
+        console.log('[Storage] Retrieved from Preferences:', key, result.value ? 'has value' : 'null');
+        
+        // Validate the retrieved value
+        if (result.value && key.includes('supabase.auth.token')) {
+          try {
+            JSON.parse(result.value); // Validate it's valid JSON
+          } catch (e) {
+            console.error('[Storage] Retrieved invalid JSON, clearing:', key);
+            await Preferences.remove({ key });
+            return null;
+          }
         }
+        
+        return result.value;
       } catch (error) {
-        console.error('[Storage] Error getting item, falling back to localStorage:', error);
-        // Fallback to localStorage on error
+        console.error('[Storage] Error getting item after retries, falling back to localStorage:', error);
         return localStorage.getItem(key);
       }
     },
+    
     setItem: async (key: string, value: string) => {
+      // Always set in localStorage as additional backup
+      localStorage.setItem(key, value);
+      
+      if (!Capacitor.isNativePlatform()) {
+        return;
+      }
+
       try {
-        if (Capacitor.isNativePlatform()) {
-          console.log('[Storage] Setting item in Preferences:', key);
-          await withTimeout(Preferences.set({ key, value }), TIMEOUT_MS);
-          console.log('[Storage] Set in Preferences successfully:', key);
-        } else {
-          localStorage.setItem(key, value);
+        console.log('[Storage] Setting item in Preferences:', key, `(${value.length} chars)`);
+        await withRetry(() => 
+          withTimeout(Preferences.set({ key, value }), TIMEOUT_MS)
+        );
+        console.log('[Storage] Set in Preferences successfully:', key);
+        
+        // Verify the write
+        const { value: storedValue } = await Preferences.get({ key });
+        if (storedValue !== value) {
+          console.error('[Storage] Verification failed, value mismatch');
+          throw new Error('Storage verification failed');
         }
       } catch (error) {
-        console.error('[Storage] Error setting item, falling back to localStorage:', error);
-        // Fallback to localStorage on error
-        localStorage.setItem(key, value);
+        console.error('[Storage] Error setting item after retries:', error);
+        // localStorage already set as backup above
       }
     },
+    
     removeItem: async (key: string) => {
+      // Remove from localStorage too
+      localStorage.removeItem(key);
+      
+      if (!Capacitor.isNativePlatform()) {
+        return;
+      }
+
       try {
-        if (Capacitor.isNativePlatform()) {
-          console.log('[Storage] Removing item from Preferences:', key);
-          await withTimeout(Preferences.remove({ key }), TIMEOUT_MS);
-          console.log('[Storage] Removed from Preferences successfully:', key);
-        } else {
-          localStorage.removeItem(key);
-        }
+        console.log('[Storage] Removing item from Preferences:', key);
+        await withRetry(() => 
+          withTimeout(Preferences.remove({ key }), TIMEOUT_MS)
+        );
+        console.log('[Storage] Removed from Preferences successfully:', key);
       } catch (error) {
-        console.error('[Storage] Error removing item, falling back to localStorage:', error);
-        // Fallback to localStorage on error
-        localStorage.removeItem(key);
+        console.error('[Storage] Error removing item after retries:', error);
+        // localStorage already removed above
       }
     },
   };
