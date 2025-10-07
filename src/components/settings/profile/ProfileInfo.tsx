@@ -56,19 +56,19 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Namn' : 'Name'}
         </p>
-        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem]">
           {userProfile?.display_name || '-'}
         </p>
       </div>
 
       <div className="space-y-1">
-        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
           Email
         </p>
-        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem]">
           {userProfile?.email || '-'}
         </p>
       </div>
@@ -76,19 +76,19 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Prenumerationstyp' : 'Subscription type'}
         </p>
-        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem]">
           {getSubscriptionType(subscriptionPlan)}
         </p>
       </div>
 
       <div className="space-y-1">
-        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Prenumerationslängd' : 'Subscription length'}
         </p>
-        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem]">
           {getSubscriptionLength(subscriptionPlan)}
         </p>
       </div>
@@ -98,10 +98,10 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
           
           <div className="space-y-1">
-            <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
+            <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
               {language === 'sv' ? 'Familjemedlemmar' : 'Family members'}
             </p>
-            <div className="font-medium text-[0.8rem] md:text-[0.9rem]">
+            <div className="font-medium text-[0.9rem] md:text-[1rem]">
               {members && members.length > 0 ? (
                 members.map((member, index) => (
                   <div key={index}>{member.display_name}</div>
@@ -117,10 +117,10 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-[0.7rem] md:text-[0.8rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
           {language === 'sv' ? 'Datum registrerad' : 'Date joined'}
         </p>
-        <p className="font-medium text-[0.8rem] md:text-[0.9rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem]">
           {formatDate(userProfile?.created_at)}
         </p>
       </div>
@@ -132,7 +132,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           href="https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline font-medium text-[0.8rem] md:text-[0.9rem]"
+          className="text-primary hover:underline font-medium text-[0.9rem] md:text-[1rem]"
         >
           {language === 'sv' ? 'Hantera prenumeration' : 'Manage subscription'}
         </a>
