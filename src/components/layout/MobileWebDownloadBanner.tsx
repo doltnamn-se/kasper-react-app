@@ -30,7 +30,7 @@ export const MobileWebDownloadBanner = () => {
       }}
     >
       <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {/* App Icon */}
           <img 
             src="/favicon.ico" 
@@ -54,8 +54,8 @@ export const MobileWebDownloadBanner = () => {
           <button
             className="px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
             style={{ 
-              backgroundColor: '#121212',
-              color: '#d4f5b6'
+              backgroundColor: isDarkMode ? '#ffffff' : '#121212',
+              color: isDarkMode ? '#121212' : '#ffffff'
             }}
           >
             {downloadText}
