@@ -27,11 +27,11 @@ export default function ProfileMenu() {
     if (!plan) return '';
     
     if (plan.includes('personskydd')) {
-      return "url('/lovable-uploads/Kasper Personskydd.png')";
+      return "url('/lovable-uploads/kasper-profil-personskydd.png')";
     } else if (plan.includes('parskydd')) {
-      return "url('/lovable-uploads/Kasper Parskydd.png')";
+      return "url('/lovable-uploads/kasper-profil-parskydd.png')";
     } else if (plan.includes('familjeskydd')) {
-      return "url('/lovable-uploads/Kasper Familjeskydd.png')";
+      return "url('/lovable-uploads/kasper-profil-familjeskydd.png')";
     }
     return '';
   };
