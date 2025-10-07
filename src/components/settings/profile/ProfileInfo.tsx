@@ -141,7 +141,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           href="https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 text-[#121212] dark:text-[#FFFFFF] hover:underline font-medium text-[0.9rem]"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#121212] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#121212] hover:opacity-90 transition-opacity font-medium text-[0.9rem]"
         >
           <ArrowUpDown size={16} />
           {language === 'sv' ? 'Byt plan' : 'Switch plan'}
