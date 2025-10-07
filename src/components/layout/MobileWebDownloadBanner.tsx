@@ -6,14 +6,25 @@ import { isWeb } from '@/capacitor';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export const MobileWebDownloadBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isDismissed, setIsDismissed] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const { resolvedTheme } = useTheme();
   const { language } = useLanguage();
   const isDarkMode = resolvedTheme === 'dark';
   const isMobileWeb = useIsMobile() && isWeb();
 
-  // Don't show if not mobile web or if dismissed
-  if (!isMobileWeb || !isVisible) {
+  // Show banner after 2 second delay
+  React.useEffect(() => {
+    if (isMobileWeb && !isDismissed) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isMobileWeb, isDismissed]);
+
+  // Don't render if not mobile web or if dismissed
+  if (!isMobileWeb || isDismissed) {
     return null;
   }
 
@@ -23,9 +34,11 @@ export const MobileWebDownloadBanner = () => {
 
   return (
     <div 
-      className="fixed top-0 left-0 right-0 z-50"
+      className={`relative z-50 transition-all duration-300 ease-in-out overflow-hidden ${
+        isVisible ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
+      }`}
       style={{
-        paddingTop: 'env(safe-area-inset-top)',
+        paddingTop: isVisible ? 'env(safe-area-inset-top)' : '0',
         backgroundColor: '#d4f5b6'
       }}
     >
@@ -63,7 +76,10 @@ export const MobileWebDownloadBanner = () => {
           
           {/* Close button */}
           <button
-            onClick={() => setIsVisible(false)}
+            onClick={() => {
+              setIsVisible(false);
+              setTimeout(() => setIsDismissed(true), 300);
+            }}
             className="p-1 rounded-full hover:bg-black/5 transition-colors"
             aria-label="Close"
           >
