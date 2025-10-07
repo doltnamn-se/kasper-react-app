@@ -136,7 +136,7 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           className="flex items-center gap-2 text-[#121212] dark:text-[#FFFFFF] hover:underline font-medium text-[0.9rem]"
         >
           <ArrowUpDown size={16} />
-          {language === 'sv' ? 'Hantera prenumeration' : 'Manage subscription'}
+          {language === 'sv' ? 'Byt plan' : 'Switch plan'}
         </a>
       </div>
     </div>
