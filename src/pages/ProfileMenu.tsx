@@ -43,14 +43,22 @@ export default function ProfileMenu() {
     const parts = plan.toLowerCase().split('_');
     if (parts.length < 2) return plan;
     
-    // Capitalize plan name
-    const planName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+    // Get plan name with translation
+    const planKey = parts[0];
+    const planTranslations: Record<string, { sv: string; en: string }> = {
+      personskydd: { sv: 'Personskydd', en: 'Personal Protection' },
+      parskydd: { sv: 'Parskydd', en: 'Couple Protection' },
+      familjeskydd: { sv: 'Familjeskydd', en: 'Family Protection' }
+    };
+    
+    const planName = planTranslations[planKey]?.[language] || planKey.charAt(0).toUpperCase() + planKey.slice(1);
     
     // Extract year number
     const yearNumber = parts[1];
+    const yearText = language === 'sv' ? 'år' : (yearNumber === '1' ? 'year' : 'years');
     
-    // Format as "Planname · X år"
-    return `${planName} · ${yearNumber} år`;
+    // Format as "Planname · X år/year(s)"
+    return `${planName} · ${yearNumber} ${yearText}`;
   };
 
   const handleSignOut = async () => {
