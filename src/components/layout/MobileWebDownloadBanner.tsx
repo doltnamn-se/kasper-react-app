@@ -13,6 +13,14 @@ export const MobileWebDownloadBanner = () => {
   const isDarkMode = resolvedTheme === 'dark';
   const isMobileWeb = useIsMobile() && isWeb();
 
+  // Detect iOS or Android
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
+  
+  const appStoreUrl = 'https://apps.apple.com/se/app/kasper-digitalt-skydd/id6752580645';
+  const googlePlayUrl = 'https://play.google.com/store/apps/details?id=app.lovable.d9e386f94e5444ac91d892db773a7ddc';
+  const downloadUrl = isIOS ? appStoreUrl : googlePlayUrl;
+
   // Show banner after 2 second delay
   React.useEffect(() => {
     if (isMobileWeb && !isDismissed) {
@@ -64,7 +72,10 @@ export const MobileWebDownloadBanner = () => {
         
         <div className="flex items-center gap-2">
           {/* Download button */}
-          <button
+          <a
+            href={downloadUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-3 py-2 rounded-full text-xs font-medium transition-colors"
             style={{ 
               backgroundColor: '#121212',
@@ -72,7 +83,7 @@ export const MobileWebDownloadBanner = () => {
             }}
           >
             {downloadText}
-          </button>
+          </a>
           
           {/* Close button */}
           <button
