@@ -44,6 +44,7 @@ export default function ProfileMenu() {
     const plan = (userProfile as any)?.subscription_plan;
     if (!plan) return '';
     
+    // New plans
     if (plan.includes('personskydd')) {
       return "url('/lovable-uploads/kasper-profil-personskydd.png')";
     } else if (plan.includes('parskydd')) {
@@ -51,27 +52,31 @@ export default function ProfileMenu() {
     } else if (plan.includes('familjeskydd')) {
       return "url('/lovable-uploads/kasper-profil-familjeskydd.png')";
     }
-    return '';
+    
+    // Old plans (1_month, 3_months, 6_months, 12_months, 24_months) - default to personskydd
+    return "url('/lovable-uploads/kasper-profil-personskydd.png')";
   };
 
   const formatSubscriptionPlan = (plan: string) => {
     if (!plan) return '';
     
-    // Extract plan name
-    const parts = plan.toLowerCase().split('_');
-    if (parts.length < 1) return plan;
+    // Handle new plan format (e.g., "personskydd_1_year")
+    if (plan.includes('_year')) {
+      const parts = plan.toLowerCase().split('_');
+      if (parts.length < 1) return plan;
+      
+      const planKey = parts[0];
+      const planTranslations: Record<string, { sv: string; en: string }> = {
+        personskydd: { sv: 'Personskydd', en: 'Personal Protection' },
+        parskydd: { sv: 'Parskydd', en: 'Couple Protection' },
+        familjeskydd: { sv: 'Familjeskydd', en: 'Family Protection' }
+      };
+      
+      return planTranslations[planKey]?.[language] || planKey.charAt(0).toUpperCase() + planKey.slice(1);
+    }
     
-    // Get plan name with translation
-    const planKey = parts[0];
-    const planTranslations: Record<string, { sv: string; en: string }> = {
-      personskydd: { sv: 'Personskydd', en: 'Personal Protection' },
-      parskydd: { sv: 'Parskydd', en: 'Couple Protection' },
-      familjeskydd: { sv: 'Familjeskydd', en: 'Family Protection' }
-    };
-    
-    const planName = planTranslations[planKey]?.[language] || planKey.charAt(0).toUpperCase() + planKey.slice(1);
-    
-    return planName;
+    // Handle old plan format (1_month, 3_months, etc.) - show as Personskydd
+    return language === 'sv' ? 'Personskydd' : 'Personal Protection';
   };
 
   const handleSignOut = async () => {
