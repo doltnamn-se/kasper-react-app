@@ -19,6 +19,7 @@ export const MobileWebDownloadBanner = () => {
 
   const mainText = language === 'sv' ? 'Hämta appen' : 'Get the app';
   const subText = 'App Store & Google Play';
+  const downloadText = language === 'sv' ? 'Ladda ned' : 'Download';
 
   return (
     <div 
@@ -34,7 +35,7 @@ export const MobileWebDownloadBanner = () => {
           <img 
             src="/favicon.ico" 
             alt="App icon" 
-            className="w-6 h-6 object-contain"
+            className="w-8 h-8 object-contain"
           />
           
           {/* Text */}
@@ -48,14 +49,27 @@ export const MobileWebDownloadBanner = () => {
           </div>
         </div>
         
-        {/* Close button */}
-        <button
-          onClick={() => setIsVisible(false)}
-          className="p-1 rounded-full hover:bg-black/5 transition-colors"
-          aria-label="Close"
-        >
-          <X className="w-4 h-4" style={{ color: '#121212' }} />
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Download button */}
+          <button
+            className="px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
+            style={{ 
+              backgroundColor: '#121212',
+              color: '#d4f5b6'
+            }}
+          >
+            {downloadText}
+          </button>
+          
+          {/* Close button */}
+          <button
+            onClick={() => setIsVisible(false)}
+            className="p-1 rounded-full hover:bg-black/5 transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" style={{ color: '#121212' }} />
+          </button>
+        </div>
       </div>
     </div>
   );
