@@ -32,7 +32,7 @@ export const EmailPreferences = ({
           checked={emailNotifications}
           onCheckedChange={onMainToggle}
           aria-label="Toggle email notifications"
-          className="data-[state=checked]:bg-[#c3caf5] data-[state=unchecked]:bg-gray-200"
+          className="data-[state=checked]:bg-[#007ee5]"
         />
       </div>
     </div>
