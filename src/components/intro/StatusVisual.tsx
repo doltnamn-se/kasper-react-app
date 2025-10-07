@@ -37,13 +37,13 @@ export const StatusVisual = ({ language, bgColorLight = '#fafafa', bgColorDark =
       <div className="relative h-[140px] overflow-hidden">
         {/* Fade out gradient at top */}
         <div 
-          className="absolute top-0 left-0 right-0 h-8 z-10 pointer-events-none"
+          className="absolute top-0 left-0 right-0 h-8 z-10 pointer-events-none dark:hidden"
           style={{
             backgroundImage: `linear-gradient(to bottom, ${bgColorLight} 0%, transparent 100%)`
           }}
         />
         <div 
-          className="absolute top-0 left-0 right-0 h-8 z-10 pointer-events-none dark:block hidden"
+          className="absolute top-0 left-0 right-0 h-8 z-10 pointer-events-none hidden dark:block"
           style={{
             backgroundImage: `linear-gradient(to bottom, ${bgColorDark} 0%, transparent 100%)`
           }}
@@ -51,13 +51,13 @@ export const StatusVisual = ({ language, bgColorLight = '#fafafa', bgColorDark =
         
         {/* Fade in gradient at bottom */}
         <div 
-          className="absolute bottom-0 left-0 right-0 h-8 z-10 pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 h-8 z-10 pointer-events-none dark:hidden"
           style={{
             backgroundImage: `linear-gradient(to top, ${bgColorLight} 0%, transparent 100%)`
           }}
         />
         <div 
-          className="absolute bottom-0 left-0 right-0 h-8 z-10 pointer-events-none dark:block hidden"
+          className="absolute bottom-0 left-0 right-0 h-8 z-10 pointer-events-none hidden dark:block"
           style={{
             backgroundImage: `linear-gradient(to top, ${bgColorDark} 0%, transparent 100%)`
           }}
