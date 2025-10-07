@@ -18,7 +18,7 @@ export const InAppPreferences = () => {
       <Switch
         checked={true}
         disabled={true}
-        className="data-[state=checked]:bg-[#007ee5] cursor-not-allowed"
+        className="data-[state=checked]:bg-[#121212] dark:data-[state=checked]:bg-[#FFFFFF] cursor-not-allowed"
       />
     </div>
   );

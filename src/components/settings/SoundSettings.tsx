@@ -54,7 +54,7 @@ export const SoundSettings: React.FC = () => {
             id="sound-enabled"
             checked={soundEnabled}
             onCheckedChange={handleSoundToggle}
-            className="data-[state=checked]:bg-[#007ee5]"
+            className="data-[state=checked]:bg-[#121212] dark:data-[state=checked]:bg-[#FFFFFF]"
           />
         </div>
 
@@ -72,7 +72,7 @@ export const SoundSettings: React.FC = () => {
                 max={1}
                 min={0}
                 step={0.1}
-                className="flex-1 [&_[role=slider]]:border-[#007ee5] [&_.bg-primary]:bg-[#007ee5]"
+                className="flex-1 [&_[role=slider]]:border-[#121212] dark:[&_[role=slider]]:border-[#FFFFFF] [&_.bg-primary]:bg-[#121212] dark:[&_.bg-primary]:bg-[#FFFFFF]"
               />
               <Volume2 className="w-4 h-4" />
             </div>
