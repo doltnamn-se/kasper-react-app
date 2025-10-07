@@ -126,7 +126,7 @@ export default function ProfileMenu() {
         className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm border border-[#e5e7eb] dark:border-[#232325] transition-colors duration-200 overflow-hidden bg-cover bg-center relative h-48"
         style={{ backgroundImage: getProfileBackground() }}
       >
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-black/15"></div>
         <div className="absolute top-4 left-4 flex gap-2 z-10">
           <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
             {language === 'sv' ? 'Prenumeration' : 'Subscription'}
