@@ -43,8 +43,10 @@ export const SoundSettings: React.FC = () => {
         {/* Enable/Disable Sound */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <Label htmlFor="sound-enabled">Enable notification sounds</Label>
-            <p className="text-sm text-muted-foreground">
+            <Label htmlFor="sound-enabled" className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+              Enable notification sounds
+            </Label>
+            <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               Play a sound when you receive new chat messages
             </p>
           </div>
@@ -58,7 +60,9 @@ export const SoundSettings: React.FC = () => {
         {/* Volume Control */}
         {soundEnabled && (
           <div className="space-y-3">
-            <Label>Notification Volume</Label>
+            <Label className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+              Notification Volume
+            </Label>
             <div className="flex items-center space-x-3">
               <VolumeX className="w-4 h-4" />
               <Slider
@@ -71,7 +75,7 @@ export const SoundSettings: React.FC = () => {
               />
               <Volume2 className="w-4 h-4" />
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
               {Math.round(volume * 100)}% volume
             </p>
           </div>
@@ -91,7 +95,7 @@ export const SoundSettings: React.FC = () => {
         )}
 
         {!soundEnabled && (
-          <p className="text-sm text-muted-foreground bg-muted p-3 rounded-md">
+          <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6] bg-muted p-3 rounded-md">
             Sound notifications are disabled. Enable them to hear when new messages arrive.
           </p>
         )}

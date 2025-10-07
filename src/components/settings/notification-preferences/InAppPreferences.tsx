@@ -8,10 +8,10 @@ export const InAppPreferences = () => {
   return (
     <div className="flex items-center justify-between">
       <div className="space-y-0.5">
-        <label className="text-sm font-medium text-[#000000] dark:text-[#FFFFFF]">
+        <label className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {t('settings.inapp.notifications')}
         </label>
-        <p className="text-sm text-[#000000A6] dark:text-[#FFFFFFA6]">
+        <p className="text-[0.9rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
           {t('settings.inapp.notifications.description')}
         </p>
       </div>
