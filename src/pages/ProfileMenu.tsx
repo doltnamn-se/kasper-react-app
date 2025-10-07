@@ -136,11 +136,11 @@ export default function ProfileMenu() {
         </div>
         <div className="absolute bottom-4 left-4 flex flex-col gap-1">
           {(userProfile as any)?.subscription_plan && (
-            <span className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>
+            <span className="text-white font-medium" style={{ fontSize: '1rem' }}>
               {formatSubscriptionPlan((userProfile as any).subscription_plan)}
             </span>
           )}
-          <span className="text-white font-medium" style={{ fontSize: '1rem' }}>{displayName}</span>
+          <span className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>{displayName}</span>
         </div>
         <img 
           src="/lovable-uploads/kasper-profil-k-ikon.svg" 
