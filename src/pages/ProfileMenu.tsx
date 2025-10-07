@@ -148,8 +148,8 @@ export default function ProfileMenu() {
         style={{ backgroundImage: getProfileBackground() }}
       >
         <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.20) 100%)' }}></div>
-        <div className="relative z-10 min-h-48 flex flex-col justify-between p-4">
-          <div className="flex gap-2">
+        <div className="relative z-10 pt-4 px-4 pb-4">
+          <div className="flex gap-2 mb-32">
             <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
               {language === 'sv' ? 'Prenumeration' : 'Subscription'}
             </span>
