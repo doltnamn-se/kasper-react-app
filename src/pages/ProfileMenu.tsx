@@ -136,7 +136,7 @@ export default function ProfileMenu() {
         </div>
         <div className="absolute bottom-4 left-4 flex flex-col gap-1">
           {(userProfile as any)?.subscription_plan && (
-            <span className="text-xs text-white/80">
+            <span className="text-sm text-white/80 font-medium">
               {formatSubscriptionPlan((userProfile as any).subscription_plan)}
             </span>
           )}
