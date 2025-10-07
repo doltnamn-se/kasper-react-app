@@ -36,6 +36,23 @@ export default function ProfileMenu() {
     return '';
   };
 
+  const formatSubscriptionPlan = (plan: string) => {
+    if (!plan) return '';
+    
+    // Extract plan name and duration
+    const parts = plan.toLowerCase().split('_');
+    if (parts.length < 2) return plan;
+    
+    // Capitalize plan name
+    const planName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+    
+    // Extract year number
+    const yearNumber = parts[1];
+    
+    // Format as "Planname · X år"
+    return `${planName} · ${yearNumber} år`;
+  };
+
   const handleSignOut = async () => {
     if (signingOut || isSigningOut) {
       console.log("Sign out already in progress");
@@ -110,17 +127,17 @@ export default function ProfileMenu() {
         style={{ backgroundImage: getProfileBackground() }}
       >
         <div className="absolute top-4 left-4 flex gap-2">
-          <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-xs text-white font-medium" style={{ borderRadius: '6px' }}>
+          <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-xs text-white font-normal" style={{ borderRadius: '6px' }}>
             {language === 'sv' ? 'Prenumeration' : 'Subscription'}
           </span>
-          <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-xs text-white font-medium" style={{ borderRadius: '6px' }}>
+          <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-xs text-white font-normal" style={{ borderRadius: '6px' }}>
             {language === 'sv' ? 'Aktiv' : 'Active'}
           </span>
         </div>
         <div className="absolute bottom-4 left-4 flex flex-col gap-1">
           {(userProfile as any)?.subscription_plan && (
             <span className="text-xs text-white/80">
-              {(userProfile as any).subscription_plan}
+              {formatSubscriptionPlan((userProfile as any).subscription_plan)}
             </span>
           )}
           <span className="text-sm text-white font-medium">{displayName}</span>
