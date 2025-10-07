@@ -56,19 +56,19 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
           {language === 'sv' ? 'Namn' : 'Name'}
         </p>
-        <p className="font-medium text-[0.9rem] md:text-[1rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem] text-[#121212] dark:text-[#FFFFFF]">
           {userProfile?.display_name || '-'}
         </p>
       </div>
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
           Email
         </p>
-        <p className="font-medium text-[0.9rem] md:text-[1rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem] text-[#121212] dark:text-[#FFFFFF]">
           {userProfile?.email || '-'}
         </p>
       </div>
@@ -76,19 +76,19 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
           {language === 'sv' ? 'Prenumerationstyp' : 'Subscription type'}
         </p>
-        <p className="font-medium text-[0.9rem] md:text-[1rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem] text-[#121212] dark:text-[#FFFFFF]">
           {getSubscriptionType(subscriptionPlan)}
         </p>
       </div>
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
           {language === 'sv' ? 'Prenumerationslängd' : 'Subscription length'}
         </p>
-        <p className="font-medium text-[0.9rem] md:text-[1rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem] text-[#121212] dark:text-[#FFFFFF]">
           {getSubscriptionLength(subscriptionPlan)}
         </p>
       </div>
@@ -98,10 +98,10 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
           
           <div className="space-y-1">
-            <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
+            <p className="text-[0.8rem] md:text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
               {language === 'sv' ? 'Familjemedlemmar' : 'Family members'}
             </p>
-            <div className="font-medium text-[0.9rem] md:text-[1rem]">
+            <div className="font-medium text-[0.9rem] md:text-[1rem] text-[#121212] dark:text-[#FFFFFF]">
               {members && members.length > 0 ? (
                 members.map((member, index) => (
                   <div key={index}>{member.display_name}</div>
@@ -117,10 +117,10 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
       <div className="h-px bg-[#e5e7eb] dark:bg-[#232325]" />
 
       <div className="space-y-1">
-        <p className="text-[0.8rem] md:text-[0.9rem] text-gray-500 dark:text-gray-400">
+        <p className="text-[0.8rem] md:text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
           {language === 'sv' ? 'Datum registrerad' : 'Date joined'}
         </p>
-        <p className="font-medium text-[0.9rem] md:text-[1rem]">
+        <p className="font-medium text-[0.9rem] md:text-[1rem] text-[#121212] dark:text-[#FFFFFF]">
           {formatDate(userProfile?.created_at)}
         </p>
       </div>
