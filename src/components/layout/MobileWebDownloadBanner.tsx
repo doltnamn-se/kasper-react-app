@@ -26,24 +26,27 @@ export const MobileWebDownloadBanner = () => {
       className="fixed top-0 left-0 right-0 z-50"
       style={{
         paddingTop: 'env(safe-area-inset-top)',
-        backgroundColor: isDarkMode ? '#404937' : '#d4f5b6'
+        backgroundColor: isDarkMode ? '#556249' : '#d4f5b6'
       }}
     >
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           {/* App Icon */}
           <img 
-            src="/favicon.ico" 
+            src={isDarkMode 
+              ? "https://d9e386f9-4e54-44ac-91d8-92db773a7ddc.lovableproject.com/lovable-uploads/kasper-mob-icon-darkmode.svg"
+              : "/favicon.ico"
+            }
             alt="App icon" 
             className="w-8 h-8 object-contain"
           />
           
           {/* Text */}
           <div className="flex flex-col">
-            <span className="text-xs font-semibold" style={{ color: '#121212' }}>
+            <span className="text-xs font-semibold" style={{ color: isDarkMode ? '#ffffff' : '#121212' }}>
               {mainText}
             </span>
-            <span className="text-[10px] font-medium" style={{ color: '#121212', opacity: 0.6 }}>
+            <span className="text-[10px] font-medium" style={{ color: isDarkMode ? '#ffffff' : '#121212', opacity: 0.6 }}>
               {subText}
             </span>
           </div>
@@ -67,7 +70,7 @@ export const MobileWebDownloadBanner = () => {
             className="p-1 rounded-full hover:bg-black/5 transition-colors"
             aria-label="Close"
           >
-            <X className="w-4 h-4" style={{ color: '#121212' }} />
+            <X className="w-4 h-4" style={{ color: isDarkMode ? '#ffffff' : '#121212' }} />
           </button>
         </div>
       </div>
