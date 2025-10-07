@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { ArrowUpDown } from "lucide-react";
 
 interface ProfileInfoProps {
   userProfile: Profile | null;
@@ -132,8 +133,9 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
           href="https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline font-medium text-[0.9rem]"
+          className="flex items-center gap-2 text-[#121212] dark:text-[#FFFFFF] hover:underline font-medium text-[0.9rem]"
         >
+          <ArrowUpDown size={16} />
           {language === 'sv' ? 'Hantera prenumeration' : 'Manage subscription'}
         </a>
       </div>
