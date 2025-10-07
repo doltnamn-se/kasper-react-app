@@ -12,6 +12,7 @@ import { useTheme } from "next-themes";
 import { StripePricingTable } from "@/components/auth/StripePricingTable";
 import { IOSNotification } from "@/components/auth/iOSNotification";
 import { isIOS } from "@/capacitor";
+import { IntroCarousel } from "@/components/intro/IntroCarousel";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -178,16 +179,10 @@ const Auth = () => {
         </div>
       </div>
 
-      {/* Right side - Image background */}
+      {/* Right side - Carousel */}
       <div className="hidden md:block md:w-3/5 bg-[#fafafa] dark:bg-[#1a1a1a] h-screen p-[15px]">
-        <div className="h-full w-full flex items-center justify-center p-0 rounded-lg overflow-hidden relative">
-          <img 
-            src="/lovable-uploads/kasper-app-desktop-hero.webp"
-            alt="Kasper App" 
-            className="w-full h-full object-cover rounded-lg pointer-events-none"
-            draggable="false"
-            onContextMenu={(e) => e.preventDefault()}
-          />
+        <div className="h-full w-full flex items-center justify-center rounded-lg">
+          <IntroCarousel language={language} showIndicators={false} />
         </div>
       </div>
     </div>
