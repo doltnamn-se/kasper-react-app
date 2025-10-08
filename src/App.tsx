@@ -12,6 +12,7 @@ import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
 import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
+import { ScrollToTop } from "@/components/routing/ScrollToTop";
 import { supabase } from "@/integrations/supabase/client";
 import { ImagePreloader } from "@/components/ImagePreloader";
 
@@ -130,6 +131,7 @@ function App() {
           <SidebarProvider>
             <ImagePreloader />
             <Router>
+              <ScrollToTop />
               <MobileIntroRedirect />
               <Routes>
                 {/* Intro/Onboarding route for iOS */}
