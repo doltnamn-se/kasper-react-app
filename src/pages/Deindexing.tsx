@@ -24,7 +24,7 @@ const Deindexing = () => {
   const { incomingUrls } = useIncomingUrls();
   
   // Check if any URL has status "request_submitted" (Begäran skickad)
-  const showGoogleAnnouncement = incomingUrls?.some(url => url.current_status === 'request_submitted') ?? false;
+  const showGoogleAnnouncement = incomingUrls?.some(url => url.status === 'request_submitted') ?? false;
 
   // Query for deindexed URLs count
   const { data: deindexedUrls } = useQuery({
