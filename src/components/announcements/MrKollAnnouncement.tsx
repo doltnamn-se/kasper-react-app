@@ -20,14 +20,20 @@ export const MrKollAnnouncement = () => {
   // Load the collapsed and deleted state from storage on mount
   useEffect(() => {
     const loadState = async () => {
-      const { value: collapsed } = await Preferences.get({ key: 'announcement_mrkoll_collapsed' });
-      const { value: deleted } = await Preferences.get({ key: 'announcement_mrkoll_deleted' });
-      
-      if (collapsed === 'true') {
-        setIsExpanded(false);
-      }
-      if (deleted === 'true') {
-        setShow(false);
+      try {
+        const { value: collapsed } = await Preferences.get({ key: 'announcement_mrkoll_collapsed' });
+        const { value: deleted } = await Preferences.get({ key: 'announcement_mrkoll_deleted' });
+        
+        console.log('[MrKoll] Loaded from Preferences - collapsed:', collapsed, 'deleted:', deleted);
+        
+        if (collapsed === 'true') {
+          setIsExpanded(false);
+        }
+        if (deleted === 'true') {
+          setShow(false);
+        }
+      } catch (error) {
+        console.error('[MrKoll] Error loading preferences:', error);
       }
     };
     
@@ -37,12 +43,22 @@ export const MrKollAnnouncement = () => {
   const handleToggle = async () => {
     const newState = !isExpanded;
     setIsExpanded(newState);
-    await Preferences.set({ key: 'announcement_mrkoll_collapsed', value: String(!newState) });
+    try {
+      await Preferences.set({ key: 'announcement_mrkoll_collapsed', value: String(!newState) });
+      console.log('[MrKoll] Saved collapsed state:', String(!newState));
+    } catch (error) {
+      console.error('[MrKoll] Error saving collapsed state:', error);
+    }
   };
 
   const handleDelete = async () => {
     setShow(false);
-    await Preferences.set({ key: 'announcement_mrkoll_deleted', value: 'true' });
+    try {
+      await Preferences.set({ key: 'announcement_mrkoll_deleted', value: 'true' });
+      console.log('[MrKoll] Saved deleted state: true');
+    } catch (error) {
+      console.error('[MrKoll] Error saving deleted state:', error);
+    }
   };
 
   // Swipe handlers
