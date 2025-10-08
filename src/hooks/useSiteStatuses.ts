@@ -1,5 +1,5 @@
-
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SiteStatus {
@@ -7,60 +7,48 @@ interface SiteStatus {
   status: string;
 }
 
-export const useSiteStatuses = (userId?: string, memberId?: string) => {
-  const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const fetchSiteStatuses = async (userId: string, memberId?: string) => {
+  console.log(`Fetching site statuses for user: ${userId} member: ${memberId ?? 'main'}`);
+  let query = supabase
+    .from('customer_site_statuses')
+    .select('*')
+    .eq('customer_id', userId);
 
-  const fetchSiteStatuses = useCallback(async () => {
+  if (memberId) {
+    query = query.eq('member_id', memberId);
+  } else {
+    query = query.is('member_id', null);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching site statuses:', error);
+    throw error;
+  }
+
+  console.log('Fetched site statuses:', data);
+  return data || [];
+};
+
+export const useSiteStatuses = (userId?: string, memberId?: string) => {
+  const queryClient = useQueryClient();
+  
+  const { data: siteStatuses = [], isLoading, refetch } = useQuery({
+    queryKey: ['site-statuses', userId, memberId],
+    queryFn: () => fetchSiteStatuses(userId!, memberId),
+    enabled: !!userId,
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
+  });
+
+  useEffect(() => {
     if (!userId) {
-      console.log('No user ID provided to useSiteStatuses');
-      setIsLoading(false);
       return;
     }
     
-    setIsLoading(true);
-    try {
-      console.log(`Fetching site statuses for user: ${userId} member: ${memberId ?? 'main'}`);
-      let query = supabase
-        .from('customer_site_statuses')
-        .select('*')
-        .eq('customer_id', userId);
-
-      if (memberId) {
-        query = query.eq('member_id', memberId);
-      } else {
-        query = query.is('member_id', null);
-      }
-
-      const { data, error } = await query;
-
-      if (error) {
-        console.error('Error fetching site statuses:', error);
-        return;
-      }
-
-      console.log('Fetched site statuses:', data);
-      const statusArray = data || [];
-      setSiteStatuses(statusArray);
-    } catch (error) {
-      console.error('Error in fetchSiteStatuses:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId, memberId]);
-
-  useEffect(() => {
-    // Initial fetch
-    fetchSiteStatuses();
-
-    // Set up real-time subscription for status changes
-    if (!userId) {
-      console.log('No userId for real-time updates');
-      return () => {};
-    }
-    
     const statusChannel = supabase
-      .channel('customer-site-statuses')
+      .channel(`customer-site-statuses-${userId}-${memberId || 'main'}`)
       .on(
         'postgres_changes',
         {
@@ -76,23 +64,9 @@ export const useSiteStatuses = (userId?: string, memberId?: string) => {
           const matchesNew = memberId ? newMemberId === memberId : newMemberId === null;
           const matchesOld = memberId ? oldMemberId === memberId : oldMemberId === null;
 
-          if (payload.eventType === 'INSERT' && matchesNew) {
-            setSiteStatuses(prev => [...prev, payload.new as SiteStatus]);
-          } else if (payload.eventType === 'UPDATE' && matchesNew) {
-            setSiteStatuses(prev => 
-              prev.map(status => 
-                status.site_name === (payload.new as SiteStatus).site_name 
-                  ? (payload.new as SiteStatus) 
-                  : status
-              )
-            );
-          } else if (payload.eventType === 'DELETE' && matchesOld) {
-            setSiteStatuses(prev => 
-              prev.filter(status => status.site_name !== (payload.old as SiteStatus).site_name)
-            );
-          } else {
-            // For other cases or non-matching member updates, refetch to stay consistent
-            fetchSiteStatuses();
+          if (matchesNew || matchesOld) {
+            // Invalidate and refetch the query when relevant changes occur
+            queryClient.invalidateQueries({ queryKey: ['site-statuses', userId, memberId] });
           }
         }
       )
@@ -106,7 +80,7 @@ export const useSiteStatuses = (userId?: string, memberId?: string) => {
       console.log('Cleaning up subscription');
       supabase.removeChannel(statusChannel);
     };
-  }, [userId, fetchSiteStatuses]);
+  }, [userId, memberId, queryClient]);
 
-  return { siteStatuses, isLoading, refetch: fetchSiteStatuses };
+  return { siteStatuses, isLoading, refetch };
 };

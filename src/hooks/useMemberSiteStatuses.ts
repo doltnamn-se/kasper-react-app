@@ -1,5 +1,5 @@
-
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SiteStatus {
@@ -7,46 +7,39 @@ interface SiteStatus {
   status: string;
 }
 
-export const useMemberSiteStatuses = (customerId?: string, memberId?: string) => {
-  const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const fetchMemberSiteStatuses = async (customerId: string, memberId: string) => {
+  const { data, error } = await supabase
+    .from('customer_site_statuses')
+    .select('*')
+    .eq('customer_id', customerId)
+    .eq('member_id', memberId);
 
-  const fetchSiteStatuses = useCallback(async () => {
+  if (error) {
+    console.error('Error fetching member site statuses:', error);
+    throw error;
+  }
+
+  return data || [];
+};
+
+export const useMemberSiteStatuses = (customerId?: string, memberId?: string) => {
+  const queryClient = useQueryClient();
+  
+  const { data: siteStatuses = [], isLoading, refetch } = useQuery({
+    queryKey: ['member-site-statuses', customerId, memberId],
+    queryFn: () => fetchMemberSiteStatuses(customerId!, memberId!),
+    enabled: !!customerId && !!memberId,
+    staleTime: 30000,
+    gcTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
     if (!customerId || !memberId) {
-      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('customer_site_statuses')
-        .select('*')
-        .eq('customer_id', customerId)
-        .eq('member_id', memberId);
-
-      if (error) {
-        console.error('Error fetching member site statuses:', error);
-        return;
-      }
-
-      setSiteStatuses(data || []);
-    } catch (error) {
-      console.error('Error in fetchMemberSiteStatuses:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [customerId, memberId]);
-
-  useEffect(() => {
-    fetchSiteStatuses();
-
-    if (!customerId || !memberId) {
-      return () => {};
-    }
-
     const channel = supabase
-      .channel('member-customer-site-statuses')
+      .channel(`member-site-statuses-${customerId}-${memberId}`)
       .on(
         'postgres_changes',
         {
@@ -56,23 +49,13 @@ export const useMemberSiteStatuses = (customerId?: string, memberId?: string) =>
           filter: `customer_id=eq.${customerId}`
         },
         (payload) => {
-          // Restrict updates to the active member only
           const newRow = payload.new as SiteStatus & { member_id?: string };
           const oldRow = payload.old as SiteStatus & { member_id?: string };
-          if (payload.eventType === 'INSERT') {
-            if ((newRow as any)?.member_id === memberId) {
-              setSiteStatuses(prev => [...prev, newRow]);
-            }
-          } else if (payload.eventType === 'UPDATE') {
-            if ((newRow as any)?.member_id === memberId) {
-              setSiteStatuses(prev => prev.map(s => s.site_name === newRow.site_name ? newRow : s));
-            }
-          } else if (payload.eventType === 'DELETE') {
-            if ((oldRow as any)?.member_id === memberId) {
-              setSiteStatuses(prev => prev.filter(s => s.site_name !== oldRow.site_name));
-            }
-          } else {
-            fetchSiteStatuses();
+          const affectsMember = (newRow as any)?.member_id === memberId || 
+                                (oldRow as any)?.member_id === memberId;
+          
+          if (affectsMember) {
+            queryClient.invalidateQueries({ queryKey: ['member-site-statuses', customerId, memberId] });
           }
         }
       )
@@ -81,7 +64,7 @@ export const useMemberSiteStatuses = (customerId?: string, memberId?: string) =>
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [customerId, memberId, fetchSiteStatuses]);
+  }, [customerId, memberId, queryClient]);
 
-  return { siteStatuses, isLoading, refetch: fetchSiteStatuses };
+  return { siteStatuses, isLoading, refetch };
 };
