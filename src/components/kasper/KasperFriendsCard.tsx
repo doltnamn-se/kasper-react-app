@@ -32,7 +32,9 @@ export const KasperFriendsCard = () => {
       }
       return data;
     },
-    enabled: !!userProfile?.id
+    enabled: !!userProfile?.id,
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
   });
 
   // Fetch usage count from promotional_codes table
@@ -60,7 +62,9 @@ export const KasperFriendsCard = () => {
       
       return data;
     },
-    enabled: !!customerData?.coupon_code
+    enabled: !!customerData?.coupon_code,
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
   });
 
   const discountAmount = (usageData?.usage_count || 0) * 50;
