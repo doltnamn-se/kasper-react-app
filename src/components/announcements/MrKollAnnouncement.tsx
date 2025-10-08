@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Preferences } from '@capacitor/preferences';
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export const MrKollAnnouncement = () => {
+interface MrKollAnnouncementProps {
+  shouldShow: boolean;
+}
+
+export const MrKollAnnouncement = ({ shouldShow }: MrKollAnnouncementProps) => {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
   const [isExpanded, setIsExpanded] = useState(true);
@@ -89,7 +93,8 @@ export const MrKollAnnouncement = () => {
     ? "Just nu är MrKolls handläggningstid för borttagning av profiler mellan 3-5 veckor"
     : "Right now, MrKoll's processing time for removing profiles is between 3-5 weeks";
 
-  if (!show) return null;
+  // Don't show if MrKoll status is not "Begäran skickad"
+  if (!shouldShow || !show) return null;
 
   return (
     <div className="relative overflow-hidden rounded-2xl">

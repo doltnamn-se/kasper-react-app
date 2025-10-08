@@ -36,9 +36,14 @@ const Index = () => {
   const getWelcomeMessage = () => {
     return language === 'sv' ? "Välkommen" : "Welcome";
   };
+
+  // Check if MrKoll status is "Begäran skickad"
+  const mrKollStatus = siteStatuses?.find(s => s.site_name === 'mrkoll')?.status;
+  const showMrKollAnnouncement = mrKollStatus === 'Begäran skickad';
+
   const content = (
     <div className={`space-y-6 ${isMobile ? '' : ''} pb-20 md:pb-0`}>
-      <MrKollAnnouncement />
+      <MrKollAnnouncement shouldShow={showMrKollAnnouncement} />
       
       <div className="mb-6 flex items-center justify-start gap-3 min-w-0">
         <h1 className={`m-0 flex-1 min-w-0 ${isMobile ? 'whitespace-nowrap truncate text-ellipsis' : ''}`}>
