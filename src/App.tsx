@@ -13,6 +13,7 @@ import { splashScreenService } from "@/services/splashScreenService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
 import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
 import { supabase } from "@/integrations/supabase/client";
+import { ImagePreloader } from "@/components/ImagePreloader";
 
 import Auth from "@/pages/Auth";
 import Intro from "@/pages/Intro";
@@ -127,6 +128,7 @@ function App() {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
         <LanguageProvider>
           <SidebarProvider>
+            <ImagePreloader />
             <Router>
               <MobileIntroRedirect />
               <Routes>
