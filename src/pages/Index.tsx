@@ -38,7 +38,7 @@ const Index = () => {
   };
 
   // Check if MrKoll status is "Begäran skickad"
-  const mrKollStatus = siteStatuses?.find(s => s.site_name === 'mrkoll')?.status;
+  const mrKollStatus = siteStatuses?.find(s => s.site_name?.toLowerCase() === 'mrkoll')?.status;
   const showMrKollAnnouncement = mrKollStatus === 'Begäran skickad';
 
   const content = (
