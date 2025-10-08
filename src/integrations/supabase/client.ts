@@ -7,10 +7,11 @@ import { Capacitor } from '@capacitor/core';
 const SUPABASE_URL = "https://upfapfohwnkiugvebujh.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZmFwZm9od25raXVndmVidWpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4OTk1MjEsImV4cCI6MjA1MjQ3NTUyMX0.bph8bum09_ZYifznCYeksXeTsPQnn3m1TdWhbwfcvA0";
 
-// Create custom storage adapter for Capacitor with extended timeout and retry logic
+// Create custom storage adapter for Capacitor with Android optimizations
 const createCapacitorStorage = () => {
-  const TIMEOUT_MS = 10000; // 10 second timeout (increased for mobile)
-  const MAX_RETRIES = 3; // Retry failed operations
+  const isAndroid = Capacitor.getPlatform() === 'android';
+  const TIMEOUT_MS = isAndroid ? 5000 : 10000; // 5s for Android, 10s for iOS
+  const MAX_RETRIES = isAndroid ? 1 : 3; // 1 retry for Android, 3 for iOS
   
   const withTimeout = <T>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
     return Promise.race([
@@ -30,7 +31,7 @@ const createCapacitorStorage = () => {
     } catch (error) {
       if (retries > 0) {
         console.log(`[Storage] Retrying operation, ${retries} attempts left`);
-        await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before retry
+        await new Promise(resolve => setTimeout(resolve, isAndroid ? 300 : 500));
         return withRetry(operation, retries - 1);
       }
       throw error;
@@ -83,11 +84,13 @@ const createCapacitorStorage = () => {
         );
         console.log('[Storage] Set in Preferences successfully:', key);
         
-        // Verify the write
-        const { value: storedValue } = await Preferences.get({ key });
-        if (storedValue !== value) {
-          console.error('[Storage] Verification failed, value mismatch');
-          throw new Error('Storage verification failed');
+        // Skip verification on Android to speed up storage
+        if (!isAndroid) {
+          const { value: storedValue } = await Preferences.get({ key });
+          if (storedValue !== value) {
+            console.error('[Storage] Verification failed, value mismatch');
+            throw new Error('Storage verification failed');
+          }
         }
       } catch (error) {
         console.error('[Storage] Error setting item after retries:', error);
