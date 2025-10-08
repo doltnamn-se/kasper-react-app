@@ -14,7 +14,6 @@ import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayo
 import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
 import { supabase } from "@/integrations/supabase/client";
 import { PullToRefresh } from "@/components/android/PullToRefresh";
-import { useAndroidRefresh } from "@/hooks/useAndroidRefresh";
 
 import Auth from "@/pages/Auth";
 import Intro from "@/pages/Intro";
@@ -48,8 +47,6 @@ import { AuthRoute } from "@/components/auth/AuthRoute";
 const queryClient = new QueryClient();
 
 function App() {
-  const { handleRefresh } = useAndroidRefresh();
-
   useEffect(() => {
     initializeVersionTracking();
     return () => cleanupVersionTracking();
@@ -132,7 +129,7 @@ function App() {
         <LanguageProvider>
           <SidebarProvider>
             <Router>
-              <PullToRefresh onRefresh={handleRefresh}>
+              <PullToRefresh>
                 <MobileIntroRedirect />
                 <Routes>
                   {/* Intro/Onboarding route for iOS */}

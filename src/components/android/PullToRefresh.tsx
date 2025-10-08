@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { isAndroid } from '@/capacitor';
 import { RefreshCw } from 'lucide-react';
+import { useAndroidRefresh } from '@/hooks/useAndroidRefresh';
 
 interface PullToRefreshProps {
-  onRefresh: () => Promise<void>;
   children: React.ReactNode;
   disabled?: boolean;
 }
 
-export const PullToRefresh = ({ onRefresh, children, disabled = false }: PullToRefreshProps) => {
+export const PullToRefresh = ({ children, disabled = false }: PullToRefreshProps) => {
+  const { handleRefresh } = useAndroidRefresh();
   const [isPulling, setIsPulling] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
@@ -64,7 +65,7 @@ export const PullToRefresh = ({ onRefresh, children, disabled = false }: PullToR
         console.log('[Android] Pull to refresh triggered');
         setIsRefreshing(true);
         try {
-          await onRefresh();
+          await handleRefresh();
         } catch (error) {
           console.error('[Android] Refresh failed:', error);
         } finally {
@@ -84,7 +85,7 @@ export const PullToRefresh = ({ onRefresh, children, disabled = false }: PullToR
       container.removeEventListener('touchmove', handleTouchMove);
       container.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isEnabled, isPulling, isRefreshing, pullDistance, onRefresh]);
+  }, [isEnabled, isPulling, isRefreshing, pullDistance, handleRefresh]);
 
   if (!isEnabled) {
     return <>{children}</>;
