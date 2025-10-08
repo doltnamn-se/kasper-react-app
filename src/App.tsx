@@ -13,7 +13,6 @@ import { splashScreenService } from "@/services/splashScreenService";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
 import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
 import { supabase } from "@/integrations/supabase/client";
-import { PullToRefresh } from "@/components/android/PullToRefresh";
 
 import Auth from "@/pages/Auth";
 import Intro from "@/pages/Intro";
@@ -129,45 +128,43 @@ function App() {
         <LanguageProvider>
           <SidebarProvider>
             <Router>
-              <PullToRefresh>
-                <MobileIntroRedirect />
-                <Routes>
-                  {/* Intro/Onboarding route for iOS */}
-                  <Route path="/intro" element={<Intro />} />
-                  
-                  {/* Auth routes */}
-                  <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
-                  <Route path="/auth/reset-password" element={<ResetPassword />} />
-                  <Route path="/completion" element={<Completion />} />
-                  
-                  {/* Admin routes */}
-                  <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="customers" element={<AdminCustomers />} />
-                    <Route path="deindexing" element={<AdminDeindexingView />} />
-                    <Route path="monitoring" element={<AdminMonitoring />} />
-                    <Route path="promotional-codes" element={<AdminPromotionalCodes />} />
-                    <Route path="chat" element={<AdminChat />} />
-                    <Route path="version-log" element={<AdminVersionLog />} />
-                  </Route>
+              <MobileIntroRedirect />
+              <Routes>
+                {/* Intro/Onboarding route for iOS */}
+                <Route path="/intro" element={<Intro />} />
+                
+                {/* Auth routes */}
+                <Route path="/auth/*" element={<AuthRoute><Auth /></AuthRoute>} />
+                <Route path="/auth/reset-password" element={<ResetPassword />} />
+                <Route path="/completion" element={<Completion />} />
+                
+                {/* Admin routes */}
+                <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="customers" element={<AdminCustomers />} />
+                  <Route path="deindexing" element={<AdminDeindexingView />} />
+                  <Route path="monitoring" element={<AdminMonitoring />} />
+                  <Route path="promotional-codes" element={<AdminPromotionalCodes />} />
+                  <Route path="chat" element={<AdminChat />} />
+                  <Route path="version-log" element={<AdminVersionLog />} />
+                </Route>
 
-                  {/* Customer routes wrapped with MobilePersistentLayout for mobile persistence */}
-                  <Route element={<MobilePersistentLayout />}>
-                    <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
-                    <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
-                    <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
-                    <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
-                    <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
-                    <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
-                    <Route path="/kasper-friends" element={<ProtectedRoute customerOnly><KasperFriends /></ProtectedRoute>} />
-                    <Route path="/chat" element={<ProtectedRoute customerOnly><Chat /></ProtectedRoute>} />
-                    <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
-                    <Route path="/profile-menu" element={<ProtectedRoute customerOnly><ProfileMenu /></ProtectedRoute>} />
-                  </Route>
-                  
-                </Routes>
-                <Toaster />
-              </PullToRefresh>
+                {/* Customer routes wrapped with MobilePersistentLayout for mobile persistence */}
+                <Route element={<MobilePersistentLayout />}>
+                  <Route path="/" element={<ProtectedRoute customerOnly><Index /></ProtectedRoute>} />
+                  <Route path="/checklist" element={<ProtectedRoute customerOnly><Checklist /></ProtectedRoute>} />
+                  <Route path="/monitoring" element={<ProtectedRoute customerOnly><Monitoring /></ProtectedRoute>} />
+                  <Route path="/deindexing" element={<ProtectedRoute customerOnly><Deindexing /></ProtectedRoute>} />
+                  <Route path="/address-alerts" element={<ProtectedRoute customerOnly><AddressAlerts /></ProtectedRoute>} />
+                  <Route path="/guides" element={<ProtectedRoute customerOnly><Guides /></ProtectedRoute>} />
+                  <Route path="/kasper-friends" element={<ProtectedRoute customerOnly><KasperFriends /></ProtectedRoute>} />
+                  <Route path="/chat" element={<ProtectedRoute customerOnly><Chat /></ProtectedRoute>} />
+                  <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
+                  <Route path="/profile-menu" element={<ProtectedRoute customerOnly><ProfileMenu /></ProtectedRoute>} />
+                </Route>
+                
+              </Routes>
+              <Toaster />
             </Router>
           </SidebarProvider>
         </LanguageProvider>
