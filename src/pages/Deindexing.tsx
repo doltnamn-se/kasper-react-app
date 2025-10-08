@@ -22,6 +22,9 @@ const Deindexing = () => {
   const [showNewLinkForm, setShowNewLinkForm] = useState(false);
   const isMobile = useIsMobile();
   const { incomingUrls } = useIncomingUrls();
+  
+  // Check if any URL has status "request_submitted" (Begäran skickad)
+  const showGoogleAnnouncement = incomingUrls?.some(url => url.current_status === 'request_submitted') ?? false;
 
   // Query for deindexed URLs count
   const { data: deindexedUrls } = useQuery({
@@ -163,7 +166,7 @@ const Deindexing = () => {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <GoogleAnnouncement />
+        {showGoogleAnnouncement && <GoogleAnnouncement />}
         
         {/* Modified header section with flex layout for mobile */}
         <div className="flex flex-row justify-between items-center mb-6">

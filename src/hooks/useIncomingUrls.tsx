@@ -6,6 +6,7 @@ interface IncomingURL {
   id: string;
   url: string;
   status: string;
+  current_status: string;
   created_at: string;
   status_history: URLStatusHistory[];
 }
@@ -23,6 +24,7 @@ export const useIncomingUrls = () => {
           id,
           url,
           status,
+          current_status,
           created_at,
           status_history
         `)
