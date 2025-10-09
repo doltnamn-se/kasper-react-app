@@ -168,7 +168,10 @@ export default function ProfileMenu() {
           <div className="flex flex-col gap-1">
             {(userProfile as any)?.subscription_plan && (
               <span className="text-white font-medium" style={{ fontSize: '1rem' }}>
-                {formatSubscriptionPlan((userProfile as any).subscription_plan)}
+                {(userProfile as any)?.customer_type === 'business' && (userProfile as any)?.company_name
+                  ? (userProfile as any).company_name
+                  : formatSubscriptionPlan((userProfile as any).subscription_plan)
+                }
               </span>
             )}
             <span className="text-white/80 font-medium" style={{ fontSize: '1rem' }}>{displayName}</span>
