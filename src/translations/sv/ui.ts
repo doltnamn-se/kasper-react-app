@@ -166,6 +166,7 @@ export const ui: UITranslations = {
   'address.alert': 'Adresslarm',
   'private.customer': 'Privatkund',
   'business.client': 'Företagskund',
+  'company.name': 'Företag',
   'select.address.alert': 'Välj adresslarm',
   'select.customer.type': 'Välj kundtyp',
   'select.subscription.plan': 'Välj abonnemangsplan',

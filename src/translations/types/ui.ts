@@ -164,6 +164,7 @@ export interface UITranslations {
   'address.alert': string;
   'private.customer': string;
   'business.client': string;
+  'company.name': string;
   'select.address.alert': string;
   'select.customer.type': string;
   'select.subscription.plan': string;

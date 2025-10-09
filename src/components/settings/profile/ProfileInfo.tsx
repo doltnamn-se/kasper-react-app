@@ -9,9 +9,11 @@ import { ArrowUpDown } from "lucide-react";
 interface ProfileInfoProps {
   userProfile: Profile | null;
   subscriptionPlan: string | null;
+  customerType?: string | null;
+  companyName?: string | null;
 }
 
-export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps) => {
+export const ProfileInfo = ({ userProfile, subscriptionPlan, customerType, companyName }: ProfileInfoProps) => {
   const { t, language } = useLanguage();
 
   // Get customer members
@@ -93,14 +95,36 @@ export const ProfileInfo = ({ userProfile, subscriptionPlan }: ProfileInfoProps)
         </p>
       </div>
 
-      <div className="space-y-1">
-        <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
-          {language === 'sv' ? 'Prenumerationslängd' : 'Subscription length'}
-        </p>
-        <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
-          {getSubscriptionLength(subscriptionPlan)}
-        </p>
-      </div>
+      {customerType === 'business' ? (
+        <>
+          <div className="space-y-1">
+            <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {t('customer.type')}
+            </p>
+            <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
+              {t('business.client')}
+            </p>
+          </div>
+
+          <div className="space-y-1">
+            <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {t('company.name')}
+            </p>
+            <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
+              {companyName || '-'}
+            </p>
+          </div>
+        </>
+      ) : (
+        <div className="space-y-1">
+          <p className="text-[0.8rem] font-medium text-[#000000A6] dark:text-[#FFFFFFA6]">
+            {language === 'sv' ? 'Prenumerationslängd' : 'Subscription length'}
+          </p>
+          <p className="font-medium text-[0.9rem] text-[#121212] dark:text-[#FFFFFF]">
+            {getSubscriptionLength(subscriptionPlan)}
+          </p>
+        </div>
+      )}
 
       {showFamilyMembers && (
         <>

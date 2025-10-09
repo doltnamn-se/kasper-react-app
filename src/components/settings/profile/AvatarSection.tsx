@@ -14,7 +14,11 @@ export const AvatarSection = ({ userProfile }: AvatarSectionProps) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('customers')
-        .select('subscription_plan')
+        .select(`
+          subscription_plan,
+          customer_type,
+          company:companies(name)
+        `)
         .eq('id', userProfile?.id)
         .single();
       
@@ -29,6 +33,8 @@ export const AvatarSection = ({ userProfile }: AvatarSectionProps) => {
       <ProfileInfo
         userProfile={userProfile}
         subscriptionPlan={customerData?.subscription_plan}
+        customerType={customerData?.customer_type}
+        companyName={(customerData?.company as any)?.name}
       />
     </div>
   );
