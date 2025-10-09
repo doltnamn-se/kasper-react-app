@@ -15,15 +15,16 @@ interface CustomerDetailsSheetProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetailsSheetProps) => {
+export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }: CustomerDetailsSheetProps) => {
   const isMobile = useIsMobile();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
   // Use empty ID if customer is null to prevent hook conditionally
-  const customerId = customer?.id || "";
+  const customerId = initialCustomer?.id || "";
   
   const {
     isLoading,
+    customerData,
     isOnline,
     userLastSeen,
     usedUrls,
@@ -43,6 +44,9 @@ export const CustomerDetailsSheet = ({ customer, onOpenChange }: CustomerDetails
     handleSubscriptionUpdate,
     refetchData
   } = useCustomerDetails(customerId, onOpenChange);
+
+  // Use refreshed customer data if available, otherwise use initial customer
+  const customer = customerData?.customer || initialCustomer;
 
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
