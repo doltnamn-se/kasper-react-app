@@ -146,6 +146,7 @@ export interface UITranslations {
   'unlimited': string;
   'customer.type': string;
   'subscription': string;
+  'personal.protection': string;
   'updating': string;
   'update': string;
   'success.email_sent': string;

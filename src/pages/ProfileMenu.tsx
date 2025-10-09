@@ -156,7 +156,10 @@ export default function ProfileMenu() {
         <div className="relative z-10 pt-4 px-4 pb-4">
           <div className="flex gap-2 mb-20">
             <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
-              {language === 'sv' ? 'Prenumeration' : 'Subscription'}
+              {(userProfile as any)?.customer_type === 'company' 
+                ? (language === 'sv' ? 'Personskydd' : 'Personal Protection')
+                : (language === 'sv' ? 'Prenumeration' : 'Subscription')
+              }
             </span>
             <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
               {language === 'sv' ? 'Aktiv' : 'Active'}

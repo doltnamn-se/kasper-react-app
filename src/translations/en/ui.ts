@@ -148,6 +148,7 @@ export const ui: UITranslations = {
   'unlimited': 'Unlimited',
   'customer.type': 'Customer Type',
   'subscription': 'Subscription',
+  'personal.protection': 'Personal Protection',
   'updating': 'Updating...',
   'update': 'Update',
   'success.email_sent': 'Email Sent',
