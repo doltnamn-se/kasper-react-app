@@ -3,9 +3,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { AdminUserSelect } from "./AdminUserSelect";
 
 interface CompaniesTableProps {
   companies: Company[];
@@ -46,6 +47,9 @@ export const CompaniesTable = ({ companies, onRefresh }: CompaniesTableProps) =>
               {language === 'sv' ? 'Organisationsnummer' : 'Org Number'}
             </TableHead>
             <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6]">
+              {language === 'sv' ? 'Admin' : 'Admin'}
+            </TableHead>
+            <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6]">
               {language === 'sv' ? 'Kontakt' : 'Contact'}
             </TableHead>
             <TableHead className="text-[#000000A6] dark:text-[#FFFFFFA6]">
@@ -67,6 +71,13 @@ export const CompaniesTable = ({ companies, onRefresh }: CompaniesTableProps) =>
               </TableCell>
               <TableCell className="text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {company.organization_number || '-'}
+              </TableCell>
+              <TableCell>
+                <AdminUserSelect 
+                  companyId={company.id}
+                  currentAdminId={company.admin_user_id}
+                  onAdminChanged={onRefresh}
+                />
               </TableCell>
               <TableCell className="text-[#000000A6] dark:text-[#FFFFFFA6]">
                 {company.contact_email || '-'}

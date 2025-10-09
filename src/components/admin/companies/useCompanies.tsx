@@ -12,6 +12,11 @@ export interface Company {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  admin_user_id: string | null;
+  admin_user?: {
+    display_name: string | null;
+    email: string | null;
+  };
 }
 
 export const useCompanies = () => {
@@ -22,7 +27,10 @@ export const useCompanies = () => {
     try {
       const { data, error } = await supabase
         .from('companies')
-        .select('*')
+        .select(`
+          *,
+          admin_user:profiles!companies_admin_user_id_fkey(display_name, email)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) {
