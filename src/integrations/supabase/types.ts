@@ -250,6 +250,7 @@ export type Database = {
       }
       companies: {
         Row: {
+          admin_user_id: string | null
           billing_address: string | null
           contact_email: string | null
           created_at: string
@@ -261,6 +262,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          admin_user_id?: string | null
           billing_address?: string | null
           contact_email?: string | null
           created_at?: string
@@ -272,6 +274,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          admin_user_id?: string | null
           billing_address?: string | null
           contact_email?: string | null
           created_at?: string
@@ -282,7 +285,15 @@ export type Database = {
           phone_number?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "companies_admin_user_id_fkey"
+            columns: ["admin_user_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       customer_checklist_progress: {
         Row: {
