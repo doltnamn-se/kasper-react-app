@@ -38,7 +38,7 @@ export const useUserProfile = () => {
         .select(`
           subscription_plan, 
           customer_type,
-          company:companies(name)
+          company:companies!customers_company_id_fkey(name)
         `)
         .eq('id', session.user.id)
         .maybeSingle();
