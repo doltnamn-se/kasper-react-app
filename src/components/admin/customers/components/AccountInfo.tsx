@@ -2,11 +2,10 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerWithProfile } from "@/types/customer";
-import { Check } from "lucide-react";
-import { format } from "date-fns";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface AccountInfoProps {
   customer: CustomerWithProfile;
@@ -25,29 +24,37 @@ export const AccountInfo = ({
   isSuperAdmin,
 }: AccountInfoProps) => {
   const { language, t } = useLanguage();
-  const [isUpdatingMrkoll, setIsUpdatingMrkoll] = useState(false);
+  const [isUpdatingCustomerType, setIsUpdatingCustomerType] = useState(false);
   
-  const handleMrkollRemovalChange = async (value: string) => {
+  const handleCustomerTypeToggle = async () => {
     if (!customer.id) return;
     
-    setIsUpdatingMrkoll(true);
+    setIsUpdatingCustomerType(true);
     try {
-      const timestamp = value === "checked" ? new Date().toISOString() : null;
+      const newType = customer.customer_type === 'private' ? 'business' : 'private';
       
       const { error } = await supabase
-        .from('profiles')
-        .update({ mrkoll_removal_checked_at: timestamp })
+        .from('customers')
+        .update({ customer_type: newType })
         .eq('id', customer.id);
         
       if (error) throw error;
       
-      // Toast notification removed
+      toast.success(
+        language === 'sv' 
+          ? `Kundtyp ändrad till ${newType === 'private' ? 'Privatkund' : 'Företagskund'}` 
+          : `Customer type changed to ${newType === 'private' ? 'Private' : 'Business'}`
+      );
       
     } catch (error) {
-      console.error('Error updating Mrkoll removal status:', error);
-      // Toast error notification also removed
+      console.error('Error updating customer type:', error);
+      toast.error(
+        language === 'sv' 
+          ? 'Kunde inte uppdatera kundtyp' 
+          : 'Failed to update customer type'
+      );
     } finally {
-      setIsUpdatingMrkoll(false);
+      setIsUpdatingCustomerType(false);
     }
   };
 
@@ -68,33 +75,20 @@ export const AccountInfo = ({
         {isSuperAdmin && (
           <div className="space-y-2">
             <p className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-              {language === 'sv' ? 'Borttagning Mrkoll' : 'Removal Mrkoll'}
+              {language === 'sv' ? 'Kundtyp' : 'Customer Type'}
             </p>
-            <RadioGroup 
-              disabled={isUpdatingMrkoll}
-              value={customer.profile?.mrkoll_removal_checked_at ? "checked" : "unchecked"}
-              onValueChange={handleMrkollRemovalChange}
-              className="flex items-center gap-2"
+            <Button
+              onClick={handleCustomerTypeToggle}
+              disabled={isUpdatingCustomerType}
+              variant="outline"
+              size="sm"
+              className="w-full text-xs"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem 
-                  value="checked" 
-                  id="mrkoll-checked"
-                  className="bg-[#f5f5f5] dark:bg-[#121212] border-[#c7c7c7] dark:border-[#393939]"
-                />
-                <div className="text-xs">
-                  {customer.profile?.mrkoll_removal_checked_at ? (
-                    <span className="text-xs text-[#000000] dark:text-[#FFFFFF]">
-                      {format(new Date(customer.profile.mrkoll_removal_checked_at), 'yyyy-MM-dd HH:mm')}
-                    </span>
-                  ) : (
-                    <span className="text-xs font-medium text-[#000000] dark:text-[#FFFFFF]">
-                      {t('mrkoll.not.checked')}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </RadioGroup>
+              {customer.customer_type === 'private' 
+                ? (language === 'sv' ? 'Privatkund → Företagskund' : 'Private → Business')
+                : (language === 'sv' ? 'Företagskund → Privatkund' : 'Business → Private')
+              }
+            </Button>
           </div>
         )}
       </div>
