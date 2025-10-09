@@ -25,12 +25,9 @@ export const useCompanies = () => {
 
   const fetchCompanies = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: companiesData, error } = await supabase
         .from('companies')
-        .select(`
-          *,
-          admin_user:profiles!companies_admin_user_id_fkey(display_name, email)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -39,7 +36,26 @@ export const useCompanies = () => {
         return;
       }
 
-      setCompanies(data || []);
+      // Fetch admin user details for each company
+      const companiesWithAdmins = await Promise.all(
+        (companiesData || []).map(async (company) => {
+          if (company.admin_user_id) {
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('display_name, email')
+              .eq('id', company.admin_user_id)
+              .maybeSingle();
+            
+            return {
+              ...company,
+              admin_user: profileData
+            };
+          }
+          return { ...company, admin_user: null };
+        })
+      );
+
+      setCompanies(companiesWithAdmins);
     } catch (error) {
       console.error('Error:', error);
       toast.error("Failed to load companies");
