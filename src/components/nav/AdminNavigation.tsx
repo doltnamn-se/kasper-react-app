@@ -8,7 +8,8 @@ import {
   EyeOff,
   History,
   UserRoundSearch,
-  Infinity
+  Infinity,
+  Building2
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -59,7 +60,12 @@ export const AdminNavigation = ({ toggleMobileMenu }: AdminNavigationProps = {})
         t('nav.admin.customers')
       )}
 
-      {renderNavLink("/admin/monitoring", 
+      {renderNavLink("/admin/companies", 
+        <Building2 className="w-[18px] h-[18px]" />, 
+        "Företag"
+      )}
+
+      {renderNavLink("/admin/monitoring",
         <UserRoundSearch className="w-[18px] h-[18px]" />, 
         t('nav.admin.monitoring')
       )}

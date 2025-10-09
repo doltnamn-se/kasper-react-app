@@ -9,6 +9,7 @@ export interface CustomerFormData {
   subscriptionPlan: SubscriptionPlan;
   customerType: CustomerType;
   hasAddressAlert: boolean;
+  companyId: string | null;
 }
 
 export interface CustomerFormFieldsProps {
@@ -17,9 +18,11 @@ export interface CustomerFormFieldsProps {
   subscriptionPlan: SubscriptionPlan;
   customerType: CustomerType;
   hasAddressAlert: boolean;
+  companyId: string | null;
   onEmailChange: (value: string) => void;
   onDisplayNameChange: (value: string) => void;
   onSubscriptionPlanChange: (value: SubscriptionPlan) => void;
   onCustomerTypeChange: (value: CustomerType) => void;
   onHasAddressAlertChange: (value: boolean) => void;
+  onCompanyIdChange: (value: string | null) => void;
 }

@@ -36,6 +36,7 @@ import ProfileMenu from "@/pages/ProfileMenu";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminCustomers from "@/pages/admin/AdminCustomers";
+import AdminCompanies from "@/pages/admin/AdminCompanies";
 import AdminVersionLog from "@/pages/admin/AdminVersionLog";
 import AdminMonitoring from "@/pages/admin/AdminMonitoring";
 import AdminPromotionalCodes from "@/pages/admin/AdminPromotionalCodes";
@@ -146,6 +147,7 @@ function App() {
                 <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="customers" element={<AdminCustomers />} />
+                  <Route path="companies" element={<AdminCompanies />} />
                   <Route path="deindexing" element={<AdminDeindexingView />} />
                   <Route path="monitoring" element={<AdminMonitoring />} />
                   <Route path="promotional-codes" element={<AdminPromotionalCodes />} />

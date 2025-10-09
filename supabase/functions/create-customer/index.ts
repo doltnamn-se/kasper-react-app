@@ -33,6 +33,7 @@ serve(async (req) => {
       subscriptionPlan, 
       customerType,
       hasAddressAlert,
+      companyId,
       createdBy, 
       password 
     } = requestData;
@@ -139,6 +140,7 @@ serve(async (req) => {
         created_by: createdBy,
         customer_type: customerType,
         has_address_alert: hasAddressAlert,
+        company_id: companyId || null,
         coupon_code: assignedCode
       })
       .eq('id', user.id);

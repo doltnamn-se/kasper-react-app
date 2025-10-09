@@ -248,6 +248,42 @@ export type Database = {
         }
         Relationships: []
       }
+      companies: {
+        Row: {
+          billing_address: string | null
+          contact_email: string | null
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          organization_number: string | null
+          phone_number: string | null
+          updated_at: string
+        }
+        Insert: {
+          billing_address?: string | null
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          organization_number?: string | null
+          phone_number?: string | null
+          updated_at?: string
+        }
+        Update: {
+          billing_address?: string | null
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          organization_number?: string | null
+          phone_number?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       customer_checklist_progress: {
         Row: {
           address: string | null
@@ -400,6 +436,7 @@ export type Database = {
         Row: {
           checklist_completed: boolean | null
           checklist_step: number | null
+          company_id: string | null
           completed_guides: string[] | null
           coupon_code: string | null
           created_at: string | null
@@ -418,6 +455,7 @@ export type Database = {
         Insert: {
           checklist_completed?: boolean | null
           checklist_step?: number | null
+          company_id?: string | null
           completed_guides?: string[] | null
           coupon_code?: string | null
           created_at?: string | null
@@ -436,6 +474,7 @@ export type Database = {
         Update: {
           checklist_completed?: boolean | null
           checklist_step?: number | null
+          company_id?: string | null
           completed_guides?: string[] | null
           coupon_code?: string | null
           created_at?: string | null
@@ -452,6 +491,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "customers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "customers_id_fkey"
             columns: ["id"]

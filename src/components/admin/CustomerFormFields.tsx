@@ -1,5 +1,5 @@
-
 import { CustomerTypeField } from "./customer-form/CustomerTypeField";
+import { CompanySelectField } from "./customer-form/CompanySelectField";
 import { AddressAlertField } from "./customer-form/AddressAlertField";
 import { BasicInfoFields } from "./customer-form/BasicInfoFields";
 import { CustomerFormFieldsProps } from "@/types/customer-form";
@@ -10,11 +10,13 @@ export const CustomerFormFields = ({
   subscriptionPlan,
   customerType,
   hasAddressAlert,
+  companyId,
   onEmailChange,
   onDisplayNameChange,
   onSubscriptionPlanChange,
   onCustomerTypeChange,
   onHasAddressAlertChange,
+  onCompanyIdChange,
 }: CustomerFormFieldsProps) => {
   return (
     <div className="space-y-4">
@@ -38,6 +40,13 @@ export const CustomerFormFields = ({
           onChange={onHasAddressAlertChange}
         />
       </div>
+      
+      {customerType === 'business' && (
+        <CompanySelectField 
+          value={companyId}
+          onChange={onCompanyIdChange}
+        />
+      )}
     </div>
   );
 };

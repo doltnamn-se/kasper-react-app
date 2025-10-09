@@ -45,6 +45,10 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
   const handleAddressAlertChange = useCallback((hasAddressAlert: boolean) => {
     setFormData(prev => ({ ...prev, hasAddressAlert }));
   }, [setFormData]);
+
+  const handleCompanyIdChange = useCallback((companyId: string | null) => {
+    setFormData(prev => ({ ...prev, companyId }));
+  }, [setFormData]);
   
   // Memoize FormContent to prevent unnecessary re-renders
   const FormContent = useMemo(() => (
@@ -55,14 +59,16 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         subscriptionPlan={formData.subscriptionPlan}
         customerType={formData.customerType}
         hasAddressAlert={formData.hasAddressAlert}
+        companyId={formData.companyId}
         onEmailChange={handleEmailChange}
         onDisplayNameChange={handleDisplayNameChange}
         onSubscriptionPlanChange={handleSubscriptionPlanChange}
         onCustomerTypeChange={handleCustomerTypeChange}
         onHasAddressAlertChange={handleAddressAlertChange}
+        onCompanyIdChange={handleCompanyIdChange}
       />
     </div>
-  ), [formData, handleEmailChange, handleDisplayNameChange, handleSubscriptionPlanChange, handleCustomerTypeChange, handleAddressAlertChange]);
+  ), [formData, handleEmailChange, handleDisplayNameChange, handleSubscriptionPlanChange, handleCustomerTypeChange, handleAddressAlertChange, handleCompanyIdChange]);
   
   const FormActions = () => (
     <div className="flex flex-col gap-2">
