@@ -32,10 +32,10 @@ export const useUserProfile = () => {
         return null;
       }
       
-      // Also fetch customer data to get subscription plan
+      // Also fetch customer data to get subscription plan and customer type
       const { data: customerData, error: customerError } = await supabase
         .from('customers')
-        .select('subscription_plan')
+        .select('subscription_plan, customer_type')
         .eq('id', session.user.id)
         .maybeSingle();
         
@@ -46,11 +46,13 @@ export const useUserProfile = () => {
       console.log("Profile data fetched successfully", profileData);
       console.log("Avatar URL:", profileData?.avatar_url);
       console.log("Subscription plan:", customerData?.subscription_plan);
+      console.log("Customer type:", customerData?.customer_type);
       
-      // Combine profile data with subscription plan
+      // Combine profile data with subscription plan and customer type
       return {
         ...profileData,
-        subscription_plan: customerData?.subscription_plan
+        subscription_plan: customerData?.subscription_plan,
+        customer_type: customerData?.customer_type
       };
     },
     enabled: true
