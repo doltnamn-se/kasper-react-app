@@ -149,14 +149,16 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
           <span className="text-black dark:text-gray-300 font-medium">{language === 'sv' ? 'Support' : 'Support'}</span>
         </DropdownMenuItem>
         
-        {/* SWAPPED: Billing now comes after Support */}
-        <DropdownMenuItem 
-          className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
-          onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
-        >
-          <CreditCard className="mr-3 h-4 w-4" />
-          <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
-        </DropdownMenuItem>
+        {/* SWAPPED: Billing now comes after Support - hidden for business users */}
+        {(userProfile as any)?.customer_type !== 'business' && (
+          <DropdownMenuItem 
+            className="py-2 cursor-pointer hover:bg-[#f3f4f6] dark:hover:bg-[#2d2d2d] data-[highlighted=true]:bg-[#f3f4f6] dark:data-[highlighted=true]:bg-[#2d2d2d]"
+            onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
+          >
+            <CreditCard className="mr-3 h-4 w-4" />
+            <span className="text-black dark:text-gray-300 font-medium">{t('profile.billing')}</span>
+          </DropdownMenuItem>
+        )}
         
         <DropdownMenuItem 
           onClick={() => navigate("/settings")} 

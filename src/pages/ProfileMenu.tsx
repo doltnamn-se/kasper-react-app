@@ -203,12 +203,14 @@ export default function ProfileMenu() {
           onClick={() => navigate("/chat")}
         />
 
-        {/* Billing */}
-        <MenuItem
-          icon={CreditCard}
-          label={t('profile.billing')}
-          onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
-        />
+        {/* Billing - hidden for business users */}
+        {(userProfile as any)?.customer_type !== 'business' && (
+          <MenuItem
+            icon={CreditCard}
+            label={t('profile.billing')}
+            onClick={() => window.location.href = 'https://billing.stripe.com/p/login/eVa4ifayTfS48la7ss'}
+          />
+        )}
 
         {/* Settings */}
         <MenuItem
