@@ -102,7 +102,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         <div className="relative z-10 pt-4 px-4 pb-4">
           <div className="flex gap-2 mb-12">
             <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
-              {(userProfile as any)?.customer_type === 'company' 
+              {(userProfile as any)?.customer_type === 'business' 
                 ? (language === 'sv' ? 'Personskydd' : 'Personal Protection')
                 : (language === 'sv' ? 'Prenumeration' : 'Subscription')
               }
