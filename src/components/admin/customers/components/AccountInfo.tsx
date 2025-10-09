@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerWithProfile } from "@/types/customer";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
+import { CustomerTypeSelect } from "./CustomerTypeSelect";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 interface AccountInfoProps {
@@ -26,13 +26,11 @@ export const AccountInfo = ({
   const { language, t } = useLanguage();
   const [isUpdatingCustomerType, setIsUpdatingCustomerType] = useState(false);
   
-  const handleCustomerTypeToggle = async () => {
+  const handleCustomerTypeUpdate = async (newType: string) => {
     if (!customer.id) return;
     
     setIsUpdatingCustomerType(true);
     try {
-      const newType = customer.customer_type === 'private' ? 'business' : 'private';
-      
       const { error } = await supabase
         .from('customers')
         .update({ customer_type: newType })
@@ -77,18 +75,11 @@ export const AccountInfo = ({
             <p className="text-xs text-[#000000] dark:text-[#FFFFFF]">
               {language === 'sv' ? 'Kundtyp' : 'Customer Type'}
             </p>
-            <Button
-              onClick={handleCustomerTypeToggle}
-              disabled={isUpdatingCustomerType}
-              variant="outline"
-              size="sm"
-              className="w-full text-xs"
-            >
-              {customer.customer_type === 'private' 
-                ? (language === 'sv' ? 'Privatkund → Företagskund' : 'Private → Business')
-                : (language === 'sv' ? 'Företagskund → Privatkund' : 'Business → Private')
-              }
-            </Button>
+            <CustomerTypeSelect 
+              currentType={customer.customer_type || 'private'} 
+              onUpdateType={handleCustomerTypeUpdate}
+              isUpdating={isUpdatingCustomerType}
+            />
           </div>
         )}
       </div>
