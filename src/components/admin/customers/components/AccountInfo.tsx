@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { CustomerWithProfile } from "@/types/customer";
 import { SubscriptionPlanSelect } from "./SubscriptionPlanSelect";
 import { CustomerTypeSelect } from "./CustomerTypeSelect";
+import { CompanySelectField } from "../../customer-form/CompanySelectField";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -25,6 +26,7 @@ export const AccountInfo = ({
 }: AccountInfoProps) => {
   const { language, t } = useLanguage();
   const [isUpdatingCustomerType, setIsUpdatingCustomerType] = useState(false);
+  const [isUpdatingCompany, setIsUpdatingCompany] = useState(false);
   
   const handleCustomerTypeUpdate = async (newType: string) => {
     if (!customer.id) return;
@@ -55,6 +57,36 @@ export const AccountInfo = ({
       setIsUpdatingCustomerType(false);
     }
   };
+  
+  const handleCompanyUpdate = async (companyId: string | null) => {
+    if (!customer.id) return;
+    
+    setIsUpdatingCompany(true);
+    try {
+      const { error } = await supabase
+        .from('customers')
+        .update({ company_id: companyId })
+        .eq('id', customer.id);
+        
+      if (error) throw error;
+      
+      toast.success(
+        language === 'sv' 
+          ? 'Företag uppdaterat' 
+          : 'Company updated'
+      );
+      
+    } catch (error) {
+      console.error('Error updating company:', error);
+      toast.error(
+        language === 'sv' 
+          ? 'Kunde inte uppdatera företag' 
+          : 'Failed to update company'
+      );
+    } finally {
+      setIsUpdatingCompany(false);
+    }
+  };
 
   return (
     <div className="w-full md:max-w-[220px]">
@@ -79,6 +111,15 @@ export const AccountInfo = ({
               currentType={customer.customer_type || 'private'} 
               onUpdateType={handleCustomerTypeUpdate}
               isUpdating={isUpdatingCustomerType}
+            />
+          </div>
+        )}
+        
+        {isSuperAdmin && customer.customer_type === 'business' && (
+          <div className="space-y-2">
+            <CompanySelectField 
+              value={customer.company_id || null} 
+              onChange={handleCompanyUpdate}
             />
           </div>
         )}
