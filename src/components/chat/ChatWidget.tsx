@@ -60,8 +60,9 @@ export const ChatWidget = () => {
   };
 
   const handleImageViewerOpen = () => {
-    console.log('ChatWidget - handleImageViewerOpen called, isMobile:', isMobile, 'isOpen:', isOpen);
-    if (isMobile && isOpen) {
+    console.log('ChatWidget - handleImageViewerOpen called, isOpen:', isOpen);
+    // Always close drawer if it's open, regardless of isMobile check
+    if (isOpen) {
       setDrawerWasOpen(true);
       setIsOpen(false);
       console.log('ChatWidget - Drawer closed for image viewer');
@@ -70,7 +71,8 @@ export const ChatWidget = () => {
 
   const handleImageViewerClose = () => {
     console.log('ChatWidget - handleImageViewerClose called, drawerWasOpen:', drawerWasOpen);
-    if (isMobile && drawerWasOpen) {
+    // Always reopen drawer if it was open
+    if (drawerWasOpen) {
       setIsOpen(true);
       setDrawerWasOpen(false);
       console.log('ChatWidget - Drawer reopened after image viewer closed');
