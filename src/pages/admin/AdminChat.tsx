@@ -41,7 +41,6 @@ export default function AdminChat() {
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [isFileViewerOpen, setIsFileViewerOpen] = useState(false);
   const [newChatData, setNewChatData] = useState({
     customerId: ''
   });
@@ -523,8 +522,6 @@ export default function AdminChat() {
                       attachmentUrl={message.attachment_url} 
                       fileName={message.message} 
                       isCurrentUser={isAdmin}
-                      onViewerOpen={() => setIsFileViewerOpen(true)}
-                      onViewerClose={() => setIsFileViewerOpen(false)}
                     />
                   ) : (
                     <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
@@ -787,8 +784,6 @@ export default function AdminChat() {
                             attachmentUrl={message.attachment_url} 
                             fileName={message.message} 
                             isCurrentUser={isAdmin}
-                            onViewerOpen={() => setIsFileViewerOpen(true)}
-                            onViewerClose={() => setIsFileViewerOpen(false)}
                           />
                         ) : (
                           <div className={`max-w-[80%] px-3 py-2 ${isAdmin ? 'bg-[#d0ecfb] dark:bg-[#007aff] rounded-tl-[10px] rounded-tr-[10px] rounded-bl-[10px] rounded-br-[0px]' : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] rounded-tl-[10px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[0px]'}`}>
@@ -1053,13 +1048,7 @@ export default function AdminChat() {
           </Button>}
 
         {/* Desktop Chat Interface or Mobile Sheet */}
-        {!isMobile ? isCreatingNew ? renderNewChatForm() : renderChatInterface() : <Sheet open={isChatOpen} onOpenChange={(open) => {
-              // Don't allow Sheet to close if file viewer is open
-              if (!open && isFileViewerOpen) {
-                return;
-              }
-              setIsChatOpen(open);
-            }}>
+        {!isMobile ? isCreatingNew ? renderNewChatForm() : renderChatInterface() : <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetContent
                 side="bottom"
                 className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"

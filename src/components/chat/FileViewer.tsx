@@ -37,12 +37,8 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   if (!shouldRender) return null;
 
   const handleBackgroundClick = (e: React.MouseEvent | React.TouchEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  const handleCloseClick = () => {
+    e.preventDefault();
+    e.stopPropagation();
     onClose();
   };
 
@@ -57,37 +53,40 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        position: 'fixed'
+        position: 'fixed',
+        touchAction: 'none'
       }}
       onClick={handleBackgroundClick}
-      onTouchEnd={handleBackgroundClick}
+      onTouchStart={handleBackgroundClick}
     >
       {/* Close button */}
-      <button
-        onClick={handleCloseClick}
-        onTouchEnd={(e) => {
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={(e) => { 
+          e.preventDefault();
+          e.stopPropagation(); 
+          onClose(); 
+        }}
+        onTouchStart={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          handleCloseClick();
+          onClose();
         }}
-        className="absolute bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center"
+        className="absolute z-[1000000] bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center p-0 aspect-square"
         aria-label="Close"
         style={{
           top: 'max(env(safe-area-inset-top, 0px), 1rem)',
           right: 'max(env(safe-area-inset-right, 0px), 1rem)',
-          width: '44px',
-          height: '44px',
-          padding: 0,
-          zIndex: 2147483647,
-          position: 'absolute',
-          pointerEvents: 'auto',
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-          cursor: 'pointer'
+          width: '40px',
+          height: '40px',
+          minWidth: '40px',
+          minHeight: '40px',
+          padding: 0
         }}
       >
         <X className="w-6 h-6" />
-      </button>
+      </Button>
 
       {/* File content */}
       <div className={`flex items-center justify-center w-full h-full p-4 transition-all duration-300 ${
@@ -98,26 +97,29 @@ export const FileViewer: React.FC<FileViewerProps> = ({
             src={attachmentUrl}
             alt={fileName}
             onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             className="max-w-full max-h-full w-auto h-auto object-contain"
             style={{
               maxWidth: '90vw',
-              maxHeight: '90vh'
+              maxHeight: '90vh',
+              pointerEvents: 'auto'
             }}
           />
         ) : fileType === 'pdf' ? (
           <iframe
             src={attachmentUrl}
             onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             className="w-[90vw] h-[90vh]"
             title={fileName}
+            style={{ pointerEvents: 'auto' }}
           />
         ) : (
           <div 
             onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             className="flex items-center justify-center w-[50vw] h-[50vh] bg-white/10 rounded-lg"
+            style={{ pointerEvents: 'auto' }}
           >
             <div className="text-white text-center">
               <p className="text-lg">Cannot preview this file type</p>

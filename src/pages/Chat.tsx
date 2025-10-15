@@ -33,7 +33,6 @@ export default function Chat() {
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [isFileViewerOpen, setIsFileViewerOpen] = useState(false);
   // Set up stable viewport height and keyboard detection for iOS
   React.useEffect(() => {
     const setVH = () => {
@@ -413,8 +412,6 @@ export default function Chat() {
                               attachmentUrl={message.attachment_url} 
                               fileName={message.message} 
                               isCurrentUser={isCurrentUser}
-                              onViewerOpen={() => setIsFileViewerOpen(true)}
-                              onViewerClose={() => setIsFileViewerOpen(false)}
                             />
                           ) : (
                             <div
@@ -670,8 +667,6 @@ export default function Chat() {
                             attachmentUrl={message.attachment_url} 
                             fileName={message.message} 
                             isCurrentUser={isCurrentUser}
-                            onViewerOpen={() => setIsFileViewerOpen(true)}
-                            onViewerClose={() => setIsFileViewerOpen(false)}
                           />
                         ) : (
                           <div
@@ -959,13 +954,7 @@ export default function Chat() {
           {!isMobile ? (
             renderChatInterface()
           ) : (
-            <Sheet open={isChatOpen} onOpenChange={(open) => {
-              // Don't allow Sheet to close if file viewer is open
-              if (!open && isFileViewerOpen) {
-                return;
-              }
-              setIsChatOpen(open);
-            }}>
+            <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetContent
                 side="bottom"
                 className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
