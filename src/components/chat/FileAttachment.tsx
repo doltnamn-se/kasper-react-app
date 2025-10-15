@@ -6,8 +6,6 @@ import { FileViewer } from './FileViewer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { isStoragePath } from '@/utils/chatFileUtils';
-import { Browser } from '@capacitor/browser';
-import { isNativePlatform } from '@/capacitor';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -68,34 +66,24 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const fileExt = getFileExtension(fileName);
 
   const handleView = async () => {
-    let urlToView = displayUrl;
-    
-    // Generate signed URL if needed
-    if (needsSignedUrl && !displayUrl.startsWith('http')) {
-      try {
-        const { data, error } = await supabase.storage
-          .from('chat-attachments')
-          .createSignedUrl(attachmentUrl, 3600);
-        
-        if (error) throw error;
-        urlToView = data.signedUrl;
-      } catch (error) {
-        console.error('Failed to generate signed URL:', error);
-        return;
-      }
-    }
-
-    // On native mobile, open images with system viewer
-    if (isNativePlatform() && fileType === 'image') {
-      await Browser.open({ url: urlToView, presentationStyle: 'fullscreen' });
-      return;
-    }
-    
-    // For PDFs, open in new tab
+    // For PDFs, open in new tab to avoid Chrome blocking issues
     if (fileType === 'pdf') {
-      window.open(urlToView, '_blank');
+      if (needsSignedUrl && !displayUrl.startsWith('http')) {
+        try {
+          const { data, error } = await supabase.storage
+            .from('chat-attachments')
+            .createSignedUrl(attachmentUrl, 3600); // 1 hour expiry
+
+          if (error) throw error;
+          window.open(data.signedUrl, '_blank');
+        } catch (error) {
+          console.error('Failed to open PDF:', error);
+        }
+      } else {
+        window.open(displayUrl, '_blank');
+      }
     } else {
-      // For images on web, use the modal viewer
+      // For images and other files, use the modal viewer
       handleViewerOpen();
     }
   };
