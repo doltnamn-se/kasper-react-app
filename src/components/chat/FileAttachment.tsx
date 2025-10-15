@@ -55,6 +55,8 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const fileExt = getFileExtension(fileName);
 
   const handleView = async () => {
+    console.log('FileAttachment - handleView called, fileType:', fileType);
+    
     // For PDFs, open in new tab to avoid Chrome blocking issues
     if (fileType === 'pdf') {
       if (needsSignedUrl && !displayUrl.startsWith('http')) {
@@ -73,7 +75,9 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       }
     } else {
       // For images and other files, use the modal viewer
+      console.log('FileAttachment - Opening image viewer, calling onImageViewerOpen');
       onImageViewerOpen?.();
+      console.log('FileAttachment - Setting isViewerOpen to true');
       setIsViewerOpen(true);
     }
   };
