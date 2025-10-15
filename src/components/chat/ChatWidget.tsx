@@ -15,6 +15,7 @@ import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { ChatMessage, NewChatData } from '@/types/chat';
 import { formatDistanceToNow } from 'date-fns';
+import { FileAttachment } from './FileAttachment';
 
 export const ChatWidget = () => {
   const { userId } = useAuthStatus();
@@ -22,6 +23,7 @@ export const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
@@ -60,6 +62,7 @@ export const ChatWidget = () => {
   const renderMessage = (message: ChatMessage) => {
     const isOwn = message.sender_id === userId;
     const isSystem = message.message_type === 'system';
+    const hasAttachment = message.attachment_url;
     
     return (
       <div
@@ -75,7 +78,16 @@ export const ChatWidget = () => {
               : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] text-[#121212] dark:text-[#ffffff]'
           }`}
         >
-          <p className="text-sm">{message.message}</p>
+          {hasAttachment && (
+            <FileAttachment
+              attachmentUrl={message.attachment_url!}
+              fileName={message.attachment_url!.split('/').pop() || 'file'}
+              isCurrentUser={isOwn}
+              onImageViewerOpen={() => setIsImageViewerOpen(true)}
+              onImageViewerClose={() => setIsImageViewerOpen(false)}
+            />
+          )}
+          {message.message && <p className="text-sm">{message.message}</p>}
           <p className="text-xs opacity-70 mt-1">
             {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
           </p>
@@ -248,7 +260,10 @@ export const ChatWidget = () => {
       {/* Mobile Drawer */}
       {isMobile ? (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent className="h-[85vh]">
+          <DrawerContent 
+            className="h-[85vh]"
+            style={{ pointerEvents: isImageViewerOpen ? 'none' : 'auto' }}
+          >
             <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <DrawerTitle className="text-lg">Support Chat</DrawerTitle>
               <div className="flex gap-2">
