@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,23 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   fileName,
   fileType
 }) => {
-  if (!isOpen) return null;
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      // Small delay to trigger animation
+      setTimeout(() => setIsAnimating(true), 10);
+    } else {
+      setIsAnimating(false);
+      // Wait for animation to complete before unmounting
+      const timer = setTimeout(() => setShouldRender(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!shouldRender) return null;
 
   const handleBackgroundClick = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
@@ -27,7 +43,9 @@ export const FileViewer: React.FC<FileViewerProps> = ({
 
   const viewerContent = (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black/90"
+      className={`fixed inset-0 flex items-center justify-center bg-black/90 transition-opacity duration-300 ${
+        isAnimating ? 'opacity-100' : 'opacity-0'
+      }`}
       style={{ 
         zIndex: 99999,
         top: 0,
@@ -60,7 +78,9 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       </Button>
 
       {/* File content */}
-      <div className="flex items-center justify-center w-full h-full p-4">
+      <div className={`flex items-center justify-center w-full h-full p-4 transition-all duration-300 ${
+        isAnimating ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+      }`}>
         {fileType === 'image' ? (
           <img
             src={attachmentUrl}
