@@ -37,12 +37,16 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       </Button>
 
       {/* File content */}
-      <div className="max-w-[90vw] max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+      <div className="flex items-center justify-center w-full h-full p-4" onClick={(e) => e.stopPropagation()}>
         {fileType === 'image' ? (
           <img
             src={attachmentUrl}
             alt={fileName}
-            className="max-w-full max-h-full object-contain"
+            className="max-w-full max-h-full w-auto h-auto object-contain"
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '90vh'
+            }}
           />
         ) : fileType === 'pdf' ? (
           <iframe
