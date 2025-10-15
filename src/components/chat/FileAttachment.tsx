@@ -184,53 +184,19 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const downloadText = t('nav.dashboard') === 'Översikt' ? 'Ladda ner' : 'Download';
 
   const handleRectangleClick = () => {
-    if (isMobile) {
-      handleView(); // Use the same view logic for mobile clicks
-    }
+    handleView();
   };
 
   return (
     <div className="flex items-center gap-2">
       <div
-        className="relative w-32 h-32 rounded-lg transition-all duration-200 hover:shadow-md cursor-pointer"
-        onMouseEnter={() => !isMobile && setIsHovered(true)}
-        onMouseLeave={() => !isMobile && setIsHovered(false)}
+        className="relative w-32 h-32 rounded-lg transition-all duration-200 cursor-pointer"
         onClick={handleRectangleClick}
       >
         {/* File preview */}
         <div className="w-full h-full">
           {renderPreview()}
         </div>
-
-        {/* Desktop hover buttons */}
-        {!isMobile && isHovered && (
-          <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleView();
-              }}
-              className="bg-white/90 hover:bg-white text-gray-800 shadow-lg h-8 px-2"
-            >
-              <Eye className="w-4 h-4" />
-            </Button>
-            {!isCurrentUser && (
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownload();
-                }}
-                className="bg-white/90 hover:bg-white text-gray-800 shadow-lg h-8 px-2"
-              >
-                <Download className="w-4 h-4" />
-              </Button>
-            )}
-          </div>
-        )}
 
         {/* File Viewer Modal */}
         <FileViewer
@@ -242,8 +208,8 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         />
       </div>
 
-      {/* Mobile download button - outside the rectangle */}
-      {isMobile && !isCurrentUser && (
+      {/* Download button - always visible on the right, for all platforms */}
+      {!isCurrentUser && (
         <Button
           variant="ghost"
           size="sm"
