@@ -106,32 +106,42 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   };
 
   const handleDownload = async () => {
-    if (isStoragePath) {
-      // Generate a fresh signed URL for download
-      try {
+    try {
+      let downloadUrl: string;
+      
+      if (isStoragePath) {
+        // Generate a fresh signed URL for download
         const { data, error } = await supabase.storage
           .from('chat-attachments')
           .createSignedUrl(attachmentUrl, 300); // 5 minute expiry for download
 
         if (error) throw error;
-
-        const link = document.createElement('a');
-        link.href = data.signedUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error('Download failed:', error);
+        downloadUrl = data.signedUrl;
+      } else {
+        downloadUrl = attachmentUrl;
       }
-    } else {
-      // For old format URLs
+
+      // Fetch the file as a blob
+      const response = await fetch(downloadUrl);
+      if (!response.ok) throw new Error('Failed to fetch file');
+      
+      const blob = await response.blob();
+      
+      // Create a temporary blob URL
+      const blobUrl = URL.createObjectURL(blob);
+      
+      // Create and trigger download
       const link = document.createElement('a');
-      link.href = attachmentUrl;
+      link.href = blobUrl;
       link.download = fileName;
       document.body.appendChild(link);
       link.click();
+      
+      // Cleanup
       document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download failed:', error);
     }
   };
 
