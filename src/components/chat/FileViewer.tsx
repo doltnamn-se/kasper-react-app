@@ -43,7 +43,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
 
   const viewerContent = (
     <div 
-      className={`fixed inset-0 flex items-center justify-center bg-black/90 transition-opacity duration-300 ${
+      className={`fixed inset-0 flex items-center justify-center backdrop-blur-xl bg-black/20 transition-all duration-300 ${
         isAnimating ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ 
