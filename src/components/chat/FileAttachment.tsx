@@ -11,12 +11,16 @@ interface FileAttachmentProps {
   attachmentUrl: string;
   fileName: string;
   isCurrentUser?: boolean;
+  onViewerOpen?: () => void;
+  onViewerClose?: () => void;
 }
 
 export const FileAttachment: React.FC<FileAttachmentProps> = ({ 
   attachmentUrl, 
   fileName, 
-  isCurrentUser = false 
+  isCurrentUser = false,
+  onViewerOpen,
+  onViewerClose
 }) => {
   const [imageError, setImageError] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -27,6 +31,17 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   // Use the pre-generated URL directly (already processed in hook)
   const displayUrl = attachmentUrl;
   const needsSignedUrl = isStoragePath(attachmentUrl);
+
+  // Notify parent when viewer state changes
+  const handleViewerOpen = () => {
+    setIsViewerOpen(true);
+    onViewerOpen?.();
+  };
+
+  const handleViewerClose = () => {
+    setIsViewerOpen(false);
+    onViewerClose?.();
+  };
 
   // Get file extension and determine file type
   const getFileExtension = (filename: string) => {
@@ -69,7 +84,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       }
     } else {
       // For images and other files, use the modal viewer
-      setIsViewerOpen(true);
+      handleViewerOpen();
     }
   };
 
@@ -193,7 +208,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         {/* File Viewer Modal */}
         <FileViewer
           isOpen={isViewerOpen}
-          onClose={() => setIsViewerOpen(false)}
+          onClose={handleViewerClose}
           attachmentUrl={displayUrl}
           fileName={fileName}
           fileType={fileType}
