@@ -15,6 +15,7 @@ import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
 import { ScrollToTop } from "@/components/routing/ScrollToTop";
 import { supabase } from "@/integrations/supabase/client";
 import { ImagePreloader } from "@/components/ImagePreloader";
+import { App as CapacitorApp } from '@capacitor/app';
 
 import Auth from "@/pages/Auth";
 import Intro from "@/pages/Intro";
@@ -123,6 +124,53 @@ function App() {
     };
     
     hideSplashScreen();
+  }, []);
+
+  // NATIVE-ONLY: Refresh session when app resumes (iOS/Android only)
+  useEffect(() => {
+    if (!isNativePlatform()) return;
+
+    const handleAppStateChange = async (state: { isActive: boolean }) => {
+      if (state.isActive) {
+        console.log('[Native] App resumed, refreshing session...');
+        
+        try {
+          const { data: { session }, error } = await supabase.auth.getSession();
+          
+          if (error) {
+            console.error('[Native] Error getting session on resume:', error);
+            return;
+          }
+          
+          if (session) {
+            console.log('[Native] Session found, attempting refresh...');
+            const { error: refreshError } = await supabase.auth.refreshSession();
+            
+            if (refreshError) {
+              console.error('[Native] Session refresh failed:', refreshError);
+            } else {
+              console.log('[Native] Session refreshed successfully');
+            }
+          } else {
+            console.log('[Native] No session found on resume');
+          }
+        } catch (err) {
+          console.error('[Native] Error in app resume handler:', err);
+        }
+      }
+    };
+
+    let listenerHandle: any;
+    
+    CapacitorApp.addListener('appStateChange', handleAppStateChange).then(handle => {
+      listenerHandle = handle;
+    });
+
+    return () => {
+      if (listenerHandle) {
+        listenerHandle.remove();
+      }
+    };
   }, []);
 
   return (
