@@ -5,6 +5,7 @@ import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
 import { useTypingIndicator } from './useTypingIndicator';
 import { globalChatNotifications } from '@/services/globalChatNotifications';
+import { preGenerateSignedUrls } from '@/utils/chatFileUtils';
 
 export const useChat = (userId?: string) => {
   const queryClient = useQueryClient();
@@ -96,7 +97,9 @@ export const useChat = (userId?: string) => {
         return [];
       }
 
-      return data as ChatMessage[];
+      // Pre-generate signed URLs for all attachments
+      const messagesWithUrls = await preGenerateSignedUrls(data as ChatMessage[]);
+      return messagesWithUrls;
     },
     enabled: !!activeConversationId
   });

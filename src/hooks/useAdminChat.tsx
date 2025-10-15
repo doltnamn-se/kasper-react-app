@@ -5,6 +5,7 @@ import { ChatConversation, ChatMessage, NewChatData } from '@/types/chat';
 import { toast } from 'sonner';
 import { useTypingIndicator } from './useTypingIndicator';
 import { globalChatNotifications } from '@/services/globalChatNotifications';
+import { preGenerateSignedUrls } from '@/utils/chatFileUtils';
 
 export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
   const queryClient = useQueryClient();
@@ -109,7 +110,9 @@ export const useAdminChat = (statusFilter: 'active' | 'closed' = 'active') => {
         return [];
       }
 
-      return data as ChatMessage[];
+      // Pre-generate signed URLs for all attachments
+      const messagesWithUrls = await preGenerateSignedUrls(data as ChatMessage[]);
+      return messagesWithUrls;
     },
     enabled: !!activeConversationId
   });

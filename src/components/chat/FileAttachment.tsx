@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Download, Eye, FileText, Image, File } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, FileText, Image, File, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { FileViewer } from './FileViewer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
+import { isStoragePath } from '@/utils/chatFileUtils';
 
 interface FileAttachmentProps {
   attachmentUrl: string;
@@ -17,48 +18,15 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   fileName, 
   isCurrentUser = false 
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
-  const [signedUrl, setSignedUrl] = useState<string>('');
-  const [urlError, setUrlError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { t } = useLanguage();
   const isMobile = useIsMobile();
 
-  // Check if the attachmentUrl is a path (new format) or full URL (old format)
-  const isStoragePath = attachmentUrl && !attachmentUrl.startsWith('http');
-
-  // Generate signed URL for storage paths
-  useEffect(() => {
-    const generateSignedUrl = async () => {
-      if (isStoragePath) {
-        try {
-          const { data, error } = await supabase.storage
-            .from('chat-attachments')
-            .createSignedUrl(attachmentUrl, 3600); // 1 hour expiry
-
-          if (error) {
-            console.error('Error generating signed URL:', error);
-            setUrlError(true);
-            return;
-          }
-
-          setSignedUrl(data.signedUrl);
-        } catch (error) {
-          console.error('Failed to generate signed URL:', error);
-          setUrlError(true);
-        }
-      } else {
-        // For old format (full URLs), use as-is
-        setSignedUrl(attachmentUrl);
-      }
-    };
-
-    generateSignedUrl();
-  }, [attachmentUrl, isStoragePath]);
-
-  // Use the signed URL or fall back to original
-  const displayUrl = signedUrl || attachmentUrl;
+  // Use the pre-generated URL directly (already processed in hook)
+  const displayUrl = attachmentUrl;
+  const needsSignedUrl = isStoragePath(attachmentUrl);
 
   // Get file extension and determine file type
   const getFileExtension = (filename: string) => {
@@ -85,7 +53,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   const handleView = async () => {
     // For PDFs, open in new tab to avoid Chrome blocking issues
     if (fileType === 'pdf') {
-      if (isStoragePath) {
+      if (needsSignedUrl && !displayUrl.startsWith('http')) {
         try {
           const { data, error } = await supabase.storage
             .from('chat-attachments')
@@ -97,7 +65,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
           console.error('Failed to open PDF:', error);
         }
       } else {
-        window.open(attachmentUrl, '_blank');
+        window.open(displayUrl, '_blank');
       }
     } else {
       // For images and other files, use the modal viewer
@@ -107,19 +75,15 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
 
   const handleDownload = async () => {
     try {
-      let downloadUrl: string;
-      
-      if (isStoragePath) {
-        // Generate a fresh signed URL for download
+      // Use the pre-generated URL or generate a fresh one if needed
+      const downloadUrl = displayUrl.startsWith('http') ? displayUrl : await (async () => {
         const { data, error } = await supabase.storage
           .from('chat-attachments')
           .createSignedUrl(attachmentUrl, 300); // 5 minute expiry for download
-
+        
         if (error) throw error;
-        downloadUrl = data.signedUrl;
-      } else {
-        downloadUrl = attachmentUrl;
-      }
+        return data.signedUrl;
+      })();
 
       // Fetch the file as a blob
       const response = await fetch(downloadUrl);
@@ -161,14 +125,32 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   };
 
   const renderPreview = () => {
-    if (fileType === 'image' && !imageError && !urlError && displayUrl) {
+    if (fileType === 'image' && !imageError && displayUrl) {
       return (
-        <img
-          src={displayUrl}
-          alt={fileName}
-          className="w-full h-full object-cover rounded-lg"
-          onError={() => setImageError(true)}
-        />
+        <div className="relative w-full h-full">
+          {!imageLoaded && (
+            <div className={`absolute inset-0 flex items-center justify-center rounded-lg ${
+              isCurrentUser 
+                ? 'bg-[#d0ecfb] dark:bg-[#007aff]' 
+                : 'bg-[#f0f0f0] dark:bg-[#2f2f31]'
+            }`}>
+              <Loader2 className={`w-6 h-6 animate-spin ${
+                isCurrentUser 
+                  ? 'text-[#121212] dark:text-[#ffffff]' 
+                  : 'text-[#121212] dark:text-[#ffffff]'
+              }`} />
+            </div>
+          )}
+          <img
+            src={displayUrl}
+            alt={fileName}
+            className={`w-full h-full object-cover rounded-lg transition-opacity duration-200 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
+          />
+        </div>
       );
     }
     
