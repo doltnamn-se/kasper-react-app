@@ -68,12 +68,16 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
           return;
         }
         
+        // CRITICAL: Set the session explicitly and wait for it to be stored
         await supabase.auth.setSession(data.session);
+        
+        // Wait a moment for the session to be persisted to storage (especially on native platforms)
+        await new Promise(resolve => setTimeout(resolve, 300));
         
         // Check if user is admin
         if (email === 'info@doltnamn.se') {
           console.log("Admin user detected, redirecting to admin dashboard");
-          window.location.href = '/admin';
+          navigate('/admin', { replace: true });
           return;
         }
 
@@ -96,13 +100,13 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
 
         console.log("Customer checklist status:", customerData?.checklist_completed);
         
-        // Redirect based on checklist completion
+        // Redirect based on checklist completion using navigate (no full page reload)
         if (!customerData?.checklist_completed) {
           console.log("Checklist not completed, redirecting to checklist");
-          window.location.href = '/checklist';
+          navigate('/checklist', { replace: true });
         } else {
           console.log("Checklist completed, redirecting to home");
-          window.location.href = '/';
+          navigate('/', { replace: true });
         }
       }
     } catch (err) {
