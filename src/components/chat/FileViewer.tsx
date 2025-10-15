@@ -43,6 +43,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   };
 
   const handleCloseClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     onClose();
   };
@@ -67,8 +68,8 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       <Button
         variant="ghost"
         size="icon"
+        onTouchStart={handleCloseClick}
         onClick={handleCloseClick}
-        onTouchEnd={handleCloseClick}
         className="absolute z-[1000000] bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center p-0 aspect-square"
         aria-label="Close"
         style={{
@@ -78,7 +79,8 @@ export const FileViewer: React.FC<FileViewerProps> = ({
           height: '40px',
           minWidth: '40px',
           minHeight: '40px',
-          padding: 0
+          padding: 0,
+          touchAction: 'none'
         }}
       >
         <X className="w-6 h-6" />
