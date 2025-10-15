@@ -145,11 +145,33 @@ export const ChatWidget = () => {
 
           <div className="p-4 border-t">
             <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {/* File upload functionality can be added later */}}
+                disabled={(() => {
+                  const activeConv = conversations.find(c => c.id === activeConversationId);
+                  return activeConv?.status === 'closed';
+                })()}
+                className="h-10 w-10 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
               <Textarea
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 min-h-[40px] max-h-[100px]"
+                placeholder={(() => {
+                  const activeConv = conversations.find(c => c.id === activeConversationId);
+                  if (activeConv?.status === 'closed') {
+                    return '';
+                  }
+                  return 'Type your message...';
+                })()}
+                disabled={(() => {
+                  const activeConv = conversations.find(c => c.id === activeConversationId);
+                  return activeConv?.status === 'closed';
+                })()}
+                className="flex-1 min-h-[40px] max-h-[100px] disabled:opacity-50 disabled:cursor-not-allowed"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -159,7 +181,10 @@ export const ChatWidget = () => {
               />
               <Button
                 onClick={handleSendMessage}
-                disabled={!newMessage.trim() || isSendingMessage}
+                disabled={(() => {
+                  const activeConv = conversations.find(c => c.id === activeConversationId);
+                  return !newMessage.trim() || isSendingMessage || activeConv?.status === 'closed';
+                })()}
                 size="icon"
               >
                 <Send className="h-4 w-4" />
