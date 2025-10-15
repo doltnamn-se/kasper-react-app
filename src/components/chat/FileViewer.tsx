@@ -31,7 +31,10 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         bottom: 0,
         position: 'fixed'
       }}
-      onClick={onClose}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClose();
+      }}
     >
       {/* Close button */}
       <Button
