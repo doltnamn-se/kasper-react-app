@@ -24,7 +24,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
     <div 
       className="fixed inset-0 flex items-center justify-center bg-black/90"
       style={{ 
-        zIndex: 9999,
+        zIndex: 99999,
         top: 0,
         left: 0,
         right: 0,
@@ -38,7 +38,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         variant="ghost"
         size="sm"
         onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute z-[10000] text-gray-800 bg-white/90 hover:bg-white hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 h-10 w-10 rounded-full flex items-center justify-center"
+        className="absolute z-[100000] text-gray-800 bg-white/90 hover:bg-white hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 h-10 w-10 rounded-full flex items-center justify-center"
         aria-label="Close"
         style={{
           top: 'max(env(safe-area-inset-top, 0px), 1rem)',
