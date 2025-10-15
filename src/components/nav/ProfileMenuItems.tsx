@@ -11,6 +11,7 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAdminCheck } from "./hooks/useAdminCheck";
 
 interface ProfileMenuItemsProps {
   onSignOut: () => void;
@@ -23,6 +24,7 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
   const { setTheme, resolvedTheme } = useTheme();
   const { userProfile, userEmail } = useUserProfile();
   const isMobile = useIsMobile();
+  const isAdmin = useAdminCheck();
 
   // Fetch customer members
   const { data: customerMembers } = useQuery({
@@ -100,15 +102,23 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
         <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.20) 100%)' }}></div>
         <div className="relative z-10 pt-4 px-4 pb-4">
           <div className="flex gap-2 mb-12">
-            <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
-              {(userProfile as any)?.customer_type === 'business' 
-                ? (language === 'sv' ? 'Personskydd' : 'Personal Protection')
-                : (language === 'sv' ? 'Prenumeration' : 'Subscription')
-              }
-            </span>
-            <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
-              {language === 'sv' ? 'Aktiv' : 'Active'}
-            </span>
+            {isAdmin ? (
+              <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
+                {language === 'sv' ? 'Adminbehörighet' : 'Admin access'}
+              </span>
+            ) : (
+              <>
+                <span className="inline-block px-3 py-1 bg-black/40 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
+                  {(userProfile as any)?.customer_type === 'business' 
+                    ? (language === 'sv' ? 'Personskydd' : 'Personal Protection')
+                    : (language === 'sv' ? 'Prenumeration' : 'Subscription')
+                  }
+                </span>
+                <span className="inline-block px-3 py-1 bg-black/20 backdrop-blur-sm text-white font-normal" style={{ borderRadius: '6px', fontSize: '0.8rem' }}>
+                  {language === 'sv' ? 'Aktiv' : 'Active'}
+                </span>
+              </>
+            )}
           </div>
           <div className="flex flex-col gap-1">
             {(userProfile as any)?.subscription_plan && (
