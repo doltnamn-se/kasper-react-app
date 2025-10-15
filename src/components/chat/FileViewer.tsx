@@ -52,11 +52,12 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       </Button>
 
       {/* File content */}
-      <div className="flex items-center justify-center w-full h-full p-4" onClick={(e) => e.stopPropagation()}>
+      <div className="flex items-center justify-center w-full h-full p-4">
         {fileType === 'image' ? (
           <img
             src={attachmentUrl}
             alt={fileName}
+            onClick={(e) => e.stopPropagation()}
             className="max-w-full max-h-full w-auto h-auto object-contain"
             style={{
               maxWidth: '90vw',
@@ -66,11 +67,15 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         ) : fileType === 'pdf' ? (
           <iframe
             src={attachmentUrl}
+            onClick={(e) => e.stopPropagation()}
             className="w-[90vw] h-[90vh]"
             title={fileName}
           />
         ) : (
-          <div className="flex items-center justify-center w-[50vw] h-[50vh] bg-white/10 rounded-lg">
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center justify-center w-[50vw] h-[50vh] bg-white/10 rounded-lg"
+          >
             <div className="text-white text-center">
               <p className="text-lg">Cannot preview this file type</p>
               <p className="text-sm opacity-70 mt-2">{fileName}</p>
