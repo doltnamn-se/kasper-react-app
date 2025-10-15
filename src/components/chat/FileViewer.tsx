@@ -37,6 +37,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   if (!shouldRender) return null;
 
   const handleBackgroundClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     onClose();
   };
@@ -47,22 +48,32 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         isAnimating ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ 
-        zIndex: 99999,
+        zIndex: 999999,
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        position: 'fixed'
+        position: 'fixed',
+        touchAction: 'none'
       }}
       onClick={handleBackgroundClick}
-      onTouchEnd={handleBackgroundClick}
+      onTouchStart={handleBackgroundClick}
     >
       {/* Close button */}
       <Button
         variant="ghost"
         size="icon"
-        onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute z-[100000] bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center p-0 aspect-square"
+        onClick={(e) => { 
+          e.preventDefault();
+          e.stopPropagation(); 
+          onClose(); 
+        }}
+        onTouchStart={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute z-[1000000] bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center p-0 aspect-square"
         aria-label="Close"
         style={{
           top: 'max(env(safe-area-inset-top, 0px), 1rem)',
@@ -86,26 +97,29 @@ export const FileViewer: React.FC<FileViewerProps> = ({
             src={attachmentUrl}
             alt={fileName}
             onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             className="max-w-full max-h-full w-auto h-auto object-contain"
             style={{
               maxWidth: '90vw',
-              maxHeight: '90vh'
+              maxHeight: '90vh',
+              pointerEvents: 'auto'
             }}
           />
         ) : fileType === 'pdf' ? (
           <iframe
             src={attachmentUrl}
             onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             className="w-[90vw] h-[90vh]"
             title={fileName}
+            style={{ pointerEvents: 'auto' }}
           />
         ) : (
           <div 
             onClick={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             className="flex items-center justify-center w-[50vw] h-[50vh] bg-white/10 rounded-lg"
+            style={{ pointerEvents: 'auto' }}
           >
             <div className="text-white text-center">
               <p className="text-lg">Cannot preview this file type</p>
