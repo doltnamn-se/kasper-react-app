@@ -24,10 +24,32 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
+      
+      // Disable the entire app when viewer opens
+      const appRoot = document.getElementById('root');
+      if (appRoot) {
+        appRoot.style.pointerEvents = 'none';
+        appRoot.setAttribute('inert', '');
+      }
+      
+      // Prevent body scrolling
+      document.body.style.overflow = 'hidden';
+      
       // Small delay to trigger animation
       setTimeout(() => setIsAnimating(true), 10);
     } else {
       setIsAnimating(false);
+      
+      // Re-enable the app when viewer closes
+      const appRoot = document.getElementById('root');
+      if (appRoot) {
+        appRoot.style.pointerEvents = '';
+        appRoot.removeAttribute('inert');
+      }
+      
+      // Restore body scrolling
+      document.body.style.overflow = '';
+      
       // Wait for animation to complete before unmounting
       const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
