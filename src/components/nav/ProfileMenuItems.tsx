@@ -54,18 +54,17 @@ export const ProfileMenuItems = ({ onSignOut, isSigningOut }: ProfileMenuItemsPr
 
   const getProfileBackground = () => {
     const plan = (userProfile as any)?.subscription_plan;
-    if (!plan) return '';
     
     // New plans
-    if (plan.includes('personskydd')) {
+    if (plan?.includes('personskydd')) {
       return "url('/lovable-uploads/kasper-profil-personskydd.png')";
-    } else if (plan.includes('parskydd')) {
+    } else if (plan?.includes('parskydd')) {
       return "url('/lovable-uploads/kasper-profil-parskydd.png')";
-    } else if (plan.includes('familjeskydd')) {
+    } else if (plan?.includes('familjeskydd')) {
       return "url('/lovable-uploads/kasper-profil-familjeskydd.png')";
     }
     
-    // Old plans (1_month, 3_months, 6_months, 12_months, 24_months) - default to personskydd
+    // Old plans (1_month, 3_months, 6_months, 12_months, 24_months) and admin users - default to personskydd
     return "url('/lovable-uploads/kasper-profil-personskydd.png')";
   };
 
