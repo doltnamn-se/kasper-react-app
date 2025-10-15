@@ -73,6 +73,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       }
     } else {
       // For images and other files, use the modal viewer
+      onImageViewerOpen?.();
       setIsViewerOpen(true);
     }
   };
@@ -201,7 +202,6 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
             setIsViewerOpen(false);
             onImageViewerClose?.();
           }}
-          onOpen={onImageViewerOpen}
           attachmentUrl={displayUrl}
           fileName={fileName}
           fileType={fileType}

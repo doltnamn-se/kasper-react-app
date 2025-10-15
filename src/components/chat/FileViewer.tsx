@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 interface FileViewerProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpen?: () => void;
   attachmentUrl: string;
   fileName: string;
   fileType: 'image' | 'pdf' | 'document' | 'other';
@@ -15,7 +14,6 @@ interface FileViewerProps {
 export const FileViewer: React.FC<FileViewerProps> = ({
   isOpen,
   onClose,
-  onOpen,
   attachmentUrl,
   fileName,
   fileType
@@ -26,7 +24,6 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      onOpen?.(); // Notify parent that viewer is opening
       // Small delay to trigger animation
       setTimeout(() => setIsAnimating(true), 10);
     } else {
@@ -35,7 +32,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
     }
-  }, [isOpen, onOpen]);
+  }, [isOpen]);
 
   if (!shouldRender) return null;
 

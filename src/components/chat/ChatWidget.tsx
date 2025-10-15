@@ -23,7 +23,7 @@ export const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
+  const [drawerWasOpen, setDrawerWasOpen] = useState(false);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
@@ -59,6 +59,20 @@ export const ChatWidget = () => {
     markAsRead(conversationId);
   };
 
+  const handleImageViewerOpen = () => {
+    if (isMobile && isOpen) {
+      setDrawerWasOpen(true);
+      setIsOpen(false);
+    }
+  };
+
+  const handleImageViewerClose = () => {
+    if (isMobile && drawerWasOpen) {
+      setIsOpen(true);
+      setDrawerWasOpen(false);
+    }
+  };
+
   const renderMessage = (message: ChatMessage) => {
     const isOwn = message.sender_id === userId;
     const isSystem = message.message_type === 'system';
@@ -83,8 +97,8 @@ export const ChatWidget = () => {
               attachmentUrl={message.attachment_url!}
               fileName={message.attachment_url!.split('/').pop() || 'file'}
               isCurrentUser={isOwn}
-              onImageViewerOpen={() => setIsImageViewerOpen(true)}
-              onImageViewerClose={() => setIsImageViewerOpen(false)}
+              onImageViewerOpen={handleImageViewerOpen}
+              onImageViewerClose={handleImageViewerClose}
             />
           )}
           {message.message && <p className="text-sm">{message.message}</p>}
@@ -260,10 +274,7 @@ export const ChatWidget = () => {
       {/* Mobile Drawer */}
       {isMobile ? (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent 
-            className="h-[85vh]"
-            style={{ pointerEvents: isImageViewerOpen ? 'none' : 'auto' }}
-          >
+          <DrawerContent className="h-[85vh]">
             <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <DrawerTitle className="text-lg">Support Chat</DrawerTitle>
               <div className="flex gap-2">
