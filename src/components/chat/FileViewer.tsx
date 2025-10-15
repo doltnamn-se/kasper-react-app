@@ -20,6 +20,11 @@ export const FileViewer: React.FC<FileViewerProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  const handleBackgroundClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
   const viewerContent = (
     <div 
       className="fixed inset-0 flex items-center justify-center bg-black/90"
@@ -31,10 +36,8 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         bottom: 0,
         position: 'fixed'
       }}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClose();
-      }}
+      onClick={handleBackgroundClick}
+      onTouchEnd={handleBackgroundClick}
     >
       {/* Close button */}
       <Button
@@ -58,6 +61,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
             src={attachmentUrl}
             alt={fileName}
             onClick={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="max-w-full max-h-full w-auto h-auto object-contain"
             style={{
               maxWidth: '90vw',
@@ -68,12 +72,14 @@ export const FileViewer: React.FC<FileViewerProps> = ({
           <iframe
             src={attachmentUrl}
             onClick={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="w-[90vw] h-[90vh]"
             title={fileName}
           />
         ) : (
           <div 
             onClick={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className="flex items-center justify-center w-[50vw] h-[50vh] bg-white/10 rounded-lg"
           >
             <div className="text-white text-center">
