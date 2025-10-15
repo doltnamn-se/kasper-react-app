@@ -116,11 +116,13 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6" autoComplete="on">
       <div>
         <Input
           id="email"
+          name="email"
           type="email"
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0 placeholder:font-medium font-system-ui"
@@ -132,7 +134,9 @@ export const LoginForm = ({ onForgotPassword, isLoading, setIsLoading }: LoginFo
       <div className="relative">
         <Input
           id="password"
+          name="password"
           type={showPassword ? "text" : "password"}
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full h-12 bg-transparent border-0 border-b border-[#e0e0e0] dark:border-[#3a3a3b] rounded-none text-black dark:text-white placeholder:text-[#000000A6] dark:placeholder:text-[#FFFFFFA6] font-medium pl-0 pr-10 placeholder:font-medium font-system-ui"
