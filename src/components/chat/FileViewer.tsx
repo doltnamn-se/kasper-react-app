@@ -42,13 +42,15 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       {/* Close button */}
       <Button
         variant="ghost"
-        size="sm"
+        size="icon"
         onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute z-[100000] text-gray-800 bg-white/90 hover:bg-white hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 h-10 w-10 rounded-full flex items-center justify-center"
+        className="absolute z-[100000] text-white bg-white/20 hover:bg-white/30 backdrop-blur-sm h-10 w-10 rounded-full flex items-center justify-center p-0"
         aria-label="Close"
         style={{
           top: 'max(env(safe-area-inset-top, 0px), 1rem)',
-          right: 'max(env(safe-area-inset-right, 0px), 1rem)'
+          right: 'max(env(safe-area-inset-right, 0px), 1rem)',
+          minWidth: '40px',
+          minHeight: '40px'
         }}
       >
         <X className="w-6 h-6" />
