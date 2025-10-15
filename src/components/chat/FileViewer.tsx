@@ -36,14 +36,20 @@ export const FileViewer: React.FC<FileViewerProps> = ({
 
   if (!shouldRender) return null;
 
-  const handleBackgroundClick = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  const handleCloseClick = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
+  const handleBackgroundTouch = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      onClose();
+    }
+  };
+
+  const handleCloseClick = () => {
     onClose();
   };
 
@@ -61,14 +67,22 @@ export const FileViewer: React.FC<FileViewerProps> = ({
         position: 'fixed'
       }}
       onClick={handleBackgroundClick}
-      onTouchEnd={handleBackgroundClick}
+      onTouchEnd={handleBackgroundTouch}
     >
       {/* Close button */}
       <Button
         variant="ghost"
         size="icon"
-        onClick={handleCloseClick}
-        onTouchEnd={handleCloseClick}
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleCloseClick();
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleCloseClick();
+        }}
         className="absolute z-[1000000] bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center p-0 aspect-square"
         aria-label="Close"
         style={{
