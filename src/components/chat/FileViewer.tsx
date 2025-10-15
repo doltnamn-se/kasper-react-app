@@ -42,9 +42,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
     }
   };
 
-  const handleCloseClick = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleCloseClick = () => {
     onClose();
   };
 
@@ -65,26 +63,31 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       onTouchEnd={handleBackgroundClick}
     >
       {/* Close button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onTouchStart={handleCloseClick}
+      <button
         onClick={handleCloseClick}
-        className="absolute z-[1000000] bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center p-0 aspect-square"
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleCloseClick();
+        }}
+        className="absolute bg-white/90 hover:bg-white text-gray-800 hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 rounded-full flex items-center justify-center"
         aria-label="Close"
         style={{
           top: 'max(env(safe-area-inset-top, 0px), 1rem)',
           right: 'max(env(safe-area-inset-right, 0px), 1rem)',
-          width: '40px',
-          height: '40px',
-          minWidth: '40px',
-          minHeight: '40px',
+          width: '44px',
+          height: '44px',
           padding: 0,
-          touchAction: 'none'
+          zIndex: 2147483647,
+          position: 'absolute',
+          pointerEvents: 'auto',
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+          cursor: 'pointer'
         }}
       >
         <X className="w-6 h-6" />
-      </Button>
+      </button>
 
       {/* File content */}
       <div className={`flex items-center justify-center w-full h-full p-4 transition-all duration-300 ${
