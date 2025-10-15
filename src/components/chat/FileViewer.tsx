@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -19,18 +20,29 @@ export const FileViewer: React.FC<FileViewerProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
+  const viewerContent = (
+    <div 
+      className="fixed inset-0 flex items-center justify-center bg-black/90"
+      style={{ 
+        zIndex: 9999,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: 'fixed'
+      }}
+      onClick={onClose}
+    >
       {/* Close button */}
       <Button
         variant="ghost"
         size="sm"
         onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute z-10 text-gray-800 bg-white/90 hover:bg-white hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 h-10 w-10 rounded-full flex items-center justify-center"
+        className="absolute z-[10000] text-gray-800 bg-white/90 hover:bg-white hover:text-gray-900 dark:text-white dark:bg-black/50 dark:hover:bg-black/70 h-10 w-10 rounded-full flex items-center justify-center"
         aria-label="Close"
         style={{
-          top: 'calc(env(safe-area-inset-top, 0px) + 1rem)',
-          right: 'calc(env(safe-area-inset-right, 0px) + 1rem)'
+          top: 'max(env(safe-area-inset-top, 0px), 1rem)',
+          right: 'max(env(safe-area-inset-right, 0px), 1rem)'
         }}
       >
         <X className="w-6 h-6" />
@@ -65,4 +77,7 @@ export const FileViewer: React.FC<FileViewerProps> = ({
       </div>
     </div>
   );
+
+  // Render using portal to ensure it's at the root level
+  return createPortal(viewerContent, document.body);
 };
