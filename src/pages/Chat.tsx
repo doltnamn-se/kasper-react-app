@@ -874,7 +874,7 @@ export default function Chat() {
 
   return (
     <MainLayout>
-      <div className={isMobile ? 'px-4 pt-4 pb-6' : ''}>
+      <div>
         <div className="flex justify-between items-center mb-6">
           <h1>
             {t('nav.admin.support')}
@@ -898,7 +898,7 @@ export default function Chat() {
           )}
         </div>
 
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-2' : 'gap-6 lg:grid-cols-3 h-[600px]'}`}>
+        <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
           {/* Conversations List */}
           <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
             <CardHeader>
