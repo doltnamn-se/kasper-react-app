@@ -399,12 +399,11 @@ export default function Chat() {
                 })()}
               </div>
               
-              {/* Scrollable messages area */}
-              <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
+              {/* Scrollable messages area - flex-1 makes it flexible */}
+              <div className="flex-1 overflow-hidden mt-[88px]" style={{ minHeight: 0 }}>
                  <ScrollArea 
                    ref={scrollAreaRef} 
-                   className="h-full px-4"
-                   style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
+                   className="h-full px-4 pb-[80px]"
                  >
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
@@ -761,8 +760,8 @@ export default function Chat() {
                </ScrollArea>
             </div>
             
-             {/* Fixed bottom input area */}
-             <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+             {/* Fixed bottom input area - absolute positioning keeps it fixed */}
+             <div className="absolute bottom-0 left-0 right-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e] z-10">
                <div className="flex items-end gap-2">
                 <input
                   type="file"
@@ -905,7 +904,7 @@ export default function Chat() {
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea className={`${isMobile ? 'h-[calc(100vh-380px)]' : 'h-[500px]'}`} style={isMobile ? { paddingBottom: 'calc(env(safe-area-inset-bottom) + 60px)' } : undefined}>
+              <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
@@ -953,12 +952,9 @@ export default function Chat() {
             </CardContent>
           </Card>
 
-          {/* Mobile Buttons - Fixed at bottom on native apps */}
+          {/* Mobile Buttons */}
           {isMobile && (
-            <div 
-              className="fixed bottom-0 left-0 right-0 grid grid-cols-2 gap-2 px-4 py-3 bg-[#fafafa] dark:bg-[#161618] border-t border-[#ecedee] dark:border-[#232325] z-[9999]"
-              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }}
-            >
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
@@ -983,7 +979,12 @@ export default function Chat() {
               <SheetContent
                 side="bottom"
                 className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
-                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
+                style={{ 
+                  height: 'calc(var(--vh) * 90)', 
+                  maxHeight: 'calc(var(--vh) * 90)',
+                  paddingBottom: 'env(safe-area-inset-bottom)',
+                  overscrollBehavior: 'none' 
+                }}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
@@ -993,7 +994,7 @@ export default function Chat() {
                   }, 50);
                 }}
               >
-                <div className="flex flex-col h-full relative z-[10001]">
+                <div className="flex flex-col h-full relative z-[10001]" style={{ maxHeight: '100%' }}>
                   {renderChatInterface(true)}
                 </div>
               </SheetContent>
