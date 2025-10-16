@@ -898,14 +898,14 @@ export default function Chat() {
           )}
         </div>
 
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-3' : 'gap-6'} ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-3' : 'gap-6'} ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'} ${isMobile ? 'pb-5' : ''}`}>
           {/* Conversations List */}
           <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
             <CardHeader>
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea className={`${isMobile ? 'h-[320px]' : 'h-[500px]'}`}>
+              <ScrollArea className={`${isMobile ? 'h-[280px]' : 'h-[500px]'}`}>
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
