@@ -21,6 +21,7 @@ import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { supabase } from '@/integrations/supabase/client';
 import { FileAttachment } from '@/components/chat/FileAttachment';
 import { MobileUploadMenu } from '@/components/chat/MobileUploadMenu';
+import { Capacitor } from '@capacitor/core';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -905,7 +906,7 @@ export default function Chat() {
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea className={`${isMobile ? 'h-[320px]' : 'h-[500px]'}`}>
+              <ScrollArea className={`${isMobile ? (Capacitor.getPlatform() === 'ios' ? 'h-[360px]' : 'h-[280px]') : 'h-[500px]'}`}>
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
