@@ -905,7 +905,7 @@ export default function Chat() {
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
+              <ScrollArea className={`${isMobile ? 'h-[calc(100vh-380px)]' : 'h-[500px]'}`} style={isMobile ? { paddingBottom: 'calc(env(safe-area-inset-bottom) + 60px)' } : undefined}>
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
@@ -953,9 +953,12 @@ export default function Chat() {
             </CardContent>
           </Card>
 
-          {/* Mobile Buttons */}
+          {/* Mobile Buttons - Fixed at bottom on native apps */}
           {isMobile && (
-            <div className="grid grid-cols-2 gap-2">
+            <div 
+              className="fixed bottom-0 left-0 right-0 grid grid-cols-2 gap-2 px-4 py-3 bg-[#fafafa] dark:bg-[#161618] border-t border-[#ecedee] dark:border-[#232325] z-[9999]"
+              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }}
+            >
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
