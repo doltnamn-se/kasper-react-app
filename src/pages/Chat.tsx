@@ -905,7 +905,7 @@ export default function Chat() {
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <ScrollArea className={`${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
+              <ScrollArea className={`${isMobile ? 'h-[320px]' : 'h-[500px]'}`}>
                 {conversations.map((conversation) => (
                   <div
                     key={conversation.id}
