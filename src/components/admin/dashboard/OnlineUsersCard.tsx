@@ -97,12 +97,15 @@ export const OnlineUsersCard = () => {
             <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-[#1c1c1e] to-transparent pointer-events-none z-10" />
           )}
 
-          {/* Scrollable container with fixed max height */}
+          {/* Scrollable container with fixed height */}
           <div 
             ref={scrollContainerRef}
-            className="space-y-3 mt-2 overflow-y-auto"
+            className="space-y-3 mt-2 overflow-y-auto online-users-scroll"
             style={{ 
-              maxHeight: onlineUsersList.length > 3 ? '200px' : 'none'
+              maxHeight: '180px', // Fixed height - fits ~3 users perfectly
+              minHeight: onlineUsersList.length === 0 ? 'auto' : '180px',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'rgb(209 213 219) transparent'
             }}
           >
             {onlineUsersList.map(user => (

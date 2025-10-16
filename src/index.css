@@ -760,3 +760,29 @@ input[type="search"]:focus {
   color: hsl(var(--switcher-active-dot));
 }
 
+/* Custom scrollbar styles for online users card */
+.online-users-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.online-users-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.online-users-scroll::-webkit-scrollbar-thumb {
+  background: rgb(209 213 219);
+  border-radius: 3px;
+}
+
+.online-users-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(156 163 175);
+}
+
+.dark .online-users-scroll::-webkit-scrollbar-thumb {
+  background: rgb(55 65 81);
+}
+
+.dark .online-users-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(75 85 99);
+}
+
