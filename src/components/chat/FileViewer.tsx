@@ -9,6 +9,7 @@ interface FileViewerProps {
   attachmentUrl: string;
   fileName: string;
   fileType: 'image' | 'pdf' | 'document' | 'other';
+  isFromDrawer?: boolean;
 }
 
 export const FileViewer: React.FC<FileViewerProps> = ({
@@ -16,7 +17,8 @@ export const FileViewer: React.FC<FileViewerProps> = ({
   onClose,
   attachmentUrl,
   fileName,
-  fileType
+  fileType,
+  isFromDrawer = false
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);

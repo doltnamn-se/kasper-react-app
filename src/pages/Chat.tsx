@@ -33,6 +33,22 @@ export default function Chat() {
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [drawerWasOpen, setDrawerWasOpen] = useState(false);
+  
+  // Handle image viewer opening/closing for mobile drawer
+  const handleImageViewerOpen = React.useCallback(() => {
+    if (isMobile && isChatOpen) {
+      setDrawerWasOpen(true);
+      setIsChatOpen(false);
+    }
+  }, [isMobile, isChatOpen]);
+  
+  const handleImageViewerClose = React.useCallback(() => {
+    if (isMobile && drawerWasOpen) {
+      setIsChatOpen(true);
+      setDrawerWasOpen(false);
+    }
+  }, [isMobile, drawerWasOpen]);
   // Set up stable viewport height and keyboard detection for iOS
   React.useEffect(() => {
     const setVH = () => {
@@ -412,6 +428,9 @@ export default function Chat() {
                               attachmentUrl={message.attachment_url} 
                               fileName={message.message} 
                               isCurrentUser={isCurrentUser}
+                              isFromDrawer={isMobile}
+                              onImageViewerOpen={handleImageViewerOpen}
+                              onImageViewerClose={handleImageViewerClose}
                             />
                           ) : (
                             <div
@@ -667,6 +686,9 @@ export default function Chat() {
                             attachmentUrl={message.attachment_url} 
                             fileName={message.message} 
                             isCurrentUser={isCurrentUser}
+                            isFromDrawer={isMobile}
+                            onImageViewerOpen={handleImageViewerOpen}
+                            onImageViewerClose={handleImageViewerClose}
                           />
                         ) : (
                           <div

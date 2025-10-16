@@ -11,12 +11,18 @@ interface FileAttachmentProps {
   attachmentUrl: string;
   fileName: string;
   isCurrentUser?: boolean;
+  isFromDrawer?: boolean;
+  onImageViewerOpen?: () => void;
+  onImageViewerClose?: () => void;
 }
 
 export const FileAttachment: React.FC<FileAttachmentProps> = ({ 
   attachmentUrl, 
   fileName, 
-  isCurrentUser = false 
+  isCurrentUser = false,
+  isFromDrawer = false,
+  onImageViewerOpen,
+  onImageViewerClose
 }) => {
   const [imageError, setImageError] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -69,6 +75,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       }
     } else {
       // For images and other files, use the modal viewer
+      onImageViewerOpen?.();
       setIsViewerOpen(true);
     }
   };
@@ -193,10 +200,14 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         {/* File Viewer Modal */}
         <FileViewer
           isOpen={isViewerOpen}
-          onClose={() => setIsViewerOpen(false)}
+          onClose={() => {
+            setIsViewerOpen(false);
+            onImageViewerClose?.();
+          }}
           attachmentUrl={displayUrl}
           fileName={fileName}
           fileType={fileType}
+          isFromDrawer={isFromDrawer}
         />
       </div>
 
