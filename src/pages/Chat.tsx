@@ -399,11 +399,12 @@ export default function Chat() {
                 })()}
               </div>
               
-              {/* Scrollable messages area - flex-1 makes it flexible */}
-              <div className="flex-1 overflow-hidden mt-[88px]" style={{ minHeight: 0 }}>
+              {/* Scrollable messages area */}
+              <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
                  <ScrollArea 
                    ref={scrollAreaRef} 
-                   className="h-full px-4 pb-[80px]"
+                   className="h-full px-4"
+                   style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
                  >
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
@@ -760,8 +761,8 @@ export default function Chat() {
                </ScrollArea>
             </div>
             
-             {/* Fixed bottom input area - absolute positioning keeps it fixed */}
-             <div className="absolute bottom-0 left-0 right-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e] z-10">
+             {/* Fixed bottom input area */}
+             <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
                <div className="flex items-end gap-2">
                 <input
                   type="file"
@@ -979,12 +980,7 @@ export default function Chat() {
               <SheetContent
                 side="bottom"
                 className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
-                style={{ 
-                  height: 'calc(var(--vh) * 90)', 
-                  maxHeight: 'calc(var(--vh) * 90)',
-                  paddingBottom: 'env(safe-area-inset-bottom)',
-                  overscrollBehavior: 'none' 
-                }}
+                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
@@ -994,7 +990,7 @@ export default function Chat() {
                   }, 50);
                 }}
               >
-                <div className="flex flex-col h-full relative z-[10001]" style={{ maxHeight: '100%' }}>
+                <div className="flex flex-col h-full relative z-[10001]">
                   {renderChatInterface(true)}
                 </div>
               </SheetContent>
