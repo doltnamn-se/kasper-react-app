@@ -142,7 +142,7 @@ export const OnlineUsersCard = () => {
             ref={scrollContainerRef}
             className={`space-y-3 mt-2 overflow-y-auto online-users-scroll pr-2 ${showScrollbar ? 'show-scrollbar' : ''}`}
             style={{ 
-              maxHeight: '118px' // Matches the natural height of LinkManagementCard's 2x2 grid
+              height: '118px' // Fixed height to match LinkManagementCard's 2x2 grid
             }}
           >
             {onlineUsersList.map(user => (
