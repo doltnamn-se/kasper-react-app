@@ -23,6 +23,8 @@ import { FileAttachment } from '@/components/chat/FileAttachment';
 import { MobileUploadMenu } from '@/components/chat/MobileUploadMenu';
 import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 export default function Chat() {
   const { userId } = useAuthStatus();
@@ -322,16 +324,128 @@ export default function Chat() {
   };
 
   // Mobile upload handlers
-  const handleCameraCapture = () => {
-    cameraInputRef.current?.click();
+  const handleCameraCapture = async () => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Camera
+        });
+        
+        if (image.webPath) {
+          const response = await fetch(image.webPath);
+          const blob = await response.blob();
+          const file = new File([blob], `camera-${Date.now()}.jpg`, { type: 'image/jpeg' });
+          await handleFileUpload([file]);
+        }
+      } catch (error) {
+        console.error('Camera capture failed:', error);
+      }
+    } else {
+      cameraInputRef.current?.click();
+    }
   };
 
-  const handlePhotoUpload = () => {
-    photoInputRef.current?.click();
+  const handlePhotoUpload = async () => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Photos
+        });
+        
+        if (image.webPath) {
+          const response = await fetch(image.webPath);
+          const blob = await response.blob();
+          const file = new File([blob], `photo-${Date.now()}.jpg`, { type: 'image/jpeg' });
+          await handleFileUpload([file]);
+        }
+      } catch (error) {
+        console.error('Photo upload failed:', error);
+      }
+    } else {
+      photoInputRef.current?.click();
+    }
   };
 
-  const handleFileUpload = () => {
-    fileInputRef.current?.click();
+  const handleFileUpload = async (files?: File[]) => {
+    if (!files && Capacitor.isNativePlatform()) {
+      try {
+        const result = await FilePicker.pickFiles({
+          types: ['image/*', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain']
+        });
+        
+        if (result.files && result.files.length > 0) {
+          const pickedFile = result.files[0];
+          let response;
+          if (pickedFile.path) {
+            response = await fetch(pickedFile.path);
+          } else if (pickedFile.blob) {
+            const blobUrl = URL.createObjectURL(pickedFile.blob);
+            response = await fetch(blobUrl);
+            URL.revokeObjectURL(blobUrl);
+          } else {
+            throw new Error('No file data available');
+          }
+          const blob = await response.blob();
+          const file = new File([blob], pickedFile.name, { type: pickedFile.mimeType });
+          await uploadFileToStorage(file);
+        }
+      } catch (error) {
+        console.error('File picker failed:', error);
+      }
+    } else if (!files) {
+      fileInputRef.current?.click();
+    } else {
+      // Process the files
+      for (const file of files) {
+        await uploadFileToStorage(file);
+      }
+    }
+  };
+
+  const uploadFileToStorage = async (file: File) => {
+    if (!file || !userId) return;
+
+    setIsUploadingFile(true);
+    try {
+      // Generate unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${userId}/${Date.now()}.${fileExt}`;
+
+      // Upload file to storage
+      const { data, error } = await supabase.storage
+        .from('chat-attachments')
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      // Send message with attachment (store path, not public URL)
+      const messageText = file.name;
+      
+      if (isDraftConversation) {
+        createConversationWithMessage({ 
+          message: messageText, 
+          subject: 'Support',
+          attachmentUrl: data.path
+        });
+        setIsDraftConversation(false);
+      } else if (activeConversationId) {
+        sendMessage({ 
+          conversationId: activeConversationId, 
+          message: messageText,
+          attachmentUrl: data.path
+        });
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    } finally {
+      setIsUploadingFile(false);
+    }
   };
 
   const handleToggleUploadMenu = () => {
