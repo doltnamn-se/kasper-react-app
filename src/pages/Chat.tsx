@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -35,6 +35,16 @@ export default function Chat() {
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [drawerWasOpen, setDrawerWasOpen] = useState(false);
+  
+  // Prevent page scrolling on mobile
+  useEffect(() => {
+    if (isMobile) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isMobile]);
   
   // Handle image viewer opening/closing for mobile drawer
   const handleImageViewerOpen = React.useCallback(() => {
