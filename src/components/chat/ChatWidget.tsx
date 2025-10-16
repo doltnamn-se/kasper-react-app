@@ -15,7 +15,6 @@ import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { ChatMessage, NewChatData } from '@/types/chat';
 import { formatDistanceToNow } from 'date-fns';
-import { FileAttachment } from './FileAttachment';
 
 export const ChatWidget = () => {
   const { userId } = useAuthStatus();
@@ -23,7 +22,6 @@ export const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [drawerWasOpen, setDrawerWasOpen] = useState(false);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
@@ -59,30 +57,9 @@ export const ChatWidget = () => {
     markAsRead(conversationId);
   };
 
-  const handleImageViewerOpen = () => {
-    console.log('ChatWidget - handleImageViewerOpen called, isOpen:', isOpen);
-    // Always close drawer if it's open, regardless of isMobile check
-    if (isOpen) {
-      setDrawerWasOpen(true);
-      setIsOpen(false);
-      console.log('ChatWidget - Drawer closed for image viewer');
-    }
-  };
-
-  const handleImageViewerClose = () => {
-    console.log('ChatWidget - handleImageViewerClose called, drawerWasOpen:', drawerWasOpen);
-    // Always reopen drawer if it was open
-    if (drawerWasOpen) {
-      setIsOpen(true);
-      setDrawerWasOpen(false);
-      console.log('ChatWidget - Drawer reopened after image viewer closed');
-    }
-  };
-
   const renderMessage = (message: ChatMessage) => {
     const isOwn = message.sender_id === userId;
     const isSystem = message.message_type === 'system';
-    const hasAttachment = message.attachment_url;
     
     return (
       <div
@@ -98,16 +75,7 @@ export const ChatWidget = () => {
               : 'bg-[#f0f0f0] dark:!bg-[#2f2f31] text-[#121212] dark:text-[#ffffff]'
           }`}
         >
-          {hasAttachment && (
-            <FileAttachment
-              attachmentUrl={message.attachment_url!}
-              fileName={message.attachment_url!.split('/').pop() || 'file'}
-              isCurrentUser={isOwn}
-              onImageViewerOpen={handleImageViewerOpen}
-              onImageViewerClose={handleImageViewerClose}
-            />
-          )}
-          {message.message && <p className="text-sm">{message.message}</p>}
+          <p className="text-sm">{message.message}</p>
           <p className="text-xs opacity-70 mt-1">
             {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
           </p>
