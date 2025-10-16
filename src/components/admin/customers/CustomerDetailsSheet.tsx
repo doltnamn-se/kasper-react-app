@@ -51,7 +51,10 @@ export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
 
-  if (isLoading) {
+  // Skip loading skeleton if we have initial customer data - show content immediately
+  const showLoadingSkeleton = isLoading && !initialCustomer;
+
+  if (showLoadingSkeleton) {
     return isMobile ? (
       <Drawer open={!!customer} onOpenChange={onOpenChange}>
         <CustomerDetailsLoading isMobile={true} />
