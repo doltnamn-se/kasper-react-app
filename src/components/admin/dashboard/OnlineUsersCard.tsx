@@ -6,9 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { getUserInitials } from "@/utils/profileUtils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CustomerDetailsSheet } from "@/components/admin/customers/CustomerDetailsSheet";
+import { CustomerWithProfile } from "@/types/customer";
 
-type OnlineUserInfo = {
-  id: string;
+type OnlineUserInfo = CustomerWithProfile & {
   display_name: string | null;
   email: string | null;
   avatar_url: string | null;
@@ -22,6 +23,7 @@ export const OnlineUsersCard = () => {
   const [showTopFade, setShowTopFade] = useState(false);
   const [showBottomFade, setShowBottomFade] = useState(false);
   const [showScrollbar, setShowScrollbar] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithProfile | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const hideScrollbarTimeoutRef = useRef<NodeJS.Timeout>();
   
@@ -46,7 +48,8 @@ export const OnlineUsersCard = () => {
           .in('id', onlineUserIds);
         
         if (profilesData) {
-          setOnlineUsersList(profilesData);
+          // Cast to OnlineUserInfo type - these are actual customers with profiles
+          setOnlineUsersList(profilesData as OnlineUserInfo[]);
         }
       } else {
         setOnlineUsersList([]);
@@ -143,7 +146,11 @@ export const OnlineUsersCard = () => {
             }}
           >
             {onlineUsersList.map(user => (
-              <div key={user.id} className="flex items-center justify-between">
+              <div 
+                key={user.id} 
+                className="flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-[#232325] -mx-2 px-2 py-1 rounded-md transition-colors"
+                onClick={() => setSelectedCustomer(user)}
+              >
                 <div className="flex items-center space-x-2">
                   <Avatar className="h-7 w-7">
                     {user.avatar_url ? (
@@ -184,6 +191,11 @@ export const OnlineUsersCard = () => {
           )}
         </div>
       </CardContent>
+
+      <CustomerDetailsSheet 
+        customer={selectedCustomer}
+        onOpenChange={() => setSelectedCustomer(null)}
+      />
     </div>
   );
 };
