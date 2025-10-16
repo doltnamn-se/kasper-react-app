@@ -874,7 +874,7 @@ export default function Chat() {
 
   return (
     <MainLayout>
-      <div>
+      <div className={isMobile ? 'h-screen overflow-hidden flex flex-col' : ''}>
         <div className="flex justify-between items-center mb-6">
           <h1>
             {t('nav.admin.support')}
