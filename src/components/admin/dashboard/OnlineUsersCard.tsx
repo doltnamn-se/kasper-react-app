@@ -21,7 +21,9 @@ export const OnlineUsersCard = () => {
   const [onlineUsersList, setOnlineUsersList] = useState<OnlineUserInfo[]>([]);
   const [showTopFade, setShowTopFade] = useState(false);
   const [showBottomFade, setShowBottomFade] = useState(false);
+  const [showScrollbar, setShowScrollbar] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const hideScrollbarTimeoutRef = useRef<NodeJS.Timeout>();
   
   useEffect(() => {
     const fetchOnlineUsersData = async () => {
@@ -68,6 +70,7 @@ export const OnlineUsersCard = () => {
     setShowBottomFade(scrollTop < scrollHeight - clientHeight - 10);
   };
 
+
   // Update fade indicators when list changes
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -76,9 +79,43 @@ export const OnlineUsersCard = () => {
     // Initial check
     handleScroll();
 
-    // Add scroll listener
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    // Handle scroll events
+    const onScroll = () => {
+      handleScroll();
+      
+      // Show scrollbar on scroll
+      setShowScrollbar(true);
+      
+      // Hide scrollbar after 1 second of no scrolling
+      if (hideScrollbarTimeoutRef.current) {
+        clearTimeout(hideScrollbarTimeoutRef.current);
+      }
+      hideScrollbarTimeoutRef.current = setTimeout(() => {
+        setShowScrollbar(false);
+      }, 1000);
+    };
+
+    // Handle mouse enter/leave for desktop
+    const onMouseEnter = () => setShowScrollbar(true);
+    const onMouseLeave = () => {
+      if (hideScrollbarTimeoutRef.current) {
+        clearTimeout(hideScrollbarTimeoutRef.current);
+      }
+      setShowScrollbar(false);
+    };
+
+    container.addEventListener('scroll', onScroll);
+    container.addEventListener('mouseenter', onMouseEnter);
+    container.addEventListener('mouseleave', onMouseLeave);
+    
+    return () => {
+      container.removeEventListener('scroll', onScroll);
+      container.removeEventListener('mouseenter', onMouseEnter);
+      container.removeEventListener('mouseleave', onMouseLeave);
+      if (hideScrollbarTimeoutRef.current) {
+        clearTimeout(hideScrollbarTimeoutRef.current);
+      }
+    };
   }, [onlineUsersList]);
   
   return (
@@ -100,7 +137,7 @@ export const OnlineUsersCard = () => {
           {/* Scrollable container with fixed height to match LinkManagementCard */}
           <div 
             ref={scrollContainerRef}
-            className="space-y-3 mt-2 overflow-y-auto online-users-scroll pr-2"
+            className={`space-y-3 mt-2 overflow-y-auto online-users-scroll pr-2 ${showScrollbar ? 'show-scrollbar' : ''}`}
             style={{ 
               maxHeight: '118px' // Matches the natural height of LinkManagementCard's 2x2 grid
             }}
