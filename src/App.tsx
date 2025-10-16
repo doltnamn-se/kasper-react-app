@@ -10,6 +10,7 @@ import { initializeVersionTracking, cleanupVersionTracking } from "@/config/vers
 import { isNativePlatform } from "@/capacitor";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { splashScreenService } from "@/services/splashScreenService";
+import { lockToPortrait } from "@/utils/orientationLock";
 import { MobilePersistentLayout } from "@/components/layout/MobilePersistentLayout";
 import { MobileIntroRedirect } from "@/components/routing/MobileIntroRedirect";
 import { ScrollToTop } from "@/components/routing/ScrollToTop";
@@ -53,6 +54,11 @@ function App() {
   useEffect(() => {
     initializeVersionTracking();
     return () => cleanupVersionTracking();
+  }, []);
+
+  // Lock screen orientation to portrait on native platforms
+  useEffect(() => {
+    lockToPortrait();
   }, []);
 
   // Initialize push notifications for native platforms with error handling
