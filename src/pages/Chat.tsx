@@ -874,7 +874,7 @@ export default function Chat() {
 
   return (
     <MainLayout>
-      <div className={isMobile ? 'h-[calc(100vh-6rem)] overflow-hidden flex flex-col' : ''}>
+      <div>
         <div className="flex justify-between items-center mb-6">
           <h1>
             {t('nav.admin.support')}
@@ -898,9 +898,9 @@ export default function Chat() {
           )}
         </div>
 
-        <div className={`grid grid-cols-1 gap-2 ${isMobile ? 'flex-1 overflow-hidden' : 'lg:grid-cols-3 h-[600px] gap-6'}`}>
+        <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
           {/* Conversations List */}
-          <Card className={`${isMobile ? 'flex-shrink-0' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
+          <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
             <CardHeader>
               <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
             </CardHeader>
@@ -955,7 +955,7 @@ export default function Chat() {
 
           {/* Mobile Buttons */}
           {isMobile && (
-            <div className="grid grid-cols-2 gap-2 flex-shrink-0 pb-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
                 className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
