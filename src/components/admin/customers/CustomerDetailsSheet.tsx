@@ -8,7 +8,7 @@ import { CustomerDetailsLoading } from "./components/CustomerDetailsLoading";
 import { CustomerDetailsContent } from "./components/CustomerDetailsContent";
 import { useCustomerDetails } from "./hooks/useCustomerDetails";
 import { DeleteUserDialog } from "./components/DeleteUserDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface CustomerDetailsSheetProps {
   customer: CustomerWithProfile | null;
@@ -18,6 +18,7 @@ interface CustomerDetailsSheetProps {
 export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }: CustomerDetailsSheetProps) => {
   const isMobile = useIsMobile();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   
   // Use empty ID if customer is null to prevent hook conditionally
   const customerId = initialCustomer?.id || "";
@@ -48,6 +49,26 @@ export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }
   // Use refreshed customer data if available, otherwise use initial customer
   const customer = customerData?.customer || initialCustomer;
 
+  // Update isOpen when customer changes
+  useEffect(() => {
+    if (initialCustomer) {
+      setIsOpen(true);
+    }
+  }, [initialCustomer]);
+
+  // Handle close with animation delay
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setIsOpen(false);
+      // Wait for exit animation to complete before unmounting
+      setTimeout(() => {
+        onOpenChange(false);
+      }, 500);
+    } else {
+      setIsOpen(true);
+    }
+  };
+
   // Return null early but AFTER all hooks have been called
   if (!customer) return null;
 
@@ -56,11 +77,11 @@ export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }
 
   if (showLoadingSkeleton) {
     return isMobile ? (
-      <Drawer open={!!customer} onOpenChange={onOpenChange}>
+      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <CustomerDetailsLoading isMobile={true} />
       </Drawer>
     ) : (
-      <Sheet open={!!customer} onOpenChange={onOpenChange}>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <CustomerDetailsLoading isMobile={false} />
       </Sheet>
     );
@@ -76,7 +97,7 @@ export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }
   };
 
   return isMobile ? (
-    <Drawer open={!!customer} onOpenChange={onOpenChange}>
+    <Drawer open={isOpen} onOpenChange={handleOpenChange}>
       <DrawerContent className="px-0 pb-16 max-h-[85vh] bg-[#FFFFFF] dark:bg-[#161617]">
         <ScrollArea className="h-full max-h-[85vh] overflow-y-auto">
           <CustomerDetailsContent
@@ -111,7 +132,7 @@ export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }
       />
     </Drawer>
   ) : (
-    <Sheet open={!!customer} onOpenChange={onOpenChange}>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent side="right" className="sm:max-w-xl w-full p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#161617]" hideCloseButton={true}>
         <ScrollArea className="h-full">
           <CustomerDetailsContent
