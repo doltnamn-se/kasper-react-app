@@ -97,12 +97,12 @@ export const OnlineUsersCard = () => {
             <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-[#1c1c1e] to-transparent pointer-events-none z-10" />
           )}
 
-          {/* Scrollable container with fixed height */}
+          {/* Scrollable container with fixed height to match LinkManagementCard */}
           <div 
             ref={scrollContainerRef}
             className="space-y-3 mt-2 overflow-y-auto online-users-scroll"
             style={{ 
-              maxHeight: '90px', // Fixed max height - shows ~2 users before scrolling
+              maxHeight: '118px', // Matches the natural height of LinkManagementCard's 2x2 grid
               scrollbarWidth: 'thin',
               scrollbarColor: 'rgb(209 213 219) transparent'
             }}
