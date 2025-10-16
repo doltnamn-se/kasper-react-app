@@ -13,6 +13,8 @@ import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatChatTimestamp } from '@/utils/dateUtils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Capacitor } from '@capacitor/core';
+import { Keyboard } from '@capacitor/keyboard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
@@ -78,31 +80,55 @@ export default function AdminChat() {
     stopTyping
   } = activeTab === 'inbox' ? inboxData : archiveData;
 
-  // Set up stable viewport height and keyboard detection for iOS
+  // Keyboard handling - Native vs Web
   React.useEffect(() => {
-    const setVH = () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-    
-    setVH();
-    window.addEventListener('resize', setVH);
-    
-    // iOS keyboard detection via visualViewport
-    if (window.visualViewport) {
-      const handleViewportChange = () => {
-        const heightDiff = window.innerHeight - window.visualViewport.height;
-        setKeyboardHeight(heightDiff > 150 ? heightDiff : 0);
+    if (Capacitor.isNativePlatform()) {
+      // Native keyboard handling for iOS/Android
+      let keyboardShowListener: any;
+      let keyboardHideListener: any;
+
+      const setupListeners = async () => {
+        keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
+          setKeyboardHeight(info.keyboardHeight);
+        });
+
+        keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
+          setKeyboardHeight(0);
+        });
+      };
+
+      setupListeners();
+
+      return () => {
+        keyboardShowListener?.remove();
+        keyboardHideListener?.remove();
+      };
+    } else {
+      // Web mobile keyboard detection
+      const setVH = () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
       };
       
-      window.visualViewport.addEventListener('resize', handleViewportChange);
-      return () => {
-        window.removeEventListener('resize', setVH);
-        window.visualViewport?.removeEventListener('resize', handleViewportChange);
-      };
+      setVH();
+      window.addEventListener('resize', setVH);
+      
+      if (window.visualViewport) {
+        const handleViewportChange = () => {
+          const heightDiff = window.innerHeight - window.visualViewport.height;
+          setKeyboardHeight(heightDiff > 150 ? heightDiff : 0);
+        };
+        
+        window.visualViewport.addEventListener('resize', handleViewportChange);
+        
+        return () => {
+          window.removeEventListener('resize', setVH);
+          window.visualViewport?.removeEventListener('resize', handleViewportChange);
+        };
+      }
+      
+      return () => window.removeEventListener('resize', setVH);
     }
-    
-    return () => window.removeEventListener('resize', setVH);
   }, []);
 
   // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps

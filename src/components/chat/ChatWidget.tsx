@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle, X, Send, Plus } from 'lucide-react';
+import { Keyboard } from '@capacitor/keyboard';
+import { Capacitor } from '@capacitor/core';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,6 +24,7 @@ export const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
@@ -56,6 +59,31 @@ export const ChatWidget = () => {
     setActiveConversationId(conversationId);
     markAsRead(conversationId);
   };
+
+  // Native keyboard handling for iOS/Android
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    let keyboardShowListener: any;
+    let keyboardHideListener: any;
+
+    const setupListeners = async () => {
+      keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
+        setKeyboardHeight(info.keyboardHeight);
+      });
+
+      keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
+        setKeyboardHeight(0);
+      });
+    };
+
+    setupListeners();
+
+    return () => {
+      keyboardShowListener?.remove();
+      keyboardHideListener?.remove();
+    };
+  }, []);
 
   const renderMessage = (message: ChatMessage) => {
     const isOwn = message.sender_id === userId;
@@ -248,8 +276,15 @@ export const ChatWidget = () => {
       {/* Mobile Drawer */}
       {isMobile ? (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent className="h-[85vh]">
-            <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <DrawerContent 
+            className="h-[85vh] flex flex-col"
+            style={{ 
+              height: keyboardHeight > 0 
+                ? `calc(85vh - ${keyboardHeight}px)` 
+                : '85vh'
+            }}
+          >
+            <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">
               <DrawerTitle className="text-lg">Support Chat</DrawerTitle>
               <div className="flex gap-2">
                 {!activeConversationId && !showNewChat && (
@@ -263,7 +298,7 @@ export const ChatWidget = () => {
                 )}
               </div>
             </DrawerHeader>
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-hidden min-h-0">
               <ChatContent />
             </div>
           </DrawerContent>
