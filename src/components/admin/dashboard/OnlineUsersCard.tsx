@@ -148,7 +148,7 @@ export const OnlineUsersCard = () => {
             {onlineUsersList.map(user => (
               <div 
                 key={user.id} 
-                className="flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-[#232325] -mx-2 px-2 py-1 rounded-md transition-colors"
+                className="flex items-center justify-between cursor-pointer"
                 onClick={() => setSelectedCustomer(user)}
               >
                 <div className="flex items-center space-x-2">
