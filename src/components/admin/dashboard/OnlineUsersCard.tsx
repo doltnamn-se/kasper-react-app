@@ -133,7 +133,7 @@ export const OnlineUsersCard = () => {
         
         <div 
           className="relative"
-          style={onlineUsersList.length > 3 ? { height: '116px' } : undefined}
+          style={onlineUsersList.length >= 3 ? { height: '110px' } : undefined}
         >
           {/* Top fade indicator */}
           {showTopFade && (
