@@ -100,7 +100,7 @@ export const OnlineUsersCard = () => {
           {/* Scrollable container with fixed height to match LinkManagementCard */}
           <div 
             ref={scrollContainerRef}
-            className="space-y-3 mt-2 overflow-y-auto online-users-scroll"
+            className="space-y-3 mt-2 overflow-y-auto online-users-scroll pr-2"
             style={{ 
               maxHeight: '118px' // Matches the natural height of LinkManagementCard's 2x2 grid
             }}
