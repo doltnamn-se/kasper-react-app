@@ -102,8 +102,7 @@ export const OnlineUsersCard = () => {
             ref={scrollContainerRef}
             className="space-y-3 mt-2 overflow-y-auto online-users-scroll"
             style={{ 
-              maxHeight: '130px', // Fixed height - fits ~2.5 users to match initial state
-              minHeight: onlineUsersList.length === 0 ? 'auto' : '130px',
+              maxHeight: '90px', // Fixed max height - shows ~2 users before scrolling
               scrollbarWidth: 'thin',
               scrollbarColor: 'rgb(209 213 219) transparent'
             }}
