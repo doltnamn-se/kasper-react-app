@@ -774,29 +774,23 @@ input[type="search"]:focus {
 }
 
 .online-users-scroll::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: transparent;
   border-radius: 9999px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: background 0.2s ease;
 }
 
-.online-users-scroll:hover::-webkit-scrollbar-thumb {
-  opacity: 1;
+.online-users-scroll:hover::-webkit-scrollbar-thumb,
+.online-users-scroll:focus-within::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
 }
 
 .online-users-scroll::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--border) / 0.8);
-  background-clip: padding-box;
 }
 
-.dark .online-users-scroll::-webkit-scrollbar-thumb {
+.dark .online-users-scroll:hover::-webkit-scrollbar-thumb,
+.dark .online-users-scroll:focus-within::-webkit-scrollbar-thumb {
   background: #2f2f31;
-}
-
-.dark .online-users-scroll:hover::-webkit-scrollbar-thumb {
-  opacity: 1;
 }
 
 .dark .online-users-scroll::-webkit-scrollbar-thumb:hover {
