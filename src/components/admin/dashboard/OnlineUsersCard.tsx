@@ -131,7 +131,10 @@ export const OnlineUsersCard = () => {
       <CardContent className="p-0">
         <div className="text-2xl font-bold mb-12">{onlineCount}</div>
         
-        <div className="relative">
+        <div 
+          className="relative"
+          style={onlineUsersList.length > 3 ? { height: '116px' } : undefined}
+        >
           {/* Top fade indicator */}
           {showTopFade && (
             <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-[#1c1c1e] to-transparent pointer-events-none z-10" />
