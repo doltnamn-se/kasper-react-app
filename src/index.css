@@ -765,6 +765,10 @@ input[type="search"]:focus {
   width: 10px;
 }
 
+.online-users-scroll::-webkit-scrollbar-button {
+  display: none;
+}
+
 .online-users-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -779,5 +783,13 @@ input[type="search"]:focus {
 .online-users-scroll::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--border) / 0.8);
   background-clip: padding-box;
+}
+
+.dark .online-users-scroll::-webkit-scrollbar-thumb {
+  background: #2f2f31;
+}
+
+.dark .online-users-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3f3f41;
 }
 
