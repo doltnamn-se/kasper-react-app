@@ -214,7 +214,7 @@ function App() {
                   <Route path="/kasper-friends" element={<ProtectedRoute customerOnly><KasperFriends /></ProtectedRoute>} />
                   <Route path="/chat" element={<ProtectedRoute customerOnly><Chat /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute customerOnly><Settings /></ProtectedRoute>} />
-                  <Route path="/profile-menu" element={<ProtectedRoute customerOnly><ProfileMenu /></ProtectedRoute>} />
+                  <Route path="/profile-menu" element={<ProtectedRoute><ProfileMenu /></ProtectedRoute>} />
                 </Route>
                 
               </Routes>
