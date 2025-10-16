@@ -131,7 +131,7 @@ export const OnlineUsersCard = () => {
       <CardContent className="p-0">
         <div className="text-2xl font-bold mb-12">{onlineCount}</div>
         
-        <div className="relative" style={{ height: '126px' }}> {/* 118px content + 8px mt-2 margin */}
+        <div className="relative">
           {/* Top fade indicator */}
           {showTopFade && (
             <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-[#1c1c1e] to-transparent pointer-events-none z-10" />
@@ -140,7 +140,7 @@ export const OnlineUsersCard = () => {
           {/* Scrollable container with fixed height to match LinkManagementCard */}
           <div 
             ref={scrollContainerRef}
-            className={`space-y-3 mt-2 overflow-y-auto online-users-scroll pr-2 ${showScrollbar ? 'show-scrollbar' : ''}`}
+            className={`space-y-3 overflow-y-auto online-users-scroll pr-2 ${showScrollbar ? 'show-scrollbar' : ''}`}
             style={{ 
               height: '118px' // Fixed height to match LinkManagementCard's 2x2 grid
             }}
