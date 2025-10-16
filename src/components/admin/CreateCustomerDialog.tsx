@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CustomerFormFields } from "./CustomerFormFields";
 import { useCustomerCreation } from "@/hooks/useCustomerCreation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSafeArea } from "@/hooks/useSafeArea";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { UserRoundCheck, SendHorizontal } from "lucide-react";
 
@@ -16,6 +17,7 @@ interface CreateCustomerDialogProps {
 
 export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCustomerDialogProps) => {
   const [open, setOpen] = useState(false);
+  const safeArea = useSafeArea();
   const { formData, setFormData, isCreating, handleCreateCustomer } = useCustomerCreation(() => {
     onCustomerCreated();
     setOpen(false);
@@ -98,7 +100,10 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
         <DrawerTrigger asChild>
           {children}
         </DrawerTrigger>
-        <DrawerContent className="bg-white dark:bg-[#161617] z-[10000]">
+        <DrawerContent 
+          className="bg-white dark:bg-[#161617] z-[10000]"
+          style={{ paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined }}
+        >
           <DrawerHeader>
             <DrawerTitle className="font-medium flex items-center gap-2">
               <UserRoundCheck className="h-5 w-5" />

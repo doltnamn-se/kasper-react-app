@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CustomerWithProfile } from "@/types/customer";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSafeArea } from "@/hooks/useSafeArea";
 import { CustomerDetailsLoading } from "./components/CustomerDetailsLoading";
 import { CustomerDetailsContent } from "./components/CustomerDetailsContent";
 import { useCustomerDetails } from "./hooks/useCustomerDetails";
@@ -17,6 +18,7 @@ interface CustomerDetailsSheetProps {
 
 export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }: CustomerDetailsSheetProps) => {
   const isMobile = useIsMobile();
+  const safeArea = useSafeArea();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   
@@ -98,7 +100,10 @@ export const CustomerDetailsSheet = ({ customer: initialCustomer, onOpenChange }
 
   return isMobile ? (
     <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-      <DrawerContent className="px-0 pb-16 max-h-[85vh] bg-[#FFFFFF] dark:bg-[#161617]">
+      <DrawerContent 
+        className="px-0 max-h-[85vh] bg-[#FFFFFF] dark:bg-[#161617]"
+        style={{ paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom + 16}px` : '16px' }}
+      >
         <ScrollArea className="h-full max-h-[85vh] overflow-y-auto">
           <CustomerDetailsContent
             customer={customer}

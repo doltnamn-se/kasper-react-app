@@ -12,12 +12,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSafeArea } from "@/hooks/useSafeArea";
 
 export const AdminDeindexingView = () => {
   const { urls, handleStatusChange, handleDeleteUrl, handleBulkStatusUpdate } = useAdminURLManagement();
   const { t, language } = useLanguage();
   const { customers, isLoading } = useCustomers();
   const isMobile = useIsMobile();
+  const safeArea = useSafeArea();
 
   const [open, setOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -114,7 +116,7 @@ export const AdminDeindexingView = () => {
 
       {isMobile ? (
         <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerContent>
+          <DrawerContent style={{ paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined }}>
             <DrawerHeader>
               <DrawerTitle>{language === 'sv' ? 'Begär ID-intyg' : 'Request ID verification'}</DrawerTitle>
               <DrawerDescription>

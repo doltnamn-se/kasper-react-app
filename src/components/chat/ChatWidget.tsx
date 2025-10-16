@@ -15,12 +15,14 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/u
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
+import { useSafeArea } from '@/hooks/useSafeArea';
 import { ChatMessage, NewChatData } from '@/types/chat';
 import { formatDistanceToNow } from 'date-fns';
 
 export const ChatWidget = () => {
   const { userId } = useAuthStatus();
   const isMobile = useIsMobile();
+  const safeArea = useSafeArea();
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
@@ -281,7 +283,8 @@ export const ChatWidget = () => {
             style={{ 
               height: keyboardHeight > 0 
                 ? `calc(85vh - ${keyboardHeight}px)` 
-                : '85vh'
+                : '85vh',
+              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
             }}
           >
             <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">

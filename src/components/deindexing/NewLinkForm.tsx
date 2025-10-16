@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { CornerDownLeft, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSafeArea } from "@/hooks/useSafeArea";
 import { 
   Sheet,
   SheetContent,
@@ -30,6 +31,7 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
   const { t, language } = useLanguage();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const safeArea = useSafeArea();
   const [isOpen, setIsOpen] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,7 +116,10 @@ export const NewLinkForm = ({ onClose }: NewLinkFormProps) => {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleClose}>
-        <DrawerContent className="px-4 pb-4 pt-6 h-[90vh] z-[10000] focus-within:h-[90vh]">
+        <DrawerContent 
+          className="px-4 pt-6 h-[90vh] z-[10000] focus-within:h-[90vh]"
+          style={{ paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom + 16}px` : '16px' }}
+        >
           <div className="mx-auto w-full max-w-sm">
             <h3 className="text-lg font-semibold mb-4">
               {language === 'sv' ? 'Lägg till ny länk' : 'Add new link'}

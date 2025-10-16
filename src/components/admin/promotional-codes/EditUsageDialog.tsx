@@ -8,6 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useSafeArea } from '@/hooks/useSafeArea';
 
 interface EditUsageDialogProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ export const EditUsageDialog = ({ isOpen, onClose, codeData, onUpdate }: EditUsa
   const { t } = useLanguage();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const safeArea = useSafeArea();
   const [usageCount, setUsageCount] = useState(codeData?.usage_count || 0);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -140,7 +142,10 @@ export const EditUsageDialog = ({ isOpen, onClose, codeData, onUpdate }: EditUsa
 
   return isMobile ? (
     <Drawer open={isOpen} onOpenChange={handleClose}>
-      <DrawerContent className="px-4 pb-4 pt-6 z-[10000] h-[70vh] min-h-[400px]">
+      <DrawerContent 
+        className="px-4 pt-6 z-[10000] h-[70vh] min-h-[400px]"
+        style={{ paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom + 16}px` : '16px' }}
+      >
         <DrawerHeader>
           <DrawerTitle>Edit Coupon Usage</DrawerTitle>
         </DrawerHeader>
