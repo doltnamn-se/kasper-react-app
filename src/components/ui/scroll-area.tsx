@@ -5,35 +5,15 @@ import { cn } from "@/lib/utils"
 
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & {
-    disableAnchor?: boolean;
-  }
->(({ className, children, disableAnchor = false, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
+>(({ className, children, ...props }, ref) => (
   <ScrollAreaPrimitive.Root
     ref={ref}
     className={cn("relative overflow-hidden", className)}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport 
-      className={cn(
-        "h-full w-full rounded-[inherit]",
-        !disableAnchor && "overflow-anchor-none"
-      )}
-      style={!disableAnchor ? {
-        overflowAnchor: 'none',
-        paddingBottom: 'calc(var(--kb, 0px) + env(safe-area-inset-bottom))'
-      } : undefined}
-    >
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
       {children}
-      {!disableAnchor && (
-        <div 
-          className="scroll-anchor" 
-          style={{ 
-            overflowAnchor: 'auto', 
-            height: '1px' 
-          }} 
-        />
-      )}
     </ScrollAreaPrimitive.Viewport>
     <ScrollBar />
     <ScrollAreaPrimitive.Corner />
