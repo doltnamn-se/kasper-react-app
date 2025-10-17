@@ -27,6 +27,7 @@ export const ChatWidget = () => {
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
@@ -73,6 +74,7 @@ export const ChatWidget = () => {
       // Calculate offset needed to keep drawer at bottom of screen (not visual viewport)
       const offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
       setKeyboardHeight(offset);
+      setIsKeyboardVisible(offset > 0);
     };
 
     window.visualViewport.addEventListener('resize', updatePosition);
@@ -288,11 +290,12 @@ export const ChatWidget = () => {
           <DrawerContent 
             className="flex flex-col"
             style={{ 
-              height: '85vh',
-              maxHeight: '85vh',
+              height: '600px',
+              maxHeight: '600px',
               position: 'fixed',
               bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : 0,
-              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
+              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined,
+              transition: isKeyboardVisible ? 'none' : undefined
             }}
           >
             <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">
