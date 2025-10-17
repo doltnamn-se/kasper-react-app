@@ -696,13 +696,21 @@ export default function Chat() {
                       onCameraCapture={handleCameraCapture}
                       onPhotoUpload={handlePhotoUpload}
                       onFileUpload={handleFileUpload}
+                      disabled={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return activeConv?.status === 'closed';
+                      })()}
                     />
                   ) : (
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                      disabled={(() => {
+                        const activeConv = conversations.find(c => c.id === activeConversationId);
+                        return activeConv?.status === 'closed';
+                      })()}
+                      className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
                     </Button>
@@ -954,13 +962,21 @@ export default function Chat() {
                     onCameraCapture={handleCameraCapture}
                     onPhotoUpload={handlePhotoUpload}
                     onFileUpload={handleFileUpload}
+                    disabled={(() => {
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      return activeConv?.status === 'closed';
+                    })()}
                   />
                 ) : (
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0"
+                    disabled={(() => {
+                      const activeConv = conversations.find(c => c.id === activeConversationId);
+                      return activeConv?.status === 'closed';
+                    })()}
+                    className="w-[2.2rem] h-[2.2rem] rounded-[10px] bg-[#f0f0f0] dark:bg-[#2f2f31] hover:bg-[#E5E5EA] dark:hover:bg-[#3A3A3C] p-0 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="text-lg" style={{ fontWeight: 400, fontSize: '1.2rem', paddingBottom: '3px' }}>+</span>
                   </Button>
