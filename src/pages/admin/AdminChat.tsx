@@ -663,7 +663,13 @@ export default function AdminChat() {
               </div>
              
              {/* Scrollable messages area */}
-             <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
+             <div 
+               className="flex-1 overflow-hidden mt-[88px]"
+               style={{
+                 marginBottom: `${80 + keyboardHeight}px`,
+                 transition: 'margin-bottom 0.25s ease-out'
+               }}
+             >
                 <ScrollArea 
                   ref={scrollAreaRef} 
                   className="h-full px-4 py-0"
