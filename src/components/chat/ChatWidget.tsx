@@ -62,7 +62,7 @@ export const ChatWidget = () => {
     markAsRead(conversationId);
   };
 
-  // Visual Viewport API handling for keyboard
+  // Visual Viewport API handling for keyboard - keeps drawer in fixed screen position
   useEffect(() => {
     if (!Capacitor.isNativePlatform() || !window.visualViewport) return;
 
@@ -70,13 +70,16 @@ export const ChatWidget = () => {
       const vv = window.visualViewport;
       if (!vv) return;
       
-      // Calculate how much the viewport has shrunk
-      const viewportShrinkage = window.innerHeight - vv.height;
-      setKeyboardHeight(viewportShrinkage);
+      // Calculate offset needed to keep drawer at bottom of screen (not visual viewport)
+      const offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      setKeyboardHeight(offset);
     };
 
     window.visualViewport.addEventListener('resize', updatePosition);
     window.visualViewport.addEventListener('scroll', updatePosition);
+
+    // Initial call
+    updatePosition();
 
     return () => {
       window.visualViewport?.removeEventListener('resize', updatePosition);
@@ -168,17 +171,13 @@ export const ChatWidget = () => {
           
           <ScrollArea 
             className="flex-1 p-4"
-            style={{
-              paddingBottom: keyboardHeight > 0 ? `${keyboardHeight + 80}px` : undefined
-            }}
           >
             {messages.map(renderMessage)}
           </ScrollArea>
 
           <div 
-            className="p-4 border-t transition-all duration-[250ms] ease-out"
+            className="p-4 border-t"
             style={{
-              transform: keyboardHeight > 0 ? `translateY(-${keyboardHeight}px)` : 'translateY(0)',
               backgroundColor: 'hsl(var(--background))'
             }}
           >
@@ -292,7 +291,7 @@ export const ChatWidget = () => {
               height: '85vh',
               maxHeight: '85vh',
               position: 'fixed',
-              bottom: 0,
+              bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : 0,
               paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
             }}
           >
