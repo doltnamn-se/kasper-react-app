@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, ChevronUp, Check, CheckCheck } from 'lucide-react';
+import { Send, ChevronUp, Check, CheckCheck, X } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { useUnreadChatMessages } from '@/hooks/useUnreadChatMessages';
@@ -511,6 +511,16 @@ export default function Chat() {
             <>
               {/* Fixed header */}
               <div className={`absolute top-0 left-0 w-full z-10 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+                {/* Close button for mobile */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsChatOpen(false)}
+                  className="absolute top-2 right-2 z-20 h-8 w-8"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+                
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
@@ -1136,21 +1146,8 @@ export default function Chat() {
             renderChatInterface()
           ) : isChatOpen ? (
             // Mobile: full screen when chat is open
-            <div className="fixed inset-0 z-50 bg-[#FFFFFF] dark:bg-[#1c1c1e]" style={{ top: 0 }}>
-              <div className="flex flex-col h-full">
-                {/* Back button */}
-                <div className="flex items-center p-4 border-b border-[#ecedee] dark:border-[#232325]">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsChatOpen(false)}
-                    className="mr-2"
-                  >
-                    ← Back
-                  </Button>
-                </div>
-                {renderChatInterface(true)}
-              </div>
+            <div className="fixed inset-0 z-[9999] bg-[#FFFFFF] dark:bg-[#1c1c1e]" style={{ top: 0 }}>
+              {renderChatInterface(true)}
             </div>
           ) : null}
         </div>
