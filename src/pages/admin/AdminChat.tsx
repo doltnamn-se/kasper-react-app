@@ -888,10 +888,10 @@ export default function AdminChat() {
                   // Auto-resize textarea
                   e.target.style.height = 'auto';
                   e.target.style.height = e.target.scrollHeight + 'px';
-                }} placeholder={(() => {
+                 }} placeholder={(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   if (activeConv?.status === 'closed') {
-                    return '';
+                    return t('nav.dashboard') === 'Översikt' ? 'Konversationen är arkiverad' : 'Conversation is archived';
                   }
                   return t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...';
                 })()} disabled={(() => {
@@ -1148,10 +1148,10 @@ export default function AdminChat() {
                 // Auto-resize textarea
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';
-              }} placeholder={(() => {
+               }} placeholder={(() => {
                 const activeConv = conversations.find(c => c.id === activeConversationId);
                 if (activeConv?.status === 'closed') {
-                  return '';
+                  return t('nav.dashboard') === 'Översikt' ? 'Konversationen är arkiverad' : 'Conversation is archived';
                 }
                 return t('nav.dashboard') === 'Översikt' ? 'Skriv här...' : 'Type here...';
               })()} disabled={(() => {
