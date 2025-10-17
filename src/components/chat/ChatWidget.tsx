@@ -62,28 +62,25 @@ export const ChatWidget = () => {
     markAsRead(conversationId);
   };
 
-  // Native keyboard handling for iOS/Android
+  // Visual Viewport API handling for keyboard
   useEffect(() => {
-    if (!Capacitor.isNativePlatform()) return;
+    if (!Capacitor.isNativePlatform() || !window.visualViewport) return;
 
-    let keyboardShowListener: any;
-    let keyboardHideListener: any;
-
-    const setupListeners = async () => {
-      keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
-        setKeyboardHeight(info.keyboardHeight);
-      });
-
-      keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
-        setKeyboardHeight(0);
-      });
+    const updatePosition = () => {
+      const vv = window.visualViewport;
+      if (!vv) return;
+      
+      // Calculate how much the viewport has shrunk
+      const viewportShrinkage = window.innerHeight - vv.height;
+      setKeyboardHeight(viewportShrinkage);
     };
 
-    setupListeners();
+    window.visualViewport.addEventListener('resize', updatePosition);
+    window.visualViewport.addEventListener('scroll', updatePosition);
 
     return () => {
-      keyboardShowListener?.remove();
-      keyboardHideListener?.remove();
+      window.visualViewport?.removeEventListener('resize', updatePosition);
+      window.visualViewport?.removeEventListener('scroll', updatePosition);
     };
   }, []);
 
