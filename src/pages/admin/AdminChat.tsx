@@ -92,6 +92,15 @@ export default function AdminChat() {
       const setupListeners = async () => {
         keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
           setKeyboardHeight(info.keyboardHeight);
+          // Scroll to bottom when keyboard opens
+          setTimeout(() => {
+            if (scrollAreaRef.current) {
+              const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+              if (viewport) {
+                viewport.scrollTop = viewport.scrollHeight;
+              }
+            }
+          }, 100);
         });
 
         keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
@@ -113,10 +122,22 @@ export default function AdminChat() {
       const updateKeyboardHeight = () => {
         // Calculate how much the keyboard overlaps the layout viewport
         const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-        const keyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
+        const newKeyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
         
-        setKeyboardHeight(keyboardHeight);
-        document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`);
+        // Scroll to bottom when keyboard opens (height goes from 0 to positive)
+        if (keyboardHeight === 0 && newKeyboardHeight > 0) {
+          setTimeout(() => {
+            if (scrollAreaRef.current) {
+              const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+              if (viewport) {
+                viewport.scrollTop = viewport.scrollHeight;
+              }
+            }
+          }, 100);
+        }
+        
+        setKeyboardHeight(newKeyboardHeight);
+        document.documentElement.style.setProperty('--keyboard-height', `${newKeyboardHeight}px`);
       };
 
       vv.addEventListener('resize', updateKeyboardHeight);
@@ -131,7 +152,7 @@ export default function AdminChat() {
         window.removeEventListener('resize', updateKeyboardHeight);
       };
     }
-  }, []);
+  }, [keyboardHeight]);
 
   // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps
   const scrollToBottom = React.useCallback(() => {
