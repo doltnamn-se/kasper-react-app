@@ -169,14 +169,20 @@ export const ChatWidget = () => {
             </Button>
           </div>
           
-          <ScrollArea className="flex-1 p-4">
+          <ScrollArea 
+            className="flex-1 p-4"
+            style={{
+              paddingBottom: keyboardHeight > 0 ? `${keyboardHeight + 80}px` : undefined
+            }}
+          >
             {messages.map(renderMessage)}
           </ScrollArea>
 
           <div 
-            className="p-4 border-t transition-all duration-300 ease-out"
+            className="p-4 border-t transition-all duration-[250ms] ease-out"
             style={{
-              marginBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0'
+              transform: keyboardHeight > 0 ? `translateY(-${keyboardHeight}px)` : 'translateY(0)',
+              backgroundColor: 'hsl(var(--background))'
             }}
           >
             <div className="flex gap-2">
