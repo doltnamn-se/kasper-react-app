@@ -189,7 +189,7 @@ export const AdminActionButtons = ({
             variant="outline"
             size="icon"
             title={isBanned ? "Unban user" : "Ban user"}
-            className={`hover:bg-transparent ${isBanned ? 'text-red-500 hover:text-red-600' : 'text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]'}`}
+            className={`hover:bg-transparent ${isBanned ? 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500' : 'text-[#000000A6] hover:text-[#000000] dark:text-[#FFFFFFA6] dark:hover:text-[#FFFFFF]'}`}
           >
             <Ban className={`h-4 w-4 ${isTogglingBan ? 'animate-spin' : ''}`} />
           </Button>

@@ -35,8 +35,23 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     checkSuperAdmin();
   }, []);
   
-  // Ban status is tracked locally and updated when toggle action is performed
-  // Initial state defaults to false (not banned)
+  // Fetch initial ban status when customer data loads
+  useEffect(() => {
+    const fetchBanStatus = async () => {
+      if (!customerId) return;
+      
+      const { data, error } = await supabase.auth.admin.getUserById(customerId);
+      if (!error && data?.user) {
+        // Type cast to access admin-only field
+        const user = data.user as any;
+        const isBannedStatus = user.banned_until != null;
+        console.log('[DEBUG] Initial ban status fetched:', isBannedStatus, 'banned_until:', user.banned_until);
+        setIsBanned(isBannedStatus);
+      }
+    };
+    
+    fetchBanStatus();
+  }, [customerId]);
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
