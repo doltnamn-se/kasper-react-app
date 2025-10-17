@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useSafeArea } from '@/hooks/useSafeArea';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { supabase } from '@/integrations/supabase/client';
 import { FileAttachment } from '@/components/chat/FileAttachment';
@@ -29,6 +30,7 @@ export default function Chat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const safeArea = useSafeArea();
   const [newMessage, setNewMessage] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -1146,7 +1148,13 @@ export default function Chat() {
             renderChatInterface()
           ) : isChatOpen ? (
             // Mobile: full screen when chat is open
-            <div className="fixed inset-0 z-[9999] bg-[#FFFFFF] dark:bg-[#1c1c1e]" style={{ top: 0, paddingBottom: '80px' }}>
+            <div 
+              className="fixed inset-0 z-[9999] bg-[#FFFFFF] dark:bg-[#1c1c1e]" 
+              style={{ 
+                top: 0,
+                paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
+              }}
+            >
               {renderChatInterface(true)}
             </div>
           ) : null}
