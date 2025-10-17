@@ -1178,8 +1178,17 @@ export default function Chat() {
             <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
               <SheetContent
                 side="bottom"
-                className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
-                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
+                className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem] !fixed !inset-0"
+                style={{ 
+                  height: '100dvh',
+                  maxHeight: '100dvh',
+                  overscrollBehavior: 'none',
+                  position: 'fixed',
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0
+                }}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
