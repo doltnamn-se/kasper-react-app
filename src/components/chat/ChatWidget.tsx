@@ -11,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
@@ -286,37 +285,51 @@ export const ChatWidget = () => {
 
       {/* Mobile Drawer */}
       {isMobile ? (
-        <Drawer open={isOpen} onOpenChange={setIsOpen} shouldScaleBackground={false}>
-          <DrawerContent 
-            className="flex flex-col"
-            style={{ 
-              height: '600px',
-              maxHeight: '600px',
-              position: 'fixed',
-              bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : 0,
-              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined,
-              transition: isKeyboardVisible ? 'none' : undefined
-            }}
-          >
-            <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">
-              <DrawerTitle className="text-lg">Support Chat</DrawerTitle>
-              <div className="flex gap-2">
-                {!activeConversationId && !showNewChat && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setShowNewChat(true)}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                )}
+        <>
+          {isOpen && (
+            <>
+              {/* Overlay */}
+              <div 
+                className="fixed inset-0 z-[10000] bg-black/50"
+                onClick={() => setIsOpen(false)}
+              />
+              
+              {/* Custom Fixed Drawer */}
+              <div
+                className="fixed inset-x-0 z-[10000] flex flex-col rounded-t-[10px] border bg-background"
+                style={{
+                  height: '600px',
+                  bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : 0,
+                  paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
+                }}
+              >
+                {/* Drag Handle */}
+                <div className="mx-auto mt-1 mb-4 h-[4px] w-[80px] rounded-full bg-[#e8e8e8] dark:bg-[#232324]" />
+                
+                {/* Header */}
+                <div className="flex flex-row items-center justify-between space-y-0 pb-3 px-4 flex-shrink-0">
+                  <h2 className="text-lg font-semibold">Support Chat</h2>
+                  <div className="flex gap-2">
+                    {!activeConversationId && !showNewChat && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setShowNewChat(true)}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+                  <ChatContent />
+                </div>
               </div>
-            </DrawerHeader>
-            <div className="flex-1 flex flex-col overflow-hidden min-h-0">
-              <ChatContent />
-            </div>
-          </DrawerContent>
-        </Drawer>
+            </>
+          )}
+        </>
       ) : (
         /* Desktop Dialog */
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
