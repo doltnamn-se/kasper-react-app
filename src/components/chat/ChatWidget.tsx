@@ -173,7 +173,7 @@ export const ChatWidget = () => {
             {messages.map(renderMessage)}
           </ScrollArea>
 
-          <div className="p-4 border-t">
+          <div className="p-4 border-t transition-all duration-300 ease-out">
             <div className="flex gap-2">
               <Button
                 variant="ghost"
@@ -284,7 +284,8 @@ export const ChatWidget = () => {
               height: keyboardHeight > 0 
                 ? `calc(85vh - ${keyboardHeight}px)` 
                 : '85vh',
-              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
+              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined,
+              transition: 'height 0.25s ease-out'
             }}
           >
             <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">

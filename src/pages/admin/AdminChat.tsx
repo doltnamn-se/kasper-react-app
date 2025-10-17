@@ -646,7 +646,10 @@ export default function AdminChat() {
                 <ScrollArea 
                   ref={scrollAreaRef} 
                   className="h-full px-4 py-0"
-                  style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0' }}
+                  style={{ 
+                    paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0',
+                    transition: 'padding-bottom 0.25s ease-out'
+                  }}
                 >
                   {isDraftConversation ? (
                     <div className="flex-1 flex items-center justify-center h-full">
@@ -740,7 +743,7 @@ export default function AdminChat() {
               </div>
               
               {/* Fixed bottom input area */}
-              <div className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+              <div className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-300 ease-out">
                 <div className="flex items-end gap-2">
                   <input
                     type="file"
