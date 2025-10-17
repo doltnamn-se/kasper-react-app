@@ -569,6 +569,7 @@ export default function Chat() {
                    ref={scrollAreaRef} 
                    className="h-full px-4"
                  >
+                   <div style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0', transition: 'padding-bottom 0.25s ease-out' }}>
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
                        <p className="text-[#8E8E93] text-lg text-center">
@@ -662,8 +663,9 @@ export default function Chat() {
                      })()
                    )}
                    
-                   <div ref={messagesEndRef} />
-                 </ScrollArea>
+                    <div ref={messagesEndRef} />
+                   </div>
+                  </ScrollArea>
               </div>
               
               {/* Fixed bottom input area */}
