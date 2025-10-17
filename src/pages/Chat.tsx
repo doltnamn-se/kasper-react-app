@@ -557,11 +557,6 @@ export default function Chat() {
                   <ScrollArea 
                    ref={scrollAreaRef} 
                    className="h-full px-4"
-                   style={{
-                     // Only add padding on web - native platforms handle viewport resize automatically
-                     paddingBottom: !Capacitor.isNativePlatform() ? (keyboardHeight > 0 ? `${keyboardHeight + 20}px` : '80px') : '80px',
-                     transition: 'padding-bottom 0.25s ease-out'
-                   }}
                  >
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
