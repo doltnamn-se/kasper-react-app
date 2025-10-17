@@ -4,20 +4,19 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, ChevronUp, Check, CheckCheck, X } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetOverlay } from '@/components/ui/sheet';
+import { Send, ChevronUp, Check, CheckCheck } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
 import { useUnreadChatMessages } from '@/hooks/useUnreadChatMessages';
 import { formatDistanceToNow, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useChatContext } from '@/contexts/ChatContext';
 import { formatChatTimestamp } from '@/utils/dateUtils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useSafeArea } from '@/hooks/useSafeArea';
 import { TypingIndicator } from '@/components/ui/typing-indicator';
 import { supabase } from '@/integrations/supabase/client';
 import { FileAttachment } from '@/components/chat/FileAttachment';
@@ -31,8 +30,6 @@ export default function Chat() {
   const { userId } = useAuthStatus();
   const { t } = useLanguage();
   const isMobile = useIsMobile();
-  const safeArea = useSafeArea();
-  const { setIsChatFullScreenOpen } = useChatContext();
   const [newMessage, setNewMessage] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -460,23 +457,8 @@ export default function Chat() {
     markAsRead(conversationId);
     setIsCreatingNew(false);
     setIsDraftConversation(false);
-    if (isMobile) {
-      setIsChatOpen(true);
-      setIsChatFullScreenOpen(true);
-    }
+    if (isMobile) setIsChatOpen(true);
   };
-
-  // Update context when chat opens/closes
-  useEffect(() => {
-    if (isMobile) {
-      setIsChatFullScreenOpen(isChatOpen);
-    }
-    return () => {
-      if (isMobile) {
-        setIsChatFullScreenOpen(false);
-      }
-    };
-  }, [isChatOpen, isMobile, setIsChatFullScreenOpen]);
 
   const renderNewChatForm = (inSheet = false) => (
     <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
@@ -530,16 +512,6 @@ export default function Chat() {
             <>
               {/* Fixed header */}
               <div className={`absolute top-0 left-0 w-full z-10 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
-                {/* Close button for mobile */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsChatOpen(false)}
-                  className="absolute top-2 right-2 z-20 h-8 w-8"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-                
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
@@ -1057,91 +1029,86 @@ export default function Chat() {
   return (
     <MainLayout>
       <div className={isMobile ? 'h-screen overflow-hidden flex flex-col' : ''}>
-        {/* Header - only show on desktop or when viewing list on mobile */}
-        {(!isMobile || !isChatOpen) && (
-          <div className="flex justify-between items-center mb-6">
-            <h1>
-              {t('nav.admin.support')}
-            </h1>
-            {!isMobile && (
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
-                  onClick={() => window.open('https://joinkasper.com/support/', '_blank')}
-                >
-                  {t('general.questions')}
-                </Button>
-                <Button
-                  onClick={handleStartNewChat}
-                  className="rounded-xl h-9"
-                >
-                  {t('new.message')}
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="flex justify-between items-center mb-6">
+          <h1>
+            {t('nav.admin.support')}
+          </h1>
+          {!isMobile && (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="rounded-xl h-9 bg-[#f0f0f0] hover:bg-[#e0e0e0] dark:bg-[#303032] dark:hover:bg-[#404044]"
+                onClick={() => window.open('https://joinkasper.com/support/', '_blank')}
+              >
+                {t('general.questions')}
+              </Button>
+              <Button
+                onClick={handleStartNewChat}
+                className="rounded-xl h-9"
+              >
+                {t('new.message')}
+              </Button>
+            </div>
+          )}
+        </div>
 
         <div className={`grid grid-cols-1 gap-6 ${isMobile ? '' : 'lg:grid-cols-3 h-[600px]'}`}>
-          {/* Conversations List - hide on mobile when chat is open */}
-          {(!isMobile || !isChatOpen) && (
-            <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
-              <CardHeader>
-                <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <ScrollArea className={`${isMobile ? (Capacitor.getPlatform() === 'ios' ? 'h-[360px]' : 'h-[280px]') : 'h-[500px]'}`}>
-                  {conversations.map((conversation) => (
-                    <div
-                      key={conversation.id}
-                      className={`relative p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${
-                        activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''
-                      }`}
-                      onClick={() => handleConversationSelect(conversation.id)}
-                    >
-                      {(conversation.unread_count || 0) > 0 && (
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 h-2 w-2 rounded-full bg-[#2e77d0] flex-shrink-0" />
-                      )}
-                      <div className={`${(conversation.unread_count || 0) > 0 ? 'ml-4' : ''}`}>
-                        <div className="flex justify-between items-start mb-1">
-                          <h4 className="font-medium text-sm">
-                            {conversation.status === 'closed'
-                              ? t('conversation.history')
-                              : ((conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support'))}
-                          </h4>
-                          <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
-                            {conversation.last_message_at && (() => {
-                              const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
-                              const formattedTime = formatDistanceToNow(new Date(conversation.last_message_at), { 
-                                addSuffix: true,
-                                locale: currentLang === 'sv' ? sv : undefined
-                              });
-                              // Remove "ungefär " from Swedish and "about " from English timestamps
-                              return currentLang === 'sv' 
-                                ? formattedTime.replace(/^ungefär /, '') 
-                                : formattedTime.replace(/^about /, '');
-                            })()}
-                          </p>
-                        </div>
-                        <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
-                          {conversation.last_message || 'No messages yet'}
+          {/* Conversations List */}
+          <Card className={`${isMobile ? '' : 'lg:col-span-1'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>
+            <CardHeader>
+              <CardTitle className="text-lg font-medium text-[#121212] dark:text-[#ffffff]">{t('inbox')}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <ScrollArea className={`${isMobile ? (Capacitor.getPlatform() === 'ios' ? 'h-[360px]' : 'h-[280px]') : 'h-[500px]'}`}>
+                {conversations.map((conversation) => (
+                  <div
+                    key={conversation.id}
+                    className={`relative p-4 border-b border-gray-200 dark:border-[#2f2f31] cursor-pointer ${!isMobile ? 'hover:bg-[#f0f0f0] dark:hover:bg-[#232324]' : ''} ${
+                      activeConversationId === conversation.id && !isMobile ? 'bg-[#f0f0f0] dark:bg-[#232324]' : ''
+                    }`}
+                    onClick={() => handleConversationSelect(conversation.id)}
+                  >
+                    {(conversation.unread_count || 0) > 0 && (
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 h-2 w-2 rounded-full bg-[#2e77d0] flex-shrink-0" />
+                    )}
+                    <div className={`${(conversation.unread_count || 0) > 0 ? 'ml-4' : ''}`}>
+                      <div className="flex justify-between items-start mb-1">
+                        <h4 className="font-medium text-sm">
+                          {conversation.status === 'closed'
+                            ? t('conversation.history')
+                            : ((conversation.subject === 'Support Request' || conversation.subject === 'Support Chat') ? 'Support' : (conversation.subject || 'Support'))}
+                        </h4>
+                        <p className="text-xs text-[#121212] dark:text-[#FFFFFF] font-medium">
+                          {conversation.last_message_at && (() => {
+                            const currentLang = t('nav.dashboard') === 'Översikt' ? 'sv' : 'en';
+                            const formattedTime = formatDistanceToNow(new Date(conversation.last_message_at), { 
+                              addSuffix: true,
+                              locale: currentLang === 'sv' ? sv : undefined
+                            });
+                            // Remove "ungefär " from Swedish and "about " from English timestamps
+                            return currentLang === 'sv' 
+                              ? formattedTime.replace(/^ungefär /, '') 
+                              : formattedTime.replace(/^about /, '');
+                          })()}
                         </p>
                       </div>
+                      <p className="text-[#707070] dark:text-[#FFFFFFA6] font-medium truncate" style={{ fontSize: '0.875rem' }}>
+                        {conversation.last_message || 'No messages yet'}
+                      </p>
                     </div>
-                  ))}
-                  {conversations.length === 0 && (
-                    <div className="p-4 text-center text-[#707070] dark:text-[#ffffffa6] text-[0.8rem] md:text-[0.9rem]">
-                      {t('no.message.history')}
-                    </div>
-                  )}
-                </ScrollArea>
-              </CardContent>
-            </Card>
-          )}
+                  </div>
+                ))}
+                {conversations.length === 0 && (
+                  <div className="p-4 text-center text-[#707070] dark:text-[#ffffffa6] text-[0.8rem] md:text-[0.9rem]">
+                    {t('no.message.history')}
+                  </div>
+                )}
+              </ScrollArea>
+            </CardContent>
+          </Card>
 
-          {/* Mobile Buttons - only show when list is visible */}
-          {isMobile && !isChatOpen && (
+          {/* Mobile Buttons */}
+          {isMobile && (
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
@@ -1159,22 +1126,30 @@ export default function Chat() {
             </div>
           )}
 
-          {/* Chat Interface */}
+          {/* Desktop Chat Interface or Mobile Sheet */}
           {!isMobile ? (
-            // Desktop: always show in right column
             renderChatInterface()
-          ) : isChatOpen ? (
-            // Mobile: full screen when chat is open
-            <div 
-              className="fixed inset-0 z-[9999] bg-[#FFFFFF] dark:bg-[#1c1c1e]" 
-              style={{ 
-                top: 0,
-                paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
-              }}
-            >
-              {renderChatInterface(true)}
-            </div>
-          ) : null}
+          ) : (
+            <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+              <SheetContent
+                side="bottom"
+                className="p-0 overflow-hidden bg-[#FFFFFF] dark:bg-[#1c1c1e] border-none rounded-t-[1rem]"
+                style={{ height: 'calc(var(--vh) * 90)', overscrollBehavior: 'none' }}
+                onOpenAutoFocus={(e) => {
+                  e.preventDefault();
+                  setTimeout(() => {
+                    scrollToBottom();
+                    setTimeout(scrollToBottom, 150);
+                    setTimeout(scrollToBottom, 350);
+                  }, 50);
+                }}
+              >
+                <div className="flex flex-col h-full relative z-[10001]">
+                  {renderChatInterface(true)}
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </MainLayout>

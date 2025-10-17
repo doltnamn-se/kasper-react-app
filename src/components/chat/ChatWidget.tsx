@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle, X, Send, Plus } from 'lucide-react';
 import { Keyboard } from '@capacitor/keyboard';
 import { Capacitor } from '@capacitor/core';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useChat } from '@/hooks/useChat';
 import { useAuthStatus } from '@/hooks/useAuthStatus';
@@ -22,13 +22,11 @@ import { formatDistanceToNow } from 'date-fns';
 export const ChatWidget = () => {
   const { userId } = useAuthStatus();
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const safeArea = useSafeArea();
   const [isOpen, setIsOpen] = useState(false);
   const [showNewChat, setShowNewChat] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [newChatData, setNewChatData] = useState<NewChatData>({
     subject: '',
     message: ''
@@ -64,29 +62,28 @@ export const ChatWidget = () => {
     markAsRead(conversationId);
   };
 
-  // Visual Viewport API handling for keyboard - keeps drawer in fixed screen position
+  // Native keyboard handling for iOS/Android
   useEffect(() => {
-    if (!Capacitor.isNativePlatform() || !window.visualViewport) return;
+    if (!Capacitor.isNativePlatform()) return;
 
-    const updatePosition = () => {
-      const vv = window.visualViewport;
-      if (!vv) return;
-      
-      // Calculate offset needed to keep drawer at bottom of screen (not visual viewport)
-      const offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      setKeyboardHeight(offset);
-      setIsKeyboardVisible(offset > 0);
+    let keyboardShowListener: any;
+    let keyboardHideListener: any;
+
+    const setupListeners = async () => {
+      keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
+        setKeyboardHeight(info.keyboardHeight);
+      });
+
+      keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
+        setKeyboardHeight(0);
+      });
     };
 
-    window.visualViewport.addEventListener('resize', updatePosition);
-    window.visualViewport.addEventListener('scroll', updatePosition);
-
-    // Initial call
-    updatePosition();
+    setupListeners();
 
     return () => {
-      window.visualViewport?.removeEventListener('resize', updatePosition);
-      window.visualViewport?.removeEventListener('scroll', updatePosition);
+      keyboardShowListener?.remove();
+      keyboardHideListener?.remove();
     };
   }, []);
 
@@ -172,18 +169,11 @@ export const ChatWidget = () => {
             </Button>
           </div>
           
-          <ScrollArea 
-            className="flex-1 p-4"
-          >
+          <ScrollArea className="flex-1 p-4">
             {messages.map(renderMessage)}
           </ScrollArea>
 
-          <div 
-            className="p-4 border-t"
-            style={{
-              backgroundColor: 'hsl(var(--background))'
-            }}
-          >
+          <div className="p-4 border-t transition-all duration-300 ease-out">
             <div className="flex gap-2">
               <Button
                 variant="ghost"
@@ -274,29 +264,51 @@ export const ChatWidget = () => {
     </>
   );
 
-  const handleChatOpen = () => {
-    if (isMobile) {
-      // Navigate to full-page chat on mobile
-      navigate('/chat');
-    } else {
-      // Open dialog on desktop
-      setIsOpen(true);
-    }
-  };
-
   return (
     <>
       {/* Floating Chat Button */}
       <Button
-        onClick={handleChatOpen}
+        onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-40"
         size="icon"
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
 
-      {/* Desktop Dialog Only */}
-      {!isMobile && (
+      {/* Mobile Drawer */}
+      {isMobile ? (
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+          <DrawerContent 
+            className="h-[85vh] flex flex-col"
+            style={{ 
+              height: keyboardHeight > 0 
+                ? `calc(85vh - ${keyboardHeight}px)` 
+                : '85vh',
+              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined,
+              transition: 'height 0.25s ease-out'
+            }}
+          >
+            <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">
+              <DrawerTitle className="text-lg">Support Chat</DrawerTitle>
+              <div className="flex gap-2">
+                {!activeConversationId && !showNewChat && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setShowNewChat(true)}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </DrawerHeader>
+            <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+              <ChatContent />
+            </div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        /* Desktop Dialog */
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent className="max-w-md h-[500px] p-0 flex flex-col">
             <DialogHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-3">

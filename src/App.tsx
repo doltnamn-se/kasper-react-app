@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/contexts/SidebarContext";
-import { ChatProvider } from "@/contexts/ChatContext";
 import { useEffect } from "react";
 import { initializeVersionTracking, cleanupVersionTracking } from "@/config/version";
 import { isNativePlatform } from "@/capacitor";
@@ -185,9 +184,8 @@ function App() {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
         <LanguageProvider>
           <SidebarProvider>
-            <ChatProvider>
-              <ImagePreloader />
-              <Router>
+            <ImagePreloader />
+            <Router>
               <ScrollToTop />
               <MobileIntroRedirect />
               <Routes>
@@ -228,7 +226,6 @@ function App() {
               </Routes>
               <Toaster />
             </Router>
-            </ChatProvider>
           </SidebarProvider>
         </LanguageProvider>
       </ThemeProvider>
