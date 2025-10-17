@@ -554,11 +554,12 @@ export default function Chat() {
               
               {/* Scrollable messages area */}
                <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
-                 <ScrollArea 
+                  <ScrollArea 
                    ref={scrollAreaRef} 
                    className="h-full px-4"
                    style={{
-                     paddingBottom: keyboardHeight > 0 ? `${keyboardHeight + 20}px` : '80px',
+                     // Only add padding on web - native platforms handle viewport resize automatically
+                     paddingBottom: !Capacitor.isNativePlatform() ? (keyboardHeight > 0 ? `${keyboardHeight + 20}px` : '80px') : '80px',
                      transition: 'padding-bottom 0.25s ease-out'
                    }}
                  >
@@ -663,7 +664,8 @@ export default function Chat() {
               <div 
                 className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
                 style={{
-                  transform: `translateY(-${keyboardHeight}px)`,
+                  // Only apply transform on web - native platforms handle viewport resize automatically
+                  transform: !Capacitor.isNativePlatform() ? `translateY(-${keyboardHeight}px)` : 'none',
                   transition: 'transform 0.25s ease-out'
                 }}
               >
