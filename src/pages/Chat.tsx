@@ -13,6 +13,7 @@ import { formatDistanceToNow, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatChatTimestamp } from '@/utils/dateUtils';
+import { atBottom, preserveBottom, snapToBottom, updateKeyboardInset } from '@/utils/chatScrollUtils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { MainLayout } from '@/components/layout/MainLayout';
@@ -38,6 +39,7 @@ export default function Chat() {
   const [isUploadMenuOpen, setIsUploadMenuOpen] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [drawerWasOpen, setDrawerWasOpen] = useState(false);
+  const [lastWasAtBottom, setLastWasAtBottom] = useState(true);
   
   // Prevent page scrolling on mobile
   useEffect(() => {
@@ -64,8 +66,10 @@ export default function Chat() {
     }
   }, [isMobile, drawerWasOpen]);
   
-  // Keyboard handling - visualViewport approach for web, native for apps
+  // Keyboard handling with bottom-relative scroll positioning
   React.useEffect(() => {
+    const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+    
     if (Capacitor.isNativePlatform()) {
       // Native keyboard handling for iOS/Android
       let keyboardShowListener: any;
@@ -74,12 +78,21 @@ export default function Chat() {
       const setupListeners = async () => {
         keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
           setKeyboardHeight(info.keyboardHeight);
-          document.documentElement.style.setProperty('--keyboard-height', `${info.keyboardHeight}px`);
+          document.documentElement.style.setProperty('--kb', `${info.keyboardHeight}px`);
+          
+          // Preserve bottom position and snap if user was at bottom
+          const wasBottom = lastWasAtBottom || atBottom(viewport);
+          preserveBottom(viewport, () => {});
+          if (wasBottom) {
+            snapToBottom(anchorRef.current);
+          }
+          setLastWasAtBottom(atBottom(viewport));
         });
 
         keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
           setKeyboardHeight(0);
-          document.documentElement.style.setProperty('--keyboard-height', '0px');
+          document.documentElement.style.setProperty('--kb', '0px');
+          preserveBottom(viewport, () => {});
         });
       };
 
@@ -94,28 +107,38 @@ export default function Chat() {
       const vv = window.visualViewport;
       if (!vv) return;
 
-      const updateKeyboardHeight = () => {
-        // Calculate how much the keyboard overlaps the layout viewport
-        const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-        const newKeyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
+      const onViewportChange = () => {
+        updateKeyboardInset();
         
-        setKeyboardHeight(newKeyboardHeight);
-        document.documentElement.style.setProperty('--keyboard-height', `${newKeyboardHeight}px`);
+        // Detect whether user was at bottom *before* the change
+        const wasBottom = lastWasAtBottom || atBottom(viewport);
+
+        // Preserve relative position through the inset/padding change
+        preserveBottom(viewport, () => {});
+
+        // After things settle, snap only if user was already at bottom
+        if (wasBottom) {
+          snapToBottom(anchorRef.current);
+        }
+
+        // Update memory for next time
+        setLastWasAtBottom(atBottom(viewport));
       };
 
-      vv.addEventListener('resize', updateKeyboardHeight);
-      vv.addEventListener('scroll', updateKeyboardHeight);
-      window.addEventListener('resize', updateKeyboardHeight);
+      const evt = ('ongeometrychange' in vv) ? 'geometrychange' : 'resize';
+      vv.addEventListener(evt as any, onViewportChange);
+      vv.addEventListener('scroll', onViewportChange);
+      window.addEventListener('resize', onViewportChange);
       
-      updateKeyboardHeight();
+      updateKeyboardInset();
 
       return () => {
-        vv.removeEventListener('resize', updateKeyboardHeight);
-        vv.removeEventListener('scroll', updateKeyboardHeight);
-        window.removeEventListener('resize', updateKeyboardHeight);
+        vv.removeEventListener(evt as any, onViewportChange);
+        vv.removeEventListener('scroll', onViewportChange);
+        window.removeEventListener('resize', onViewportChange);
       };
     }
-  }, [keyboardHeight]);
+  }, [lastWasAtBottom]);
 
   React.useEffect(() => {
     try {
@@ -123,27 +146,19 @@ export default function Chat() {
       console.info('UserChat: dark mode?', isDark, 'Left bubble dark class: #2f2f31');
     } catch {}
   }, []);
+  
   const [newChatData, setNewChatData] = useState({
     subject: '',
     message: ''
   });
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const anchorRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const cameraInputRef = React.useRef<HTMLInputElement>(null);
   const photoInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps
-  const scrollToBottom = React.useCallback(() => {
-    if (scrollAreaRef.current) {
-      const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
-      if (viewport) {
-        viewport.scrollTop = viewport.scrollHeight;
-      }
-    }
-  }, []);
-  
   const {
     conversations: baseConversations,
     messages,
@@ -177,43 +192,29 @@ export default function Chat() {
   // Draft conversation state - when user is composing a new conversation
   const [isDraftConversation, setIsDraftConversation] = useState(false);
 
-  // Auto-scroll to bottom when messages change
+  // Auto-scroll to bottom when messages change - only if user was at bottom
   React.useEffect(() => {
-    if (messagesEndRef.current && activeConversationId) {
-      // For mobile, we need to scroll within the ScrollArea viewport
-      if (isMobile && scrollAreaRef.current) {
-        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (viewport) {
-          setTimeout(() => {
-            viewport.scrollTop = viewport.scrollHeight;
-          }, 100);
-        }
+    const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+    if (messages.length > 0 && viewport) {
+      const shouldStick = atBottom(viewport);
+      if (shouldStick) {
+        snapToBottom(anchorRef.current);
       } else {
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        preserveBottom(viewport, () => {});
       }
     }
-  }, [messages, activeConversationId, isMobile]);
+  }, [messages, activeConversationId]);
 
-  // Ensure scroll to latest when mobile sheet opens (with retries)
+  // Ensure scroll to latest when mobile sheet opens
   React.useEffect(() => {
-    if (isMobile && isChatOpen && messagesEndRef.current) {
-      let rafId = 0;
-      let tries = 0;
-      const maxTries = 20;
-      const tick = () => {
-        scrollToBottom();
-        if (tries++ < maxTries) rafId = requestAnimationFrame(tick);
-      };
-      // Start after small delay to allow sheet animation/layout
-      const start = setTimeout(() => {
-        tick();
-      }, 100);
-      return () => {
-        clearTimeout(start);
-        cancelAnimationFrame(rafId);
-      };
+    if (isMobile && isChatOpen && messages.length > 0) {
+      const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+      setTimeout(() => {
+        snapToBottom(anchorRef.current);
+        setLastWasAtBottom(atBottom(viewport));
+      }, 150);
     }
-  }, [isMobile, isChatOpen, activeConversationId, messages.length, scrollToBottom]);
+  }, [isMobile, isChatOpen, activeConversationId]);
 
   // Handle scroll to show/hide header shadow
   const handleScroll = React.useCallback((e: Event) => {
@@ -649,9 +650,9 @@ export default function Chat() {
                        }
                        return null;
                      })()
-                   )}
-                   
-                    <div ref={messagesEndRef} />
+                    )}
+                    
+                    <div ref={anchorRef} />
                   </ScrollArea>
               </div>
               
@@ -660,7 +661,7 @@ export default function Chat() {
                 className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
                 style={{
                   // Only apply transform on web - native platforms handle viewport resize automatically
-                  transform: !Capacitor.isNativePlatform() ? `translateY(-${keyboardHeight}px)` : 'none',
+                  transform: !Capacitor.isNativePlatform() ? `translateY(calc(-1 * var(--kb, 0px)))` : 'none',
                   transition: 'transform 0.25s ease-out'
                 }}
               >
@@ -730,6 +731,17 @@ export default function Chat() {
                         // Auto-resize textarea
                         e.target.style.height = 'auto';
                         e.target.style.height = e.target.scrollHeight + 'px';
+                      }}
+                      onFocus={() => {
+                        const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+                        setLastWasAtBottom(atBottom(viewport));
+                        // Let iOS do its scroll first; then we correct
+                        setTimeout(() => {
+                          const wasBottom = atBottom(viewport);
+                          if (wasBottom) {
+                            snapToBottom(anchorRef.current);
+                          }
+                        }, 100);
                       }}
                       placeholder={(() => {
                         const activeConv = conversations.find(c => c.id === activeConversationId);
@@ -997,6 +1009,17 @@ export default function Chat() {
                       e.target.style.height = 'auto';
                       e.target.style.height = e.target.scrollHeight + 'px';
                     }}
+                    onFocus={() => {
+                      const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+                      setLastWasAtBottom(atBottom(viewport));
+                      // Let iOS do its scroll first; then we correct
+                      setTimeout(() => {
+                        const wasBottom = atBottom(viewport);
+                        if (wasBottom) {
+                          snapToBottom(anchorRef.current);
+                        }
+                      }, 100);
+                    }}
                     placeholder={(() => {
                       const activeConv = conversations.find(c => c.id === activeConversationId);
                       if (activeConv?.status === 'closed') {
@@ -1159,10 +1182,8 @@ export default function Chat() {
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
-                    scrollToBottom();
-                    setTimeout(scrollToBottom, 150);
-                    setTimeout(scrollToBottom, 350);
-                  }, 50);
+                    snapToBottom(anchorRef.current);
+                  }, 150);
                 }}
               >
                 <div className="flex flex-col h-full relative z-[10001]">
