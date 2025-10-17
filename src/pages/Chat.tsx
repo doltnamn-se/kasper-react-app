@@ -1146,7 +1146,7 @@ export default function Chat() {
             renderChatInterface()
           ) : isChatOpen ? (
             // Mobile: full screen when chat is open
-            <div className="fixed inset-0 z-[9999] bg-[#FFFFFF] dark:bg-[#1c1c1e]" style={{ top: 0 }}>
+            <div className="fixed inset-0 z-[9999] bg-[#FFFFFF] dark:bg-[#1c1c1e]" style={{ top: 0, paddingBottom: '80px' }}>
               {renderChatInterface(true)}
             </div>
           ) : null}
