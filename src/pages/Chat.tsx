@@ -1184,10 +1184,10 @@ export default function Chat() {
                   maxHeight: '100dvh',
                   overscrollBehavior: 'none',
                   position: 'fixed',
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0
+                  top: 'env(safe-area-inset-top)',
+                  bottom: 'env(safe-area-inset-bottom)',
+                  left: 'env(safe-area-inset-left)',
+                  right: 'env(safe-area-inset-right)'
                 }}
                 onOpenAutoFocus={(e) => {
                   e.preventDefault();
