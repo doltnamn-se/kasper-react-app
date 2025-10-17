@@ -173,7 +173,7 @@ export const ChatWidget = () => {
             {messages.map(renderMessage)}
           </ScrollArea>
 
-          <div className="p-4 border-t transition-all duration-300 ease-out">
+          <div className="px-4 pt-4 pb-5 border-t transition-all duration-300 ease-out">
             <div className="flex gap-2">
               <Button
                 variant="ghost"
