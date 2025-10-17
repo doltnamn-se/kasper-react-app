@@ -292,8 +292,8 @@ export const ChatWidget = () => {
           <DrawerContent 
             className="flex flex-col"
             style={{ 
-              height: '85vh',
-              maxHeight: '85vh',
+              height: '600px',
+              maxHeight: '600px',
               position: 'fixed',
               bottom: 0,
               paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
