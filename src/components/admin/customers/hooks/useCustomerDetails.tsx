@@ -35,30 +35,8 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     checkSuperAdmin();
   }, []);
   
-  useEffect(() => {
-    const checkBannedStatus = async () => {
-      if (!customerId) return;
-      
-      try {
-        const { data, error } = await supabase.auth.admin.getUserById(customerId);
-        if (error) {
-          console.error("Error getting user ban status:", error);
-          return;
-        }
-        
-        // Check if the user is banned by safely accessing the banned_until property
-        // Use type assertion to access the property that exists at runtime but not in TypeScript definitions
-        const userData = data?.user as any;
-        setIsBanned(userData && userData.banned_until !== null);
-      } catch (err) {
-        console.error("Error checking ban status:", err);
-      }
-    };
-    
-    if (customerId && isSuperAdmin) {
-      checkBannedStatus();
-    }
-  }, [customerId, isSuperAdmin]);
+  // Ban status is tracked locally and updated when toggle action is performed
+  // Initial state defaults to false (not banned)
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
