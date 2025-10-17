@@ -288,7 +288,7 @@ export const ChatWidget = () => {
 
       {/* Mobile Drawer */}
       {isMobile ? (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <Drawer open={isOpen} onOpenChange={setIsOpen} shouldScaleBackground={false}>
           <DrawerContent 
             className="flex flex-col"
             style={{ 
