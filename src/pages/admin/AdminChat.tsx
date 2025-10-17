@@ -156,6 +156,65 @@ export default function AdminChat() {
     }
   }, []);
 
+  // Left edge swipe gesture to close chat sheet (iOS-style)
+  React.useEffect(() => {
+    if (!isMobile || !isChatOpen) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+    const EDGE_WIDTH = 50; // Left edge detection zone
+    const SWIPE_THRESHOLD = 100; // Minimum swipe distance to trigger close
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      
+      // Only start tracking if touch begins at left edge
+      if (touchStartX <= EDGE_WIDTH) {
+        isSwiping = true;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isSwiping) return;
+      
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = Math.abs(touch.clientY - touchStartY);
+      
+      // Ensure horizontal swipe (not vertical scroll)
+      if (deltaX > 20 && deltaY < 50) {
+        e.preventDefault(); // Prevent scrolling while swiping
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!isSwiping) return;
+      
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      
+      // Close sheet if swiped right far enough
+      if (deltaX > SWIPE_THRESHOLD) {
+        setIsChatOpen(false);
+      }
+      
+      isSwiping = false;
+    };
+
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isMobile, isChatOpen]);
+
   // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps
   const scrollToBottom = React.useCallback(() => {
     if (scrollAreaRef.current) {
