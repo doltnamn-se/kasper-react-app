@@ -1226,10 +1226,14 @@ export default function AdminChat() {
                   maxHeight: '100dvh',
                   overscrollBehavior: 'none',
                   position: 'fixed',
-                  top: 'env(safe-area-inset-top)',
-                  bottom: 'env(safe-area-inset-bottom)',
-                  left: 'env(safe-area-inset-left)',
-                  right: 'env(safe-area-inset-right)'
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  paddingTop: 'env(safe-area-inset-top)',
+                  paddingBottom: 'env(safe-area-inset-bottom)',
+                  paddingLeft: 'env(safe-area-inset-left)',
+                  paddingRight: 'env(safe-area-inset-right)'
                 }}
                 hideCloseButton={true}
                 onOpenAutoFocus={(e) => {
