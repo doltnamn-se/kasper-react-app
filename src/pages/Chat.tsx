@@ -513,7 +513,7 @@ export default function Chat() {
           {activeConversationId || isDraftConversation ? (
             <>
               {/* Fixed header */}
-              <div className={`absolute top-0 left-0 w-full z-10 pt-4 px-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
+              <div className={`absolute top-0 left-0 w-full z-10 p-4 bg-[#FFFFFF] dark:bg-[#1c1c1e] transition-all duration-200 ${showHeaderBorder ? 'shadow-sm dark:shadow-[0_1px_3px_0_#dadada0d]' : ''}`}>
                 {(() => {
                   const activeConv = conversations.find(c => c.id === activeConversationId);
                   const isArchived = activeConv?.status === 'closed';
