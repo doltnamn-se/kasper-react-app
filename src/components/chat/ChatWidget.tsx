@@ -173,7 +173,12 @@ export const ChatWidget = () => {
             {messages.map(renderMessage)}
           </ScrollArea>
 
-          <div className="p-4 border-t transition-all duration-300 ease-out">
+          <div 
+            className="p-4 border-t transition-all duration-300 ease-out"
+            style={{
+              marginBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0'
+            }}
+          >
             <div className="flex gap-2">
               <Button
                 variant="ghost"
@@ -281,11 +286,7 @@ export const ChatWidget = () => {
           <DrawerContent 
             className="h-[85vh] flex flex-col"
             style={{ 
-              height: keyboardHeight > 0 
-                ? `calc(85vh - ${keyboardHeight}px)` 
-                : '85vh',
-              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined,
-              transition: 'height 0.25s ease-out'
+              paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
             }}
           >
             <DrawerHeader className="flex flex-row items-center justify-between space-y-0 pb-3 flex-shrink-0">
