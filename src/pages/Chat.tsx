@@ -556,9 +556,9 @@ export default function Chat() {
                <div className="flex-1 overflow-hidden mt-[88px] mb-[80px]">
                   <ScrollArea 
                    ref={scrollAreaRef} 
-                   className="h-full px-4 -mt-4"
-                 >
-                   {isDraftConversation ? (
+                   className="h-full px-4"
+                  >
+                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
                        <p className="text-[#8E8E93] text-lg text-center">
                          Skriv för att börja konversationen
