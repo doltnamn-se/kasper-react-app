@@ -106,30 +106,30 @@ export default function AdminChat() {
         keyboardHideListener?.remove();
       };
     } else {
-      // Web mobile keyboard detection
-      const setVH = () => {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      // Web keyboard detection using visualViewport API
+      const vv = window.visualViewport;
+      if (!vv) return;
+
+      const updateKeyboardHeight = () => {
+        // Calculate how much the keyboard overlaps the layout viewport
+        const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        const keyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
+        
+        setKeyboardHeight(keyboardHeight);
+        document.documentElement.style.setProperty('--keyboard-height', `${keyboardHeight}px`);
       };
+
+      vv.addEventListener('resize', updateKeyboardHeight);
+      vv.addEventListener('scroll', updateKeyboardHeight);
+      window.addEventListener('resize', updateKeyboardHeight);
       
-      setVH();
-      window.addEventListener('resize', setVH);
-      
-      if (window.visualViewport) {
-        const handleViewportChange = () => {
-          const heightDiff = window.innerHeight - window.visualViewport.height;
-          setKeyboardHeight(heightDiff > 150 ? heightDiff : 0);
-        };
-        
-        window.visualViewport.addEventListener('resize', handleViewportChange);
-        
-        return () => {
-          window.removeEventListener('resize', setVH);
-          window.visualViewport?.removeEventListener('resize', handleViewportChange);
-        };
-      }
-      
-      return () => window.removeEventListener('resize', setVH);
+      updateKeyboardHeight();
+
+      return () => {
+        vv.removeEventListener('resize', updateKeyboardHeight);
+        vv.removeEventListener('scroll', updateKeyboardHeight);
+        window.removeEventListener('resize', updateKeyboardHeight);
+      };
     }
   }, []);
 
@@ -1003,7 +1003,14 @@ export default function AdminChat() {
             </div>
             
             {/* Fixed bottom input area */}
-            <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+            <div 
+              className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
+              style={{
+                // Only apply transform on web - native platforms handle viewport resize automatically
+                transform: !Capacitor.isNativePlatform() ? `translateY(-${keyboardHeight}px)` : 'none',
+                transition: 'transform 0.25s ease-out'
+              }}
+            >
               <div className="flex items-end gap-2">
                 <input
                   type="file"
