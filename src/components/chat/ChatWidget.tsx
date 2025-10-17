@@ -298,8 +298,8 @@ export const ChatWidget = () => {
               <div
                 className="fixed inset-x-0 z-[10000] flex flex-col rounded-t-[10px] border bg-background"
                 style={{
-                  height: '600px',
-                  bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : 0,
+                  height: keyboardHeight > 0 ? `${600 - keyboardHeight}px` : '600px',
+                  bottom: 0,
                   paddingBottom: safeArea.bottom > 0 ? `${safeArea.bottom}px` : undefined
                 }}
               >
