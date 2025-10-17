@@ -11,6 +11,7 @@ import { useUnreadChatMessages } from '@/hooks/useUnreadChatMessages';
 import { formatDistanceToNow, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useChatContext } from '@/contexts/ChatContext';
 import { formatChatTimestamp } from '@/utils/dateUtils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -31,6 +32,7 @@ export default function Chat() {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
   const safeArea = useSafeArea();
+  const { setIsChatFullScreenOpen } = useChatContext();
   const [newMessage, setNewMessage] = useState('');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -458,8 +460,23 @@ export default function Chat() {
     markAsRead(conversationId);
     setIsCreatingNew(false);
     setIsDraftConversation(false);
-    if (isMobile) setIsChatOpen(true);
+    if (isMobile) {
+      setIsChatOpen(true);
+      setIsChatFullScreenOpen(true);
+    }
   };
+
+  // Update context when chat opens/closes
+  useEffect(() => {
+    if (isMobile) {
+      setIsChatFullScreenOpen(isChatOpen);
+    }
+    return () => {
+      if (isMobile) {
+        setIsChatFullScreenOpen(false);
+      }
+    };
+  }, [isChatOpen, isMobile, setIsChatFullScreenOpen]);
 
   const renderNewChatForm = (inSheet = false) => (
     <Card className={`${inSheet ? '' : 'lg:col-span-2'} bg-white dark:bg-[#1c1c1e] dark:border dark:border-[#232325] rounded-2xl`}>

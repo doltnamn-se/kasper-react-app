@@ -6,6 +6,7 @@ import { UserBottomNav } from "@/components/nav/UserBottomNav";
 import { MobileWebDownloadBanner } from "@/components/layout/MobileWebDownloadBanner";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useChatContext } from "@/contexts/ChatContext";
 
 
 export const MobilePersistentLayout = () => {
@@ -13,6 +14,7 @@ export const MobilePersistentLayout = () => {
   const isAdmin = userProfile?.role === 'super_admin';
   const isMobile = useIsMobile();
   const location = useLocation();
+  const { isChatFullScreenOpen } = useChatContext();
   
   // Force re-render on route change for proper indicator position
   const [, setPathChanged] = useState(0);
@@ -33,6 +35,9 @@ export const MobilePersistentLayout = () => {
     return <Outlet />;
   }
 
+  // Hide bottom nav when chat full screen is open
+  const showBottomNav = !isChatFullScreenOpen;
+
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#161618] pb-12">
       {/* Mobile Web Download Banner */}
@@ -47,7 +52,7 @@ export const MobilePersistentLayout = () => {
       </main>
       
       {/* Fixed Bottom Navigation */}
-      {isAdmin ? <AdminBottomNav /> : <UserBottomNav />}
+      {showBottomNav && (isAdmin ? <AdminBottomNav /> : <UserBottomNav />)}
     </div>
   );
 };
