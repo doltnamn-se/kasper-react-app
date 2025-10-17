@@ -1,6 +1,13 @@
-/* CSS Variables for stable viewport height */
+/* CSS Variables for stable viewport height and keyboard */
 :root {
   --vh: 1vh;
+  --keyboard-height: 0px;
+}
+
+/* Support for dynamic viewport units on mobile */
+html {
+  height: 100dvh;
+  height: 100vh; /* fallback for older browsers */
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
