@@ -565,16 +565,17 @@ export default function Chat() {
                        </p>
                      </div>
                    ) : (
-                     messages.map((message, index) => {
+                      <div className="space-y-4 pt-4">
+                        {messages.map((message, index) => {
                       const isCurrentUser = message.sender_id === userId;
                       const isLastMessage = index === messages.length - 1;
                       const isRead = message.read_at !== null && isCurrentUser; // Only show read status for current user's messages that have been read
                        const statusText = isRead ? t('message.seen') : t('message.delivered');
                      return (
-                        <div
-                          key={message.id}
-                          className={`flex flex-col mb-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
-                        >
+                          <div
+                            key={message.id}
+                            className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'}`}
+                          >
                           {message.attachment_url ? (
                             <FileAttachment 
                               attachmentUrl={message.attachment_url} 
@@ -628,8 +629,9 @@ export default function Chat() {
                          </div>
                      </div>
                    );
-                     })
-                  )}
+                        })}
+                      </div>
+                   )}
                    <TypingIndicator users={typingUsers} />
                    
                    {/* Show closed chat message if conversation is archived */}
