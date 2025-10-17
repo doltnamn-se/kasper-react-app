@@ -82,10 +82,10 @@ export default function AdminChat() {
     stopTyping
   } = activeTab === 'inbox' ? inboxData : archiveData;
 
-  // Keyboard handling - Native vs Web
+  // Keyboard handling - smooth transform animation for native platforms
   React.useEffect(() => {
     if (Capacitor.isNativePlatform()) {
-      // Native keyboard handling for iOS/Android
+      // Native keyboard handling for iOS/Android with smooth animations
       let keyboardShowListener: any;
       let keyboardHideListener: any;
 
@@ -116,7 +116,6 @@ export default function AdminChat() {
         const newKeyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
         
         setKeyboardHeight(newKeyboardHeight);
-        document.documentElement.style.setProperty('--keyboard-height', `${newKeyboardHeight}px`);
       };
 
       vv.addEventListener('resize', updateKeyboardHeight);
@@ -131,7 +130,7 @@ export default function AdminChat() {
         window.removeEventListener('resize', updateKeyboardHeight);
       };
     }
-  }, [keyboardHeight]);
+  }, []);
 
   // Helper to reliably scroll to bottom (used for mobile sheet) - simplified to prevent keyboard jumps
   const scrollToBottom = React.useCallback(() => {
@@ -742,9 +741,9 @@ export default function AdminChat() {
               <div 
                 className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
                 style={{
-                  // Only apply transform on web - native platforms handle viewport resize automatically
-                  transform: !Capacitor.isNativePlatform() ? `translateY(-${keyboardHeight}px)` : 'none',
-                  transition: 'transform 0.25s ease-out'
+                  transform: `translateY(-${keyboardHeight}px)`,
+                  transition: 'transform 0.25s ease-in-out',
+                  willChange: 'transform'
                 }}
               >
                 <div className="flex items-end gap-2">

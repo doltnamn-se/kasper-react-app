@@ -64,22 +64,20 @@ export default function Chat() {
     }
   }, [isMobile, drawerWasOpen]);
   
-  // Keyboard handling - visualViewport approach for web, native for apps
+  // Keyboard handling - smooth transform animation for native platforms
   React.useEffect(() => {
     if (Capacitor.isNativePlatform()) {
-      // Native keyboard handling for iOS/Android
+      // Native keyboard handling for iOS/Android with smooth animations
       let keyboardShowListener: any;
       let keyboardHideListener: any;
 
       const setupListeners = async () => {
         keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
           setKeyboardHeight(info.keyboardHeight);
-          document.documentElement.style.setProperty('--keyboard-height', `${info.keyboardHeight}px`);
         });
 
         keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
           setKeyboardHeight(0);
-          document.documentElement.style.setProperty('--keyboard-height', '0px');
         });
       };
 
@@ -100,7 +98,6 @@ export default function Chat() {
         const newKeyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
         
         setKeyboardHeight(newKeyboardHeight);
-        document.documentElement.style.setProperty('--keyboard-height', `${newKeyboardHeight}px`);
       };
 
       vv.addEventListener('resize', updateKeyboardHeight);
@@ -115,7 +112,7 @@ export default function Chat() {
         window.removeEventListener('resize', updateKeyboardHeight);
       };
     }
-  }, [keyboardHeight]);
+  }, []);
 
   React.useEffect(() => {
     try {
@@ -929,7 +926,14 @@ export default function Chat() {
             </div>
             
              {/* Fixed bottom input area */}
-             <div className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]">
+             <div 
+               className="flex-shrink-0 px-2 pt-2 pb-4 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
+               style={{
+                 transform: `translateY(-${keyboardHeight}px)`,
+                 transition: 'transform 0.25s ease-in-out',
+                 willChange: 'transform'
+               }}
+             >
                <div className="flex items-end gap-2">
                 <input
                   type="file"
