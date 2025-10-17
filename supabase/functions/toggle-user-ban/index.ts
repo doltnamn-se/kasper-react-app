@@ -52,8 +52,8 @@ serve(async (req) => {
       )
     }
     
-    // Check if user is currently banned
-    const isBanned = userData?.user && userData.user.banned_until !== null
+    // Check if user is currently banned (check for both null and undefined)
+    const isBanned = userData?.user?.banned_until != null // Using != to check for both null and undefined
     
     console.log('[EDGE] isBanned check:', { 
       isBanned, 
