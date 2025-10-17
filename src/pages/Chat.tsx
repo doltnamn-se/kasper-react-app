@@ -75,10 +75,17 @@ export default function Chat() {
         keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
           setKeyboardHeight(info.keyboardHeight);
           document.documentElement.style.setProperty('--keyboard-height', `${info.keyboardHeight}px`);
-          // Scroll to last message when keyboard opens
-          setTimeout(() => {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-          }, 150);
+          // Multiple scroll attempts to catch keyboard animation
+          [50, 150, 300].forEach(delay => {
+            setTimeout(() => {
+              if (scrollAreaRef.current) {
+                const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
+                if (viewport) {
+                  viewport.scrollTop = viewport.scrollHeight;
+                }
+              }
+            }, delay);
+          });
         });
 
         keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
@@ -103,11 +110,18 @@ export default function Chat() {
         const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
         const newKeyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
         
-        // Scroll to last message when keyboard opens (height goes from 0 to positive)
+        // Multiple scroll attempts when keyboard opens (height goes from 0 to positive)
         if (keyboardHeight === 0 && newKeyboardHeight > 0) {
-          setTimeout(() => {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-          }, 150);
+          [50, 150, 300].forEach(delay => {
+            setTimeout(() => {
+              if (scrollAreaRef.current) {
+                const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
+                if (viewport) {
+                  viewport.scrollTop = viewport.scrollHeight;
+                }
+              }
+            }, delay);
+          });
         }
         
         setKeyboardHeight(newKeyboardHeight);
@@ -569,7 +583,6 @@ export default function Chat() {
                    ref={scrollAreaRef} 
                    className="h-full px-4"
                  >
-                   <div style={{ paddingBottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0', transition: 'padding-bottom 0.25s ease-out' }}>
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
                        <p className="text-[#8E8E93] text-lg text-center">
@@ -664,7 +677,6 @@ export default function Chat() {
                    )}
                    
                     <div ref={messagesEndRef} />
-                   </div>
                   </ScrollArea>
               </div>
               
