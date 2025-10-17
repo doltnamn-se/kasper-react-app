@@ -181,7 +181,10 @@ export const AdminActionButtons = ({
         
         {onBanUser && (
           <Button
-            onClick={onBanUser}
+            onClick={() => {
+              console.log('[CLICK] Ban button clicked, isBanned:', isBanned, 'isTogglingBan:', isTogglingBan);
+              onBanUser();
+            }}
             disabled={isTogglingBan}
             variant="outline"
             size="icon"
