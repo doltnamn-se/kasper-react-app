@@ -25,6 +25,8 @@ serve(async (req) => {
       )
     }
     
+    console.log('[EDGE] Received request for user_id:', user_id)
+    
     // Create Supabase client with admin privileges using service role key
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -40,8 +42,10 @@ serve(async (req) => {
     // Get the current user data to check if they're already banned
     const { data: userData, error: getUserError } = await supabaseAdmin.auth.admin.getUserById(user_id)
     
+    console.log('[EDGE] getUserById result:', { userData, getUserError })
+    
     if (getUserError) {
-      console.error('Error fetching user:', getUserError)
+      console.error('[EDGE] Error fetching user:', getUserError)
       return new Response(
         JSON.stringify({ error: 'Failed to fetch user data' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
@@ -51,15 +55,23 @@ serve(async (req) => {
     // Check if user is currently banned
     const isBanned = userData?.user && userData.user.banned_until !== null
     
+    console.log('[EDGE] isBanned check:', { 
+      isBanned, 
+      banned_until: userData?.user?.banned_until,
+      user: userData?.user ? 'exists' : 'null'
+    })
+    
     let result
     
     if (isBanned) {
+      console.log('[EDGE] User is banned, unbanning...')
       // If banned, unban the user by setting banned_until to null
       result = await supabaseAdmin.auth.admin.updateUserById(
         user_id,
         { banned_until: null }
       )
     } else {
+      console.log('[EDGE] User is not banned, banning...')
       // If not banned, ban the user indefinitely (far future date)
       const banUntil = new Date('2100-01-01')
       result = await supabaseAdmin.auth.admin.updateUserById(
@@ -68,13 +80,17 @@ serve(async (req) => {
       )
     }
     
+    console.log('[EDGE] Update result:', { result })
+    
     if (result.error) {
-      console.error('Error toggling ban status:', result.error)
+      console.error('[EDGE] Error toggling ban status:', result.error)
       return new Response(
         JSON.stringify({ error: 'Failed to update user ban status' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       )
     }
+    
+    console.log('[EDGE] Returning success, banned:', !isBanned)
     
     // Return success with the new ban state
     return new Response(
