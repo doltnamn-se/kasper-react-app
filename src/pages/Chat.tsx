@@ -661,10 +661,10 @@ export default function Chat() {
               
               {/* Fixed bottom input area */}
               <div 
-                className="absolute left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
+                className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
                 style={{
-                  bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0px',
-                  transition: 'bottom 0.25s ease-out'
+                  transform: `translateY(-${keyboardHeight}px)`,
+                  transition: 'transform 0.25s ease-out'
                 }}
               >
                 <div className="flex items-end gap-2">
