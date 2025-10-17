@@ -79,10 +79,16 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
   };
   
   const handleBanUser = async () => {
+    console.log('[DEBUG] handleBanUser called, current isBanned state:', isBanned);
     const result = await handleToggleUserBan();
+    console.log('[DEBUG] handleToggleUserBan result:', result);
+    
     if (result && 'success' in result) {
+      console.log('[DEBUG] Setting isBanned to:', result.banned);
       setIsBanned(result.banned);
       await refetchData();
+    } else {
+      console.log('[DEBUG] Result was falsy or missing success property:', result);
     }
   };
 

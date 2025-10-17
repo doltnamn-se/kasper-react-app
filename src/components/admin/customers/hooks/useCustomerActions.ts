@@ -70,11 +70,14 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
   };
 
   const handleToggleUserBan = async () => {
+    console.log('[DEBUG] handleToggleUserBan called for user:', customerId);
     setIsTogglingBan(true);
     try {
       const { data, error } = await supabase.functions.invoke('toggle-user-ban', {
         body: { user_id: customerId }
       });
+      
+      console.log('[DEBUG] Edge function response - data:', data, 'error:', error);
       
       if (error || !data.success) {
         throw error || new Error('Failed to toggle user ban status');
@@ -87,9 +90,10 @@ export const useCustomerActions = (customerId: string, onSuccess?: () => void) =
           : 'User has been unbanned and can now log in'
       });
       
+      console.log('[DEBUG] Returning data:', data);
       return data;
     } catch (error) {
-      console.error('Error toggling user ban status:', error);
+      console.error('[DEBUG] Error in handleToggleUserBan:', error);
       toast.error('Action failed', {
         description: 'Failed to update user ban status'
       });
