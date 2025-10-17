@@ -75,17 +75,6 @@ export default function Chat() {
         keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
           setKeyboardHeight(info.keyboardHeight);
           document.documentElement.style.setProperty('--keyboard-height', `${info.keyboardHeight}px`);
-          // Multiple scroll attempts to catch keyboard animation
-          [50, 150, 300].forEach(delay => {
-            setTimeout(() => {
-              if (scrollAreaRef.current) {
-                const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
-                if (viewport) {
-                  viewport.scrollTop = viewport.scrollHeight;
-                }
-              }
-            }, delay);
-          });
         });
 
         keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
@@ -109,20 +98,6 @@ export default function Chat() {
         // Calculate how much the keyboard overlaps the layout viewport
         const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
         const newKeyboardHeight = overlap > 50 ? overlap : 0; // Ignore small viewport changes
-        
-        // Multiple scroll attempts when keyboard opens (height goes from 0 to positive)
-        if (keyboardHeight === 0 && newKeyboardHeight > 0) {
-          [50, 150, 300].forEach(delay => {
-            setTimeout(() => {
-              if (scrollAreaRef.current) {
-                const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
-                if (viewport) {
-                  viewport.scrollTop = viewport.scrollHeight;
-                }
-              }
-            }, delay);
-          });
-        }
         
         setKeyboardHeight(newKeyboardHeight);
         document.documentElement.style.setProperty('--keyboard-height', `${newKeyboardHeight}px`);
