@@ -557,6 +557,10 @@ export default function Chat() {
                  <ScrollArea 
                    ref={scrollAreaRef} 
                    className="h-full px-4"
+                   style={{
+                     paddingBottom: keyboardHeight > 0 ? `${keyboardHeight + 20}px` : '80px',
+                     transition: 'padding-bottom 0.25s ease-out'
+                   }}
                  >
                    {isDraftConversation ? (
                      <div className="flex-1 flex items-center justify-center h-full">
@@ -657,10 +661,10 @@ export default function Chat() {
               
               {/* Fixed bottom input area */}
               <div 
-                className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
+                className="absolute left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
                 style={{
-                  transform: `translateY(calc(-1 * var(--keyboard-height, 0px)))`,
-                  transition: 'transform 0.25s ease-out'
+                  bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0px',
+                  transition: 'bottom 0.25s ease-out'
                 }}
               >
                 <div className="flex items-end gap-2">
