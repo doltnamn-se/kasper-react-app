@@ -82,19 +82,43 @@ export default function AdminChat() {
     stopTyping
   } = activeTab === 'inbox' ? inboxData : archiveData;
 
-  // Keyboard handling - smooth transform animation for native platforms
+  // Keyboard handling - Web Animations API for smooth native-like animations
+  const bottomContainerRef = React.useRef<HTMLDivElement>(null);
+
   React.useEffect(() => {
     if (Capacitor.isNativePlatform()) {
-      // Native keyboard handling for iOS/Android with smooth animations
+      // Native keyboard handling with Web Animations API
       let keyboardShowListener: any;
       let keyboardHideListener: any;
 
       const setupListeners = async () => {
         keyboardShowListener = await Keyboard.addListener('keyboardWillShow', info => {
+          const element = bottomContainerRef.current;
+          if (element) {
+            element.animate([
+              { transform: `translateY(-${keyboardHeight}px)` },
+              { transform: `translateY(-${info.keyboardHeight}px)` }
+            ], {
+              duration: 250,
+              easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+              fill: 'forwards'
+            });
+          }
           setKeyboardHeight(info.keyboardHeight);
         });
 
         keyboardHideListener = await Keyboard.addListener('keyboardWillHide', () => {
+          const element = bottomContainerRef.current;
+          if (element) {
+            element.animate([
+              { transform: `translateY(-${keyboardHeight}px)` },
+              { transform: 'translateY(0)' }
+            ], {
+              duration: 250,
+              easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+              fill: 'forwards'
+            });
+          }
           setKeyboardHeight(0);
         });
       };
@@ -739,12 +763,8 @@ export default function AdminChat() {
               
               {/* Fixed bottom input area */}
               <div 
+                ref={bottomContainerRef}
                 className="absolute bottom-0 left-0 w-full px-2 pt-2 pb-10 border-t border-[#ecedee] dark:border-[#232325] bg-[#FFFFFF] dark:bg-[#1c1c1e]"
-                style={{
-                  transform: `translateY(-${keyboardHeight}px)`,
-                  transition: 'transform 0.25s ease-in-out',
-                  willChange: 'transform'
-                }}
               >
                 <div className="flex items-end gap-2">
                   <input
