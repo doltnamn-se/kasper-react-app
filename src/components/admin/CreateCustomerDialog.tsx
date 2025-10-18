@@ -76,7 +76,7 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
     <div className="flex flex-col gap-2">
       <Button 
         className="w-full" 
-        onClick={() => handleCreateCustomer(true)}
+        onClick={() => handleCreateCustomer(true, false)}
         disabled={isCreating || !isFormValid}
       >
         {isCreating ? t('creating') : t('create.with.email')}
@@ -85,7 +85,16 @@ export const CreateCustomerDialog = ({ onCustomerCreated, children }: CreateCust
       <Button 
         className="w-full" 
         variant="outline"
-        onClick={() => handleCreateCustomer(false)}
+        onClick={() => handleCreateCustomer(true, true)}
+        disabled={isCreating || !isFormValid}
+      >
+        {isCreating ? t('creating') : 'Send Email + Trustpilot'}
+        <SendHorizontal className="h-4 w-4 ml-1" />
+      </Button>
+      <Button 
+        className="w-full" 
+        variant="outline"
+        onClick={() => handleCreateCustomer(false, false)}
         disabled={isCreating || !isFormValid}
       >
         {isCreating ? t('creating') : t('create.without.email')}

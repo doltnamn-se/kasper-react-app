@@ -36,7 +36,7 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
     });
   };
 
-  const handleCreateCustomer = async (sendEmail: boolean = true) => {
+  const handleCreateCustomer = async (sendEmail: boolean = true, includeTrustpilotBcc: boolean = false) => {
     try {
       setIsCreating(true);
       console.log('Starting customer creation process with data:', formData);
@@ -81,7 +81,8 @@ export const useCustomerCreation = (onCustomerCreated: () => void) => {
           body: {
             email: formData.email,
             displayName: formData.displayName,
-            password: generatedPassword
+            password: generatedPassword,
+            includeTrustpilotBcc
           }
         });
 

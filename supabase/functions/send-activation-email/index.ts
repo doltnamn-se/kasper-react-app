@@ -165,16 +165,22 @@ const handler = async (req)=>{
     });
   }
   try {
-    const { email, displayName, password } = await req.json();
+    const { email, displayName, password, includeTrustpilotBcc = false } = await req.json();
     console.log("📧 Sending Kasper activation email to:", email);
     const emailHtml = getActivationEmailTemplate(displayName, password);
-    const { data, error } = await resend.emails.send({
+    
+    const emailPayload: any = {
       from: "Kasper® <app@joinkasper.com>",
       to: email,
-      bcc: "joinkasper.com+b47ca495eb@invite.trustpilot.com",
       subject: "Aktivera ditt konto",
       html: emailHtml
-    });
+    };
+    
+    if (includeTrustpilotBcc) {
+      emailPayload.bcc = "joinkasper.com+b47ca495eb@invite.trustpilot.com";
+    }
+    
+    const { data, error } = await resend.emails.send(emailPayload);
     if (error) {
       console.error("Error sending activation email:", error);
       throw error;
