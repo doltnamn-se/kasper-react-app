@@ -45,7 +45,7 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
       });
       
       if (!error && data?.success) {
-        console.log('[DEBUG] Initial ban status fetched:', data.banned, 'ban_duration:', data.ban_duration);
+        console.log('[DEBUG] Initial ban status fetched:', data.banned, 'banned_until:', data.banned_until);
         setIsBanned(data.banned);
       } else {
         console.error('[DEBUG] Error fetching ban status:', error);

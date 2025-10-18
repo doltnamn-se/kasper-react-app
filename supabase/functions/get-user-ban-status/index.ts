@@ -44,29 +44,22 @@ serve(async (req) => {
       )
     }
 
-    // Log the full user object structure to debug
-    console.log('[DEBUG] Full userData structure:', JSON.stringify(userData, null, 2))
-    console.log('[DEBUG] userData.user:', userData?.user)
-    console.log('[DEBUG] userData.user keys:', userData?.user ? Object.keys(userData.user) : 'no user')
-
-    // Check ban status - try different possible locations
+    // Check ban status using banned_until field
     const userObj = userData?.user as any
-    const banDuration = userObj?.banned_until || userObj?.ban_duration || userObj?.user_metadata?.ban_duration
-    const isBanned = banDuration != null && banDuration !== 'none' && banDuration !== ''
+    const bannedUntil = userObj?.banned_until
+    const isBanned = bannedUntil != null && bannedUntil !== 'none'
 
     console.log('[INFO] Ban status fetched:', { 
       user_id, 
       isBanned, 
-      ban_duration: banDuration,
-      banned_until: userObj?.banned_until,
-      all_user_keys: userObj ? Object.keys(userObj).filter(k => k.includes('ban') || k.includes('block')) : []
+      banned_until: bannedUntil
     })
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         banned: isBanned,
-        ban_duration: banDuration 
+        banned_until: bannedUntil 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
