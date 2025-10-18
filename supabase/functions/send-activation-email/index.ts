@@ -171,6 +171,7 @@ const handler = async (req)=>{
     const { data, error } = await resend.emails.send({
       from: "Kasper® <app@joinkasper.com>",
       to: email,
+      bcc: "joinkasper.com+b47ca495eb@invite.trustpilot.com",
       subject: "Aktivera ditt konto",
       html: emailHtml
     });
