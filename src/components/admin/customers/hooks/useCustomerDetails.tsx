@@ -40,14 +40,15 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
     const fetchBanStatus = async () => {
       if (!customerId) return;
       
-      const { data, error } = await supabase.auth.admin.getUserById(customerId);
-      if (!error && data?.user) {
-        // Type cast to access admin-only field
-        const user = data.user as any;
-        const banDuration = user.ban_duration;
-        const isBannedStatus = banDuration != null && banDuration !== 'none' && banDuration !== '';
-        console.log('[DEBUG] Initial ban status fetched:', isBannedStatus, 'ban_duration:', banDuration);
-        setIsBanned(isBannedStatus);
+      const { data, error } = await supabase.functions.invoke('get-user-ban-status', {
+        body: { user_id: customerId }
+      });
+      
+      if (!error && data?.success) {
+        console.log('[DEBUG] Initial ban status fetched:', data.banned, 'ban_duration:', data.ban_duration);
+        setIsBanned(data.banned);
+      } else {
+        console.error('[DEBUG] Error fetching ban status:', error);
       }
     };
     
