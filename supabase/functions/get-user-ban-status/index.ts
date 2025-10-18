@@ -44,11 +44,23 @@ serve(async (req) => {
       )
     }
 
-    // Check ban status
-    const banDuration = (userData?.user as any)?.ban_duration
+    // Log the full user object structure to debug
+    console.log('[DEBUG] Full userData structure:', JSON.stringify(userData, null, 2))
+    console.log('[DEBUG] userData.user:', userData?.user)
+    console.log('[DEBUG] userData.user keys:', userData?.user ? Object.keys(userData.user) : 'no user')
+
+    // Check ban status - try different possible locations
+    const userObj = userData?.user as any
+    const banDuration = userObj?.banned_until || userObj?.ban_duration || userObj?.user_metadata?.ban_duration
     const isBanned = banDuration != null && banDuration !== 'none' && banDuration !== ''
 
-    console.log('[INFO] Ban status fetched:', { user_id, isBanned, ban_duration: banDuration })
+    console.log('[INFO] Ban status fetched:', { 
+      user_id, 
+      isBanned, 
+      ban_duration: banDuration,
+      banned_until: userObj?.banned_until,
+      all_user_keys: userObj ? Object.keys(userObj).filter(k => k.includes('ban') || k.includes('block')) : []
+    })
 
     return new Response(
       JSON.stringify({ 
