@@ -52,12 +52,13 @@ serve(async (req) => {
       )
     }
     
-    // Check if user is currently banned (check for both null and undefined)
-    const isBanned = userData?.user?.banned_until != null // Using != to check for both null and undefined
+    // Check if user is currently banned by checking ban_duration field
+    const banDuration = (userData?.user as any)?.ban_duration
+    const isBanned = banDuration != null && banDuration !== 'none' && banDuration !== ''
     
     console.log('[EDGE] isBanned check:', { 
       isBanned, 
-      banned_until: userData?.user?.banned_until,
+      ban_duration: banDuration,
       user: userData?.user ? 'exists' : 'null'
     })
     
@@ -65,18 +66,17 @@ serve(async (req) => {
     
     if (isBanned) {
       console.log('[EDGE] User is banned, unbanning...')
-      // If banned, unban the user by setting banned_until to null
+      // If banned, unban the user by setting ban_duration to "none"
       result = await supabaseAdmin.auth.admin.updateUserById(
         user_id,
-        { banned_until: null }
+        { ban_duration: 'none' }
       )
     } else {
       console.log('[EDGE] User is not banned, banning...')
-      // If not banned, ban the user indefinitely (far future date)
-      const banUntil = new Date('2100-01-01')
+      // If not banned, ban the user for ~100 years
       result = await supabaseAdmin.auth.admin.updateUserById(
         user_id,
-        { banned_until: banUntil.toISOString() }
+        { ban_duration: '876000h' }
       )
     }
     

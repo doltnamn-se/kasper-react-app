@@ -44,8 +44,9 @@ export const useCustomerDetails = (customerId: string, onOpenChange: (open: bool
       if (!error && data?.user) {
         // Type cast to access admin-only field
         const user = data.user as any;
-        const isBannedStatus = user.banned_until != null;
-        console.log('[DEBUG] Initial ban status fetched:', isBannedStatus, 'banned_until:', user.banned_until);
+        const banDuration = user.ban_duration;
+        const isBannedStatus = banDuration != null && banDuration !== 'none' && banDuration !== '';
+        console.log('[DEBUG] Initial ban status fetched:', isBannedStatus, 'ban_duration:', banDuration);
         setIsBanned(isBannedStatus);
       }
     };
